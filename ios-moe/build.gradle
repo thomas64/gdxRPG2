@@ -5,7 +5,7 @@ task copyNatives {
     doLast {
         file("xcode/native/ios/").mkdirs();
         def LD_FLAGS = "LIBGDX_NATIVES = "
-        configurations.natives.files.each { jar->
+        configurations.natives.files.each { jar ->
             def outputDir = null
             if (jar.name.endsWith("natives-ios.jar")) outputDir = file("xcode/native/ios")
             if (outputDir != null) {
@@ -33,7 +33,7 @@ task copyNatives {
     }
 }
 
-sourceSets.main.java.srcDirs = [ "src/" ]
+sourceSets.main.java.srcDirs = ["src/"]
 
 // Setup Multi-OS Engine
 moe {
@@ -44,7 +44,7 @@ moe {
     }
 
     remoteBuild {
-        resources = [ file("../android/assets") ]
+        resources = [file("../android/assets")]
     }
 }
 

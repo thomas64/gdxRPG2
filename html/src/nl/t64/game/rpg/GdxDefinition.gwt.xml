@@ -9,7 +9,7 @@
     <inherits name='com.badlogic.ashley_gwt'/>
     <inherits name='com.badlogic.gdx.ai'/>
 
-    <inherits name='Game'/>
+    <inherits name='GdxRpg2'/>
     <entry-point class='nl.t64.game.rpg.client.HtmlLauncher'/>
     <set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
     <set-configuration-property name="gdx.assetpath" value="../android/assets"/>
