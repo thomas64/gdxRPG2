@@ -9,7 +9,7 @@ public class GdxRpg2 extends Game {
 
     @Override
     public void create() {
-        this.setScreen(ADVENTURE_SCREEN);
+        setScreen(ADVENTURE_SCREEN);
     }
 
     @Override
