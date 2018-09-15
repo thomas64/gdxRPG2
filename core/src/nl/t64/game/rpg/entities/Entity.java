@@ -10,6 +10,8 @@ import com.badlogic.gdx.utils.Array;
 import nl.t64.game.rpg.Logger;
 import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.Utility;
+import nl.t64.game.rpg.constants.Direction;
+import nl.t64.game.rpg.constants.EntityState;
 
 import java.util.UUID;
 
@@ -17,15 +19,17 @@ public class Entity {
 
     private static final String TAG = Entity.class.getSimpleName();
     private static final String DEFAULT_SPRITE_PATH = "sprites/characters/hero1.png";
+
     public static Rectangle boundingBox;
-    public final int frameWidth = 48;
-    public final int frameHeight = 48;
-    protected Vector2 nextPlayerPosition;
-    protected Vector2 currentPlayerPostion;
-    protected State state = State.IDLE;
-    protected float frameTime = 0f;
-    protected Sprite frameSprite = null;
-    protected TextureRegion currentFrame = null;
+
+    private final int frameWidth = 48;
+    private final int frameHeight = 48;
+    private Vector2 nextPlayerPosition;
+    private Vector2 currentPlayerPostion;
+    private EntityState state = EntityState.IDLE;
+    private float frameTime = 0f;
+    private Sprite frameSprite = null;
+    private TextureRegion currentFrame = null;
     private Vector2 velocity;
     private String entityId;
     private Direction currentDirection = Direction.WEST;
@@ -41,9 +45,9 @@ public class Entity {
 
     public Entity() {
         this.entityId = UUID.randomUUID().toString();
+        boundingBox = new Rectangle();
         this.nextPlayerPosition = new Vector2();
         this.currentPlayerPostion = new Vector2();
-        this.boundingBox = new Rectangle();
         this.velocity = new Vector2(2f, 2f);
 
         Utility.loadTextureAsset(DEFAULT_SPRITE_PATH);
@@ -141,17 +145,17 @@ public class Entity {
         walkNorthFrames.insert(2, textureFrames[3][1]);
         walkNorthFrames.insert(3, textureFrames[3][2]);
 
-        walkSouthAnimation = new Animation(0.25f, walkSouthFrames, Animation.PlayMode.LOOP);
-        walkWestAnimation = new Animation(0.25f, walkWestFrames, Animation.PlayMode.LOOP);
-        walkEastAnimation = new Animation(0.25f, walkEastFrames, Animation.PlayMode.LOOP);
-        walkNorthAnimation = new Animation(0.25f, walkNorthFrames, Animation.PlayMode.LOOP);
+        walkSouthAnimation = new Animation<>(0.25f, walkSouthFrames, Animation.PlayMode.LOOP);
+        walkWestAnimation = new Animation<>(0.25f, walkWestFrames, Animation.PlayMode.LOOP);
+        walkEastAnimation = new Animation<>(0.25f, walkEastFrames, Animation.PlayMode.LOOP);
+        walkNorthAnimation = new Animation<>(0.25f, walkNorthFrames, Animation.PlayMode.LOOP);
     }
 
     public void dispose() {
         Utility.unloadAsset(DEFAULT_SPRITE_PATH);
     }
 
-    public void setState(State state) {
+    public void setState(EntityState state) {
         this.state = state;
     }
 
@@ -180,10 +184,6 @@ public class Entity {
             default:
                 break;
         }
-    }
-
-    public Vector2 getCurrentPosition() {
-        return currentPlayerPostion;
     }
 
     public void setCurrentPostion(float currentPositionX, float currentPositionY) {
@@ -228,14 +228,6 @@ public class Entity {
         nextPlayerPosition.y = testY;
 
         velocity.scl(1 / deltaTime);
-    }
-
-    public enum State {
-        IDLE, WALKING;
-    }
-
-    public enum Direction {
-        NORTH, SOUTH, WEST, EAST;
     }
 
 }

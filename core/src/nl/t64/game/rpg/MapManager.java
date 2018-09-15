@@ -6,6 +6,8 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import lombok.Getter;
+import nl.t64.game.rpg.constants.MapLayerName;
+import nl.t64.game.rpg.constants.MapTitle;
 import nl.t64.game.rpg.tiled.Portal;
 import nl.t64.game.rpg.tiled.SpawnPoint;
 
@@ -35,14 +37,14 @@ public class MapManager {
 
     public TiledMap getCurrentMap() {
         if (currentMap == null) {
-            loadMap(Maps.MAP1.name());
+            loadMap(MapTitle.MAP1.name());
         }
         return currentMap;
     }
 
     public void loadMap(String mapName) {
 
-        String mapFullPath = Maps.valueOf(mapName).getMapPath();
+        String mapFullPath = MapTitle.valueOf(mapName).getMapPath();
 
         if (currentMap != null) {
             currentMap.dispose();
@@ -67,7 +69,7 @@ public class MapManager {
     }
 
     private void loadBlockers() {
-        MapLayer collisionLayer = currentMap.getLayers().get(MapLayers.COLLISION_LAYER.name());
+        MapLayer collisionLayer = currentMap.getLayers().get(MapLayerName.COLLISION_LAYER.name());
         for (MapObject mapObject : collisionLayer.getObjects()) {
             RectangleMapObject rectObject = (RectangleMapObject) mapObject;
             blockers.add(rectObject);
@@ -75,7 +77,7 @@ public class MapManager {
     }
 
     private void loadPortals() {
-        MapLayer portalLayer = currentMap.getLayers().get(MapLayers.PORTAL_LAYER.name());
+        MapLayer portalLayer = currentMap.getLayers().get(MapLayerName.PORTAL_LAYER.name());
         for (MapObject mapObject : portalLayer.getObjects()) {
             RectangleMapObject rectObject = (RectangleMapObject) mapObject;
             String toMapLocation = rectObject.getProperties().get("type", String.class);
@@ -92,7 +94,7 @@ public class MapManager {
     }
 
     private void loadSpawnPoints() {
-        MapLayer spawnsLayer = currentMap.getLayers().get(MapLayers.SPAWNS_LAYER.name());
+        MapLayer spawnsLayer = currentMap.getLayers().get(MapLayerName.SPAWNS_LAYER.name());
         for (MapObject mapObject : spawnsLayer.getObjects()) {
             RectangleMapObject rectObject = (RectangleMapObject) mapObject;
             String fromMapLocation = rectObject.getProperties().get("type", String.class);
@@ -125,28 +127,6 @@ public class MapManager {
         Vector2 playerStart = this.playerStart.cpy();
         playerStart.set(this.playerStart.x * UNIT_SCALE, this.playerStart.y * UNIT_SCALE);
         return playerStart;
-    }
-
-    private enum Maps {
-        MAP1("map1.tmx"),
-        MAP2("map2.tmx"),
-        MAP3("map3.tmx");
-
-        private final String mapPath;
-
-        Maps(String mapPath) {
-            this.mapPath = "maps/" + mapPath;
-        }
-
-        String getMapPath() {
-            return mapPath;
-        }
-    }
-
-    private enum MapLayers {
-        COLLISION_LAYER,
-        SPAWNS_LAYER,
-        PORTAL_LAYER;
     }
 
 }

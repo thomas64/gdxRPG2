@@ -4,6 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
+import nl.t64.game.rpg.constants.Direction;
+import nl.t64.game.rpg.constants.EntityState;
+import nl.t64.game.rpg.constants.Key;
+import nl.t64.game.rpg.constants.Mouse;
 import nl.t64.game.rpg.entities.Entity;
 
 import java.util.HashMap;
@@ -12,16 +16,23 @@ import java.util.Map;
 public class PlayerController implements InputProcessor {
 
     private static final String TAG = PlayerController.class.getSimpleName();
-    private static Map<Keys, Boolean> keys = new HashMap<>();
+    private static Map<Key, Boolean> keys = new HashMap<>();
     private static Map<Mouse, Boolean> mouseButtons = new HashMap<>();
 
     static {
-        keys.put(Keys.UP, false);
-        keys.put(Keys.DOWN, false);
-        keys.put(Keys.LEFT, false);
-        keys.put(Keys.RIGHT, false);
-        keys.put(Keys.QUIT, false);
+        keyHide();
+        mouseHide();
+    }
 
+    private static void keyHide() {
+        keys.put(Key.UP, false);
+        keys.put(Key.DOWN, false);
+        keys.put(Key.LEFT, false);
+        keys.put(Key.RIGHT, false);
+        keys.put(Key.QUIT, false);
+    }
+
+    private static void mouseHide() {
         mouseButtons.put(Mouse.SELECT, false);
         mouseButtons.put(Mouse.DO_ACTION, false);
     }
@@ -32,14 +43,6 @@ public class PlayerController implements InputProcessor {
     public PlayerController(Entity player) {
         this.lastMouseCoordinates = new Vector3();
         this.player = player;
-    }
-
-    public static void hide() {
-        keys.put(Keys.UP, false);
-        keys.put(Keys.DOWN, false);
-        keys.put(Keys.LEFT, false);
-        keys.put(Keys.RIGHT, false);
-        keys.put(Keys.QUIT, false);
     }
 
     @Override
@@ -139,18 +142,18 @@ public class PlayerController implements InputProcessor {
     }
 
     private void processInput(float delta) {
-        if (keys.get(Keys.UP)) {
-            playerMove(Entity.Direction.NORTH, delta);
-        } else if (keys.get(Keys.DOWN)) {
-            playerMove(Entity.Direction.SOUTH, delta);
-        } else if (keys.get(Keys.LEFT)) {
-            playerMove(Entity.Direction.WEST, delta);
-        } else if (keys.get(Keys.RIGHT)) {
-            playerMove(Entity.Direction.EAST, delta);
-        } else if (keys.get(Keys.QUIT)) {
+        if (keys.get(Key.UP)) {
+            playerMove(Direction.NORTH, delta);
+        } else if (keys.get(Key.DOWN)) {
+            playerMove(Direction.SOUTH, delta);
+        } else if (keys.get(Key.LEFT)) {
+            playerMove(Direction.WEST, delta);
+        } else if (keys.get(Key.RIGHT)) {
+            playerMove(Direction.EAST, delta);
+        } else if (keys.get(Key.QUIT)) {
             Gdx.app.exit();
         } else {
-            player.setState(Entity.State.IDLE);
+            player.setState(EntityState.IDLE);
         }
 
         if (mouseButtons.get(Mouse.SELECT)) {
@@ -158,32 +161,32 @@ public class PlayerController implements InputProcessor {
         }
     }
 
-    private void playerMove(Entity.Direction direction, float delta) {
+    private void playerMove(Direction direction, float delta) {
         player.calculateNextPosition(direction, delta);
-        player.setState(Entity.State.WALKING);
+        player.setState(EntityState.WALKING);
         player.setDirection(direction, delta);
     }
 
     private void upPressed() {
-        keys.put(Keys.UP, true);
+        keys.put(Key.UP, true);
     }
 
     private void downPressed() {
-        keys.put(Keys.DOWN, true);
+        keys.put(Key.DOWN, true);
     }
 
 //region Key presses
 
     private void leftPressed() {
-        keys.put(Keys.LEFT, true);
+        keys.put(Key.LEFT, true);
     }
 
     private void rightPressed() {
-        keys.put(Keys.RIGHT, true);
+        keys.put(Key.RIGHT, true);
     }
 
     private void quitPressed() {
-        keys.put(Keys.QUIT, true);
+        keys.put(Key.QUIT, true);
     }
 
     private void selectMouseButtonPressed(int x, int y) {
@@ -195,11 +198,11 @@ public class PlayerController implements InputProcessor {
     }
 
     private void upReleased() {
-        keys.put(Keys.UP, false);
+        keys.put(Key.UP, false);
     }
 
     private void downReleased() {
-        keys.put(Keys.DOWN, false);
+        keys.put(Key.DOWN, false);
     }
 
 //endregion
@@ -207,15 +210,15 @@ public class PlayerController implements InputProcessor {
 //region Key releases
 
     private void leftReleased() {
-        keys.put(Keys.LEFT, false);
+        keys.put(Key.LEFT, false);
     }
 
     private void rightReleased() {
-        keys.put(Keys.RIGHT, false);
+        keys.put(Key.RIGHT, false);
     }
 
     private void quitReleased() {
-        keys.put(Keys.QUIT, false);
+        keys.put(Key.QUIT, false);
     }
 
     private void selectMouseButtonReleased(int x, int y) {
@@ -226,15 +229,6 @@ public class PlayerController implements InputProcessor {
         mouseButtons.put(Mouse.DO_ACTION, false);
     }
 
-    private enum Keys {
-        UP, DOWN, LEFT, RIGHT, QUIT;
-    }
-
-    private enum Mouse {
-        SELECT, DO_ACTION;
-    }
-
 //endregion
-
 
 }
