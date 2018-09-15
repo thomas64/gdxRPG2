@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="44" height="40" tilewidth="24" tileheight="24" infinite="0" nextobjectid="40">
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="44" height="40" tilewidth="24" tileheight="24" infinite="0" nextobjectid="43">
  <tileset firstgid="1" source="fsm_Town01_A2.tsx"/>
  <tileset firstgid="769" source="fsm_Town01_B.tsx"/>
  <layer name="under0Ground" width="44" height="40">
@@ -149,11 +149,17 @@
  </objectgroup>
  <objectgroup name="SPAWNS_LAYER">
   <object id="30" name="PLAYER_START" x="864" y="432" width="48" height="48"/>
-  <object id="38" name="PLAYER_START" x="984" y="744" width="48" height="48"/>
-  <object id="39" name="PLAYER_START" x="984" y="192" width="48" height="48"/>
+  <object id="38" name="MAP2" type="2" x="984" y="744" width="48" height="48"/>
+  <object id="39" name="MAP2" type="1" x="984" y="192" width="48" height="48"/>
+  <object id="42" name="MAP3" x="696" y="24" width="48" height="48">
+   <properties>
+    <property name="direction" value="north"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup name="PORTAL_LAYER">
-  <object id="36" name="MAP2" x="1056" y="624" width="24" height="336"/>
-  <object id="37" name="MAP2" x="1056" y="0" width="24" height="336"/>
+  <object id="36" name="MAP2" type="2" x="1056" y="624" width="24" height="336"/>
+  <object id="37" name="MAP2" type="1" x="1056" y="0" width="24" height="336"/>
+  <object id="41" name="MAP3" x="624" y="-24" width="264" height="24"/>
  </objectgroup>
 </map>

@@ -127,6 +127,8 @@ project(":core") {
         compile "com.badlogicgames.ashley:ashley:$ashleyVersion"
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
 
+        compile "org.projectlombok:lombok:1.18.2"
+
         testCompile "junit:junit:4.12"
         testCompile "org.assertj:assertj-core:3.9.1"
     }

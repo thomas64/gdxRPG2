@@ -5,8 +5,12 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
+import lombok.Getter;
+import nl.t64.game.rpg.tiled.Portal;
+import nl.t64.game.rpg.tiled.SpawnPoint;
 
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MapManager {
@@ -14,39 +18,30 @@ public class MapManager {
     public final static float UNIT_SCALE = 1 / 48f;
     private static final String TAG = MapManager.class.getSimpleName();
     private final static String PLAYER_START = "PLAYER_START";
-    private Hashtable<Maps, Vector2> playerStartLocationTable;
-    private Vector2 playerStartPositionRect;
-    private Vector2 closestPlayerStartPosition;
-    private Vector2 convertedUnits;
+
     private Vector2 playerStart;
     private TiledMap currentMap = null;
     private String currentMapName;
-    private MapLayer collisionLayer = null;
-    private MapLayer portalLayer = null;
-    private MapLayer spawnsLayer = null;
+
+    @Getter
+    private List<Portal> portals = new ArrayList<>();
+    private List<SpawnPoint> spawnPoints = new ArrayList<>();
+    @Getter
+    private List<RectangleMapObject> blockers = new ArrayList<>();
 
     public MapManager() {
         playerStart = new Vector2(0, 0);
-
-        playerStartLocationTable = new Hashtable<>(2);
-        playerStartLocationTable.put(Maps.MAP1, playerStart.cpy());
-        playerStartLocationTable.put(Maps.MAP2, playerStart.cpy());
-
-        playerStartPositionRect = new Vector2(0, 0);
-        closestPlayerStartPosition = new Vector2(0, 0);
-        convertedUnits = new Vector2(0, 0);
     }
 
     public TiledMap getCurrentMap() {
         if (currentMap == null) {
-            currentMapName = Maps.MAP1.name();
-            loadMap(currentMapName);
+            loadMap(Maps.MAP1.name());
         }
         return currentMap;
     }
 
     public void loadMap(String mapName) {
-        playerStart.set(0, 0);
+
         String mapFullPath = Maps.valueOf(mapName).getMapPath();
 
         if (currentMap != null) {
@@ -62,49 +57,68 @@ public class MapManager {
             return;
         }
 
-        collisionLayer = currentMap.getLayers().get(MapLayers.COLLISION_LAYER.name());
-        portalLayer = currentMap.getLayers().get(MapLayers.PORTAL_LAYER.name());
-        spawnsLayer = currentMap.getLayers().get(MapLayers.SPAWNS_LAYER.name());
+        loadBlockers();
+        loadPortals();
+        loadSpawnPoints();
 
-        Vector2 start = playerStartLocationTable.get(Maps.valueOf(currentMapName));
-        if (start.isZero()) {
-            setClosestStartPosition(playerStart);
-            start = playerStartLocationTable.get(Maps.valueOf(currentMapName));
+        if (playerStart.isZero()) {
+            setPlayerSpawnLocation(PLAYER_START, "");
         }
-        playerStart.set(start.x, start.y);
-        Logger.playerStart(TAG, playerStart.x, playerStart.y);
     }
 
-    public void setClosestStartPositionFromScaledUnits(Vector2 position) {
-        if (UNIT_SCALE <= 0) return;
-        convertedUnits.set(position.x / UNIT_SCALE, position.y / UNIT_SCALE);
-        setClosestStartPosition(convertedUnits);
+    private void loadBlockers() {
+        MapLayer collisionLayer = currentMap.getLayers().get(MapLayers.COLLISION_LAYER.name());
+        for (MapObject mapObject : collisionLayer.getObjects()) {
+            RectangleMapObject rectObject = (RectangleMapObject) mapObject;
+            blockers.add(rectObject);
+        }
     }
 
-    private void setClosestStartPosition(final Vector2 position) {
-        playerStartPositionRect.set(0, 0);
-        closestPlayerStartPosition.set(0, 0);
-        float shortestDistance = 0f;
+    private void loadPortals() {
+        MapLayer portalLayer = currentMap.getLayers().get(MapLayers.PORTAL_LAYER.name());
+        for (MapObject mapObject : portalLayer.getObjects()) {
+            RectangleMapObject rectObject = (RectangleMapObject) mapObject;
+            String toMapLocation = rectObject.getProperties().get("type", String.class);
+            if (toMapLocation == null) toMapLocation = "";
+            portals.add(
+                    new Portal(
+                            rectObject.getRectangle(),
+                            currentMapName,
+                            rectObject.getName(),
+                            toMapLocation
+                    )
+            );
+        }
+    }
 
+    private void loadSpawnPoints() {
+        MapLayer spawnsLayer = currentMap.getLayers().get(MapLayers.SPAWNS_LAYER.name());
         for (MapObject mapObject : spawnsLayer.getObjects()) {
-            if (mapObject.getName().equalsIgnoreCase(PLAYER_START)) {
-                ((RectangleMapObject) mapObject).getRectangle().getPosition(playerStartPositionRect);
-                float distance = position.dst2(playerStartPositionRect);
-                if (distance < shortestDistance || shortestDistance == 0) {
-                    closestPlayerStartPosition.set(playerStartPositionRect);
-                    shortestDistance = distance;
-                }
+            RectangleMapObject rectObject = (RectangleMapObject) mapObject;
+            String fromMapLocation = rectObject.getProperties().get("type", String.class);
+            if (fromMapLocation == null) fromMapLocation = "";
+            String direction = rectObject.getProperties().get("direction", String.class);
+            if (direction == null) direction = "";
+            spawnPoints.add(
+                    new SpawnPoint(
+                            rectObject.getRectangle(),
+                            rectObject.getName(),
+                            fromMapLocation,
+                            direction
+                    )
+            );
+        }
+    }
+
+    public void setPlayerSpawnLocation(String fromMapName, String fromMapLocation) {
+        for (SpawnPoint spawnPoint : spawnPoints) {
+            if (spawnPoint.getFromMapName().equalsIgnoreCase(fromMapName) &&
+                    spawnPoint.getFromMapLocation().equalsIgnoreCase(fromMapLocation)) {
+                playerStart.set(spawnPoint.getRectangle().getX(), spawnPoint.getRectangle().getY());
+                Logger.playerStart(TAG, playerStart.x, playerStart.y);
+                return;
             }
         }
-        playerStartLocationTable.put(Maps.valueOf(currentMapName), closestPlayerStartPosition.cpy());
-    }
-
-    public MapLayer getCollisionLayer() {
-        return collisionLayer;
-    }
-
-    public MapLayer getPortalLayer() {
-        return portalLayer;
     }
 
     public Vector2 getPlayerStartUnitScaled() {
@@ -115,7 +129,8 @@ public class MapManager {
 
     private enum Maps {
         MAP1("map1.tmx"),
-        MAP2("map2.tmx");
+        MAP2("map2.tmx"),
+        MAP3("map3.tmx");
 
         private final String mapPath;
 
@@ -129,7 +144,9 @@ public class MapManager {
     }
 
     private enum MapLayers {
-        COLLISION_LAYER, SPAWNS_LAYER, PORTAL_LAYER;
+        COLLISION_LAYER,
+        SPAWNS_LAYER,
+        PORTAL_LAYER;
     }
 
 }

@@ -6,15 +6,15 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import nl.t64.game.rpg.Logger;
 import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.PlayerController;
 import nl.t64.game.rpg.entities.Entity;
+import nl.t64.game.rpg.tiled.Portal;
 
 public class AdventureScreen implements Screen {
 
@@ -63,20 +63,31 @@ public class AdventureScreen implements Screen {
         player.update(delta);
         currentPlayerFrame = player.getFrame();
 
-        updatePortalLayerActivation(player.boundingBox);
+        checkPortals(player.boundingBox);
         if (!isCollisionWithMapLayer(player.boundingBox)) {
             player.setNextPositionToCurrent();
         }
         controller.update(delta);
 
+        renderMapLayers();
+    }
+
+    private void renderMapLayers() {
         mapRenderer.setView(camera);
         mapRenderer.render();
 
         mapRenderer.getBatch().begin();
+        renderMapLayer("under0Ground");
+        renderMapLayer("under1Trees");
         float x = currentPlayerSprite.getX();
         float y = currentPlayerSprite.getY();
         mapRenderer.getBatch().draw(currentPlayerFrame, x, y, 1, 1);
+        renderMapLayer("over2Trees");
         mapRenderer.getBatch().end();
+    }
+
+    private void renderMapLayer(String layerName) {
+        mapRenderer.renderTileLayer((TiledMapTileLayer) mapManager.getCurrentMap().getLayers().get(layerName));
     }
 
     @Override
@@ -130,38 +141,26 @@ public class AdventureScreen implements Screen {
                 VIEWPORT.physicalWidth, VIEWPORT.physicalHeight);
     }
 
-    private boolean isCollisionWithMapLayer(Rectangle boundingBox) {
-        MapLayer mapCollisionLayer = mapManager.getCollisionLayer();
-        Rectangle rectangle;
-        for (MapObject mapObject : mapCollisionLayer.getObjects()) {
-            if (mapObject instanceof RectangleMapObject) {
-                rectangle = ((RectangleMapObject) mapObject).getRectangle();
-                if (boundingBox.overlaps(rectangle)) {
-                    return true;
-                }
+    private boolean isCollisionWithMapLayer(Rectangle playerRect) {
+        for (RectangleMapObject blocker : mapManager.getBlockers()) {
+            if (playerRect.overlaps(blocker.getRectangle())) {
+                return true;
             }
         }
         return false;
     }
 
-    private void updatePortalLayerActivation(Rectangle boundingBox) {
-        MapLayer mapPortalLayer = mapManager.getPortalLayer();
-        Rectangle rectangle;
-        for (MapObject mapObject : mapPortalLayer.getObjects()) {
-            if (mapObject instanceof RectangleMapObject) {
-                rectangle = ((RectangleMapObject) mapObject).getRectangle();
-                if (boundingBox.overlaps(rectangle)) {
-                    String mapName = mapObject.getName();
-                    if (mapName == null) {
-                        return;
-                    }
-                    mapManager.setClosestStartPositionFromScaledUnits(player.getCurrentPosition());
-                    mapManager.loadMap(mapName);
-                    player.init(mapManager.getPlayerStartUnitScaled().x, mapManager.getPlayerStartUnitScaled().y);
-                    mapRenderer.setMap(mapManager.getCurrentMap());
-                    Logger.portalActivated(TAG);
-                    return;
-                }
+    private void checkPortals(Rectangle playerRect) {
+        for (Portal portal : mapManager.getPortals()) {
+            if (playerRect.overlaps(portal.getRectangle())) {
+
+                mapManager.loadMap(portal.getToMapName());
+                mapManager.setPlayerSpawnLocation(portal.getFromMapName(), portal.getToMapLocation());
+
+                player.init(mapManager.getPlayerStartUnitScaled().x, mapManager.getPlayerStartUnitScaled().y);
+                mapRenderer.setMap(mapManager.getCurrentMap());
+                Logger.portalActivated(TAG);
+                return;
             }
         }
     }
