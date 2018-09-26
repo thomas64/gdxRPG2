@@ -33,7 +33,7 @@ public class AdventureScreen implements Screen {
 
     @Override
     public void show() {
-        setupViewport(15, 15);
+        setupViewport(15f, 15f);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
@@ -44,7 +44,7 @@ public class AdventureScreen implements Screen {
         Logger.unitScaleValue(TAG, mapRenderer.getUnitScale());
 
         player = new Entity();
-        player.init(mapManager.getPlayerStartUnitScaled().x, mapManager.getPlayerStartUnitScaled().y);
+        player.init(mapManager.getPlayerSpawnLocationUnitScaled());
 
         currentPlayerSprite = player.getFrameSprite();
 
@@ -64,7 +64,7 @@ public class AdventureScreen implements Screen {
         currentPlayerFrame = player.getFrame();
 
         checkPortals(player.boundingBox);
-        if (!isCollisionWithMapLayer(player.boundingBox)) {
+        if (!isInCollisionWithBlocker(player.boundingBox)) {
             player.setNextPositionToCurrent();
         }
         controller.update(delta);
@@ -114,7 +114,7 @@ public class AdventureScreen implements Screen {
         mapRenderer.dispose();
     }
 
-    private void setupViewport(int width, int height) {
+    private void setupViewport(float width, float height) {
         // Make the viewport a percentage of the total display area
         VIEWPORT.virtualWidth = width;
         VIEWPORT.virtualHeight = height;
@@ -122,7 +122,7 @@ public class AdventureScreen implements Screen {
         VIEWPORT.physicalWidth = Gdx.graphics.getWidth();
         VIEWPORT.physicalHeight = Gdx.graphics.getHeight();
         // Aspect ratio for current viewport
-        VIEWPORT.aspectRatio = (width / height);
+        VIEWPORT.aspectRatio = width / height;
 
         // Update viewport if there could be skewing
         if (VIEWPORT.physicalWidth / VIEWPORT.physicalHeight >= VIEWPORT.aspectRatio) {
@@ -141,7 +141,7 @@ public class AdventureScreen implements Screen {
                 VIEWPORT.physicalWidth, VIEWPORT.physicalHeight);
     }
 
-    private boolean isCollisionWithMapLayer(Rectangle playerRect) {
+    private boolean isInCollisionWithBlocker(Rectangle playerRect) {
         for (RectangleMapObject blocker : mapManager.getBlockers()) {
             if (playerRect.overlaps(blocker.getRectangle())) {
                 return true;
@@ -155,9 +155,9 @@ public class AdventureScreen implements Screen {
             if (playerRect.overlaps(portal.getRectangle())) {
 
                 mapManager.loadMap(portal.getToMapName());
-                mapManager.setPlayerSpawnLocation(portal.getFromMapName(), portal.getToMapLocation());
+                mapManager.setPlayerSpawnLocation(portal);
 
-                player.init(mapManager.getPlayerStartUnitScaled().x, mapManager.getPlayerStartUnitScaled().y);
+                player.init(mapManager.getPlayerSpawnLocationUnitScaled());
                 mapRenderer.setMap(mapManager.getCurrentMap());
                 Logger.portalActivated(TAG);
                 return;

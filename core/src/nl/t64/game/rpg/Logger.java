@@ -46,8 +46,8 @@ public class Logger {
         Gdx.app.debug(tag, "Portal Activated");
     }
 
-    public static void playerStart(String tag, float x, float y) {
-        Gdx.app.debug(tag, "Player Start: (" + x + "," + y + ")");
+    public static void playerSpawnLocation(String tag, float x, float y) {
+        Gdx.app.debug(tag, "Player Spawn Location: (" + x + "," + y + ")");
     }
 
     public static void boundingBoxIsZero(String tag, float width, float height) {

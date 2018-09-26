@@ -60,11 +60,11 @@ public class Entity {
         setBoundingBoxSize(0f, 0.5f);  // hitbox at the feet
     }
 
-    public void init(float startX, float startY) {
-        currentPlayerPostion.x = startX;
-        currentPlayerPostion.y = startY;
-        nextPlayerPosition.x = startX;
-        nextPlayerPosition.y = startY;
+    public void init(Vector2 spawnPosition) {
+        currentPlayerPostion.x = spawnPosition.x;
+        currentPlayerPostion.y = spawnPosition.y;
+        nextPlayerPosition.x = spawnPosition.x;
+        nextPlayerPosition.y = spawnPosition.y;
     }
 
     public void setBoundingBoxSize(float percentageWidthReduced, float percentageHeightReduced) {
