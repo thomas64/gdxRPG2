@@ -4,11 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
+import lombok.Getter;
 import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.constants.EntityState;
-import nl.t64.game.rpg.constants.Key;
 import nl.t64.game.rpg.constants.Mouse;
 import nl.t64.game.rpg.entities.Entity;
+import nl.t64.game.rpg.screens.AdventureScreen;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,20 +17,12 @@ import java.util.Map;
 public class PlayerController implements InputProcessor {
 
     private static final String TAG = PlayerController.class.getSimpleName();
-    private static Map<Key, Boolean> keys = new HashMap<>();
+    private static final float TURN_DELAY = 7f / 60f; // of a second
+
     private static Map<Mouse, Boolean> mouseButtons = new HashMap<>();
 
     static {
-        keyHide();
         mouseHide();
-    }
-
-    private static void keyHide() {
-        keys.put(Key.UP, false);
-        keys.put(Key.DOWN, false);
-        keys.put(Key.LEFT, false);
-        keys.put(Key.RIGHT, false);
-        keys.put(Key.QUIT, false);
     }
 
     private static void mouseHide() {
@@ -40,6 +33,25 @@ public class PlayerController implements InputProcessor {
     private Vector3 lastMouseCoordinates;
     private Entity player;
 
+    private boolean pressUp = false;
+    private boolean pressDown = false;
+    private boolean pressLeft = false;
+    private boolean pressRight = false;
+    private boolean pressQuit = false;
+    private boolean pressAlign = false;
+
+    @Getter
+    private int timeUp = 0;
+    @Getter
+    private int timeDown = 0;
+    @Getter
+    private int timeLeft = 0;
+    @Getter
+    private int timeRight = 0;
+
+    @Getter
+    private float timeDelay = 0f;
+
     public PlayerController(Entity player) {
         this.lastMouseCoordinates = new Vector3();
         this.player = player;
@@ -48,19 +60,31 @@ public class PlayerController implements InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.UP) {
-            upPressed();
+            pressUp = true;
         }
         if (keycode == Input.Keys.DOWN) {
-            downPressed();
+            pressDown = true;
         }
         if (keycode == Input.Keys.LEFT) {
-            leftPressed();
+            pressLeft = true;
         }
         if (keycode == Input.Keys.RIGHT) {
-            rightPressed();
+            pressRight = true;
         }
         if (keycode == Input.Keys.Q) {
-            quitPressed();
+            pressQuit = true;
+        }
+        if (keycode == Input.Keys.SPACE) {
+            pressAlign = true;
+        }
+        if (keycode == Input.Keys.F10) {
+            AdventureScreen.showGrid = !AdventureScreen.showGrid;
+        }
+        if (keycode == Input.Keys.F11) {
+            AdventureScreen.showObjects = !AdventureScreen.showObjects;
+        }
+        if (keycode == Input.Keys.F12) {
+            AdventureScreen.showDebug = !AdventureScreen.showDebug;
         }
         return true;
     }
@@ -68,19 +92,22 @@ public class PlayerController implements InputProcessor {
     @Override
     public boolean keyUp(int keycode) {
         if (keycode == Input.Keys.UP) {
-            upReleased();
+            pressUp = false;
         }
         if (keycode == Input.Keys.DOWN) {
-            downReleased();
+            pressDown = false;
         }
         if (keycode == Input.Keys.LEFT) {
-            leftReleased();
+            pressLeft = false;
         }
         if (keycode == Input.Keys.RIGHT) {
-            rightReleased();
+            pressRight = false;
         }
         if (keycode == Input.Keys.Q) {
-            quitReleased();
+            pressQuit = false;
+        }
+        if (keycode == Input.Keys.SPACE) {
+            pressAlign = false;
         }
         return true;
     }
@@ -142,51 +169,103 @@ public class PlayerController implements InputProcessor {
     }
 
     private void processInput(float delta) {
-        if (keys.get(Key.UP)) {
-            playerMove(Direction.NORTH, delta);
-        } else if (keys.get(Key.DOWN)) {
-            playerMove(Direction.SOUTH, delta);
-        } else if (keys.get(Key.LEFT)) {
-            playerMove(Direction.WEST, delta);
-        } else if (keys.get(Key.RIGHT)) {
-            playerMove(Direction.EAST, delta);
-        } else if (keys.get(Key.QUIT)) {
-            Gdx.app.exit();
-        } else {
-            player.setState(EntityState.IDLE);
-        }
+        processPlayerMoveInput(delta);
+
+        if (pressQuit) Gdx.app.exit();
+        if (pressAlign) player.alignToGrid();
 
         if (mouseButtons.get(Mouse.SELECT)) {
             mouseButtons.put(Mouse.SELECT, false);
         }
     }
 
-    private void playerMove(Direction direction, float delta) {
-        player.calculateNextPosition(direction, delta);
-        player.setState(EntityState.WALKING);
-        player.setDirection(direction, delta);
+    private void processPlayerMoveInput(float delta) {
+        countKeyDownTime();
+        ifNoMoveKeys_SetPlayerStill();
+        setPossibleTurnDelay();
+        setPlayerDirection();
+        ifMoveKeys_SetPlayerMoving(delta);
     }
 
-    private void upPressed() {
-        keys.put(Key.UP, true);
+    private void countKeyDownTime() {
+        if (pressUp) {
+            timeUp += 1;
+        } else {
+            timeUp = 0;
+        }
+        if (pressDown) {
+            timeDown += 1;
+        } else {
+            timeDown = 0;
+        }
+        if (pressLeft) {
+            timeLeft += 1;
+        } else {
+            timeLeft = 0;
+        }
+        if (pressRight) {
+            timeRight += 1;
+        } else {
+            timeRight = 0;
+        }
     }
 
-    private void downPressed() {
-        keys.put(Key.DOWN, true);
+    private void ifNoMoveKeys_SetPlayerStill() {
+        if (!areMoveKeysPressed()) {
+            timeDelay = 0f;
+            player.setState(EntityState.IDLE);
+            player.setStandingStillFrame();
+        }
     }
 
-//region Key presses
-
-    private void leftPressed() {
-        keys.put(Key.LEFT, true);
+    private void setPossibleTurnDelay() {
+        if (player.getState() == EntityState.IDLE) {
+            if ((timeUp > 0 && player.getCurrentDirection() != Direction.NORTH) ||
+                    (timeDown > 0 && player.getCurrentDirection() != Direction.SOUTH) ||
+                    (timeLeft > 0 && player.getCurrentDirection() != Direction.WEST) ||
+                    (timeRight > 0 && player.getCurrentDirection() != Direction.EAST)) {
+                timeDelay = TURN_DELAY;
+            }
+        }
     }
 
-    private void rightPressed() {
-        keys.put(Key.RIGHT, true);
+    private void setPlayerDirection() {
+        if (timeUp > 0 &&
+                (timeUp <= timeDown || timeUp <= timeLeft || timeUp <= timeRight)) {
+            player.setDirection(Direction.NORTH);
+        } else if (timeDown > 0 &&
+                (timeDown <= timeUp || timeDown <= timeLeft || timeDown <= timeRight)) {
+            player.setDirection(Direction.SOUTH);
+        } else if (timeLeft > 0 &&
+                (timeLeft <= timeUp || timeLeft <= timeDown || timeLeft <= timeRight)) {
+            player.setDirection(Direction.WEST);
+        } else if (timeRight > 0 &&
+                (timeRight <= timeUp || timeRight <= timeDown || timeRight <= timeLeft)) {
+            player.setDirection(Direction.EAST);
+        } else if (timeUp > 0) {
+            player.setDirection(Direction.NORTH);
+        } else if (timeDown > 0) {
+            player.setDirection(Direction.SOUTH);
+        } else if (timeLeft > 0) {
+            player.setDirection(Direction.WEST);
+        } else if (timeRight > 0) {
+            player.setDirection(Direction.EAST);
+        }
     }
 
-    private void quitPressed() {
-        keys.put(Key.QUIT, true);
+    private void ifMoveKeys_SetPlayerMoving(float delta) {
+        if (areMoveKeysPressed()) {
+            if (timeDelay > 0f) {
+                timeDelay -= delta;
+            } else {
+                player.calculateNextPosition(player.getCurrentDirection(), delta);
+                player.setState(EntityState.WALKING);
+            }
+        }
+    }
+
+    private boolean areMoveKeysPressed() {
+        return pressUp || pressDown || pressLeft || pressRight;
     }
 
     private void selectMouseButtonPressed(int x, int y) {
@@ -197,30 +276,6 @@ public class PlayerController implements InputProcessor {
         mouseButtons.put(Mouse.DO_ACTION, true);
     }
 
-    private void upReleased() {
-        keys.put(Key.UP, false);
-    }
-
-    private void downReleased() {
-        keys.put(Key.DOWN, false);
-    }
-
-//endregion
-
-//region Key releases
-
-    private void leftReleased() {
-        keys.put(Key.LEFT, false);
-    }
-
-    private void rightReleased() {
-        keys.put(Key.RIGHT, false);
-    }
-
-    private void quitReleased() {
-        keys.put(Key.QUIT, false);
-    }
-
     private void selectMouseButtonReleased(int x, int y) {
         mouseButtons.put(Mouse.SELECT, false);
     }
@@ -228,7 +283,5 @@ public class PlayerController implements InputProcessor {
     private void doActionMouseButtonReleased(int x, int y) {
         mouseButtons.put(Mouse.DO_ACTION, false);
     }
-
-//endregion
 
 }

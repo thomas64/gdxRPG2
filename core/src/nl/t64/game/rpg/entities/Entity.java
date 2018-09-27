@@ -7,9 +7,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import lombok.Getter;
+import lombok.Setter;
 import nl.t64.game.rpg.Logger;
-import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.Utility;
+import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.constants.EntityState;
 
@@ -20,20 +22,36 @@ public class Entity {
     private static final String TAG = Entity.class.getSimpleName();
     private static final String DEFAULT_SPRITE_PATH = "sprites/characters/hero1.png";
 
-    public static Rectangle boundingBox;
+    private final int frameWidth = Constant.TILE_SIZE;
+    private final int frameHeight = Constant.TILE_SIZE;
 
-    private final int frameWidth = 48;
-    private final int frameHeight = 48;
+    @Getter
+    private Rectangle boundingBox;
+
+    @Getter
     private Vector2 nextPlayerPosition;
+    @Getter
     private Vector2 currentPlayerPostion;
+
+    @Getter
+    @Setter
     private EntityState state = EntityState.IDLE;
+
+    @Getter
     private float frameTime = 0f;
-    private Sprite frameSprite = null;
+
+    @Getter
+    private Sprite playerSprite = null;
+    @Getter
     private TextureRegion currentFrame = null;
+
     private Vector2 velocity;
     private String entityId;
+
+    @Getter
     private Direction currentDirection = Direction.WEST;
     private Direction previousDirection = Direction.NORTH;
+
     private Animation<TextureRegion> walkNorthAnimation;
     private Animation<TextureRegion> walkSouthAnimation;
     private Animation<TextureRegion> walkWestAnimation;
@@ -45,10 +63,10 @@ public class Entity {
 
     public Entity() {
         this.entityId = UUID.randomUUID().toString();
-        boundingBox = new Rectangle();
+        this.boundingBox = new Rectangle();
         this.nextPlayerPosition = new Vector2();
         this.currentPlayerPostion = new Vector2();
-        this.velocity = new Vector2(2f, 2f);
+        this.velocity = new Vector2(192f, 192f);  // 48 * 4
 
         Utility.loadTextureAsset(DEFAULT_SPRITE_PATH);
         loadDefaultSprite();
@@ -65,6 +83,28 @@ public class Entity {
         currentPlayerPostion.y = spawnPosition.y;
         nextPlayerPosition.x = spawnPosition.x;
         nextPlayerPosition.y = spawnPosition.y;
+    }
+
+    public void setStandingStillFrame() {
+        Texture texture = Utility.getTextureAsset(DEFAULT_SPRITE_PATH);
+        TextureRegion[][] textureFrames = TextureRegion.split(texture, frameWidth, frameHeight);
+
+        switch (currentDirection) {
+            case NORTH:
+                currentFrame = textureFrames[3][1];
+                break;
+            case SOUTH:
+                currentFrame = textureFrames[0][1];
+                break;
+            case WEST:
+                currentFrame = textureFrames[1][1];
+                break;
+            case EAST:
+                currentFrame = textureFrames[2][1];
+                break;
+            default:
+                break;
+        }
     }
 
     public void setBoundingBoxSize(float percentageWidthReduced, float percentageHeightReduced) {
@@ -89,26 +129,15 @@ public class Entity {
             Logger.boundingBoxIsZero(TAG, width, height);
         }
 
-        setBoundingBoxSizeAccountingForUnitScale(width, height);
-    }
-
-    private void setBoundingBoxSizeAccountingForUnitScale(float width, float height) {
-        float minX;
-        float minY;
-        if (MapManager.UNIT_SCALE > 0) {
-            minX = nextPlayerPosition.x / MapManager.UNIT_SCALE;
-            minY = nextPlayerPosition.y / MapManager.UNIT_SCALE;
-        } else {
-            minX = nextPlayerPosition.x;
-            minY = nextPlayerPosition.y;
-        }
+        float minX = nextPlayerPosition.x;
+        float minY = nextPlayerPosition.y;
         boundingBox.set(minX, minY, width, height);
     }
 
     private void loadDefaultSprite() {
         Texture texture = Utility.getTextureAsset(DEFAULT_SPRITE_PATH);
         TextureRegion[][] textureFrames = TextureRegion.split(texture, frameWidth, frameHeight);
-        frameSprite = new Sprite(textureFrames[0][0].getTexture(), 0, 0, frameWidth, frameHeight);
+        playerSprite = new Sprite(textureFrames[0][0].getTexture(), 0, 0, frameWidth, frameHeight);
         currentFrame = textureFrames[0][0];
     }
 
@@ -155,19 +184,7 @@ public class Entity {
         Utility.unloadAsset(DEFAULT_SPRITE_PATH);
     }
 
-    public void setState(EntityState state) {
-        this.state = state;
-    }
-
-    public Sprite getFrameSprite() {
-        return frameSprite;
-    }
-
-    public TextureRegion getFrame() {
-        return currentFrame;
-    }
-
-    private void setFrame(float deltaTime) {
+    private void setFrame() {
         switch (currentDirection) {
             case NORTH:
                 currentFrame = walkNorthAnimation.getKeyFrame(frameTime);
@@ -187,16 +204,16 @@ public class Entity {
     }
 
     public void setCurrentPostion(float currentPositionX, float currentPositionY) {
-        frameSprite.setX(currentPositionX);
-        frameSprite.setY(currentPositionY);
+        playerSprite.setX(currentPositionX);
+        playerSprite.setY(currentPositionY);
         currentPlayerPostion.x = currentPositionX;
         currentPlayerPostion.y = currentPositionY;
     }
 
-    public void setDirection(Direction direction, float deltaTime) {
+    public void setDirection(Direction direction) {
         previousDirection = currentDirection;
         currentDirection = direction;
-        setFrame(deltaTime);
+        setFrame();
     }
 
     public void setNextPositionToCurrent() {
@@ -230,4 +247,9 @@ public class Entity {
         velocity.scl(1 / deltaTime);
     }
 
+    public void alignToGrid() {
+        float roundedX = Math.round(currentPlayerPostion.x / Constant.TILE_SIZE) * Constant.TILE_SIZE;
+        float roundedY = Math.round(currentPlayerPostion.y / Constant.TILE_SIZE) * Constant.TILE_SIZE;
+        setCurrentPostion(roundedX, roundedY);
+    }
 }

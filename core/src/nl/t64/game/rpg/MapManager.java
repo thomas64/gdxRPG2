@@ -17,16 +17,17 @@ import java.util.List;
 
 public class MapManager {
 
-    public final static float UNIT_SCALE = 1 / 48f;
     private static final String TAG = MapManager.class.getSimpleName();
     private final static String PLAYER_START = "PLAYER_START";
 
+    @Getter
     private Vector2 playerSpawnLocation;
     private TiledMap currentMap = null;
     private String currentMapName = null;
 
     @Getter
     private List<Portal> portals = new ArrayList<>();
+    @Getter
     private List<SpawnPoint> spawnPoints = new ArrayList<>();
     @Getter
     private List<RectangleMapObject> blockers = new ArrayList<>();
@@ -111,10 +112,6 @@ public class MapManager {
                 return;
             }
         }
-    }
-
-    public Vector2 getPlayerSpawnLocationUnitScaled() {
-        return new Vector2(playerSpawnLocation.x * UNIT_SCALE, playerSpawnLocation.y * UNIT_SCALE);
     }
 
 }
