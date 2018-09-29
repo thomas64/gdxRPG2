@@ -10,10 +10,12 @@ public class DesktopLauncher {
     public static void main(String[] arg) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
-        config.title = "gdxRPG2";
+        config.title = GdxRpg2.TITLE;
+        config.width = GdxRpg2.WIDTH;
+        config.height = GdxRpg2.HEIGHT;
         config.useGL30 = false;
-        config.width = 1280;
-        config.height = 720;
+        config.resizable = false;
+//        config.foregroundFPS = 20;
 
         Gdx.app = new LwjglApplication(new GdxRpg2(), config);
         //Gdx.app.setLogLevel(Application.LOG_INFO);

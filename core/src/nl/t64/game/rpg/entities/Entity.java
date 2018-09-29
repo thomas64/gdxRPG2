@@ -9,13 +9,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import lombok.Getter;
 import lombok.Setter;
-import nl.t64.game.rpg.Logger;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.constants.EntityState;
+import nl.t64.game.rpg.screens.WorldScreen;
 
 import java.util.UUID;
+
 
 public class Entity {
 
@@ -28,17 +29,12 @@ public class Entity {
     @Getter
     private Rectangle boundingBox;
 
+    private Vector2 oldPosition;
     @Getter
-    private Vector2 nextPlayerPosition;
-    @Getter
-    private Vector2 currentPlayerPostion;
-
+    private Vector2 currentPosition;
     @Getter
     @Setter
-    private EntityState state = EntityState.IDLE;
-
-    @Getter
-    private float frameTime = 0f;
+    private Direction direction = null;
 
     @Getter
     private Sprite playerSprite = null;
@@ -46,26 +42,23 @@ public class Entity {
     private TextureRegion currentFrame = null;
 
     private Vector2 velocity;
+
     private String entityId;
 
     @Getter
-    private Direction currentDirection = Direction.WEST;
-    private Direction previousDirection = Direction.NORTH;
+    @Setter
+    private EntityState state = EntityState.IDLE;
 
     private Animation<TextureRegion> walkNorthAnimation;
     private Animation<TextureRegion> walkSouthAnimation;
     private Animation<TextureRegion> walkWestAnimation;
     private Animation<TextureRegion> walkEastAnimation;
-    private Array<TextureRegion> walkNorthFrames;
-    private Array<TextureRegion> walkSouthFrames;
-    private Array<TextureRegion> walkWestFrames;
-    private Array<TextureRegion> walkEastFrames;
 
     public Entity() {
         this.entityId = UUID.randomUUID().toString();
         this.boundingBox = new Rectangle();
-        this.nextPlayerPosition = new Vector2();
-        this.currentPlayerPostion = new Vector2();
+        this.oldPosition = new Vector2();
+        this.currentPosition = new Vector2();
         this.velocity = new Vector2(192f, 192f);  // 48 * 4
 
         Utility.loadTextureAsset(DEFAULT_SPRITE_PATH);
@@ -73,23 +66,48 @@ public class Entity {
         loadAllAnimations();
     }
 
-    public void update(float delta) {
-        frameTime = (frameTime + delta) % 5; // want to avoid overflow
-        setBoundingBoxSize(0f, 0.5f);  // hitbox at the feet
+    public void update() {
+        setBoundingBox(0.75f, 0.75f);
     }
 
-    public void init(Vector2 spawnPosition) {
-        currentPlayerPostion.x = spawnPosition.x;
-        currentPlayerPostion.y = spawnPosition.y;
-        nextPlayerPosition.x = spawnPosition.x;
-        nextPlayerPosition.y = spawnPosition.y;
+    public void setBoundingBox(float percentageWidth, float percentageHeight) {
+        float width = frameWidth * percentageWidth;
+        float height = frameHeight * percentageHeight;
+        float widthReduction = 1.00f - percentageWidth;
+        float x = currentPosition.x + (frameWidth * (widthReduction / 2));
+        float y = currentPosition.y;
+        boundingBox.set(x, y, width, height);
+    }
+
+    public void init(Vector2 spawnPosition, Direction spawnDirection) {
+        oldPosition.x = spawnPosition.x;
+        oldPosition.y = spawnPosition.y;
+        currentPosition.x = spawnPosition.x;
+        currentPosition.y = spawnPosition.y;
+        playerSprite.setX(spawnPosition.x);
+        playerSprite.setY(spawnPosition.y);
+        direction = spawnDirection;
+    }
+
+    public Vector2 getCenter() {
+        float x = playerSprite.getX() + playerSprite.getWidth() / 2;
+        float y = playerSprite.getY() + playerSprite.getHeight() / 2;
+        return new Vector2(x, y);
+    }
+
+    public void setFrame() {
+        if (state == EntityState.IDLE) {
+            setStandingStillFrame();
+        } else if (state == EntityState.WALKING) {
+            setWalkingFrame();
+        }
     }
 
     public void setStandingStillFrame() {
         Texture texture = Utility.getTextureAsset(DEFAULT_SPRITE_PATH);
         TextureRegion[][] textureFrames = TextureRegion.split(texture, frameWidth, frameHeight);
 
-        switch (currentDirection) {
+        switch (direction) {
             case NORTH:
                 currentFrame = textureFrames[3][1];
                 break;
@@ -102,43 +120,88 @@ public class Entity {
             case EAST:
                 currentFrame = textureFrames[2][1];
                 break;
-            default:
+        }
+    }
+
+    private void setWalkingFrame() {
+        switch (direction) {
+            case NORTH:
+                currentFrame = walkNorthAnimation.getKeyFrame(WorldScreen.playTime);
+                break;
+            case SOUTH:
+                currentFrame = walkSouthAnimation.getKeyFrame(WorldScreen.playTime);
+                break;
+            case WEST:
+                currentFrame = walkWestAnimation.getKeyFrame(WorldScreen.playTime);
+                break;
+            case EAST:
+                currentFrame = walkEastAnimation.getKeyFrame(WorldScreen.playTime);
                 break;
         }
     }
 
-    public void setBoundingBoxSize(float percentageWidthReduced, float percentageHeightReduced) {
-        float width;
-        float height;
+    public void move(float dt) {
+        oldPosition = currentPosition.cpy();
 
-        float widthReductionAmount = 1.0f - percentageWidthReduced; //.8f for 20% (1 - .20)
-        float heightReductionAmount = 1.0f - percentageHeightReduced; //.8f for 20% (1 - .20)
-
-        if (widthReductionAmount > 0 && widthReductionAmount < 1) {
-            width = frameWidth * widthReductionAmount;
-        } else {
-            width = frameWidth;
+        switch (direction) {
+            case NORTH:
+                currentPosition.y += velocity.y * dt;
+                break;
+            case SOUTH:
+                currentPosition.y -= velocity.y * dt;
+                break;
+            case WEST:
+                currentPosition.x -= velocity.x * dt;
+                break;
+            case EAST:
+                currentPosition.x += velocity.x * dt;
+                break;
         }
-        if (heightReductionAmount > 0 && heightReductionAmount < 1) {
-            height = frameHeight * heightReductionAmount;
-        } else {
-            height = frameHeight;
-        }
+        playerSprite.setX(currentPosition.x);
+        playerSprite.setY(currentPosition.y);
+    }
 
-        if (width == 0 || height == 0) {
-            Logger.boundingBoxIsZero(TAG, width, height);
+    public void moveBack() {
+        switch (direction) {
+            case NORTH:
+                currentPosition.y -= 1;
+                break;
+            case SOUTH:
+                currentPosition.y += 1;
+                break;
+            case WEST:
+                currentPosition.x += 1;
+                break;
+            case EAST:
+                currentPosition.x -= 1;
+                break;
         }
+        float roundedX = Math.round(currentPosition.x);
+        float roundedY = Math.round(currentPosition.y);
+        setCurrentPostion(roundedX, roundedY);
+    }
 
-        float minX = nextPlayerPosition.x;
-        float minY = nextPlayerPosition.y;
-        boundingBox.set(minX, minY, width, height);
+    public void alignToGrid() {
+        float roundedX = Math.round(currentPosition.x / Constant.TILE_SIZE) * Constant.TILE_SIZE;
+        float roundedY = Math.round(currentPosition.y / Constant.TILE_SIZE) * Constant.TILE_SIZE;
+        setCurrentPostion(roundedX, roundedY);
+    }
+
+    public void dispose() {
+        Utility.unloadAsset(DEFAULT_SPRITE_PATH);
+    }
+
+    private void setCurrentPostion(float currentPositionX, float currentPositionY) {
+        playerSprite.setX(currentPositionX);
+        playerSprite.setY(currentPositionY);
+        currentPosition.x = currentPositionX;
+        currentPosition.y = currentPositionY;
     }
 
     private void loadDefaultSprite() {
         Texture texture = Utility.getTextureAsset(DEFAULT_SPRITE_PATH);
         TextureRegion[][] textureFrames = TextureRegion.split(texture, frameWidth, frameHeight);
         playerSprite = new Sprite(textureFrames[0][0].getTexture(), 0, 0, frameWidth, frameHeight);
-        currentFrame = textureFrames[0][0];
     }
 
     private void loadAllAnimations() {
@@ -149,10 +212,10 @@ public class Entity {
         Texture texture = Utility.getTextureAsset(DEFAULT_SPRITE_PATH);
         TextureRegion[][] textureFrames = TextureRegion.split(texture, frameWidth, frameHeight);
 
-        walkNorthFrames = new Array<>(4);
-        walkSouthFrames = new Array<>(4);
-        walkWestFrames = new Array<>(4);
-        walkEastFrames = new Array<>(4);
+        Array<TextureRegion> walkNorthFrames = new Array<>(4);
+        Array<TextureRegion> walkSouthFrames = new Array<>(4);
+        Array<TextureRegion> walkWestFrames = new Array<>(4);
+        Array<TextureRegion> walkEastFrames = new Array<>(4);
 
         walkSouthFrames.insert(0, textureFrames[0][1]);
         walkSouthFrames.insert(1, textureFrames[0][0]);
@@ -180,76 +243,4 @@ public class Entity {
         walkNorthAnimation = new Animation<>(0.25f, walkNorthFrames, Animation.PlayMode.LOOP);
     }
 
-    public void dispose() {
-        Utility.unloadAsset(DEFAULT_SPRITE_PATH);
-    }
-
-    private void setFrame() {
-        switch (currentDirection) {
-            case NORTH:
-                currentFrame = walkNorthAnimation.getKeyFrame(frameTime);
-                break;
-            case SOUTH:
-                currentFrame = walkSouthAnimation.getKeyFrame(frameTime);
-                break;
-            case WEST:
-                currentFrame = walkWestAnimation.getKeyFrame(frameTime);
-                break;
-            case EAST:
-                currentFrame = walkEastAnimation.getKeyFrame(frameTime);
-                break;
-            default:
-                break;
-        }
-    }
-
-    public void setCurrentPostion(float currentPositionX, float currentPositionY) {
-        playerSprite.setX(currentPositionX);
-        playerSprite.setY(currentPositionY);
-        currentPlayerPostion.x = currentPositionX;
-        currentPlayerPostion.y = currentPositionY;
-    }
-
-    public void setDirection(Direction direction) {
-        previousDirection = currentDirection;
-        currentDirection = direction;
-        setFrame();
-    }
-
-    public void setNextPositionToCurrent() {
-        setCurrentPostion(nextPlayerPosition.x, nextPlayerPosition.y);
-    }
-
-    public void calculateNextPosition(Direction direction, float deltaTime) {
-        float testX = currentPlayerPostion.x;
-        float testY = currentPlayerPostion.y;
-
-        velocity.scl(deltaTime);
-
-        switch (direction) {
-            case NORTH:
-                testY += velocity.y;
-                break;
-            case SOUTH:
-                testY -= velocity.y;
-                break;
-            case WEST:
-                testX -= velocity.x;
-                break;
-            case EAST:
-                testX += velocity.x;
-                break;
-        }
-
-        nextPlayerPosition.x = testX;
-        nextPlayerPosition.y = testY;
-
-        velocity.scl(1 / deltaTime);
-    }
-
-    public void alignToGrid() {
-        float roundedX = Math.round(currentPlayerPostion.x / Constant.TILE_SIZE) * Constant.TILE_SIZE;
-        float roundedY = Math.round(currentPlayerPostion.y / Constant.TILE_SIZE) * Constant.TILE_SIZE;
-        setCurrentPostion(roundedX, roundedY);
-    }
 }

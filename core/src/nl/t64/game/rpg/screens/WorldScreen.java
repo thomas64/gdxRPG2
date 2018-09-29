@@ -4,106 +4,120 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import nl.t64.game.rpg.Camera;
 import nl.t64.game.rpg.Logger;
 import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.PlayerController;
 import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.constants.MapLayerName;
 import nl.t64.game.rpg.entities.Entity;
 import nl.t64.game.rpg.tiled.Portal;
 import nl.t64.game.rpg.tiled.SpawnPoint;
 
-public class AdventureScreen implements Screen {
 
-    private static final String TAG = AdventureScreen.class.getSimpleName();
+public class WorldScreen implements Screen {
+
+    private static final String TAG = WorldScreen.class.getSimpleName();
     private static final Color TRANSPARENT = new Color(0, 0, 0, 0.5f);
 
     public static boolean showGrid = false;
     public static boolean showObjects = false;
     public static boolean showDebug = false;
 
-    private float playTime = 0f;
+    public static float playTime = 0f;
+
     private MapManager mapManager;
     private Entity player;
+    private Camera camera;
+    private OrthogonalTiledMapRenderer mapRenderer;
     private PlayerController controller;
-    private Sprite currentPlayerSprite;
-    private OrthogonalTiledMapRenderer mapRenderer = null;
-    private OrthographicCamera camera = null;
 
-    public AdventureScreen() {
+    public WorldScreen() {
         mapManager = new MapManager();
     }
 
     @Override
     public void show() {
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false);
+        setupPlayer();
+        setupMapView();
+        setupInput();
+    }
 
-        mapRenderer = new OrthogonalTiledMapRenderer(mapManager.getCurrentMap());
-        mapRenderer.setView(camera);
-
+    private void setupPlayer() {
         player = new Entity();
-        player.init(mapManager.getPlayerSpawnLocation());
+        player.init(mapManager.getCurrentMap().getPlayerSpawnLocation(),
+                    mapManager.getCurrentMap().getPlayerSpawnDirection());
+    }
 
-        currentPlayerSprite = player.getPlayerSprite();
+    private void setupMapView() {
+        camera = new Camera(mapManager.getCurrentMap().getPixelWidth(),
+                            mapManager.getCurrentMap().getPixelHeight());
+        mapRenderer = new OrthogonalTiledMapRenderer(mapManager.getCurrentMap().getTiledMap());
+    }
 
+    private void setupInput() {
         controller = new PlayerController(player);
         Gdx.input.setInputProcessor(controller);
     }
 
     @Override
-    public void render(float delta) {
-        playTime += delta;
+    public void render(float dt) {
+        playTime += dt;
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        camera.position.set(currentPlayerSprite.getX(), currentPlayerSprite.getY(), 0f);
-        camera.update();
-
-        player.update(delta);
-
-        checkPortals(player.getBoundingBox());
-
-        if (!isInCollisionWithBlocker(player.getBoundingBox())) {
-            player.setNextPositionToCurrent();
-        }
-
-        controller.update(delta);
-
+        controller.processInput(dt);
+        updatePlayer();
+        updateCameraPosition();
         renderMapLayers();
         renderGrid();
         renderObjects();
-        renderDebugBox(delta);
+        renderDebugBox(dt);
+    }
+
+    private void updatePlayer() {
+        player.update();
+        checkBlocker(player.getBoundingBox());
+        checkPortals(player.getBoundingBox());
+    }
+
+    private void updateCameraPosition() {
+        camera.setPosition(player.getCenter());
+        mapRenderer.setView(camera);
     }
 
     private void renderMapLayers() {
-        mapRenderer.setView(camera);
-        mapRenderer.render();
-
         mapRenderer.getBatch().begin();
-        renderMapLayer("under0Ground");
-        renderMapLayer("under1Trees");
+        renderMapLayer(MapLayerName.UNDER0_NONE.name().toLowerCase());
+        renderMapLayer(MapLayerName.UNDER1_GROUND.name().toLowerCase());
+        renderMapLayer(MapLayerName.UNDER2_NONE.name().toLowerCase());
+        renderMapLayer(MapLayerName.UNDER3_NONE.name().toLowerCase());
+        renderMapLayer(MapLayerName.UNDER4_OBJECTS.name().toLowerCase());
+        renderMapLayer(MapLayerName.UNDER5_NONE.name().toLowerCase());
         renderPlayer();
-        renderMapLayer("over2Trees");
+        renderMapLayer(MapLayerName.OVER6_OBJECTS.name().toLowerCase());
+        renderMapLayer(MapLayerName.OVER7_NONE.name().toLowerCase());
+        renderMapLayer(MapLayerName.OVER8_NONE.name().toLowerCase());
         mapRenderer.getBatch().end();
     }
 
     private void renderMapLayer(String layerName) {
-        mapRenderer.renderTileLayer((TiledMapTileLayer) mapManager.getCurrentMap().getLayers().get(layerName));
+        MapLayer mapLayer = mapManager.getCurrentMap().getTiledMap().getLayers().get(layerName);
+        mapRenderer.renderTileLayer((TiledMapTileLayer) mapLayer);
     }
 
     private void renderPlayer() {
-        float playerX = currentPlayerSprite.getX();
-        float playerY = currentPlayerSprite.getY();
+        float playerX = player.getPlayerSprite().getX();
+        float playerY = player.getPlayerSprite().getY();
         mapRenderer.getBatch().draw(player.getCurrentFrame(), playerX, playerY, Constant.TILE_SIZE, Constant.TILE_SIZE);
     }
 
@@ -131,24 +145,26 @@ public class AdventureScreen implements Screen {
         mapRenderer.dispose();
     }
 
-    private boolean isInCollisionWithBlocker(Rectangle playerRect) {
-        for (RectangleMapObject blocker : mapManager.getBlockers()) {
-            if (playerRect.overlaps(blocker.getRectangle())) {
-                return true;
+    private void checkBlocker(Rectangle playerRect) {
+        for (RectangleMapObject blocker : mapManager.getCurrentMap().getBlockers()) {
+            while (playerRect.overlaps(blocker.getRectangle())) {
+                player.moveBack();
+                player.update();
             }
         }
-        return false;
     }
 
     private void checkPortals(Rectangle playerRect) {
-        for (Portal portal : mapManager.getPortals()) {
+        for (Portal portal : mapManager.getCurrentMap().getPortals()) {
             if (playerRect.overlaps(portal.getRectangle())) {
 
+                portal.setEnterDirection(player.getDirection());
                 mapManager.loadMap(portal.getToMapName());
-                mapManager.setPlayerSpawnLocation(portal);
+                mapManager.getCurrentMap().setPlayerSpawnLocation(portal);
 
-                player.init(mapManager.getPlayerSpawnLocation());
-                mapRenderer.setMap(mapManager.getCurrentMap());
+                player.init(mapManager.getCurrentMap().getPlayerSpawnLocation(),
+                            mapManager.getCurrentMap().getPlayerSpawnDirection());
+                mapRenderer.setMap(mapManager.getCurrentMap().getTiledMap());
                 Logger.portalActivated(TAG);
                 return;
             }
@@ -161,12 +177,8 @@ public class AdventureScreen implements Screen {
             shapeRenderer.setProjectionMatrix(camera.combined);
             shapeRenderer.setColor(Color.DARK_GRAY);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            int mapWidth = mapManager.getCurrentMap().getProperties().get("width", Integer.class);
-            int mapHeight = mapManager.getCurrentMap().getProperties().get("height", Integer.class);
-            int mapTileWidth = mapManager.getCurrentMap().getProperties().get("tilewidth", Integer.class);
-            int mapTileHeight = mapManager.getCurrentMap().getProperties().get("tileheight", Integer.class);
-            int mapPixelWidth = mapWidth * mapTileWidth;
-            int mapPixelHeight = mapHeight * mapTileHeight;
+            float mapPixelWidth = mapManager.getCurrentMap().getPixelWidth();
+            float mapPixelHeight = mapManager.getCurrentMap().getPixelHeight();
             for (int x = 0; x < mapPixelWidth; x = x + Constant.TILE_SIZE) {
                 shapeRenderer.line(x, 0, x, mapPixelHeight);
             }
@@ -174,6 +186,7 @@ public class AdventureScreen implements Screen {
                 shapeRenderer.line(0, y, mapPixelWidth, y);
             }
             shapeRenderer.end();
+            shapeRenderer.dispose();
         }
     }
 
@@ -186,7 +199,7 @@ public class AdventureScreen implements Screen {
             Rectangle rect;
 
             shapeRenderer.setColor(Color.YELLOW);
-            for (RectangleMapObject blocker : mapManager.getBlockers()) {
+            for (RectangleMapObject blocker : mapManager.getCurrentMap().getBlockers()) {
                 rect = blocker.getRectangle();
                 shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
             }
@@ -194,19 +207,20 @@ public class AdventureScreen implements Screen {
             shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
 
             shapeRenderer.setColor(Color.BLUE);
-            for (Portal portal : mapManager.getPortals()) {
+            for (Portal portal : mapManager.getCurrentMap().getPortals()) {
                 rect = portal.getRectangle();
                 shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
             }
-            for (SpawnPoint spawnPoint : mapManager.getSpawnPoints()) {
+            for (SpawnPoint spawnPoint : mapManager.getCurrentMap().getSpawnPoints()) {
                 rect = spawnPoint.getRectangle();
                 shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
             }
             shapeRenderer.end();
+            shapeRenderer.dispose();
         }
     }
 
-    private void renderDebugBox(float delta) {
+    private void renderDebugBox(float dt) {
         if (showDebug) {
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -224,7 +238,7 @@ public class AdventureScreen implements Screen {
 
             String debug1 = "" +
                     "FPS:\n" +
-                    "delta:\n" +
+                    "dt:\n" +
                     "playTime:\n" +
                     "\n" +
                     "timeUp:\n" +
@@ -233,25 +247,18 @@ public class AdventureScreen implements Screen {
                     "timeRight:\n" +
                     "timeDelay:\n" +
                     "\n" +
-                    "currentPlayerPositionX:\n" +
-                    "currentPlayerPositionY:\n" +
+                    "currentPositionX:\n" +
+                    "currentPositionY:\n" +
                     "\n" +
-                    "currentPlayerPositionTiledX:\n" +
-                    "currentPlayerPositionTiledY:\n" +
+                    "currentPositionTiledX:\n" +
+                    "currentPositionTiledY:\n" +
                     "\n" +
-                    "nextPlayerPositionX:\n" +
-                    "nextPlayerPositionY:\n" +
-                    "\n" +
-                    "nextPlayerPositionTiledX:\n" +
-                    "nextPlayerPositionTiledY:\n" +
-                    "\n" +
-                    "currentDirection:\n" +
-                    "state:\n" +
-                    "frameTime:";
+                    "direction:\n" +
+                    "state:\n";
 
             String debug2 = "" +
                     Gdx.graphics.getFramesPerSecond() + "\n" +
-                    String.valueOf(delta).substring(0, 5) + "\n" +
+                    String.valueOf(dt).substring(0, 5) + "\n" +
                     String.valueOf(playTime).substring(0, String.valueOf(playTime).length() - 4) + "\n" +
                     "\n" +
                     controller.getTimeUp() + "\n" +
@@ -260,21 +267,14 @@ public class AdventureScreen implements Screen {
                     controller.getTimeRight() + "\n" +
                     controller.getTimeDelay() + "\n" +
                     "\n" +
-                    player.getCurrentPlayerPostion().x + "\n" +
-                    player.getCurrentPlayerPostion().y + "\n" +
+                    player.getCurrentPosition().x + "\n" +
+                    player.getCurrentPosition().y + "\n" +
                     "\n" +
-                    (int) player.getCurrentPlayerPostion().x / Constant.TILE_SIZE + "\n" +
-                    (int) player.getCurrentPlayerPostion().y / Constant.TILE_SIZE + "\n" +
+                    (int) player.getCurrentPosition().x / Constant.TILE_SIZE + "\n" +
+                    (int) player.getCurrentPosition().y / Constant.TILE_SIZE + "\n" +
                     "\n" +
-                    player.getNextPlayerPosition().x + "\n" +
-                    player.getNextPlayerPosition().y + "\n" +
-                    "\n" +
-                    (int) player.getNextPlayerPosition().x / Constant.TILE_SIZE + "\n" +
-                    (int) player.getNextPlayerPosition().y / Constant.TILE_SIZE + "\n" +
-                    "\n" +
-                    player.getCurrentDirection() + "\n" +
-                    player.getState() + "\n" +
-                    player.getFrameTime();
+                    player.getDirection() + "\n" +
+                    player.getState() + "\n";
 
             String[] lines1 = debug1.split("\n");
             String[] lines2 = debug2.split("\n");
@@ -290,6 +290,9 @@ public class AdventureScreen implements Screen {
                 font.draw(batch, lines2[i], xSecondColumn, Gdx.graphics.getHeight() - (i * lineHeight));
             }
             batch.end();
+            shapeRenderer.dispose();
+            batch.dispose();
+            font.dispose();
         }
     }
 
