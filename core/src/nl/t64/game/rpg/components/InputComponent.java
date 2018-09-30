@@ -7,30 +7,17 @@ import com.badlogic.gdx.math.Vector3;
 import lombok.Getter;
 import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.constants.EntityState;
-import nl.t64.game.rpg.constants.Mouse;
 import nl.t64.game.rpg.entities.Entity;
 import nl.t64.game.rpg.screens.WorldScreen;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class InputComponent implements InputProcessor {
 
     private static final String TAG = InputComponent.class.getSimpleName();
     private static final float TURN_DELAY = 8f / 60f; // of a second
 
-    private static Map<Mouse, Boolean> mouseButtons = new HashMap<>();
-
-    static {
-        mouseHide();
-    }
-
-    private static void mouseHide() {
-        mouseButtons.put(Mouse.SELECT, false);
-        mouseButtons.put(Mouse.DO_ACTION, false);
-    }
-
     private Vector3 lastMouseCoordinates;
+    private boolean clickSelect = false;
+    private boolean clickDoAction = false;
 
     private boolean pressUp = false;
     private boolean pressDown = false;
@@ -119,13 +106,13 @@ public class InputComponent implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button == Input.Buttons.LEFT || button == Input.Buttons.RIGHT) {
-            setClickedMouseCoordinates(screenX, screenY);
+            lastMouseCoordinates.set(screenX, screenY, 0);
         }
         if (button == Input.Buttons.LEFT) {
-            selectMouseButtonPressed(screenX, screenY);
+            clickSelect = true;
         }
         if (button == Input.Buttons.RIGHT) {
-            doActionMouseButtonPressed(screenX, screenY);
+            clickDoAction = true;
         }
         return true;
     }
@@ -133,10 +120,10 @@ public class InputComponent implements InputProcessor {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if (button == Input.Buttons.LEFT) {
-            selectMouseButtonReleased(screenX, screenY);
+            clickSelect = false;
         }
         if (button == Input.Buttons.RIGHT) {
-            doActionMouseButtonReleased(screenX, screenY);
+            clickDoAction = false;
         }
         return true;
     }
@@ -159,19 +146,12 @@ public class InputComponent implements InputProcessor {
     public void dispose() {
     }
 
-    private void setClickedMouseCoordinates(int x, int y) {
-        lastMouseCoordinates.set(x, y, 0);
-    }
-
     public void update(Entity player, float dt) {
         processPlayerMoveInput(player, dt);
 
         if (pressQuit) Gdx.app.exit();
         if (pressAlign) player.alignToGrid();
-
-        if (mouseButtons.get(Mouse.SELECT)) {
-            mouseButtons.put(Mouse.SELECT, false);
-        }
+        if (clickSelect) clickSelect = false;
     }
 
     private void processPlayerMoveInput(Entity player, float dt) {
@@ -263,22 +243,6 @@ public class InputComponent implements InputProcessor {
 
     private boolean areMoveKeysPressed() {
         return pressUp || pressDown || pressLeft || pressRight;
-    }
-
-    private void selectMouseButtonPressed(int x, int y) {
-        mouseButtons.put(Mouse.SELECT, true);
-    }
-
-    private void doActionMouseButtonPressed(int x, int y) {
-        mouseButtons.put(Mouse.DO_ACTION, true);
-    }
-
-    private void selectMouseButtonReleased(int x, int y) {
-        mouseButtons.put(Mouse.SELECT, false);
-    }
-
-    private void doActionMouseButtonReleased(int x, int y) {
-        mouseButtons.put(Mouse.DO_ACTION, false);
     }
 
 }
