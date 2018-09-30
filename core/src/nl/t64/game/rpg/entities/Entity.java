@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import lombok.Getter;
 import lombok.Setter;
 import nl.t64.game.rpg.Utility;
+import nl.t64.game.rpg.components.InputComponent;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.constants.EntityState;
@@ -22,6 +23,7 @@ public class Entity {
 
     private static final String TAG = Entity.class.getSimpleName();
     private static final String DEFAULT_SPRITE_PATH = "sprites/characters/hero1.png";
+    private static final float BOUNDING_BOX_PERCENTAGE = 0.75f;
 
     private final int frameWidth = Constant.TILE_SIZE;
     private final int frameHeight = Constant.TILE_SIZE;
@@ -54,6 +56,9 @@ public class Entity {
     private Animation<TextureRegion> walkWestAnimation;
     private Animation<TextureRegion> walkEastAnimation;
 
+    @Getter
+    private InputComponent inputComponent;
+
     public Entity() {
         this.entityId = UUID.randomUUID().toString();
         this.boundingBox = new Rectangle();
@@ -64,16 +69,19 @@ public class Entity {
         Utility.loadTextureAsset(DEFAULT_SPRITE_PATH);
         loadDefaultSprite();
         loadAllAnimations();
+
+        inputComponent = new InputComponent();
     }
 
-    public void update() {
-        setBoundingBox(0.75f, 0.75f);
+    public void update(float dt) {
+        inputComponent.update(this, dt);
+        setBoundingBox();
     }
 
-    public void setBoundingBox(float percentageWidth, float percentageHeight) {
-        float width = frameWidth * percentageWidth;
-        float height = frameHeight * percentageHeight;
-        float widthReduction = 1.00f - percentageWidth;
+    public void setBoundingBox() {
+        float width = frameWidth * BOUNDING_BOX_PERCENTAGE;
+        float height = frameHeight * BOUNDING_BOX_PERCENTAGE;
+        float widthReduction = 1.00f - BOUNDING_BOX_PERCENTAGE;
         float x = currentPosition.x + (frameWidth * (widthReduction / 2));
         float y = currentPosition.y;
         boundingBox.set(x, y, width, height);
@@ -179,6 +187,7 @@ public class Entity {
         float roundedX = Math.round(currentPosition.x);
         float roundedY = Math.round(currentPosition.y);
         setCurrentPostion(roundedX, roundedY);
+        setBoundingBox();
     }
 
     public void alignToGrid() {
@@ -189,6 +198,7 @@ public class Entity {
 
     public void dispose() {
         Utility.unloadAsset(DEFAULT_SPRITE_PATH);
+        inputComponent.dispose();
     }
 
     private void setCurrentPostion(float currentPositionX, float currentPositionY) {

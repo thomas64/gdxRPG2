@@ -1,4 +1,4 @@
-package nl.t64.game.rpg;
+package nl.t64.game.rpg.components;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -14,9 +14,9 @@ import nl.t64.game.rpg.screens.WorldScreen;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PlayerController implements InputProcessor {
+public class InputComponent implements InputProcessor {
 
-    private static final String TAG = PlayerController.class.getSimpleName();
+    private static final String TAG = InputComponent.class.getSimpleName();
     private static final float TURN_DELAY = 8f / 60f; // of a second
 
     private static Map<Mouse, Boolean> mouseButtons = new HashMap<>();
@@ -31,7 +31,6 @@ public class PlayerController implements InputProcessor {
     }
 
     private Vector3 lastMouseCoordinates;
-    private Entity player;
 
     private boolean pressUp = false;
     private boolean pressDown = false;
@@ -52,9 +51,9 @@ public class PlayerController implements InputProcessor {
     @Getter
     private float timeDelay = 0f;
 
-    public PlayerController(Entity player) {
+    public InputComponent() {
         this.lastMouseCoordinates = new Vector3();
-        this.player = player;
+        Gdx.input.setInputProcessor(this);
     }
 
     @Override
@@ -164,8 +163,8 @@ public class PlayerController implements InputProcessor {
         lastMouseCoordinates.set(x, y, 0);
     }
 
-    public void processInput(float dt) {
-        processPlayerMoveInput(dt);
+    public void update(Entity player, float dt) {
+        processPlayerMoveInput(player, dt);
 
         if (pressQuit) Gdx.app.exit();
         if (pressAlign) player.alignToGrid();
@@ -175,13 +174,13 @@ public class PlayerController implements InputProcessor {
         }
     }
 
-    private void processPlayerMoveInput(float dt) {
+    private void processPlayerMoveInput(Entity player, float dt) {
         countKeyDownTime();
-        ifNoMoveKeys_SetPlayerStill();
-        setPossibleTurnDelay();
-        setPlayerDirection();
+        ifNoMoveKeys_SetPlayerStill(player);
+        setPossibleTurnDelay(player);
+        setPlayerDirection(player);
         player.setFrame();
-        ifMoveKeys_SetPlayerMoving(dt);
+        ifMoveKeys_SetPlayerMoving(player, dt);
     }
 
     private void countKeyDownTime() {
@@ -207,7 +206,7 @@ public class PlayerController implements InputProcessor {
         }
     }
 
-    private void ifNoMoveKeys_SetPlayerStill() {
+    private void ifNoMoveKeys_SetPlayerStill(Entity player) {
         if (!areMoveKeysPressed()) {
             timeDelay = 0f;
             player.setState(EntityState.IDLE);
@@ -215,7 +214,7 @@ public class PlayerController implements InputProcessor {
         }
     }
 
-    private void setPossibleTurnDelay() {
+    private void setPossibleTurnDelay(Entity player) {
         if (player.getState() == EntityState.IDLE) {
             if ((pressUp && player.getDirection() != Direction.NORTH) ||
                     (pressDown && player.getDirection() != Direction.SOUTH) ||
@@ -226,7 +225,7 @@ public class PlayerController implements InputProcessor {
         }
     }
 
-    private void setPlayerDirection() {
+    private void setPlayerDirection(Entity player) {
         if (pressUp &&
                 (timeUp <= timeDown || timeUp <= timeLeft || timeUp <= timeRight)) {
             player.setDirection(Direction.NORTH);
@@ -251,7 +250,7 @@ public class PlayerController implements InputProcessor {
         }
     }
 
-    private void ifMoveKeys_SetPlayerMoving(float dt) {
+    private void ifMoveKeys_SetPlayerMoving(Entity player, float dt) {
         if (areMoveKeysPressed()) {
             if (timeDelay > 0f) {
                 timeDelay -= dt;

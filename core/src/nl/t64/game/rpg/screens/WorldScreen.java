@@ -15,7 +15,6 @@ import com.badlogic.gdx.math.Rectangle;
 import nl.t64.game.rpg.Camera;
 import nl.t64.game.rpg.Logger;
 import nl.t64.game.rpg.MapManager;
-import nl.t64.game.rpg.PlayerController;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.MapLayerName;
 import nl.t64.game.rpg.entities.Entity;
@@ -38,7 +37,6 @@ public class WorldScreen implements Screen {
     private Entity player;
     private Camera camera;
     private OrthogonalTiledMapRenderer mapRenderer;
-    private PlayerController controller;
 
     public WorldScreen() {
         mapManager = new MapManager();
@@ -48,7 +46,6 @@ public class WorldScreen implements Screen {
     public void show() {
         setupPlayer();
         setupMapView();
-        setupInput();
     }
 
     private void setupPlayer() {
@@ -63,11 +60,6 @@ public class WorldScreen implements Screen {
         mapRenderer = new OrthogonalTiledMapRenderer(mapManager.getCurrentMap().getTiledMap());
     }
 
-    private void setupInput() {
-        controller = new PlayerController(player);
-        Gdx.input.setInputProcessor(controller);
-    }
-
     @Override
     public void render(float dt) {
         playTime += dt;
@@ -75,8 +67,7 @@ public class WorldScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        controller.processInput(dt);
-        updatePlayer();
+        updatePlayer(dt);
         updateCameraPosition();
         renderMapLayers();
         renderGrid();
@@ -84,8 +75,8 @@ public class WorldScreen implements Screen {
         renderDebugBox(dt);
     }
 
-    private void updatePlayer() {
-        player.update();
+    private void updatePlayer(float dt) {
+        player.update(dt);
         checkBlocker(player.getBoundingBox());
         checkPortals(player.getBoundingBox());
     }
@@ -140,7 +131,6 @@ public class WorldScreen implements Screen {
     @Override
     public void dispose() {
         player.dispose();
-        controller.dispose();
         Gdx.input.setInputProcessor(null);
         mapRenderer.dispose();
     }
@@ -149,7 +139,6 @@ public class WorldScreen implements Screen {
         for (RectangleMapObject blocker : mapManager.getCurrentMap().getBlockers()) {
             while (playerRect.overlaps(blocker.getRectangle())) {
                 player.moveBack();
-                player.update();
             }
         }
     }
@@ -261,11 +250,11 @@ public class WorldScreen implements Screen {
                     String.valueOf(dt).substring(0, 5) + "\n" +
                     String.valueOf(playTime).substring(0, String.valueOf(playTime).length() - 4) + "\n" +
                     "\n" +
-                    controller.getTimeUp() + "\n" +
-                    controller.getTimeDown() + "\n" +
-                    controller.getTimeLeft() + "\n" +
-                    controller.getTimeRight() + "\n" +
-                    controller.getTimeDelay() + "\n" +
+                    player.getInputComponent().getTimeUp() + "\n" +
+                    player.getInputComponent().getTimeDown() + "\n" +
+                    player.getInputComponent().getTimeLeft() + "\n" +
+                    player.getInputComponent().getTimeRight() + "\n" +
+                    player.getInputComponent().getTimeDelay() + "\n" +
                     "\n" +
                     player.getCurrentPosition().x + "\n" +
                     player.getCurrentPosition().y + "\n" +
