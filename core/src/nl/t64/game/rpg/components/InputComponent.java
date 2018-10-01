@@ -151,7 +151,7 @@ public class InputComponent implements InputProcessor {
         processPlayerMoveInput(player, dt);
 
         if (pressQuit) Gdx.app.exit();
-        if (pressAlign) player.alignToGrid();
+        if (pressAlign) player.getPhysicsComponent().alignToGrid();
         if (clickSelect) clickSelect = false;
     }
 
@@ -195,10 +195,10 @@ public class InputComponent implements InputProcessor {
 
     private void setPossibleTurnDelay(Entity player) {
         if (player.getState() == EntityState.IDLE) {
-            if ((pressUp && player.getDirection() != Direction.NORTH) ||
-                    (pressDown && player.getDirection() != Direction.SOUTH) ||
-                    (pressLeft && player.getDirection() != Direction.WEST) ||
-                    (pressRight && player.getDirection() != Direction.EAST)) {
+            if ((pressUp && player.getPhysicsComponent().getDirection() != Direction.NORTH) ||
+                    (pressDown && player.getPhysicsComponent().getDirection() != Direction.SOUTH) ||
+                    (pressLeft && player.getPhysicsComponent().getDirection() != Direction.WEST) ||
+                    (pressRight && player.getPhysicsComponent().getDirection() != Direction.EAST)) {
                 timeDelay = TURN_DELAY;
             }
         }
@@ -207,25 +207,25 @@ public class InputComponent implements InputProcessor {
     private void setPlayerDirection(Entity player) {
         if (pressUp &&
                 (timeUp <= timeDown || timeUp <= timeLeft || timeUp <= timeRight)) {
-            player.setDirection(Direction.NORTH);
+            player.getPhysicsComponent().setDirection(Direction.NORTH);
         } else if (pressDown &&
                 (timeDown <= timeUp || timeDown <= timeLeft || timeDown <= timeRight)) {
-            player.setDirection(Direction.SOUTH);
+            player.getPhysicsComponent().setDirection(Direction.SOUTH);
         } else if (pressLeft &&
                 (timeLeft <= timeUp || timeLeft <= timeDown || timeLeft <= timeRight)) {
-            player.setDirection(Direction.WEST);
+            player.getPhysicsComponent().setDirection(Direction.WEST);
         } else if (pressRight &&
                 (timeRight <= timeUp || timeRight <= timeDown || timeRight <= timeLeft)) {
-            player.setDirection(Direction.EAST);
+            player.getPhysicsComponent().setDirection(Direction.EAST);
 
         } else if (pressUp) {
-            player.setDirection(Direction.NORTH);
+            player.getPhysicsComponent().setDirection(Direction.NORTH);
         } else if (pressDown) {
-            player.setDirection(Direction.SOUTH);
+            player.getPhysicsComponent().setDirection(Direction.SOUTH);
         } else if (pressLeft) {
-            player.setDirection(Direction.WEST);
+            player.getPhysicsComponent().setDirection(Direction.WEST);
         } else if (pressRight) {
-            player.setDirection(Direction.EAST);
+            player.getPhysicsComponent().setDirection(Direction.EAST);
         }
     }
 
@@ -235,7 +235,7 @@ public class InputComponent implements InputProcessor {
                 timeDelay -= dt;
             } else {
                 player.setState(EntityState.WALKING);
-                player.move(dt);
+                player.getPhysicsComponent().move(dt);
             }
         }
     }

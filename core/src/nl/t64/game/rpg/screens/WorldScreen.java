@@ -50,8 +50,8 @@ public class WorldScreen implements Screen {
 
     private void setupPlayer() {
         player = new Entity();
-        player.init(mapManager.getCurrentMap().getPlayerSpawnLocation(),
-                    mapManager.getCurrentMap().getPlayerSpawnDirection());
+        player.getPhysicsComponent().init(mapManager.getCurrentMap().getPlayerSpawnLocation(),
+                                          mapManager.getCurrentMap().getPlayerSpawnDirection());
     }
 
     private void setupMapView() {
@@ -76,13 +76,12 @@ public class WorldScreen implements Screen {
     }
 
     private void updatePlayer(float dt) {
-        player.update(dt);
-        checkBlocker(player.getBoundingBox());
-        checkPortals(player.getBoundingBox());
+        player.update(mapManager, dt);
+        checkPortals(player.getPhysicsComponent().getBoundingBox());
     }
 
     private void updateCameraPosition() {
-        camera.setPosition(player.getCurrentPosition());
+        camera.setPosition(player.getPhysicsComponent().getCurrentPosition());
         mapRenderer.setView(camera);
     }
 
@@ -128,24 +127,16 @@ public class WorldScreen implements Screen {
         mapRenderer.dispose();
     }
 
-    private void checkBlocker(Rectangle playerRect) {
-        for (RectangleMapObject blocker : mapManager.getCurrentMap().getBlockers()) {
-            while (playerRect.overlaps(blocker.getRectangle())) {
-                player.moveBack();
-            }
-        }
-    }
-
     private void checkPortals(Rectangle playerRect) {
         for (Portal portal : mapManager.getCurrentMap().getPortals()) {
             if (playerRect.overlaps(portal.getRectangle())) {
 
-                portal.setEnterDirection(player.getDirection());
+                portal.setEnterDirection(player.getPhysicsComponent().getDirection());
                 mapManager.loadMap(portal.getToMapName());
                 mapManager.getCurrentMap().setPlayerSpawnLocation(portal);
 
-                player.init(mapManager.getCurrentMap().getPlayerSpawnLocation(),
-                            mapManager.getCurrentMap().getPlayerSpawnDirection());
+                player.getPhysicsComponent().init(mapManager.getCurrentMap().getPlayerSpawnLocation(),
+                                                  mapManager.getCurrentMap().getPlayerSpawnDirection());
                 mapRenderer.setMap(mapManager.getCurrentMap().getTiledMap());
                 Logger.portalActivated(TAG);
                 return;
@@ -185,7 +176,7 @@ public class WorldScreen implements Screen {
                 rect = blocker.getRectangle();
                 shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
             }
-            rect = player.getBoundingBox();
+            rect = player.getPhysicsComponent().getBoundingBox();
             shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
 
             shapeRenderer.setColor(Color.BLUE);
@@ -249,13 +240,13 @@ public class WorldScreen implements Screen {
                     player.getInputComponent().getTimeRight() + "\n" +
                     player.getInputComponent().getTimeDelay() + "\n" +
                     "\n" +
-                    player.getCurrentPosition().x + "\n" +
-                    player.getCurrentPosition().y + "\n" +
+                    player.getPhysicsComponent().getCurrentPosition().x + "\n" +
+                    player.getPhysicsComponent().getCurrentPosition().y + "\n" +
                     "\n" +
-                    (int) player.getCurrentPosition().x / Constant.TILE_SIZE + "\n" +
-                    (int) player.getCurrentPosition().y / Constant.TILE_SIZE + "\n" +
+                    (int) player.getPhysicsComponent().getCurrentPosition().x / Constant.TILE_SIZE + "\n" +
+                    (int) player.getPhysicsComponent().getCurrentPosition().y / Constant.TILE_SIZE + "\n" +
                     "\n" +
-                    player.getDirection() + "\n" +
+                    player.getPhysicsComponent().getDirection() + "\n" +
                     player.getState() + "\n";
 
             String[] lines1 = debug1.split("\n");

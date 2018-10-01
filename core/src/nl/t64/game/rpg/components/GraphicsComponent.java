@@ -39,8 +39,8 @@ public class GraphicsComponent {
     }
 
     public void render(Batch batch, Entity entity) {
-        float entityX = entity.getCurrentPosition().x;
-        float entityY = entity.getCurrentPosition().y;
+        float entityX = entity.getPhysicsComponent().getCurrentPosition().x;
+        float entityY = entity.getPhysicsComponent().getCurrentPosition().y;
         batch.draw(currentFrame, entityX, entityY, Constant.TILE_SIZE, Constant.TILE_SIZE);
     }
 
@@ -53,7 +53,7 @@ public class GraphicsComponent {
     }
 
     private void setStandingStillFrame(Entity entity) {
-        switch (entity.getDirection()) {
+        switch (entity.getPhysicsComponent().getDirection()) {
             case NORTH:
                 currentFrame = walkNorthAnimation.getKeyFrame(0f);
                 break;
@@ -70,7 +70,7 @@ public class GraphicsComponent {
     }
 
     private void setWalkingFrame(Entity entity) {
-        switch (entity.getDirection()) {
+        switch (entity.getPhysicsComponent().getDirection()) {
             case NORTH:
                 currentFrame = walkNorthAnimation.getKeyFrame(WorldScreen.playTime);
                 break;
