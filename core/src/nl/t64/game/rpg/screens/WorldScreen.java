@@ -82,7 +82,7 @@ public class WorldScreen implements Screen {
     }
 
     private void updateCameraPosition() {
-        camera.setPosition(player.getCenter());
+        camera.setPosition(player.getCurrentPosition());
         mapRenderer.setView(camera);
     }
 
@@ -94,7 +94,7 @@ public class WorldScreen implements Screen {
         renderMapLayer(MapLayerName.UNDER3_NONE.name().toLowerCase());
         renderMapLayer(MapLayerName.UNDER4_OBJECTS.name().toLowerCase());
         renderMapLayer(MapLayerName.UNDER5_NONE.name().toLowerCase());
-        renderPlayer();
+        player.render(mapRenderer.getBatch());
         renderMapLayer(MapLayerName.OVER6_OBJECTS.name().toLowerCase());
         renderMapLayer(MapLayerName.OVER7_NONE.name().toLowerCase());
         renderMapLayer(MapLayerName.OVER8_NONE.name().toLowerCase());
@@ -104,12 +104,6 @@ public class WorldScreen implements Screen {
     private void renderMapLayer(String layerName) {
         MapLayer mapLayer = mapManager.getCurrentMap().getTiledMap().getLayers().get(layerName);
         mapRenderer.renderTileLayer((TiledMapTileLayer) mapLayer);
-    }
-
-    private void renderPlayer() {
-        float playerX = player.getPlayerSprite().getX();
-        float playerY = player.getPlayerSprite().getY();
-        mapRenderer.getBatch().draw(player.getCurrentFrame(), playerX, playerY, Constant.TILE_SIZE, Constant.TILE_SIZE);
     }
 
     @Override
@@ -131,7 +125,6 @@ public class WorldScreen implements Screen {
     @Override
     public void dispose() {
         player.dispose();
-        Gdx.input.setInputProcessor(null);
         mapRenderer.dispose();
     }
 

@@ -144,6 +144,7 @@ public class InputComponent implements InputProcessor {
     }
 
     public void dispose() {
+        Gdx.input.setInputProcessor(null);
     }
 
     public void update(Entity player, float dt) {
@@ -159,7 +160,6 @@ public class InputComponent implements InputProcessor {
         ifNoMoveKeys_SetPlayerStill(player);
         setPossibleTurnDelay(player);
         setPlayerDirection(player);
-        player.setFrame();
         ifMoveKeys_SetPlayerMoving(player, dt);
     }
 
@@ -190,7 +190,6 @@ public class InputComponent implements InputProcessor {
         if (!areMoveKeysPressed()) {
             timeDelay = 0f;
             player.setState(EntityState.IDLE);
-            player.setStandingStillFrame();
         }
     }
 
