@@ -4,16 +4,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
-import lombok.Getter;
 import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.constants.EntityState;
 import nl.t64.game.rpg.entities.Entity;
+import nl.t64.game.rpg.events.DirectionEvent;
+import nl.t64.game.rpg.events.Event;
+import nl.t64.game.rpg.events.StartDirectionEvent;
+import nl.t64.game.rpg.events.StateEvent;
 import nl.t64.game.rpg.screens.WorldScreen;
 
-public class InputComponent implements InputProcessor {
+public class InputComponent implements InputProcessor, Component {
 
     private static final String TAG = InputComponent.class.getSimpleName();
-    private static final float TURN_DELAY = 8f / 60f; // of a second
+    private static final float TURN_DELAY_TIME = 8f / 60f; // of a second
 
     private Vector3 lastMouseCoordinates;
     private boolean clickSelect = false;
@@ -26,21 +29,29 @@ public class InputComponent implements InputProcessor {
     private boolean pressQuit = false;
     private boolean pressAlign = false;
 
-    @Getter
     private int timeUp = 0;
-    @Getter
     private int timeDown = 0;
-    @Getter
     private int timeLeft = 0;
-    @Getter
     private int timeRight = 0;
+    private float turnDelay = 0f;
 
-    @Getter
-    private float timeDelay = 0f;
+    private Direction direction;
 
     public InputComponent() {
         this.lastMouseCoordinates = new Vector3();
         Gdx.input.setInputProcessor(this);
+    }
+
+    @Override
+    public void receive(Event event) {
+        if (event instanceof StartDirectionEvent) {
+            direction = ((StartDirectionEvent) event).getDirection();
+        }
+    }
+
+    @Override
+    public void dispose() {
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override
@@ -143,24 +154,20 @@ public class InputComponent implements InputProcessor {
         return false;
     }
 
-    public void dispose() {
-        Gdx.input.setInputProcessor(null);
-    }
-
     public void update(Entity player, float dt) {
         processPlayerMoveInput(player, dt);
 
         if (pressQuit) Gdx.app.exit();
-        if (pressAlign) player.getPhysicsComponent().alignToGrid();
+        if (pressAlign) player.send(new StateEvent(EntityState.ALIGNING));
         if (clickSelect) clickSelect = false;
     }
 
     private void processPlayerMoveInput(Entity player, float dt) {
         countKeyDownTime();
         ifNoMoveKeys_SetPlayerStill(player);
-        setPossibleTurnDelay(player);
-        setPlayerDirection(player);
-        ifMoveKeys_SetPlayerMoving(player, dt);
+        setPossibleTurnDelay();
+        setPlayerDirection();
+        ifMoveKeys_SetPlayerWalking(player, dt);
     }
 
     private void countKeyDownTime() {
@@ -188,54 +195,55 @@ public class InputComponent implements InputProcessor {
 
     private void ifNoMoveKeys_SetPlayerStill(Entity player) {
         if (!areMoveKeysPressed()) {
-            timeDelay = 0f;
-            player.setState(EntityState.IDLE);
+            turnDelay = 0f;
+            player.send(new StateEvent(EntityState.IDLE));
         }
     }
 
-    private void setPossibleTurnDelay(Entity player) {
-        if (player.getState() == EntityState.IDLE) {
-            if ((pressUp && player.getPhysicsComponent().getDirection() != Direction.NORTH) ||
-                    (pressDown && player.getPhysicsComponent().getDirection() != Direction.SOUTH) ||
-                    (pressLeft && player.getPhysicsComponent().getDirection() != Direction.WEST) ||
-                    (pressRight && player.getPhysicsComponent().getDirection() != Direction.EAST)) {
-                timeDelay = TURN_DELAY;
+    private void setPossibleTurnDelay() {
+        if (turnDelay <= 0f) {
+            if ((pressUp && direction != Direction.NORTH) ||
+                    (pressDown && direction != Direction.SOUTH) ||
+                    (pressLeft && direction != Direction.WEST) ||
+                    (pressRight && direction != Direction.EAST)) {
+                turnDelay = TURN_DELAY_TIME;
             }
         }
     }
 
-    private void setPlayerDirection(Entity player) {
+    private void setPlayerDirection() {
         if (pressUp &&
                 (timeUp <= timeDown || timeUp <= timeLeft || timeUp <= timeRight)) {
-            player.getPhysicsComponent().setDirection(Direction.NORTH);
+            direction = Direction.NORTH;
         } else if (pressDown &&
                 (timeDown <= timeUp || timeDown <= timeLeft || timeDown <= timeRight)) {
-            player.getPhysicsComponent().setDirection(Direction.SOUTH);
+            direction = Direction.SOUTH;
         } else if (pressLeft &&
                 (timeLeft <= timeUp || timeLeft <= timeDown || timeLeft <= timeRight)) {
-            player.getPhysicsComponent().setDirection(Direction.WEST);
+            direction = Direction.WEST;
         } else if (pressRight &&
                 (timeRight <= timeUp || timeRight <= timeDown || timeRight <= timeLeft)) {
-            player.getPhysicsComponent().setDirection(Direction.EAST);
+            direction = Direction.EAST;
 
         } else if (pressUp) {
-            player.getPhysicsComponent().setDirection(Direction.NORTH);
+            direction = Direction.NORTH;
         } else if (pressDown) {
-            player.getPhysicsComponent().setDirection(Direction.SOUTH);
+            direction = Direction.SOUTH;
         } else if (pressLeft) {
-            player.getPhysicsComponent().setDirection(Direction.WEST);
+            direction = Direction.WEST;
         } else if (pressRight) {
-            player.getPhysicsComponent().setDirection(Direction.EAST);
+            direction = Direction.EAST;
         }
     }
 
-    private void ifMoveKeys_SetPlayerMoving(Entity player, float dt) {
+    private void ifMoveKeys_SetPlayerWalking(Entity player, float dt) {
         if (areMoveKeysPressed()) {
-            if (timeDelay > 0f) {
-                timeDelay -= dt;
+            player.send(new DirectionEvent(direction));
+
+            if (turnDelay > 0f) {
+                turnDelay -= dt;
             } else {
-                player.setState(EntityState.WALKING);
-                player.getPhysicsComponent().move(dt);
+                player.send(new StateEvent(EntityState.WALKING));
             }
         }
     }

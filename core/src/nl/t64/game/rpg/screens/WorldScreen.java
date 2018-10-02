@@ -13,11 +13,12 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import nl.t64.game.rpg.Camera;
-import nl.t64.game.rpg.Logger;
 import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.MapLayerName;
 import nl.t64.game.rpg.entities.Entity;
+import nl.t64.game.rpg.events.StartDirectionEvent;
+import nl.t64.game.rpg.events.StartPositionEvent;
 import nl.t64.game.rpg.tiled.Portal;
 import nl.t64.game.rpg.tiled.SpawnPoint;
 
@@ -44,17 +45,7 @@ public class WorldScreen implements Screen {
 
     @Override
     public void show() {
-        setupPlayer();
-        setupMapView();
-    }
-
-    private void setupPlayer() {
         player = new Entity();
-        player.getPhysicsComponent().init(mapManager.getCurrentMap().getPlayerSpawnLocation(),
-                                          mapManager.getCurrentMap().getPlayerSpawnDirection());
-    }
-
-    private void setupMapView() {
         camera = new Camera(mapManager.getCurrentMap().getPixelWidth(),
                             mapManager.getCurrentMap().getPixelHeight());
         mapRenderer = new OrthogonalTiledMapRenderer(mapManager.getCurrentMap().getTiledMap());
@@ -67,6 +58,7 @@ public class WorldScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        updateMap();
         updatePlayer(dt);
         updateCameraPosition();
         renderMapLayers();
@@ -75,13 +67,20 @@ public class WorldScreen implements Screen {
         renderDebugBox(dt);
     }
 
+    private void updateMap() {
+        if (mapManager.isMapChanged()) {
+            mapRenderer.setMap(mapManager.getCurrentMap().getTiledMap());
+            player.send(new StartPositionEvent(mapManager.getCurrentMap().getPlayerSpawnLocation()));
+            player.send(new StartDirectionEvent(mapManager.getCurrentMap().getPlayerSpawnDirection()));
+            mapManager.setMapChanged(false);
+        }
+    }
+
     private void updatePlayer(float dt) {
-        player.update(mapManager, dt);
-        checkPortals(player.getPhysicsComponent().getBoundingBox());
+        player.update(mapManager, camera, dt);
     }
 
     private void updateCameraPosition() {
-        camera.setPosition(player.getPhysicsComponent().getCurrentPosition());
         mapRenderer.setView(camera);
     }
 
@@ -127,23 +126,6 @@ public class WorldScreen implements Screen {
         mapRenderer.dispose();
     }
 
-    private void checkPortals(Rectangle playerRect) {
-        for (Portal portal : mapManager.getCurrentMap().getPortals()) {
-            if (playerRect.overlaps(portal.getRectangle())) {
-
-                portal.setEnterDirection(player.getPhysicsComponent().getDirection());
-                mapManager.loadMap(portal.getToMapName());
-                mapManager.getCurrentMap().setPlayerSpawnLocation(portal);
-
-                player.getPhysicsComponent().init(mapManager.getCurrentMap().getPlayerSpawnLocation(),
-                                                  mapManager.getCurrentMap().getPlayerSpawnDirection());
-                mapRenderer.setMap(mapManager.getCurrentMap().getTiledMap());
-                Logger.portalActivated(TAG);
-                return;
-            }
-        }
-    }
-
     private void renderGrid() {
         if (showGrid) {
             ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -176,8 +158,8 @@ public class WorldScreen implements Screen {
                 rect = blocker.getRectangle();
                 shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
             }
-            rect = player.getPhysicsComponent().getBoundingBox();
-            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+//            rect = player.getPhysicsComponent().getBoundingBox();
+//            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
 
             shapeRenderer.setColor(Color.BLUE);
             for (Portal portal : mapManager.getCurrentMap().getPortals()) {
@@ -213,41 +195,41 @@ public class WorldScreen implements Screen {
                     "FPS:\n" +
                     "dt:\n" +
                     "playTime:\n" +
-                    "\n" +
-                    "timeUp:\n" +
-                    "timeDown:\n" +
-                    "timeLeft:\n" +
-                    "timeRight:\n" +
-                    "timeDelay:\n" +
-                    "\n" +
-                    "currentPositionX:\n" +
-                    "currentPositionY:\n" +
-                    "\n" +
-                    "currentPositionTiledX:\n" +
-                    "currentPositionTiledY:\n" +
-                    "\n" +
-                    "direction:\n" +
-                    "state:\n";
+                    "\n";
+//                    "timeUp:\n" +
+//                    "timeDown:\n" +
+//                    "timeLeft:\n" +
+//                    "timeRight:\n" +
+//                    "timeDelay:\n" +
+//                    "\n" +
+//                    "currentPositionX:\n" +
+//                    "currentPositionY:\n" +
+//                    "\n" +
+//                    "currentPositionTiledX:\n" +
+//                    "currentPositionTiledY:\n" +
+//                    "\n" +
+//                    "direction:\n" +
+//                    "state:\n";
 
             String debug2 = "" +
                     Gdx.graphics.getFramesPerSecond() + "\n" +
                     String.valueOf(dt).substring(0, 5) + "\n" +
                     String.valueOf(playTime).substring(0, String.valueOf(playTime).length() - 4) + "\n" +
-                    "\n" +
-                    player.getInputComponent().getTimeUp() + "\n" +
-                    player.getInputComponent().getTimeDown() + "\n" +
-                    player.getInputComponent().getTimeLeft() + "\n" +
-                    player.getInputComponent().getTimeRight() + "\n" +
-                    player.getInputComponent().getTimeDelay() + "\n" +
-                    "\n" +
-                    player.getPhysicsComponent().getCurrentPosition().x + "\n" +
-                    player.getPhysicsComponent().getCurrentPosition().y + "\n" +
-                    "\n" +
-                    (int) player.getPhysicsComponent().getCurrentPosition().x / Constant.TILE_SIZE + "\n" +
-                    (int) player.getPhysicsComponent().getCurrentPosition().y / Constant.TILE_SIZE + "\n" +
-                    "\n" +
-                    player.getPhysicsComponent().getDirection() + "\n" +
-                    player.getState() + "\n";
+                    "\n";
+//                    player.getInputComponent().getTimeUp() + "\n" +
+//                    player.getInputComponent().getTimeDown() + "\n" +
+//                    player.getInputComponent().getTimeLeft() + "\n" +
+//                    player.getInputComponent().getTimeRight() + "\n" +
+//                    player.getInputComponent().getTimeDelay() + "\n" +
+//                    "\n" +
+//                    player.getPhysicsComponent().getCurrentPosition().x + "\n" +
+//                    player.getPhysicsComponent().getCurrentPosition().y + "\n" +
+//                    "\n" +
+//                    (int) player.getPhysicsComponent().getCurrentPosition().x / Constant.TILE_SIZE + "\n" +
+//                    (int) player.getPhysicsComponent().getCurrentPosition().y / Constant.TILE_SIZE + "\n" +
+//                    "\n" +
+//                    player.getPhysicsComponent().getDirection() + "\n" +
+//                    player.getState() + "\n";
 
             String[] lines1 = debug1.split("\n");
             String[] lines2 = debug2.split("\n");

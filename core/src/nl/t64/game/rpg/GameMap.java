@@ -81,11 +81,11 @@ public class GameMap {
     }
 
     public float getPixelWidth() {
-        return this.bottomLayer.getWidth() * Constant.TILE_SIZE / 2f;
+        return bottomLayer.getWidth() * Constant.TILE_SIZE / 2f;
     }
 
     public float getPixelHeight() {
-        return this.bottomLayer.getHeight() * Constant.TILE_SIZE / 2f;
+        return bottomLayer.getHeight() * Constant.TILE_SIZE / 2f;
     }
 
     private void loadBlockers() {

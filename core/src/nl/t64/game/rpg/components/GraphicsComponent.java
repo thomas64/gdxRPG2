@@ -3,18 +3,18 @@ package nl.t64.game.rpg.components;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.constants.EntityState;
-import nl.t64.game.rpg.entities.Entity;
+import nl.t64.game.rpg.events.*;
 import nl.t64.game.rpg.screens.WorldScreen;
 
 
-public class GraphicsComponent {
+public class GraphicsComponent implements Component {
 
     private static final String TAG = GraphicsComponent.class.getSimpleName();
     private static final String DEFAULT_SPRITE_PATH = "sprites/characters/hero1.png";
@@ -25,35 +25,56 @@ public class GraphicsComponent {
     private Animation<TextureRegion> walkWestAnimation;
     private Animation<TextureRegion> walkEastAnimation;
 
-    private Sprite sprite = null;
     private TextureRegion currentFrame = null;
+
+    private EntityState state;
+    private Vector2 position;
+    private Direction direction;
 
     public GraphicsComponent() {
         Utility.loadTextureAsset(DEFAULT_SPRITE_PATH);
-        loadDefaultSprite();
         loadAllAnimations();
     }
 
-    public void update(Entity entity) {
-        setFrame(entity);
-    }
-
-    public void render(Batch batch, Entity entity) {
-        float entityX = entity.getPhysicsComponent().getCurrentPosition().x;
-        float entityY = entity.getPhysicsComponent().getCurrentPosition().y;
-        batch.draw(currentFrame, entityX, entityY, Constant.TILE_SIZE, Constant.TILE_SIZE);
-    }
-
-    private void setFrame(Entity entity) {
-        if (entity.getState() == EntityState.IDLE) {
-            setStandingStillFrame(entity);
-        } else if (entity.getState() == EntityState.WALKING) {
-            setWalkingFrame(entity);
+    @Override
+    public void receive(Event event) {
+        if (event instanceof StateEvent) {
+            state = ((StateEvent) event).getState();
+        }
+        if (event instanceof StartDirectionEvent) {
+            direction = ((StartDirectionEvent) event).getDirection();
+        }
+        if (event instanceof DirectionEvent) {
+            direction = ((DirectionEvent) event).getDirection();
+        }
+        if (event instanceof PositionEvent) {
+            position = ((PositionEvent) event).getPosition();
         }
     }
 
-    private void setStandingStillFrame(Entity entity) {
-        switch (entity.getPhysicsComponent().getDirection()) {
+    @Override
+    public void dispose() {
+        Utility.unloadAsset(DEFAULT_SPRITE_PATH);
+    }
+
+    public void update() {
+        setFrame();
+    }
+
+    public void render(Batch batch) {
+        batch.draw(currentFrame, position.x, position.y, Constant.TILE_SIZE, Constant.TILE_SIZE);
+    }
+
+    private void setFrame() {
+        if (state == EntityState.IDLE) {
+            setStandingStillFrame();
+        } else if (state == EntityState.WALKING) {
+            setWalkingFrame();
+        }
+    }
+
+    private void setStandingStillFrame() {
+        switch (direction) {
             case NORTH:
                 currentFrame = walkNorthAnimation.getKeyFrame(0f);
                 break;
@@ -69,8 +90,8 @@ public class GraphicsComponent {
         }
     }
 
-    private void setWalkingFrame(Entity entity) {
-        switch (entity.getPhysicsComponent().getDirection()) {
+    private void setWalkingFrame() {
+        switch (direction) {
             case NORTH:
                 currentFrame = walkNorthAnimation.getKeyFrame(WorldScreen.playTime);
                 break;
@@ -84,22 +105,6 @@ public class GraphicsComponent {
                 currentFrame = walkEastAnimation.getKeyFrame(WorldScreen.playTime);
                 break;
         }
-    }
-
-    public Vector2 getCenter() {
-        float x = sprite.getX() + sprite.getWidth() / 2;
-        float y = sprite.getY() + sprite.getHeight() / 2;
-        return new Vector2(x, y);
-    }
-
-    public void dispose() {
-        Utility.unloadAsset(DEFAULT_SPRITE_PATH);
-    }
-
-    private void loadDefaultSprite() {
-        Texture texture = Utility.getTextureAsset(DEFAULT_SPRITE_PATH);
-        TextureRegion[][] textureFrames = TextureRegion.split(texture, Constant.TILE_SIZE, Constant.TILE_SIZE);
-        sprite = new Sprite(textureFrames[0][0].getTexture(), 0, 0, Constant.TILE_SIZE, Constant.TILE_SIZE);
     }
 
     private void loadAllAnimations() {

@@ -1,5 +1,7 @@
 package nl.t64.game.rpg;
 
+import lombok.Getter;
+import lombok.Setter;
 import nl.t64.game.rpg.constants.MapTitle;
 
 
@@ -9,6 +11,10 @@ public class MapManager {
 
     private GameMap currentMap = null;
 
+    @Getter
+    @Setter
+    private boolean mapChanged = false;
+
     public GameMap getCurrentMap() {
         loadStartOfGameMapIfNecessary();
         return currentMap;
@@ -17,6 +23,7 @@ public class MapManager {
     public void loadMap(String mapName) {
         disposeOldMap();
         currentMap = new GameMap(mapName);
+        mapChanged = true;
     }
 
     private void loadStartOfGameMapIfNecessary() {

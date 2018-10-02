@@ -4,12 +4,13 @@ import com.badlogic.gdx.math.Rectangle;
 import lombok.Getter;
 
 
-@Getter
 public class SpawnPoint {
 
+    @Getter
     private final Rectangle rectangle;
     private final String fromMapName;
     private final String fromMapLocation;
+    @Getter
     private final String direction;
 
     public SpawnPoint(Rectangle rectangle, String fromMapName, String fromMapLocation, String direction) {
@@ -22,16 +23,16 @@ public class SpawnPoint {
     }
 
     public boolean isInConnectionWith(Portal portal) {
-        return (this.fromMapName.equalsIgnoreCase(portal.getFromMapName()) &&
-                this.fromMapLocation.equalsIgnoreCase(portal.getToMapLocation()));
+        return (fromMapName.equalsIgnoreCase(portal.getFromMapName()) &&
+                fromMapLocation.equalsIgnoreCase(portal.getToMapLocation()));
     }
 
     public float getX() {
-        return this.rectangle.getX();
+        return rectangle.getX();
     }
 
     public float getY() {
-        return this.rectangle.getY();
+        return rectangle.getY();
     }
 
 }
