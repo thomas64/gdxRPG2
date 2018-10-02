@@ -1,29 +1,33 @@
 package nl.t64.game.rpg.tiled;
 
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import lombok.Getter;
+import nl.t64.game.rpg.constants.Direction;
+import nl.t64.game.rpg.constants.MapTitle;
 
 
 public class SpawnPoint {
 
     @Getter
     private final Rectangle rectangle;
-    private final String fromMapName;
+    private final MapTitle fromMapName;
     private final String fromMapLocation;
     @Getter
-    private final String direction;
+    private final Direction direction;
 
-    public SpawnPoint(Rectangle rectangle, String fromMapName, String fromMapLocation, String direction) {
-        this.rectangle = rectangle;
-        this.fromMapName = fromMapName;
-        if (fromMapLocation == null) fromMapLocation = "";
-        this.fromMapLocation = fromMapLocation;
-        if (direction == null) direction = "";
-        this.direction = direction;
+    public SpawnPoint(MapObject mapObject) {
+        RectangleMapObject rectObject = (RectangleMapObject) mapObject;
+
+        this.rectangle = rectObject.getRectangle();
+        this.fromMapName = MapTitle.valueOf(rectObject.getName().toUpperCase());
+        this.fromMapLocation = createFromMapLocation(rectObject);
+        this.direction = createDirection(rectObject);
     }
 
     public boolean isInConnectionWith(Portal portal) {
-        return (fromMapName.equalsIgnoreCase(portal.getFromMapName()) &&
+        return (fromMapName.equals(portal.getFromMapName()) &&
                 fromMapLocation.equalsIgnoreCase(portal.getToMapLocation()));
     }
 
@@ -33,6 +37,23 @@ public class SpawnPoint {
 
     public float getY() {
         return rectangle.getY();
+    }
+
+    private String createFromMapLocation(RectangleMapObject rectObject) {
+        String fromMapLocation = rectObject.getProperties().get("type", String.class);
+        if (fromMapLocation == null) {
+            fromMapLocation = "";
+        }
+        return fromMapLocation;
+    }
+
+    private Direction createDirection(RectangleMapObject rectObject) {
+        String directionString = rectObject.getProperties().get("direction", String.class);
+        if (directionString == null) {
+            return Direction.NONE;
+        } else {
+            return Direction.valueOf(directionString.toUpperCase());
+        }
     }
 
 }

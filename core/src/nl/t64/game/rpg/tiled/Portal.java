@@ -1,27 +1,39 @@
 package nl.t64.game.rpg.tiled;
 
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
 import nl.t64.game.rpg.constants.Direction;
+import nl.t64.game.rpg.constants.MapTitle;
 
 
 @Getter
 public class Portal {
 
     private final Rectangle rectangle;
-    private final String fromMapName;
-    private final String toMapName;
+    private final MapTitle fromMapName;
+    private final MapTitle toMapName;
     private final String toMapLocation;
     @Setter
     private Direction enterDirection;
 
-    public Portal(Rectangle rectangle, String fromMapName, String toMapName, String toMapLocation) {
-        this.rectangle = rectangle;
+    public Portal(MapObject mapObject, MapTitle fromMapName) {
+        RectangleMapObject rectObject = (RectangleMapObject) mapObject;
+
+        this.rectangle = rectObject.getRectangle();
         this.fromMapName = fromMapName;
-        this.toMapName = toMapName;
-        if (toMapLocation == null) toMapLocation = "";
-        this.toMapLocation = toMapLocation;
+        this.toMapName = MapTitle.valueOf(rectObject.getName().toUpperCase());
+        this.toMapLocation = createToMapLocation(rectObject);
+    }
+
+    private String createToMapLocation(RectangleMapObject rectObject) {
+        String toMapLocation = rectObject.getProperties().get("type", String.class);
+        if (toMapLocation == null) {
+            toMapLocation = "";
+        }
+        return toMapLocation;
     }
 
 }

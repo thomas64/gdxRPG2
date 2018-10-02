@@ -66,6 +66,8 @@ public abstract class PhysicsComponent implements Component {
             case EAST:
                 currentPosition.x += velocity.x * dt;
                 break;
+            default:
+                throw new IllegalArgumentException(String.format("Direction '%s' not usable.", direction));
         }
     }
 
@@ -83,7 +85,10 @@ public abstract class PhysicsComponent implements Component {
             case EAST:
                 currentPosition.x -= 1;
                 break;
+            default:
+                throw new IllegalArgumentException(String.format("Direction '%s' not usable.", direction));
         }
+
         float roundedX = Math.round(currentPosition.x);
         float roundedY = Math.round(currentPosition.y);
         setCurrentPosition(roundedX, roundedY);

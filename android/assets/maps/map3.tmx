@@ -398,6 +398,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup name="npc_layer"/>
  <objectgroup name="collision_layer">
   <object id="19" x="48" y="144" width="96" height="24"/>
   <object id="20" x="240" y="144" width="96" height="24"/>
@@ -411,7 +412,7 @@
   <object id="28" x="168" y="816" width="96" height="24"/>
   <object id="29" x="888" y="840" width="96" height="24"/>
  </objectgroup>
- <objectgroup name="spawns_layer">
+ <objectgroup name="spawn_layer">
   <object id="35" name="map1" x="504" y="840" width="48" height="48"/>
  </objectgroup>
  <objectgroup name="portal_layer">

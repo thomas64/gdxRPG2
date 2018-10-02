@@ -12,16 +12,17 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 import nl.t64.game.rpg.Camera;
 import nl.t64.game.rpg.MapManager;
-import nl.t64.game.rpg.components.PlayerGraphicsComponent;
-import nl.t64.game.rpg.components.PlayerInputComponent;
-import nl.t64.game.rpg.components.PlayerPhysicsComponent;
+import nl.t64.game.rpg.components.*;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.MapLayerName;
 import nl.t64.game.rpg.entities.Entity;
 import nl.t64.game.rpg.events.StartDirectionEvent;
 import nl.t64.game.rpg.events.StartPositionEvent;
+import nl.t64.game.rpg.events.StartStateEvent;
+import nl.t64.game.rpg.tiled.Npc;
 import nl.t64.game.rpg.tiled.Portal;
 import nl.t64.game.rpg.tiled.SpawnPoint;
 
@@ -39,6 +40,7 @@ public class WorldScreen implements Screen {
 
     private MapManager mapManager;
     private Entity player;
+    private Array<Entity> npcEntities;
     private Camera camera;
     private OrthogonalTiledMapRenderer mapRenderer;
 
@@ -49,7 +51,6 @@ public class WorldScreen implements Screen {
     @Override
     public void show() {
         player = new Entity(new PlayerInputComponent(), new PlayerPhysicsComponent(), new PlayerGraphicsComponent());
-//        player = new Entity(new NpcInputComponent(), new NpcPhysicsComponent(), new NpcGraphicsComponent());
         camera = new Camera(mapManager.getCurrentMap().getPixelWidth(),
                             mapManager.getCurrentMap().getPixelHeight());
         mapRenderer = new OrthogonalTiledMapRenderer(mapManager.getCurrentMap().getTiledMap());
@@ -63,7 +64,7 @@ public class WorldScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         updateMap();
-        updatePlayer(dt);
+        updateEntities(dt);
         updateCameraPosition();
         renderMapLayers();
         renderGrid();
@@ -74,14 +75,31 @@ public class WorldScreen implements Screen {
     private void updateMap() {
         if (mapManager.isMapChanged()) {
             mapRenderer.setMap(mapManager.getCurrentMap().getTiledMap());
+            loadNpcEntities();
             player.send(new StartPositionEvent(mapManager.getCurrentMap().getPlayerSpawnLocation()));
             player.send(new StartDirectionEvent(mapManager.getCurrentMap().getPlayerSpawnDirection()));
             mapManager.setMapChanged(false);
         }
     }
 
-    private void updatePlayer(float dt) {
+    private void loadNpcEntities() {
+        npcEntities = new Array<>();
+        for (Npc npc : mapManager.getCurrentMap().getNpcs()) {
+            Entity entity = new Entity(new NpcInputComponent(),
+                                       new NpcPhysicsComponent(),
+                                       new NpcGraphicsComponent());
+            npcEntities.add(entity);
+            entity.send(new StartStateEvent(npc.getState()));
+            entity.send(new StartDirectionEvent(npc.getDirection()));
+            entity.send(new StartPositionEvent(npc.getPosition()));
+        }
+    }
+
+    private void updateEntities(float dt) {
         player.update(mapManager, camera, dt);
+        for (Entity entity : npcEntities) {
+            entity.update(mapManager, camera, dt);
+        }
     }
 
     private void updateCameraPosition() {
@@ -96,7 +114,7 @@ public class WorldScreen implements Screen {
         renderMapLayer(MapLayerName.UNDER3_NONE.name().toLowerCase());
         renderMapLayer(MapLayerName.UNDER4_OBJECTS.name().toLowerCase());
         renderMapLayer(MapLayerName.UNDER5_NONE.name().toLowerCase());
-        player.render(mapRenderer.getBatch());
+        renderEntities();
         renderMapLayer(MapLayerName.OVER6_OBJECTS.name().toLowerCase());
         renderMapLayer(MapLayerName.OVER7_NONE.name().toLowerCase());
         renderMapLayer(MapLayerName.OVER8_NONE.name().toLowerCase());
@@ -106,6 +124,13 @@ public class WorldScreen implements Screen {
     private void renderMapLayer(String layerName) {
         MapLayer mapLayer = mapManager.getCurrentMap().getTiledMap().getLayers().get(layerName);
         mapRenderer.renderTileLayer((TiledMapTileLayer) mapLayer);
+    }
+
+    private void renderEntities() {
+        for (Entity entity : npcEntities) {
+            entity.render(mapRenderer.getBatch());
+        }
+        player.render(mapRenderer.getBatch());
     }
 
     @Override
@@ -174,6 +199,10 @@ public class WorldScreen implements Screen {
                 rect = spawnPoint.getRectangle();
                 shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
             }
+//            for (Entity entity : mapManager.getCurrentMap().getNpcEntities()) {
+//                rect = entity.getPhysicsComponent().getBoundingBox();
+//                shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+//            }
             shapeRenderer.end();
             shapeRenderer.dispose();
         }

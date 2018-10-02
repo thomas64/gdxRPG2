@@ -30,44 +30,35 @@ public abstract class GraphicsComponent implements Component {
     public abstract void render(Batch batch);
 
     void setFrame() {
-        if (state == EntityState.IDLE) {
-            setStandingStillFrame();
-        } else if (state == EntityState.WALKING) {
-            setWalkingFrame();
+        switch (state) {
+            case IDLE:
+            case IMMOBILE:
+                setCurrentFrame(0f);
+                break;
+            case WALKING:
+                setCurrentFrame(WorldScreen.playTime);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("EntityState '%s' not usable.", state));
         }
     }
 
-    private void setStandingStillFrame() {
+    private void setCurrentFrame(float frameTime) {
         switch (direction) {
             case NORTH:
-                currentFrame = walkNorthAnimation.getKeyFrame(0f);
+                currentFrame = walkNorthAnimation.getKeyFrame(frameTime);
                 break;
             case SOUTH:
-                currentFrame = walkSouthAnimation.getKeyFrame(0f);
+                currentFrame = walkSouthAnimation.getKeyFrame(frameTime);
                 break;
             case WEST:
-                currentFrame = walkWestAnimation.getKeyFrame(0f);
+                currentFrame = walkWestAnimation.getKeyFrame(frameTime);
                 break;
             case EAST:
-                currentFrame = walkEastAnimation.getKeyFrame(0f);
+                currentFrame = walkEastAnimation.getKeyFrame(frameTime);
                 break;
-        }
-    }
-
-    private void setWalkingFrame() {
-        switch (direction) {
-            case NORTH:
-                currentFrame = walkNorthAnimation.getKeyFrame(WorldScreen.playTime);
-                break;
-            case SOUTH:
-                currentFrame = walkSouthAnimation.getKeyFrame(WorldScreen.playTime);
-                break;
-            case WEST:
-                currentFrame = walkWestAnimation.getKeyFrame(WorldScreen.playTime);
-                break;
-            case EAST:
-                currentFrame = walkEastAnimation.getKeyFrame(WorldScreen.playTime);
-                break;
+            default:
+                throw new IllegalArgumentException(String.format("Direction '%s' not usable.", direction));
         }
     }
 

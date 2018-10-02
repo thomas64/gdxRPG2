@@ -1,9 +1,10 @@
 package nl.t64.game.rpg.constants;
 
 public enum MapLayerName {
-    COLLISION_LAYER,
-    SPAWNS_LAYER,
     PORTAL_LAYER,
+    SPAWN_LAYER,
+    COLLISION_LAYER,
+    NPC_LAYER,
     OVER8_NONE,
     OVER7_NONE,
     OVER6_OBJECTS,

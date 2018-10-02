@@ -6,26 +6,24 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import lombok.Getter;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.constants.MapLayerName;
 import nl.t64.game.rpg.constants.MapTitle;
+import nl.t64.game.rpg.tiled.Npc;
 import nl.t64.game.rpg.tiled.Portal;
 import nl.t64.game.rpg.tiled.SpawnPoint;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class GameMap {
 
     private static final String TAG = GameMap.class.getSimpleName();
-    private static final String PLAYER_START = "player_start";
 
     @Getter
     private TiledMap tiledMap;
-    private String mapName;
+    private MapTitle mapTitle;
     private TiledMapTileLayer bottomLayer;
 
     @Getter
@@ -34,21 +32,23 @@ public class GameMap {
     private Direction playerSpawnDirection;
 
     @Getter
-    private List<RectangleMapObject> blockers = new ArrayList<>();
+    private Array<Npc> npcs = new Array<>();
     @Getter
-    private List<Portal> portals = new ArrayList<>();
+    private Array<RectangleMapObject> blockers = new Array<>();
     @Getter
-    private List<SpawnPoint> spawnPoints = new ArrayList<>();
+    private Array<Portal> portals = new Array<>();
+    @Getter
+    private Array<SpawnPoint> spawnPoints = new Array<>();
 
 
-    public GameMap(String mapName) {
-        String mapFullPath = MapTitle.valueOf(mapName.toUpperCase()).getMapPath();
-        Utility.loadMapAsset(mapFullPath);
-        this.tiledMap = Utility.getMapAsset(mapFullPath);
-        this.mapName = mapName;
+    public GameMap(MapTitle mapTitle) {
+        this.mapTitle = mapTitle;
+        Utility.loadMapAsset(mapTitle.getMapPath());
+        this.tiledMap = Utility.getMapAsset(mapTitle.getMapPath());
         this.bottomLayer = (TiledMapTileLayer) this.tiledMap.getLayers().get(0);
         this.playerSpawnLocation = new Vector2(0, 0);
 
+        loadNpcs();
         loadBlockers();
         loadPortals();
         loadSpawnPoints();
@@ -56,7 +56,9 @@ public class GameMap {
 
     public void setPlayerStartOfGameSpawnLocation() {
         if (playerSpawnLocation.isZero()) {
-            Portal startOfGamePortal = new Portal(null, PLAYER_START, null, "");
+            MapObject dummyObject = new RectangleMapObject();
+            dummyObject.setName(MapTitle.NONE.name());
+            Portal startOfGamePortal = new Portal(dummyObject, MapTitle.MAP1);
             setPlayerSpawnLocation(startOfGamePortal);
         }
     }
@@ -73,10 +75,10 @@ public class GameMap {
     }
 
     private void setPlayerSpawnDirection(Portal portal, SpawnPoint spawnPoint) {
-        if (spawnPoint.getDirection().isEmpty()) {
+        if (spawnPoint.getDirection() == Direction.NONE) {
             playerSpawnDirection = portal.getEnterDirection();
         } else {
-            playerSpawnDirection = Direction.valueOf(spawnPoint.getDirection().toUpperCase());
+            playerSpawnDirection = spawnPoint.getDirection();
         }
     }
 
@@ -86,6 +88,13 @@ public class GameMap {
 
     public float getPixelHeight() {
         return bottomLayer.getHeight() * Constant.TILE_SIZE / 2f;
+    }
+
+    private void loadNpcs() {
+        MapLayer npcLayer = tiledMap.getLayers().get(MapLayerName.NPC_LAYER.name().toLowerCase());
+        for (MapObject mapObject : npcLayer.getObjects()) {
+            npcs.add(new Npc(mapObject));
+        }
     }
 
     private void loadBlockers() {
@@ -99,21 +108,14 @@ public class GameMap {
     private void loadPortals() {
         MapLayer portalLayer = tiledMap.getLayers().get(MapLayerName.PORTAL_LAYER.name().toLowerCase());
         for (MapObject mapObject : portalLayer.getObjects()) {
-            RectangleMapObject rectObject = (RectangleMapObject) mapObject;
-            String toMapLocation = rectObject.getProperties().get("type", String.class);
-            Portal p = new Portal(rectObject.getRectangle(), mapName, rectObject.getName(), toMapLocation);
-            portals.add(p);
+            portals.add(new Portal(mapObject, mapTitle));
         }
     }
 
     private void loadSpawnPoints() {
-        MapLayer spawnsLayer = tiledMap.getLayers().get(MapLayerName.SPAWNS_LAYER.name().toLowerCase());
+        MapLayer spawnsLayer = tiledMap.getLayers().get(MapLayerName.SPAWN_LAYER.name().toLowerCase());
         for (MapObject mapObject : spawnsLayer.getObjects()) {
-            RectangleMapObject rectObject = (RectangleMapObject) mapObject;
-            String fromMapLocation = rectObject.getProperties().get("type", String.class);
-            String direction = rectObject.getProperties().get("direction", String.class);
-            SpawnPoint s = new SpawnPoint(rectObject.getRectangle(), rectObject.getName(), fromMapLocation, direction);
-            spawnPoints.add(s);
+            spawnPoints.add(new SpawnPoint(mapObject));
         }
     }
 

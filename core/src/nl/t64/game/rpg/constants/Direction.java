@@ -7,10 +7,12 @@ public enum Direction {
     NORTH,
     SOUTH,
     WEST,
-    EAST;
+    EAST,
+
+    NONE;
 
     public static Direction getRandom() {
-        int randomNumber = MathUtils.random(Direction.values().length - 1);
+        int randomNumber = MathUtils.random(Direction.values().length - 2); // - 2: without NONE
         return Direction.values()[randomNumber];
     }
 }

@@ -18,11 +18,17 @@ public class NpcPhysicsComponent extends PhysicsComponent {
 
     @Override
     public void receive(Event event) {
+        if (event instanceof StartStateEvent) {
+            state = ((StartStateEvent) event).getState();
+        }
         if (event instanceof StateEvent) {
             state = ((StateEvent) event).getState();
         }
         if (event instanceof StartPositionEvent) {
             currentPosition = ((StartPositionEvent) event).getPosition();
+        }
+        if (event instanceof StartDirectionEvent) {
+            direction = ((StartDirectionEvent) event).getDirection();
         }
         if (event instanceof DirectionEvent) {
             direction = ((DirectionEvent) event).getDirection();

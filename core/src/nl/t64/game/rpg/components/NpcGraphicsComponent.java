@@ -18,6 +18,9 @@ public class NpcGraphicsComponent extends GraphicsComponent {
 
     @Override
     public void receive(Event event) {
+        if (event instanceof StartStateEvent) {
+            state = ((StartStateEvent) event).getState();
+        }
         if (event instanceof StateEvent) {
             state = ((StateEvent) event).getState();
         }

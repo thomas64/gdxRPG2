@@ -20,15 +20,15 @@ public class MapManager {
         return currentMap;
     }
 
-    public void loadMap(String mapName) {
+    public void loadMap(MapTitle mapTitle) {
         disposeOldMap();
-        currentMap = new GameMap(mapName);
+        currentMap = new GameMap(mapTitle);
         mapChanged = true;
     }
 
     private void loadStartOfGameMapIfNecessary() {
         if (currentMap == null) {
-            loadMap(MapTitle.MAP1.name());
+            loadMap(MapTitle.MAP1);
             currentMap.setPlayerStartOfGameSpawnLocation();
         }
     }
