@@ -7,7 +7,9 @@ import nl.t64.game.rpg.Camera;
 import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
+import nl.t64.game.rpg.constants.EntityState;
 import nl.t64.game.rpg.entities.Entity;
+import nl.t64.game.rpg.events.CollisionEvent;
 
 
 public abstract class PhysicsComponent implements Component {
@@ -15,6 +17,7 @@ public abstract class PhysicsComponent implements Component {
     private static final String TAG = PhysicsComponent.class.getSimpleName();
     private static final float BOUNDING_BOX_PERCENTAGE = 0.75f;
 
+    EntityState state;
     Direction direction = null;
     Vector2 velocity;
     Vector2 oldPosition;
@@ -25,7 +28,6 @@ public abstract class PhysicsComponent implements Component {
         this.boundingBox = new Rectangle();
         this.oldPosition = new Vector2();
         this.currentPosition = new Vector2();
-        this.velocity = new Vector2(192f, 192f);  // 48 * 4
     }
 
     public abstract void update(Entity entity, MapManager mapManager, Camera camera, float dt);
@@ -39,10 +41,11 @@ public abstract class PhysicsComponent implements Component {
         boundingBox.set(x, y, width, height);
     }
 
-    void checkBlocker(MapManager mapManager) {
+    void checkBlocker(Entity entity, MapManager mapManager) {
         for (RectangleMapObject blocker : mapManager.getCurrentMap().getBlockers()) {
             while (boundingBox.overlaps(blocker.getRectangle())) {
                 moveBack();
+                entity.send(new CollisionEvent());
             }
         }
     }

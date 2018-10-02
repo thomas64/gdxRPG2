@@ -49,6 +49,7 @@ public class WorldScreen implements Screen {
     @Override
     public void show() {
         player = new Entity(new PlayerInputComponent(), new PlayerPhysicsComponent(), new PlayerGraphicsComponent());
+//        player = new Entity(new NpcInputComponent(), new NpcPhysicsComponent(), new NpcGraphicsComponent());
         camera = new Camera(mapManager.getCurrentMap().getPixelWidth(),
                             mapManager.getCurrentMap().getPixelHeight());
         mapRenderer = new OrthogonalTiledMapRenderer(mapManager.getCurrentMap().getTiledMap());

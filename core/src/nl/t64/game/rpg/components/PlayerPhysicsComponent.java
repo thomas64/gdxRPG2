@@ -1,5 +1,6 @@
 package nl.t64.game.rpg.components;
 
+import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.Camera;
 import nl.t64.game.rpg.Logger;
 import nl.t64.game.rpg.MapManager;
@@ -14,8 +15,9 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
 
     private static final String TAG = PlayerPhysicsComponent.class.getSimpleName();
 
-    private EntityState state;
-
+    public PlayerPhysicsComponent() {
+        this.velocity = new Vector2(192f, 192f);  // 48 * 4
+    }
 
     @Override
     public void receive(Event event) {
@@ -38,7 +40,7 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
     public void update(Entity entity, MapManager mapManager, Camera camera, float dt) {
         relocate(dt);
         setBoundingBox();
-        checkBlocker(mapManager);
+        checkBlocker(entity, mapManager);
         checkPortals(mapManager);
         entity.send(new PositionEvent(currentPosition));
         camera.setPosition(currentPosition);

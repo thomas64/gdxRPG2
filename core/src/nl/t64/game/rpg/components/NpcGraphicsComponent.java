@@ -6,12 +6,12 @@ import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.events.*;
 
 
-public class PlayerGraphicsComponent extends GraphicsComponent {
+public class NpcGraphicsComponent extends GraphicsComponent {
 
-    private static final String TAG = PlayerGraphicsComponent.class.getSimpleName();
-    private static final String DEFAULT_SPRITE_PATH = "sprites/characters/hero1.png";
+    private static final String TAG = NpcGraphicsComponent.class.getSimpleName();
+    private static final String DEFAULT_SPRITE_PATH = "sprites/characters/woman1.png";
 
-    public PlayerGraphicsComponent() {
+    public NpcGraphicsComponent() {
         Utility.loadTextureAsset(DEFAULT_SPRITE_PATH);
         loadWalkingAnimation(DEFAULT_SPRITE_PATH);
     }
