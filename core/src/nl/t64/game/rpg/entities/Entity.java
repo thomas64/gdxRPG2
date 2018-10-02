@@ -22,10 +22,10 @@ public class Entity {
     private PhysicsComponent physicsComponent;
     private GraphicsComponent graphicsComponent;
 
-    public Entity() {
-        inputComponent = new InputComponent();
-        physicsComponent = new PhysicsComponent();
-        graphicsComponent = new GraphicsComponent();
+    public Entity(InputComponent ic, PhysicsComponent pc, GraphicsComponent gc) {
+        inputComponent = ic;
+        physicsComponent = pc;
+        graphicsComponent = gc;
 
         components = new Array<>(MAX_COMPONENTS);
         components.add(inputComponent);

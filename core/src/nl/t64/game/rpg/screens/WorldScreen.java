@@ -14,6 +14,9 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import nl.t64.game.rpg.Camera;
 import nl.t64.game.rpg.MapManager;
+import nl.t64.game.rpg.components.PlayerGraphicsComponent;
+import nl.t64.game.rpg.components.PlayerInputComponent;
+import nl.t64.game.rpg.components.PlayerPhysicsComponent;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.MapLayerName;
 import nl.t64.game.rpg.entities.Entity;
@@ -45,7 +48,7 @@ public class WorldScreen implements Screen {
 
     @Override
     public void show() {
-        player = new Entity();
+        player = new Entity(new PlayerInputComponent(), new PlayerPhysicsComponent(), new PlayerGraphicsComponent());
         camera = new Camera(mapManager.getCurrentMap().getPixelWidth(),
                             mapManager.getCurrentMap().getPixelHeight());
         mapRenderer = new OrthogonalTiledMapRenderer(mapManager.getCurrentMap().getTiledMap());
