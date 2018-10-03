@@ -2,7 +2,6 @@ package nl.t64.game.rpg.components;
 
 import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.Camera;
-import nl.t64.game.rpg.Logger;
 import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.EntityState;
@@ -58,12 +57,9 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
     private void checkPortals(MapManager mapManager) {
         for (Portal portal : mapManager.getCurrentMap().getPortals()) {
             if (boundingBox.overlaps(portal.getRectangle())) {
-
                 portal.setEnterDirection(direction);
                 mapManager.loadMap(portal.getToMapName());
                 mapManager.getCurrentMap().setPlayerSpawnLocation(portal);
-
-                Logger.portalActivated(TAG);
                 return;
             }
         }

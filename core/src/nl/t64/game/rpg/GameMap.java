@@ -68,7 +68,6 @@ public class GameMap {
             if (spawnPoint.isInConnectionWith(portal)) {
                 playerSpawnLocation.set(spawnPoint.getX(), spawnPoint.getY());
                 setPlayerSpawnDirection(portal, spawnPoint);
-                Logger.playerSpawnLocation(TAG, playerSpawnLocation.x, playerSpawnLocation.y);
                 return;
             }
         }
