@@ -1,11 +1,15 @@
 package nl.t64.game.rpg;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.ObjectMap;
+import nl.t64.game.rpg.events.LoadSpriteEvent;
 
 
 public final class Utility {
@@ -13,6 +17,8 @@ public final class Utility {
     private static final String TAG = Utility.class.getSimpleName();
     private static final AssetManager ASSET_MANAGER = new AssetManager();
     private static final InternalFileHandleResolver FILE_PATH_RESOLVER = new InternalFileHandleResolver();
+
+    private static final String PEOPLE_SPRITE_CONFIG = "configs/sprites_people.json";
 
     public static void unloadAsset(String assetFilenamePath) {
         if (ASSET_MANAGER.isLoaded(assetFilenamePath)) {
@@ -70,6 +76,12 @@ public final class Utility {
             Logger.textureNotLoaded(TAG, textureFilenamePath);
         }
         return texture;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static ObjectMap<String, LoadSpriteEvent> getAllPeopleSpriteConfigsFromJson() {
+        Json json = new Json();
+        return json.fromJson(ObjectMap.class, LoadSpriteEvent.class, Gdx.files.internal(PEOPLE_SPRITE_CONFIG));
     }
 
 }

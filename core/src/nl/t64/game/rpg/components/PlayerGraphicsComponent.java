@@ -12,7 +12,6 @@ public class PlayerGraphicsComponent extends GraphicsComponent {
     private static final String DEFAULT_SPRITE_PATH = "sprites/characters/hero1.png";
 
     public PlayerGraphicsComponent() {
-        Utility.loadTextureAsset(DEFAULT_SPRITE_PATH);
         loadWalkingAnimation(DEFAULT_SPRITE_PATH);
     }
 

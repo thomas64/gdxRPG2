@@ -1,7 +1,6 @@
 package nl.t64.game.rpg.components;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.events.*;
 
@@ -9,15 +8,13 @@ import nl.t64.game.rpg.events.*;
 public class NpcGraphicsComponent extends GraphicsComponent {
 
     private static final String TAG = NpcGraphicsComponent.class.getSimpleName();
-    private static final String DEFAULT_SPRITE_PATH = "sprites/characters/woman1.png";
-
-    public NpcGraphicsComponent() {
-        Utility.loadTextureAsset(DEFAULT_SPRITE_PATH);
-        loadWalkingAnimation(DEFAULT_SPRITE_PATH);
-    }
 
     @Override
     public void receive(Event event) {
+        if (event instanceof LoadSpriteEvent) {
+            LoadSpriteEvent loadSpriteEvent = (LoadSpriteEvent) event;
+            loadWalkingAnimation(loadSpriteEvent.getPath(), loadSpriteEvent.getCol(), loadSpriteEvent.getRow());
+        }
         if (event instanceof StartStateEvent) {
             state = ((StartStateEvent) event).getState();
         }
@@ -37,7 +34,6 @@ public class NpcGraphicsComponent extends GraphicsComponent {
 
     @Override
     public void dispose() {
-        Utility.unloadAsset(DEFAULT_SPRITE_PATH);
     }
 
     @Override

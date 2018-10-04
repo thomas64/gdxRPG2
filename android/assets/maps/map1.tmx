@@ -399,14 +399,14 @@
 </data>
  </layer>
  <objectgroup name="npc_layer">
-  <object id="44" name="nameless" type="w" x="264" y="216" width="48" height="48"/>
-  <object id="43" name="nameless" type="w" x="168" y="168" width="48" height="48"/>
-  <object id="45" name="nameless" x="480" y="192" width="48" height="48">
+  <object id="44" name="youngwoman01" type="w" x="264" y="216" width="48" height="48"/>
+  <object id="43" name="youngman01" type="w" x="168" y="168" width="48" height="48"/>
+  <object id="45" name="boy01" x="480" y="192" width="48" height="48">
    <properties>
     <property name="direction" value="east"/>
    </properties>
   </object>
-  <object id="46" name="nameless" x="552" y="192" width="48" height="48">
+  <object id="46" name="girl01" x="552" y="192" width="48" height="48">
    <properties>
     <property name="direction" value="west"/>
    </properties>

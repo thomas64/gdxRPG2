@@ -15,10 +15,12 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import nl.t64.game.rpg.Camera;
 import nl.t64.game.rpg.MapManager;
+import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.components.*;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.MapLayerName;
 import nl.t64.game.rpg.entities.Entity;
+import nl.t64.game.rpg.events.LoadSpriteEvent;
 import nl.t64.game.rpg.events.StartDirectionEvent;
 import nl.t64.game.rpg.events.StartPositionEvent;
 import nl.t64.game.rpg.events.StartStateEvent;
@@ -51,8 +53,7 @@ public class WorldScreen implements Screen {
     @Override
     public void show() {
         player = new Entity(new PlayerInputComponent(), new PlayerPhysicsComponent(), new PlayerGraphicsComponent());
-        camera = new Camera(mapManager.getCurrentMap().getPixelWidth(),
-                            mapManager.getCurrentMap().getPixelHeight());
+        camera = new Camera();
         mapRenderer = new OrthogonalTiledMapRenderer(mapManager.getCurrentMap().getTiledMap());
     }
 
@@ -75,6 +76,8 @@ public class WorldScreen implements Screen {
     private void updateMap() {
         if (mapManager.isMapChanged()) {
             mapRenderer.setMap(mapManager.getCurrentMap().getTiledMap());
+            camera.setNewMapSize(mapManager.getCurrentMap().getPixelWidth(),
+                                 mapManager.getCurrentMap().getPixelHeight());
             loadNpcEntities();
             player.send(new StartPositionEvent(mapManager.getCurrentMap().getPlayerSpawnLocation()));
             player.send(new StartDirectionEvent(mapManager.getCurrentMap().getPlayerSpawnDirection()));
@@ -85,13 +88,13 @@ public class WorldScreen implements Screen {
     private void loadNpcEntities() {
         npcEntities = new Array<>();
         for (Npc npc : mapManager.getCurrentMap().getNpcs()) {
-            Entity entity = new Entity(new NpcInputComponent(),
-                                       new NpcPhysicsComponent(),
-                                       new NpcGraphicsComponent());
+            Entity entity = new Entity(new NpcInputComponent(), new NpcPhysicsComponent(), new NpcGraphicsComponent());
             npcEntities.add(entity);
             entity.send(new StartStateEvent(npc.getState()));
             entity.send(new StartDirectionEvent(npc.getDirection()));
             entity.send(new StartPositionEvent(npc.getPosition()));
+            LoadSpriteEvent loadSpriteEvent = Utility.getAllPeopleSpriteConfigsFromJson().get(npc.getName());
+            entity.send(loadSpriteEvent);
         }
     }
 

@@ -13,10 +13,7 @@ public class Camera extends OrthographicCamera {
     private float mapWidth;
     private float mapHeight;
 
-    public Camera(float mapWidth, float mapHeight) {
-        this.mapWidth = mapWidth;
-        this.mapHeight = mapHeight;
-
+    public Camera() {
         Viewport viewport = new FitViewport(GdxRpg2.WIDTH, GdxRpg2.HEIGHT, this);
         viewport.update(GdxRpg2.WIDTH, GdxRpg2.HEIGHT);
 
@@ -27,6 +24,11 @@ public class Camera extends OrthographicCamera {
         focusCameraOn(playerPosition);
         setCameraOnMapEdge();
         update();
+    }
+
+    public void setNewMapSize(float mapWidth, float mapHeight) {
+        this.mapWidth = mapWidth;
+        this.mapHeight = mapHeight;
     }
 
     private void zoom() {

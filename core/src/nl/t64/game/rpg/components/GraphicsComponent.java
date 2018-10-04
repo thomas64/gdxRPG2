@@ -15,7 +15,10 @@ import nl.t64.game.rpg.screens.WorldScreen;
 
 public abstract class GraphicsComponent implements Component {
 
+    private static final int SPRITE_GROUP_WIDTH = 144;
+    private static final int SPRITE_GROUP_HEIGHT = 192;
     private static final float FRAME_DURATION = 0.25f;
+
     TextureRegion currentFrame = null;
     EntityState state;
     Vector2 position;
@@ -63,8 +66,15 @@ public abstract class GraphicsComponent implements Component {
     }
 
     void loadWalkingAnimation(String spritePath) {
+        loadWalkingAnimation(spritePath, 1, 1);
+    }
+
+    void loadWalkingAnimation(String spritePath, int col, int row) {
+        Utility.loadTextureAsset(spritePath);
         Texture texture = Utility.getTextureAsset(spritePath);
-        TextureRegion[][] textureFrames = TextureRegion.split(texture, Constant.TILE_SIZE, Constant.TILE_SIZE);
+        TextureRegion[][] splitOfEight = TextureRegion.split(texture, SPRITE_GROUP_WIDTH, SPRITE_GROUP_HEIGHT);
+        TextureRegion personSprite = splitOfEight[row - 1][col - 1];
+        TextureRegion[][] textureFrames = personSprite.split(Constant.TILE_SIZE, Constant.TILE_SIZE);
 
         Array<TextureRegion> walkNorthFrames = new Array<>(4);
         Array<TextureRegion> walkSouthFrames = new Array<>(4);
