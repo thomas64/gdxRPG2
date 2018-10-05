@@ -6,7 +6,9 @@ import lombok.Getter;
 
 
 @AllArgsConstructor
-public class StartPositionEvent implements Event {
+public class WaitEvent implements Event {
     @Getter
-    private final Vector2 position;
+    private final Vector2 npcPosition;
+    @Getter
+    private final Vector2 playerPosition;
 }

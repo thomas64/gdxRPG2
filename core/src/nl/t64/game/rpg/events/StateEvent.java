@@ -6,7 +6,7 @@ import nl.t64.game.rpg.constants.EntityState;
 
 
 @AllArgsConstructor
-public class StateEvent extends Event {
+public class StateEvent implements Event {
     @Getter
-    private EntityState state;
+    private final EntityState state;
 }

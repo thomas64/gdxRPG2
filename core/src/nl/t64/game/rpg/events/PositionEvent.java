@@ -6,7 +6,7 @@ import lombok.Getter;
 
 
 @AllArgsConstructor
-public class PositionEvent extends Event {
+public class PositionEvent implements Event {
     @Getter
-    private Vector2 position;
+    private final Vector2 position;
 }

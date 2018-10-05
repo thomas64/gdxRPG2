@@ -6,7 +6,7 @@ import nl.t64.game.rpg.constants.Direction;
 
 
 @AllArgsConstructor
-public class DirectionEvent extends Event {
+public class DirectionEvent implements Event {
     @Getter
-    private Direction direction;
+    private final Direction direction;
 }

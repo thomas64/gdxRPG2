@@ -166,7 +166,7 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
 
     private void processPlayerMoveInput(Entity player, float dt) {
         countKeyDownTime();
-        ifNoMoveKeys_SetPlayerStill(player);
+        ifNoMoveKeys_SetPlayerIdle(player);
         setPossibleTurnDelay();
         setPlayerDirection();
         ifMoveKeys_SetPlayerWalking(player, dt);
@@ -195,7 +195,7 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
         }
     }
 
-    private void ifNoMoveKeys_SetPlayerStill(Entity player) {
+    private void ifNoMoveKeys_SetPlayerIdle(Entity player) {
         if (!areMoveKeysPressed()) {
             turnDelay = 0f;
             player.send(new StateEvent(EntityState.IDLE));
@@ -203,28 +203,24 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
     }
 
     private void setPossibleTurnDelay() {
-        if (turnDelay <= 0f) {
-            if ((pressUp && direction != Direction.NORTH) ||
-                    (pressDown && direction != Direction.SOUTH) ||
-                    (pressLeft && direction != Direction.WEST) ||
-                    (pressRight && direction != Direction.EAST)) {
-                turnDelay = TURN_DELAY_TIME;
-            }
+        if (turnDelay <= 0f
+                && (pressUpButDirectionisNotYetNorth() ||
+                pressDownButDirectionIsNotYetSouth() ||
+                pressLeftButDirectionIsNotYetWest() ||
+                pressRightButDirectionIsNotYetEast())
+        ) {
+            turnDelay = TURN_DELAY_TIME;
         }
     }
 
     private void setPlayerDirection() {
-        if (pressUp &&
-                (timeUp <= timeDown || timeUp <= timeLeft || timeUp <= timeRight)) {
+        if (pressUp && timeUpIsLess()) {
             direction = Direction.NORTH;
-        } else if (pressDown &&
-                (timeDown <= timeUp || timeDown <= timeLeft || timeDown <= timeRight)) {
+        } else if (pressDown && timeDownIsLess()) {
             direction = Direction.SOUTH;
-        } else if (pressLeft &&
-                (timeLeft <= timeUp || timeLeft <= timeDown || timeLeft <= timeRight)) {
+        } else if (pressLeft && timeLeftIsLess()) {
             direction = Direction.WEST;
-        } else if (pressRight &&
-                (timeRight <= timeUp || timeRight <= timeDown || timeRight <= timeLeft)) {
+        } else if (pressRight && timeRightIsLess()) {
             direction = Direction.EAST;
 
         } else if (pressUp) {
@@ -252,6 +248,38 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
 
     private boolean areMoveKeysPressed() {
         return pressUp || pressDown || pressLeft || pressRight;
+    }
+
+    private boolean pressUpButDirectionisNotYetNorth() {
+        return pressUp && direction != Direction.NORTH;
+    }
+
+    private boolean pressDownButDirectionIsNotYetSouth() {
+        return pressDown && direction != Direction.SOUTH;
+    }
+
+    private boolean pressLeftButDirectionIsNotYetWest() {
+        return pressLeft && direction != Direction.WEST;
+    }
+
+    private boolean pressRightButDirectionIsNotYetEast() {
+        return pressRight && direction != Direction.EAST;
+    }
+
+    private boolean timeRightIsLess() {
+        return timeRight <= timeUp || timeRight <= timeDown || timeRight <= timeLeft;
+    }
+
+    private boolean timeLeftIsLess() {
+        return timeLeft <= timeUp || timeLeft <= timeDown || timeLeft <= timeRight;
+    }
+
+    private boolean timeDownIsLess() {
+        return timeDown <= timeUp || timeDown <= timeLeft || timeDown <= timeRight;
+    }
+
+    private boolean timeUpIsLess() {
+        return timeUp <= timeDown || timeUp <= timeLeft || timeUp <= timeRight;
     }
 
 }

@@ -63,11 +63,9 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
     }
 
     private void checkObstacles(MapManager mapManager, Array<Entity> npcEntities) {
-        if (state == EntityState.WALKING) {
-            checkBlocker(mapManager);
-            checkOtherEntities(npcEntities);
-            checkPortals(mapManager);
-        }
+        checkBlocker(mapManager);
+        checkOtherEntities(npcEntities);
+        checkPortals(mapManager);
     }
 
     private void checkBlocker(MapManager mapManager) {
@@ -82,7 +80,9 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
         for (Entity npcEntity : npcEntities) {
             while (boundingBox.overlaps(npcEntity.getBoundingBox())) {
                 moveBack();
-                npcEntity.send(new StateEvent(EntityState.IDLE));
+            }
+            if (getALittleBitBiggerBoundingBox().overlaps(npcEntity.getBoundingBox())) {
+                npcEntity.send(new WaitEvent(npcEntity.getPosition(), currentPosition));
             }
         }
     }
@@ -106,10 +106,10 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
 
     private Rectangle getALittleBitBiggerBoundingBox() {
         Rectangle aLittleBitBiggerBox = new Rectangle(boundingBox);
-        aLittleBitBiggerBox.setWidth(boundingBox.width + 4);
-        aLittleBitBiggerBox.setHeight(boundingBox.height + 4);
-        aLittleBitBiggerBox.setX(boundingBox.x - 2);
-        aLittleBitBiggerBox.setY(boundingBox.y - 2);
+        aLittleBitBiggerBox.setWidth(boundingBox.width + 2);
+        aLittleBitBiggerBox.setHeight(boundingBox.height + 2);
+        aLittleBitBiggerBox.setX(boundingBox.x - 1);
+        aLittleBitBiggerBox.setY(boundingBox.y - 1);
         return aLittleBitBiggerBox;
     }
 

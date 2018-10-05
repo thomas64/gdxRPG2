@@ -4,7 +4,7 @@ import lombok.Getter;
 
 
 @Getter
-public class LoadSpriteEvent extends Event {
+public class LoadSpriteEvent implements Event {
     private String path;
     private int col;
     private int row;

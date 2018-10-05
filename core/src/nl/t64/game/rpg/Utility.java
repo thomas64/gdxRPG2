@@ -14,6 +14,10 @@ import nl.t64.game.rpg.events.LoadSpriteEvent;
 
 public final class Utility {
 
+    private Utility() {
+        throw new IllegalStateException("Utility class");
+    }
+
     private static final String TAG = Utility.class.getSimpleName();
     private static final AssetManager ASSET_MANAGER = new AssetManager();
     private static final InternalFileHandleResolver FILE_PATH_RESOLVER = new InternalFileHandleResolver();
