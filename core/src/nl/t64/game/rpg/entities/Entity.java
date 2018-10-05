@@ -1,8 +1,9 @@
 package nl.t64.game.rpg.entities;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import nl.t64.game.rpg.Camera;
 import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.components.Component;
 import nl.t64.game.rpg.components.GraphicsComponent;
@@ -39,9 +40,9 @@ public class Entity {
         }
     }
 
-    public void update(MapManager mapManager, Camera camera, float dt) {
+    public void update(MapManager mapManager, Array<Entity> npcEntities, float dt) {
         inputComponent.update(this, dt);
-        physicsComponent.update(this, mapManager, camera, dt);
+        physicsComponent.update(this, mapManager, npcEntities, dt);
         graphicsComponent.update();
     }
 
@@ -54,5 +55,14 @@ public class Entity {
             component.dispose();
         }
     }
+
+    public Rectangle getBoundingBox() {
+        return physicsComponent.getBoundingBox();
+    }
+
+    public Vector2 getPosition() {
+        return physicsComponent.getCurrentPosition();
+    }
+
 
 }

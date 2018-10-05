@@ -99,13 +99,16 @@ public class WorldScreen implements Screen {
     }
 
     private void updateEntities(float dt) {
-        player.update(mapManager, camera, dt);
+        player.update(mapManager, npcEntities, dt);
+        Array<Entity> copyEntities = new Array<>(npcEntities);
+        copyEntities.add(player);
         for (Entity entity : npcEntities) {
-            entity.update(mapManager, camera, dt);
+            entity.update(mapManager, copyEntities, dt);
         }
     }
 
     private void updateCameraPosition() {
+        camera.setPosition(player.getPosition());
         mapRenderer.setView(camera);
     }
 
@@ -190,8 +193,18 @@ public class WorldScreen implements Screen {
                 rect = blocker.getRectangle();
                 shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
             }
-//            rect = player.getPhysicsComponent().getBoundingBox();
-//            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+            rect = player.getBoundingBox();
+            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+            for (Entity entity : npcEntities) {
+                rect = entity.getBoundingBox();
+                shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+            }
+
+//            shapeRenderer.setColor(Color.GREEN);
+//            for (Entity entity : npcEntities){
+//                rect = entity.getPhysicsComponent().getWanderBox();
+//                shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+//            }
 
             shapeRenderer.setColor(Color.BLUE);
             for (Portal portal : mapManager.getCurrentMap().getPortals()) {
@@ -202,10 +215,6 @@ public class WorldScreen implements Screen {
                 rect = spawnPoint.getRectangle();
                 shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
             }
-//            for (Entity entity : mapManager.getCurrentMap().getNpcEntities()) {
-//                rect = entity.getPhysicsComponent().getBoundingBox();
-//                shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-//            }
             shapeRenderer.end();
             shapeRenderer.dispose();
         }
@@ -231,19 +240,19 @@ public class WorldScreen implements Screen {
                     "FPS:\n" +
                     "dt:\n" +
                     "playTime:\n" +
-                    "\n";
+                    "\n" +
 //                    "timeUp:\n" +
 //                    "timeDown:\n" +
 //                    "timeLeft:\n" +
 //                    "timeRight:\n" +
 //                    "timeDelay:\n" +
 //                    "\n" +
-//                    "currentPositionX:\n" +
-//                    "currentPositionY:\n" +
-//                    "\n" +
-//                    "currentPositionTiledX:\n" +
-//                    "currentPositionTiledY:\n" +
-//                    "\n" +
+                    "currentPositionX:\n" +
+                    "currentPositionY:\n" +
+                    "\n" +
+                    "currentPositionTiledX:\n" +
+                    "currentPositionTiledY:\n" +
+                    "\n";
 //                    "direction:\n" +
 //                    "state:\n";
 
@@ -251,19 +260,19 @@ public class WorldScreen implements Screen {
                     Gdx.graphics.getFramesPerSecond() + "\n" +
                     String.valueOf(dt).substring(0, 5) + "\n" +
                     String.valueOf(playTime).substring(0, String.valueOf(playTime).length() - 4) + "\n" +
-                    "\n";
+                    "\n" +
 //                    player.getInputComponent().getTimeUp() + "\n" +
 //                    player.getInputComponent().getTimeDown() + "\n" +
 //                    player.getInputComponent().getTimeLeft() + "\n" +
 //                    player.getInputComponent().getTimeRight() + "\n" +
 //                    player.getInputComponent().getTimeDelay() + "\n" +
 //                    "\n" +
-//                    player.getPhysicsComponent().getCurrentPosition().x + "\n" +
-//                    player.getPhysicsComponent().getCurrentPosition().y + "\n" +
-//                    "\n" +
-//                    (int) player.getPhysicsComponent().getCurrentPosition().x / Constant.TILE_SIZE + "\n" +
-//                    (int) player.getPhysicsComponent().getCurrentPosition().y / Constant.TILE_SIZE + "\n" +
-//                    "\n" +
+                    player.getPosition().x + "\n" +
+                    player.getPosition().y + "\n" +
+                    "\n" +
+                    (int) player.getPosition().x / Constant.TILE_SIZE + "\n" +
+                    (int) player.getPosition().y / Constant.TILE_SIZE + "\n" +
+                    "\n";
 //                    player.getPhysicsComponent().getDirection() + "\n" +
 //                    player.getState() + "\n";
 

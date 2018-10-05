@@ -400,17 +400,17 @@
  </layer>
  <objectgroup name="npc_layer"/>
  <objectgroup name="collision_layer">
-  <object id="19" x="48" y="144" width="96" height="24"/>
-  <object id="20" x="240" y="144" width="96" height="24"/>
-  <object id="21" x="888" y="168" width="96" height="24"/>
-  <object id="22" x="144" y="288" width="96" height="24"/>
-  <object id="23" x="336" y="288" width="96" height="24"/>
-  <object id="24" x="240" y="432" width="96" height="24"/>
-  <object id="25" x="744" y="408" width="96" height="24"/>
-  <object id="26" x="504" y="624" width="96" height="24"/>
-  <object id="27" x="336" y="768" width="96" height="24"/>
-  <object id="28" x="168" y="816" width="96" height="24"/>
-  <object id="29" x="888" y="840" width="96" height="24"/>
+  <object id="19" x="48" y="144" width="96" height="48"/>
+  <object id="20" x="240" y="144" width="96" height="48"/>
+  <object id="21" x="888" y="168" width="96" height="48"/>
+  <object id="22" x="144" y="288" width="96" height="48"/>
+  <object id="23" x="336" y="288" width="96" height="48"/>
+  <object id="24" x="240" y="432" width="96" height="48"/>
+  <object id="25" x="744" y="408" width="96" height="48"/>
+  <object id="26" x="504" y="624" width="96" height="48"/>
+  <object id="27" x="336" y="768" width="96" height="48"/>
+  <object id="28" x="168" y="816" width="96" height="48"/>
+  <object id="29" x="888" y="840" width="96" height="48"/>
  </objectgroup>
  <objectgroup name="spawn_layer">
   <object id="33" name="map1" type="1" x="48" y="312" width="48" height="48"/>

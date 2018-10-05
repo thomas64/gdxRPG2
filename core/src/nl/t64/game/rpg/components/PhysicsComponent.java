@@ -1,28 +1,31 @@
 package nl.t64.game.rpg.components;
 
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import nl.t64.game.rpg.Camera;
+import com.badlogic.gdx.utils.Array;
+import lombok.Getter;
 import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.constants.EntityState;
 import nl.t64.game.rpg.entities.Entity;
-import nl.t64.game.rpg.events.CollisionEvent;
 
 
 public abstract class PhysicsComponent implements Component {
 
     private static final String TAG = PhysicsComponent.class.getSimpleName();
-    private static final float BOUNDING_BOX_PERCENTAGE = 0.75f;
 
     EntityState state;
     Direction direction = null;
     Vector2 velocity;
     Vector2 oldPosition;
+    @Getter
     Vector2 currentPosition;
+    @Getter
     Rectangle boundingBox;
+    float boundingBoxWidthPercentage;
+    float boundingBoxHeightPercentage;
+
 
     PhysicsComponent() {
         this.boundingBox = new Rectangle();
@@ -30,24 +33,15 @@ public abstract class PhysicsComponent implements Component {
         this.currentPosition = new Vector2();
     }
 
-    public abstract void update(Entity entity, MapManager mapManager, Camera camera, float dt);
+    public abstract void update(Entity entity, MapManager mapManager, Array<Entity> entities, float dt);
 
     void setBoundingBox() {
-        float width = Constant.TILE_SIZE * BOUNDING_BOX_PERCENTAGE;
-        float height = Constant.TILE_SIZE * BOUNDING_BOX_PERCENTAGE;
-        float widthReduction = 1.00f - BOUNDING_BOX_PERCENTAGE;
+        float width = Constant.TILE_SIZE * boundingBoxWidthPercentage;
+        float height = Constant.TILE_SIZE * boundingBoxHeightPercentage;
+        float widthReduction = 1.00f - boundingBoxWidthPercentage;
         float x = currentPosition.x + (Constant.TILE_SIZE * (widthReduction / 2));
         float y = currentPosition.y;
         boundingBox.set(x, y, width, height);
-    }
-
-    void checkBlocker(Entity entity, MapManager mapManager) {
-        for (RectangleMapObject blocker : mapManager.getCurrentMap().getBlockers()) {
-            while (boundingBox.overlaps(blocker.getRectangle())) {
-                moveBack();
-                entity.send(new CollisionEvent());
-            }
-        }
     }
 
     void move(float dt) {
@@ -71,7 +65,7 @@ public abstract class PhysicsComponent implements Component {
         }
     }
 
-    private void moveBack() {
+    void moveBack() {
         switch (direction) {
             case NORTH:
                 currentPosition.y -= 1;

@@ -35,6 +35,7 @@ public abstract class GraphicsComponent implements Component {
     void setFrame() {
         switch (state) {
             case IDLE:
+            case ALIGNING:
             case IMMOBILE:
                 setCurrentFrame(0f);
                 break;
