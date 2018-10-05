@@ -8,10 +8,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import nl.t64.game.rpg.Camera;
 import nl.t64.game.rpg.MapManager;
@@ -25,14 +23,14 @@ import nl.t64.game.rpg.events.StartDirectionEvent;
 import nl.t64.game.rpg.events.StartPositionEvent;
 import nl.t64.game.rpg.events.StartStateEvent;
 import nl.t64.game.rpg.tiled.Npc;
-import nl.t64.game.rpg.tiled.Portal;
-import nl.t64.game.rpg.tiled.SpawnPoint;
 
 
 public class WorldScreen implements Screen {
 
     private static final String TAG = WorldScreen.class.getSimpleName();
     private static final Color TRANSPARENT = new Color(0, 0, 0, 0.5f);
+
+    private ShapeRenderer shapeRenderer;
 
     public static boolean showGrid = false;
     public static boolean showObjects = false;
@@ -55,6 +53,7 @@ public class WorldScreen implements Screen {
         player = new Entity(new PlayerInputComponent(), new PlayerPhysicsComponent(), new PlayerGraphicsComponent());
         camera = new Camera();
         mapRenderer = new OrthogonalTiledMapRenderer(mapManager.getCurrentMap().getTiledMap());
+        shapeRenderer = new ShapeRenderer();
     }
 
     @Override
@@ -159,14 +158,15 @@ public class WorldScreen implements Screen {
     public void dispose() {
         player.dispose();
         mapRenderer.dispose();
+        shapeRenderer.dispose();
     }
 
     private void renderGrid() {
         if (showGrid) {
-            ShapeRenderer shapeRenderer = new ShapeRenderer();
             shapeRenderer.setProjectionMatrix(camera.combined);
             shapeRenderer.setColor(Color.DARK_GRAY);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+
             float mapPixelWidth = mapManager.getCurrentMap().getPixelWidth();
             float mapPixelHeight = mapManager.getCurrentMap().getPixelHeight();
             for (int x = 0; x < mapPixelWidth; x = x + Constant.TILE_SIZE) {
@@ -176,47 +176,21 @@ public class WorldScreen implements Screen {
                 shapeRenderer.line(0, y, mapPixelWidth, y);
             }
             shapeRenderer.end();
-            shapeRenderer.dispose();
         }
     }
 
     private void renderObjects() {
         if (showObjects) {
-            ShapeRenderer shapeRenderer = new ShapeRenderer();
             shapeRenderer.setProjectionMatrix(camera.combined);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
-            Rectangle rect;
-
-            shapeRenderer.setColor(Color.YELLOW);
-            for (RectangleMapObject blocker : mapManager.getCurrentMap().getBlockers()) {
-                rect = blocker.getRectangle();
-                shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-            }
-            rect = player.getBoundingBox();
-            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+            player.debug(shapeRenderer);
             for (Entity entity : npcEntities) {
-                rect = entity.getBoundingBox();
-                shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+                entity.debug(shapeRenderer);
             }
+            mapManager.debug(shapeRenderer);
 
-//            shapeRenderer.setColor(Color.GREEN);
-//            for (Entity entity : npcEntities){
-//                rect = entity.getPhysicsComponent().getWanderBox();
-//                shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-//            }
-
-            shapeRenderer.setColor(Color.BLUE);
-            for (Portal portal : mapManager.getCurrentMap().getPortals()) {
-                rect = portal.getRectangle();
-                shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-            }
-            for (SpawnPoint spawnPoint : mapManager.getCurrentMap().getSpawnPoints()) {
-                rect = spawnPoint.getRectangle();
-                shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-            }
             shapeRenderer.end();
-            shapeRenderer.dispose();
         }
     }
 
@@ -224,10 +198,10 @@ public class WorldScreen implements Screen {
         if (showDebug) {
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            ShapeRenderer shapeRenderer = new ShapeRenderer();
             shapeRenderer.setProjectionMatrix(camera.projection);
             shapeRenderer.setColor(TRANSPARENT);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+
             int w = 300;
             int h = 600;
             int x = 0 - (Gdx.graphics.getWidth() / 2);
@@ -290,7 +264,6 @@ public class WorldScreen implements Screen {
                 font.draw(batch, lines2[i], xSecondColumn, Gdx.graphics.getHeight() - (i * lineHeight));
             }
             batch.end();
-            shapeRenderer.dispose();
             batch.dispose();
             font.dispose();
         }

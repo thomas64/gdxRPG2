@@ -1,5 +1,6 @@
 package nl.t64.game.rpg.components;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -34,6 +35,8 @@ public abstract class PhysicsComponent implements Component {
     }
 
     public abstract void update(Entity entity, MapManager mapManager, Array<Entity> entities, float dt);
+
+    public abstract void debug(ShapeRenderer shapeRenderer);
 
     void setBoundingBox() {
         float width = Constant.TILE_SIZE * boundingBoxWidthPercentage;

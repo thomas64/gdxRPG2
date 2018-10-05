@@ -1,5 +1,7 @@
 package nl.t64.game.rpg.components;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -52,10 +54,10 @@ public class NpcPhysicsComponent extends PhysicsComponent {
     }
 
     @Override
-    public void update(Entity entity, MapManager mapManager, Array<Entity> npcEntities, float dt) {
+    public void update(Entity entity, MapManager mapManager, Array<Entity> npcEntitiesPlusLastOnePlayer, float dt) {
         relocate(dt);
         setBoundingBox();
-        checkObstacles(entity, mapManager, npcEntities);
+        checkObstacles(entity, mapManager, npcEntitiesPlusLastOnePlayer);
         entity.send(new PositionEvent(currentPosition));
     }
 
@@ -65,11 +67,11 @@ public class NpcPhysicsComponent extends PhysicsComponent {
         }
     }
 
-    private void checkObstacles(Entity entity, MapManager mapManager, Array<Entity> npcEntities) {
+    private void checkObstacles(Entity entity, MapManager mapManager, Array<Entity> npcEntitiesPlusLastOnePlayer) {
         if (state == EntityState.WALKING) {
             boolean moveBack1 = checkWanderBox();
             boolean moveBack2 = checkBlocker(mapManager);
-            boolean moveBack3 = checkOtherEntities(entity, npcEntities);
+            boolean moveBack3 = checkOtherEntities(entity, npcEntitiesPlusLastOnePlayer);
             if (moveBack1 || moveBack2 || moveBack3) {
                 entity.send(new CollisionEvent());
             }
@@ -96,9 +98,9 @@ public class NpcPhysicsComponent extends PhysicsComponent {
         return moveBack;
     }
 
-    private boolean checkOtherEntities(Entity npc, Array<Entity> npcEntities) {
+    private boolean checkOtherEntities(Entity npc, Array<Entity> npcEntitiesPlusLastOnePlayer) {
         boolean moveBack = false;
-        for (Entity npcEntity : npcEntities) {
+        for (Entity npcEntity : npcEntitiesPlusLastOnePlayer) {
             if (npcEntity.equals(npc)) {
                 continue;
             }
@@ -108,6 +110,14 @@ public class NpcPhysicsComponent extends PhysicsComponent {
             }
         }
         return moveBack;
+    }
+
+    @Override
+    public void debug(ShapeRenderer shapeRenderer) {
+        shapeRenderer.setColor(Color.PURPLE);
+        shapeRenderer.rect(wanderBox.x, wanderBox.y, wanderBox.width, wanderBox.height);
+        shapeRenderer.setColor(Color.YELLOW);
+        shapeRenderer.rect(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
     }
 
 }

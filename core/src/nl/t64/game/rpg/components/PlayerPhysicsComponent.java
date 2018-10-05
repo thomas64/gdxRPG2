@@ -1,6 +1,9 @@
 package nl.t64.game.rpg.components;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import nl.t64.game.rpg.MapManager;
@@ -43,11 +46,11 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
     }
 
     @Override
-    public void update(Entity entity, MapManager mapManager, Array<Entity> npcEntities, float dt) {
+    public void update(Entity player, MapManager mapManager, Array<Entity> npcEntities, float dt) {
         relocate(dt);
         setBoundingBox();
         checkObstacles(mapManager, npcEntities);
-        entity.send(new PositionEvent(currentPosition));
+        player.send(new PositionEvent(currentPosition));
     }
 
     private void relocate(float dt) {
@@ -99,6 +102,26 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
         float roundedX = Math.round(currentPosition.x / Constant.TILE_SIZE) * Constant.TILE_SIZE;
         float roundedY = Math.round(currentPosition.y / Constant.TILE_SIZE) * Constant.TILE_SIZE;
         setCurrentPosition(roundedX, roundedY);
+    }
+
+    private Rectangle getALittleBitBiggerBoundingBox() {
+        Rectangle aLittleBitBiggerBox = new Rectangle(boundingBox);
+        aLittleBitBiggerBox.setWidth(boundingBox.width + 4);
+        aLittleBitBiggerBox.setHeight(boundingBox.height + 4);
+        aLittleBitBiggerBox.setX(boundingBox.x - 2);
+        aLittleBitBiggerBox.setY(boundingBox.y - 2);
+        return aLittleBitBiggerBox;
+    }
+
+    @Override
+    public void debug(ShapeRenderer shapeRenderer) {
+        shapeRenderer.setColor(Color.YELLOW);
+        shapeRenderer.rect(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
+        shapeRenderer.setColor(Color.GREEN);
+        shapeRenderer.rect(getALittleBitBiggerBoundingBox().x,
+                           getALittleBitBiggerBoundingBox().y,
+                           getALittleBitBiggerBoundingBox().width,
+                           getALittleBitBiggerBoundingBox().height);
     }
 
 }

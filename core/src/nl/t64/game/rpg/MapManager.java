@@ -1,8 +1,15 @@
 package nl.t64.game.rpg;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.math.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
 import nl.t64.game.rpg.constants.MapTitle;
+import nl.t64.game.rpg.tiled.Npc;
+import nl.t64.game.rpg.tiled.Portal;
+import nl.t64.game.rpg.tiled.SpawnPoint;
 
 
 public class MapManager {
@@ -36,6 +43,30 @@ public class MapManager {
     private void disposeOldMap() {
         if (currentMap != null) {
             currentMap.dispose();
+        }
+    }
+
+    public void debug(ShapeRenderer shapeRenderer) {
+        Rectangle rect;
+
+        shapeRenderer.setColor(Color.YELLOW);
+        for (RectangleMapObject blocker : currentMap.getBlockers()) {
+            rect = blocker.getRectangle();
+            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+        }
+
+        shapeRenderer.setColor(Color.BLUE);
+        for (Portal portal : currentMap.getPortals()) {
+            rect = portal.getRectangle();
+            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+        }
+        for (SpawnPoint spawnPoint : currentMap.getSpawnPoints()) {
+            rect = spawnPoint.getRectangle();
+            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+        }
+        for (Npc npc : currentMap.getNpcs()) {
+            rect = npc.getRectangle();
+            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
         }
     }
 
