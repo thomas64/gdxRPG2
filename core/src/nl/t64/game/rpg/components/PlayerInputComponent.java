@@ -4,13 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
+import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.constants.EntityState;
 import nl.t64.game.rpg.entities.Entity;
-import nl.t64.game.rpg.events.DirectionEvent;
-import nl.t64.game.rpg.events.Event;
-import nl.t64.game.rpg.events.StartDirectionEvent;
-import nl.t64.game.rpg.events.StateEvent;
+import nl.t64.game.rpg.events.*;
 import nl.t64.game.rpg.screens.WorldScreen;
 
 
@@ -36,6 +34,9 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
     private int timeRight = 0;
     private float turnDelay = 0f;
 
+    private boolean pressCtrl = false;
+    private boolean pressShift = false;
+
     private Direction direction;
 
     public PlayerInputComponent() {
@@ -57,6 +58,13 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
 
     @Override
     public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.CONTROL_LEFT || keycode == Input.Keys.CONTROL_RIGHT) {
+            pressCtrl = true;
+        }
+        if (keycode == Input.Keys.SHIFT_LEFT || keycode == Input.Keys.SHIFT_RIGHT) {
+            pressShift = true;
+        }
+
         if (keycode == Input.Keys.UP) {
             pressUp = true;
         }
@@ -69,6 +77,7 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
         if (keycode == Input.Keys.RIGHT) {
             pressRight = true;
         }
+
         if (keycode == Input.Keys.Q) {
             pressQuit = true;
         }
@@ -89,6 +98,13 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
 
     @Override
     public boolean keyUp(int keycode) {
+        if (keycode == Input.Keys.CONTROL_LEFT || keycode == Input.Keys.CONTROL_RIGHT) {
+            pressCtrl = false;
+        }
+        if (keycode == Input.Keys.SHIFT_LEFT || keycode == Input.Keys.SHIFT_RIGHT) {
+            pressShift = false;
+        }
+
         if (keycode == Input.Keys.UP) {
             pressUp = false;
         }
@@ -101,6 +117,7 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
         if (keycode == Input.Keys.RIGHT) {
             pressRight = false;
         }
+
         if (keycode == Input.Keys.Q) {
             pressQuit = false;
         }
@@ -165,11 +182,24 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
     }
 
     private void processPlayerMoveInput(Entity player, float dt) {
+        processPlayerSpeedInput(player);
         countKeyDownTime();
         ifNoMoveKeys_SetPlayerIdle(player);
         setPossibleTurnDelay();
         setPlayerDirection();
         ifMoveKeys_SetPlayerWalking(player, dt);
+    }
+
+    private void processPlayerSpeedInput(Entity player) {
+        float moveSpeed = Constant.MOVE_SPEED_2;
+        if (pressCtrl && pressShift) {
+            moveSpeed = Constant.MOVE_SPEED_4;
+        } else if (pressShift) {
+            moveSpeed = Constant.MOVE_SPEED_3;
+        } else if (pressCtrl) {
+            moveSpeed = Constant.MOVE_SPEED_1;
+        }
+        player.send(new SpeedEvent(moveSpeed));
     }
 
     private void countKeyDownTime() {

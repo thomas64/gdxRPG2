@@ -17,16 +17,16 @@ public abstract class GraphicsComponent implements Component {
 
     private static final int SPRITE_GROUP_WIDTH = 144;
     private static final int SPRITE_GROUP_HEIGHT = 192;
-    private static final float FRAME_DURATION = 0.25f;
 
+    float frameDuration;
     TextureRegion currentFrame = null;
     EntityState state;
     Vector2 position;
     Direction direction;
-    private Animation<TextureRegion> walkNorthAnimation;
-    private Animation<TextureRegion> walkSouthAnimation;
-    private Animation<TextureRegion> walkWestAnimation;
-    private Animation<TextureRegion> walkEastAnimation;
+    Animation<TextureRegion> walkNorthAnimation;
+    Animation<TextureRegion> walkSouthAnimation;
+    Animation<TextureRegion> walkWestAnimation;
+    Animation<TextureRegion> walkEastAnimation;
 
     public abstract void update();
 
@@ -40,7 +40,11 @@ public abstract class GraphicsComponent implements Component {
                 setCurrentFrame(0f);
                 break;
             case WALKING:
-                setCurrentFrame(WorldScreen.playTime);
+                if (frameDuration == 0f) { // no player animation when high speed moving.
+                    setCurrentFrame(0f);
+                } else {
+                    setCurrentFrame(WorldScreen.playTime);
+                }
                 break;
             default:
                 throw new IllegalArgumentException(String.format("EntityState '%s' not usable.", state));
@@ -102,10 +106,10 @@ public abstract class GraphicsComponent implements Component {
         walkNorthFrames.insert(2, textureFrames[3][1]);
         walkNorthFrames.insert(3, textureFrames[3][2]);
 
-        walkSouthAnimation = new Animation<>(FRAME_DURATION, walkSouthFrames, Animation.PlayMode.LOOP);
-        walkWestAnimation = new Animation<>(FRAME_DURATION, walkWestFrames, Animation.PlayMode.LOOP);
-        walkEastAnimation = new Animation<>(FRAME_DURATION, walkEastFrames, Animation.PlayMode.LOOP);
-        walkNorthAnimation = new Animation<>(FRAME_DURATION, walkNorthFrames, Animation.PlayMode.LOOP);
+        walkSouthAnimation = new Animation<>(frameDuration, walkSouthFrames, Animation.PlayMode.LOOP);
+        walkWestAnimation = new Animation<>(frameDuration, walkWestFrames, Animation.PlayMode.LOOP);
+        walkEastAnimation = new Animation<>(frameDuration, walkEastFrames, Animation.PlayMode.LOOP);
+        walkNorthAnimation = new Animation<>(frameDuration, walkNorthFrames, Animation.PlayMode.LOOP);
     }
 
 }

@@ -9,6 +9,10 @@ public class NpcGraphicsComponent extends GraphicsComponent {
 
     private static final String TAG = NpcGraphicsComponent.class.getSimpleName();
 
+    public NpcGraphicsComponent() {
+        this.frameDuration = 0.25f;
+    }
+
     @Override
     public void receive(Event event) {
         if (event instanceof LoadSpriteEvent) {

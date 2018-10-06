@@ -7,8 +7,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.Array;
 import nl.t64.game.rpg.Camera;
@@ -16,7 +14,6 @@ import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.components.*;
 import nl.t64.game.rpg.constants.Constant;
-import nl.t64.game.rpg.constants.MapLayerName;
 import nl.t64.game.rpg.entities.Entity;
 import nl.t64.game.rpg.events.LoadSpriteEvent;
 import nl.t64.game.rpg.events.StartDirectionEvent;
@@ -112,30 +109,20 @@ public class WorldScreen implements Screen {
     }
 
     private void renderMapLayers() {
-        mapRenderer.getBatch().begin();
-        renderMapLayer(MapLayerName.UNDER0_NONE.name().toLowerCase());
-        renderMapLayer(MapLayerName.UNDER1_GROUND.name().toLowerCase());
-        renderMapLayer(MapLayerName.UNDER2_NONE.name().toLowerCase());
-        renderMapLayer(MapLayerName.UNDER3_NONE.name().toLowerCase());
-        renderMapLayer(MapLayerName.UNDER4_OBJECTS.name().toLowerCase());
-        renderMapLayer(MapLayerName.UNDER5_NONE.name().toLowerCase());
+        int[] underLayers = {0, 1, 2, 3, 4, 5};
+        mapRenderer.render(underLayers);
         renderEntities();
-        renderMapLayer(MapLayerName.OVER6_OBJECTS.name().toLowerCase());
-        renderMapLayer(MapLayerName.OVER7_NONE.name().toLowerCase());
-        renderMapLayer(MapLayerName.OVER8_NONE.name().toLowerCase());
-        mapRenderer.getBatch().end();
-    }
-
-    private void renderMapLayer(String layerName) {
-        MapLayer mapLayer = mapManager.getCurrentMap().getTiledMap().getLayers().get(layerName);
-        mapRenderer.renderTileLayer((TiledMapTileLayer) mapLayer);
+        int[] overLayers = {6, 7, 8};
+        mapRenderer.render(overLayers);
     }
 
     private void renderEntities() {
+        mapRenderer.getBatch().begin();
         for (Entity entity : npcEntities) {
             entity.render(mapRenderer.getBatch());
         }
         player.render(mapRenderer.getBatch());
+        mapRenderer.getBatch().end();
     }
 
     @Override

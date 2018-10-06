@@ -18,9 +18,7 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
 
     private static final String TAG = PlayerPhysicsComponent.class.getSimpleName();
 
-
     public PlayerPhysicsComponent() {
-        this.velocity = new Vector2(192f, 192f);  // 48 * 4
         this.boundingBoxWidthPercentage = 0.80f;
         this.boundingBoxHeightPercentage = 0.40f;
     }
@@ -38,6 +36,10 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
         }
         if (event instanceof DirectionEvent) {
             direction = ((DirectionEvent) event).getDirection();
+        }
+        if (event instanceof SpeedEvent) {
+            float moveSpeed = ((SpeedEvent) event).getMoveSpeed();
+            velocity = new Vector2(moveSpeed, moveSpeed);
         }
     }
 
@@ -63,9 +65,11 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
     }
 
     private void checkObstacles(MapManager mapManager, Array<Entity> npcEntities) {
-        checkBlocker(mapManager);
-        checkOtherEntities(npcEntities);
-        checkPortals(mapManager);
+        if (!velocity.equals(new Vector2(Constant.MOVE_SPEED_4, Constant.MOVE_SPEED_4))) {
+            checkBlocker(mapManager);
+            checkOtherEntities(npcEntities);
+            checkPortals(mapManager);
+        }
     }
 
     private void checkBlocker(MapManager mapManager) {
