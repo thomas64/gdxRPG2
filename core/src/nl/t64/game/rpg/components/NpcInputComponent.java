@@ -82,7 +82,7 @@ public class NpcInputComponent extends InputComponent {
         Vector2 npcPosition = event.getNpcPosition();
         Vector2 playerPosition = event.getPlayerPosition();
         stateTime = 5f;
-        if (state == EntityState.IMMOBILE) {
+        if (state == EntityState.IMMOBILE && !stateWasImmobile) {
             stateWasImmobile = true;
             originalDirection = direction;
         } else if (state == EntityState.WALKING) {

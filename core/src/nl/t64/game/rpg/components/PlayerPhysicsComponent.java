@@ -67,7 +67,7 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
     }
 
     private void checkObstacles(MapManager mapManager, List<Entity> npcEntities, float dt) {
-        if (velocity != Constant.MOVE_SPEED_4) {
+        if (state == EntityState.WALKING && velocity != Constant.MOVE_SPEED_4) {
             turnEntities(npcEntities);
             checkBlocker(mapManager, npcEntities, dt);
             checkPortals(mapManager);
