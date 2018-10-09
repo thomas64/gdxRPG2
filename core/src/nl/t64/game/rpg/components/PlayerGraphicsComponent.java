@@ -1,8 +1,10 @@
 package nl.t64.game.rpg.components;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.entities.Entity;
 import nl.t64.game.rpg.events.*;
 
 
@@ -50,7 +52,7 @@ public class PlayerGraphicsComponent extends GraphicsComponent {
     }
 
     @Override
-    public void render(Batch batch) {
+    public void render(Entity player, Batch batch, ShapeRenderer shapeRenderer) {
         batch.draw(currentFrame, position.x, position.y, Constant.TILE_SIZE, Constant.TILE_SIZE);
     }
 

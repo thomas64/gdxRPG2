@@ -3,6 +3,8 @@ package nl.t64.game.rpg.components;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.Ray;
 import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
@@ -20,10 +22,18 @@ import java.util.stream.Collectors;
 public class PlayerPhysicsComponent extends PhysicsComponent {
 
     private static final String TAG = PlayerPhysicsComponent.class.getSimpleName();
+    private static final float MINIMUM_SELECT_DISTANCE = 144f;
+
+    private boolean isMouseSelectEnabled = false;
+    private Vector3 mouseSelectCoordinates;
+    private Ray selectionRay;
+
 
     public PlayerPhysicsComponent() {
         this.boundingBoxWidthPercentage = 0.80f;
         this.boundingBoxHeightPercentage = 0.40f;
+        mouseSelectCoordinates = new Vector3(0, 0, 0);
+        selectionRay = new Ray(new Vector3(), new Vector3());
     }
 
     @Override
@@ -44,6 +54,10 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
         if (event instanceof SpeedEvent) {
             velocity = ((SpeedEvent) event).getMoveSpeed();
         }
+        if (event instanceof StartSelectEvent) {
+            mouseSelectCoordinates = ((StartSelectEvent) event).getMouseCoordinates();
+            isMouseSelectEnabled = true;
+        }
     }
 
     @Override
@@ -52,9 +66,33 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
 
     @Override
     public void update(Entity player, MapManager mapManager, List<Entity> npcEntities, float dt) {
+        if (isMouseSelectEnabled) {
+            selectMapEntityCandidate(mapManager, npcEntities);
+            isMouseSelectEnabled = false;
+        }
+
         relocate(dt);
         checkObstacles(mapManager, npcEntities, dt);
         player.send(new PositionEvent(currentPosition));
+    }
+
+    private void selectMapEntityCandidate(MapManager mapManager, List<Entity> npcEntities) {
+        mapManager.getCamera().unproject(mouseSelectCoordinates);
+        npcEntities.forEach(npcEntity -> {
+            npcEntity.send(new DeselectEvent());
+            if (npcEntity.getBoundingBox().contains(mouseSelectCoordinates.x, mouseSelectCoordinates.y)) {
+                setPossibleSelection(npcEntity);
+            }
+        });
+    }
+
+    private void setPossibleSelection(Entity npcEntity) {
+        Rectangle npcBbox = npcEntity.getBoundingBox();
+        selectionRay.set(boundingBox.x, boundingBox.y, 0f, npcBbox.x, npcBbox.y, 0f);
+        float distance = selectionRay.origin.dst(selectionRay.direction);
+        if (distance <= MINIMUM_SELECT_DISTANCE) {
+            npcEntity.send(new SelectEvent());
+        }
     }
 
     private void relocate(float dt) {

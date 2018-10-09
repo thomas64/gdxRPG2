@@ -52,6 +52,7 @@ public class WorldScreen implements Screen {
     public void show() {
         player = new Entity(new PlayerInputComponent(), new PlayerPhysicsComponent(), new PlayerGraphicsComponent());
         camera = new Camera();
+        mapManager.setCamera(camera);
         mapRenderer = new OrthogonalTiledMapRenderer(mapManager.getCurrentMap().getTiledMap());
         shapeRenderer = new ShapeRenderer();
     }
@@ -121,9 +122,10 @@ public class WorldScreen implements Screen {
     }
 
     private void renderEntities() {
+        shapeRenderer.setProjectionMatrix(camera.combined);
         mapRenderer.getBatch().begin();
-        npcEntities.forEach(entity -> entity.render(mapRenderer.getBatch()));
-        player.render(mapRenderer.getBatch());
+        npcEntities.forEach(entity -> entity.render(mapRenderer.getBatch(), shapeRenderer));
+        player.render(mapRenderer.getBatch(), shapeRenderer);
         mapRenderer.getBatch().end();
     }
 
@@ -152,7 +154,6 @@ public class WorldScreen implements Screen {
 
     private void renderGrid() {
         if (showGrid) {
-            shapeRenderer.setProjectionMatrix(camera.combined);
             shapeRenderer.setColor(Color.DARK_GRAY);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
@@ -170,13 +171,10 @@ public class WorldScreen implements Screen {
 
     private void renderObjects() {
         if (showObjects) {
-            shapeRenderer.setProjectionMatrix(camera.combined);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-
             player.debug(shapeRenderer);
             npcEntities.forEach(entity -> entity.debug(shapeRenderer));
             mapManager.debug(shapeRenderer);
-
             shapeRenderer.end();
         }
     }
@@ -196,6 +194,7 @@ public class WorldScreen implements Screen {
             shapeRenderer.rect(x, y, w, h);
             shapeRenderer.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
+            shapeRenderer.setProjectionMatrix(camera.combined);
 
             String debug1 = "" +
                     "FPS:\n" +

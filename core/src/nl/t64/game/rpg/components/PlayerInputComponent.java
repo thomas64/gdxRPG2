@@ -176,9 +176,16 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
     public void update(Entity player, float dt) {
         processPlayerMoveInput(player, dt);
 
-        if (pressQuit) Gdx.app.exit();
-        if (pressAlign) player.send(new StateEvent(EntityState.ALIGNING));
-        if (clickSelect) clickSelect = false;
+        if (pressQuit) {
+            Gdx.app.exit();
+        }
+        if (pressAlign) {
+            player.send(new StateEvent(EntityState.ALIGNING));
+        }
+        if (clickSelect) {
+            player.send(new StartSelectEvent(lastMouseCoordinates));
+            clickSelect = false;
+        }
     }
 
     private void processPlayerMoveInput(Entity player, float dt) {

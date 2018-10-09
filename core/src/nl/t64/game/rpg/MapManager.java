@@ -16,6 +16,9 @@ public class MapManager {
     private static final String TAG = MapManager.class.getSimpleName();
 
     private GameMap currentMap = null;
+    @Getter
+    @Setter
+    private Camera camera;
 
     @Getter
     @Setter

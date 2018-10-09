@@ -48,8 +48,8 @@ public class Entity {
         graphicsComponent.update();
     }
 
-    public void render(Batch batch) {
-        graphicsComponent.render(batch);
+    public void render(Batch batch, ShapeRenderer shapeRenderer) {
+        graphicsComponent.render(this, batch, shapeRenderer);
     }
 
     public void debug(ShapeRenderer shapeRenderer) {
