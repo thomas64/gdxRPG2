@@ -3,7 +3,6 @@ package nl.t64.game.rpg.components;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import lombok.Getter;
 import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.constants.Constant;
@@ -11,14 +10,17 @@ import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.constants.EntityState;
 import nl.t64.game.rpg.entities.Entity;
 
+import java.util.List;
+
 
 public abstract class PhysicsComponent implements Component {
 
     private static final String TAG = PhysicsComponent.class.getSimpleName();
 
+    @Getter
     EntityState state;
     Direction direction = null;
-    Vector2 velocity;
+    float velocity;
     Vector2 oldPosition;
     @Getter
     Vector2 currentPosition;
@@ -34,7 +36,7 @@ public abstract class PhysicsComponent implements Component {
         this.currentPosition = new Vector2();
     }
 
-    public abstract void update(Entity entity, MapManager mapManager, Array<Entity> entities, float dt);
+    public abstract void update(Entity entity, MapManager mapManager, List<Entity> npcEntities, float dt);
 
     public abstract void debug(ShapeRenderer shapeRenderer);
 
@@ -48,24 +50,26 @@ public abstract class PhysicsComponent implements Component {
     }
 
     void move(float dt) {
-        oldPosition = currentPosition.cpy();
+        oldPosition.x = Math.round(currentPosition.cpy().x);
+        oldPosition.y = Math.round(currentPosition.cpy().y);
 
         switch (direction) {
             case NORTH:
-                currentPosition.y += velocity.y * dt;
+                currentPosition.y += velocity * dt;
                 break;
             case SOUTH:
-                currentPosition.y -= velocity.y * dt;
+                currentPosition.y -= velocity * dt;
                 break;
             case WEST:
-                currentPosition.x -= velocity.x * dt;
+                currentPosition.x -= velocity * dt;
                 break;
             case EAST:
-                currentPosition.x += velocity.x * dt;
+                currentPosition.x += velocity * dt;
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Direction '%s' not usable.", direction));
         }
+        setRoundPosition();
     }
 
     void moveBack() {
@@ -85,16 +89,12 @@ public abstract class PhysicsComponent implements Component {
             default:
                 throw new IllegalArgumentException(String.format("Direction '%s' not usable.", direction));
         }
-
-        float roundedX = Math.round(currentPosition.x);
-        float roundedY = Math.round(currentPosition.y);
-        setCurrentPosition(roundedX, roundedY);
-        setBoundingBox();
+        setRoundPosition();
     }
 
-    void setCurrentPosition(float positionX, float positionY) {
-        currentPosition.x = positionX;
-        currentPosition.y = positionY;
+    void setRoundPosition() {
+        currentPosition.set(Math.round(currentPosition.x), Math.round(currentPosition.y));
+        setBoundingBox();
     }
 
 }

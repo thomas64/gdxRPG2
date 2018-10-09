@@ -2,16 +2,19 @@ package nl.t64.game.rpg.components;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.constants.EntityState;
 import nl.t64.game.rpg.entities.Entity;
 import nl.t64.game.rpg.events.*;
 import nl.t64.game.rpg.tiled.Portal;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 public class PlayerPhysicsComponent extends PhysicsComponent {
@@ -30,6 +33,7 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
         }
         if (event instanceof StartPositionEvent) {
             currentPosition = ((StartPositionEvent) event).getPosition();
+            setBoundingBox();
         }
         if (event instanceof StartDirectionEvent) {
             direction = ((StartDirectionEvent) event).getDirection();
@@ -38,8 +42,7 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
             direction = ((DirectionEvent) event).getDirection();
         }
         if (event instanceof SpeedEvent) {
-            float moveSpeed = ((SpeedEvent) event).getMoveSpeed();
-            velocity = new Vector2(moveSpeed, moveSpeed);
+            velocity = ((SpeedEvent) event).getMoveSpeed();
         }
     }
 
@@ -48,10 +51,9 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
     }
 
     @Override
-    public void update(Entity player, MapManager mapManager, Array<Entity> npcEntities, float dt) {
+    public void update(Entity player, MapManager mapManager, List<Entity> npcEntities, float dt) {
         relocate(dt);
-        setBoundingBox();
-        checkObstacles(mapManager, npcEntities);
+        checkObstacles(mapManager, npcEntities, dt);
         player.send(new PositionEvent(currentPosition));
     }
 
@@ -64,30 +66,84 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
         }
     }
 
-    private void checkObstacles(MapManager mapManager, Array<Entity> npcEntities) {
-        if (!velocity.equals(new Vector2(Constant.MOVE_SPEED_4, Constant.MOVE_SPEED_4))) {
-            checkBlocker(mapManager);
-            checkOtherEntities(npcEntities);
+    private void checkObstacles(MapManager mapManager, List<Entity> npcEntities, float dt) {
+        if (velocity != Constant.MOVE_SPEED_4) {
+            turnEntities(npcEntities);
+            checkBlocker(mapManager, npcEntities, dt);
             checkPortals(mapManager);
         }
     }
 
-    private void checkBlocker(MapManager mapManager) {
-        for (RectangleMapObject blocker : mapManager.getCurrentMap().getBlockers()) {
-            while (boundingBox.overlaps(blocker.getRectangle())) {
-                moveBack();
+    private void turnEntities(List<Entity> npcEntities) {
+        npcEntities.stream()
+                   .filter(npc -> getALittleBitBiggerBoundingBox().overlaps(npc.getBoundingBox()))
+                   .forEach(npc -> npc.send(new WaitEvent(npc.getPosition(), currentPosition)));
+    }
+
+    private void checkBlocker(MapManager mapManager, List<Entity> npcEntities, float dt) {
+
+        List<Rectangle> blockers = mapManager.getCurrentMap().getBlockers();
+        List<Rectangle> walkingBlockers = npcEntities.stream()
+                                                     .filter(entity -> entity.getState() != EntityState.IMMOBILE)
+                                                     .map(Entity::getBoundingBox)
+                                                     .collect(Collectors.toList());
+
+        List<Rectangle> copyBlockers = new ArrayList<>(blockers);
+        List<Rectangle> copyWalkingBlockers = new ArrayList<>(walkingBlockers);
+
+        possibleMoveSide(copyBlockers, copyWalkingBlockers, dt);
+        setRoundPosition();
+        if (setPossibleOldPosition(copyBlockers, copyWalkingBlockers)) {
+            return;
+        }
+        possibleMoveBack(blockers, walkingBlockers);
+    }
+
+    private void possibleMoveSide(List<Rectangle> copyBlockers, List<Rectangle> copyWalkingBlockers, float dt) {
+        Optional<Rectangle> blocker1 = getOnlySingleCollisionBlocker(copyBlockers);
+        Optional<Rectangle> blocker2 = getOnlySingleCollisionBlocker(copyWalkingBlockers);
+
+        blocker1.ifPresent(blckr -> {
+            moveSide(blckr, dt);
+            copyBlockers.remove(blckr);
+        });
+
+        blocker2.ifPresent(blckr -> {
+            moveSide(blckr, dt);
+            copyWalkingBlockers.remove(blckr);
+        });
+    }
+
+    private Optional<Rectangle> getOnlySingleCollisionBlocker(List<Rectangle> blockerList) {
+        int count = 0;
+        Rectangle blocker = null;
+        for (Rectangle blockerRect : blockerList) {
+            if (boundingBox.overlaps(blockerRect)) {
+                count++;
+                blocker = blockerRect;
             }
+        }
+        if (count == 1) {
+            return Optional.of(blocker);
+        } else {
+            return Optional.empty();
         }
     }
 
-    private void checkOtherEntities(Array<Entity> npcEntities) {
-        for (Entity npcEntity : npcEntities) {
-            while (boundingBox.overlaps(npcEntity.getBoundingBox())) {
-                moveBack();
-            }
-            if (getALittleBitBiggerBoundingBox().overlaps(npcEntity.getBoundingBox())) {
-                npcEntity.send(new WaitEvent(npcEntity.getPosition(), currentPosition));
-            }
+    private boolean setPossibleOldPosition(List<Rectangle> copyBlockers, List<Rectangle> copyWalkingBlockers) {
+        if (copyBlockers.stream().anyMatch(boundingBox::overlaps) ||
+                copyWalkingBlockers.stream().anyMatch(boundingBox::overlaps)) {
+            currentPosition.set(oldPosition.x, oldPosition.y);
+            setBoundingBox();
+            return true;
+        }
+        return false;
+    }
+
+    private void possibleMoveBack(List<Rectangle> blockers, List<Rectangle> walkingBlockers) {
+        while (blockers.stream().anyMatch(boundingBox::overlaps) ||
+                walkingBlockers.stream().anyMatch(boundingBox::overlaps)) {
+            moveBack();
         }
     }
 
@@ -102,18 +158,64 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
         }
     }
 
+    private void moveSide(Rectangle blocker, float dt) {
+        if (direction == Direction.NORTH || direction == Direction.SOUTH) {
+            blockerIsWest(blocker, dt);
+            blockerIsEast(blocker, dt);
+        } else if (direction == Direction.WEST || direction == Direction.EAST) {
+            blockerIsNorth(blocker, dt);
+            blockerIsSouth(blocker, dt);
+        }
+    }
+
+    private void blockerIsWest(Rectangle blocker, float dt) {
+        if (boundingBox.x + (boundingBox.width / 2) > blocker.x + blocker.width) {
+            currentPosition.x += velocity * dt;
+            if (boundingBox.x > blocker.x + blocker.width) {
+                currentPosition.x = blocker.x + blocker.width;
+            }
+        }
+    }
+
+    private void blockerIsEast(Rectangle blocker, float dt) {
+        if (boundingBox.x + (boundingBox.width / 2) < blocker.x) {
+            currentPosition.x -= velocity * dt;
+            if (boundingBox.x + boundingBox.width < blocker.x) {
+                currentPosition.x = blocker.x - boundingBox.width;
+            }
+        }
+    }
+
+    private void blockerIsNorth(Rectangle blocker, float dt) {
+        if (boundingBox.y + (boundingBox.height / 2) < blocker.y) {
+            currentPosition.y -= velocity * dt;
+            if (boundingBox.y + boundingBox.height < blocker.y) {
+                currentPosition.y = blocker.y - boundingBox.height;
+            }
+        }
+    }
+
+    private void blockerIsSouth(Rectangle blocker, float dt) {
+        if (boundingBox.y + (boundingBox.height / 2) > blocker.y + blocker.height) {
+            currentPosition.y += velocity * dt;
+            if (boundingBox.y > blocker.y + blocker.height) {
+                currentPosition.y = blocker.y + blocker.height;
+            }
+        }
+    }
+
     private void alignToGrid() {
         float roundedX = Math.round(currentPosition.x / Constant.TILE_SIZE) * Constant.TILE_SIZE;
         float roundedY = Math.round(currentPosition.y / Constant.TILE_SIZE) * Constant.TILE_SIZE;
-        setCurrentPosition(roundedX, roundedY);
+        currentPosition.set(roundedX, roundedY);
     }
 
     private Rectangle getALittleBitBiggerBoundingBox() {
         Rectangle aLittleBitBiggerBox = new Rectangle(boundingBox);
-        aLittleBitBiggerBox.setWidth(boundingBox.width + 2);
-        aLittleBitBiggerBox.setHeight(boundingBox.height + 2);
-        aLittleBitBiggerBox.setX(boundingBox.x - 1);
-        aLittleBitBiggerBox.setY(boundingBox.y - 1);
+        aLittleBitBiggerBox.setWidth(boundingBox.width + 4);
+        aLittleBitBiggerBox.setHeight(boundingBox.height + 4);
+        aLittleBitBiggerBox.setX(boundingBox.x - 2);
+        aLittleBitBiggerBox.setY(boundingBox.y - 2);
         return aLittleBitBiggerBox;
     }
 

@@ -4,13 +4,16 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.components.Component;
 import nl.t64.game.rpg.components.GraphicsComponent;
 import nl.t64.game.rpg.components.InputComponent;
 import nl.t64.game.rpg.components.PhysicsComponent;
+import nl.t64.game.rpg.constants.EntityState;
 import nl.t64.game.rpg.events.Event;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Entity {
@@ -18,7 +21,7 @@ public class Entity {
     private static final String TAG = Entity.class.getSimpleName();
 
     private static final int MAX_COMPONENTS = 5;
-    private Array<Component> components;
+    private List<Component> components;
 
     private InputComponent inputComponent;
     private PhysicsComponent physicsComponent;
@@ -29,19 +32,17 @@ public class Entity {
         physicsComponent = pc;
         graphicsComponent = gc;
 
-        components = new Array<>(MAX_COMPONENTS);
+        components = new ArrayList<>(MAX_COMPONENTS);
         components.add(inputComponent);
         components.add(physicsComponent);
         components.add(graphicsComponent);
     }
 
     public void send(Event event) {
-        for (Component component : components) {
-            component.receive(event);
-        }
+        components.forEach(component -> component.receive(event));
     }
 
-    public void update(MapManager mapManager, Array<Entity> npcEntities, float dt) {
+    public void update(MapManager mapManager, List<Entity> npcEntities, float dt) {
         inputComponent.update(this, dt);
         physicsComponent.update(this, mapManager, npcEntities, dt);
         graphicsComponent.update();
@@ -56,9 +57,7 @@ public class Entity {
     }
 
     public void dispose() {
-        for (Component component : components) {
-            component.dispose();
-        }
+        components.forEach(Component::dispose);
     }
 
     public Rectangle getBoundingBox() {
@@ -67,6 +66,10 @@ public class Entity {
 
     public Vector2 getPosition() {
         return physicsComponent.getCurrentPosition();
+    }
+
+    public EntityState getState() {
+        return physicsComponent.getState();
     }
 
 }

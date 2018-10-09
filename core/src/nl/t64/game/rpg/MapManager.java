@@ -2,7 +2,6 @@ package nl.t64.game.rpg;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,9 +49,8 @@ public class MapManager {
         Rectangle rect;
 
         shapeRenderer.setColor(Color.YELLOW);
-        for (RectangleMapObject blocker : currentMap.getBlockers()) {
-            rect = blocker.getRectangle();
-            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+        for (Rectangle blocker : currentMap.getBlockers()) {
+            shapeRenderer.rect(blocker.x, blocker.y, blocker.width, blocker.height);
         }
 
         shapeRenderer.setColor(Color.BLUE);

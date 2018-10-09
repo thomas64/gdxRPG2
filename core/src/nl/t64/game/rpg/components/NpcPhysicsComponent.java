@@ -2,14 +2,13 @@ package nl.t64.game.rpg.components;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.constants.EntityState;
 import nl.t64.game.rpg.entities.Entity;
 import nl.t64.game.rpg.events.*;
+
+import java.util.List;
 
 
 public class NpcPhysicsComponent extends PhysicsComponent {
@@ -22,7 +21,7 @@ public class NpcPhysicsComponent extends PhysicsComponent {
 
 
     public NpcPhysicsComponent() {
-        this.velocity = new Vector2(48f, 48f);
+        this.velocity = 48f;
         this.boundingBoxWidthPercentage = 0.80f;
         this.boundingBoxHeightPercentage = 1.00f;
     }
@@ -40,6 +39,7 @@ public class NpcPhysicsComponent extends PhysicsComponent {
             wanderBox = new Rectangle(currentPosition.x + WANDER_BOX_POSITION,
                                       currentPosition.y + WANDER_BOX_POSITION,
                                       WANDER_BOX_SIZE, WANDER_BOX_SIZE);
+            setBoundingBox();
         }
         if (event instanceof StartDirectionEvent) {
             direction = ((StartDirectionEvent) event).getDirection();
@@ -54,9 +54,8 @@ public class NpcPhysicsComponent extends PhysicsComponent {
     }
 
     @Override
-    public void update(Entity entity, MapManager mapManager, Array<Entity> npcEntitiesPlusLastOnePlayer, float dt) {
+    public void update(Entity entity, MapManager mapManager, List<Entity> npcEntitiesPlusLastOnePlayer, float dt) {
         relocate(dt);
-        setBoundingBox();
         checkObstacles(entity, mapManager, npcEntitiesPlusLastOnePlayer);
         entity.send(new PositionEvent(currentPosition));
     }
@@ -67,7 +66,7 @@ public class NpcPhysicsComponent extends PhysicsComponent {
         }
     }
 
-    private void checkObstacles(Entity entity, MapManager mapManager, Array<Entity> npcEntitiesPlusLastOnePlayer) {
+    private void checkObstacles(Entity entity, MapManager mapManager, List<Entity> npcEntitiesPlusLastOnePlayer) {
         if (state == EntityState.WALKING) {
             boolean moveBack1 = checkWanderBox();
             boolean moveBack2 = checkBlocker(mapManager);
@@ -89,16 +88,14 @@ public class NpcPhysicsComponent extends PhysicsComponent {
 
     private boolean checkBlocker(MapManager mapManager) {
         boolean moveBack = false;
-        for (RectangleMapObject blocker : mapManager.getCurrentMap().getBlockers()) {
-            while (boundingBox.overlaps(blocker.getRectangle())) {
-                moveBack();
-                moveBack = true;
-            }
+        while (mapManager.getCurrentMap().isInCollisionWithBlocker(boundingBox)) {
+            moveBack();
+            moveBack = true;
         }
         return moveBack;
     }
 
-    private boolean checkOtherEntities(Entity npc, Array<Entity> npcEntitiesPlusLastOnePlayer) {
+    private boolean checkOtherEntities(Entity npc, List<Entity> npcEntitiesPlusLastOnePlayer) {
         boolean moveBack = false;
         for (Entity npcEntity : npcEntitiesPlusLastOnePlayer) {
             if (npcEntity.equals(npc)) {

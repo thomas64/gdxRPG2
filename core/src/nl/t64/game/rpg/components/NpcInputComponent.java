@@ -17,7 +17,7 @@ public class NpcInputComponent extends InputComponent {
     private EntityState state;
     private Direction direction;
 
-    private boolean stateHasChangedFromImmobile = false;
+    private boolean stateWasImmobile = false;
     private Direction originalDirection;
 
     @Override
@@ -44,7 +44,7 @@ public class NpcInputComponent extends InputComponent {
     public void update(Entity entity, float dt) {
         stateTime -= dt;
         if (stateTime < 0) {
-            if (stateHasChangedFromImmobile) {
+            if (stateWasImmobile) {
                 restoreOriginal();
             } else {
                 setRandom();
@@ -55,8 +55,8 @@ public class NpcInputComponent extends InputComponent {
     }
 
     private void restoreOriginal() {
-        state = EntityState.IMMOBILE;
         direction = originalDirection;
+        stateWasImmobile = false;
     }
 
     private void setRandom() {
@@ -83,10 +83,11 @@ public class NpcInputComponent extends InputComponent {
         Vector2 playerPosition = event.getPlayerPosition();
         stateTime = 5f;
         if (state == EntityState.IMMOBILE) {
-            stateHasChangedFromImmobile = true;
+            stateWasImmobile = true;
             originalDirection = direction;
+        } else if (state == EntityState.WALKING) {
+            state = EntityState.IDLE;
         }
-        state = EntityState.IDLE;
         turnToPlayer(npcPosition, playerPosition);
     }
 

@@ -8,18 +8,21 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.utils.Array;
 import nl.t64.game.rpg.Camera;
 import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.components.*;
 import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.constants.EntityState;
 import nl.t64.game.rpg.entities.Entity;
 import nl.t64.game.rpg.events.LoadSpriteEvent;
 import nl.t64.game.rpg.events.StartDirectionEvent;
 import nl.t64.game.rpg.events.StartPositionEvent;
 import nl.t64.game.rpg.events.StartStateEvent;
 import nl.t64.game.rpg.tiled.Npc;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class WorldScreen implements Screen {
@@ -37,7 +40,7 @@ public class WorldScreen implements Screen {
 
     private MapManager mapManager;
     private Entity player;
-    private Array<Entity> npcEntities;
+    private List<Entity> npcEntities;
     private Camera camera;
     private OrthogonalTiledMapRenderer mapRenderer;
 
@@ -82,7 +85,7 @@ public class WorldScreen implements Screen {
     }
 
     private void loadNpcEntities() {
-        npcEntities = new Array<>();
+        npcEntities = new ArrayList<>();
         for (Npc npc : mapManager.getCurrentMap().getNpcs()) {
             Entity entity = new Entity(new NpcInputComponent(), new NpcPhysicsComponent(), new NpcGraphicsComponent());
             npcEntities.add(entity);
@@ -91,16 +94,17 @@ public class WorldScreen implements Screen {
             entity.send(new StartPositionEvent(npc.getPosition()));
             LoadSpriteEvent loadSpriteEvent = Utility.getAllPeopleSpriteConfigsFromJson().get(npc.getName());
             entity.send(loadSpriteEvent);
+            if (npc.getState() == EntityState.IMMOBILE) {
+                mapManager.getCurrentMap().addToBlockers(entity.getBoundingBox());
+            }
         }
     }
 
     private void updateEntities(float dt) {
         player.update(mapManager, npcEntities, dt);
-        Array<Entity> copyEntities = new Array<>(npcEntities);
+        List<Entity> copyEntities = new ArrayList<>(npcEntities);
         copyEntities.add(player);
-        for (Entity entity : npcEntities) {
-            entity.update(mapManager, copyEntities, dt);
-        }
+        npcEntities.forEach(entity -> entity.update(mapManager, copyEntities, dt));
     }
 
     private void updateCameraPosition() {
@@ -118,9 +122,7 @@ public class WorldScreen implements Screen {
 
     private void renderEntities() {
         mapRenderer.getBatch().begin();
-        for (Entity entity : npcEntities) {
-            entity.render(mapRenderer.getBatch());
-        }
+        npcEntities.forEach(entity -> entity.render(mapRenderer.getBatch()));
         player.render(mapRenderer.getBatch());
         mapRenderer.getBatch().end();
     }
@@ -172,9 +174,7 @@ public class WorldScreen implements Screen {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
             player.debug(shapeRenderer);
-            for (Entity entity : npcEntities) {
-                entity.debug(shapeRenderer);
-            }
+            npcEntities.forEach(entity -> entity.debug(shapeRenderer));
             mapManager.debug(shapeRenderer);
 
             shapeRenderer.end();
@@ -208,6 +208,9 @@ public class WorldScreen implements Screen {
 //                    "timeRight:\n" +
 //                    "timeDelay:\n" +
 //                    "\n" +
+//                    "oldPositionX:\n" +
+//                    "oldPositionY:\n" +
+//                    "\n" +
                     "currentPositionX:\n" +
                     "currentPositionY:\n" +
                     "\n" +
@@ -227,6 +230,9 @@ public class WorldScreen implements Screen {
 //                    player.getInputComponent().getTimeLeft() + "\n" +
 //                    player.getInputComponent().getTimeRight() + "\n" +
 //                    player.getInputComponent().getTimeDelay() + "\n" +
+//                    "\n" +
+//                    player.getOldPosition().x + "\n" +
+//                    player.getOldPosition().y + "\n" +
 //                    "\n" +
                     player.getPosition().x + "\n" +
                     player.getPosition().y + "\n" +

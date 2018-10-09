@@ -5,8 +5,8 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import lombok.Getter;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
@@ -15,6 +15,9 @@ import nl.t64.game.rpg.constants.MapTitle;
 import nl.t64.game.rpg.tiled.Npc;
 import nl.t64.game.rpg.tiled.Portal;
 import nl.t64.game.rpg.tiled.SpawnPoint;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class GameMap {
@@ -32,13 +35,13 @@ public class GameMap {
     private Direction playerSpawnDirection;
 
     @Getter
-    private Array<Npc> npcs = new Array<>();
+    private List<Npc> npcs = new ArrayList<>();
     @Getter
-    private Array<RectangleMapObject> blockers = new Array<>();
+    private List<Rectangle> blockers = new ArrayList<>();
     @Getter
-    private Array<Portal> portals = new Array<>();
+    private List<Portal> portals = new ArrayList<>();
     @Getter
-    private Array<SpawnPoint> spawnPoints = new Array<>();
+    private List<SpawnPoint> spawnPoints = new ArrayList<>();
 
 
     public GameMap(MapTitle mapTitle) {
@@ -52,6 +55,14 @@ public class GameMap {
         loadBlockers();
         loadPortals();
         loadSpawnPoints();
+    }
+
+    public void addToBlockers(Rectangle immobileNpc) {
+        blockers.add(immobileNpc);
+    }
+
+    public boolean isInCollisionWithBlocker(Rectangle entityRect) {
+        return blockers.stream().anyMatch(r -> entityRect.overlaps(r));
     }
 
     public void setPlayerStartOfGameSpawnLocation() {
@@ -100,7 +111,7 @@ public class GameMap {
         MapLayer collisionLayer = tiledMap.getLayers().get(MapLayerName.COLLISION_LAYER.name().toLowerCase());
         for (MapObject mapObject : collisionLayer.getObjects()) {
             RectangleMapObject rectObject = (RectangleMapObject) mapObject;
-            blockers.add(rectObject);
+            blockers.add(rectObject.getRectangle());
         }
     }
 
