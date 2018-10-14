@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="44" height="40" tilewidth="24" tileheight="24" infinite="0" nextobjectid="54">
- <tileset firstgid="1" source="fsm_Town01_A2.tsx"/>
- <tileset firstgid="769" source="fsm_Town01_B.tsx"/>
- <tileset firstgid="1793" source="fsm_Forest01_A1.tsx"/>
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="44" height="40" tilewidth="24" tileheight="24" infinite="0" nextobjectid="56">
+ <tileset firstgid="1" source="fsm_town01_a2.tsx"/>
+ <tileset firstgid="769" source="fsm_town01_b.tsx"/>
+ <tileset firstgid="1793" source="fsm_forest01_a1.tsx"/>
  <layer name="under0_none" width="44" height="40">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -440,10 +440,12 @@
     <property name="direction" value="north"/>
    </properties>
   </object>
+  <object id="55" name="map5" x="144" y="24" width="48" height="48"/>
  </objectgroup>
  <objectgroup name="portal_layer">
   <object id="36" name="map2" type="2" x="1056" y="624" width="24" height="336"/>
   <object id="37" name="map2" type="1" x="1056" y="0" width="24" height="336"/>
   <object id="41" name="map3" x="624" y="-24" width="264" height="24"/>
+  <object id="54" name="map5" x="0" y="-24" width="336" height="24"/>
  </objectgroup>
 </map>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="44" height="40" tilewidth="24" tileheight="24" infinite="0" nextobjectid="35">
- <tileset firstgid="1" source="fsm_Town01_A2.tsx"/>
- <tileset firstgid="769" source="fsm_Town01_B.tsx"/>
+ <tileset firstgid="1" source="fsm_town01_a2.tsx"/>
+ <tileset firstgid="769" source="fsm_town01_b.tsx"/>
  <layer name="under0_none" width="44" height="40">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

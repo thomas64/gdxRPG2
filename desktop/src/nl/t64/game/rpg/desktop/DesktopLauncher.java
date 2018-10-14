@@ -19,8 +19,8 @@ public class DesktopLauncher {
 
         Gdx.app = new LwjglApplication(new GdxRpg2(), config);
         //Gdx.app.setLogLevel(Application.LOG_INFO);
-        Gdx.app.setLogLevel(Application.LOG_DEBUG);
-        //Gdx.app.setLogLevel(Application.LOG_ERROR);
+        //Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        Gdx.app.setLogLevel(Application.LOG_ERROR);
         //Gdx.app.setLogLevel(Application.LOG_NONE);
 
 
