@@ -27,6 +27,7 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
     private boolean isMouseSelectEnabled = false;
     private Vector3 mouseSelectCoordinates;
     private Ray selectionRay;
+    private boolean isActionPressed = false;
 
 
     public PlayerPhysicsComponent() {
@@ -58,6 +59,10 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
             mouseSelectCoordinates = ((StartSelectEvent) event).getMouseCoordinates();
             isMouseSelectEnabled = true;
         }
+        if (event instanceof ActionEvent) {
+            isActionPressed = true;
+        }
+
     }
 
     @Override
@@ -66,14 +71,35 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
 
     @Override
     public void update(Entity player, MapManager mapManager, List<Entity> npcEntities, float dt) {
-        if (isMouseSelectEnabled) {
-            selectMapEntityCandidate(mapManager, npcEntities);
-            isMouseSelectEnabled = false;
-        }
+        checkMouseSelection(mapManager, npcEntities);
+        checkActionPressed(npcEntities);
 
         relocate(dt);
         checkObstacles(mapManager, npcEntities, dt);
         player.send(new PositionEvent(currentPosition));
+    }
+
+    private void checkMouseSelection(MapManager mapManager, List<Entity> npcEntities) {
+        if (isMouseSelectEnabled) {
+            selectMapEntityCandidate(mapManager, npcEntities);
+            isMouseSelectEnabled = false;
+        }
+    }
+
+    private void checkActionPressed(List<Entity> npcEntities) {
+        if (isActionPressed) {
+            selectMapEntityCandidate(npcEntities);
+            isActionPressed = false;
+        }
+    }
+
+    private void selectMapEntityCandidate(List<Entity> npcEntities) {
+        npcEntities.forEach(npcEntity -> {
+            npcEntity.send(new DeselectEvent());
+            if (getCheckRect().overlaps(npcEntity.getBoundingBox())) {
+                npcEntity.send(new SelectEvent());
+            }
+        });
     }
 
     private void selectMapEntityCandidate(MapManager mapManager, List<Entity> npcEntities) {
@@ -257,6 +283,35 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
         return aLittleBitBiggerBox;
     }
 
+    private Rectangle getCheckRect() {
+        Rectangle checkRect = new Rectangle(boundingBox);
+        switch (direction) {
+            case NORTH:
+                checkRect.setWidth(boundingBox.width / 4);
+                checkRect.setX(boundingBox.x + (boundingBox.width / 2) - (boundingBox.width / 8));
+                checkRect.setY(boundingBox.y + (Constant.TILE_SIZE / 2f));
+                break;
+            case SOUTH:
+                checkRect.setWidth(boundingBox.width / 4);
+                checkRect.setX(boundingBox.x + (boundingBox.width / 2) - (boundingBox.width / 8));
+                checkRect.setY(boundingBox.y - (Constant.TILE_SIZE / 2f));
+                break;
+            case WEST:
+                checkRect.setHeight(boundingBox.height / 4);
+                checkRect.setY(boundingBox.y + (boundingBox.height / 2) - (boundingBox.height / 8));
+                checkRect.setX(boundingBox.x - (Constant.TILE_SIZE / 2f));
+                break;
+            case EAST:
+                checkRect.setHeight(boundingBox.height / 4);
+                checkRect.setY(boundingBox.y + (boundingBox.height / 2) - (boundingBox.height / 8));
+                checkRect.setX(boundingBox.x + (Constant.TILE_SIZE / 2f));
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Direction '%s' not usable.", direction));
+        }
+        return checkRect;
+    }
+
     @Override
     public void debug(ShapeRenderer shapeRenderer) {
         shapeRenderer.setColor(Color.YELLOW);
@@ -266,6 +321,11 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
                            getALittleBitBiggerBoundingBox().y,
                            getALittleBitBiggerBoundingBox().width,
                            getALittleBitBiggerBoundingBox().height);
+        shapeRenderer.setColor(Color.CYAN);
+        shapeRenderer.rect(getCheckRect().x,
+                           getCheckRect().y,
+                           getCheckRect().width,
+                           getCheckRect().height);
     }
 
 }

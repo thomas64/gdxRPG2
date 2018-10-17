@@ -36,6 +36,7 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
 
     private boolean pressCtrl = false;
     private boolean pressShift = false;
+    private boolean pressAction = false;
 
     private Direction direction;
 
@@ -63,6 +64,10 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
         }
         if (keycode == Input.Keys.SHIFT_LEFT || keycode == Input.Keys.SHIFT_RIGHT) {
             pressShift = true;
+        }
+
+        if (keycode == Input.Keys.A) {
+            pressAction = true;
         }
 
         if (keycode == Input.Keys.UP) {
@@ -103,6 +108,10 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
         }
         if (keycode == Input.Keys.SHIFT_LEFT || keycode == Input.Keys.SHIFT_RIGHT) {
             pressShift = false;
+        }
+
+        if (keycode == Input.Keys.A) {
+            pressAction = false;
         }
 
         if (keycode == Input.Keys.UP) {
@@ -186,6 +195,11 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
             player.send(new StartSelectEvent(lastMouseCoordinates));
             clickSelect = false;
         }
+        if (pressAction) {
+            player.send(new ActionEvent());
+            pressAction = false;
+        }
+
     }
 
     private void processPlayerMoveInput(Entity player, float dt) {
