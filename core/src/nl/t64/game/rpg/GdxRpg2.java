@@ -26,7 +26,7 @@ public class GdxRpg2 extends Game {
     @Override
     public void create() {
         mainMenuScreen = new MainMenuScreen(this);
-        worldScreen = new WorldScreen(this);
+        worldScreen = new WorldScreen();
         setScreen(mainMenuScreen);
     }
 

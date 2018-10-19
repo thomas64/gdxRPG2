@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.utils.ObjectMap;
 import nl.t64.game.rpg.Camera;
 import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.Utility;
@@ -29,6 +30,8 @@ public class WorldScreen implements Screen {
 
     private static final String TAG = WorldScreen.class.getSimpleName();
     private static final Color TRANSPARENT = new Color(0, 0, 0, 0.5f);
+
+    private static final String PEOPLE1_SPRITE_CONFIG = "configs/sprites_people1.json";
 
     private ShapeRenderer shapeRenderer;
 
@@ -93,7 +96,8 @@ public class WorldScreen implements Screen {
             entity.send(new StartStateEvent(npc.getState()));
             entity.send(new StartDirectionEvent(npc.getDirection()));
             entity.send(new StartPositionEvent(npc.getPosition()));
-            LoadSpriteEvent loadSpriteEvent = Utility.getAllPeopleSpriteConfigsFromJson().get(npc.getName());
+            ObjectMap<String, LoadSpriteEvent> peopleData = Utility.getAllSpriteConfigsFromJson(PEOPLE1_SPRITE_CONFIG);
+            LoadSpriteEvent loadSpriteEvent = peopleData.get(npc.getName());
             entity.send(loadSpriteEvent);
             if (npc.getState() == EntityState.IMMOBILE) {
                 mapManager.getCurrentMap().addToBlockers(entity.getBoundingBox());

@@ -24,8 +24,6 @@ public final class Utility {
     private static final AssetManager ASSET_MANAGER = new AssetManager();
     private static final InternalFileHandleResolver FILE_PATH_RESOLVER = new InternalFileHandleResolver();
 
-    private static final String PEOPLE_SPRITE_CONFIG = "configs/sprites_people.json";
-
     public static void unloadAsset(String assetFilenamePath) {
         if (ASSET_MANAGER.isLoaded(assetFilenamePath)) {
             ASSET_MANAGER.unload(assetFilenamePath);
@@ -85,9 +83,9 @@ public final class Utility {
     }
 
     @SuppressWarnings("unchecked")
-    public static ObjectMap<String, LoadSpriteEvent> getAllPeopleSpriteConfigsFromJson() {
+    public static ObjectMap<String, LoadSpriteEvent> getAllSpriteConfigsFromJson(String path) {
         Json json = new Json();
-        return json.fromJson(ObjectMap.class, LoadSpriteEvent.class, Gdx.files.internal(PEOPLE_SPRITE_CONFIG));
+        return json.fromJson(ObjectMap.class, LoadSpriteEvent.class, Gdx.files.internal(path));
     }
 
     public static BitmapFont generateBitmapFontFromFreeTypeFont(String fontPath, int fontSize) {

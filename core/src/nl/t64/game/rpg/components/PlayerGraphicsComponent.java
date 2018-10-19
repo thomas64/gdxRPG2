@@ -2,6 +2,7 @@ package nl.t64.game.rpg.components;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.ObjectMap;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.entities.Entity;
@@ -11,14 +12,17 @@ import nl.t64.game.rpg.events.*;
 public class PlayerGraphicsComponent extends GraphicsComponent {
 
     private static final String TAG = PlayerGraphicsComponent.class.getSimpleName();
-    private static final String DEFAULT_SPRITE_PATH = "sprites/characters/hero1.png";
+    private static final String HERO1_SPRITE_CONFIG = "configs/sprites_hero1.json";
+    private static final String HERO_NAME = "mozes";
     private static final float SLOW_FRAMES = 0.50f;
     private static final float NORMAL_FRAMES = 0.25f;
     private static final float FAST_FRAMES = 0.15f;
     private static final float NO_FRAMES = 0f;
 
     public PlayerGraphicsComponent() {
-        loadWalkingAnimation(DEFAULT_SPRITE_PATH);
+        ObjectMap<String, LoadSpriteEvent> heroData = Utility.getAllSpriteConfigsFromJson(HERO1_SPRITE_CONFIG);
+        LoadSpriteEvent loadSpriteEvent = heroData.get(HERO_NAME);
+        loadWalkingAnimation(loadSpriteEvent.getPath(), loadSpriteEvent.getCol(), loadSpriteEvent.getRow());
     }
 
     @Override
@@ -43,7 +47,6 @@ public class PlayerGraphicsComponent extends GraphicsComponent {
 
     @Override
     public void dispose() {
-        Utility.unloadAsset(DEFAULT_SPRITE_PATH);
     }
 
     @Override

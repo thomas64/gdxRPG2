@@ -72,10 +72,6 @@ public abstract class GraphicsComponent implements Component {
         }
     }
 
-    void loadWalkingAnimation(String spritePath) {
-        loadWalkingAnimation(spritePath, 1, 1);
-    }
-
     void loadWalkingAnimation(String spritePath, int col, int row) {
         Utility.loadTextureAsset(spritePath);
         Texture texture = Utility.getTextureAsset(spritePath);
