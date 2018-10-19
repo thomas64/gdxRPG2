@@ -5,6 +5,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.Json;
@@ -86,6 +88,15 @@ public final class Utility {
     public static ObjectMap<String, LoadSpriteEvent> getAllPeopleSpriteConfigsFromJson() {
         Json json = new Json();
         return json.fromJson(ObjectMap.class, LoadSpriteEvent.class, Gdx.files.internal(PEOPLE_SPRITE_CONFIG));
+    }
+
+    public static BitmapFont generateBitmapFontFromFreeTypeFont(String fontPath, int fontSize) {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(fontPath));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = fontSize;
+        BitmapFont bitmapFont = generator.generateFont(parameter);
+        generator.dispose();
+        return bitmapFont;
     }
 
 }

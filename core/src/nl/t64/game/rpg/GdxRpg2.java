@@ -1,23 +1,38 @@
 package nl.t64.game.rpg;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Screen;
+import nl.t64.game.rpg.constants.ScreenType;
+import nl.t64.game.rpg.screens.MainMenuScreen;
 import nl.t64.game.rpg.screens.WorldScreen;
+
 
 public class GdxRpg2 extends Game {
 
-    public static final int WIDTH = 1280;
-    public static final int HEIGHT = 720;
-    public static final String TITLE = "gdxRPG2";
+    private WorldScreen worldScreen;
+    private MainMenuScreen mainMenuScreen;
 
-    private static final WorldScreen WORLD_SCREEN = new WorldScreen();
+    public Screen getScreenType(ScreenType screenType) {
+        switch (screenType) {
+            case MAIN_MENU:
+                return mainMenuScreen;
+            case WORLD:
+                return worldScreen;
+            default:
+                return mainMenuScreen;
+        }
+    }
 
     @Override
     public void create() {
-        setScreen(WORLD_SCREEN);
+        mainMenuScreen = new MainMenuScreen(this);
+        worldScreen = new WorldScreen(this);
+        setScreen(mainMenuScreen);
     }
 
     @Override
     public void dispose() {
-        WORLD_SCREEN.dispose();
+        mainMenuScreen.dispose();
+        worldScreen.dispose();
     }
 }

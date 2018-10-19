@@ -14,8 +14,8 @@ public class Camera extends OrthographicCamera {
     private float mapHeight;
 
     public Camera() {
-        Viewport viewport = new FitViewport(GdxRpg2.WIDTH, GdxRpg2.HEIGHT, this);
-        viewport.update(GdxRpg2.WIDTH, GdxRpg2.HEIGHT);
+        Viewport viewport = new FitViewport(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGHT, this);
+        viewport.update(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGHT);
 
         // zoom();
     }

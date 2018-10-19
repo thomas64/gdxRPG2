@@ -3,6 +3,11 @@ package nl.t64.game.rpg.constants;
 
 public class Constant {
 
+    public static final String TITLE = "gdxRPG2";
+    public static final int SCREEN_WIDTH = 1280;
+    public static final int SCREEN_HEIGHT = 720;
+
+
     public static final int TILE_SIZE = 48;
 
     public static final float MOVE_SPEED_1 = 48f;  // = pixels/second
