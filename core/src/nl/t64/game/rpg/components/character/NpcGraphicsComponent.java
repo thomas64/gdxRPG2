@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.components;
+package nl.t64.game.rpg.components.character;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -6,8 +6,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import nl.t64.game.rpg.constants.Constant;
-import nl.t64.game.rpg.entities.Entity;
-import nl.t64.game.rpg.events.*;
+import nl.t64.game.rpg.entities.Character;
+import nl.t64.game.rpg.events.Event;
+import nl.t64.game.rpg.events.character.*;
 
 
 public class NpcGraphicsComponent extends GraphicsComponent {
@@ -60,10 +61,10 @@ public class NpcGraphicsComponent extends GraphicsComponent {
     }
 
     @Override
-    public void render(Entity entity, Batch batch, ShapeRenderer shapeRenderer) {
+    public void render(Character npcCharacter, Batch batch, ShapeRenderer shapeRenderer) {
         batch.end();
         if (isSelected) {
-            drawSelected(entity.getBoundingBox(), shapeRenderer);
+            drawSelected(npcCharacter.getBoundingBox(), shapeRenderer);
         }
         batch.begin();
         batch.draw(currentFrame, position.x, position.y, Constant.TILE_SIZE, Constant.TILE_SIZE);

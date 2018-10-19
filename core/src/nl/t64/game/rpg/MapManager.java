@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
 import nl.t64.game.rpg.constants.MapTitle;
+import nl.t64.game.rpg.tiled.GameMap;
 import nl.t64.game.rpg.tiled.Npc;
 import nl.t64.game.rpg.tiled.Portal;
 import nl.t64.game.rpg.tiled.SpawnPoint;

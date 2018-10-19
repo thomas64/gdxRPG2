@@ -5,8 +5,8 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import lombok.Getter;
+import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Direction;
-import nl.t64.game.rpg.constants.EntityState;
 
 
 @Getter
@@ -14,7 +14,7 @@ public class Npc {
 
     private final Rectangle rectangle;
     private final String name;
-    private final EntityState state;
+    private final CharacterState state;
     private final Direction direction;
 
     public Npc(MapObject mapObject) {
@@ -30,14 +30,14 @@ public class Npc {
         return new Vector2(rectangle.x, rectangle.y);
     }
 
-    private EntityState createState(RectangleMapObject rectObject) {
-        String entityState = rectObject.getProperties().get("type", String.class);
-        if (entityState == null) {
-            return EntityState.IMMOBILE;
-        } else if (entityState.equalsIgnoreCase("w")) {
-            return EntityState.getRandom();
+    private CharacterState createState(RectangleMapObject rectObject) {
+        String characterState = rectObject.getProperties().get("type", String.class);
+        if (characterState == null) {
+            return CharacterState.IMMOBILE;
+        } else if (characterState.equalsIgnoreCase("w")) {
+            return CharacterState.getRandom();
         } else {
-            throw new IllegalArgumentException(String.format("EntityState '%s' unknown.", entityState));
+            throw new IllegalArgumentException(String.format("CharacterState '%s' unknown.", characterState));
         }
     }
 

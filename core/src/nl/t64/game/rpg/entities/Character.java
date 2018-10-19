@@ -6,19 +6,19 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.components.Component;
-import nl.t64.game.rpg.components.GraphicsComponent;
-import nl.t64.game.rpg.components.InputComponent;
-import nl.t64.game.rpg.components.PhysicsComponent;
-import nl.t64.game.rpg.constants.EntityState;
+import nl.t64.game.rpg.components.character.GraphicsComponent;
+import nl.t64.game.rpg.components.character.InputComponent;
+import nl.t64.game.rpg.components.character.PhysicsComponent;
+import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.events.Event;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Entity {
+public class Character {
 
-    private static final String TAG = Entity.class.getSimpleName();
+    private static final String TAG = Character.class.getSimpleName();
 
     private static final int MAX_COMPONENTS = 5;
     private List<Component> components;
@@ -27,7 +27,7 @@ public class Entity {
     private PhysicsComponent physicsComponent;
     private GraphicsComponent graphicsComponent;
 
-    public Entity(InputComponent ic, PhysicsComponent pc, GraphicsComponent gc) {
+    public Character(InputComponent ic, PhysicsComponent pc, GraphicsComponent gc) {
         inputComponent = ic;
         physicsComponent = pc;
         graphicsComponent = gc;
@@ -42,9 +42,9 @@ public class Entity {
         components.forEach(component -> component.receive(event));
     }
 
-    public void update(MapManager mapManager, List<Entity> npcEntities, float dt) {
+    public void update(MapManager mapManager, List<Character> npcCharacters, float dt) {
         inputComponent.update(this, dt);
-        physicsComponent.update(this, mapManager, npcEntities, dt);
+        physicsComponent.update(this, mapManager, npcCharacters, dt);
         graphicsComponent.update();
     }
 
@@ -68,7 +68,7 @@ public class Entity {
         return physicsComponent.getCurrentPosition();
     }
 
-    public EntityState getState() {
+    public CharacterState getState() {
         return physicsComponent.getState();
     }
 

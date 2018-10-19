@@ -1,8 +1,9 @@
-package nl.t64.game.rpg.events;
+package nl.t64.game.rpg.events.character;
 
 import com.badlogic.gdx.math.Vector3;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import nl.t64.game.rpg.events.Event;
 
 
 @AllArgsConstructor

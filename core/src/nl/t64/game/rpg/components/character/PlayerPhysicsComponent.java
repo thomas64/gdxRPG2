@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.components;
+package nl.t64.game.rpg.components.character;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -6,11 +6,12 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import nl.t64.game.rpg.MapManager;
+import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
-import nl.t64.game.rpg.constants.EntityState;
-import nl.t64.game.rpg.entities.Entity;
-import nl.t64.game.rpg.events.*;
+import nl.t64.game.rpg.entities.Character;
+import nl.t64.game.rpg.events.Event;
+import nl.t64.game.rpg.events.character.*;
 import nl.t64.game.rpg.tiled.Portal;
 
 import java.util.ArrayList;
@@ -70,87 +71,88 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
     }
 
     @Override
-    public void update(Entity player, MapManager mapManager, List<Entity> npcEntities, float dt) {
-        checkMouseSelection(mapManager, npcEntities);
-        checkActionPressed(npcEntities);
+    public void update(Character player, MapManager mapManager, List<Character> npcCharacters, float dt) {
+        checkMouseSelection(mapManager, npcCharacters);
+        checkActionPressed(npcCharacters);
 
         relocate(dt);
-        checkObstacles(mapManager, npcEntities, dt);
+        checkObstacles(mapManager, npcCharacters, dt);
         player.send(new PositionEvent(currentPosition));
     }
 
-    private void checkMouseSelection(MapManager mapManager, List<Entity> npcEntities) {
+    private void checkMouseSelection(MapManager mapManager, List<Character> npcCharacters) {
         if (isMouseSelectEnabled) {
-            selectMapEntityCandidate(mapManager, npcEntities);
+            selectNpcCharacterCandidate(mapManager, npcCharacters);
             isMouseSelectEnabled = false;
         }
     }
 
-    private void checkActionPressed(List<Entity> npcEntities) {
+    private void checkActionPressed(List<Character> npcCharacters) {
         if (isActionPressed) {
-            selectMapEntityCandidate(npcEntities);
+            selectNpcCharacterCandidate(npcCharacters);
             isActionPressed = false;
         }
     }
 
-    private void selectMapEntityCandidate(List<Entity> npcEntities) {
-        npcEntities.forEach(npcEntity -> {
-            npcEntity.send(new DeselectEvent());
-            if (getCheckRect().overlaps(npcEntity.getBoundingBox())) {
-                npcEntity.send(new SelectEvent());
+    private void selectNpcCharacterCandidate(List<Character> npcCharacters) {
+        npcCharacters.forEach(npcCharacter -> {
+            npcCharacter.send(new DeselectEvent());
+            if (getCheckRect().overlaps(npcCharacter.getBoundingBox())) {
+                npcCharacter.send(new SelectEvent());
             }
         });
     }
 
-    private void selectMapEntityCandidate(MapManager mapManager, List<Entity> npcEntities) {
+    private void selectNpcCharacterCandidate(MapManager mapManager, List<Character> npcCharacters) {
         mapManager.getCamera().unproject(mouseSelectCoordinates);
-        npcEntities.forEach(npcEntity -> {
-            npcEntity.send(new DeselectEvent());
-            if (npcEntity.getBoundingBox().contains(mouseSelectCoordinates.x, mouseSelectCoordinates.y)) {
-                setPossibleSelection(npcEntity);
+        npcCharacters.forEach(npcCharacter -> {
+            npcCharacter.send(new DeselectEvent());
+            if (npcCharacter.getBoundingBox().contains(mouseSelectCoordinates.x, mouseSelectCoordinates.y)) {
+                setPossibleSelection(npcCharacter);
             }
         });
     }
 
-    private void setPossibleSelection(Entity npcEntity) {
-        Rectangle npcBbox = npcEntity.getBoundingBox();
+    private void setPossibleSelection(Character npcCharacter) {
+        Rectangle npcBbox = npcCharacter.getBoundingBox();
         selectionRay.set(boundingBox.x, boundingBox.y, 0f, npcBbox.x, npcBbox.y, 0f);
         float distance = selectionRay.origin.dst(selectionRay.direction);
         if (distance <= MINIMUM_SELECT_DISTANCE) {
-            npcEntity.send(new SelectEvent());
+            npcCharacter.send(new SelectEvent());
         }
     }
 
     private void relocate(float dt) {
-        if (state == EntityState.WALKING) {
+        if (state == CharacterState.WALKING) {
             move(dt);
         }
-        if (state == EntityState.ALIGNING) {
+        if (state == CharacterState.ALIGNING) {
             alignToGrid();
         }
     }
 
-    private void checkObstacles(MapManager mapManager, List<Entity> npcEntities, float dt) {
-        if (state == EntityState.WALKING && velocity != Constant.MOVE_SPEED_4) {
-            turnEntities(npcEntities);
-            checkBlocker(mapManager, npcEntities, dt);
+    private void checkObstacles(MapManager mapManager, List<Character> npcCharacter, float dt) {
+        if (state == CharacterState.WALKING && velocity != Constant.MOVE_SPEED_4) {
+            turnCharacters(npcCharacter);
+            checkBlocker(mapManager, npcCharacter, dt);
             checkPortals(mapManager);
         }
     }
 
-    private void turnEntities(List<Entity> npcEntities) {
-        npcEntities.stream()
-                   .filter(npc -> getALittleBitBiggerBoundingBox().overlaps(npc.getBoundingBox()))
-                   .forEach(npc -> npc.send(new WaitEvent(npc.getPosition(), currentPosition)));
+    private void turnCharacters(List<Character> npcCharacter) {
+        npcCharacter.stream()
+                    .filter(npc -> getALittleBitBiggerBoundingBox().overlaps(npc.getBoundingBox()))
+                    .forEach(npc -> npc.send(new WaitEvent(npc.getPosition(), currentPosition)));
     }
 
-    private void checkBlocker(MapManager mapManager, List<Entity> npcEntities, float dt) {
+    private void checkBlocker(MapManager mapManager, List<Character> npcCharacters, float dt) {
 
         List<Rectangle> blockers = mapManager.getCurrentMap().getBlockers();
-        List<Rectangle> walkingBlockers = npcEntities.stream()
-                                                     .filter(entity -> entity.getState() != EntityState.IMMOBILE)
-                                                     .map(Entity::getBoundingBox)
-                                                     .collect(Collectors.toList());
+        List<Rectangle> walkingBlockers =
+                npcCharacters.stream()
+                             .filter(npcCharacter -> npcCharacter.getState() != CharacterState.IMMOBILE)
+                             .map(Character::getBoundingBox)
+                             .collect(Collectors.toList());
 
         List<Rectangle> copyBlockers = new ArrayList<>(blockers);
         List<Rectangle> copyWalkingBlockers = new ArrayList<>(walkingBlockers);

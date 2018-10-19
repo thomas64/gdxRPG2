@@ -1,4 +1,4 @@
-package nl.t64.game.rpg;
+package nl.t64.game.rpg.tiled;
 
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
@@ -8,13 +8,11 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import lombok.Getter;
+import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.constants.MapLayerName;
 import nl.t64.game.rpg.constants.MapTitle;
-import nl.t64.game.rpg.tiled.Npc;
-import nl.t64.game.rpg.tiled.Portal;
-import nl.t64.game.rpg.tiled.SpawnPoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,8 +59,8 @@ public class GameMap {
         blockers.add(immobileNpc);
     }
 
-    public boolean isInCollisionWithBlocker(Rectangle entityRect) {
-        return blockers.stream().anyMatch(r -> entityRect.overlaps(r));
+    public boolean isInCollisionWithBlocker(Rectangle characterRect) {
+        return blockers.stream().anyMatch(blocker -> characterRect.overlaps(blocker));
     }
 
     public void setPlayerStartOfGameSpawnLocation() {

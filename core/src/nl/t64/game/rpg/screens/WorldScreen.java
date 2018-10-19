@@ -12,14 +12,14 @@ import com.badlogic.gdx.utils.ObjectMap;
 import nl.t64.game.rpg.Camera;
 import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.Utility;
-import nl.t64.game.rpg.components.*;
+import nl.t64.game.rpg.components.character.*;
+import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
-import nl.t64.game.rpg.constants.EntityState;
-import nl.t64.game.rpg.entities.Entity;
-import nl.t64.game.rpg.events.LoadSpriteEvent;
-import nl.t64.game.rpg.events.StartDirectionEvent;
-import nl.t64.game.rpg.events.StartPositionEvent;
-import nl.t64.game.rpg.events.StartStateEvent;
+import nl.t64.game.rpg.entities.Character;
+import nl.t64.game.rpg.events.character.LoadSpriteEvent;
+import nl.t64.game.rpg.events.character.StartDirectionEvent;
+import nl.t64.game.rpg.events.character.StartPositionEvent;
+import nl.t64.game.rpg.events.character.StartStateEvent;
 import nl.t64.game.rpg.tiled.Npc;
 
 import java.util.ArrayList;
@@ -42,8 +42,8 @@ public class WorldScreen implements Screen {
     public static float playTime = 0f;
 
     private MapManager mapManager;
-    private Entity player;
-    private List<Entity> npcEntities;
+    private Character player;
+    private List<Character> npcCharacters;
     private Camera camera;
     private OrthogonalTiledMapRenderer mapRenderer;
 
@@ -53,7 +53,7 @@ public class WorldScreen implements Screen {
 
     @Override
     public void show() {
-        player = new Entity(new PlayerInputComponent(), new PlayerPhysicsComponent(), new PlayerGraphicsComponent());
+        player = new Character(new PlayerInputComponent(), new PlayerPhysicsComponent(), new PlayerGraphicsComponent());
         camera = new Camera();
         mapManager.setCamera(camera);
         mapRenderer = new OrthogonalTiledMapRenderer(mapManager.getCurrentMap().getTiledMap());
@@ -68,7 +68,7 @@ public class WorldScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         updateMap();
-        updateEntities(dt);
+        updateCharacters(dt);
         updateCameraPosition();
         renderMapLayers();
         renderGrid();
@@ -81,35 +81,37 @@ public class WorldScreen implements Screen {
             mapRenderer.setMap(mapManager.getCurrentMap().getTiledMap());
             camera.setNewMapSize(mapManager.getCurrentMap().getPixelWidth(),
                                  mapManager.getCurrentMap().getPixelHeight());
-            loadNpcEntities();
+            loadNpcCharacters();
             player.send(new StartPositionEvent(mapManager.getCurrentMap().getPlayerSpawnLocation()));
             player.send(new StartDirectionEvent(mapManager.getCurrentMap().getPlayerSpawnDirection()));
             mapManager.setMapChanged(false);
         }
     }
 
-    private void loadNpcEntities() {
-        npcEntities = new ArrayList<>();
+    private void loadNpcCharacters() {
+        npcCharacters = new ArrayList<>();
         for (Npc npc : mapManager.getCurrentMap().getNpcs()) {
-            Entity entity = new Entity(new NpcInputComponent(), new NpcPhysicsComponent(), new NpcGraphicsComponent());
-            npcEntities.add(entity);
-            entity.send(new StartStateEvent(npc.getState()));
-            entity.send(new StartDirectionEvent(npc.getDirection()));
-            entity.send(new StartPositionEvent(npc.getPosition()));
+            Character npcCharacter = new Character(new NpcInputComponent(),
+                                                   new NpcPhysicsComponent(),
+                                                   new NpcGraphicsComponent());
+            npcCharacters.add(npcCharacter);
+            npcCharacter.send(new StartStateEvent(npc.getState()));
+            npcCharacter.send(new StartDirectionEvent(npc.getDirection()));
+            npcCharacter.send(new StartPositionEvent(npc.getPosition()));
             ObjectMap<String, LoadSpriteEvent> peopleData = Utility.getAllSpriteConfigsFromJson(PEOPLE1_SPRITE_CONFIG);
             LoadSpriteEvent loadSpriteEvent = peopleData.get(npc.getName());
-            entity.send(loadSpriteEvent);
-            if (npc.getState() == EntityState.IMMOBILE) {
-                mapManager.getCurrentMap().addToBlockers(entity.getBoundingBox());
+            npcCharacter.send(loadSpriteEvent);
+            if (npc.getState() == CharacterState.IMMOBILE) {
+                mapManager.getCurrentMap().addToBlockers(npcCharacter.getBoundingBox());
             }
         }
     }
 
-    private void updateEntities(float dt) {
-        player.update(mapManager, npcEntities, dt);
-        List<Entity> copyEntities = new ArrayList<>(npcEntities);
-        copyEntities.add(player);
-        npcEntities.forEach(entity -> entity.update(mapManager, copyEntities, dt));
+    private void updateCharacters(float dt) {
+        player.update(mapManager, npcCharacters, dt);
+        List<Character> copyCharacters = new ArrayList<>(npcCharacters);
+        copyCharacters.add(player);
+        npcCharacters.forEach(npcCharacter -> npcCharacter.update(mapManager, copyCharacters, dt));
     }
 
     private void updateCameraPosition() {
@@ -120,15 +122,15 @@ public class WorldScreen implements Screen {
     private void renderMapLayers() {
         int[] underLayers = {0, 1, 2, 3, 4, 5};
         mapRenderer.render(underLayers);
-        renderEntities();
+        renderCharacters();
         int[] overLayers = {6, 7, 8};
         mapRenderer.render(overLayers);
     }
 
-    private void renderEntities() {
+    private void renderCharacters() {
         shapeRenderer.setProjectionMatrix(camera.combined);
         mapRenderer.getBatch().begin();
-        npcEntities.forEach(entity -> entity.render(mapRenderer.getBatch(), shapeRenderer));
+        npcCharacters.forEach(npcCharacter -> npcCharacter.render(mapRenderer.getBatch(), shapeRenderer));
         player.render(mapRenderer.getBatch(), shapeRenderer);
         mapRenderer.getBatch().end();
     }
@@ -177,7 +179,7 @@ public class WorldScreen implements Screen {
         if (showObjects) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             player.debug(shapeRenderer);
-            npcEntities.forEach(entity -> entity.debug(shapeRenderer));
+            npcCharacters.forEach(npcCharacter -> npcCharacter.debug(shapeRenderer));
             mapManager.debug(shapeRenderer);
             shapeRenderer.end();
         }

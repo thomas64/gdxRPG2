@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.components;
+package nl.t64.game.rpg.components.character;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -8,10 +8,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import nl.t64.game.rpg.Utility;
+import nl.t64.game.rpg.components.Component;
+import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
-import nl.t64.game.rpg.constants.EntityState;
-import nl.t64.game.rpg.entities.Entity;
+import nl.t64.game.rpg.entities.Character;
 import nl.t64.game.rpg.screens.WorldScreen;
 
 
@@ -22,7 +23,7 @@ public abstract class GraphicsComponent implements Component {
 
     float frameDuration;
     TextureRegion currentFrame = null;
-    EntityState state;
+    CharacterState state;
     Vector2 position;
     Direction direction;
     Animation<TextureRegion> walkNorthAnimation;
@@ -32,7 +33,7 @@ public abstract class GraphicsComponent implements Component {
 
     public abstract void update();
 
-    public abstract void render(Entity entity, Batch batch, ShapeRenderer shapeRenderer);
+    public abstract void render(Character character, Batch batch, ShapeRenderer shapeRenderer);
 
     void setFrame() {
         switch (state) {
@@ -49,7 +50,7 @@ public abstract class GraphicsComponent implements Component {
                 }
                 break;
             default:
-                throw new IllegalArgumentException(String.format("EntityState '%s' not usable.", state));
+                throw new IllegalArgumentException(String.format("CharacterState '%s' not usable.", state));
         }
     }
 

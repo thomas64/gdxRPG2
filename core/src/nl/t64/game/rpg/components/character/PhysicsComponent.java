@@ -1,14 +1,15 @@
-package nl.t64.game.rpg.components;
+package nl.t64.game.rpg.components.character;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import lombok.Getter;
 import nl.t64.game.rpg.MapManager;
+import nl.t64.game.rpg.components.Component;
+import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
-import nl.t64.game.rpg.constants.EntityState;
-import nl.t64.game.rpg.entities.Entity;
+import nl.t64.game.rpg.entities.Character;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public abstract class PhysicsComponent implements Component {
     private static final String TAG = PhysicsComponent.class.getSimpleName();
 
     @Getter
-    EntityState state;
+    CharacterState state;
     Direction direction = null;
     float velocity;
     Vector2 oldPosition;
@@ -36,7 +37,7 @@ public abstract class PhysicsComponent implements Component {
         this.currentPosition = new Vector2();
     }
 
-    public abstract void update(Entity entity, MapManager mapManager, List<Entity> npcEntities, float dt);
+    public abstract void update(Character character, MapManager mapManager, List<Character> npcCharacters, float dt);
 
     public abstract void debug(ShapeRenderer shapeRenderer);
 

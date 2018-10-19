@@ -1,11 +1,12 @@
-package nl.t64.game.rpg.components;
+package nl.t64.game.rpg.components.character;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Direction;
-import nl.t64.game.rpg.constants.EntityState;
-import nl.t64.game.rpg.entities.Entity;
-import nl.t64.game.rpg.events.*;
+import nl.t64.game.rpg.entities.Character;
+import nl.t64.game.rpg.events.Event;
+import nl.t64.game.rpg.events.character.*;
 
 
 public class NpcInputComponent extends InputComponent {
@@ -14,7 +15,7 @@ public class NpcInputComponent extends InputComponent {
 
     private float stateTime = 0f;
 
-    private EntityState state;
+    private CharacterState state;
     private Direction direction;
 
     private boolean stateWasImmobile = false;
@@ -41,7 +42,7 @@ public class NpcInputComponent extends InputComponent {
     }
 
     @Override
-    public void update(Entity entity, float dt) {
+    public void update(Character npcCharacter, float dt) {
         stateTime -= dt;
         if (stateTime < 0) {
             if (stateWasImmobile) {
@@ -50,8 +51,8 @@ public class NpcInputComponent extends InputComponent {
                 setRandom();
             }
         }
-        entity.send(new StateEvent(state));
-        entity.send(new DirectionEvent(direction));
+        npcCharacter.send(new StateEvent(state));
+        npcCharacter.send(new DirectionEvent(direction));
     }
 
     private void restoreOriginal() {
@@ -64,17 +65,17 @@ public class NpcInputComponent extends InputComponent {
 
         switch (state) {
             case WALKING:
-                state = EntityState.IDLE;
+                state = CharacterState.IDLE;
                 break;
             case IDLE:
-                state = EntityState.WALKING;
+                state = CharacterState.WALKING;
                 direction = Direction.getRandom();
                 break;
             case IMMOBILE:
                 // keep on being immobile.
                 break;
             default:
-                throw new IllegalArgumentException(String.format("EntityState '%s' not usable.", state));
+                throw new IllegalArgumentException(String.format("CharacterState '%s' not usable.", state));
         }
     }
 
@@ -82,11 +83,11 @@ public class NpcInputComponent extends InputComponent {
         Vector2 npcPosition = event.getNpcPosition();
         Vector2 playerPosition = event.getPlayerPosition();
         stateTime = 5f;
-        if (state == EntityState.IMMOBILE && !stateWasImmobile) {
+        if (state == CharacterState.IMMOBILE && !stateWasImmobile) {
             stateWasImmobile = true;
             originalDirection = direction;
-        } else if (state == EntityState.WALKING) {
-            state = EntityState.IDLE;
+        } else if (state == CharacterState.WALKING) {
+            state = CharacterState.IDLE;
         }
         turnToPlayer(npcPosition, playerPosition);
     }

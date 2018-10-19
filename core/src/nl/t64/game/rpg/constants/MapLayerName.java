@@ -1,5 +1,6 @@
 package nl.t64.game.rpg.constants;
 
+
 public enum MapLayerName {
     PORTAL_LAYER,
     SPAWN_LAYER,

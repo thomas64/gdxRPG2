@@ -1,14 +1,15 @@
-package nl.t64.game.rpg.components;
+package nl.t64.game.rpg.components.character;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
+import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
-import nl.t64.game.rpg.constants.EntityState;
-import nl.t64.game.rpg.entities.Entity;
-import nl.t64.game.rpg.events.*;
+import nl.t64.game.rpg.entities.Character;
+import nl.t64.game.rpg.events.Event;
+import nl.t64.game.rpg.events.character.*;
 import nl.t64.game.rpg.screens.WorldScreen;
 
 
@@ -182,14 +183,14 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
     }
 
     @Override
-    public void update(Entity player, float dt) {
+    public void update(Character player, float dt) {
         processPlayerMoveInput(player, dt);
 
         if (pressQuit) {
             Gdx.app.exit();
         }
         if (pressAlign) {
-            player.send(new StateEvent(EntityState.ALIGNING));
+            player.send(new StateEvent(CharacterState.ALIGNING));
         }
         if (clickSelect) {
             player.send(new StartSelectEvent(lastMouseCoordinates));
@@ -202,7 +203,7 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
 
     }
 
-    private void processPlayerMoveInput(Entity player, float dt) {
+    private void processPlayerMoveInput(Character player, float dt) {
         processPlayerSpeedInput(player);
         countKeyDownTime();
         ifNoMoveKeys_SetPlayerIdle(player);
@@ -211,7 +212,7 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
         ifMoveKeys_SetPlayerWalking(player, dt);
     }
 
-    private void processPlayerSpeedInput(Entity player) {
+    private void processPlayerSpeedInput(Character player) {
         float moveSpeed = Constant.MOVE_SPEED_2;
         if (pressCtrl && pressShift) {
             moveSpeed = Constant.MOVE_SPEED_4;
@@ -246,10 +247,10 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
         }
     }
 
-    private void ifNoMoveKeys_SetPlayerIdle(Entity player) {
+    private void ifNoMoveKeys_SetPlayerIdle(Character player) {
         if (!areMoveKeysPressed()) {
             turnDelay = 0f;
-            player.send(new StateEvent(EntityState.IDLE));
+            player.send(new StateEvent(CharacterState.IDLE));
         }
     }
 
@@ -285,14 +286,14 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
         }
     }
 
-    private void ifMoveKeys_SetPlayerWalking(Entity player, float dt) {
+    private void ifMoveKeys_SetPlayerWalking(Character player, float dt) {
         if (areMoveKeysPressed()) {
             player.send(new DirectionEvent(direction));
 
             if (turnDelay > 0f) {
                 turnDelay -= dt;
             } else {
-                player.send(new StateEvent(EntityState.WALKING));
+                player.send(new StateEvent(CharacterState.WALKING));
             }
         }
     }

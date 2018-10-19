@@ -11,7 +11,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ObjectMap;
-import nl.t64.game.rpg.events.LoadSpriteEvent;
+import nl.t64.game.rpg.events.character.LoadSpriteEvent;
 
 
 public final class Utility {

@@ -1,12 +1,13 @@
-package nl.t64.game.rpg.components;
+package nl.t64.game.rpg.components.character;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import nl.t64.game.rpg.MapManager;
-import nl.t64.game.rpg.constants.EntityState;
-import nl.t64.game.rpg.entities.Entity;
-import nl.t64.game.rpg.events.*;
+import nl.t64.game.rpg.constants.CharacterState;
+import nl.t64.game.rpg.entities.Character;
+import nl.t64.game.rpg.events.Event;
+import nl.t64.game.rpg.events.character.*;
 
 import java.util.List;
 
@@ -54,25 +55,27 @@ public class NpcPhysicsComponent extends PhysicsComponent {
     }
 
     @Override
-    public void update(Entity entity, MapManager mapManager, List<Entity> npcEntitiesPlusLastOnePlayer, float dt) {
+    public void update(Character npcCharacter, MapManager mapManager,
+                       List<Character> npcCharactersPlusLastOnePlayer, float dt) {
         relocate(dt);
-        checkObstacles(entity, mapManager, npcEntitiesPlusLastOnePlayer);
-        entity.send(new PositionEvent(currentPosition));
+        checkObstacles(npcCharacter, mapManager, npcCharactersPlusLastOnePlayer);
+        npcCharacter.send(new PositionEvent(currentPosition));
     }
 
     private void relocate(float dt) {
-        if (state == EntityState.WALKING) {
+        if (state == CharacterState.WALKING) {
             move(dt);
         }
     }
 
-    private void checkObstacles(Entity entity, MapManager mapManager, List<Entity> npcEntitiesPlusLastOnePlayer) {
-        if (state == EntityState.WALKING) {
+    private void checkObstacles(Character npcCharacter, MapManager mapManager,
+                                List<Character> npcCharactersPlusLastOnePlayer) {
+        if (state == CharacterState.WALKING) {
             boolean moveBack1 = checkWanderBox();
             boolean moveBack2 = checkBlocker(mapManager);
-            boolean moveBack3 = checkOtherEntities(entity, npcEntitiesPlusLastOnePlayer);
+            boolean moveBack3 = checkOtherCharacters(npcCharacter, npcCharactersPlusLastOnePlayer);
             if (moveBack1 || moveBack2 || moveBack3) {
-                entity.send(new CollisionEvent());
+                npcCharacter.send(new CollisionEvent());
             }
         }
     }
@@ -95,13 +98,13 @@ public class NpcPhysicsComponent extends PhysicsComponent {
         return moveBack;
     }
 
-    private boolean checkOtherEntities(Entity npc, List<Entity> npcEntitiesPlusLastOnePlayer) {
+    private boolean checkOtherCharacters(Character npcCharacter, List<Character> npcCharactersPlusLastOnePlayer) {
         boolean moveBack = false;
-        for (Entity npcEntity : npcEntitiesPlusLastOnePlayer) {
-            if (npcEntity.equals(npc)) {
+        for (Character otherCharacter : npcCharactersPlusLastOnePlayer) {
+            if (otherCharacter.equals(npcCharacter)) {
                 continue;
             }
-            while (boundingBox.overlaps(npcEntity.getBoundingBox())) {
+            while (boundingBox.overlaps(otherCharacter.getBoundingBox())) {
                 moveBack();
                 moveBack = true;
             }
