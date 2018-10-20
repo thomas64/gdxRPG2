@@ -16,8 +16,6 @@ import java.util.List;
 
 public abstract class PhysicsComponent implements Component {
 
-    private static final String TAG = PhysicsComponent.class.getSimpleName();
-
     @Getter
     CharacterState state;
     Direction direction = null;

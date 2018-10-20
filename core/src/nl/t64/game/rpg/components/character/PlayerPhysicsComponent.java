@@ -34,8 +34,8 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
     public PlayerPhysicsComponent() {
         this.boundingBoxWidthPercentage = 0.80f;
         this.boundingBoxHeightPercentage = 0.40f;
-        mouseSelectCoordinates = new Vector3(0, 0, 0);
-        selectionRay = new Ray(new Vector3(), new Vector3());
+        this.mouseSelectCoordinates = new Vector3(0, 0, 0);
+        this.selectionRay = new Ray(new Vector3(), new Vector3());
     }
 
     @Override

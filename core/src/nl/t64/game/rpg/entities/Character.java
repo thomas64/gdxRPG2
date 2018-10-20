@@ -20,7 +20,7 @@ public class Character {
 
     private static final String TAG = Character.class.getSimpleName();
 
-    private static final int MAX_COMPONENTS = 5;
+    private static final int MAX_COMPONENTS = 3;
     private List<Component> components;
 
     private InputComponent inputComponent;

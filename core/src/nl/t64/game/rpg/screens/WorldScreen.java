@@ -30,10 +30,7 @@ public class WorldScreen implements Screen {
 
     private static final String TAG = WorldScreen.class.getSimpleName();
     private static final Color TRANSPARENT = new Color(0, 0, 0, 0.5f);
-
     private static final String PEOPLE1_SPRITE_CONFIG = "configs/sprites_people1.json";
-
-    private ShapeRenderer shapeRenderer;
 
     public static boolean showGrid = false;
     public static boolean showObjects = false;
@@ -42,22 +39,25 @@ public class WorldScreen implements Screen {
     public static float playTime = 0f;
 
     private MapManager mapManager;
-    private Character player;
-    private List<Character> npcCharacters;
     private Camera camera;
     private OrthogonalTiledMapRenderer mapRenderer;
+    private Character player;
+    private List<Character> npcCharacters;
+    private ShapeRenderer shapeRenderer;
 
     public WorldScreen() {
-        mapManager = new MapManager();
+        this.mapManager = new MapManager();
+        this.camera = new Camera();
+        this.mapManager.setCamera(this.camera);
+        this.mapRenderer = new OrthogonalTiledMapRenderer(this.mapManager.getCurrentMap().getTiledMap());
+        this.player = new Character(new PlayerInputComponent(),
+                                    new PlayerPhysicsComponent(),
+                                    new PlayerGraphicsComponent());
+        this.shapeRenderer = new ShapeRenderer();
     }
 
     @Override
     public void show() {
-        player = new Character(new PlayerInputComponent(), new PlayerPhysicsComponent(), new PlayerGraphicsComponent());
-        camera = new Camera();
-        mapManager.setCamera(camera);
-        mapRenderer = new OrthogonalTiledMapRenderer(mapManager.getCurrentMap().getTiledMap());
-        shapeRenderer = new ShapeRenderer();
     }
 
     @Override
