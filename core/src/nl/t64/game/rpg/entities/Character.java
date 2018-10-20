@@ -60,6 +60,10 @@ public class Character {
         components.forEach(Component::dispose);
     }
 
+    public void updateInput(float dt) {
+        inputComponent.update(this, dt);
+    }
+
     public Rectangle getBoundingBox() {
         return physicsComponent.getBoundingBox();
     }

@@ -7,8 +7,7 @@ public class Constant {
     public static final int SCREEN_WIDTH = 1280;
     public static final int SCREEN_HEIGHT = 720;
 
-
-    public static final int TILE_SIZE = 48;
+    public static final float TILE_SIZE = 48f;
 
     public static final float MOVE_SPEED_1 = 48f;  // = pixels/second
     public static final float MOVE_SPEED_2 = 144f; // 48 * 3

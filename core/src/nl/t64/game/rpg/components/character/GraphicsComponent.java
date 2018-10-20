@@ -46,7 +46,7 @@ public abstract class GraphicsComponent implements Component {
                 if (frameDuration == 0f) { // no player animation when high speed moving.
                     setCurrentFrame(0f);
                 } else {
-                    setCurrentFrame(WorldScreen.playTime);
+                    setCurrentFrame(WorldScreen.getPlayTime());
                 }
                 break;
             default:
@@ -78,7 +78,7 @@ public abstract class GraphicsComponent implements Component {
         Texture texture = Utility.getTextureAsset(spritePath);
         TextureRegion[][] splitOfEight = TextureRegion.split(texture, SPRITE_GROUP_WIDTH, SPRITE_GROUP_HEIGHT);
         TextureRegion personSprite = splitOfEight[row - 1][col - 1];
-        TextureRegion[][] textureFrames = personSprite.split(Constant.TILE_SIZE, Constant.TILE_SIZE);
+        TextureRegion[][] textureFrames = personSprite.split((int) Constant.TILE_SIZE, (int) Constant.TILE_SIZE);
 
         Array<TextureRegion> walkNorthFrames = new Array<>(4);
         Array<TextureRegion> walkSouthFrames = new Array<>(4);

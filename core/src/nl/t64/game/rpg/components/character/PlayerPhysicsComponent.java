@@ -68,6 +68,7 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
 
     @Override
     public void dispose() {
+        // empty
     }
 
     @Override

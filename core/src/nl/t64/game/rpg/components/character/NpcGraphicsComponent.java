@@ -53,6 +53,7 @@ public class NpcGraphicsComponent extends GraphicsComponent {
 
     @Override
     public void dispose() {
+        // empty
     }
 
     @Override

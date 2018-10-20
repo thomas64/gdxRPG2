@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector3;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
+import nl.t64.game.rpg.constants.GameState;
 import nl.t64.game.rpg.entities.Character;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.*;
@@ -26,6 +27,8 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
     private boolean pressDown = false;
     private boolean pressLeft = false;
     private boolean pressRight = false;
+
+    private boolean pressPause = false;
     private boolean pressQuit = false;
     private boolean pressAlign = false;
 
@@ -84,6 +87,9 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
             pressRight = true;
         }
 
+        if (keycode == Input.Keys.P) {
+            pressPause = true;
+        }
         if (keycode == Input.Keys.Q) {
             pressQuit = true;
         }
@@ -91,13 +97,13 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
             pressAlign = true;
         }
         if (keycode == Input.Keys.F10) {
-            WorldScreen.showGrid = !WorldScreen.showGrid;
+            WorldScreen.setShowGrid();
         }
         if (keycode == Input.Keys.F11) {
-            WorldScreen.showObjects = !WorldScreen.showObjects;
+            WorldScreen.setShowObjects();
         }
         if (keycode == Input.Keys.F12) {
-            WorldScreen.showDebug = !WorldScreen.showDebug;
+            WorldScreen.setShowDebug();
         }
         return true;
     }
@@ -128,6 +134,9 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
             pressRight = false;
         }
 
+        if (keycode == Input.Keys.P) {
+            pressPause = false;
+        }
         if (keycode == Input.Keys.Q) {
             pressQuit = false;
         }
@@ -184,11 +193,22 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
 
     @Override
     public void update(Character player, float dt) {
-        processPlayerMoveInput(player, dt);
 
+        if (pressPause) {
+            WorldScreen.setGameState(GameState.PAUSED);
+            pressPause = false;
+        }
         if (pressQuit) {
+            pressQuit = false;
             Gdx.app.exit();
         }
+
+        if (WorldScreen.getGameState() == GameState.PAUSED) {
+            return;
+        }
+
+        processPlayerMoveInput(player, dt);
+
         if (pressAlign) {
             player.send(new StateEvent(CharacterState.ALIGNING));
         }

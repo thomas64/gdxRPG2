@@ -78,6 +78,7 @@ public class MainMenuPhysicsComponent extends PhysicsComponent {
 
     @Override
     public void dispose() {
+        // empty
     }
 
     @Override

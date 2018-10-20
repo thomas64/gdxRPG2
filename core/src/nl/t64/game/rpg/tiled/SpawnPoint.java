@@ -40,11 +40,11 @@ public class SpawnPoint {
     }
 
     private String createFromMapLocation(RectangleMapObject rectObject) {
-        String fromMapLocation = rectObject.getProperties().get("type", String.class);
-        if (fromMapLocation == null) {
-            fromMapLocation = "";
+        String newFromMapLocation = rectObject.getProperties().get("type", String.class);
+        if (newFromMapLocation == null) {
+            newFromMapLocation = "";
         }
-        return fromMapLocation;
+        return newFromMapLocation;
     }
 
     private Direction createDirection(RectangleMapObject rectObject) {

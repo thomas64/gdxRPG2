@@ -29,11 +29,11 @@ public class Portal {
     }
 
     private String createToMapLocation(RectangleMapObject rectObject) {
-        String toMapLocation = rectObject.getProperties().get("type", String.class);
-        if (toMapLocation == null) {
-            toMapLocation = "";
+        String newToMapLocation = rectObject.getProperties().get("type", String.class);
+        if (newToMapLocation == null) {
+            newToMapLocation = "";
         }
-        return toMapLocation;
+        return newToMapLocation;
     }
 
 }

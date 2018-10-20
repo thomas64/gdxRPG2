@@ -60,7 +60,7 @@ public class GameMap {
     }
 
     public boolean isInCollisionWithBlocker(Rectangle characterRect) {
-        return blockers.stream().anyMatch(blocker -> characterRect.overlaps(blocker));
+        return blockers.stream().anyMatch(characterRect::overlaps);
     }
 
     public void setPlayerStartOfGameSpawnLocation() {

@@ -9,12 +9,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.ObjectMap;
+import lombok.Getter;
 import nl.t64.game.rpg.Camera;
 import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.components.character.*;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.constants.GameState;
 import nl.t64.game.rpg.entities.Character;
 import nl.t64.game.rpg.events.character.LoadSpriteEvent;
 import nl.t64.game.rpg.events.character.StartDirectionEvent;
@@ -32,11 +34,13 @@ public class WorldScreen implements Screen {
     private static final Color TRANSPARENT = new Color(0, 0, 0, 0.5f);
     private static final String PEOPLE1_SPRITE_CONFIG = "configs/sprites_people1.json";
 
-    public static boolean showGrid = false;
-    public static boolean showObjects = false;
-    public static boolean showDebug = false;
-
-    public static float playTime = 0f;
+    private static boolean showGrid = false;
+    private static boolean showObjects = false;
+    private static boolean showDebug = false;
+    @Getter
+    private static float playTime = 0f;
+    @Getter
+    private static GameState gameState;
 
     private MapManager mapManager;
     private Camera camera;
@@ -58,11 +62,17 @@ public class WorldScreen implements Screen {
 
     @Override
     public void show() {
+        setGameState(GameState.RUNNING);
     }
 
     @Override
     public void render(float dt) {
-        playTime += dt;
+        updatePlayTime(dt);
+
+        if (gameState == GameState.PAUSED) {
+            player.updateInput(dt);
+            return;
+        }
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -135,20 +145,58 @@ public class WorldScreen implements Screen {
         mapRenderer.getBatch().end();
     }
 
+    public static void setGameState(GameState newGameState) {
+        switch (newGameState) {
+            case RUNNING:
+                gameState = GameState.RUNNING;
+                break;
+            case PAUSED:
+                if (gameState == GameState.PAUSED) {
+                    gameState = GameState.RUNNING;
+                } else if (gameState == GameState.RUNNING) {
+                    gameState = GameState.PAUSED;
+                }
+                break;
+            default:
+                gameState = GameState.RUNNING;
+                break;
+        }
+    }
+
+    public static void setShowGrid() {
+        showGrid = !showGrid;
+    }
+
+    public static void setShowObjects() {
+        showObjects = !showObjects;
+    }
+
+    public static void setShowDebug() {
+        showDebug = !showDebug;
+    }
+
+    private static void updatePlayTime(float dt) {
+        playTime += dt;
+    }
+
     @Override
     public void resize(int width, int height) {
+        // empty
     }
 
     @Override
     public void pause() {
+        setGameState(GameState.PAUSED);
     }
 
     @Override
     public void resume() {
+        setGameState(GameState.RUNNING);
     }
 
     @Override
     public void hide() {
+        setGameState(GameState.PAUSED);
     }
 
     @Override
@@ -165,10 +213,10 @@ public class WorldScreen implements Screen {
 
             float mapPixelWidth = mapManager.getCurrentMap().getPixelWidth();
             float mapPixelHeight = mapManager.getCurrentMap().getPixelHeight();
-            for (int x = 0; x < mapPixelWidth; x = x + Constant.TILE_SIZE) {
+            for (float x = 0; x < mapPixelWidth; x = x + Constant.TILE_SIZE) {
                 shapeRenderer.line(x, 0, x, mapPixelHeight);
             }
-            for (int y = 0; y < mapPixelHeight; y = y + Constant.TILE_SIZE) {
+            for (float y = 0; y < mapPixelHeight; y = y + Constant.TILE_SIZE) {
                 shapeRenderer.line(0, y, mapPixelWidth, y);
             }
             shapeRenderer.end();

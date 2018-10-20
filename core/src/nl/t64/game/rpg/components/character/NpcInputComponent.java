@@ -39,6 +39,7 @@ public class NpcInputComponent extends InputComponent {
 
     @Override
     public void dispose() {
+        // empty
     }
 
     @Override

@@ -42,11 +42,11 @@ public class Npc {
     }
 
     private Direction createDirection(RectangleMapObject rectObject) {
-        String direction = rectObject.getProperties().get("direction", String.class);
-        if (direction == null) {
+        String newDirection = rectObject.getProperties().get("direction", String.class);
+        if (newDirection == null) {
             return Direction.getRandom();
         } else {
-            return Direction.valueOf(direction.toUpperCase());
+            return Direction.valueOf(newDirection.toUpperCase());
         }
     }
 

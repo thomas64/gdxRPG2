@@ -44,6 +44,7 @@ public class MainMenuGraphicsComponent extends GraphicsComponent {
 
     @Override
     public void dispose() {
+        // empty
     }
 
     @Override
