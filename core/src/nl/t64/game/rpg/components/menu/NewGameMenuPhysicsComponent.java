@@ -40,7 +40,7 @@ public class NewGameMenuPhysicsComponent extends PhysicsComponent {
             stage = ((InitMenuEvent) event).getStage();
         }
         if (event instanceof PressCharEvent) {
-            if (profileName.length() <= 8) {
+            if (profileName.length() < 8 + 1) {
                 profileName.insert(profileName.length() - 1, (((PressCharEvent) event).getCharacter()));
             }
         }

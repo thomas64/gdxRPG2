@@ -1,11 +1,12 @@
 package nl.t64.game.rpg.components.menu;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.menu.InitMenuEvent;
@@ -17,14 +18,13 @@ public class NewGameMenuGraphicsComponent extends GraphicsComponent {
 
     private static final Color DARK_RED = new Color(0.5f, 0f, 0f, 1f);
 
+    private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
     private static final String MENU_FONT = "fonts/fff_tusj.ttf";
     private static final int MENU_SIZE = 30;
 
-    private static final String UISKIN_ATLAS = "skins/uiskin.atlas";
-    private static final String UISKIN_JSON = "skins/uiskin.json";
-
     private static final String PROFILE_NAME = "Enter Profile Name:";
-    private static final int PROFILE_TEXT_LENGTH = 9;
+    private static final int PROFILE_TEXT_LENGTH = 8 + 1;
+    private static final int ALIGN_CENTER = 1;
 
     private static final String MENU_ITEM_START = "Start";
     private static final String MENU_ITEM_BACK = "Back";
@@ -35,15 +35,18 @@ public class NewGameMenuGraphicsComponent extends GraphicsComponent {
     private static final String DIALOG_OVERWRITE = "Overwrite";
 
     private static final int PROFILE_NAME_SPACE_RIGHT = 20;
-    private static final int PROFILE_TEXT_WIDTH = 200;
+    private static final int PROFILE_TEXT_WIDTH = 280;
+    private static final int PROFILE_TEXT_HEIGHT = 75;
     private static final int START_BUTTON_SPACE_RIGHT = 150;
-    private static final int UPPER_TABLE_SPACE_BOTTOM = 30;
+    private static final int UPPER_TABLE_SPACE_BOTTOM = 50;
 
-    private Table table;
+    private BitmapFont menuFont;
     private TextField profileText;
+    private Table table;
     private int selectedIndex;
 
     public NewGameMenuGraphicsComponent() {
+        this.menuFont = Utility.generateBitmapFontFromFreeTypeFont(MENU_FONT, MENU_SIZE);
         this.table = createTable();
     }
 
@@ -64,7 +67,7 @@ public class NewGameMenuGraphicsComponent extends GraphicsComponent {
 
     @Override
     public void dispose() {
-        // empty
+        menuFont.dispose();
     }
 
     @Override
@@ -74,24 +77,17 @@ public class NewGameMenuGraphicsComponent extends GraphicsComponent {
     }
 
     private Table createTable() {
-        BitmapFont menuFont = Utility.generateBitmapFontFromFreeTypeFont(MENU_FONT, MENU_SIZE);
+//        Skin uiskin = new Skin();
+//        uiskin.add("default-font", menuFont, BitmapFont.class);
+//        TextureAtlas atlas = new TextureAtlas(UISKIN_ATLAS);
+//        uiskin.addRegions(atlas);
+//        uiskin.load(Gdx.files.internal(UISKIN_JSON));
 
-        Skin uiskin = new Skin();
-        uiskin.add("default-font", menuFont, BitmapFont.class);
-        TextureAtlas atlas = new TextureAtlas(UISKIN_ATLAS);
-        uiskin.addRegions(atlas);
-        uiskin.load(Gdx.files.internal(UISKIN_JSON));
+        Label.LabelStyle menuStyle = new Label.LabelStyle(menuFont, Color.WHITE);
+        Label profileName = new Label(PROFILE_NAME, menuStyle);
+        Label overwriteLabel = new Label(DIALOG_TEXT, menuStyle);
 
-//        Label.LabelStyle menuStyle = new Label.LabelStyle(menuFont, Color.WHITE);
-        Label profileName = new Label(PROFILE_NAME, uiskin);
-
-//        TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
-//        textFieldStyle.font = menuFont;
-//        textFieldStyle.fontColor = Color.WHITE;
-        profileText = new TextField("", uiskin);
-        profileText.setMaxLength(PROFILE_TEXT_LENGTH);
-
-        Label overwriteLabel = new Label(DIALOG_TEXT, uiskin);
+        profileText = createProfileText();
 
         Dialog.WindowStyle windowStyle = new Dialog.WindowStyle();
         windowStyle.titleFont = menuFont;
@@ -120,7 +116,7 @@ public class NewGameMenuGraphicsComponent extends GraphicsComponent {
 
         Table upperTable = new Table();
         upperTable.add(profileName).spaceRight(PROFILE_NAME_SPACE_RIGHT);
-        upperTable.add(profileText).width(PROFILE_TEXT_WIDTH);
+        upperTable.add(profileText).width(PROFILE_TEXT_WIDTH).height(PROFILE_TEXT_HEIGHT);
 
         Table lowerTable = new Table();
         lowerTable.add(startButton).spaceRight(START_BUTTON_SPACE_RIGHT);
@@ -129,6 +125,21 @@ public class NewGameMenuGraphicsComponent extends GraphicsComponent {
         newTable.add(upperTable).spaceBottom(UPPER_TABLE_SPACE_BOTTOM).row();
         newTable.add(lowerTable);
         return newTable;
+    }
+
+    private TextField createProfileText() {
+        TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
+        textFieldStyle.font = menuFont;
+        textFieldStyle.fontColor = Color.BLACK;
+        Utility.loadTextureAsset(SPRITE_PARCHMENT);
+        Texture texture = Utility.getTextureAsset(SPRITE_PARCHMENT);
+        Sprite sprite = new Sprite(texture);
+        textFieldStyle.background = new SpriteDrawable(sprite);
+
+        TextField textField = new TextField("", textFieldStyle);
+        textField.setMaxLength(PROFILE_TEXT_LENGTH);
+        textField.setAlignment(ALIGN_CENTER);
+        return textField;
     }
 
     private void setAllTextButtonsToWhite() {
