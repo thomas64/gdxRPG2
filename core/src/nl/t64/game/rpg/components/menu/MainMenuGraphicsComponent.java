@@ -15,19 +15,28 @@ import nl.t64.game.rpg.events.menu.UpdateIndexEvent;
 public class MainMenuGraphicsComponent extends GraphicsComponent {
 
     private static final Color DARK_RED = new Color(0.5f, 0f, 0f, 1f);
-    private static final String TITLE = "gdxRPG2";
+
     private static final String TITLE_FONT = "fonts/colonna.ttf";
     private static final int TITLE_SIZE = 200;
+    private static final int TITLE_SPACE_BOTTOM = 75;
+
     private static final String MENU_FONT = "fonts/fff_tusj.ttf";
     private static final int MENU_SIZE = 30;
+    private static final int MENU_SPACE_BOTTOM = 10;
+
+    private static final String TITLE = "gdxRPG2";
+
+    private static final String MENU_ITEM_NEW_GAME = "New Game";
+    private static final String MENU_ITEM_LOAD_GAME = "Load Game";
+    private static final String MENU_ITEM_SETTINGS = "Settings";
+    private static final String MENU_ITEM_EXIT = "Exit";
 
     private Table table;
     private int selectedIndex;
 
     public MainMenuGraphicsComponent() {
-        this.table = new Table();
-        this.table.setFillParent(true);
-        this.fillTable();
+        Label titleLabel = createTitleLabel();
+        this.table = createTable(titleLabel);
     }
 
     @Override
@@ -53,29 +62,30 @@ public class MainMenuGraphicsComponent extends GraphicsComponent {
         setCurrentTextButtonToRed();
     }
 
-    private void fillTable() {
-        Label titleLabel = createTitleLabel();
-
-        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font = Utility.generateBitmapFontFromFreeTypeFont(MENU_FONT, MENU_SIZE);
-        buttonStyle.fontColor = Color.WHITE;
-
-        TextButton newGameButton = new TextButton("New Game", new TextButton.TextButtonStyle(buttonStyle));
-        TextButton loadGameButton = new TextButton("Load Game", new TextButton.TextButtonStyle(buttonStyle));
-        TextButton settingsButton = new TextButton("Settings", new TextButton.TextButtonStyle(buttonStyle));
-        TextButton exitButton = new TextButton("Exit", new TextButton.TextButtonStyle(buttonStyle));
-
-        table.add(titleLabel).spaceBottom(75).row();
-        table.add(newGameButton).spaceBottom(10).row();
-        table.add(loadGameButton).spaceBottom(10).row();
-        table.add(settingsButton).spaceBottom(10).row();
-        table.add(exitButton).spaceBottom(10).row();
-    }
-
     private Label createTitleLabel() {
         BitmapFont titleFont = Utility.generateBitmapFontFromFreeTypeFont(TITLE_FONT, TITLE_SIZE);
         Label.LabelStyle titleStyle = new Label.LabelStyle(titleFont, DARK_RED);
         return new Label(TITLE, titleStyle);
+    }
+
+    private Table createTable(Label titleLabel) {
+        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
+        buttonStyle.font = Utility.generateBitmapFontFromFreeTypeFont(MENU_FONT, MENU_SIZE);
+        buttonStyle.fontColor = Color.WHITE;
+
+        TextButton newGameButton = new TextButton(MENU_ITEM_NEW_GAME, new TextButton.TextButtonStyle(buttonStyle));
+        TextButton loadGameButton = new TextButton(MENU_ITEM_LOAD_GAME, new TextButton.TextButtonStyle(buttonStyle));
+        TextButton settingsButton = new TextButton(MENU_ITEM_SETTINGS, new TextButton.TextButtonStyle(buttonStyle));
+        TextButton exitButton = new TextButton(MENU_ITEM_EXIT, new TextButton.TextButtonStyle(buttonStyle));
+
+        Table newTable = new Table();
+        newTable.setFillParent(true);
+        newTable.add(titleLabel).spaceBottom(TITLE_SPACE_BOTTOM).row();
+        newTable.add(newGameButton).spaceBottom(MENU_SPACE_BOTTOM).row();
+        newTable.add(loadGameButton).spaceBottom(MENU_SPACE_BOTTOM).row();
+        newTable.add(settingsButton).spaceBottom(MENU_SPACE_BOTTOM).row();
+        newTable.add(exitButton).spaceBottom(MENU_SPACE_BOTTOM).row();
+        return newTable;
     }
 
     private void setAllTextButtonsToWhite() {
@@ -87,17 +97,9 @@ public class MainMenuGraphicsComponent extends GraphicsComponent {
     }
 
     private void setCurrentTextButtonToRed() {
+        selectedIndex += 1; // because the title is also in the table.
         ((TextButton) table.getChildren().get(selectedIndex)).getStyle().fontColor = DARK_RED;
+        selectedIndex -= 1;
     }
-
-//    private Skin createMenuSkin() {
-//        BitmapFont menuFont = Utility.generateBitmapFontFromFreeTypeFont(MENU_FONT, MENU_SIZE);
-//        Skin skin = new Skin();
-//        skin.add("default-font", menuFont, BitmapFont.class);
-//        atlas = new TextureAtlas(UISKIN_ATLAS);
-//        skin.addRegions(atlas);
-//        skin.load(Gdx.files.internal(MENU_JSON));
-//        return skin;
-//    }
 
 }

@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import nl.t64.game.rpg.GdxRpg2;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.entities.Menu;
@@ -17,10 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainMenuPhysicsComponent extends PhysicsComponent {
+public class NewGameMenuPhysicsComponent extends PhysicsComponent {
 
-    private static final int NUMBER_OF_ITEMS = 4;
-    private static final int EXIT_INDEX = 3;
+    private static final int NUMBER_OF_ITEMS = 2;
+    private static final int EXIT_INDEX = 1;
 
     private Stage stage;
 
@@ -28,7 +27,7 @@ public class MainMenuPhysicsComponent extends PhysicsComponent {
     private Vector3 mouseSelectCoordinates;
     private boolean isSelected = false;
 
-    public MainMenuPhysicsComponent() {
+    public NewGameMenuPhysicsComponent() {
         this.mouseSelectCoordinates = new Vector3(0, 0, 0);
     }
 
@@ -99,8 +98,8 @@ public class MainMenuPhysicsComponent extends PhysicsComponent {
     }
 
     @Override
-    public void update(Menu mainMenu, GdxRpg2 game) {
-        mainMenu.send(new UpdateIndexEvent(selectedIndex));
+    public void update(Menu newGameMenu, GdxRpg2 game) {
+        newGameMenu.send(new UpdateIndexEvent(selectedIndex));
         if (isSelected) {
             selectMenuItem(game);
             isSelected = false;
@@ -110,16 +109,10 @@ public class MainMenuPhysicsComponent extends PhysicsComponent {
     private void selectMenuItem(GdxRpg2 game) {
         switch (selectedIndex) {
             case 0:
-                game.setScreen(game.getScreenType(ScreenType.NEW_GAME_MENU));
+
                 break;
             case 1:
-                game.setScreen(game.getScreenType(ScreenType.LOAD_GAME_MENU));
-                break;
-            case 2:
-                game.setScreen(game.getScreenType(ScreenType.SETTINGS_MENU));
-                break;
-            case 3:
-                Gdx.app.exit();
+                game.setScreen(game.getScreenType(ScreenType.MAIN_MENU));
                 break;
             default:
                 throw new IllegalArgumentException("SelectedIndex not found.");
@@ -128,11 +121,10 @@ public class MainMenuPhysicsComponent extends PhysicsComponent {
 
     private List<Actor> getMenuItems() {
         List<Actor> actors = new ArrayList<>();
-        Table table = (Table) stage.getActors().get(0); // the only actor(=table) inside this stage.
-        for (Actor actor : table.getChildren()) {
-            if (actor instanceof TextButton) {
-                actors.add(actor);
-            }
+        Table outerTable = (Table) stage.getActors().get(0); // the only actor(=table) inside this stage.
+        Table lowerTable = (Table) outerTable.getChildren().get(1); // two tables inside the table, get the second.
+        for (Actor actor : lowerTable.getChildren()) {
+            actors.add(actor);
         }
         return actors;
     }

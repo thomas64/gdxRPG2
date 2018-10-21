@@ -5,39 +5,39 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import nl.t64.game.rpg.GdxRpg2;
-import nl.t64.game.rpg.components.menu.MainMenuGraphicsComponent;
-import nl.t64.game.rpg.components.menu.MainMenuInputComponent;
-import nl.t64.game.rpg.components.menu.MainMenuPhysicsComponent;
+import nl.t64.game.rpg.components.menu.NewGameMenuGraphicsComponent;
+import nl.t64.game.rpg.components.menu.NewGameMenuInputComponent;
+import nl.t64.game.rpg.components.menu.NewGameMenuPhysicsComponent;
 import nl.t64.game.rpg.entities.Menu;
 import nl.t64.game.rpg.events.menu.InitMenuEvent;
 import nl.t64.game.rpg.events.menu.RefreshInputEvent;
 
 
-public class MainMenuScreen implements Screen {
+public class NewGameMenuScreen implements Screen {
 
     private GdxRpg2 game;
-    private Menu mainMenu;
+    private Menu newGameMenu;
     private Stage stage;
 
-    public MainMenuScreen(GdxRpg2 game) {
+    public NewGameMenuScreen(GdxRpg2 game) {
         this.game = game;
         this.stage = new Stage();
-        this.mainMenu = new Menu(new MainMenuInputComponent(),
-                                 new MainMenuPhysicsComponent(),
-                                 new MainMenuGraphicsComponent());
-        this.mainMenu.send(new InitMenuEvent(this.stage, 0));
+        this.newGameMenu = new Menu(new NewGameMenuInputComponent(),
+                                    new NewGameMenuPhysicsComponent(),
+                                    new NewGameMenuGraphicsComponent());
     }
 
     @Override
     public void show() {
-        mainMenu.send(new RefreshInputEvent());
+        newGameMenu.send(new InitMenuEvent(this.stage, 0));
+        newGameMenu.send(new RefreshInputEvent());
     }
 
     @Override
     public void render(float dt) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        mainMenu.update(game);
+        newGameMenu.update(game);
         stage.draw();
     }
 
@@ -64,7 +64,7 @@ public class MainMenuScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        mainMenu.dispose();
+        newGameMenu.dispose();
     }
 
 }

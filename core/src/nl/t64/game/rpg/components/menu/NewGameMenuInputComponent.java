@@ -9,18 +9,18 @@ import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.menu.*;
 
 
-public class MainMenuInputComponent extends InputComponent implements InputProcessor {
+public class NewGameMenuInputComponent extends InputComponent implements InputProcessor {
 
     private Vector3 lastMouseCoordinates;
     private boolean mouseMoved = false;
     private boolean clickSelect = false;
 
-    private boolean pressUp = false;
-    private boolean pressDown = false;
+    private boolean pressLeft = false;
+    private boolean pressRight = false;
     private boolean pressEnter = false;
     private boolean pressEscape = false;
 
-    public MainMenuInputComponent() {
+    public NewGameMenuInputComponent() {
         this.lastMouseCoordinates = new Vector3();
     }
 
@@ -38,11 +38,11 @@ public class MainMenuInputComponent extends InputComponent implements InputProce
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.UP) {
-            pressUp = true;
+        if (keycode == Input.Keys.LEFT) {
+            pressLeft = true;
         }
-        if (keycode == Input.Keys.DOWN) {
-            pressDown = true;
+        if (keycode == Input.Keys.RIGHT) {
+            pressRight = true;
         }
         if (keycode == Input.Keys.ENTER) {
             pressEnter = true;
@@ -55,11 +55,11 @@ public class MainMenuInputComponent extends InputComponent implements InputProce
 
     @Override
     public boolean keyUp(int keycode) {
-        if (keycode == Input.Keys.UP) {
-            pressUp = false;
+        if (keycode == Input.Keys.LEFT) {
+            pressLeft = false;
         }
-        if (keycode == Input.Keys.DOWN) {
-            pressDown = false;
+        if (keycode == Input.Keys.RIGHT) {
+            pressRight = false;
         }
         if (keycode == Input.Keys.ENTER) {
             pressEnter = false;
@@ -112,29 +112,29 @@ public class MainMenuInputComponent extends InputComponent implements InputProce
     }
 
     @Override
-    public void update(Menu mainMenu) {
-        if (pressUp) {
-            mainMenu.send(new PressUpEvent());
-            pressUp = false;
+    public void update(Menu newGameMenu) {
+        if (pressLeft) {
+            newGameMenu.send(new PressUpEvent());
+            pressLeft = false;
         }
-        if (pressDown) {
-            mainMenu.send(new PressDownEvent());
-            pressDown = false;
+        if (pressRight) {
+            newGameMenu.send(new PressDownEvent());
+            pressRight = false;
         }
         if (pressEnter) {
-            mainMenu.send(new PressEnterEvent());
+            newGameMenu.send(new PressEnterEvent());
             pressEnter = false;
         }
         if (pressEscape) {
-            mainMenu.send(new PressEscapeEvent());
+            newGameMenu.send(new PressEscapeEvent());
             pressEscape = false;
         }
         if (mouseMoved) {
-            mainMenu.send(new MouseMoveEvent(lastMouseCoordinates));
+            newGameMenu.send(new MouseMoveEvent(lastMouseCoordinates));
             mouseMoved = false;
         }
         if (clickSelect) {
-            mainMenu.send(new MouseClickEvent());
+            newGameMenu.send(new MouseClickEvent());
             clickSelect = false;
         }
     }
