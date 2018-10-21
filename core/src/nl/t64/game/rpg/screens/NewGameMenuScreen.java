@@ -25,11 +25,11 @@ public class NewGameMenuScreen implements Screen {
         this.newGameMenu = new Menu(new NewGameMenuInputComponent(),
                                     new NewGameMenuPhysicsComponent(),
                                     new NewGameMenuGraphicsComponent());
+        this.newGameMenu.send(new InitMenuEvent(this.stage, 0));
     }
 
     @Override
     public void show() {
-        newGameMenu.send(new InitMenuEvent(this.stage, 0));
         newGameMenu.send(new RefreshInputEvent());
     }
 
@@ -63,6 +63,7 @@ public class NewGameMenuScreen implements Screen {
 
     @Override
     public void dispose() {
+        stage.clear();
         stage.dispose();
         newGameMenu.dispose();
     }

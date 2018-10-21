@@ -15,6 +15,9 @@ public class NewGameMenuInputComponent extends InputComponent implements InputPr
     private boolean mouseMoved = false;
     private boolean clickSelect = false;
 
+    private Character pressChar = null;
+    private boolean pressBackspace = false;
+
     private boolean pressLeft = false;
     private boolean pressRight = false;
     private boolean pressEnter = false;
@@ -38,6 +41,9 @@ public class NewGameMenuInputComponent extends InputComponent implements InputPr
 
     @Override
     public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.BACKSPACE) {
+            pressBackspace = true;
+        }
         if (keycode == Input.Keys.LEFT) {
             pressLeft = true;
         }
@@ -55,6 +61,9 @@ public class NewGameMenuInputComponent extends InputComponent implements InputPr
 
     @Override
     public boolean keyUp(int keycode) {
+        if (keycode == Input.Keys.BACKSPACE) {
+            pressBackspace = false;
+        }
         if (keycode == Input.Keys.LEFT) {
             pressLeft = false;
         }
@@ -72,7 +81,14 @@ public class NewGameMenuInputComponent extends InputComponent implements InputPr
 
     @Override
     public boolean keyTyped(char character) {
-        return false;
+        String validCharacters = "1234567890abcdefghijklmnopqrstuvwxyz";
+        for (char c : validCharacters.toCharArray()) {
+            if (character == c) {
+                pressChar = character;
+                break;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -113,6 +129,14 @@ public class NewGameMenuInputComponent extends InputComponent implements InputPr
 
     @Override
     public void update(Menu newGameMenu) {
+        if (pressChar != null) {
+            newGameMenu.send(new PressCharEvent(pressChar));
+            pressChar = null;
+        }
+        if (pressBackspace) {
+            newGameMenu.send(new PressBackspaceEvent());
+            pressBackspace = false;
+        }
         if (pressLeft) {
             newGameMenu.send(new PressUpEvent());
             pressLeft = false;

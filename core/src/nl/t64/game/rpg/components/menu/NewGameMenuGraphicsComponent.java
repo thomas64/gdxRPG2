@@ -10,6 +10,7 @@ import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.menu.InitMenuEvent;
 import nl.t64.game.rpg.events.menu.UpdateIndexEvent;
+import nl.t64.game.rpg.events.menu.UpdateProfileNameEvent;
 
 
 public class NewGameMenuGraphicsComponent extends GraphicsComponent {
@@ -23,7 +24,7 @@ public class NewGameMenuGraphicsComponent extends GraphicsComponent {
     private static final String UISKIN_JSON = "skins/uiskin.json";
 
     private static final String PROFILE_NAME = "Enter Profile Name:";
-    private static final String INPUT_FIELD = "_";
+    private static final int PROFILE_TEXT_LENGTH = 9;
 
     private static final String MENU_ITEM_START = "Start";
     private static final String MENU_ITEM_BACK = "Back";
@@ -39,6 +40,7 @@ public class NewGameMenuGraphicsComponent extends GraphicsComponent {
     private static final int UPPER_TABLE_SPACE_BOTTOM = 30;
 
     private Table table;
+    private TextField profileText;
     private int selectedIndex;
 
     public NewGameMenuGraphicsComponent() {
@@ -51,6 +53,9 @@ public class NewGameMenuGraphicsComponent extends GraphicsComponent {
             InitMenuEvent initMenuEvent = (InitMenuEvent) event;
             selectedIndex = initMenuEvent.getSelectedIndex();
             initMenuEvent.getStage().addActor(table);
+        }
+        if (event instanceof UpdateProfileNameEvent) {
+            profileText.setText(((UpdateProfileNameEvent) event).getProfileName());
         }
         if (event instanceof UpdateIndexEvent) {
             selectedIndex = ((UpdateIndexEvent) event).getSelectedIndex();
@@ -83,8 +88,8 @@ public class NewGameMenuGraphicsComponent extends GraphicsComponent {
 //        TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
 //        textFieldStyle.font = menuFont;
 //        textFieldStyle.fontColor = Color.WHITE;
-        TextField profileText = new TextField(INPUT_FIELD, uiskin);
-        profileText.setMaxLength(8);
+        profileText = new TextField("", uiskin);
+        profileText.setMaxLength(PROFILE_TEXT_LENGTH);
 
         Label overwriteLabel = new Label(DIALOG_TEXT, uiskin);
 

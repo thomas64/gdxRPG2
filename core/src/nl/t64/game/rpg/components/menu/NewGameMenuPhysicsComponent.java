@@ -23,6 +23,8 @@ public class NewGameMenuPhysicsComponent extends PhysicsComponent {
 
     private Stage stage;
 
+    private StringBuilder profileName = new StringBuilder("_");
+
     private int selectedIndex;
     private Vector3 mouseSelectCoordinates;
     private boolean isSelected = false;
@@ -36,6 +38,16 @@ public class NewGameMenuPhysicsComponent extends PhysicsComponent {
         if (event instanceof InitMenuEvent) {
             selectedIndex = ((InitMenuEvent) event).getSelectedIndex();
             stage = ((InitMenuEvent) event).getStage();
+        }
+        if (event instanceof PressCharEvent) {
+            if (profileName.length() <= 8) {
+                profileName.insert(profileName.length() - 1, (((PressCharEvent) event).getCharacter()));
+            }
+        }
+        if (event instanceof PressBackspaceEvent) {
+            if (profileName.length() - 1 > 0) {
+                profileName.deleteCharAt(profileName.length() - 2);
+            }
         }
         if (event instanceof PressUpEvent) {
             setIndexDown();
@@ -99,6 +111,7 @@ public class NewGameMenuPhysicsComponent extends PhysicsComponent {
 
     @Override
     public void update(Menu newGameMenu, GdxRpg2 game) {
+        newGameMenu.send(new UpdateProfileNameEvent(profileName.toString()));
         newGameMenu.send(new UpdateIndexEvent(selectedIndex));
         if (isSelected) {
             selectMenuItem(game);
