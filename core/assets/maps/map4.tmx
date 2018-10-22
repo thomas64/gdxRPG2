@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="34" height="26" tilewidth="24" tileheight="24" infinite="0" nextobjectid="32">
  <tileset firstgid="1" name="map4" tilewidth="24" tileheight="24" tilecount="3294" columns="122">
-  <image source="map4.png" width="2928" height="648"/>
+  <image source="tilesets/map4.png" width="2928" height="648"/>
  </tileset>
- <tileset firstgid="3295" source="fsm_town01_e.tsx"/>
- <tileset firstgid="4319" source="fsm_town01_b.tsx"/>
- <tileset firstgid="5343" source="fsm_town01_a2.tsx"/>
+ <tileset firstgid="3295" source="tilesets/fsm_town01_e.tsx"/>
+ <tileset firstgid="4319" source="tilesets/fsm_town01_b.tsx"/>
+ <tileset firstgid="5343" source="tilesets/fsm_town01_a2.tsx"/>
  <layer name="under0_none" width="34" height="26">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
