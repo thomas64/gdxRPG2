@@ -9,8 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import nl.t64.game.rpg.GdxRpg2;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.entities.Menu;
+import nl.t64.game.rpg.entities.MessageBox;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.menu.*;
+import nl.t64.game.rpg.profile.ProfileManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,13 +124,25 @@ public class NewGameMenuPhysicsComponent extends PhysicsComponent {
     private void selectMenuItem(GdxRpg2 game) {
         switch (selectedIndex) {
             case 0:
-
+                processStartButton(game);
                 break;
             case 1:
                 game.setScreen(game.getScreenType(ScreenType.MAIN_MENU));
                 break;
             default:
                 throw new IllegalArgumentException("SelectedIndex not found.");
+        }
+    }
+
+    private void processStartButton(GdxRpg2 game) {
+        String newProfileName = profileName.toString().substring(0, profileName.length() - 1);
+        boolean exists = ProfileManager.getInstance().doesProfileExist(newProfileName);
+        if (exists) {
+            MessageBox overwriteDialog = new MessageBox(game, newProfileName);
+            overwriteDialog.show(stage);
+        } else {
+            ProfileManager.getInstance().createNewProfile(newProfileName);
+            game.setScreen(game.getScreenType(ScreenType.WORLD));
         }
     }
 

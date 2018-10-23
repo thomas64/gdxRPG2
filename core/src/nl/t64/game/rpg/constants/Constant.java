@@ -1,5 +1,7 @@
 package nl.t64.game.rpg.constants;
 
+import com.badlogic.gdx.graphics.Color;
+
 
 public class Constant {
 
@@ -13,6 +15,8 @@ public class Constant {
     public static final float MOVE_SPEED_2 = 144f; // 48 * 3
     public static final float MOVE_SPEED_3 = 240f; // 48 * 5
     public static final float MOVE_SPEED_4 = 960f; // 48 * 20
+
+    public static final Color DARK_RED = new Color(0.5f, 0f, 0f, 1f);
 
     private Constant() {
         throw new IllegalStateException("Constant class");

@@ -11,6 +11,7 @@ import nl.t64.game.rpg.components.menu.NewGameMenuPhysicsComponent;
 import nl.t64.game.rpg.entities.Menu;
 import nl.t64.game.rpg.events.menu.InitMenuEvent;
 import nl.t64.game.rpg.events.menu.RefreshInputEvent;
+import nl.t64.game.rpg.profile.ProfileManager;
 
 
 public class NewGameMenuScreen implements Screen {
@@ -30,6 +31,7 @@ public class NewGameMenuScreen implements Screen {
 
     @Override
     public void show() {
+        ProfileManager.getInstance().storeAllProfiles();
         newGameMenu.send(new RefreshInputEvent());
     }
 
@@ -38,6 +40,7 @@ public class NewGameMenuScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         newGameMenu.update(game);
+        stage.act();
         stage.draw();
     }
 

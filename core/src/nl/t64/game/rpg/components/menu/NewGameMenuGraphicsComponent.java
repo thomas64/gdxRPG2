@@ -5,9 +5,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Utility;
+import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.menu.InitMenuEvent;
 import nl.t64.game.rpg.events.menu.UpdateIndexEvent;
@@ -16,23 +21,15 @@ import nl.t64.game.rpg.events.menu.UpdateProfileNameEvent;
 
 public class NewGameMenuGraphicsComponent extends GraphicsComponent {
 
-    private static final Color DARK_RED = new Color(0.5f, 0f, 0f, 1f);
-
     private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
     private static final String MENU_FONT = "fonts/fff_tusj.ttf";
     private static final int MENU_SIZE = 30;
 
     private static final String PROFILE_NAME = "Enter Profile Name:";
     private static final int PROFILE_TEXT_LENGTH = 8 + 1;
-    private static final int ALIGN_CENTER = 1;
 
     private static final String MENU_ITEM_START = "Start";
     private static final String MENU_ITEM_BACK = "Back";
-
-    private static final String DIALOG_TITLE = "Overwrite?";
-    private static final String DIALOG_TEXT = "Overwrite existing profile name?";
-    private static final String DIALOG_CANCEL = "Cancel";
-    private static final String DIALOG_OVERWRITE = "Overwrite";
 
     private static final int PROFILE_NAME_SPACE_RIGHT = 20;
     private static final int PROFILE_TEXT_WIDTH = 280;
@@ -84,32 +81,15 @@ public class NewGameMenuGraphicsComponent extends GraphicsComponent {
 //        uiskin.load(Gdx.files.internal(UISKIN_JSON));
 
         Label.LabelStyle menuStyle = new Label.LabelStyle(menuFont, Color.WHITE);
-        Label profileName = new Label(PROFILE_NAME, menuStyle);
-        Label overwriteLabel = new Label(DIALOG_TEXT, menuStyle);
-
-        profileText = createProfileText();
-
-        Dialog.WindowStyle windowStyle = new Dialog.WindowStyle();
-        windowStyle.titleFont = menuFont;
-        windowStyle.titleFontColor = Color.WHITE;
-        Dialog overwriteDialog = new Dialog(DIALOG_TITLE, windowStyle);
-        overwriteDialog.setKeepWithinStage(true);
-        overwriteDialog.setModal(true);
-        overwriteDialog.setMovable(false);
-        overwriteDialog.text(overwriteLabel);
-
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = menuFont;
         buttonStyle.fontColor = Color.WHITE;
-        TextButton cancelButton = new TextButton(DIALOG_CANCEL, buttonStyle);
-        TextButton overwriteButton = new TextButton(DIALOG_OVERWRITE, buttonStyle);
+
+        Label profileName = new Label(PROFILE_NAME, menuStyle);
+        profileText = createProfileText();
+
         TextButton startButton = new TextButton(MENU_ITEM_START, new TextButton.TextButtonStyle(buttonStyle));
         TextButton backButton = new TextButton(MENU_ITEM_BACK, new TextButton.TextButtonStyle(buttonStyle));
-
-        //Layout
-        overwriteDialog.row();
-        overwriteDialog.button(overwriteButton).bottom().left();
-        overwriteDialog.button(cancelButton).bottom().right();
 
         Table newTable = new Table();
         newTable.setFillParent(true);
@@ -138,7 +118,7 @@ public class NewGameMenuGraphicsComponent extends GraphicsComponent {
 
         TextField textField = new TextField("", textFieldStyle);
         textField.setMaxLength(PROFILE_TEXT_LENGTH);
-        textField.setAlignment(ALIGN_CENTER);
+        textField.setAlignment(Align.center);
         return textField;
     }
 
@@ -151,7 +131,7 @@ public class NewGameMenuGraphicsComponent extends GraphicsComponent {
 
     private void setCurrentTextButtonToRed() {
         Table lowerTable = (Table) table.getChildren().get(1); // two tables inside the table, get the second.
-        ((TextButton) lowerTable.getChildren().get(selectedIndex)).getStyle().fontColor = DARK_RED;
+        ((TextButton) lowerTable.getChildren().get(selectedIndex)).getStyle().fontColor = Constant.DARK_RED;
     }
 
 }

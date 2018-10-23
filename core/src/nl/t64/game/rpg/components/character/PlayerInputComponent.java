@@ -193,6 +193,9 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
 
     @Override
     public void update(Character player, float dt) {
+        if (Gdx.input.getInputProcessor() != this) {    // todo, ik weet nog niet of dit wel een juiste beslissing is.
+            Gdx.input.setInputProcessor(this);          // todo, dit is om uit menu de input over te geven.
+        }
 
         if (pressPause) {
             WorldScreen.setGameState(GameState.PAUSED);

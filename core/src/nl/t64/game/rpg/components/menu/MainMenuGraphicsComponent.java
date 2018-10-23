@@ -7,14 +7,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import nl.t64.game.rpg.Utility;
+import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.menu.InitMenuEvent;
 import nl.t64.game.rpg.events.menu.UpdateIndexEvent;
 
 
 public class MainMenuGraphicsComponent extends GraphicsComponent {
-
-    private static final Color DARK_RED = new Color(0.5f, 0f, 0f, 1f);
 
     private static final String TITLE_FONT = "fonts/colonna.ttf";
     private static final int TITLE_SIZE = 200;
@@ -64,7 +63,7 @@ public class MainMenuGraphicsComponent extends GraphicsComponent {
 
     private Label createTitleLabel() {
         BitmapFont titleFont = Utility.generateBitmapFontFromFreeTypeFont(TITLE_FONT, TITLE_SIZE);
-        Label.LabelStyle titleStyle = new Label.LabelStyle(titleFont, DARK_RED);
+        Label.LabelStyle titleStyle = new Label.LabelStyle(titleFont, Constant.DARK_RED);
         return new Label(TITLE, titleStyle);
     }
 
@@ -98,7 +97,7 @@ public class MainMenuGraphicsComponent extends GraphicsComponent {
 
     private void setCurrentTextButtonToRed() {
         selectedIndex += 1; // because the title is also in the table.
-        ((TextButton) table.getChildren().get(selectedIndex)).getStyle().fontColor = DARK_RED;
+        ((TextButton) table.getChildren().get(selectedIndex)).getStyle().fontColor = Constant.DARK_RED;
         selectedIndex -= 1;
     }
 
