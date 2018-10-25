@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import nl.t64.game.rpg.GdxRpg2;
+import nl.t64.game.rpg.constants.KeyDown;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.entities.Menu;
 import nl.t64.game.rpg.entities.MessageBox;
@@ -51,18 +52,8 @@ public class NewGameMenuPhysicsComponent extends PhysicsComponent {
                 profileName.deleteCharAt(profileName.length() - 2);
             }
         }
-        if (event instanceof PressUpEvent) {
-            setIndexDown();
-        }
-        if (event instanceof PressDownEvent) {
-            setIndexUp();
-        }
-        if (event instanceof PressEnterEvent) {
-            isSelected = true;
-        }
-        if (event instanceof PressEscapeEvent) {
-            selectedIndex = EXIT_INDEX;
-            isSelected = true;
+        if (event instanceof KeyDownEvent) {
+            handleKeyDownEvent(((KeyDownEvent) event).getKeyDown());
         }
         if (event instanceof MouseMoveEvent) {
             mouseSelectCoordinates = ((MouseMoveEvent) event).getMouseCoordinates();
@@ -70,6 +61,26 @@ public class NewGameMenuPhysicsComponent extends PhysicsComponent {
         }
         if (event instanceof MouseClickEvent) {
             setIsSelected();
+        }
+    }
+
+    private void handleKeyDownEvent(KeyDown keyDown) {
+        switch (keyDown) {
+            case LEFT:
+                setIndexDown();
+                break;
+            case RIGHT:
+                setIndexUp();
+                break;
+            case ENTER:
+                isSelected = true;
+                break;
+            case ESCAPE:
+                selectedIndex = EXIT_INDEX;
+                isSelected = true;
+                break;
+            default:
+                break;
         }
     }
 

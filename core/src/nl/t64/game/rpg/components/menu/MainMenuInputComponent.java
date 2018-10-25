@@ -1,132 +1,30 @@
 package nl.t64.game.rpg.components.menu;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.Vector3;
+import nl.t64.game.rpg.constants.KeyDown;
 import nl.t64.game.rpg.entities.Menu;
-import nl.t64.game.rpg.events.Event;
-import nl.t64.game.rpg.events.menu.*;
+import nl.t64.game.rpg.events.menu.KeyDownEvent;
+import nl.t64.game.rpg.events.menu.MouseClickEvent;
+import nl.t64.game.rpg.events.menu.MouseMoveEvent;
 
 
-public class MainMenuInputComponent extends InputComponent implements InputProcessor {
-
-    private Vector3 lastMouseCoordinates;
-    private boolean mouseMoved = false;
-    private boolean clickSelect = false;
-
-    private boolean pressUp = false;
-    private boolean pressDown = false;
-    private boolean pressEnter = false;
-    private boolean pressEscape = false;
-
-    public MainMenuInputComponent() {
-        this.lastMouseCoordinates = new Vector3();
-    }
-
-    @Override
-    public void receive(Event event) {
-        if (event instanceof RefreshInputEvent) {
-            Gdx.input.setInputProcessor(this);
-        }
-    }
-
-    @Override
-    public void dispose() {
-        Gdx.input.setInputProcessor(null);
-    }
-
-    @Override
-    public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.UP) {
-            pressUp = true;
-        }
-        if (keycode == Input.Keys.DOWN) {
-            pressDown = true;
-        }
-        if (keycode == Input.Keys.ENTER) {
-            pressEnter = true;
-        }
-        if (keycode == Input.Keys.ESCAPE) {
-            pressEscape = true;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        if (keycode == Input.Keys.UP) {
-            pressUp = false;
-        }
-        if (keycode == Input.Keys.DOWN) {
-            pressDown = false;
-        }
-        if (keycode == Input.Keys.ENTER) {
-            pressEnter = false;
-        }
-        if (keycode == Input.Keys.ESCAPE) {
-            pressEscape = false;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (button == Input.Buttons.LEFT || button == Input.Buttons.RIGHT) {
-            lastMouseCoordinates.set(screenX, screenY, 0);
-        }
-        if (button == Input.Buttons.LEFT) {
-            clickSelect = true;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if (button == Input.Buttons.LEFT) {
-            clickSelect = false;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        mouseMoved = true;
-        lastMouseCoordinates.set(screenX, screenY, 0);
-        return true;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
-    }
+public class MainMenuInputComponent extends InputComponent {
 
     @Override
     public void update(Menu mainMenu) {
         if (pressUp) {
-            mainMenu.send(new PressUpEvent());
+            mainMenu.send(new KeyDownEvent(KeyDown.UP));
             pressUp = false;
         }
         if (pressDown) {
-            mainMenu.send(new PressDownEvent());
+            mainMenu.send(new KeyDownEvent(KeyDown.DOWN));
             pressDown = false;
         }
         if (pressEnter) {
-            mainMenu.send(new PressEnterEvent());
+            mainMenu.send(new KeyDownEvent(KeyDown.ENTER));
             pressEnter = false;
         }
         if (pressEscape) {
-            mainMenu.send(new PressEscapeEvent());
+            mainMenu.send(new KeyDownEvent(KeyDown.ESCAPE));
             pressEscape = false;
         }
         if (mouseMoved) {
