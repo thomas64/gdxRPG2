@@ -1,14 +1,11 @@
 package nl.t64.game.rpg.entities;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -35,12 +32,17 @@ public class MessageBox {
     private static final int NUMBER_OF_ITEMS = 2;
     private static final int EXIT_INDEX = 1;
 
+    private GdxRpg2 game;
+    private String profileName;
+
     private Stage stage;
     private BitmapFont menuFont;
     private Dialog dialog;
     private int selectedIndex = 1;
 
     public MessageBox(GdxRpg2 game, String profileName) {
+        this.game = game;
+        this.profileName = profileName;
 
         menuFont = Utility.generateBitmapFontFromFreeTypeFont(MENU_FONT, MENU_SIZE);
 
@@ -84,69 +86,16 @@ public class MessageBox {
         setAllTextButtonsToBlack();
         setCurrentTextButtonToRed();
 
-        dialog.addListener(new InputListener() {
-            @Override
-            public boolean keyDown(InputEvent event, int keycode) {
-
-                switch (keycode) {
-                    case Input.Keys.LEFT:
-                        if (selectedIndex <= 0) {
-                            selectedIndex = 0;
-                        } else {
-                            selectedIndex -= 1;
-                        }
-                        break;
-                    case Input.Keys.RIGHT:
-                        if (selectedIndex >= NUMBER_OF_ITEMS - 1) {
-                            selectedIndex = NUMBER_OF_ITEMS - 1;
-                        } else {
-                            selectedIndex += 1;
-                        }
-                        break;
-                    case Input.Keys.ENTER:
-                        selectItem(game, profileName);
-                        break;
-                    case Input.Keys.ESCAPE:
-                        selectedIndex = EXIT_INDEX;
-                        selectItem(game, profileName);
-                        break;
-                    default:
-                }
-                setAllTextButtonsToBlack();
-                setCurrentTextButtonToRed();
-                return true;
-            }
-        });
-
-        // todo, listeners op de buttons direct.
-        // todo, listeners in aparte classes.
-        // todo, complete refactoring.
-        // todo, meerdere screens maken, load enzo.
-        // todo, de rest van hoofdstuk 4 doornemen.
-        // todo, de menu componenten undryen.
-        // todo, multiplexer voor het hide probleem
-
-        int i = 0;
-        for (Actor actor : dialog.getButtonTable().getChildren()) {
-            int finalI = i;
-            actor.addListener(new InputListener() {
-                @Override
-                public boolean mouseMoved(InputEvent event, float x, float y) {
-                    selectedIndex = finalI;
-                    setAllTextButtonsToBlack();
-                    setCurrentTextButtonToRed();
-                    return true;
-                }
-
-                @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    selectItem(game, profileName);
-                    return true;
-                }
-            });
-            i++;
-        }
+        dialog.addListener(new DialogKeyListener(this::updateIndex, this::selectItem, NUMBER_OF_ITEMS, EXIT_INDEX));
+        overwriteButton.addListener(new ButtonMouseListener(this::updateIndex, this::selectItem, 0));
+        cancelButton.addListener(new ButtonMouseListener(this::updateIndex, this::selectItem, 1));
     }
+
+    // todo, complete refactoring.
+    // todo, meerdere screens maken, load enzo.
+    // todo, de rest van hoofdstuk 4 doornemen.
+    // todo, de menu componenten undryen.
+    // todo, multiplexer voor het hide probleem
 
     public void show(Stage stage) {
         this.stage = stage;
@@ -159,7 +108,13 @@ public class MessageBox {
         Gdx.input.setInputProcessor(null);
     }
 
-    private void selectItem(GdxRpg2 game, String profileName) {
+    private void updateIndex(Integer newIndex) {
+        selectedIndex = newIndex;
+        setAllTextButtonsToBlack();
+        setCurrentTextButtonToRed();
+    }
+
+    private void selectItem() {
         switch (selectedIndex) {
             case 0:
                 ProfileManager.getInstance().createNewProfile(profileName);
