@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.entities;
+package nl.t64.game.rpg.screens.menu;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -26,6 +26,7 @@ public class ButtonMouseListener extends InputListener {
 
     @Override
     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+        updateIndexFunction.accept(index);
         selectItemFunction.run();
         return true;
     }

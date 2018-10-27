@@ -7,6 +7,8 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
+import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.Json;
@@ -57,6 +59,35 @@ public final class Utility {
         return map;
     }
 
+    public static void loadTrueTypeAsset(String trueTypeFilenamePath, int fontSize) {
+        if (ASSET_MANAGER.isLoaded(trueTypeFilenamePath)) {
+            return;
+        }
+        if (FILE_PATH_RESOLVER.resolve(trueTypeFilenamePath).exists()) {
+            ASSET_MANAGER.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(FILE_PATH_RESOLVER));
+            ASSET_MANAGER.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(FILE_PATH_RESOLVER));
+            FreetypeFontLoader.FreeTypeFontLoaderParameter parameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+            parameter.fontFileName = trueTypeFilenamePath;
+            parameter.fontParameters.size = fontSize;
+            ASSET_MANAGER.load(trueTypeFilenamePath, BitmapFont.class, parameter);
+            // todo, loading screen. for now, just block until font is loaded
+            ASSET_MANAGER.finishLoadingAsset(trueTypeFilenamePath);
+            Logger.trueTypeLoaded(TAG, trueTypeFilenamePath);
+        } else {
+            Logger.trueTypeLoadingFailed(TAG, trueTypeFilenamePath);
+        }
+    }
+
+    public static BitmapFont getTrueTypeAsset(String trueTypeFilenamePath) {
+        BitmapFont bitmapFont = null;
+        if (ASSET_MANAGER.isLoaded(trueTypeFilenamePath)) {
+            bitmapFont = ASSET_MANAGER.get(trueTypeFilenamePath, BitmapFont.class);
+        } else {
+            Logger.trueTypeNotLoaded(TAG, trueTypeFilenamePath);
+        }
+        return bitmapFont;
+    }
+
     public static void loadTextureAsset(String textureFilenamePath) {
         if (ASSET_MANAGER.isLoaded(textureFilenamePath)) {
             return;
@@ -86,15 +117,6 @@ public final class Utility {
     public static ObjectMap<String, LoadSpriteEvent> getAllSpriteConfigsFromJson(String path) {
         Json json = new Json();
         return json.fromJson(ObjectMap.class, LoadSpriteEvent.class, Gdx.files.internal(path));
-    }
-
-    public static BitmapFont generateBitmapFontFromFreeTypeFont(String fontPath, int fontSize) {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(fontPath));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = fontSize;
-        BitmapFont bitmapFont = generator.generateFont(parameter);
-        generator.dispose();
-        return bitmapFont;
     }
 
 }

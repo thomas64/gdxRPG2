@@ -25,6 +25,18 @@ public class Logger {
         Gdx.app.debug(tag, "Map doesn't exist: " + mapFilenamePath);
     }
 
+    public static void trueTypeLoaded(String tag, String trueTypeFilenamePath) {
+        Gdx.app.debug(tag, "TrueType loaded: " + trueTypeFilenamePath);
+    }
+
+    public static void trueTypeNotLoaded(String tag, String trueTypeFilenamePath) {
+        Gdx.app.debug(tag, "TrueType is not loaded: " + trueTypeFilenamePath);
+    }
+
+    public static void trueTypeLoadingFailed(String tag, String trueTypeFilenamePath) {
+        Gdx.app.debug(tag, "TrueType doesn't exist: " + trueTypeFilenamePath);
+    }
+
     public static void textureLoaded(String tag, String textureFilenamePath) {
         Gdx.app.debug(tag, "Texture loaded: " + textureFilenamePath);
     }

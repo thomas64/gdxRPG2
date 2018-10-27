@@ -3,15 +3,15 @@ package nl.t64.game.rpg;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import nl.t64.game.rpg.constants.ScreenType;
-import nl.t64.game.rpg.screens.MainMenuScreen;
-import nl.t64.game.rpg.screens.NewGameMenuScreen;
 import nl.t64.game.rpg.screens.WorldScreen;
+import nl.t64.game.rpg.screens.menu.MainMenu;
+import nl.t64.game.rpg.screens.menu.NewMenu;
 
 
 public class GdxRpg2 extends Game {
 
-    private MainMenuScreen mainMenuScreen;
-    private NewGameMenuScreen newGameMenuScreen;
+    private MainMenu mainMenuScreen;
+    private NewMenu newGameMenuScreen;
     private WorldScreen worldScreen;
 
     public Screen getScreenType(ScreenType screenType) {
@@ -30,8 +30,8 @@ public class GdxRpg2 extends Game {
 
     @Override
     public void create() {
-        mainMenuScreen = new MainMenuScreen(this);
-        newGameMenuScreen = new NewGameMenuScreen(this);
+        mainMenuScreen = new MainMenu(this);
+        newGameMenuScreen = new NewMenu(this);
         worldScreen = new WorldScreen();
         setScreen(mainMenuScreen);
     }
