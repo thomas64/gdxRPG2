@@ -63,11 +63,11 @@ public class GameMap {
         return blockers.stream().anyMatch(characterRect::overlaps);
     }
 
-    public void setPlayerStartOfGameSpawnLocation() {
+    public void setPlayerStartOfGameSpawnLocation(MapTitle mapTitle) {
         if (playerSpawnLocation.isZero()) {
             MapObject dummyObject = new RectangleMapObject();
-            dummyObject.setName(MapTitle.NONE.name());
-            Portal startOfGamePortal = new Portal(dummyObject, MapTitle.MAP1);
+            dummyObject.setName(mapTitle.name());
+            Portal startOfGamePortal = new Portal(dummyObject, mapTitle);
             setPlayerSpawnLocation(startOfGamePortal);
         }
     }

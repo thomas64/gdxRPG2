@@ -16,6 +16,8 @@ public class MapManager {
 
     private static final String TAG = MapManager.class.getSimpleName();
 
+    private static final MapTitle START_OF_GAME_MAP = MapTitle.MAP4;
+
     private GameMap currentMap = null;
     @Getter
     @Setter
@@ -38,8 +40,8 @@ public class MapManager {
 
     private void loadStartOfGameMapIfNecessary() {
         if (currentMap == null) {
-            loadMap(MapTitle.MAP1);
-            currentMap.setPlayerStartOfGameSpawnLocation();
+            loadMap(START_OF_GAME_MAP);
+            currentMap.setPlayerStartOfGameSpawnLocation(START_OF_GAME_MAP);
         }
     }
 

@@ -136,6 +136,7 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
         if (state == CharacterState.WALKING && velocity != Constant.MOVE_SPEED_4) {
             turnCharacters(npcCharacter);
             checkBlocker(mapManager, npcCharacter, dt);
+        } else if (state == CharacterState.WALKING) {
             checkPortals(mapManager);
         }
     }

@@ -428,11 +428,6 @@
   <object id="53" x="336" y="432" width="48" height="48"/>
  </objectgroup>
  <objectgroup name="spawn_layer">
-  <object id="30" name="map1" x="264" y="240" width="48" height="48">
-   <properties>
-    <property name="direction" value="north"/>
-   </properties>
-  </object>
   <object id="38" name="map2" type="2" x="984" y="744" width="48" height="48"/>
   <object id="39" name="map2" type="1" x="984" y="192" width="48" height="48"/>
   <object id="42" name="map3" x="696" y="24" width="48" height="48">
