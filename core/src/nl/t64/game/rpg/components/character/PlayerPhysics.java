@@ -9,7 +9,6 @@ import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
-import nl.t64.game.rpg.entities.Character;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.*;
 import nl.t64.game.rpg.tiled.Portal;
@@ -20,9 +19,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 
-public class PlayerPhysicsComponent extends PhysicsComponent {
+public class PlayerPhysics extends Physics {
 
-    private static final String TAG = PlayerPhysicsComponent.class.getSimpleName();
+    private static final String TAG = PlayerPhysics.class.getSimpleName();
     private static final float MINIMUM_SELECT_DISTANCE = 144f;
 
     private boolean isMouseSelectEnabled = false;
@@ -31,7 +30,7 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
     private boolean isActionPressed = false;
 
 
-    public PlayerPhysicsComponent() {
+    public PlayerPhysics() {
         this.boundingBoxWidthPercentage = 0.80f;
         this.boundingBoxHeightPercentage = 0.40f;
         this.mouseSelectCoordinates = new Vector3(0, 0, 0);

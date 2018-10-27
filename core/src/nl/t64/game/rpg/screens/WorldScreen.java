@@ -13,11 +13,11 @@ import lombok.Getter;
 import nl.t64.game.rpg.Camera;
 import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.Utility;
+import nl.t64.game.rpg.components.character.Character;
 import nl.t64.game.rpg.components.character.*;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.GameState;
-import nl.t64.game.rpg.entities.Character;
 import nl.t64.game.rpg.events.character.LoadSpriteEvent;
 import nl.t64.game.rpg.events.character.StartDirectionEvent;
 import nl.t64.game.rpg.events.character.StartPositionEvent;
@@ -54,9 +54,7 @@ public class WorldScreen implements Screen {
         this.camera = new Camera();
         this.mapManager.setCamera(this.camera);
         this.mapRenderer = new OrthogonalTiledMapRenderer(this.mapManager.getCurrentMap().getTiledMap());
-        this.player = new Character(new PlayerInputComponent(),
-                                    new PlayerPhysicsComponent(),
-                                    new PlayerGraphicsComponent());
+        this.player = new Character(new PlayerInput(), new PlayerPhysics(), new PlayerGraphics());
         this.shapeRenderer = new ShapeRenderer();
     }
 
@@ -101,9 +99,7 @@ public class WorldScreen implements Screen {
     private void loadNpcCharacters() {
         npcCharacters = new ArrayList<>();
         for (Npc npc : mapManager.getCurrentMap().getNpcs()) {
-            Character npcCharacter = new Character(new NpcInputComponent(),
-                                                   new NpcPhysicsComponent(),
-                                                   new NpcGraphicsComponent());
+            Character npcCharacter = new Character(new NpcInput(), new NpcPhysics(), new NpcGraphics());
             npcCharacters.add(npcCharacter);
             npcCharacter.send(new StartStateEvent(npc.getState()));
             npcCharacter.send(new StartDirectionEvent(npc.getDirection()));

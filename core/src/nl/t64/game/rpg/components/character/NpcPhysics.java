@@ -5,23 +5,21 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.constants.CharacterState;
-import nl.t64.game.rpg.entities.Character;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.*;
 
 import java.util.List;
 
 
-public class NpcPhysicsComponent extends PhysicsComponent {
+public class NpcPhysics extends Physics {
 
-    private static final String TAG = NpcPhysicsComponent.class.getSimpleName();
+    private static final String TAG = NpcPhysics.class.getSimpleName();
     private static final int WANDER_BOX_SIZE = 240;
     private static final int WANDER_BOX_POSITION = -96;
 
     private Rectangle wanderBox;
 
-
-    public NpcPhysicsComponent() {
+    public NpcPhysics() {
         this.velocity = 48f;
         this.boundingBoxWidthPercentage = 0.80f;
         this.boundingBoxHeightPercentage = 1.00f;

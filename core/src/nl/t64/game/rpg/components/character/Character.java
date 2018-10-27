@@ -1,14 +1,10 @@
-package nl.t64.game.rpg.entities;
+package nl.t64.game.rpg.components.character;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.MapManager;
-import nl.t64.game.rpg.components.Component;
-import nl.t64.game.rpg.components.character.GraphicsComponent;
-import nl.t64.game.rpg.components.character.InputComponent;
-import nl.t64.game.rpg.components.character.PhysicsComponent;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.events.Event;
 
@@ -23,14 +19,14 @@ public class Character {
     private static final int MAX_COMPONENTS = 3;
     private List<Component> components;
 
-    private InputComponent inputComponent;
-    private PhysicsComponent physicsComponent;
-    private GraphicsComponent graphicsComponent;
+    private Input inputComponent;
+    private Physics physicsComponent;
+    private Graphics graphicsComponent;
 
-    public Character(InputComponent ic, PhysicsComponent pc, GraphicsComponent gc) {
-        inputComponent = ic;
-        physicsComponent = pc;
-        graphicsComponent = gc;
+    public Character(Input input, Physics physics, Graphics graphics) {
+        inputComponent = input;
+        physicsComponent = physics;
+        graphicsComponent = graphics;
 
         components = new ArrayList<>(MAX_COMPONENTS);
         components.add(inputComponent);

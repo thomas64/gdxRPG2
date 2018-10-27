@@ -5,16 +5,14 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import lombok.Getter;
 import nl.t64.game.rpg.MapManager;
-import nl.t64.game.rpg.components.Component;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
-import nl.t64.game.rpg.entities.Character;
 
 import java.util.List;
 
 
-public abstract class PhysicsComponent implements Component {
+public abstract class Physics implements Component {
 
     @Getter
     CharacterState state;
@@ -28,8 +26,7 @@ public abstract class PhysicsComponent implements Component {
     float boundingBoxWidthPercentage;
     float boundingBoxHeightPercentage;
 
-
-    PhysicsComponent() {
+    Physics() {
         this.boundingBox = new Rectangle();
         this.oldPosition = new Vector2();
         this.currentPosition = new Vector2();

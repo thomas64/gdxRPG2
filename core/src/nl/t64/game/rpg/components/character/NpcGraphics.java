@@ -6,18 +6,17 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import nl.t64.game.rpg.constants.Constant;
-import nl.t64.game.rpg.entities.Character;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.*;
 
 
-public class NpcGraphicsComponent extends GraphicsComponent {
+public class NpcGraphics extends Graphics {
 
-    private static final String TAG = NpcGraphicsComponent.class.getSimpleName();
+    private static final String TAG = NpcGraphics.class.getSimpleName();
 
     private boolean isSelected = false;
 
-    public NpcGraphicsComponent() {
+    public NpcGraphics() {
         this.frameDuration = 0.25f;
     }
 

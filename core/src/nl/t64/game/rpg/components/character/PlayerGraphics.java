@@ -5,14 +5,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ObjectMap;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
-import nl.t64.game.rpg.entities.Character;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.*;
 
 
-public class PlayerGraphicsComponent extends GraphicsComponent {
+public class PlayerGraphics extends Graphics {
 
-    private static final String TAG = PlayerGraphicsComponent.class.getSimpleName();
+    private static final String TAG = PlayerGraphics.class.getSimpleName();
     private static final String HERO1_SPRITE_CONFIG = "configs/sprites_hero1.json";
     private static final String HERO_NAME = "mozes";
     private static final float SLOW_FRAMES = 0.50f;
@@ -20,7 +19,7 @@ public class PlayerGraphicsComponent extends GraphicsComponent {
     private static final float FAST_FRAMES = 0.15f;
     private static final float NO_FRAMES = 0f;
 
-    public PlayerGraphicsComponent() {
+    public PlayerGraphics() {
         ObjectMap<String, LoadSpriteEvent> heroData = Utility.getAllSpriteConfigsFromJson(HERO1_SPRITE_CONFIG);
         LoadSpriteEvent loadSpriteEvent = heroData.get(HERO_NAME);
         loadWalkingAnimation(loadSpriteEvent.getPath(), loadSpriteEvent.getCol(), loadSpriteEvent.getRow());

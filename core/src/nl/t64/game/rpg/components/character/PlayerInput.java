@@ -1,22 +1,20 @@
 package nl.t64.game.rpg.components.character;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.constants.GameState;
-import nl.t64.game.rpg.entities.Character;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.*;
 import nl.t64.game.rpg.screens.WorldScreen;
 
 
-public class PlayerInputComponent extends InputComponent implements InputProcessor {
+public class PlayerInput extends Input implements InputProcessor {
 
-    private static final String TAG = PlayerInputComponent.class.getSimpleName();
+    private static final String TAG = PlayerInput.class.getSimpleName();
     private static final float TURN_DELAY_TIME = 8f / 60f; // of a second
 
     private Vector3 lastMouseCoordinates;
@@ -44,7 +42,7 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
 
     private Direction direction;
 
-    public PlayerInputComponent() {
+    public PlayerInput() {
         this.lastMouseCoordinates = new Vector3();
         Gdx.input.setInputProcessor(this);
     }
@@ -63,46 +61,46 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.CONTROL_LEFT || keycode == Input.Keys.CONTROL_RIGHT) {
+        if (keycode == com.badlogic.gdx.Input.Keys.CONTROL_LEFT || keycode == com.badlogic.gdx.Input.Keys.CONTROL_RIGHT) {
             pressCtrl = true;
         }
-        if (keycode == Input.Keys.SHIFT_LEFT || keycode == Input.Keys.SHIFT_RIGHT) {
+        if (keycode == com.badlogic.gdx.Input.Keys.SHIFT_LEFT || keycode == com.badlogic.gdx.Input.Keys.SHIFT_RIGHT) {
             pressShift = true;
         }
 
-        if (keycode == Input.Keys.A) {
+        if (keycode == com.badlogic.gdx.Input.Keys.A) {
             pressAction = true;
         }
 
-        if (keycode == Input.Keys.UP) {
+        if (keycode == com.badlogic.gdx.Input.Keys.UP) {
             pressUp = true;
         }
-        if (keycode == Input.Keys.DOWN) {
+        if (keycode == com.badlogic.gdx.Input.Keys.DOWN) {
             pressDown = true;
         }
-        if (keycode == Input.Keys.LEFT) {
+        if (keycode == com.badlogic.gdx.Input.Keys.LEFT) {
             pressLeft = true;
         }
-        if (keycode == Input.Keys.RIGHT) {
+        if (keycode == com.badlogic.gdx.Input.Keys.RIGHT) {
             pressRight = true;
         }
 
-        if (keycode == Input.Keys.P) {
+        if (keycode == com.badlogic.gdx.Input.Keys.P) {
             pressPause = true;
         }
-        if (keycode == Input.Keys.Q) {
+        if (keycode == com.badlogic.gdx.Input.Keys.Q) {
             pressQuit = true;
         }
-        if (keycode == Input.Keys.SPACE) {
+        if (keycode == com.badlogic.gdx.Input.Keys.SPACE) {
             pressAlign = true;
         }
-        if (keycode == Input.Keys.F10) {
+        if (keycode == com.badlogic.gdx.Input.Keys.F10) {
             WorldScreen.setShowGrid();
         }
-        if (keycode == Input.Keys.F11) {
+        if (keycode == com.badlogic.gdx.Input.Keys.F11) {
             WorldScreen.setShowObjects();
         }
-        if (keycode == Input.Keys.F12) {
+        if (keycode == com.badlogic.gdx.Input.Keys.F12) {
             WorldScreen.setShowDebug();
         }
         return true;
@@ -110,37 +108,37 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
 
     @Override
     public boolean keyUp(int keycode) {
-        if (keycode == Input.Keys.CONTROL_LEFT || keycode == Input.Keys.CONTROL_RIGHT) {
+        if (keycode == com.badlogic.gdx.Input.Keys.CONTROL_LEFT || keycode == com.badlogic.gdx.Input.Keys.CONTROL_RIGHT) {
             pressCtrl = false;
         }
-        if (keycode == Input.Keys.SHIFT_LEFT || keycode == Input.Keys.SHIFT_RIGHT) {
+        if (keycode == com.badlogic.gdx.Input.Keys.SHIFT_LEFT || keycode == com.badlogic.gdx.Input.Keys.SHIFT_RIGHT) {
             pressShift = false;
         }
 
-        if (keycode == Input.Keys.A) {
+        if (keycode == com.badlogic.gdx.Input.Keys.A) {
             pressAction = false;
         }
 
-        if (keycode == Input.Keys.UP) {
+        if (keycode == com.badlogic.gdx.Input.Keys.UP) {
             pressUp = false;
         }
-        if (keycode == Input.Keys.DOWN) {
+        if (keycode == com.badlogic.gdx.Input.Keys.DOWN) {
             pressDown = false;
         }
-        if (keycode == Input.Keys.LEFT) {
+        if (keycode == com.badlogic.gdx.Input.Keys.LEFT) {
             pressLeft = false;
         }
-        if (keycode == Input.Keys.RIGHT) {
+        if (keycode == com.badlogic.gdx.Input.Keys.RIGHT) {
             pressRight = false;
         }
 
-        if (keycode == Input.Keys.P) {
+        if (keycode == com.badlogic.gdx.Input.Keys.P) {
             pressPause = false;
         }
-        if (keycode == Input.Keys.Q) {
+        if (keycode == com.badlogic.gdx.Input.Keys.Q) {
             pressQuit = false;
         }
-        if (keycode == Input.Keys.SPACE) {
+        if (keycode == com.badlogic.gdx.Input.Keys.SPACE) {
             pressAlign = false;
         }
         return true;
@@ -153,13 +151,13 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (button == Input.Buttons.LEFT || button == Input.Buttons.RIGHT) {
+        if (button == com.badlogic.gdx.Input.Buttons.LEFT || button == com.badlogic.gdx.Input.Buttons.RIGHT) {
             lastMouseCoordinates.set(screenX, screenY, 0);
         }
-        if (button == Input.Buttons.LEFT) {
+        if (button == com.badlogic.gdx.Input.Buttons.LEFT) {
             clickSelect = true;
         }
-        if (button == Input.Buttons.RIGHT) {
+        if (button == com.badlogic.gdx.Input.Buttons.RIGHT) {
             clickDoAction = true;
         }
         return true;
@@ -167,10 +165,10 @@ public class PlayerInputComponent extends InputComponent implements InputProcess
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if (button == Input.Buttons.LEFT) {
+        if (button == com.badlogic.gdx.Input.Buttons.LEFT) {
             clickSelect = false;
         }
-        if (button == Input.Buttons.RIGHT) {
+        if (button == com.badlogic.gdx.Input.Buttons.RIGHT) {
             clickDoAction = false;
         }
         return true;

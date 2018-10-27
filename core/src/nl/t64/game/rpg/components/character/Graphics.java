@@ -8,15 +8,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import nl.t64.game.rpg.Utility;
-import nl.t64.game.rpg.components.Component;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
-import nl.t64.game.rpg.entities.Character;
 import nl.t64.game.rpg.screens.WorldScreen;
 
 
-public abstract class GraphicsComponent implements Component {
+public abstract class Graphics implements Component {
 
     private static final int SPRITE_GROUP_WIDTH = 144;
     private static final int SPRITE_GROUP_HEIGHT = 192;

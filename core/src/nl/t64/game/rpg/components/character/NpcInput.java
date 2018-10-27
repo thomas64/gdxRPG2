@@ -4,14 +4,13 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Direction;
-import nl.t64.game.rpg.entities.Character;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.*;
 
 
-public class NpcInputComponent extends InputComponent {
+public class NpcInput extends Input {
 
-    private static final String TAG = NpcInputComponent.class.getSimpleName();
+    private static final String TAG = NpcInput.class.getSimpleName();
 
     private float stateTime = 0f;
 
