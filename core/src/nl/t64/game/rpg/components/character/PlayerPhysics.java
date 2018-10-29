@@ -132,11 +132,12 @@ public class PlayerPhysics extends Physics {
     }
 
     private void checkObstacles(MapManager mapManager, List<Character> npcCharacter, float dt) {
-        if (state == CharacterState.WALKING && velocity != Constant.MOVE_SPEED_4) {
-            turnCharacters(npcCharacter);
-            checkBlocker(mapManager, npcCharacter, dt);
-        } else if (state == CharacterState.WALKING) {
+        if (state == CharacterState.WALKING) {
             checkPortals(mapManager);
+            if (velocity != Constant.MOVE_SPEED_4) {
+                turnCharacters(npcCharacter);
+                checkBlocker(mapManager, npcCharacter, dt);
+            }
         }
     }
 
