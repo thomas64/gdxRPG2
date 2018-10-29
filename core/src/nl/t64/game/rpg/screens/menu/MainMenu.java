@@ -26,7 +26,7 @@ public class MainMenu implements Screen {
     private static final int MENU_SIZE = 30;
     private static final int MENU_SPACE_BOTTOM = 10;
 
-    private static final String TITLE = "gdxRPG2";
+    private static final String TITLE_LABEL = "gdxRPG2";
 
     private static final String MENU_ITEM_NEW_GAME = "New Game";
     private static final String MENU_ITEM_LOAD_GAME = "Load Game";
@@ -162,7 +162,7 @@ public class MainMenu implements Screen {
         buttonStyle.fontColor = Color.WHITE;
 
         // actors
-        Label titleLabel = new Label(TITLE, titleStyle);
+        Label titleLabel = new Label(TITLE_LABEL, titleStyle);
         newGameButton = new TextButton(MENU_ITEM_NEW_GAME, new TextButton.TextButtonStyle(buttonStyle));
         loadGameButton = new TextButton(MENU_ITEM_LOAD_GAME, new TextButton.TextButtonStyle(buttonStyle));
         settingsButton = new TextButton(MENU_ITEM_SETTINGS, new TextButton.TextButtonStyle(buttonStyle));

@@ -14,12 +14,12 @@ public class HorizontalKeyListener extends InputListener {
 
     private int selectedIndex;
 
-    public HorizontalKeyListener(Consumer<Integer> updateIndexFunction, int numberOfItems) {
+    HorizontalKeyListener(Consumer<Integer> updateIndexFunction, int numberOfItems) {
         this.updateIndexFunction = updateIndexFunction;
         this.numberOfItems = numberOfItems;
     }
 
-    public void updateSelectedIndex(int newSelectedIndex) {
+    void updateSelectedIndex(int newSelectedIndex) {
         selectedIndex = newSelectedIndex;
     }
 

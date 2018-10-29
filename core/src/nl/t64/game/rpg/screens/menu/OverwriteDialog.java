@@ -45,7 +45,7 @@ public class OverwriteDialog {
 
     private int selectedIndex;
 
-    public OverwriteDialog(Runnable createNewGameFunction) {
+    OverwriteDialog(Runnable createNewGameFunction) {
         this.createNewGameFunction = createNewGameFunction;
 
         createFonts();
@@ -57,7 +57,7 @@ public class OverwriteDialog {
         setCurrentTextButtonToRed();
     }
 
-    public void show(Stage stage) {
+    void show(Stage stage) {
         dialog.show(stage);
     }
 

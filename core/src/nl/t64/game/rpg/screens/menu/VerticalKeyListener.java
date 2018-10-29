@@ -14,17 +14,20 @@ public class VerticalKeyListener extends InputListener {
 
     private int selectedIndex;
 
-    public VerticalKeyListener(Consumer<Integer> updateIndexFunction, int numberOfItems) {
+    VerticalKeyListener(Consumer<Integer> updateIndexFunction, int numberOfItems) {
         this.updateIndexFunction = updateIndexFunction;
         this.numberOfItems = numberOfItems;
     }
 
-    public void updateSelectedIndex(int newSelectedIndex) {
+    void updateSelectedIndex(int newSelectedIndex) {
         selectedIndex = newSelectedIndex;
     }
 
     @Override
     public boolean keyDown(InputEvent event, int keycode) {
+        if (numberOfItems == 0) {
+            return false;
+        }
         switch (keycode) {
             case Input.Keys.UP:
                 if (selectedIndex <= 0) {

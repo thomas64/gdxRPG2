@@ -13,7 +13,7 @@ public class ConfirmKeyListener extends InputListener {
     private final Runnable selectItemFunction;
     private final int exitIndex;
 
-    public ConfirmKeyListener(Consumer<Integer> updateIndexFunction, Runnable selectItemFunction, int exitIndex) {
+    ConfirmKeyListener(Consumer<Integer> updateIndexFunction, Runnable selectItemFunction, int exitIndex) {
         this.updateIndexFunction = updateIndexFunction;
         this.selectItemFunction = selectItemFunction;
         this.exitIndex = exitIndex;

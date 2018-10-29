@@ -2,6 +2,7 @@ package nl.t64.game.rpg.profile;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ObjectMap;
 import nl.t64.game.rpg.constants.ProfileEvent;
@@ -55,8 +56,10 @@ public class ProfileManager {
         profiles.put(profileName, file);
     }
 
-    public List<String> getProfileList() {
-        return new ArrayList<>(profiles.keySet());
+    public Array<String> getProfileList() {
+        Array<String> profilesArray = new Array<>();
+        profiles.keySet().forEach(profilesArray::add);
+        return profilesArray;
     }
 
     public Optional<FileHandle> getProfileFile(String profileName) {

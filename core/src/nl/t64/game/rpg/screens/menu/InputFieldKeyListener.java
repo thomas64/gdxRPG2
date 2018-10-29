@@ -16,12 +16,12 @@ public class InputFieldKeyListener extends InputListener {
 
     private StringBuilder inputField;
 
-    public InputFieldKeyListener(Consumer<StringBuilder> updateInputFunction, int maxSizeOfInput) {
+    InputFieldKeyListener(Consumer<StringBuilder> updateInputFunction, int maxSizeOfInput) {
         this.updateInputFunction = updateInputFunction;
         this.maxSizeOfInput = maxSizeOfInput;
     }
 
-    public void updateInputField(StringBuilder newInputField) {
+    void updateInputField(StringBuilder newInputField) {
         inputField = newInputField;
     }
 

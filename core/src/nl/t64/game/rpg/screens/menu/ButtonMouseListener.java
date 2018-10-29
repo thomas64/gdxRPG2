@@ -12,7 +12,7 @@ public class ButtonMouseListener extends InputListener {
     private final Runnable selectItemFunction;
     private final int index;
 
-    public ButtonMouseListener(Consumer<Integer> updateIndexFunction, Runnable selectItemFunction, int index) {
+    ButtonMouseListener(Consumer<Integer> updateIndexFunction, Runnable selectItemFunction, int index) {
         this.updateIndexFunction = updateIndexFunction;
         this.selectItemFunction = selectItemFunction;
         this.index = index;
