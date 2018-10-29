@@ -18,7 +18,6 @@ import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.GdxRpg2;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
-import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.profile.ProfileManager;
 
 
@@ -44,7 +43,6 @@ public class NewMenu implements Screen {
     private static final int EXIT_INDEX = 1;
 
     private Stage stage;
-    private GdxRpg2 game;
 
     private BitmapFont menuFont;
     private Table table;
@@ -60,8 +58,7 @@ public class NewMenu implements Screen {
     private StringBuilder profileName;
     private int selectedIndex;
 
-    public NewMenu(GdxRpg2 game) {
-        this.game = game;
+    public NewMenu() {
         this.stage = new Stage();
 
         createFonts();
@@ -141,7 +138,7 @@ public class NewMenu implements Screen {
                 processStartButton();
                 break;
             case 1:
-                game.setScreen(game.getScreenType(ScreenType.MAIN_MENU));
+                GdxRpg2.getInstance().setScreen(GdxRpg2.getInstance().getMainMenuScreen());
                 break;
             default:
                 throw new IllegalArgumentException("SelectedIndex not found.");
@@ -160,7 +157,7 @@ public class NewMenu implements Screen {
 
     private void createNewGame() {
         ProfileManager.getInstance().createNewProfile(finalProfileName);
-        game.setScreen(game.getScreenType(ScreenType.WORLD));
+        GdxRpg2.getInstance().setScreen(GdxRpg2.getInstance().getWorldScreen());
     }
 
     private void setAllTextButtonsToWhite() {

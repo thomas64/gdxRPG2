@@ -19,7 +19,7 @@ public class DesktopLauncher {
         config.resizable = false;
 //        config.foregroundFPS = 20;
 
-        Gdx.app = new LwjglApplication(new GdxRpg2(), config);
+        Gdx.app = new LwjglApplication(GdxRpg2.getInstance(), config);
         //Gdx.app.setLogLevel(Application.LOG_INFO);
         //Gdx.app.setLogLevel(Application.LOG_DEBUG);
         Gdx.app.setLogLevel(Application.LOG_ERROR);

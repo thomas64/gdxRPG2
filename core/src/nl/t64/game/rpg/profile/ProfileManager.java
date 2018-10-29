@@ -118,7 +118,6 @@ public class ProfileManager {
         for (ProfileObserver observer : observers) {
             observer.onNotify(this, event);
         }
-
     }
 
 }

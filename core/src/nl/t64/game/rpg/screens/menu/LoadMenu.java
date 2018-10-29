@@ -15,7 +15,6 @@ import com.badlogic.gdx.utils.Array;
 import nl.t64.game.rpg.GdxRpg2;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
-import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.profile.ProfileManager;
 
 
@@ -39,7 +38,6 @@ public class LoadMenu implements Screen {
     private static final int EXIT_INDEX = 1;
 
     private Stage stage;
-    private GdxRpg2 game;
 
     private Array<String> profiles;
 
@@ -60,9 +58,8 @@ public class LoadMenu implements Screen {
 
     private boolean isMouseScrolled = false;
 
-    public LoadMenu(GdxRpg2 game) {
+    public LoadMenu() {
         this.stage = new Stage();
-        this.game = game;
         createFonts();
         this.selectedMenuIndex = 0;
     }
@@ -166,7 +163,7 @@ public class LoadMenu implements Screen {
                 processLoadButton();
                 break;
             case 1:
-                game.setScreen(game.getScreenType(ScreenType.MAIN_MENU));
+                GdxRpg2.getInstance().setScreen(GdxRpg2.getInstance().getMainMenuScreen());
                 break;
             default:
                 throw new IllegalArgumentException("SelectedIndex not found.");

@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import nl.t64.game.rpg.GdxRpg2;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
-import nl.t64.game.rpg.constants.ScreenType;
 
 
 public class MainMenu implements Screen {
@@ -37,7 +36,6 @@ public class MainMenu implements Screen {
     private static final int EXIT_INDEX = 3;
 
     private Stage stage;
-    private GdxRpg2 game;
 
     private BitmapFont titleFont;
     private BitmapFont menuFont;
@@ -51,8 +49,7 @@ public class MainMenu implements Screen {
 
     private int selectedIndex;
 
-    public MainMenu(GdxRpg2 game) {
-        this.game = game;
+    public MainMenu() {
         this.stage = new Stage();
 
         createFonts();
@@ -115,15 +112,16 @@ public class MainMenu implements Screen {
     }
 
     private void selectMenuItem() {
+        GdxRpg2 game = GdxRpg2.getInstance();
         switch (selectedIndex) {
             case 0:
-                game.setScreen(game.getScreenType(ScreenType.NEW_GAME_MENU));
+                game.setScreen(game.getNewGameMenuScreen());
                 break;
             case 1:
-                game.setScreen(game.getScreenType(ScreenType.LOAD_GAME_MENU));
+                game.setScreen(game.getLoadGameMenuScreen());
                 break;
             case 2:
-                game.setScreen(game.getScreenType(ScreenType.SETTINGS_MENU));
+                game.setScreen(null); // settingsScreen
                 break;
             case 3:
                 Gdx.app.exit();
