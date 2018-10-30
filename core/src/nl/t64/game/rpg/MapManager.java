@@ -15,6 +15,7 @@ import nl.t64.game.rpg.tiled.SpawnPoint;
 public class MapManager {
 
     private static final String TAG = MapManager.class.getSimpleName();
+    private static final MapManager INSTANCE = new MapManager();
 
     private static final MapTitle START_OF_GAME_MAP = MapTitle.MAP4;
 
@@ -26,6 +27,13 @@ public class MapManager {
     @Getter
     @Setter
     private boolean mapChanged = false;
+
+    private MapManager() {
+    }
+
+    public static MapManager getInstance() {
+        return INSTANCE;
+    }
 
     public GameMap getCurrentMap() {
         loadStartOfGameMapIfNecessary();
@@ -41,7 +49,7 @@ public class MapManager {
     private void loadStartOfGameMapIfNecessary() {
         if (currentMap == null) {
             loadMap(START_OF_GAME_MAP);
-            currentMap.setPlayerStartOfGameSpawnLocation(START_OF_GAME_MAP);
+            currentMap.setPlayerSpawnLocationForNewLoad(START_OF_GAME_MAP);
         }
     }
 

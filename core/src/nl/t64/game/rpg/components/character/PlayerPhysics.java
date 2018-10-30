@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class PlayerPhysics extends Physics {
 
     private static final String TAG = PlayerPhysics.class.getSimpleName();
-    private static final float MINIMUM_SELECT_DISTANCE = 144f;
+    private static final float MINIMUM_SELECT_DISTANCE = 96f;
 
     private boolean isMouseSelectEnabled = false;
     private Vector3 mouseSelectCoordinates;
@@ -71,30 +71,30 @@ public class PlayerPhysics extends Physics {
     }
 
     @Override
-    public void update(Character player, MapManager mapManager, List<Character> npcCharacters, float dt) {
-        checkMouseSelection(mapManager, npcCharacters);
+    public void update(Character player, List<Character> npcCharacters, float dt) {
+        checkMouseSelection(npcCharacters);
         checkActionPressed(npcCharacters);
 
         relocate(dt);
-        checkObstacles(mapManager, npcCharacters, dt);
+        checkObstacles(npcCharacters, dt);
         player.send(new PositionEvent(currentPosition));
     }
 
-    private void checkMouseSelection(MapManager mapManager, List<Character> npcCharacters) {
+    private void checkMouseSelection(List<Character> npcCharacters) {
         if (isMouseSelectEnabled) {
-            selectNpcCharacterCandidate(mapManager, npcCharacters);
+            selectMouseNpcCharacterCandidate(npcCharacters);
             isMouseSelectEnabled = false;
         }
     }
 
     private void checkActionPressed(List<Character> npcCharacters) {
         if (isActionPressed) {
-            selectNpcCharacterCandidate(npcCharacters);
+            selectKeyNpcCharacterCandidate(npcCharacters);
             isActionPressed = false;
         }
     }
 
-    private void selectNpcCharacterCandidate(List<Character> npcCharacters) {
+    private void selectKeyNpcCharacterCandidate(List<Character> npcCharacters) {
         npcCharacters.forEach(npcCharacter -> {
             npcCharacter.send(new DeselectEvent());
             if (getCheckRect().overlaps(npcCharacter.getBoundingBox())) {
@@ -103,8 +103,8 @@ public class PlayerPhysics extends Physics {
         });
     }
 
-    private void selectNpcCharacterCandidate(MapManager mapManager, List<Character> npcCharacters) {
-        mapManager.getCamera().unproject(mouseSelectCoordinates);
+    private void selectMouseNpcCharacterCandidate(List<Character> npcCharacters) {
+        MapManager.getInstance().getCamera().unproject(mouseSelectCoordinates);
         npcCharacters.forEach(npcCharacter -> {
             npcCharacter.send(new DeselectEvent());
             if (npcCharacter.getBoundingBox().contains(mouseSelectCoordinates.x, mouseSelectCoordinates.y)) {
@@ -131,12 +131,12 @@ public class PlayerPhysics extends Physics {
         }
     }
 
-    private void checkObstacles(MapManager mapManager, List<Character> npcCharacter, float dt) {
+    private void checkObstacles(List<Character> npcCharacter, float dt) {
         if (state == CharacterState.WALKING) {
-            checkPortals(mapManager);
+            checkPortals();
             if (velocity != Constant.MOVE_SPEED_4) {
                 turnCharacters(npcCharacter);
-                checkBlocker(mapManager, npcCharacter, dt);
+                checkBlocker(npcCharacter, dt);
             }
         }
     }
@@ -147,9 +147,9 @@ public class PlayerPhysics extends Physics {
                     .forEach(npc -> npc.send(new WaitEvent(npc.getPosition(), currentPosition)));
     }
 
-    private void checkBlocker(MapManager mapManager, List<Character> npcCharacters, float dt) {
+    private void checkBlocker(List<Character> npcCharacters, float dt) {
 
-        List<Rectangle> blockers = mapManager.getCurrentMap().getBlockers();
+        List<Rectangle> blockers = MapManager.getInstance().getCurrentMap().getBlockers();
         List<Rectangle> walkingBlockers =
                 npcCharacters.stream()
                              .filter(npcCharacter -> npcCharacter.getState() != CharacterState.IMMOBILE)
@@ -215,12 +215,12 @@ public class PlayerPhysics extends Physics {
         }
     }
 
-    private void checkPortals(MapManager mapManager) {
-        for (Portal portal : mapManager.getCurrentMap().getPortals()) {
+    private void checkPortals() {
+        for (Portal portal : MapManager.getInstance().getCurrentMap().getPortals()) {
             if (boundingBox.overlaps(portal.getRectangle())) {
                 portal.setEnterDirection(direction);
-                mapManager.loadMap(portal.getToMapName());
-                mapManager.getCurrentMap().setPlayerSpawnLocation(portal);
+                MapManager.getInstance().loadMap(portal.getToMapName());
+                MapManager.getInstance().getCurrentMap().setPlayerSpawnLocation(portal);
                 return;
             }
         }

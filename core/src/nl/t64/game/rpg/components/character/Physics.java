@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import lombok.Getter;
-import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
@@ -32,7 +31,7 @@ public abstract class Physics implements Component {
         this.currentPosition = new Vector2();
     }
 
-    public abstract void update(Character character, MapManager mapManager, List<Character> npcCharacters, float dt);
+    public abstract void update(Character character, List<Character> npcCharacters, float dt);
 
     public abstract void debug(ShapeRenderer shapeRenderer);
 

@@ -5,7 +5,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ObjectMap;
-import nl.t64.game.rpg.constants.ProfileEvent;
 
 import java.util.*;
 
@@ -75,7 +74,7 @@ public class ProfileManager {
     }
 
     public void saveProfile() {
-        notify(ProfileEvent.SAVE_PROFILE);
+        observers.forEach(observer -> observer.onNotifySave());
         String text = json.prettyPrint(json.toJson(profileProperties));
         createNewProfile(profileName, text);
     }
@@ -88,7 +87,7 @@ public class ProfileManager {
             return;
         }
         profileProperties = json.fromJson(ObjectMap.class, profiles.get(profileName));
-        notify(ProfileEvent.LOAD_PROFILE);
+        observers.forEach(observer -> observer.onNotifyLoad());
     }
 
     public void createNewProfile(String profileName, String fileData) {
@@ -112,12 +111,6 @@ public class ProfileManager {
 
     public void removeObserver(ProfileObserver observer) {
         observers.remove(observer);
-    }
-
-    private void notify(ProfileEvent event) {
-        for (ProfileObserver observer : observers) {
-            observer.onNotify(this, event);
-        }
     }
 
 }

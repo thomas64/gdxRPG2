@@ -22,6 +22,7 @@ import nl.t64.game.rpg.events.character.LoadSpriteEvent;
 import nl.t64.game.rpg.events.character.StartDirectionEvent;
 import nl.t64.game.rpg.events.character.StartPositionEvent;
 import nl.t64.game.rpg.events.character.StartStateEvent;
+import nl.t64.game.rpg.tiled.GameMap;
 import nl.t64.game.rpg.tiled.Npc;
 
 import java.util.ArrayList;
@@ -42,18 +43,18 @@ public class WorldScreen implements Screen {
     @Getter
     private static GameState gameState;
 
-    private MapManager mapManager;
     private Camera camera;
+    private GameMap currentMap;
     private OrthogonalTiledMapRenderer mapRenderer;
     private Character player;
     private List<Character> npcCharacters;
     private ShapeRenderer shapeRenderer;
 
     public WorldScreen() {
-        this.mapManager = new MapManager();
         this.camera = new Camera();
-        this.mapManager.setCamera(this.camera);
-        this.mapRenderer = new OrthogonalTiledMapRenderer(this.mapManager.getCurrentMap().getTiledMap());
+        MapManager.getInstance().setCamera(this.camera);
+        this.mapRenderer = new OrthogonalTiledMapRenderer(null);
+        MapManager.getInstance().setMapChanged(true);
         this.player = new Character(new PlayerInput(), new PlayerPhysics(), new PlayerGraphics());
         this.shapeRenderer = new ShapeRenderer();
     }
@@ -85,20 +86,20 @@ public class WorldScreen implements Screen {
     }
 
     private void updateMap() {
-        if (mapManager.isMapChanged()) {
-            mapRenderer.setMap(mapManager.getCurrentMap().getTiledMap());
-            camera.setNewMapSize(mapManager.getCurrentMap().getPixelWidth(),
-                                 mapManager.getCurrentMap().getPixelHeight());
+        if (MapManager.getInstance().isMapChanged()) {
+            currentMap = MapManager.getInstance().getCurrentMap();
+            mapRenderer.setMap(currentMap.getTiledMap());
+            camera.setNewMapSize(currentMap.getPixelWidth(), currentMap.getPixelHeight());
             loadNpcCharacters();
-            player.send(new StartPositionEvent(mapManager.getCurrentMap().getPlayerSpawnLocation()));
-            player.send(new StartDirectionEvent(mapManager.getCurrentMap().getPlayerSpawnDirection()));
-            mapManager.setMapChanged(false);
+            player.send(new StartPositionEvent(currentMap.getPlayerSpawnLocation()));
+            player.send(new StartDirectionEvent(currentMap.getPlayerSpawnDirection()));
+            MapManager.getInstance().setMapChanged(false);
         }
     }
 
     private void loadNpcCharacters() {
         npcCharacters = new ArrayList<>();
-        for (Npc npc : mapManager.getCurrentMap().getNpcs()) {
+        for (Npc npc : currentMap.getNpcs()) {
             Character npcCharacter = new Character(new NpcInput(), new NpcPhysics(), new NpcGraphics());
             npcCharacters.add(npcCharacter);
             npcCharacter.send(new StartStateEvent(npc.getState()));
@@ -108,16 +109,16 @@ public class WorldScreen implements Screen {
             LoadSpriteEvent loadSpriteEvent = peopleData.get(npc.getName());
             npcCharacter.send(loadSpriteEvent);
             if (npc.getState() == CharacterState.IMMOBILE) {
-                mapManager.getCurrentMap().addToBlockers(npcCharacter.getBoundingBox());
+                currentMap.addToBlockers(npcCharacter.getBoundingBox());
             }
         }
     }
 
     private void updateCharacters(float dt) {
-        player.update(mapManager, npcCharacters, dt);
+        player.update(npcCharacters, dt);
         List<Character> copyCharacters = new ArrayList<>(npcCharacters);
         copyCharacters.add(player);
-        npcCharacters.forEach(npcCharacter -> npcCharacter.update(mapManager, copyCharacters, dt));
+        npcCharacters.forEach(npcCharacter -> npcCharacter.update(copyCharacters, dt));
     }
 
     private void updateCameraPosition() {
@@ -207,8 +208,8 @@ public class WorldScreen implements Screen {
             shapeRenderer.setColor(Color.DARK_GRAY);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
-            float mapPixelWidth = mapManager.getCurrentMap().getPixelWidth();
-            float mapPixelHeight = mapManager.getCurrentMap().getPixelHeight();
+            float mapPixelWidth = currentMap.getPixelWidth();
+            float mapPixelHeight = currentMap.getPixelHeight();
             for (float x = 0; x < mapPixelWidth; x = x + Constant.TILE_SIZE) {
                 shapeRenderer.line(x, 0, x, mapPixelHeight);
             }
@@ -224,7 +225,7 @@ public class WorldScreen implements Screen {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             player.debug(shapeRenderer);
             npcCharacters.forEach(npcCharacter -> npcCharacter.debug(shapeRenderer));
-            mapManager.debug(shapeRenderer);
+            MapManager.getInstance().debug(shapeRenderer);
             shapeRenderer.end();
         }
     }

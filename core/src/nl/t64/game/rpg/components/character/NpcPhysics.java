@@ -54,10 +54,9 @@ public class NpcPhysics extends Physics {
     }
 
     @Override
-    public void update(Character npcCharacter, MapManager mapManager,
-                       List<Character> npcCharactersPlusLastOnePlayer, float dt) {
+    public void update(Character npcCharacter, List<Character> npcCharactersPlusLastOnePlayer, float dt) {
         relocate(dt);
-        checkObstacles(npcCharacter, mapManager, npcCharactersPlusLastOnePlayer);
+        checkObstacles(npcCharacter, npcCharactersPlusLastOnePlayer);
         npcCharacter.send(new PositionEvent(currentPosition));
     }
 
@@ -67,11 +66,10 @@ public class NpcPhysics extends Physics {
         }
     }
 
-    private void checkObstacles(Character npcCharacter, MapManager mapManager,
-                                List<Character> npcCharactersPlusLastOnePlayer) {
+    private void checkObstacles(Character npcCharacter, List<Character> npcCharactersPlusLastOnePlayer) {
         if (state == CharacterState.WALKING) {
             boolean moveBack1 = checkWanderBox();
-            boolean moveBack2 = checkBlocker(mapManager);
+            boolean moveBack2 = checkBlocker();
             boolean moveBack3 = checkOtherCharacters(npcCharacter, npcCharactersPlusLastOnePlayer);
             if (moveBack1 || moveBack2 || moveBack3) {
                 npcCharacter.send(new CollisionEvent());
@@ -88,9 +86,9 @@ public class NpcPhysics extends Physics {
         return moveBack;
     }
 
-    private boolean checkBlocker(MapManager mapManager) {
+    private boolean checkBlocker() {
         boolean moveBack = false;
-        while (mapManager.getCurrentMap().isInCollisionWithBlocker(boundingBox)) {
+        while (MapManager.getInstance().getCurrentMap().isInCollisionWithBlocker(boundingBox)) {
             moveBack();
             moveBack = true;
         }
