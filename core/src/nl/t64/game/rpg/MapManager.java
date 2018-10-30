@@ -6,13 +6,15 @@ import com.badlogic.gdx.math.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
 import nl.t64.game.rpg.constants.MapTitle;
+import nl.t64.game.rpg.profile.ProfileManager;
+import nl.t64.game.rpg.profile.ProfileObserver;
 import nl.t64.game.rpg.tiled.GameMap;
 import nl.t64.game.rpg.tiled.Npc;
 import nl.t64.game.rpg.tiled.Portal;
 import nl.t64.game.rpg.tiled.SpawnPoint;
 
 
-public class MapManager {
+public class MapManager implements ProfileObserver {
 
     private static final String TAG = MapManager.class.getSimpleName();
     private static final MapManager INSTANCE = new MapManager();
@@ -33,6 +35,19 @@ public class MapManager {
 
     public static MapManager getInstance() {
         return INSTANCE;
+    }
+
+    @Override
+    public void onNotifySave() {
+        ProfileManager.getInstance().setProperty("MapTitle", getCurrentMap().getMapTitle().name());
+    }
+
+    @Override
+    public void onNotifyLoad() {
+        String mapTitleString = ProfileManager.getInstance().getProperty("MapTitle", String.class);
+        MapTitle mapTitleEnum = MapTitle.valueOf(mapTitleString);
+        loadMap(mapTitleEnum);
+        currentMap.setPlayerSpawnLocationForNewLoad(mapTitleEnum);
     }
 
     public GameMap getCurrentMap() {

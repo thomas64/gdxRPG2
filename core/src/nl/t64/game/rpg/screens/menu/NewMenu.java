@@ -79,7 +79,7 @@ public class NewMenu implements Screen {
 
     @Override
     public void show() {
-        ProfileManager.getInstance().storeAllProfiles();
+        ProfileManager.getInstance().loadAllProfiles();
         Gdx.input.setInputProcessor(stage);
     }
 

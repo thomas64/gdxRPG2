@@ -22,6 +22,7 @@ import nl.t64.game.rpg.events.character.LoadSpriteEvent;
 import nl.t64.game.rpg.events.character.StartDirectionEvent;
 import nl.t64.game.rpg.events.character.StartPositionEvent;
 import nl.t64.game.rpg.events.character.StartStateEvent;
+import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.tiled.GameMap;
 import nl.t64.game.rpg.tiled.Npc;
 
@@ -51,6 +52,7 @@ public class WorldScreen implements Screen {
     private ShapeRenderer shapeRenderer;
 
     public WorldScreen() {
+        ProfileManager.getInstance().addObserver(MapManager.getInstance());
         this.camera = new Camera();
         MapManager.getInstance().setCamera(this.camera);
         this.mapRenderer = new OrthogonalTiledMapRenderer(null);

@@ -11,34 +11,35 @@ import lombok.Getter;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
-import nl.t64.game.rpg.constants.MapLayerName;
 import nl.t64.game.rpg.constants.MapTitle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
+@Getter
 public class GameMap {
 
     private static final String TAG = GameMap.class.getSimpleName();
 
-    @Getter
+    private static final String SAVE_LAYER = "save_layer"; // todo, possible temporary maplayer
+    private static final String NPC_LAYER = "npc_layer";
+    private static final String COLLISION_LAYER = "collision_layer";
+    private static final String PORTAL_LAYER = "portal_layer";
+    private static final String SPAWN_LAYER = "spawn_layer";
+
     private TiledMap tiledMap;
     private MapTitle mapTitle;
     private TiledMapTileLayer bottomLayer;
 
-    @Getter
     private Vector2 playerSpawnLocation;
-    @Getter
     private Direction playerSpawnDirection;
 
-    @Getter
+    private List<Rectangle> savePoints = new ArrayList<>();
     private List<Npc> npcs = new ArrayList<>();
-    @Getter
     private List<Rectangle> blockers = new ArrayList<>();
-    @Getter
     private List<Portal> portals = new ArrayList<>();
-    @Getter
     private List<SpawnPoint> spawnPoints = new ArrayList<>();
 
 
@@ -49,6 +50,7 @@ public class GameMap {
         this.bottomLayer = (TiledMapTileLayer) this.tiledMap.getLayers().get(0);
         this.playerSpawnLocation = new Vector2(0, 0);
 
+        loadSavePoints();
         loadNpcs();
         loadBlockers();
         loadPortals();
@@ -96,33 +98,50 @@ public class GameMap {
         return bottomLayer.getHeight() * Constant.TILE_SIZE / 2f;
     }
 
+    private void loadSavePoints() {
+        getMapLayer(SAVE_LAYER).ifPresent(mapLayer -> {
+            for (MapObject mapObject : mapLayer.getObjects()) {
+                RectangleMapObject rectObject = (RectangleMapObject) mapObject;
+                savePoints.add(rectObject.getRectangle());
+            }
+        });
+    }
+
     private void loadNpcs() {
-        MapLayer npcLayer = tiledMap.getLayers().get(MapLayerName.NPC_LAYER.name().toLowerCase());
-        for (MapObject mapObject : npcLayer.getObjects()) {
-            npcs.add(new Npc(mapObject));
-        }
+        getMapLayer(NPC_LAYER).ifPresent(mapLayer -> {
+            for (MapObject mapObject : mapLayer.getObjects()) {
+                npcs.add(new Npc(mapObject));
+            }
+        });
     }
 
     private void loadBlockers() {
-        MapLayer collisionLayer = tiledMap.getLayers().get(MapLayerName.COLLISION_LAYER.name().toLowerCase());
-        for (MapObject mapObject : collisionLayer.getObjects()) {
-            RectangleMapObject rectObject = (RectangleMapObject) mapObject;
-            blockers.add(rectObject.getRectangle());
-        }
+        getMapLayer(COLLISION_LAYER).ifPresent(mapLayer -> {
+            for (MapObject mapObject : mapLayer.getObjects()) {
+                RectangleMapObject rectObject = (RectangleMapObject) mapObject;
+                blockers.add(rectObject.getRectangle());
+            }
+        });
     }
 
     private void loadPortals() {
-        MapLayer portalLayer = tiledMap.getLayers().get(MapLayerName.PORTAL_LAYER.name().toLowerCase());
-        for (MapObject mapObject : portalLayer.getObjects()) {
-            portals.add(new Portal(mapObject, mapTitle));
-        }
+        getMapLayer(PORTAL_LAYER).ifPresent(mapLayer -> {
+            for (MapObject mapObject : mapLayer.getObjects()) {
+                portals.add(new Portal(mapObject, mapTitle));
+            }
+        });
     }
 
     private void loadSpawnPoints() {
-        MapLayer spawnsLayer = tiledMap.getLayers().get(MapLayerName.SPAWN_LAYER.name().toLowerCase());
-        for (MapObject mapObject : spawnsLayer.getObjects()) {
-            spawnPoints.add(new SpawnPoint(mapObject));
-        }
+        getMapLayer(SPAWN_LAYER).ifPresent(mapLayer -> {
+            for (MapObject mapObject : mapLayer.getObjects()) {
+                spawnPoints.add(new SpawnPoint(mapObject));
+            }
+        });
+    }
+
+    private Optional<MapLayer> getMapLayer(String layerName) {
+        return Optional.ofNullable(tiledMap.getLayers().get(layerName));
     }
 
     public void dispose() {

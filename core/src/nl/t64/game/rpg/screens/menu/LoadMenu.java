@@ -71,7 +71,7 @@ public class LoadMenu implements Screen {
     }
 
     private void setupScreen() {
-        ProfileManager.getInstance().storeAllProfiles();
+        ProfileManager.getInstance().loadAllProfiles();
         profiles = ProfileManager.getInstance().getProfileList();
 
         createTables();
@@ -171,7 +171,11 @@ public class LoadMenu implements Screen {
     }
 
     private void processLoadButton() {
-        System.out.println(listItems.getSelected().toString()); // todo, afmaken
+        Object profileName = listItems.getSelected();
+        if (profileName != null) {
+            ProfileManager.getInstance().loadProfile(profileName.toString());
+            GdxRpg2.getInstance().setScreen(GdxRpg2.getInstance().getWorldScreen());
+        }
     }
 
     private void setAllTextButtonsToWhite() {

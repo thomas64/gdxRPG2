@@ -12,6 +12,7 @@ import java.util.*;
 public class ProfileManager {
 
     private static final ProfileManager INSTANCE = new ProfileManager();
+    private static final String SAVE_PATH = "savegame/";
     private static final String DEFAULT_PROFILE = "default";
     private static final String SAVEGAME_SUFFIX = ".dat";
 
@@ -23,16 +24,16 @@ public class ProfileManager {
     private String profileName = null;
 
     private ProfileManager() {
-        storeAllProfiles();
+        loadAllProfiles();
     }
 
     public static ProfileManager getInstance() {
         return INSTANCE;
     }
 
-    public void storeAllProfiles() {
+    public void loadAllProfiles() {
         profiles.clear();
-        FileHandle[] files = Gdx.files.local("savegame").list(SAVEGAME_SUFFIX);
+        FileHandle[] files = Gdx.files.local(SAVE_PATH).list(SAVEGAME_SUFFIX);
         Arrays.stream(files).forEach(file -> profiles.put(file.nameWithoutExtension(), file));
     }
 
@@ -47,12 +48,8 @@ public class ProfileManager {
         if (newProfileName.isEmpty()) {
             newProfileName = DEFAULT_PROFILE;
         }
-
         profileName = newProfileName;
-        String fullFilename = profileName + SAVEGAME_SUFFIX;
-        FileHandle file = Gdx.files.local("savegame/" + fullFilename);
-        file.writeString("testo", false);
-        profiles.put(profileName, file);
+        saveProfile();
     }
 
     public Array<String> getProfileList() {
@@ -61,12 +58,8 @@ public class ProfileManager {
         return profilesArray;
     }
 
-    public Optional<FileHandle> getProfileFile(String profileName) {
-        return Optional.ofNullable(profiles.get(profileName));
-    }
-
-    public Optional<Object> getProperty(String key) {
-        return Optional.ofNullable(profileProperties.get(key));
+    public <T> T getProperty(String key, Class<T> clazz) {
+        return clazz.cast(profileProperties.get(key));
     }
 
     public void setProperty(String key, Object object) {
@@ -74,35 +67,24 @@ public class ProfileManager {
     }
 
     public void saveProfile() {
-        observers.forEach(observer -> observer.onNotifySave());
-        String text = json.prettyPrint(json.toJson(profileProperties));
-        createNewProfile(profileName, text);
-    }
-
-    @SuppressWarnings("unchecked")
-    public void loadProfile() {
+        observers.forEach(ProfileObserver::onNotifySave);
+        String fileData = json.prettyPrint(json.toJson(profileProperties));
         String fullFilename = profileName + SAVEGAME_SUFFIX;
-        boolean doesProfileExist = Gdx.files.local(fullFilename).exists();
-        if (!doesProfileExist) {
-            return;
-        }
-        profileProperties = json.fromJson(ObjectMap.class, profiles.get(profileName));
-        observers.forEach(observer -> observer.onNotifyLoad());
-    }
-
-    public void createNewProfile(String profileName, String fileData) {
-        String fullFilename = profileName + SAVEGAME_SUFFIX;
-        FileHandle file = Gdx.files.local(fullFilename);
+        FileHandle file = Gdx.files.local(SAVE_PATH + fullFilename);
         file.writeString(fileData, false);
         profiles.put(profileName, file);
     }
 
-    public void setCurrentProfile(String newProfileName) {
-        if (doesProfileExist(newProfileName)) {
-            profileName = newProfileName;
-        } else {
-            profileName = DEFAULT_PROFILE;
+    @SuppressWarnings("unchecked")
+    public void loadProfile(String selectedProfileName) {
+        String fullFilename = selectedProfileName + SAVEGAME_SUFFIX;
+        boolean doesProfileExist = Gdx.files.local(SAVE_PATH + fullFilename).exists();
+        if (!doesProfileExist) {
+            return;
         }
+        profileName = selectedProfileName;
+        profileProperties = json.fromJson(ObjectMap.class, profiles.get(profileName));
+        observers.forEach(ProfileObserver::onNotifyLoad);
     }
 
     public void addObserver(ProfileObserver observer) {

@@ -11,6 +11,7 @@ import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.*;
+import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.tiled.Portal;
 
 import java.util.ArrayList;
@@ -90,6 +91,7 @@ public class PlayerPhysics extends Physics {
     private void checkActionPressed(List<Character> npcCharacters) {
         if (isActionPressed) {
             selectKeyNpcCharacterCandidate(npcCharacters);
+            checkSavePoint();
             isActionPressed = false;
         }
     }
@@ -101,6 +103,13 @@ public class PlayerPhysics extends Physics {
                 npcCharacter.send(new SelectEvent());
             }
         });
+    }
+
+    private void checkSavePoint() {
+        List<Rectangle> savePoints = MapManager.getInstance().getCurrentMap().getSavePoints();
+        if (savePoints.stream().anyMatch(savePoint -> getCheckRect().overlaps(savePoint))) {
+            ProfileManager.getInstance().saveProfile();
+        }
     }
 
     private void selectMouseNpcCharacterCandidate(List<Character> npcCharacters) {
