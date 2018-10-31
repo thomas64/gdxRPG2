@@ -11,7 +11,7 @@ import nl.t64.game.rpg.constants.Direction;
 import java.util.List;
 
 
-public abstract class Physics implements Component {
+public abstract class PhysicsComponent implements Component {
 
     @Getter
     CharacterState state;
@@ -25,7 +25,7 @@ public abstract class Physics implements Component {
     float boundingBoxWidthPercentage;
     float boundingBoxHeightPercentage;
 
-    Physics() {
+    PhysicsComponent() {
         this.boundingBox = new Rectangle();
         this.oldPosition = new Vector2();
         this.currentPosition = new Vector2();

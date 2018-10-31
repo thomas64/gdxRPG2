@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.menu;
+package nl.t64.game.rpg.listeners;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -13,7 +13,7 @@ public class ConfirmKeyListener extends InputListener {
     private final Runnable selectItemFunction;
     private final int exitIndex;
 
-    ConfirmKeyListener(Consumer<Integer> updateIndexFunction, Runnable selectItemFunction, int exitIndex) {
+    public ConfirmKeyListener(Consumer<Integer> updateIndexFunction, Runnable selectItemFunction, int exitIndex) {
         this.updateIndexFunction = updateIndexFunction;
         this.selectItemFunction = selectItemFunction;
         this.exitIndex = exitIndex;

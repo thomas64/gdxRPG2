@@ -1,6 +1,7 @@
 package nl.t64.game.rpg.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -22,6 +23,7 @@ import nl.t64.game.rpg.events.character.LoadSpriteEvent;
 import nl.t64.game.rpg.events.character.StartDirectionEvent;
 import nl.t64.game.rpg.events.character.StartPositionEvent;
 import nl.t64.game.rpg.events.character.StartStateEvent;
+import nl.t64.game.rpg.listeners.WorldScreenListener;
 import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.tiled.GameMap;
 import nl.t64.game.rpg.tiled.Npc;
@@ -47,6 +49,7 @@ public class WorldScreen implements Screen {
     private Camera camera;
     private GameMap currentMap;
     private OrthogonalTiledMapRenderer mapRenderer;
+    private InputMultiplexer multiplexer;
     private Character player;
     private List<Character> npcCharacters;
     private ShapeRenderer shapeRenderer;
@@ -57,13 +60,16 @@ public class WorldScreen implements Screen {
         MapManager.getInstance().setCamera(this.camera);
         this.mapRenderer = new OrthogonalTiledMapRenderer(null);
         MapManager.getInstance().setMapChanged(true);
-        this.player = new Character(new PlayerInput(), new PlayerPhysics(), new PlayerGraphics());
+        this.multiplexer = new InputMultiplexer();
+        this.multiplexer.addProcessor(new WorldScreenListener());
+        this.player = new Character(new PlayerInput(this.multiplexer), new PlayerPhysics(), new PlayerGraphics());
         this.shapeRenderer = new ShapeRenderer();
     }
 
     @Override
     public void show() {
         setGameState(GameState.RUNNING);
+        Gdx.input.setInputProcessor(multiplexer);
     }
 
     @Override
@@ -71,7 +77,6 @@ public class WorldScreen implements Screen {
         updatePlayTime(dt);
 
         if (gameState == GameState.PAUSED) {
-            player.updateInput(dt);
             return;
         }
 
@@ -196,6 +201,7 @@ public class WorldScreen implements Screen {
     @Override
     public void hide() {
         setGameState(GameState.PAUSED);
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override

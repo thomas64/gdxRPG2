@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.menu;
+package nl.t64.game.rpg.listeners;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -12,7 +12,7 @@ public class ButtonMouseListener extends InputListener {
     private final Runnable selectItemFunction;
     private final int index;
 
-    ButtonMouseListener(Consumer<Integer> updateIndexFunction, Runnable selectItemFunction, int index) {
+    public ButtonMouseListener(Consumer<Integer> updateIndexFunction, Runnable selectItemFunction, int index) {
         this.updateIndexFunction = updateIndexFunction;
         this.selectItemFunction = selectItemFunction;
         this.index = index;

@@ -11,7 +11,7 @@ import nl.t64.game.rpg.events.character.*;
 import java.util.List;
 
 
-public class NpcPhysics extends Physics {
+public class NpcPhysics extends PhysicsComponent {
 
     private static final String TAG = NpcPhysics.class.getSimpleName();
     private static final int WANDER_BOX_SIZE = 240;

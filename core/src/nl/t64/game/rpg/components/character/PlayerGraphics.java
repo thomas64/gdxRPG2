@@ -9,7 +9,7 @@ import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.*;
 
 
-public class PlayerGraphics extends Graphics {
+public class PlayerGraphics extends GraphicsComponent {
 
     private static final String TAG = PlayerGraphics.class.getSimpleName();
     private static final String HERO1_SPRITE_CONFIG = "configs/sprites_hero1.json";

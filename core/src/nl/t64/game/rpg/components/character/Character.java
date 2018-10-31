@@ -18,11 +18,11 @@ public class Character {
     private static final int MAX_COMPONENTS = 3;
     private List<Component> components;
 
-    private Input inputComponent;
-    private Physics physicsComponent;
-    private Graphics graphicsComponent;
+    private InputComponent inputComponent;
+    private PhysicsComponent physicsComponent;
+    private GraphicsComponent graphicsComponent;
 
-    public Character(Input input, Physics physics, Graphics graphics) {
+    public Character(InputComponent input, PhysicsComponent physics, GraphicsComponent graphics) {
         inputComponent = input;
         physicsComponent = physics;
         graphicsComponent = graphics;
@@ -53,10 +53,6 @@ public class Character {
 
     public void dispose() {
         components.forEach(Component::dispose);
-    }
-
-    public void updateInput(float dt) {
-        inputComponent.update(this, dt);
     }
 
     public Rectangle getBoundingBox() {

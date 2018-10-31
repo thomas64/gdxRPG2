@@ -14,7 +14,7 @@ import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.screens.WorldScreen;
 
 
-public abstract class Graphics implements Component {
+public abstract class GraphicsComponent implements Component {
 
     private static final int SPRITE_GROUP_WIDTH = 144;
     private static final int SPRITE_GROUP_HEIGHT = 192;

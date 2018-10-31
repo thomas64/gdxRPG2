@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 
-public class PlayerPhysics extends Physics {
+public class PlayerPhysics extends PhysicsComponent {
 
     private static final String TAG = PlayerPhysics.class.getSimpleName();
     private static final float MINIMUM_SELECT_DISTANCE = 96f;

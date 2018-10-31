@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.menu;
+package nl.t64.game.rpg.listeners;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -16,12 +16,12 @@ public class InputFieldKeyListener extends InputListener {
 
     private StringBuilder inputField;
 
-    InputFieldKeyListener(Consumer<StringBuilder> updateInputFunction, int maxSizeOfInput) {
+    public InputFieldKeyListener(Consumer<StringBuilder> updateInputFunction, int maxSizeOfInput) {
         this.updateInputFunction = updateInputFunction;
         this.maxSizeOfInput = maxSizeOfInput;
     }
 
-    void updateInputField(StringBuilder newInputField) {
+    public void updateInputField(StringBuilder newInputField) {
         inputField = newInputField;
     }
 

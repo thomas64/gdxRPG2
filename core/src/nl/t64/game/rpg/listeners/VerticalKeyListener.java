@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.menu;
+package nl.t64.game.rpg.listeners;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -7,26 +7,29 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import java.util.function.Consumer;
 
 
-public class HorizontalKeyListener extends InputListener {
+public class VerticalKeyListener extends InputListener {
 
     private final Consumer<Integer> updateIndexFunction;
     private final int numberOfItems;
 
     private int selectedIndex;
 
-    HorizontalKeyListener(Consumer<Integer> updateIndexFunction, int numberOfItems) {
+    public VerticalKeyListener(Consumer<Integer> updateIndexFunction, int numberOfItems) {
         this.updateIndexFunction = updateIndexFunction;
         this.numberOfItems = numberOfItems;
     }
 
-    void updateSelectedIndex(int newSelectedIndex) {
+    public void updateSelectedIndex(int newSelectedIndex) {
         selectedIndex = newSelectedIndex;
     }
 
     @Override
     public boolean keyDown(InputEvent event, int keycode) {
+        if (numberOfItems == 0) {
+            return false;
+        }
         switch (keycode) {
-            case Input.Keys.LEFT:
+            case Input.Keys.UP:
                 if (selectedIndex <= 0) {
                     selectedIndex = 0;
                 } else {
@@ -34,7 +37,7 @@ public class HorizontalKeyListener extends InputListener {
                 }
                 updateIndexFunction.accept(selectedIndex);
                 break;
-            case Input.Keys.RIGHT:
+            case Input.Keys.DOWN:
                 if (selectedIndex >= numberOfItems - 1) {
                     selectedIndex = numberOfItems - 1;
                 } else {

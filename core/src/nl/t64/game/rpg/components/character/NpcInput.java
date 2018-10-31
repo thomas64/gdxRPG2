@@ -8,7 +8,7 @@ import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.*;
 
 
-public class NpcInput extends Input {
+public class NpcInput extends InputComponent {
 
     private static final String TAG = NpcInput.class.getSimpleName();
 

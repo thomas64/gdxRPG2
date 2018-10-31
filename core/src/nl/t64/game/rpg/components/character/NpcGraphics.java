@@ -10,7 +10,7 @@ import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.*;
 
 
-public class NpcGraphics extends Graphics {
+public class NpcGraphics extends GraphicsComponent {
 
     private static final String TAG = NpcGraphics.class.getSimpleName();
 
