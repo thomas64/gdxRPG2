@@ -56,6 +56,7 @@ public class LoadMenu implements Screen {
     private Table bottomTable;
     private TextButton loadButton;
     private TextButton backButton;
+    private ProgressLostDialog progressLostDialog;
 
     private VerticalKeyListener verticalKeyListener;
     private HorizontalKeyListener horizontalKeyListener;
@@ -89,6 +90,7 @@ public class LoadMenu implements Screen {
         profiles = ProfileManager.getInstance().getProfileList();
 
         createTables();
+        this.progressLostDialog = new ProgressLostDialog(this::openWorldScreen);
         applyListeners();
 
         this.stage.addActor(this.topTable);
@@ -112,6 +114,7 @@ public class LoadMenu implements Screen {
         scrollScrollPane();
         verticalKeyListener.updateSelectedIndex(currentSelectedListIndex);
         horizontalKeyListener.updateSelectedIndex(selectedMenuIndex);
+        progressLostDialog.update(); // for updating the index in de listener.
         stage.draw();
     }
 
@@ -179,11 +182,7 @@ public class LoadMenu implements Screen {
                 processLoadButton();
                 break;
             case 1:
-                if (fromScreen instanceof PauseMenu) {
-                    ((PauseMenu) fromScreen).setBackground(screenshot, blur);
-                }
-                GdxRpg2.getInstance().setScreen(fromScreen);
-                fromScreen = null;
+                processBackButton();
                 break;
             default:
                 throw new IllegalArgumentException("SelectedIndex not found.");
@@ -193,9 +192,26 @@ public class LoadMenu implements Screen {
     private void processLoadButton() {
         Object profileName = listItems.getSelected();
         if (profileName != null) {
-            ProfileManager.getInstance().loadProfile(profileName.toString());
-            GdxRpg2.getInstance().setScreen(GdxRpg2.getInstance().getWorldScreen());
+            if (fromScreen instanceof PauseMenu) {
+                progressLostDialog.show(stage);
+            } else {
+                openWorldScreen();
+            }
         }
+    }
+
+    private void processBackButton() {
+        if (fromScreen instanceof PauseMenu) {
+            ((PauseMenu) fromScreen).setBackground(screenshot, blur);
+        }
+        GdxRpg2.getInstance().setScreen(fromScreen);
+        fromScreen = null;
+    }
+
+    private void openWorldScreen() {
+        Object profileName = listItems.getSelected();
+        ProfileManager.getInstance().loadProfile(profileName.toString());
+        GdxRpg2.getInstance().setScreen(GdxRpg2.getInstance().getWorldScreen());
     }
 
     private void setAllTextButtonsToWhite() {

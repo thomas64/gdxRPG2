@@ -119,15 +119,19 @@ public class SettingsMenu implements Screen {
     private void selectMenuItem() {
         switch (selectedIndex) {
             case 0:
-                if (fromScreen instanceof PauseMenu) {
-                    ((PauseMenu) fromScreen).setBackground(screenshot, blur);
-                }
-                GdxRpg2.getInstance().setScreen(fromScreen);
-                fromScreen = null;
+                processBackButton();
                 break;
             default:
                 throw new IllegalArgumentException("SelectedIndex not found.");
         }
+    }
+
+    private void processBackButton() {
+        if (fromScreen instanceof PauseMenu) {
+            ((PauseMenu) fromScreen).setBackground(screenshot, blur);
+        }
+        GdxRpg2.getInstance().setScreen(fromScreen);
+        fromScreen = null;
     }
 
     private void setAllTextButtonsToWhite() {

@@ -50,6 +50,7 @@ public class PauseMenu implements Screen {
     private TextButton loadGameButton;
     private TextButton settingsButton;
     private TextButton mainMenuButton;
+    private ProgressLostDialog progressLostDialog;
 
     private VerticalKeyListener verticalKeyListener;
 
@@ -78,6 +79,7 @@ public class PauseMenu implements Screen {
     private void setupScreen() {
         setBackground();
         this.table = createTable();
+        this.progressLostDialog = new ProgressLostDialog(this::openMainMenu);
         applyListeners();
         this.stage.addActor(this.table);
         this.stage.setKeyboardFocus(this.table);
@@ -90,6 +92,7 @@ public class PauseMenu implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(dt);
         verticalKeyListener.updateSelectedIndex(selectedIndex);
+        progressLostDialog.update(); // for updating the index in de listener.
         stage.draw();
     }
 
@@ -144,11 +147,15 @@ public class PauseMenu implements Screen {
                 game.getSettingsMenuScreen().setFromScreen(this);
                 break;
             case 3:
-                game.setScreen(game.getMainMenuScreen());
+                progressLostDialog.show(stage);
                 break;
             default:
                 throw new IllegalArgumentException("SelectedIndex not found.");
         }
+    }
+
+    private void openMainMenu() {
+        GdxRpg2.getInstance().setScreen(GdxRpg2.getInstance().getMainMenuScreen());
     }
 
     private void setAllTextButtonsToWhite() {

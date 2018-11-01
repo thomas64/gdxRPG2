@@ -18,21 +18,21 @@ import nl.t64.game.rpg.listeners.ConfirmKeyListener;
 import nl.t64.game.rpg.listeners.HorizontalKeyListener;
 
 
-public class OverwriteDialog {
+public class ProgressLostDialog {
 
     private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
     private static final String MENU_FONT = "fonts/fff_tusj.ttf";
     private static final int MENU_SIZE = 30;
 
-    private static final String DIALOG_TEXT = "Overwrite existing profile name?";
-    private static final String DIALOG_OVERWRITE = "Overwrite";
-    private static final String DIALOG_CANCEL = "Cancel";
+    private static final String DIALOG_TEXT = "Any unsaved progress will be lost.\nAre you sure?";
+    private static final String DIALOG_OVERWRITE = "Yes";
+    private static final String DIALOG_CANCEL = "No";
 
     private static final int DIALOG_WIDTH = 620;
     private static final int DIALOG_HEIGHT = 170;
-    private static final int DIALOG_PAD_TOP = 20;
-    private static final int DIALOG_PAD_BOTTOM = 40;
-    private static final int BUTTON_SPACE_RIGHT = 50;
+    private static final int DIALOG_PAD_TOP = 0;
+    private static final int DIALOG_PAD_BOTTOM = 20;
+    private static final int BUTTON_SPACE_RIGHT = 100;
 
     private static final int NUMBER_OF_ITEMS = 2;
     private static final int EXIT_INDEX = 1;
@@ -48,7 +48,7 @@ public class OverwriteDialog {
 
     private int selectedIndex;
 
-    OverwriteDialog(Runnable yesFunction) {
+    public ProgressLostDialog(Runnable yesFunction) {
         this.yesFunction = yesFunction;
         createFonts();
         this.dialog = createDialog();
