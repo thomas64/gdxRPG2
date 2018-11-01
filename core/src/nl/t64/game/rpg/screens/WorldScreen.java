@@ -12,6 +12,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.ObjectMap;
 import lombok.Getter;
 import nl.t64.game.rpg.Camera;
+import nl.t64.game.rpg.GdxRpg2;
 import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.components.character.Character;
@@ -35,7 +36,7 @@ import java.util.List;
 public class WorldScreen implements Screen {
 
     private static final String TAG = WorldScreen.class.getSimpleName();
-    private static final Color TRANSPARENT = new Color(0, 0, 0, 0.5f);
+    private static final Color TRANSPARENT = new Color(0f, 0f, 0f, 0.5f);
     private static final String PEOPLE1_SPRITE_CONFIG = "configs/sprites_people1.json";
 
     private static boolean showGrid = false;
@@ -147,6 +148,11 @@ public class WorldScreen implements Screen {
         npcCharacters.forEach(npcCharacter -> npcCharacter.render(mapRenderer.getBatch(), shapeRenderer));
         player.render(mapRenderer.getBatch(), shapeRenderer);
         mapRenderer.getBatch().end();
+    }
+
+    public static void openPauseMenu() {
+        GdxRpg2.getInstance().setScreen(GdxRpg2.getInstance().getPauseMenuScreen());
+        GdxRpg2.getInstance().getPauseMenuScreen().updateIndex(0);
     }
 
     public static void setGameState(GameState newGameState) {

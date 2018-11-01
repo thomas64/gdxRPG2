@@ -24,7 +24,6 @@ public class ProfileManager {
     private String profileName = null;
 
     private ProfileManager() {
-        loadAllProfiles();
     }
 
     public static ProfileManager getInstance() {

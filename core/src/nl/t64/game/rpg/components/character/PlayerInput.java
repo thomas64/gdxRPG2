@@ -86,7 +86,7 @@ public class PlayerInput extends InputComponent implements InputProcessor {
         if (keycode == Input.Keys.SPACE) {
             pressAlign = true;
         }
-        return true;
+        return false;
     }
 
     @Override

@@ -64,8 +64,18 @@ public class NewMenu implements Screen {
 
     public NewMenu() {
         this.stage = new Stage();
-
         createFonts();
+    }
+
+    @Override
+    public void show() {
+        Gdx.input.setInputProcessor(stage);
+        setupScreen();
+    }
+
+    private void setupScreen() {
+        ProfileManager.getInstance().loadAllProfiles();
+
         this.table = createTable();
         this.overwriteDialog = new OverwriteDialog(this::createNewGame);
 
@@ -79,12 +89,6 @@ public class NewMenu implements Screen {
 
         this.selectedIndex = 0;
         setCurrentTextButtonToRed();
-    }
-
-    @Override
-    public void show() {
-        ProfileManager.getInstance().loadAllProfiles();
-        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -115,6 +119,7 @@ public class NewMenu implements Screen {
 
     @Override
     public void hide() {
+        stage.clear();
         Gdx.input.setInputProcessor(null);
     }
 

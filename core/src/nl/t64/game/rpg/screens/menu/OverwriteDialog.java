@@ -55,13 +55,11 @@ public class OverwriteDialog {
         this.dialog = createDialog();
 
         applyListeners();
-
-        this.selectedIndex = 1;
-        setCurrentTextButtonToRed();
     }
 
     void show(Stage stage) {
         dialog.show(stage);
+        updateIndex(EXIT_INDEX);
     }
 
     public void update() {  // handmade equivalent of a Screen.render() method.

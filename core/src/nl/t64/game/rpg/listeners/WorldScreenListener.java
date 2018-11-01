@@ -11,6 +11,9 @@ public class WorldScreenListener implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.ESCAPE) {
+            WorldScreen.openPauseMenu();
+        }
         return false;
     }
 

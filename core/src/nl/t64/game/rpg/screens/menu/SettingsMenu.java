@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import lombok.Setter;
 import nl.t64.game.rpg.GdxRpg2;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
@@ -18,41 +18,31 @@ import nl.t64.game.rpg.listeners.ConfirmKeyListener;
 import nl.t64.game.rpg.listeners.VerticalKeyListener;
 
 
-public class MainMenu implements Screen {
-
-    private static final String TITLE_FONT = "fonts/colonna.ttf";
-    private static final int TITLE_SIZE = 200;
-    private static final int TITLE_SPACE_BOTTOM = 75;
+public class SettingsMenu implements Screen {
 
     private static final String MENU_FONT = "fonts/fff_tusj.ttf";
     private static final int MENU_SIZE = 30;
     private static final int MENU_SPACE_BOTTOM = 10;
 
-    private static final String TITLE_LABEL = "gdxRPG2";
+    private static final String MENU_ITEM_BACK = "Back";
 
-    private static final String MENU_ITEM_NEW_GAME = "New Game";
-    private static final String MENU_ITEM_LOAD_GAME = "Load Game";
-    private static final String MENU_ITEM_SETTINGS = "Settings";
-    private static final String MENU_ITEM_EXIT = "Exit";
+    private static final int NUMBER_OF_ITEMS = 1;
+    private static final int EXIT_INDEX = 0;
 
-    private static final int NUMBER_OF_ITEMS = 4;
-    private static final int EXIT_INDEX = 3;
+    @Setter
+    private Screen fromScreen;
 
     private Stage stage;
 
-    private BitmapFont titleFont;
     private BitmapFont menuFont;
     private Table table;
-    private TextButton newGameButton;
-    private TextButton loadGameButton;
-    private TextButton settingsButton;
-    private TextButton exitButton;
+    private TextButton backButton;
 
     private VerticalKeyListener verticalKeyListener;
 
     private int selectedIndex;
 
-    public MainMenu() {
+    public SettingsMenu() {
         this.stage = new Stage();
 
         createFonts();
@@ -102,8 +92,7 @@ public class MainMenu implements Screen {
 
     @Override
     public void dispose() {
-        titleFont.dispose();
-        menuFont.dispose();
+        // menuFont.dispose(); is already disposed in MainMenu?
         stage.clear();
         stage.dispose();
     }
@@ -115,21 +104,10 @@ public class MainMenu implements Screen {
     }
 
     private void selectMenuItem() {
-        GdxRpg2 game = GdxRpg2.getInstance();
         switch (selectedIndex) {
             case 0:
-                game.setScreen(game.getNewGameMenuScreen());
-                break;
-            case 1:
-                game.setScreen(game.getLoadGameMenuScreen());
-                game.getLoadGameMenuScreen().setFromScreen(this);
-                break;
-            case 2:
-                game.setScreen(game.getSettingsMenuScreen());
-                game.getSettingsMenuScreen().setFromScreen(this);
-                break;
-            case 3:
-                Gdx.app.exit();
+                GdxRpg2.getInstance().setScreen(fromScreen);
+                fromScreen = null;
                 break;
             default:
                 throw new IllegalArgumentException("SelectedIndex not found.");
@@ -138,47 +116,32 @@ public class MainMenu implements Screen {
 
     private void setAllTextButtonsToWhite() {
         for (Actor actor : table.getChildren()) {
-            if (actor instanceof TextButton) {
-                ((TextButton) actor).getStyle().fontColor = Color.WHITE;
-            }
+            ((TextButton) actor).getStyle().fontColor = Color.WHITE;
         }
     }
 
     private void setCurrentTextButtonToRed() {
-        selectedIndex += 1; // because the title is also in the table.
         ((TextButton) table.getChildren().get(selectedIndex)).getStyle().fontColor = Constant.DARK_RED;
-        selectedIndex -= 1;
     }
 
     private void createFonts() {
-        Utility.loadTrueTypeAsset(TITLE_FONT, TITLE_SIZE);
-        titleFont = Utility.getTrueTypeAsset(TITLE_FONT);
         Utility.loadTrueTypeAsset(MENU_FONT, MENU_SIZE);
         menuFont = Utility.getTrueTypeAsset(MENU_FONT);
     }
 
     private Table createTable() {
         // styles
-        Label.LabelStyle titleStyle = new Label.LabelStyle(titleFont, Constant.DARK_RED);
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = menuFont;
         buttonStyle.fontColor = Color.WHITE;
 
         // actors
-        Label titleLabel = new Label(TITLE_LABEL, titleStyle);
-        newGameButton = new TextButton(MENU_ITEM_NEW_GAME, new TextButton.TextButtonStyle(buttonStyle));
-        loadGameButton = new TextButton(MENU_ITEM_LOAD_GAME, new TextButton.TextButtonStyle(buttonStyle));
-        settingsButton = new TextButton(MENU_ITEM_SETTINGS, new TextButton.TextButtonStyle(buttonStyle));
-        exitButton = new TextButton(MENU_ITEM_EXIT, new TextButton.TextButtonStyle(buttonStyle));
+        backButton = new TextButton(MENU_ITEM_BACK, new TextButton.TextButtonStyle(buttonStyle));
 
         // table
         Table newTable = new Table();
         newTable.setFillParent(true);
-        newTable.add(titleLabel).spaceBottom(TITLE_SPACE_BOTTOM).row();
-        newTable.add(newGameButton).spaceBottom(MENU_SPACE_BOTTOM).row();
-        newTable.add(loadGameButton).spaceBottom(MENU_SPACE_BOTTOM).row();
-        newTable.add(settingsButton).spaceBottom(MENU_SPACE_BOTTOM).row();
-        newTable.add(exitButton).spaceBottom(MENU_SPACE_BOTTOM).row();
+        newTable.add(backButton).spaceBottom(MENU_SPACE_BOTTOM).row();
         return newTable;
     }
 
@@ -186,10 +149,7 @@ public class MainMenu implements Screen {
         verticalKeyListener = new VerticalKeyListener(this::updateIndex, NUMBER_OF_ITEMS);
         table.addListener(verticalKeyListener);
         table.addListener(new ConfirmKeyListener(this::updateIndex, this::selectMenuItem, EXIT_INDEX));
-        newGameButton.addListener(createButtonMouseListener(0));
-        loadGameButton.addListener(createButtonMouseListener(1));
-        settingsButton.addListener(createButtonMouseListener(2));
-        exitButton.addListener(createButtonMouseListener(3));
+        backButton.addListener(createButtonMouseListener(0));
     }
 
     private ButtonMouseListener createButtonMouseListener(int index) {
