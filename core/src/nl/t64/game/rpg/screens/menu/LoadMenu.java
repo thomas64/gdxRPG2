@@ -46,6 +46,9 @@ public class LoadMenu implements Screen {
 
     private Array<String> profiles;
 
+    private Image screenshot;
+    private Image blur;
+
     private BitmapFont menuFont;
     private Table topTable;
     private List listItems;
@@ -66,6 +69,13 @@ public class LoadMenu implements Screen {
     public LoadMenu() {
         this.stage = new Stage();
         createFonts();
+    }
+
+    public void setBackground(Image screenshot, Image blur) {
+        this.screenshot = screenshot;
+        this.blur = blur;
+        stage.addActor(screenshot);
+        stage.addActor(blur);
     }
 
     @Override
@@ -169,6 +179,9 @@ public class LoadMenu implements Screen {
                 processLoadButton();
                 break;
             case 1:
+                if (fromScreen instanceof PauseMenu) {
+                    ((PauseMenu) fromScreen).setBackground(screenshot, blur);
+                }
                 GdxRpg2.getInstance().setScreen(fromScreen);
                 fromScreen = null;
                 break;

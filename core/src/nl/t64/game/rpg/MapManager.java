@@ -21,7 +21,8 @@ public class MapManager implements ProfileObserver {
 
     private static final MapTitle START_OF_GAME_MAP = MapTitle.MAP4;
 
-    private GameMap currentMap = null;
+    @Getter
+    private GameMap currentMap;
     @Getter
     @Setter
     private Camera camera;
@@ -38,6 +39,13 @@ public class MapManager implements ProfileObserver {
     }
 
     @Override
+    public void onNotifyCreate() {
+        loadMap(START_OF_GAME_MAP);
+        currentMap.setPlayerSpawnLocationForNewLoad(START_OF_GAME_MAP);
+        onNotifySave();
+    }
+
+    @Override
     public void onNotifySave() {
         ProfileManager.getInstance().setProperty("MapTitle", getCurrentMap().getMapTitle().name());
     }
@@ -50,22 +58,10 @@ public class MapManager implements ProfileObserver {
         currentMap.setPlayerSpawnLocationForNewLoad(mapTitleEnum);
     }
 
-    public GameMap getCurrentMap() {
-        loadStartOfGameMapIfNecessary();
-        return currentMap;
-    }
-
     public void loadMap(MapTitle mapTitle) {
         disposeOldMap();
         currentMap = new GameMap(mapTitle);
         mapChanged = true;
-    }
-
-    private void loadStartOfGameMapIfNecessary() {
-        if (currentMap == null) {
-            loadMap(START_OF_GAME_MAP);
-            currentMap.setPlayerSpawnLocationForNewLoad(START_OF_GAME_MAP);
-        }
     }
 
     private void disposeOldMap() {

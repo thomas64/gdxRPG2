@@ -44,9 +44,8 @@ public class WorldScreen implements Screen {
     private static boolean showDebug = false;
     @Getter
     private static float playTime = 0f;
-    @Getter
-    private static GameState gameState;
 
+    private GameState gameState;
     private Camera camera;
     private GameMap currentMap;
     private OrthogonalTiledMapRenderer mapRenderer;
@@ -62,14 +61,14 @@ public class WorldScreen implements Screen {
         this.mapRenderer = new OrthogonalTiledMapRenderer(null);
         MapManager.getInstance().setMapChanged(true);
         this.multiplexer = new InputMultiplexer();
-        this.multiplexer.addProcessor(new WorldScreenListener());
+        this.multiplexer.addProcessor(new WorldScreenListener(this::openPauseMenu));
         this.player = new Character(new PlayerInput(this.multiplexer), new PlayerPhysics(), new PlayerGraphics());
         this.shapeRenderer = new ShapeRenderer();
     }
 
     @Override
     public void show() {
-        setGameState(GameState.RUNNING);
+        gameState = GameState.RUNNING;
         Gdx.input.setInputProcessor(multiplexer);
     }
 
@@ -150,27 +149,10 @@ public class WorldScreen implements Screen {
         mapRenderer.getBatch().end();
     }
 
-    public static void openPauseMenu() {
+    private void openPauseMenu() {
+        player.resetInput();
         GdxRpg2.getInstance().setScreen(GdxRpg2.getInstance().getPauseMenuScreen());
         GdxRpg2.getInstance().getPauseMenuScreen().updateIndex(0);
-    }
-
-    public static void setGameState(GameState newGameState) {
-        switch (newGameState) {
-            case RUNNING:
-                gameState = GameState.RUNNING;
-                break;
-            case PAUSED:
-                if (gameState == GameState.PAUSED) {
-                    gameState = GameState.RUNNING;
-                } else if (gameState == GameState.RUNNING) {
-                    gameState = GameState.PAUSED;
-                }
-                break;
-            default:
-                gameState = GameState.RUNNING;
-                break;
-        }
     }
 
     public static void setShowGrid() {
@@ -196,17 +178,17 @@ public class WorldScreen implements Screen {
 
     @Override
     public void pause() {
-        setGameState(GameState.PAUSED);
+        gameState = GameState.PAUSED;
     }
 
     @Override
     public void resume() {
-        setGameState(GameState.RUNNING);
+        gameState = GameState.RUNNING;
     }
 
     @Override
     public void hide() {
-        setGameState(GameState.PAUSED);
+        gameState = GameState.PAUSED;
         Gdx.input.setInputProcessor(null);
     }
 

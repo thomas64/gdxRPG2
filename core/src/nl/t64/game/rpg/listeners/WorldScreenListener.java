@@ -1,31 +1,28 @@
 package nl.t64.game.rpg.listeners;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import nl.t64.game.rpg.constants.GameState;
 import nl.t64.game.rpg.screens.WorldScreen;
 
 
 public class WorldScreenListener implements InputProcessor {
 
+    private final Runnable openMenuFunction;
+
+    public WorldScreenListener(Runnable openMenuFunction) {
+        this.openMenuFunction = openMenuFunction;
+    }
+
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.ESCAPE) {
-            WorldScreen.openPauseMenu();
+            openMenuFunction.run();
         }
         return false;
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        if (keycode == Input.Keys.P) {
-            WorldScreen.setGameState(GameState.PAUSED);
-        }
-        if (keycode == Input.Keys.Q) {
-            Gdx.app.exit();
-        }
-
         if (keycode == Input.Keys.F10) {
             WorldScreen.setShowGrid();
         }

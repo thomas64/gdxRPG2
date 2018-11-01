@@ -25,7 +25,7 @@ import nl.t64.game.rpg.listeners.VerticalKeyListener;
 
 public class PauseMenu implements Screen {
 
-    private static final Color TRANSPARENT = new Color(0f, 0f, 0f, 0.90f);
+    private static final Color TRANSPARENT = new Color(0f, 0f, 0f, 0.85f);
     private static final String MENU_FONT = "fonts/fff_tusj.ttf";
     private static final int MENU_SIZE = 30;
     private static final int MENU_SPACE_BOTTOM = 10;
@@ -39,6 +39,10 @@ public class PauseMenu implements Screen {
     private static final int EXIT_INDEX = 0;
 
     private Stage stage;
+
+    private Image screenshot;
+    private Image blur;
+    private boolean hasBackground = false;
 
     private BitmapFont menuFont;
     private Table table;
@@ -55,6 +59,14 @@ public class PauseMenu implements Screen {
         this.stage = new Stage();
         createFonts();
         this.selectedIndex = 0;
+    }
+
+    public void setBackground(Image screenshot, Image blur) {
+        this.screenshot = screenshot;
+        this.blur = blur;
+        stage.addActor(screenshot);
+        stage.addActor(blur);
+        hasBackground = true;
     }
 
     @Override
@@ -116,20 +128,23 @@ public class PauseMenu implements Screen {
     }
 
     private void selectMenuItem() {
+        GdxRpg2 game = GdxRpg2.getInstance();
         switch (selectedIndex) {
             case 0:
-                GdxRpg2.getInstance().setScreen(GdxRpg2.getInstance().getWorldScreen());
+                game.setScreen(game.getWorldScreen());
                 break;
             case 1:
-                GdxRpg2.getInstance().setScreen(GdxRpg2.getInstance().getLoadGameMenuScreen());
-                GdxRpg2.getInstance().getLoadGameMenuScreen().setFromScreen(this);
+                game.getLoadGameMenuScreen().setBackground(screenshot, blur);
+                game.setScreen(game.getLoadGameMenuScreen());
+                game.getLoadGameMenuScreen().setFromScreen(this);
                 break;
             case 2:
-                GdxRpg2.getInstance().setScreen(GdxRpg2.getInstance().getSettingsMenuScreen());
-                GdxRpg2.getInstance().getSettingsMenuScreen().setFromScreen(this);
+                game.getSettingsMenuScreen().setBackground(screenshot, blur);
+                game.setScreen(game.getSettingsMenuScreen());
+                game.getSettingsMenuScreen().setFromScreen(this);
                 break;
             case 3:
-                GdxRpg2.getInstance().setScreen(GdxRpg2.getInstance().getMainMenuScreen());
+                game.setScreen(game.getMainMenuScreen());
                 break;
             default:
                 throw new IllegalArgumentException("SelectedIndex not found.");
@@ -152,13 +167,16 @@ public class PauseMenu implements Screen {
     }
 
     private void setBackground() {
-        Image screenshot = new Image(ScreenUtils.getFrameBufferTexture());
-        Image transparentRect = createTransparentRect();
-        stage.addActor(screenshot);
-        stage.addActor(transparentRect);
+        if (!hasBackground) {
+            screenshot = new Image(ScreenUtils.getFrameBufferTexture());
+            blur = createBlur();
+            stage.addActor(screenshot);
+            stage.addActor(blur);
+        }
+        hasBackground = false;
     }
 
-    private Image createTransparentRect() {
+    private Image createBlur() {
         Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Pixmap.Format.Alpha);
         pixmap.setColor(TRANSPARENT);
         pixmap.fill();

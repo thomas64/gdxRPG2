@@ -18,30 +18,31 @@ public class PlayerInput extends InputComponent implements InputProcessor {
     private static final float TURN_DELAY_TIME = 8f / 60f; // of a second
 
     private Vector3 lastMouseCoordinates;
-    private boolean clickSelect = false;
-    private boolean clickDoAction = false;
+    private boolean clickSelect;
+    private boolean clickDoAction;
 
-    private boolean pressUp = false;
-    private boolean pressDown = false;
-    private boolean pressLeft = false;
-    private boolean pressRight = false;
+    private boolean pressUp;
+    private boolean pressDown;
+    private boolean pressLeft;
+    private boolean pressRight;
 
-    private boolean pressAlign = false;
+    private boolean pressAlign;
 
-    private int timeUp = 0;
-    private int timeDown = 0;
-    private int timeLeft = 0;
-    private int timeRight = 0;
-    private float turnDelay = 0f;
+    private int timeUp;
+    private int timeDown;
+    private int timeLeft;
+    private int timeRight;
+    private float turnDelay;
 
-    private boolean pressCtrl = false;
-    private boolean pressShift = false;
-    private boolean pressAction = false;
+    private boolean pressCtrl;
+    private boolean pressShift;
+    private boolean pressAction;
 
     private Direction direction;
 
     public PlayerInput(InputMultiplexer multiplexer) {
         this.lastMouseCoordinates = new Vector3();
+        this.reset();
         multiplexer.addProcessor(this);
     }
 
@@ -182,6 +183,29 @@ public class PlayerInput extends InputComponent implements InputProcessor {
             pressAction = false;
         }
 
+    }
+
+    @Override
+    public void reset() {
+        clickSelect = false;
+        clickDoAction = false;
+
+        pressUp = false;
+        pressDown = false;
+        pressLeft = false;
+        pressRight = false;
+
+        pressAlign = false;
+
+        timeUp = 0;
+        timeDown = 0;
+        timeLeft = 0;
+        timeRight = 0;
+        turnDelay = 0f;
+
+        pressCtrl = false;
+        pressShift = false;
+        pressAction = false;
     }
 
     private void processPlayerMoveInput(Character player, float dt) {

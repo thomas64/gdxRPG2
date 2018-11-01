@@ -5,4 +5,8 @@ public abstract class InputComponent implements Component {
 
     public abstract void update(Character character, float dt);
 
+    public void reset() {
+        // empty
+    }
+
 }

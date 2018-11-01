@@ -48,7 +48,8 @@ public class ProfileManager {
             newProfileName = DEFAULT_PROFILE;
         }
         profileName = newProfileName;
-        saveProfile();
+        observers.forEach(ProfileObserver::onNotifyCreate);
+        writeProfileToDisk();
     }
 
     public Array<String> getProfileList() {
@@ -67,11 +68,7 @@ public class ProfileManager {
 
     public void saveProfile() {
         observers.forEach(ProfileObserver::onNotifySave);
-        String fileData = json.prettyPrint(json.toJson(profileProperties));
-        String fullFilename = profileName + SAVEGAME_SUFFIX;
-        FileHandle file = Gdx.files.local(SAVE_PATH + fullFilename);
-        file.writeString(fileData, false);
-        profiles.put(profileName, file);
+        writeProfileToDisk();
     }
 
     @SuppressWarnings("unchecked")
@@ -92,6 +89,14 @@ public class ProfileManager {
 
     public void removeObserver(ProfileObserver observer) {
         observers.remove(observer);
+    }
+
+    private void writeProfileToDisk() {
+        String fileData = json.prettyPrint(json.toJson(profileProperties));
+        String fullFilename = profileName + SAVEGAME_SUFFIX;
+        FileHandle file = Gdx.files.local(SAVE_PATH + fullFilename);
+        file.writeString(fileData, false);
+        profiles.put(profileName, file);
     }
 
 }

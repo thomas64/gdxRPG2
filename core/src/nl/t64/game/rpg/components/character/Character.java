@@ -55,6 +55,10 @@ public class Character {
         components.forEach(Component::dispose);
     }
 
+    public void resetInput() {
+        inputComponent.reset();
+    }
+
     public Rectangle getBoundingBox() {
         return physicsComponent.getBoundingBox();
     }

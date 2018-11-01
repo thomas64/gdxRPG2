@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import lombok.Setter;
@@ -34,6 +35,9 @@ public class SettingsMenu implements Screen {
 
     private Stage stage;
 
+    private Image screenshot;
+    private Image blur;
+
     private BitmapFont menuFont;
     private Table table;
     private TextButton backButton;
@@ -44,21 +48,29 @@ public class SettingsMenu implements Screen {
 
     public SettingsMenu() {
         this.stage = new Stage();
-
         createFonts();
-        this.table = createTable();
-
-        applyListeners();
-        this.stage.addActor(this.table);
-        this.stage.setKeyboardFocus(this.table);
-
         this.selectedIndex = 0;
-        setCurrentTextButtonToRed();
+    }
+
+    public void setBackground(Image screenshot, Image blur) {
+        this.screenshot = screenshot;
+        this.blur = blur;
+        stage.addActor(screenshot);
+        stage.addActor(blur);
     }
 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
+        setupScreen();
+    }
+
+    private void setupScreen() {
+        this.table = createTable();
+        applyListeners();
+        this.stage.addActor(this.table);
+        this.stage.setKeyboardFocus(this.table);
+        setCurrentTextButtonToRed();
     }
 
     @Override
@@ -87,6 +99,7 @@ public class SettingsMenu implements Screen {
 
     @Override
     public void hide() {
+        stage.clear();
         Gdx.input.setInputProcessor(null);
     }
 
@@ -106,6 +119,9 @@ public class SettingsMenu implements Screen {
     private void selectMenuItem() {
         switch (selectedIndex) {
             case 0:
+                if (fromScreen instanceof PauseMenu) {
+                    ((PauseMenu) fromScreen).setBackground(screenshot, blur);
+                }
                 GdxRpg2.getInstance().setScreen(fromScreen);
                 fromScreen = null;
                 break;
