@@ -25,10 +25,11 @@ public class SettingsMenu implements Screen {
     private static final int MENU_SIZE = 30;
     private static final int MENU_SPACE_BOTTOM = 10;
 
+    private static final String MENU_ITEM_FULL_SCREEN = "Toggle full screen";
     private static final String MENU_ITEM_BACK = "Back";
 
-    private static final int NUMBER_OF_ITEMS = 1;
-    private static final int EXIT_INDEX = 0;
+    private static final int NUMBER_OF_ITEMS = 2;
+    private static final int EXIT_INDEX = 1;
 
     @Setter
     private Screen fromScreen;
@@ -40,16 +41,19 @@ public class SettingsMenu implements Screen {
 
     private BitmapFont menuFont;
     private Table table;
+    private TextButton fullScreenButton;
     private TextButton backButton;
 
     private VerticalKeyListener verticalKeyListener;
 
     private int selectedIndex;
+    private boolean isFullScreen;
 
     public SettingsMenu() {
         this.stage = new Stage();
         createFonts();
-        this.selectedIndex = 0;
+        this.selectedIndex = 1;
+        this.isFullScreen = false;
     }
 
     public void setBackground(Image screenshot, Image blur) {
@@ -119,11 +123,23 @@ public class SettingsMenu implements Screen {
     private void selectMenuItem() {
         switch (selectedIndex) {
             case 0:
+                processToggleButton();
+                break;
+            case 1:
                 processBackButton();
                 break;
             default:
                 throw new IllegalArgumentException("SelectedIndex not found.");
         }
+    }
+
+    private void processToggleButton() {
+        if (isFullScreen) {
+            Gdx.graphics.setWindowedMode(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGHT);
+        } else {
+            Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+        }
+        isFullScreen = !isFullScreen;
     }
 
     private void processBackButton() {
@@ -156,11 +172,13 @@ public class SettingsMenu implements Screen {
         buttonStyle.fontColor = Color.WHITE;
 
         // actors
+        fullScreenButton = new TextButton(MENU_ITEM_FULL_SCREEN, new TextButton.TextButtonStyle(buttonStyle));
         backButton = new TextButton(MENU_ITEM_BACK, new TextButton.TextButtonStyle(buttonStyle));
 
         // table
         Table newTable = new Table();
         newTable.setFillParent(true);
+        newTable.add(fullScreenButton).spaceBottom(MENU_SPACE_BOTTOM).row();
         newTable.add(backButton).spaceBottom(MENU_SPACE_BOTTOM).row();
         return newTable;
     }
@@ -169,7 +187,8 @@ public class SettingsMenu implements Screen {
         verticalKeyListener = new VerticalKeyListener(this::updateIndex, NUMBER_OF_ITEMS);
         table.addListener(verticalKeyListener);
         table.addListener(new ConfirmKeyListener(this::updateIndex, this::selectMenuItem, EXIT_INDEX));
-        backButton.addListener(createButtonMouseListener(0));
+        fullScreenButton.addListener(createButtonMouseListener(0));
+        backButton.addListener(createButtonMouseListener(1));
     }
 
     private ButtonMouseListener createButtonMouseListener(int index) {
