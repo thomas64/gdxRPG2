@@ -5,13 +5,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
-import nl.t64.game.rpg.MapManager;
+import nl.t64.game.rpg.GdxRpg2;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.*;
-import nl.t64.game.rpg.profile.ProfileManager;
+import nl.t64.game.rpg.managers.MapManager;
+import nl.t64.game.rpg.managers.ProfileManager;
 import nl.t64.game.rpg.tiled.Portal;
 
 import java.util.ArrayList;
@@ -113,7 +114,7 @@ public class PlayerPhysics extends PhysicsComponent {
     }
 
     private void selectMouseNpcCharacterCandidate(List<Character> npcCharacters) {
-        MapManager.getInstance().getCamera().unproject(mouseSelectCoordinates);
+        GdxRpg2.getInstance().getWorldScreen().getCamera().unproject(mouseSelectCoordinates); // todo, camera singleton?
         npcCharacters.forEach(npcCharacter -> {
             npcCharacter.send(new DeselectEvent());
             if (npcCharacter.getBoundingBox().contains(mouseSelectCoordinates.x, mouseSelectCoordinates.y)) {

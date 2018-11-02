@@ -1,4 +1,4 @@
-package nl.t64.game.rpg;
+package nl.t64.game.rpg.managers;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -6,8 +6,6 @@ import com.badlogic.gdx.math.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
 import nl.t64.game.rpg.constants.MapTitle;
-import nl.t64.game.rpg.profile.ProfileManager;
-import nl.t64.game.rpg.profile.ProfileObserver;
 import nl.t64.game.rpg.tiled.GameMap;
 import nl.t64.game.rpg.tiled.Npc;
 import nl.t64.game.rpg.tiled.Portal;
@@ -23,9 +21,6 @@ public class MapManager implements ProfileObserver {
 
     @Getter
     private GameMap currentMap;
-    @Getter
-    @Setter
-    private Camera camera;
 
     @Getter
     @Setter

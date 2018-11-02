@@ -3,10 +3,10 @@ package nl.t64.game.rpg.components.character;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.*;
+import nl.t64.game.rpg.managers.MapManager;
 
 import java.util.List;
 

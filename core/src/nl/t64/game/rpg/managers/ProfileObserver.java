@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.profile;
+package nl.t64.game.rpg.managers;
 
 
 public interface ProfileObserver {

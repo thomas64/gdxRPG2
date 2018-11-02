@@ -22,7 +22,7 @@ import nl.t64.game.rpg.listeners.ButtonMouseListener;
 import nl.t64.game.rpg.listeners.ConfirmKeyListener;
 import nl.t64.game.rpg.listeners.HorizontalKeyListener;
 import nl.t64.game.rpg.listeners.InputFieldKeyListener;
-import nl.t64.game.rpg.profile.ProfileManager;
+import nl.t64.game.rpg.managers.ProfileManager;
 
 
 public class NewMenu implements Screen {

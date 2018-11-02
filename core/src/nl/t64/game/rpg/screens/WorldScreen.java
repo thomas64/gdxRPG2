@@ -13,7 +13,6 @@ import com.badlogic.gdx.utils.ObjectMap;
 import lombok.Getter;
 import nl.t64.game.rpg.Camera;
 import nl.t64.game.rpg.GdxRpg2;
-import nl.t64.game.rpg.MapManager;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.components.character.Character;
 import nl.t64.game.rpg.components.character.*;
@@ -25,7 +24,8 @@ import nl.t64.game.rpg.events.character.StartDirectionEvent;
 import nl.t64.game.rpg.events.character.StartPositionEvent;
 import nl.t64.game.rpg.events.character.StartStateEvent;
 import nl.t64.game.rpg.listeners.WorldScreenListener;
-import nl.t64.game.rpg.profile.ProfileManager;
+import nl.t64.game.rpg.managers.MapManager;
+import nl.t64.game.rpg.managers.ProfileManager;
 import nl.t64.game.rpg.tiled.GameMap;
 import nl.t64.game.rpg.tiled.Npc;
 
@@ -46,6 +46,7 @@ public class WorldScreen implements Screen {
     private static float playTime = 0f;
 
     private GameState gameState;
+    @Getter
     private Camera camera;
     private GameMap currentMap;
     private OrthogonalTiledMapRenderer mapRenderer;
@@ -57,7 +58,6 @@ public class WorldScreen implements Screen {
     public WorldScreen() {
         ProfileManager.getInstance().addObserver(MapManager.getInstance());
         this.camera = new Camera();
-        MapManager.getInstance().setCamera(this.camera);
         this.mapRenderer = new OrthogonalTiledMapRenderer(null);
         MapManager.getInstance().setMapChanged(true);
         this.multiplexer = new InputMultiplexer();
