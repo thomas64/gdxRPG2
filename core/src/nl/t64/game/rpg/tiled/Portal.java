@@ -8,6 +8,8 @@ import lombok.Setter;
 import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.constants.MapTitle;
 
+import java.util.Optional;
+
 
 @Getter
 public class Portal {
@@ -29,11 +31,10 @@ public class Portal {
     }
 
     private String createToMapLocation(RectangleMapObject rectObject) {
-        String newToMapLocation = rectObject.getProperties().get("type", String.class);
-        if (newToMapLocation == null) {
-            newToMapLocation = "";
-        }
-        return newToMapLocation;
+        Optional<String> newToMapLocation = Optional.ofNullable(
+                rectObject.getProperties().get("type", String.class));
+        return newToMapLocation.orElse("");
+
     }
 
 }

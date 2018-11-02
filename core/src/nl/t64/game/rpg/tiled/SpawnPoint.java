@@ -7,6 +7,8 @@ import lombok.Getter;
 import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.constants.MapTitle;
 
+import java.util.Optional;
+
 
 public class SpawnPoint {
 
@@ -40,20 +42,16 @@ public class SpawnPoint {
     }
 
     private String createFromMapLocation(RectangleMapObject rectObject) {
-        String newFromMapLocation = rectObject.getProperties().get("type", String.class);
-        if (newFromMapLocation == null) {
-            newFromMapLocation = "";
-        }
-        return newFromMapLocation;
+        Optional<String> newFromMapLocation = Optional.ofNullable(
+                rectObject.getProperties().get("type", String.class));
+        return newFromMapLocation.orElse("");
     }
 
     private Direction createDirection(RectangleMapObject rectObject) {
-        String directionString = rectObject.getProperties().get("direction", String.class);
-        if (directionString == null) {
-            return Direction.NONE;
-        } else {
-            return Direction.valueOf(directionString.toUpperCase());
-        }
+        Optional<String> directionString = Optional.ofNullable(
+                rectObject.getProperties().get("direction", String.class));
+        return directionString.map(string -> Direction.valueOf(string.toUpperCase()))
+                              .orElse(Direction.NONE);
     }
 
 }

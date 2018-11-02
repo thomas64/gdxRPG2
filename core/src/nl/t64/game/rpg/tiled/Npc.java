@@ -8,6 +8,8 @@ import lombok.Getter;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Direction;
 
+import java.util.Optional;
+
 
 @Getter
 public class Npc {
@@ -42,12 +44,10 @@ public class Npc {
     }
 
     private Direction createDirection(RectangleMapObject rectObject) {
-        String newDirection = rectObject.getProperties().get("direction", String.class);
-        if (newDirection == null) {
-            return Direction.getRandom();
-        } else {
-            return Direction.valueOf(newDirection.toUpperCase());
-        }
+        Optional<String> newDirection = Optional.ofNullable(
+                rectObject.getProperties().get("direction", String.class));
+        return newDirection.map(string -> Direction.valueOf(string.toUpperCase()))
+                           .orElseGet(Direction::getRandom);
     }
 
 }
