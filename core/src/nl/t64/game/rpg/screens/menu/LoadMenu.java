@@ -13,11 +13,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Array;
 import lombok.Setter;
-import nl.t64.game.rpg.GdxRpg2;
+import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.listeners.*;
-import nl.t64.game.rpg.managers.ProfileManager;
 
 
 public class LoadMenu implements Screen {
@@ -39,10 +38,11 @@ public class LoadMenu implements Screen {
     private static final int NUMBER_OF_ITEMS = 2;
     private static final int EXIT_INDEX = 1;
 
+    private Engine engine;
+    private Stage stage;
+
     @Setter
     private Screen fromScreen;
-
-    private Stage stage;
 
     private Array<String> profiles;
 
@@ -67,7 +67,8 @@ public class LoadMenu implements Screen {
 
     private boolean isMouseScrolled = false;
 
-    public LoadMenu() {
+    public LoadMenu(Engine engine) {
+        this.engine = engine;
         this.stage = new Stage();
         createFonts();
     }
@@ -86,8 +87,8 @@ public class LoadMenu implements Screen {
     }
 
     private void setupScreen() {
-        ProfileManager.getInstance().loadAllProfiles();
-        profiles = ProfileManager.getInstance().getProfileList();
+        engine.getProfileManager().loadAllProfiles();
+        profiles = engine.getProfileManager().getProfileList();
 
         createTables();
         this.progressLostDialog = new ProgressLostDialog(this::openWorldScreen);
@@ -204,14 +205,14 @@ public class LoadMenu implements Screen {
         if (fromScreen instanceof PauseMenu) {
             ((PauseMenu) fromScreen).setBackground(screenshot, blur);
         }
-        GdxRpg2.getInstance().setScreen(fromScreen);
+        engine.setScreen(fromScreen);
         fromScreen = null;
     }
 
     private void openWorldScreen() {
         Object profileName = listItems.getSelected();
-        ProfileManager.getInstance().loadProfile(profileName.toString());
-        GdxRpg2.getInstance().setScreen(GdxRpg2.getInstance().getWorldScreen());
+        engine.getProfileManager().loadProfile(profileName.toString());
+        engine.setScreen(engine.getWorldScreen());
     }
 
     private void setAllTextButtonsToWhite() {

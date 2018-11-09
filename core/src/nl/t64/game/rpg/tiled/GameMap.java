@@ -1,5 +1,7 @@
 package nl.t64.game.rpg.tiled;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -61,8 +63,12 @@ public class GameMap {
         blockers.add(immobileNpc);
     }
 
-    public boolean isInCollisionWithBlocker(Rectangle characterRect) {
+    public boolean areBlockersCurrentlyBlocking(Rectangle characterRect) {
         return blockers.stream().anyMatch(characterRect::overlaps);
+    }
+
+    public boolean areSavePointsBeingCheckedBy(Rectangle characterRect) {
+        return savePoints.stream().anyMatch(characterRect::overlaps);
     }
 
     public void setPlayerSpawnLocationForNewLoad(MapTitle mapTitle) {
@@ -146,6 +152,29 @@ public class GameMap {
 
     public void dispose() {
         tiledMap.dispose();
+    }
+
+    public void debug(ShapeRenderer shapeRenderer) {
+        Rectangle rect;
+
+        shapeRenderer.setColor(Color.YELLOW);
+        for (Rectangle blocker : getBlockers()) {
+            shapeRenderer.rect(blocker.x, blocker.y, blocker.width, blocker.height);
+        }
+
+        shapeRenderer.setColor(Color.BLUE);
+        for (Portal portal : getPortals()) {
+            rect = portal.getRectangle();
+            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+        }
+        for (SpawnPoint spawnPoint : getSpawnPoints()) {
+            rect = spawnPoint.getRectangle();
+            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+        }
+        for (Npc npc : getNpcs()) {
+            rect = npc.getRectangle();
+            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+        }
     }
 
 }

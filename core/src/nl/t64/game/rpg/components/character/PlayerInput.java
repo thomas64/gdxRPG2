@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.Vector3;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
@@ -16,10 +15,6 @@ public class PlayerInput extends InputComponent implements InputProcessor {
 
     private static final String TAG = PlayerInput.class.getSimpleName();
     private static final float TURN_DELAY_TIME = 8f / 60f; // of a second
-
-    private Vector3 lastMouseCoordinates;
-    private boolean clickSelect;
-    private boolean clickDoAction;
 
     private boolean pressUp;
     private boolean pressDown;
@@ -41,7 +36,6 @@ public class PlayerInput extends InputComponent implements InputProcessor {
     private Direction direction;
 
     public PlayerInput(InputMultiplexer multiplexer) {
-        this.lastMouseCoordinates = new Vector3();
         this.reset();
         multiplexer.addProcessor(this);
     }
@@ -129,27 +123,12 @@ public class PlayerInput extends InputComponent implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (button == Input.Buttons.LEFT || button == Input.Buttons.RIGHT) {
-            lastMouseCoordinates.set(screenX, screenY, 0);
-        }
-        if (button == Input.Buttons.LEFT) {
-            clickSelect = true;
-        }
-        if (button == Input.Buttons.RIGHT) {
-            clickDoAction = true;
-        }
-        return true;
+        return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if (button == Input.Buttons.LEFT) {
-            clickSelect = false;
-        }
-        if (button == Input.Buttons.RIGHT) {
-            clickDoAction = false;
-        }
-        return true;
+        return false;
     }
 
     @Override
@@ -174,10 +153,6 @@ public class PlayerInput extends InputComponent implements InputProcessor {
         if (pressAlign) {
             player.send(new StateEvent(CharacterState.ALIGNING));
         }
-        if (clickSelect) {
-            player.send(new StartSelectEvent(lastMouseCoordinates));
-            clickSelect = false;
-        }
         if (pressAction) {
             player.send(new ActionEvent());
             pressAction = false;
@@ -187,9 +162,6 @@ public class PlayerInput extends InputComponent implements InputProcessor {
 
     @Override
     public void reset() {
-        clickSelect = false;
-        clickDoAction = false;
-
         pressUp = false;
         pressDown = false;
         pressLeft = false;

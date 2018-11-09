@@ -7,11 +7,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
-import nl.t64.game.rpg.screens.WorldScreen;
 
 
 public abstract class GraphicsComponent implements Component {
@@ -44,7 +44,7 @@ public abstract class GraphicsComponent implements Component {
                 if (frameDuration == 0f) { // no player animation when high speed moving.
                     setCurrentFrame(0f);
                 } else {
-                    setCurrentFrame(WorldScreen.getPlayTime());
+                    setCurrentFrame(Engine.getRunTime());
                 }
                 break;
             default:

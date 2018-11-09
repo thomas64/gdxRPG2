@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.managers;
+package nl.t64.game.rpg.profile;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -11,7 +11,6 @@ import java.util.*;
 
 public class ProfileManager {
 
-    private static final ProfileManager INSTANCE = new ProfileManager();
     private static final String SAVE_PATH = "savegame/";
     private static final String DEFAULT_PROFILE = "default";
     private static final String SAVEGAME_SUFFIX = ".dat";
@@ -22,13 +21,6 @@ public class ProfileManager {
     private Map<String, FileHandle> profiles = new HashMap<>();
     private ObjectMap<String, Object> profileProperties = new ObjectMap<>();
     private String profileName = null;
-
-    private ProfileManager() {
-    }
-
-    public static ProfileManager getInstance() {
-        return INSTANCE;
-    }
 
     public void loadAllProfiles() {
         profiles.clear();
@@ -48,7 +40,7 @@ public class ProfileManager {
             newProfileName = DEFAULT_PROFILE;
         }
         profileName = newProfileName;
-        observers.forEach(ProfileObserver::onNotifyCreate);
+        observers.forEach(observer -> observer.onNotifyCreate(this));
         writeProfileToDisk();
     }
 
@@ -67,7 +59,7 @@ public class ProfileManager {
     }
 
     public void saveProfile() {
-        observers.forEach(ProfileObserver::onNotifySave);
+        observers.forEach(observer -> observer.onNotifySave(this));
         writeProfileToDisk();
     }
 
@@ -80,7 +72,7 @@ public class ProfileManager {
         }
         profileName = selectedProfileName;
         profileProperties = json.fromJson(ObjectMap.class, profiles.get(profileName));
-        observers.forEach(ProfileObserver::onNotifyLoad);
+        observers.forEach(observer -> observer.onNotifyLoad(this));
     }
 
     public void addObserver(ProfileObserver observer) {

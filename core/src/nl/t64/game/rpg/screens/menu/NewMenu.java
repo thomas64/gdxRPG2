@@ -15,14 +15,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
-import nl.t64.game.rpg.GdxRpg2;
+import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.listeners.ButtonMouseListener;
 import nl.t64.game.rpg.listeners.ConfirmKeyListener;
 import nl.t64.game.rpg.listeners.HorizontalKeyListener;
 import nl.t64.game.rpg.listeners.InputFieldKeyListener;
-import nl.t64.game.rpg.managers.ProfileManager;
 
 
 public class NewMenu implements Screen {
@@ -46,6 +45,7 @@ public class NewMenu implements Screen {
     private static final int NUMBER_OF_ITEMS = 2;
     private static final int EXIT_INDEX = 1;
 
+    private Engine engine;
     private Stage stage;
 
     private BitmapFont menuFont;
@@ -62,7 +62,8 @@ public class NewMenu implements Screen {
     private StringBuilder profileName;
     private int selectedIndex;
 
-    public NewMenu() {
+    public NewMenu(Engine engine) {
+        this.engine = engine;
         this.stage = new Stage();
         createFonts();
     }
@@ -74,7 +75,7 @@ public class NewMenu implements Screen {
     }
 
     private void setupScreen() {
-        ProfileManager.getInstance().loadAllProfiles();
+        engine.getProfileManager().loadAllProfiles();
 
         this.table = createTable();
         this.overwriteDialog = new OverwriteDialog(this::createNewGame);
@@ -147,7 +148,7 @@ public class NewMenu implements Screen {
                 processStartButton();
                 break;
             case 1:
-                GdxRpg2.getInstance().setScreen(GdxRpg2.getInstance().getMainMenuScreen());
+                engine.setScreen(engine.getMainMenuScreen());
                 break;
             default:
                 throw new IllegalArgumentException("SelectedIndex not found.");
@@ -156,8 +157,8 @@ public class NewMenu implements Screen {
 
     private void processStartButton() {
         finalProfileName = profileName.toString().substring(0, profileName.length() - 1);
-        boolean exists = ProfileManager.getInstance().doesProfileExist(finalProfileName);
-        if (exists) {
+        boolean profileExists = engine.getProfileManager().doesProfileExist(finalProfileName);
+        if (profileExists) {
             overwriteDialog.show(stage);
         } else {
             createNewGame();
@@ -165,8 +166,8 @@ public class NewMenu implements Screen {
     }
 
     private void createNewGame() {
-        ProfileManager.getInstance().createNewProfile(finalProfileName);
-        GdxRpg2.getInstance().setScreen(GdxRpg2.getInstance().getWorldScreen());
+        engine.getProfileManager().createNewProfile(finalProfileName);
+        engine.setScreen(engine.getWorldScreen());
     }
 
     private void setAllTextButtonsToWhite() {

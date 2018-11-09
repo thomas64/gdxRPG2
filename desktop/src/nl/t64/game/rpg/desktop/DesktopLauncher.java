@@ -4,11 +4,12 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import nl.t64.game.rpg.GdxRpg2;
+import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.constants.Constant;
 
 
 public class DesktopLauncher {
+
     public static void main(String[] arg) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
@@ -17,14 +18,10 @@ public class DesktopLauncher {
         config.height = Constant.SCREEN_HEIGHT;
         config.useGL30 = false;
         config.resizable = false;
-//        config.foregroundFPS = 20;
+        config.foregroundFPS = 60;
 
-        Gdx.app = new LwjglApplication(GdxRpg2.getInstance(), config);
-        //Gdx.app.setLogLevel(Application.LOG_INFO);
-        //Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        Gdx.app = new LwjglApplication(new Engine(), config);
         Gdx.app.setLogLevel(Application.LOG_ERROR);
-        //Gdx.app.setLogLevel(Application.LOG_NONE);
-
-
     }
+
 }

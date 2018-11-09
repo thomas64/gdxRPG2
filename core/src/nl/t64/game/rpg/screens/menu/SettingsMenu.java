@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import lombok.Setter;
-import nl.t64.game.rpg.GdxRpg2;
+import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.listeners.ButtonMouseListener;
@@ -31,10 +31,11 @@ public class SettingsMenu implements Screen {
     private static final int NUMBER_OF_ITEMS = 2;
     private static final int EXIT_INDEX = 1;
 
+    private Engine engine;
+    private Stage stage;
+
     @Setter
     private Screen fromScreen;
-
-    private Stage stage;
 
     private Image screenshot;
     private Image blur;
@@ -49,7 +50,8 @@ public class SettingsMenu implements Screen {
     private int selectedIndex;
     private boolean isFullScreen;
 
-    public SettingsMenu() {
+    public SettingsMenu(Engine engine) {
+        this.engine = engine;
         this.stage = new Stage();
         createFonts();
         this.selectedIndex = 1;
@@ -146,7 +148,7 @@ public class SettingsMenu implements Screen {
         if (fromScreen instanceof PauseMenu) {
             ((PauseMenu) fromScreen).setBackground(screenshot, blur);
         }
-        GdxRpg2.getInstance().setScreen(fromScreen);
+        engine.setScreen(fromScreen);
         fromScreen = null;
     }
 

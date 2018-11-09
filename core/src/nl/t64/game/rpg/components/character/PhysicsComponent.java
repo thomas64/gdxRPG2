@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import lombok.Getter;
+import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
@@ -25,13 +26,17 @@ public abstract class PhysicsComponent implements Component {
     float boundingBoxWidthPercentage;
     float boundingBoxHeightPercentage;
 
+    Engine engine;
+    Character thisCharacter;
+    List<Character> theOtherCharacters;
+
     PhysicsComponent() {
         this.boundingBox = new Rectangle();
         this.oldPosition = new Vector2();
         this.currentPosition = new Vector2();
     }
 
-    public abstract void update(Character character, List<Character> npcCharacters, float dt);
+    public abstract void update(Character character, Engine engine, List<Character> npcCharacters, float dt);
 
     public abstract void debug(ShapeRenderer shapeRenderer);
 
@@ -90,6 +95,18 @@ public abstract class PhysicsComponent implements Component {
     void setRoundPosition() {
         currentPosition.set(Math.round(currentPosition.x), Math.round(currentPosition.y));
         setBoundingBox();
+    }
+
+    void updateTheseFields(Character character, Engine engine, List<Character> npcCharacters) {
+        this.thisCharacter = character;
+        this.engine = engine;
+        this.theOtherCharacters = npcCharacters;
+    }
+
+    void clearTheseFields() {
+        this.thisCharacter = null;
+        this.engine = null;
+        this.theOtherCharacters = null;
     }
 
 }

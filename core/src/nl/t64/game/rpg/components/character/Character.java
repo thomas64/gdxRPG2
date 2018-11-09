@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.events.Event;
 
@@ -37,9 +38,9 @@ public class Character {
         components.forEach(component -> component.receive(event));
     }
 
-    public void update(List<Character> npcCharacters, float dt) {
+    public void update(Engine engine, List<Character> npcCharacters, float dt) {
         inputComponent.update(this, dt);
-        physicsComponent.update(this, npcCharacters, dt);
+        physicsComponent.update(this, engine, npcCharacters, dt);
         graphicsComponent.update();
     }
 

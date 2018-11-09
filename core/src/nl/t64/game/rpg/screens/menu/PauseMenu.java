@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
-import nl.t64.game.rpg.GdxRpg2;
+import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.listeners.ButtonMouseListener;
@@ -38,6 +38,7 @@ public class PauseMenu implements Screen {
     private static final int NUMBER_OF_ITEMS = 4;
     private static final int EXIT_INDEX = 0;
 
+    private Engine engine;
     private Stage stage;
 
     private Image screenshot;
@@ -56,7 +57,8 @@ public class PauseMenu implements Screen {
 
     private int selectedIndex;
 
-    public PauseMenu() {
+    public PauseMenu(Engine engine) {
+        this.engine = engine;
         this.stage = new Stage();
         createFonts();
         this.selectedIndex = 0;
@@ -131,20 +133,19 @@ public class PauseMenu implements Screen {
     }
 
     private void selectMenuItem() {
-        GdxRpg2 game = GdxRpg2.getInstance();
         switch (selectedIndex) {
             case 0:
-                game.setScreen(game.getWorldScreen());
+                engine.setScreen(engine.getWorldScreen());
                 break;
             case 1:
-                game.getLoadGameMenuScreen().setBackground(screenshot, blur);
-                game.setScreen(game.getLoadGameMenuScreen());
-                game.getLoadGameMenuScreen().setFromScreen(this);
+                engine.getLoadGameMenuScreen().setBackground(screenshot, blur);
+                engine.setScreen(engine.getLoadGameMenuScreen());
+                engine.getLoadGameMenuScreen().setFromScreen(this);
                 break;
             case 2:
-                game.getSettingsMenuScreen().setBackground(screenshot, blur);
-                game.setScreen(game.getSettingsMenuScreen());
-                game.getSettingsMenuScreen().setFromScreen(this);
+                engine.getSettingsMenuScreen().setBackground(screenshot, blur);
+                engine.setScreen(engine.getSettingsMenuScreen());
+                engine.getSettingsMenuScreen().setFromScreen(this);
                 break;
             case 3:
                 progressLostDialog.show(stage);
@@ -155,7 +156,7 @@ public class PauseMenu implements Screen {
     }
 
     private void openMainMenu() {
-        GdxRpg2.getInstance().setScreen(GdxRpg2.getInstance().getMainMenuScreen());
+        engine.setScreen(engine.getMainMenuScreen());
     }
 
     private void setAllTextButtonsToWhite() {

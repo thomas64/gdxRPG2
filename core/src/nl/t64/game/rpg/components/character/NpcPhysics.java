@@ -3,10 +3,10 @@ package nl.t64.game.rpg.components.character;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.*;
-import nl.t64.game.rpg.managers.MapManager;
 
 import java.util.List;
 
@@ -54,10 +54,13 @@ public class NpcPhysics extends PhysicsComponent {
     }
 
     @Override
-    public void update(Character npcCharacter, List<Character> npcCharactersPlusLastOnePlayer, float dt) {
+    public void update(Character npcCharacter, Engine engine,
+                       List<Character> npcCharactersPlusLastOnePlayer, float dt) {
+        updateTheseFields(npcCharacter, engine, npcCharactersPlusLastOnePlayer);
         relocate(dt);
-        checkObstacles(npcCharacter, npcCharactersPlusLastOnePlayer);
-        npcCharacter.send(new PositionEvent(currentPosition));
+        checkObstacles();
+        thisCharacter.send(new PositionEvent(currentPosition));
+        clearTheseFields();
     }
 
     private void relocate(float dt) {
@@ -66,13 +69,13 @@ public class NpcPhysics extends PhysicsComponent {
         }
     }
 
-    private void checkObstacles(Character npcCharacter, List<Character> npcCharactersPlusLastOnePlayer) {
+    private void checkObstacles() {
         if (state == CharacterState.WALKING) {
             boolean moveBack1 = checkWanderBox();
             boolean moveBack2 = checkBlocker();
-            boolean moveBack3 = checkOtherCharacters(npcCharacter, npcCharactersPlusLastOnePlayer);
+            boolean moveBack3 = checkOtherCharacters();
             if (moveBack1 || moveBack2 || moveBack3) {
-                npcCharacter.send(new CollisionEvent());
+                thisCharacter.send(new CollisionEvent());
             }
         }
     }
@@ -88,17 +91,17 @@ public class NpcPhysics extends PhysicsComponent {
 
     private boolean checkBlocker() {
         boolean moveBack = false;
-        while (MapManager.getInstance().getCurrentMap().isInCollisionWithBlocker(boundingBox)) {
+        while (engine.getWorldScreen().getCurrentMap().areBlockersCurrentlyBlocking(boundingBox)) {
             moveBack();
             moveBack = true;
         }
         return moveBack;
     }
 
-    private boolean checkOtherCharacters(Character npcCharacter, List<Character> npcCharactersPlusLastOnePlayer) {
+    private boolean checkOtherCharacters() {
         boolean moveBack = false;
-        for (Character otherCharacter : npcCharactersPlusLastOnePlayer) {
-            if (otherCharacter.equals(npcCharacter)) {
+        for (Character otherCharacter : theOtherCharacters) {
+            if (otherCharacter.equals(thisCharacter)) {
                 continue;
             }
             while (boundingBox.overlaps(otherCharacter.getBoundingBox())) {

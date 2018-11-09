@@ -12,20 +12,21 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.ObjectMap;
 import lombok.Getter;
 import nl.t64.game.rpg.Camera;
-import nl.t64.game.rpg.GdxRpg2;
+import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.components.character.Character;
 import nl.t64.game.rpg.components.character.*;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.GameState;
+import nl.t64.game.rpg.constants.MapTitle;
 import nl.t64.game.rpg.events.character.LoadSpriteEvent;
 import nl.t64.game.rpg.events.character.StartDirectionEvent;
 import nl.t64.game.rpg.events.character.StartPositionEvent;
 import nl.t64.game.rpg.events.character.StartStateEvent;
 import nl.t64.game.rpg.listeners.WorldScreenListener;
-import nl.t64.game.rpg.managers.MapManager;
-import nl.t64.game.rpg.managers.ProfileManager;
+import nl.t64.game.rpg.profile.ProfileManager;
+import nl.t64.game.rpg.profile.ProfileObserver;
 import nl.t64.game.rpg.tiled.GameMap;
 import nl.t64.game.rpg.tiled.Npc;
 
@@ -33,21 +34,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class WorldScreen implements Screen {
+public class WorldScreen implements Screen, ProfileObserver {
 
     private static final String TAG = WorldScreen.class.getSimpleName();
     private static final Color TRANSPARENT = new Color(0f, 0f, 0f, 0.5f);
     private static final String PEOPLE1_SPRITE_CONFIG = "configs/sprites_people1.json";
+    private static final MapTitle START_OF_GAME_MAP = MapTitle.MAP4;
 
     private static boolean showGrid = false;
     private static boolean showObjects = false;
     private static boolean showDebug = false;
-    @Getter
-    private static float playTime = 0f;
+
+    private Engine engine;
 
     private GameState gameState;
-    @Getter
     private Camera camera;
+    @Getter
     private GameMap currentMap;
     private OrthogonalTiledMapRenderer mapRenderer;
     private InputMultiplexer multiplexer;
@@ -55,15 +57,36 @@ public class WorldScreen implements Screen {
     private List<Character> npcCharacters;
     private ShapeRenderer shapeRenderer;
 
-    public WorldScreen() {
-        ProfileManager.getInstance().addObserver(MapManager.getInstance());
+    private boolean isMapChanged = false;
+
+    public WorldScreen(Engine engine) {
+        this.engine = engine;
         this.camera = new Camera();
         this.mapRenderer = new OrthogonalTiledMapRenderer(null);
-        MapManager.getInstance().setMapChanged(true);
         this.multiplexer = new InputMultiplexer();
         this.multiplexer.addProcessor(new WorldScreenListener(this::openPauseMenu));
         this.player = new Character(new PlayerInput(this.multiplexer), new PlayerPhysics(), new PlayerGraphics());
         this.shapeRenderer = new ShapeRenderer();
+    }
+
+    @Override
+    public void onNotifyCreate(ProfileManager profileManager) {
+        loadMap(START_OF_GAME_MAP);
+        currentMap.setPlayerSpawnLocationForNewLoad(START_OF_GAME_MAP);
+        onNotifySave(profileManager);
+    }
+
+    @Override
+    public void onNotifySave(ProfileManager profileManager) {
+        profileManager.setProperty("MapTitle", currentMap.getMapTitle().name());
+    }
+
+    @Override
+    public void onNotifyLoad(ProfileManager profileManager) {
+        String mapTitleString = profileManager.getProperty("MapTitle", String.class);
+        MapTitle mapTitleEnum = MapTitle.valueOf(mapTitleString);
+        loadMap(mapTitleEnum);
+        currentMap.setPlayerSpawnLocationForNewLoad(mapTitleEnum);
     }
 
     @Override
@@ -74,8 +97,6 @@ public class WorldScreen implements Screen {
 
     @Override
     public void render(float dt) {
-        updatePlayTime(dt);
-
         if (gameState == GameState.PAUSED) {
             return;
         }
@@ -92,15 +113,26 @@ public class WorldScreen implements Screen {
         renderDebugBox(dt);
     }
 
+    public void loadMap(MapTitle mapTitle) {
+        disposeOldMap();
+        currentMap = new GameMap(mapTitle);
+        isMapChanged = true;
+    }
+
+    private void disposeOldMap() {
+        if (currentMap != null) {
+            currentMap.dispose();
+        }
+    }
+
     private void updateMap() {
-        if (MapManager.getInstance().isMapChanged()) {
-            currentMap = MapManager.getInstance().getCurrentMap();
+        if (isMapChanged) {
             mapRenderer.setMap(currentMap.getTiledMap());
             camera.setNewMapSize(currentMap.getPixelWidth(), currentMap.getPixelHeight());
             loadNpcCharacters();
             player.send(new StartPositionEvent(currentMap.getPlayerSpawnLocation()));
             player.send(new StartDirectionEvent(currentMap.getPlayerSpawnDirection()));
-            MapManager.getInstance().setMapChanged(false);
+            isMapChanged = false;
         }
     }
 
@@ -122,10 +154,10 @@ public class WorldScreen implements Screen {
     }
 
     private void updateCharacters(float dt) {
-        player.update(npcCharacters, dt);
+        player.update(engine, npcCharacters, dt);
         List<Character> copyCharacters = new ArrayList<>(npcCharacters);
         copyCharacters.add(player);
-        npcCharacters.forEach(npcCharacter -> npcCharacter.update(copyCharacters, dt));
+        npcCharacters.forEach(npcCharacter -> npcCharacter.update(engine, copyCharacters, dt));
     }
 
     private void updateCameraPosition() {
@@ -151,8 +183,8 @@ public class WorldScreen implements Screen {
 
     private void openPauseMenu() {
         player.resetInput();
-        GdxRpg2.getInstance().setScreen(GdxRpg2.getInstance().getPauseMenuScreen());
-        GdxRpg2.getInstance().getPauseMenuScreen().updateIndex(0);
+        engine.setScreen(engine.getPauseMenuScreen());
+        engine.getPauseMenuScreen().updateIndex(0);
     }
 
     public static void setShowGrid() {
@@ -165,10 +197,6 @@ public class WorldScreen implements Screen {
 
     public static void setShowDebug() {
         showDebug = !showDebug;
-    }
-
-    private static void updatePlayTime(float dt) {
-        playTime += dt;
     }
 
     @Override
@@ -221,7 +249,7 @@ public class WorldScreen implements Screen {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             player.debug(shapeRenderer);
             npcCharacters.forEach(npcCharacter -> npcCharacter.debug(shapeRenderer));
-            MapManager.getInstance().debug(shapeRenderer);
+            currentMap.debug(shapeRenderer);
             shapeRenderer.end();
         }
     }
@@ -246,7 +274,7 @@ public class WorldScreen implements Screen {
             String debug1 = "" +
                     "FPS:\n" +
                     "dt:\n" +
-                    "playTime:\n" +
+                    "runTime:\n" +
                     "\n" +
 //                    "timeUp:\n" +
 //                    "timeDown:\n" +
@@ -266,10 +294,11 @@ public class WorldScreen implements Screen {
 //                    "direction:\n" +
 //                    "state:\n";
 
+            String runTime = String.valueOf(Engine.getRunTime());
             String debug2 = "" +
                     Gdx.graphics.getFramesPerSecond() + "\n" +
                     String.valueOf(dt).substring(0, 5) + "\n" +
-                    String.valueOf(playTime).substring(0, String.valueOf(playTime).length() - 4) + "\n" +
+                    runTime.substring(0, runTime.length() - 4) + "\n" +
                     "\n" +
 //                    player.getInputComponent().getTimeUp() + "\n" +
 //                    player.getInputComponent().getTimeDown() + "\n" +

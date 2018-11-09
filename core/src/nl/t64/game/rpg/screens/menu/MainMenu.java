@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import nl.t64.game.rpg.GdxRpg2;
+import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.listeners.ButtonMouseListener;
@@ -38,6 +38,7 @@ public class MainMenu implements Screen {
     private static final int NUMBER_OF_ITEMS = 4;
     private static final int EXIT_INDEX = 3;
 
+    private Engine engine;
     private Stage stage;
 
     private BitmapFont titleFont;
@@ -52,7 +53,8 @@ public class MainMenu implements Screen {
 
     private int selectedIndex;
 
-    public MainMenu() {
+    public MainMenu(Engine engine) {
+        this.engine = engine;
         this.stage = new Stage();
 
         createFonts();
@@ -115,18 +117,17 @@ public class MainMenu implements Screen {
     }
 
     private void selectMenuItem() {
-        GdxRpg2 game = GdxRpg2.getInstance();
         switch (selectedIndex) {
             case 0:
-                game.setScreen(game.getNewGameMenuScreen());
+                engine.setScreen(engine.getNewGameMenuScreen());
                 break;
             case 1:
-                game.setScreen(game.getLoadGameMenuScreen());
-                game.getLoadGameMenuScreen().setFromScreen(this);
+                engine.setScreen(engine.getLoadGameMenuScreen());
+                engine.getLoadGameMenuScreen().setFromScreen(this);
                 break;
             case 2:
-                game.setScreen(game.getSettingsMenuScreen());
-                game.getSettingsMenuScreen().setFromScreen(this);
+                engine.setScreen(engine.getSettingsMenuScreen());
+                engine.getSettingsMenuScreen().setFromScreen(this);
                 break;
             case 3:
                 Gdx.app.exit();
