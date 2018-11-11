@@ -64,7 +64,7 @@ public class WorldScreen implements Screen, ProfileObserver {
         this.camera = new Camera();
         this.mapRenderer = new OrthogonalTiledMapRenderer(null);
         this.multiplexer = new InputMultiplexer();
-        this.multiplexer.addProcessor(new WorldScreenListener(this::openPauseMenu));
+        this.multiplexer.addProcessor(new WorldScreenListener(this::openPauseMenu, this::openInventoryScreen));
         this.player = new Character(new PlayerInput(this.multiplexer), new PlayerPhysics(), new PlayerGraphics());
         this.shapeRenderer = new ShapeRenderer();
     }
@@ -186,6 +186,12 @@ public class WorldScreen implements Screen, ProfileObserver {
         engine.setScreen(engine.getPauseMenuScreen());
         engine.getPauseMenuScreen().updateIndex(0);
     }
+
+    private void openInventoryScreen() {
+        player.resetInput();
+        engine.setScreen(new InventoryScreen(engine));
+    }
+
 
     public static void setShowGrid() {
         showGrid = !showGrid;

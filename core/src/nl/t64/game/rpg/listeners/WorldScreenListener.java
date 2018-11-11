@@ -8,15 +8,24 @@ import nl.t64.game.rpg.screens.WorldScreen;
 public class WorldScreenListener implements InputProcessor {
 
     private final Runnable openMenuFunction;
+    private final Runnable openInventoryFunction;
 
-    public WorldScreenListener(Runnable openMenuFunction) {
+    public WorldScreenListener(Runnable openMenuFunction, Runnable openInventoryFunction) {
         this.openMenuFunction = openMenuFunction;
+        this.openInventoryFunction = openInventoryFunction;
     }
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.ESCAPE) {
-            openMenuFunction.run();
+        switch (keycode) {
+            case Input.Keys.ESCAPE:
+                openMenuFunction.run();
+                break;
+            case Input.Keys.I:
+                openInventoryFunction.run();
+                break;
+            default:
+                break;
         }
         return false;
     }

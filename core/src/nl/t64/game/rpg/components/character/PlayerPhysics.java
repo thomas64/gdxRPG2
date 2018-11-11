@@ -76,11 +76,14 @@ public class PlayerPhysics extends PhysicsComponent {
     }
 
     private void selectNpcCharacterCandidate() {
-        theOtherCharacters.forEach(npcCharacter -> {
-            npcCharacter.send(new DeselectEvent());
-            if (getCheckRect().overlaps(npcCharacter.getBoundingBox())) {
-                npcCharacter.send(new SelectEvent());
-            }
+        theOtherCharacters.forEach(npc -> npc.send(new DeselectEvent()));
+        Optional<Character> npcCharacter =
+                theOtherCharacters.stream()
+                                  .filter(npc -> getCheckRect().overlaps(npc.getBoundingBox()))
+                                  .findFirst();
+        npcCharacter.ifPresent(npc -> {
+            npc.send(new SelectEvent());
+            npc.send(new WaitEvent(npc.getPosition(), currentPosition));
         });
     }
 

@@ -19,6 +19,7 @@ public class DesktopLauncher {
         config.useGL30 = false;
         config.resizable = false;
         config.foregroundFPS = 60;
+        config.fullscreen = false;
 
         Gdx.app = new LwjglApplication(new Engine(), config);
         Gdx.app.setLogLevel(Application.LOG_ERROR);

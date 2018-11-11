@@ -1,5 +1,6 @@
 package nl.t64.game.rpg;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -14,8 +15,8 @@ public class Camera extends OrthographicCamera {
     private float mapHeight;
 
     public Camera() {
-        Viewport viewport = new FitViewport(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGHT, this);
-        viewport.update(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGHT);
+        Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), this);
+        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         // zoom();
     }
