@@ -1,10 +1,9 @@
-package nl.t64.game.rpg.desktop;
+package nl.t64.game.rpg;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.constants.Constant;
 
 
