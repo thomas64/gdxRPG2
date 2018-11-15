@@ -47,7 +47,6 @@ public class GameMap {
 
     public GameMap(MapTitle mapTitle) {
         this.mapTitle = mapTitle;
-        Utility.loadMapAsset(mapTitle.getMapPath());
         this.tiledMap = Utility.getMapAsset(mapTitle.getMapPath());
         this.bottomLayer = (TiledMapTileLayer) this.tiledMap.getLayers().get(0);
         this.playerSpawnLocation = new Vector2(0, 0);

@@ -152,10 +152,8 @@ public class MainMenu implements Screen {
     }
 
     private void createFonts() {
-        Utility.loadTrueTypeAsset(TITLE_FONT, TITLE_SIZE);
-        titleFont = Utility.getTrueTypeAsset(TITLE_FONT);
-        Utility.loadTrueTypeAsset(MENU_FONT, MENU_SIZE);
-        menuFont = Utility.getTrueTypeAsset(MENU_FONT);
+        titleFont = Utility.getTrueTypeAsset(TITLE_FONT, TITLE_SIZE);
+        menuFont = Utility.getTrueTypeAsset(MENU_FONT, MENU_SIZE);
     }
 
     private Table createTable() {

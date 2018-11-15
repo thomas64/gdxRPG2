@@ -100,8 +100,7 @@ public class QuestionDialog {
     }
 
     private void createFonts() {
-        Utility.loadTrueTypeAsset(MENU_FONT, MENU_SIZE);
-        menuFont = Utility.getTrueTypeAsset(MENU_FONT);
+        menuFont = Utility.getTrueTypeAsset(MENU_FONT, MENU_SIZE);
     }
 
     private Dialog createDialog() {
@@ -127,7 +126,6 @@ public class QuestionDialog {
         newDialog.padBottom(DIALOG_PAD_BOTTOM);
         newDialog.getContentTable().defaults().width(DIALOG_WIDTH);
 
-        Utility.loadTextureAsset(SPRITE_PARCHMENT);
         Texture texture = Utility.getTextureAsset(SPRITE_PARCHMENT);
         Sprite sprite = new Sprite(texture);
         newDialog.background(new SpriteDrawable(sprite));

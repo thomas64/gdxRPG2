@@ -227,8 +227,7 @@ public class LoadMenu implements Screen {
     }
 
     private void createFonts() {
-        Utility.loadTrueTypeAsset(MENU_FONT, MENU_SIZE);
-        menuFont = Utility.getTrueTypeAsset(MENU_FONT);
+        menuFont = Utility.getTrueTypeAsset(MENU_FONT, MENU_SIZE);
     }
 
     private void createTables() {
@@ -241,7 +240,6 @@ public class LoadMenu implements Screen {
         listStyle.font = menuFont;
         listStyle.fontColorSelected = Constant.DARK_RED;
         listStyle.fontColorUnselected = Color.WHITE;
-        Utility.loadTextureAsset(SPRITE_TRANSPARENT);
         Texture textureTransparent = Utility.getTextureAsset(SPRITE_TRANSPARENT);
         Sprite spriteTransparent = new Sprite(textureTransparent);
         listStyle.background = new SpriteDrawable(spriteTransparent);

@@ -1,6 +1,5 @@
 package nl.t64.game.rpg;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -34,89 +33,41 @@ public final class Utility {
         }
     }
 
-    public static void loadMapAsset(String mapFilenamePath) {
-        if (ASSET_MANAGER.isLoaded(mapFilenamePath)) {
-            return;
-        }
-        if (FILE_PATH_RESOLVER.resolve(mapFilenamePath).exists()) {
+    public static TiledMap getMapAsset(String mapFilenamePath) {
+        if (!ASSET_MANAGER.isLoaded(mapFilenamePath)) {
             ASSET_MANAGER.setLoader(TiledMap.class, new TmxMapLoader(FILE_PATH_RESOLVER));
             ASSET_MANAGER.load(mapFilenamePath, TiledMap.class);
-            // todo, loading screen. for now, just block until map is loaded
             ASSET_MANAGER.finishLoadingAsset(mapFilenamePath);
-            Logger.mapLoaded(TAG, mapFilenamePath);
-        } else {
-            Logger.mapLoadingFailed(TAG, mapFilenamePath);
         }
+        return ASSET_MANAGER.get(mapFilenamePath, TiledMap.class);
     }
 
-    public static TiledMap getMapAsset(String mapFilenamePath) {
-        TiledMap map = null;
-        if (ASSET_MANAGER.isLoaded(mapFilenamePath)) {
-            map = ASSET_MANAGER.get(mapFilenamePath, TiledMap.class);
-        } else {
-            Logger.mapNotLoaded(TAG, mapFilenamePath);
-        }
-        return map;
-    }
-
-    public static void loadTrueTypeAsset(String trueTypeFilenamePath, int fontSize) {
-        if (ASSET_MANAGER.isLoaded(trueTypeFilenamePath)) {
-            return;
-        }
-        if (FILE_PATH_RESOLVER.resolve(trueTypeFilenamePath).exists()) {
+    public static BitmapFont getTrueTypeAsset(String trueTypeFilenamePath, int fontSize) {
+        if (!ASSET_MANAGER.isLoaded(trueTypeFilenamePath)) {
             ASSET_MANAGER.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(FILE_PATH_RESOLVER));
             ASSET_MANAGER.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(FILE_PATH_RESOLVER));
-            FreetypeFontLoader.FreeTypeFontLoaderParameter parameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+            var parameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
             parameter.fontFileName = trueTypeFilenamePath;
             parameter.fontParameters.size = fontSize;
             ASSET_MANAGER.load(trueTypeFilenamePath, BitmapFont.class, parameter);
-            // todo, loading screen. for now, just block until font is loaded
             ASSET_MANAGER.finishLoadingAsset(trueTypeFilenamePath);
-            Logger.trueTypeLoaded(TAG, trueTypeFilenamePath);
-        } else {
-            Logger.trueTypeLoadingFailed(TAG, trueTypeFilenamePath);
         }
-    }
-
-    public static BitmapFont getTrueTypeAsset(String trueTypeFilenamePath) {
-        BitmapFont bitmapFont = null;
-        if (ASSET_MANAGER.isLoaded(trueTypeFilenamePath)) {
-            bitmapFont = ASSET_MANAGER.get(trueTypeFilenamePath, BitmapFont.class);
-        } else {
-            Logger.trueTypeNotLoaded(TAG, trueTypeFilenamePath);
-        }
-        return bitmapFont;
-    }
-
-    public static void loadTextureAsset(String textureFilenamePath) {
-        if (ASSET_MANAGER.isLoaded(textureFilenamePath)) {
-            return;
-        }
-        if (FILE_PATH_RESOLVER.resolve(textureFilenamePath).exists()) {
-            ASSET_MANAGER.setLoader(Texture.class, new TextureLoader(FILE_PATH_RESOLVER));
-            ASSET_MANAGER.load(textureFilenamePath, Texture.class);
-            // todo, loading screen. for now, just block until texture is loaded
-            ASSET_MANAGER.finishLoadingAsset(textureFilenamePath);
-            Logger.textureLoaded(TAG, textureFilenamePath);
-        } else {
-            Logger.textureLoadingFailed(TAG, textureFilenamePath);
-        }
+        return ASSET_MANAGER.get(trueTypeFilenamePath, BitmapFont.class);
     }
 
     public static Texture getTextureAsset(String textureFilenamePath) {
-        Texture texture = null;
-        if (ASSET_MANAGER.isLoaded(textureFilenamePath)) {
-            texture = ASSET_MANAGER.get(textureFilenamePath, Texture.class);
-        } else {
-            Logger.textureNotLoaded(TAG, textureFilenamePath);
+        if (!ASSET_MANAGER.isLoaded(textureFilenamePath)) {
+            ASSET_MANAGER.setLoader(Texture.class, new TextureLoader(FILE_PATH_RESOLVER));
+            ASSET_MANAGER.load(textureFilenamePath, Texture.class);
+            ASSET_MANAGER.finishLoadingAsset(textureFilenamePath);
         }
-        return texture;
+        return ASSET_MANAGER.get(textureFilenamePath, Texture.class);
     }
 
     @SuppressWarnings("unchecked")
-    public static ObjectMap<String, LoadSpriteEvent> getAllSpriteConfigsFromJson(String path) {
+    public static ObjectMap<String, LoadSpriteEvent> getAllSpriteConfigsFromJson(String configFilenamePath) {
         Json json = new Json();
-        return json.fromJson(ObjectMap.class, LoadSpriteEvent.class, Gdx.files.internal(path));
+        return json.fromJson(ObjectMap.class, LoadSpriteEvent.class, FILE_PATH_RESOLVER.resolve(configFilenamePath));
     }
 
 }

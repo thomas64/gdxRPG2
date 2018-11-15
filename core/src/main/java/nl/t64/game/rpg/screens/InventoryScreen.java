@@ -73,7 +73,6 @@ public class InventoryScreen implements Screen {
     }
 
     private void setBackground() {
-        Utility.loadTextureAsset(SPRITE_PARCHMENT);
         Texture texture = Utility.getTextureAsset(SPRITE_PARCHMENT);
         Sprite sprite = new Sprite(texture);
         background = new Image(sprite);

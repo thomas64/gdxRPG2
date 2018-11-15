@@ -172,8 +172,7 @@ public class PauseMenu implements Screen {
     }
 
     private void createFonts() {
-        Utility.loadTrueTypeAsset(MENU_FONT, MENU_SIZE);
-        menuFont = Utility.getTrueTypeAsset(MENU_FONT);
+        menuFont = Utility.getTrueTypeAsset(MENU_FONT, MENU_SIZE);
     }
 
     private void setBackground() {

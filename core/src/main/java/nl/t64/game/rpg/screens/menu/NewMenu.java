@@ -184,8 +184,7 @@ public class NewMenu implements Screen {
     }
 
     private void createFonts() {
-        Utility.loadTrueTypeAsset(MENU_FONT, MENU_SIZE);
-        menuFont = Utility.getTrueTypeAsset(MENU_FONT);
+        menuFont = Utility.getTrueTypeAsset(MENU_FONT, MENU_SIZE);
     }
 
     private Table createTable() {
@@ -193,7 +192,7 @@ public class NewMenu implements Screen {
 //        uiskin.add("default-font", menuFont, BitmapFont.class);
 //        TextureAtlas atlas = new TextureAtlas(UISKIN_ATLAS);
 //        uiskin.addRegions(atlas);
-//        uiskin.load(Gdx.files.internal(UISKIN_JSON));
+//        uiskin.load(Gdx.files.local(UISKIN_JSON));
 
         // styles
         Label.LabelStyle menuStyle = new Label.LabelStyle(menuFont, Color.WHITE);
@@ -229,7 +228,6 @@ public class NewMenu implements Screen {
         TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
         textFieldStyle.font = menuFont;
         textFieldStyle.fontColor = Color.BLACK;
-        Utility.loadTextureAsset(SPRITE_PARCHMENT);
         Texture texture = Utility.getTextureAsset(SPRITE_PARCHMENT);
         Sprite sprite = new Sprite(texture);
         textFieldStyle.background = new SpriteDrawable(sprite);

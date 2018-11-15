@@ -72,7 +72,6 @@ public abstract class GraphicsComponent implements Component {
     }
 
     void loadWalkingAnimation(String spritePath, int col, int row) {
-        Utility.loadTextureAsset(spritePath);
         Texture texture = Utility.getTextureAsset(spritePath);
         TextureRegion[][] splitOfEight = TextureRegion.split(texture, SPRITE_GROUP_WIDTH, SPRITE_GROUP_HEIGHT);
         TextureRegion personSprite = splitOfEight[row - 1][col - 1];
