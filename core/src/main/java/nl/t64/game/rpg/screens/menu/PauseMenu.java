@@ -7,13 +7,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.Utility;
@@ -45,7 +43,6 @@ public class PauseMenu implements Screen {
 
     private Image screenshot;
     private Image blur;
-    private boolean hasBackground = false;
 
     private BitmapFont menuFont;
     private Table table;
@@ -66,12 +63,15 @@ public class PauseMenu implements Screen {
         this.selectedIndex = 0;
     }
 
+    public void setBackground() {
+        setBackground(createScreenshot(), createBlur());
+    }
+
     public void setBackground(Image screenshot, Image blur) {
         this.screenshot = screenshot;
         this.blur = blur;
         stage.addActor(screenshot);
         stage.addActor(blur);
-        hasBackground = true;
     }
 
     @Override
@@ -81,7 +81,6 @@ public class PauseMenu implements Screen {
     }
 
     private void setupScreen() {
-        setBackground();
         this.table = createTable();
         this.progressLostDialog = new QuestionDialog(this::openMainMenu, DIALOG_MESSAGE);
         applyListeners();
@@ -175,28 +174,22 @@ public class PauseMenu implements Screen {
         menuFont = Utility.getTrueTypeAsset(MENU_FONT, MENU_SIZE);
     }
 
-    private void setBackground() {
-        if (!hasBackground) {
-            screenshot = new Image(ScreenUtils.getFrameBufferTexture());
-            blur = createBlur();
-            stage.addActor(screenshot);
-            stage.addActor(blur);
-        }
-        hasBackground = false;
+    private Image createScreenshot() {
+        var image = new Image(ScreenUtils.getFrameBufferTexture());
+        image.setSize(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGHT);
+        return image;
     }
 
     private Image createBlur() {
-        Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Pixmap.Format.Alpha);
+        var pixmap = new Pixmap(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGHT, Pixmap.Format.Alpha);
         pixmap.setColor(TRANSPARENT);
         pixmap.fill();
-        Texture texture = new Texture(pixmap);
-        Sprite sprite = new Sprite(texture);
-        return new Image(new SpriteDrawable(sprite));
+        return new Image(new Texture(pixmap));
     }
 
     private Table createTable() {
         // styles
-        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
+        var buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = menuFont;
         buttonStyle.fontColor = Color.WHITE;
 
@@ -207,7 +200,7 @@ public class PauseMenu implements Screen {
         mainMenuButton = new TextButton(MENU_ITEM_MAIN_MENU, new TextButton.TextButtonStyle(buttonStyle));
 
         // table
-        Table newTable = new Table();
+        var newTable = new Table();
         newTable.setFillParent(true);
         newTable.add(continueButton).spaceBottom(MENU_SPACE_BOTTOM).row();
         newTable.add(loadGameButton).spaceBottom(MENU_SPACE_BOTTOM).row();

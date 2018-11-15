@@ -1,7 +1,6 @@
 package nl.t64.game.rpg.screens.menu;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -39,7 +38,7 @@ public class QuestionDialog {
 
     private final Runnable yesFunction;
     private final String message;
-    private final int dialogHeight;
+    private final long dialogHeight;
 
     private BitmapFont menuFont;
     private Dialog dialog;
@@ -52,7 +51,7 @@ public class QuestionDialog {
 
     QuestionDialog(Runnable yesFunction, String message) {
         this.message = message;
-        this.dialogHeight = ((message.split("\r\n|\r|\n").length) * LINE_HEIGHT) + DIALOG_INIT_HEIGHT;
+        this.dialogHeight = ((message.lines().count()) * LINE_HEIGHT) + DIALOG_INIT_HEIGHT;
         this.yesFunction = yesFunction;
         createFonts();
         this.dialog = createDialog();
@@ -105,29 +104,28 @@ public class QuestionDialog {
 
     private Dialog createDialog() {
         // styles
-        Label.LabelStyle menuStyle = new Label.LabelStyle(menuFont, Color.BLACK);
-        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
+        var menuStyle = new Label.LabelStyle(menuFont, Color.BLACK);
+        var buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = menuFont;
         buttonStyle.fontColor = Color.BLACK;
-        Dialog.WindowStyle windowStyle = new Dialog.WindowStyle();
+        var windowStyle = new Dialog.WindowStyle();
         windowStyle.titleFont = menuFont;
         windowStyle.titleFontColor = Color.BLACK;
 
         // actors
-        Label overwriteLabel = new Label(message, menuStyle);
+        var overwriteLabel = new Label(message, menuStyle);
         overwriteLabel.setAlignment(Align.center);
         yesButton = new TextButton(DIALOG_YES, new TextButton.TextButtonStyle(buttonStyle));
         noButton = new TextButton(DIALOG_NO, new TextButton.TextButtonStyle(buttonStyle));
 
         // table
-        Dialog newDialog = new Dialog("", windowStyle);
+        var newDialog = new Dialog("", windowStyle);
         newDialog.getTitleLabel().setAlignment(Align.center);
         newDialog.padTop(DIALOG_PAD_TOP);
         newDialog.padBottom(DIALOG_PAD_BOTTOM);
         newDialog.getContentTable().defaults().width(DIALOG_WIDTH);
 
-        Texture texture = Utility.getTextureAsset(SPRITE_PARCHMENT);
-        Sprite sprite = new Sprite(texture);
+        var sprite = new Sprite(Utility.getTextureAsset(SPRITE_PARCHMENT));
         newDialog.background(new SpriteDrawable(sprite));
         newDialog.getBackground().setMinHeight(dialogHeight);
 

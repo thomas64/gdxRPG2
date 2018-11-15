@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -231,17 +230,16 @@ public class LoadMenu implements Screen {
     }
 
     private void createTables() {
+        var spriteTransparent = new Sprite(Utility.getTextureAsset(SPRITE_TRANSPARENT));
         // styles
-        Label.LabelStyle titleStyle = new Label.LabelStyle(menuFont, Color.WHITE);
-        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
+        var titleStyle = new Label.LabelStyle(menuFont, Color.WHITE);
+        var buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = menuFont;
         buttonStyle.fontColor = Color.WHITE;
-        List.ListStyle listStyle = new List.ListStyle();
+        var listStyle = new List.ListStyle();
         listStyle.font = menuFont;
         listStyle.fontColorSelected = Constant.DARK_RED;
         listStyle.fontColorUnselected = Color.WHITE;
-        Texture textureTransparent = Utility.getTextureAsset(SPRITE_TRANSPARENT);
-        Sprite spriteTransparent = new Sprite(textureTransparent);
         listStyle.background = new SpriteDrawable(spriteTransparent);
         listStyle.selection = new SpriteDrawable(spriteTransparent);
 
@@ -268,7 +266,7 @@ public class LoadMenu implements Screen {
 
         bottomTable = new Table();
         bottomTable.setHeight(loadButton.getHeight());
-        bottomTable.setWidth(Gdx.graphics.getWidth());
+        bottomTable.setWidth(Constant.SCREEN_WIDTH);
         bottomTable.setY(BOTTOM_TABLE_Y);
         bottomTable.add(loadButton).spaceRight(LOAD_BUTTON_SPACE_RIGHT);
         bottomTable.add(backButton);

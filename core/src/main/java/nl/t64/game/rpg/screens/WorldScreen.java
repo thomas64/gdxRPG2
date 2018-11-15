@@ -32,6 +32,8 @@ import nl.t64.game.rpg.tiled.Npc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 public class WorldScreen implements Screen, ProfileObserver {
@@ -155,7 +157,7 @@ public class WorldScreen implements Screen, ProfileObserver {
 
     private void updateCharacters(float dt) {
         player.update(engine, npcCharacters, dt);
-        List<Character> copyCharacters = new ArrayList<>(npcCharacters);
+        var copyCharacters = new ArrayList<>(npcCharacters);
         copyCharacters.add(player);
         npcCharacters.forEach(npcCharacter -> npcCharacter.update(engine, copyCharacters, dt));
     }
@@ -183,8 +185,10 @@ public class WorldScreen implements Screen, ProfileObserver {
 
     private void openPauseMenu() {
         player.resetInput();
-        engine.setScreen(engine.getPauseMenuScreen());
-        engine.getPauseMenuScreen().updateIndex(0);
+        var pauseMenu = engine.getPauseMenuScreen();
+        pauseMenu.setBackground();
+        engine.setScreen(pauseMenu);
+        pauseMenu.updateIndex(0);
     }
 
     private void openInventoryScreen() {
@@ -270,8 +274,8 @@ public class WorldScreen implements Screen, ProfileObserver {
 
             int w = 300;
             int h = 600;
-            int x = 0 - (Gdx.graphics.getWidth() / 2);
-            int y = 0 - (Gdx.graphics.getHeight() / 2) + (Gdx.graphics.getHeight() - h);
+            int x = 0 - (Constant.SCREEN_WIDTH / 2);
+            int y = 0 - (Constant.SCREEN_HEIGHT / 2) + (Constant.SCREEN_HEIGHT - h);
             shapeRenderer.rect(x, y, w, h);
             shapeRenderer.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
@@ -324,19 +328,19 @@ public class WorldScreen implements Screen, ProfileObserver {
 //                    player.getPhysicsComponent().getDirection() + "\n" +
 //                    player.getState() + "\n";
 
-            String[] lines1 = debug1.split("\n");
-            String[] lines2 = debug2.split("\n");
-            SpriteBatch batch = new SpriteBatch();
-            BitmapFont font = new BitmapFont();
+            var lines1 = debug1.lines().collect(Collectors.toList());
+            var lines2 = debug2.lines().collect(Collectors.toList());
+            var batch = new SpriteBatch();
+            var font = new BitmapFont();
             font.setColor(Color.WHITE);
             batch.begin();
             int lineHeight = 15;
             int xFirstColumn = 0;
             int xSecondColumn = 200;
-            for (int i = 0; i < lines1.length; i++) {
-                font.draw(batch, lines1[i], xFirstColumn, Gdx.graphics.getHeight() - (i * lineHeight));
-                font.draw(batch, lines2[i], xSecondColumn, Gdx.graphics.getHeight() - (i * lineHeight));
-            }
+            IntStream.range(0, lines1.size()).forEach(i -> {
+                font.draw(batch, lines1.get(i), xFirstColumn, Gdx.graphics.getHeight() - (i * lineHeight));
+                font.draw(batch, lines2.get(i), xSecondColumn, Gdx.graphics.getHeight() - (i * lineHeight));
+            });
             batch.end();
             batch.dispose();
             font.dispose();
