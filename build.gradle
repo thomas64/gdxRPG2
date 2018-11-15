@@ -12,12 +12,15 @@ buildscript {
 }
 
 allprojects {
+    apply plugin: "java"
     apply plugin: "idea"
+
+    sourceCompatibility = 1.11
 
     version = '1.0'
     ext {
         appName = "gdx-rpg2"
-        gdxVersion = '1.9.8'
+        gdxVersion = '1.9.9'
         roboVMVersion = '2.3.3'
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.3'
@@ -31,15 +34,23 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
-}
 
-dependencies {
+    dependencies {
+        implementation "org.projectlombok:lombok:1.18.2"
 
+        testImplementation "org.assertj:assertj-core:3.11.1"
+        testImplementation "org.mockito:mockito-core:2.23.0"
+        testImplementation "org.junit.jupiter:junit-jupiter-api:5.1.1"
+
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.1.1"
+    }
+
+    test {
+        useJUnitPlatform()
+    }
 }
 
 project(":desktop") {
-    apply plugin: "java"
-
     dependencies {
         implementation project(":core")
         implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
@@ -50,30 +61,16 @@ project(":desktop") {
         implementation "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
         implementation "de.tomgrill.gdxdialogs:gdx-dialogs-desktop:1.3.0"
-
-        implementation "org.projectlombok:lombok:1.18.2"
-
-        testImplementation "org.assertj:assertj-core:3.11.1"
-        testImplementation "org.mockito:mockito-core:2.23.0"
-        testImplementation "org.junit.jupiter:junit-jupiter-api:5.1.1"
-
-        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.1.1"
-    }
-
-    test {
-        useJUnitPlatform()
     }
 }
 
 project(":core") {
-    apply plugin: "java"
-
     dependencies {
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
-        implementation "com.badlogicgames.gdx:gdx-ai:1.8.1"
-        implementation "com.badlogicgames.ashley:ashley:1.7.3"
+        implementation "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+        implementation "com.badlogicgames.ashley:ashley:$ashleyVersion"
         implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         implementation "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         implementation "com.underwaterapps.overlap2druntime:overlap2d-runtime-libgdx:0.1.1"
@@ -84,17 +81,5 @@ project(":core") {
         implementation "com.github.czyzby:gdx-kiwi:1.9.1.9.6"
         implementation "com.github.czyzby:gdx-lml:1.9.1.9.6"
         implementation "com.github.czyzby:gdx-lml-vis:1.9.1.9.6"
-
-        implementation "org.projectlombok:lombok:1.18.2"
-
-        testImplementation "org.assertj:assertj-core:3.11.1"
-        testImplementation "org.mockito:mockito-core:2.23.0"
-        testImplementation "org.junit.jupiter:junit-jupiter-api:5.1.1"
-
-        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.1.1"
-    }
-
-    test {
-        useJUnitPlatform()
     }
 }
