@@ -32,6 +32,7 @@ public class NewMenu implements Screen {
 
     private static final String PROFILE_LABEL = "Enter Profile Name:";
     private static final int PROFILE_INPUT_LENGTH = 8 + 1;
+    private static final String DIALOG_MESSAGE = "Overwrite existing profile name?";
 
     private static final String MENU_ITEM_START = "Start";
     private static final String MENU_ITEM_BACK = "Back";
@@ -53,7 +54,7 @@ public class NewMenu implements Screen {
     private TextField profileText;
     private TextButton startButton;
     private TextButton backButton;
-    private OverwriteDialog overwriteDialog;
+    private QuestionDialog overwriteDialog;
 
     private InputFieldKeyListener inputFieldKeyListener;
     private HorizontalKeyListener horizontalKeyListener;
@@ -78,7 +79,7 @@ public class NewMenu implements Screen {
         engine.getProfileManager().loadAllProfiles();
 
         this.table = createTable();
-        this.overwriteDialog = new OverwriteDialog(this::createNewGame);
+        this.overwriteDialog = new QuestionDialog(this::createNewGame, DIALOG_MESSAGE);
 
         applyListeners();
         this.stage.addActor(this.table);

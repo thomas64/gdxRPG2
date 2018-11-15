@@ -28,6 +28,7 @@ public class LoadMenu implements Screen {
     private static final String TITLE_LABEL = "Select your profile:";
     private static final String MENU_ITEM_LOAD = "Load";
     private static final String MENU_ITEM_BACK = "Back";
+    private static final String DIALOG_MESSAGE = "Any unsaved progress will be lost.\nAre you sure?";
 
     private static final int TITLE_SPACE_BOTTOM = 30;
     private static final int TOP_TABLE_Y = 50;
@@ -56,7 +57,7 @@ public class LoadMenu implements Screen {
     private Table bottomTable;
     private TextButton loadButton;
     private TextButton backButton;
-    private ProgressLostDialog progressLostDialog;
+    private QuestionDialog progressLostDialog;
 
     private VerticalKeyListener verticalKeyListener;
     private HorizontalKeyListener horizontalKeyListener;
@@ -91,7 +92,7 @@ public class LoadMenu implements Screen {
         profiles = engine.getProfileManager().getProfileList();
 
         createTables();
-        this.progressLostDialog = new ProgressLostDialog(this::openWorldScreen);
+        this.progressLostDialog = new QuestionDialog(this::openWorldScreen, DIALOG_MESSAGE);
         applyListeners();
 
         this.stage.addActor(this.topTable);

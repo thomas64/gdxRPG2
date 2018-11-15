@@ -18,26 +18,28 @@ import nl.t64.game.rpg.listeners.ConfirmKeyListener;
 import nl.t64.game.rpg.listeners.HorizontalKeyListener;
 
 
-public class OverwriteDialog {
+public class QuestionDialog {
 
     private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
     private static final String MENU_FONT = "fonts/fff_tusj.ttf";
     private static final int MENU_SIZE = 30;
 
-    private static final String DIALOG_TEXT = "Overwrite existing profile name?";
-    private static final String DIALOG_OVERWRITE = "Overwrite";
-    private static final String DIALOG_CANCEL = "Cancel";
+    private static final String DIALOG_YES = "Yes";
+    private static final String DIALOG_NO = "No";
 
     private static final int DIALOG_WIDTH = 620;
-    private static final int DIALOG_HEIGHT = 170;
+    private static final int DIALOG_INIT_HEIGHT = 150;
+    private static final int LINE_HEIGHT = 30;
     private static final int DIALOG_PAD_TOP = 20;
     private static final int DIALOG_PAD_BOTTOM = 40;
-    private static final int BUTTON_SPACE_RIGHT = 50;
+    private static final int BUTTON_SPACE_RIGHT = 100;
 
     private static final int NUMBER_OF_ITEMS = 2;
     private static final int EXIT_INDEX = 1;
 
     private final Runnable yesFunction;
+    private final String message;
+    private final int dialogHeight;
 
     private BitmapFont menuFont;
     private Dialog dialog;
@@ -48,7 +50,9 @@ public class OverwriteDialog {
 
     private int selectedIndex;
 
-    OverwriteDialog(Runnable yesFunction) {
+    QuestionDialog(Runnable yesFunction, String message) {
+        this.message = message;
+        this.dialogHeight = ((message.split("\r\n|\r|\n").length) * LINE_HEIGHT) + DIALOG_INIT_HEIGHT;
         this.yesFunction = yesFunction;
         createFonts();
         this.dialog = createDialog();
@@ -111,10 +115,10 @@ public class OverwriteDialog {
         windowStyle.titleFontColor = Color.BLACK;
 
         // actors
-        Label overwriteLabel = new Label(DIALOG_TEXT, menuStyle);
+        Label overwriteLabel = new Label(message, menuStyle);
         overwriteLabel.setAlignment(Align.center);
-        yesButton = new TextButton(DIALOG_OVERWRITE, new TextButton.TextButtonStyle(buttonStyle));
-        noButton = new TextButton(DIALOG_CANCEL, new TextButton.TextButtonStyle(buttonStyle));
+        yesButton = new TextButton(DIALOG_YES, new TextButton.TextButtonStyle(buttonStyle));
+        noButton = new TextButton(DIALOG_NO, new TextButton.TextButtonStyle(buttonStyle));
 
         // table
         Dialog newDialog = new Dialog("", windowStyle);
@@ -127,7 +131,7 @@ public class OverwriteDialog {
         Texture texture = Utility.getTextureAsset(SPRITE_PARCHMENT);
         Sprite sprite = new Sprite(texture);
         newDialog.background(new SpriteDrawable(sprite));
-        newDialog.getBackground().setMinHeight(DIALOG_HEIGHT);
+        newDialog.getBackground().setMinHeight(dialogHeight);
 
         newDialog.setKeepWithinStage(true);
         newDialog.setModal(true);

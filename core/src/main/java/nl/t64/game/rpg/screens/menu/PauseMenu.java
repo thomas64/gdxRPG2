@@ -38,6 +38,8 @@ public class PauseMenu implements Screen {
     private static final int NUMBER_OF_ITEMS = 4;
     private static final int EXIT_INDEX = 0;
 
+    private static final String DIALOG_MESSAGE = "Any unsaved progress will be lost.\nAre you sure?";
+
     private Engine engine;
     private Stage stage;
 
@@ -51,7 +53,7 @@ public class PauseMenu implements Screen {
     private TextButton loadGameButton;
     private TextButton settingsButton;
     private TextButton mainMenuButton;
-    private ProgressLostDialog progressLostDialog;
+    private QuestionDialog progressLostDialog;
 
     private VerticalKeyListener verticalKeyListener;
 
@@ -81,7 +83,7 @@ public class PauseMenu implements Screen {
     private void setupScreen() {
         setBackground();
         this.table = createTable();
-        this.progressLostDialog = new ProgressLostDialog(this::openMainMenu);
+        this.progressLostDialog = new QuestionDialog(this::openMainMenu, DIALOG_MESSAGE);
         applyListeners();
         this.stage.addActor(this.table);
         this.stage.setKeyboardFocus(this.table);
