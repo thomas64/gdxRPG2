@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -100,7 +99,7 @@ public class NewMenu implements Screen {
         stage.act(dt);
         inputFieldKeyListener.updateInputField(profileName);
         horizontalKeyListener.updateSelectedIndex(selectedIndex);
-        overwriteDialog.update(); // for updating the index in de listener.
+        overwriteDialog.render(dt); // for updating the index in de listener.
         stage.draw();
     }
 
@@ -195,26 +194,26 @@ public class NewMenu implements Screen {
 //        uiskin.load(Gdx.files.local(UISKIN_JSON));
 
         // styles
-        Label.LabelStyle menuStyle = new Label.LabelStyle(menuFont, Color.WHITE);
-        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
+        var menuStyle = new Label.LabelStyle(menuFont, Color.WHITE);
+        var buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = menuFont;
         buttonStyle.fontColor = Color.WHITE;
 
         // actors
-        Label profileLabel = new Label(PROFILE_LABEL, menuStyle);
+        var profileLabel = new Label(PROFILE_LABEL, menuStyle);
         profileText = createProfileText();
         startButton = new TextButton(MENU_ITEM_START, new TextButton.TextButtonStyle(buttonStyle));
         backButton = new TextButton(MENU_ITEM_BACK, new TextButton.TextButtonStyle(buttonStyle));
 
         // table
-        Table newTable = new Table();
+        var newTable = new Table();
         newTable.setFillParent(true);
 
-        Table upperTable = new Table();
+        var upperTable = new Table();
         upperTable.add(profileLabel).spaceRight(PROFILE_LABEL_SPACE_RIGHT);
         upperTable.add(profileText).width(PROFILE_INPUT_WIDTH).height(PROFILE_INPUT_HEIGHT);
 
-        Table lowerTable = new Table();
+        var lowerTable = new Table();
         lowerTable.add(startButton).spaceRight(START_BUTTON_SPACE_RIGHT);
         lowerTable.add(backButton);
 
@@ -225,15 +224,14 @@ public class NewMenu implements Screen {
 
     private TextField createProfileText() {
         // style
-        TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
+        var textFieldStyle = new TextField.TextFieldStyle();
         textFieldStyle.font = menuFont;
         textFieldStyle.fontColor = Color.BLACK;
-        Texture texture = Utility.getTextureAsset(SPRITE_PARCHMENT);
-        Sprite sprite = new Sprite(texture);
+        var sprite = new Sprite(Utility.getTextureAsset(SPRITE_PARCHMENT));
         textFieldStyle.background = new SpriteDrawable(sprite);
 
         // actor
-        TextField textField = new TextField("", textFieldStyle);
+        var textField = new TextField("", textFieldStyle);
         textField.setMaxLength(PROFILE_INPUT_LENGTH);
         textField.setAlignment(Align.center);
         return textField;

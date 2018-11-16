@@ -12,7 +12,7 @@ import java.util.*;
 public class ProfileManager {
 
     private static final String SAVE_PATH = "savegame/";
-    private static final String DEFAULT_PROFILE = "default";
+    private static final String DEFAULT_PROFILE = "mozes";
     private static final String SAVEGAME_SUFFIX = ".dat";
 
     private List<ProfileObserver> observers = new ArrayList<>();
@@ -73,6 +73,16 @@ public class ProfileManager {
         profileName = selectedProfileName;
         profileProperties = json.fromJson(ObjectMap.class, profiles.get(profileName));
         observers.forEach(observer -> observer.onNotifyLoad(this));
+    }
+
+    public Array<String> removeProfile(String selectedProfileName) {
+        String fullFilename = selectedProfileName + SAVEGAME_SUFFIX;
+        boolean doesProfileExist = Gdx.files.local(SAVE_PATH + fullFilename).exists();
+        if (doesProfileExist) {
+            Gdx.files.local(SAVE_PATH + fullFilename).delete();
+            loadAllProfiles();
+        }
+        return getProfileList();
     }
 
     public void addObserver(ProfileObserver observer) {

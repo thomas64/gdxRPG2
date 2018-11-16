@@ -26,17 +26,20 @@ public class LoadMenu implements Screen {
 
     private static final String TITLE_LABEL = "Select your profile:";
     private static final String MENU_ITEM_LOAD = "Load";
+    private static final String MENU_ITEM_DELETE = "Delete";
     private static final String MENU_ITEM_BACK = "Back";
-    private static final String DIALOG_MESSAGE = "Any unsaved progress will be lost.\nAre you sure?";
+    private static final String LOAD_MESSAGE = "Any unsaved progress will be lost.\nAre you sure?";
+    private static final String DELETE_MESSAGE = "This save file will be removed.\nAre you sure?";
 
     private static final int TITLE_SPACE_BOTTOM = 30;
     private static final int TOP_TABLE_Y = 50;
     private static final int SCROLL_PANE_HEIGHT = 380;
     private static final int BOTTOM_TABLE_Y = 100;
-    private static final int LOAD_BUTTON_SPACE_RIGHT = 150;
+    private static final int BUTTON_SPACE_RIGHT = 150;
 
-    private static final int NUMBER_OF_ITEMS = 2;
-    private static final int EXIT_INDEX = 1;
+    private static final int NUMBER_OF_ITEMS = 3;
+    private static final int DELETE_INDEX = 1;
+    private static final int EXIT_INDEX = 2;
 
     private Engine engine;
     private Stage stage;
@@ -55,8 +58,10 @@ public class LoadMenu implements Screen {
     private ScrollPane scrollPane;
     private Table bottomTable;
     private TextButton loadButton;
+    private TextButton deleteButton;
     private TextButton backButton;
     private QuestionDialog progressLostDialog;
+    private QuestionDialog deleteFileDialog;
 
     private VerticalKeyListener verticalKeyListener;
     private HorizontalKeyListener horizontalKeyListener;
@@ -91,7 +96,8 @@ public class LoadMenu implements Screen {
         profiles = engine.getProfileManager().getProfileList();
 
         createTables();
-        this.progressLostDialog = new QuestionDialog(this::openWorldScreen, DIALOG_MESSAGE);
+        this.progressLostDialog = new QuestionDialog(this::openWorldScreen, LOAD_MESSAGE);
+        this.deleteFileDialog = new QuestionDialog(this::deleteSaveFile, DELETE_MESSAGE);
         applyListeners();
 
         this.stage.addActor(this.topTable);
@@ -115,7 +121,8 @@ public class LoadMenu implements Screen {
         scrollScrollPane();
         verticalKeyListener.updateSelectedIndex(currentSelectedListIndex);
         horizontalKeyListener.updateSelectedIndex(selectedMenuIndex);
-        progressLostDialog.update(); // for updating the index in de listener.
+        progressLostDialog.render(dt); // for updating the index in de listener.
+        deleteFileDialog.render(dt);
         stage.draw();
     }
 
@@ -183,6 +190,9 @@ public class LoadMenu implements Screen {
                 processLoadButton();
                 break;
             case 1:
+                processDeleteButton();
+                break;
+            case 2:
                 processBackButton();
                 break;
             default:
@@ -201,6 +211,13 @@ public class LoadMenu implements Screen {
         }
     }
 
+    private void processDeleteButton() {
+        Object profileName = listItems.getSelected();
+        if (profileName != null) {
+            deleteFileDialog.show(stage);
+        }
+    }
+
     private void processBackButton() {
         if (fromScreen instanceof PauseMenu) {
             ((PauseMenu) fromScreen).setBackground(screenshot, blur);
@@ -213,6 +230,20 @@ public class LoadMenu implements Screen {
         Object profileName = listItems.getSelected();
         engine.getProfileManager().loadProfile(profileName.toString());
         engine.setScreen(engine.getWorldScreen());
+    }
+
+    private void deleteSaveFile() {
+        int selectedIndex = listItems.getSelectedIndex();
+        if (selectedIndex == profiles.size - 1) {
+            selectedIndex -= 1;
+        }
+        Object profileName = listItems.getSelected();
+        profiles = engine.getProfileManager().removeProfile(profileName.toString());
+        listItems.setItems(profiles);
+        scrollPane.clearChildren();
+        scrollPane.setActor(listItems);
+        updateListIndex(selectedIndex);
+        verticalKeyListener.setNumberOfItems(listItems.getItems().size);
     }
 
     private void setAllTextButtonsToWhite() {
@@ -244,8 +275,9 @@ public class LoadMenu implements Screen {
         listStyle.selection = new SpriteDrawable(spriteTransparent);
 
         // actors
-        Label titleLabel = new Label(TITLE_LABEL, titleStyle);
+        var titleLabel = new Label(TITLE_LABEL, titleStyle);
         loadButton = new TextButton(MENU_ITEM_LOAD, new TextButton.TextButtonStyle(buttonStyle));
+        deleteButton = new TextButton(MENU_ITEM_DELETE, new TextButton.TextButtonStyle(buttonStyle));
         backButton = new TextButton(MENU_ITEM_BACK, new TextButton.TextButtonStyle(buttonStyle));
 
         listItems = new List(listStyle);
@@ -268,7 +300,8 @@ public class LoadMenu implements Screen {
         bottomTable.setHeight(loadButton.getHeight());
         bottomTable.setWidth(Constant.SCREEN_WIDTH);
         bottomTable.setY(BOTTOM_TABLE_Y);
-        bottomTable.add(loadButton).spaceRight(LOAD_BUTTON_SPACE_RIGHT);
+        bottomTable.add(loadButton).spaceRight(BUTTON_SPACE_RIGHT);
+        bottomTable.add(deleteButton).spaceRight(BUTTON_SPACE_RIGHT);
         bottomTable.add(backButton);
     }
 
@@ -278,9 +311,11 @@ public class LoadMenu implements Screen {
         scrollPane.addListener(verticalKeyListener);
         scrollPane.addListener(horizontalKeyListener);
         scrollPane.addListener(new ConfirmKeyListener(this::updateMenuIndex, this::selectMenuItem, EXIT_INDEX));
+        scrollPane.addListener(new DeleteKeyListener(this::updateMenuIndex, this::selectMenuItem, DELETE_INDEX));
         scrollPane.addListener(new MouseScrollListener(this::busyScrolling));
         loadButton.addListener(createButtonMouseListener(0));
-        backButton.addListener(createButtonMouseListener(1));
+        deleteButton.addListener(createButtonMouseListener(1));
+        backButton.addListener(createButtonMouseListener(2));
     }
 
     private ButtonMouseListener createButtonMouseListener(int index) {

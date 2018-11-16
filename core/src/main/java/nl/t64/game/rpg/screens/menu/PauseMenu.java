@@ -95,7 +95,7 @@ public class PauseMenu implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(dt);
         verticalKeyListener.updateSelectedIndex(selectedIndex);
-        progressLostDialog.update(); // for updating the index in de listener.
+        progressLostDialog.render(dt); // for updating the index in de listener.
         stage.draw();
     }
 

@@ -63,7 +63,7 @@ public class QuestionDialog {
         updateIndex(EXIT_INDEX);
     }
 
-    public void update() {  // handmade equivalent of a Screen.render() method.
+    public void render(float dt) {  // handmade equivalent of a Screen.render() method.
         horizontalKeyListener.updateSelectedIndex(selectedIndex);
     }
 

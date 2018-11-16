@@ -3,6 +3,7 @@ package nl.t64.game.rpg.listeners;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import lombok.Setter;
 
 import java.util.function.Consumer;
 
@@ -10,7 +11,8 @@ import java.util.function.Consumer;
 public class VerticalKeyListener extends InputListener {
 
     private final Consumer<Integer> updateIndexFunction;
-    private final int numberOfItems;
+    @Setter
+    private int numberOfItems;
 
     private int selectedIndex;
 
