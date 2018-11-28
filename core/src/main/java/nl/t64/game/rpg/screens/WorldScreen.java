@@ -9,18 +9,15 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.utils.ObjectMap;
 import lombok.Getter;
 import nl.t64.game.rpg.Camera;
 import nl.t64.game.rpg.Engine;
-import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.components.character.Character;
 import nl.t64.game.rpg.components.character.*;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.GameState;
 import nl.t64.game.rpg.constants.MapTitle;
-import nl.t64.game.rpg.events.character.LoadSpriteEvent;
 import nl.t64.game.rpg.events.character.StartDirectionEvent;
 import nl.t64.game.rpg.events.character.StartPositionEvent;
 import nl.t64.game.rpg.events.character.StartStateEvent;
@@ -40,7 +37,6 @@ public class WorldScreen implements Screen, ProfileObserver {
 
     private static final String TAG = WorldScreen.class.getSimpleName();
     private static final Color TRANSPARENT = new Color(0f, 0f, 0f, 0.5f);
-    private static final String PEOPLE1_SPRITE_CONFIG = "configs/sprites_people1.json";
     private static final MapTitle START_OF_GAME_MAP = MapTitle.MAP4;
 
     private static boolean showGrid = false;
@@ -141,14 +137,12 @@ public class WorldScreen implements Screen, ProfileObserver {
     private void loadNpcCharacters() {
         npcCharacters = new ArrayList<>();
         for (Npc npc : currentMap.getNpcs()) {
-            Character npcCharacter = new Character(new NpcInput(), new NpcPhysics(), new NpcGraphics());
+            String spriteId = npc.getName();
+            var npcCharacter = new Character(new NpcInput(), new NpcPhysics(), new NpcGraphics(spriteId));
             npcCharacters.add(npcCharacter);
             npcCharacter.send(new StartStateEvent(npc.getState()));
             npcCharacter.send(new StartDirectionEvent(npc.getDirection()));
             npcCharacter.send(new StartPositionEvent(npc.getPosition()));
-            ObjectMap<String, LoadSpriteEvent> peopleData = Utility.getAllSpriteConfigsFromJson(PEOPLE1_SPRITE_CONFIG);
-            LoadSpriteEvent loadSpriteEvent = peopleData.get(npc.getName());
-            npcCharacter.send(loadSpriteEvent);
             if (npc.getState() == CharacterState.IMMOBILE) {
                 currentMap.addToBlockers(npcCharacter.getBoundingBox());
             }

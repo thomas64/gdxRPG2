@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.*;
@@ -16,16 +17,14 @@ public class NpcGraphics extends GraphicsComponent {
 
     private boolean isSelected = false;
 
-    public NpcGraphics() {
+    public NpcGraphics(String spriteId) {
         this.frameDuration = 0.25f;
+        SpriteConfig spriteConfig = Utility.getSpriteConfig(spriteId);
+        loadWalkingAnimation(spriteConfig);
     }
 
     @Override
     public void receive(Event event) {
-        if (event instanceof LoadSpriteEvent) {
-            LoadSpriteEvent loadSpriteEvent = (LoadSpriteEvent) event;
-            loadWalkingAnimation(loadSpriteEvent.getPath(), loadSpriteEvent.getCol(), loadSpriteEvent.getRow());
-        }
         if (event instanceof StartStateEvent) {
             state = ((StartStateEvent) event).getState();
         }
