@@ -90,7 +90,8 @@ public final class Utility {
         Json json = new Json();
         FileHandle[] configFiles = FILE_PATH_RESOLVER.resolve("configs/").list(".json");
         for (FileHandle file : configFiles) {
-            SPRITE_CONFIGS.putAll(json.fromJson(ObjectMap.class, SpriteConfig.class, file));
+            ObjectMap<String, SpriteConfig> spriteConfigs = json.fromJson(ObjectMap.class, SpriteConfig.class, file);
+            SPRITE_CONFIGS.putAll(spriteConfigs);
         }
     }
 

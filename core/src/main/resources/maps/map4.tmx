@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="34" height="26" tilewidth="24" tileheight="24" infinite="0" nextobjectid="33">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="34" height="26" tilewidth="24" tileheight="24" infinite="0" nextlayerid="14" nextobjectid="33">
  <tileset firstgid="1" name="map4" tilewidth="24" tileheight="24" tilecount="3294" columns="122">
   <image source="tilesets/map4.png" width="2928" height="648"/>
  </tileset>
  <tileset firstgid="3295" source="tilesets/fsm_town01_e.tsx"/>
  <tileset firstgid="4319" source="tilesets/fsm_town01_b.tsx"/>
  <tileset firstgid="5343" source="tilesets/fsm_town01_a2.tsx"/>
- <layer name="under0_none" width="34" height="26">
+ <layer id="1" name="under0_none" width="34" height="26">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -36,7 +36,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="under1_ground" width="34" height="26">
+ <layer id="2" name="under1_ground" width="34" height="26">
   <data encoding="csv">
 1380,1664,1157,1168,1876,2136,2137,915,2382,1459,2381,2381,2248,2249,2137,2381,2137,2381,920,664,670,913,2137,913,910,673,1159,905,906,1447,1380,1664,1157,1168,
 1381,672,1158,1667,1877,1878,2379,675,1351,1352,1353,1354,1355,2250,2251,1354,2251,1354,921,665,666,2380,2379,2380,680,912,1385,1422,907,1448,1381,672,1158,1667,
@@ -66,7 +66,7 @@
 1449,1438,2146,1458,1381,672,1158,1667,1877,1410,1411,1412,1413,1414,4371,1416,1417,1418,1419,1420,1421,1422,907,1448,1449,1438,911,912,1385,1422,907,1448,1449,1438
 </data>
  </layer>
- <layer name="under2_none" width="34" height="26">
+ <layer id="3" name="under2_none" width="34" height="26">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -96,7 +96,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="under3_none" width="34" height="26">
+ <layer id="4" name="under3_none" width="34" height="26">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -126,7 +126,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="under4_objects" width="34" height="26">
+ <layer id="5" name="under4_objects" width="34" height="26">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -156,7 +156,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="under5_over" width="34" height="26">
+ <layer id="6" name="under5_over" width="34" height="26">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -186,7 +186,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="over6_objects" width="34" height="26">
+ <layer id="7" name="over6_objects" width="34" height="26">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -216,7 +216,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4564,0,0,4559,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="over7_over" width="34" height="26">
+ <layer id="8" name="over7_over" width="34" height="26">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -246,7 +246,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,4371,4372,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="over8_none" width="34" height="26">
+ <layer id="9" name="over8_none" width="34" height="26">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -276,8 +276,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup name="npc_layer"/>
- <objectgroup name="collision_layer">
+ <objectgroup id="11" name="collision_layer">
   <object id="1" x="0" y="0" width="96" height="624"/>
   <object id="2" x="96" y="0" width="720" height="96"/>
   <object id="3" x="720" y="96" width="96" height="528"/>
@@ -302,7 +301,7 @@
   <object id="29" x="336" y="552" width="48" height="24"/>
   <object id="30" x="336" y="600" width="24" height="24"/>
  </objectgroup>
- <objectgroup name="spawn_layer">
+ <objectgroup id="12" name="spawn_layer">
   <object id="22" name="map5" x="384" y="576" width="48" height="48"/>
   <object id="32" name="map4" x="384" y="288" width="48" height="48">
    <properties>
@@ -310,7 +309,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="portal_layer">
+ <objectgroup id="13" name="portal_layer">
   <object id="19" name="map5" x="336" y="624" width="144" height="24"/>
  </objectgroup>
 </map>

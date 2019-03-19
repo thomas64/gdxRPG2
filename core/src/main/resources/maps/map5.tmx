@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="44" height="70" tilewidth="24" tileheight="24" infinite="0" nextobjectid="35">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="44" height="70" tilewidth="24" tileheight="24" infinite="0" nextlayerid="15" nextobjectid="35">
  <tileset firstgid="1" name="map5" tilewidth="24" tileheight="24" tilecount="4352" columns="128">
   <image source="tilesets/map5.png" width="3072" height="816"/>
  </tileset>
  <tileset firstgid="4353" source="tilesets/fsm_town01_a1.tsx"/>
  <tileset firstgid="5121" source="tilesets/fsm_town01_b.tsx"/>
  <tileset firstgid="6145" source="tilesets/fsm_town01_e.tsx"/>
- <layer name="under0_none" width="44" height="70">
+ <layer id="1" name="under0_none" width="44" height="70">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -80,7 +80,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="under1_ground" width="44" height="70">
+ <layer id="2" name="under1_ground" width="44" height="70">
   <data encoding="csv">
 1743,1974,1733,1454,2211,2499,2494,2208,2209,1675,1739,1972,1743,1681,2498,2499,1743,1213,1219,1671,1977,1470,2755,2756,947,3020,2752,2499,1743,1974,1733,1454,2211,2499,3271,2236,1743,1974,1733,1454,2211,2499,1743,2499,
 3274,1684,2489,969,2212,1731,1689,1690,2210,1676,1677,1973,1770,1682,2497,1703,1770,1668,1220,3037,1978,1471,1738,943,948,2995,3263,1703,3274,1684,2489,969,2212,1731,3272,3273,3274,1684,2489,969,2212,1731,1770,1703,
@@ -154,7 +154,7 @@
 1752,4304,193,1751,1752,4304,193,1751,1752,4304,193,1751,1752,4304,193,1751,1752,1753,1754,1755,1756,2995,2000,1791,1792,1751,1752,4304,193,1751,1752,4304,193,1751,1752,4304,193,1751,1752,4304,193,1751,1752,4304
 </data>
  </layer>
- <layer name="under2_water" width="44" height="70">
+ <layer id="3" name="under2_water" width="44" height="70">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -228,7 +228,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="under3_waterplants" width="44" height="70">
+ <layer id="4" name="under3_waterplants" width="44" height="70">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -302,7 +302,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="under4_none" width="44" height="70">
+ <layer id="5" name="under4_none" width="44" height="70">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -376,7 +376,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="under5_none" width="44" height="70">
+ <layer id="6" name="under5_none" width="44" height="70">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -450,7 +450,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="over6_objects" width="44" height="70">
+ <layer id="7" name="over6_objects" width="44" height="70">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -524,7 +524,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="over7_over" width="44" height="70">
+ <layer id="8" name="over7_over" width="44" height="70">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -598,7 +598,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="over8_none" width="44" height="70">
+ <layer id="9" name="over8_none" width="44" height="70">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -672,8 +672,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup name="npc_layer"/>
- <objectgroup name="collision_layer">
+ <objectgroup id="11" name="collision_layer">
   <object id="1" x="240" y="960" width="192" height="96"/>
   <object id="2" x="480" y="960" width="240" height="96"/>
   <object id="3" x="288" y="1056" width="96" height="192"/>
@@ -699,7 +698,7 @@
   <object id="27" x="576" y="456" width="96" height="24"/>
   <object id="28" x="528" y="696" width="96" height="24"/>
  </objectgroup>
- <objectgroup name="spawn_layer">
+ <objectgroup id="12" name="spawn_layer">
   <object id="29" name="map4" x="576" y="0" width="48" height="48"/>
   <object id="32" name="map1" x="480" y="1632" width="48" height="48"/>
   <object id="33" name="map5" x="384" y="816" width="48" height="48">
@@ -708,11 +707,11 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="portal_layer">
+ <objectgroup id="13" name="portal_layer">
   <object id="30" name="map4" x="552" y="-24" width="96" height="24"/>
   <object id="31" name="map1" x="456" y="1680" width="96" height="24"/>
  </objectgroup>
- <objectgroup name="save_layer">
+ <objectgroup id="14" name="save_layer">
   <object id="34" x="384" y="768" width="48" height="48"/>
  </objectgroup>
 </map>
