@@ -15,6 +15,7 @@ public class Engine extends Game {
     private static float runTime = 0f;
 
     private ProfileManager profileManager;
+    private Data data;
 
     private MainMenu mainMenuScreen;
     private NewMenu newGameMenuScreen;
@@ -30,6 +31,7 @@ public class Engine extends Game {
     @Override
     public void create() {
         profileManager = new ProfileManager();
+        data = new Data();
 
         mainMenuScreen = new MainMenu(this);
         newGameMenuScreen = new NewMenu(this);
@@ -38,6 +40,7 @@ public class Engine extends Game {
         worldScreen = new WorldScreen(this);
         pauseMenuScreen = new PauseMenu(this);
 
+        profileManager.addObserver(data);
         profileManager.addObserver(worldScreen);
 
         setScreen(mainMenuScreen);

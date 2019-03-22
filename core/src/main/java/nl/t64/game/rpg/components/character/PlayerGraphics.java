@@ -11,14 +11,13 @@ import nl.t64.game.rpg.events.character.*;
 public class PlayerGraphics extends GraphicsComponent {
 
     private static final String TAG = PlayerGraphics.class.getSimpleName();
-    private static final String HERO_NAME = "mozes";
     private static final float SLOW_FRAMES = 0.50f;
     private static final float NORMAL_FRAMES = 0.25f;
     private static final float FAST_FRAMES = 0.15f;
     private static final float NO_FRAMES = 0f;
 
     public PlayerGraphics() {
-        SpriteConfig spriteConfig = Utility.getSpriteConfig(HERO_NAME);
+        SpriteConfig spriteConfig = Utility.getSpriteConfig(Constant.PLAYER_ID);
         loadWalkingAnimation(spriteConfig);
     }
 

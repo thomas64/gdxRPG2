@@ -18,6 +18,8 @@ public class Constant {
 
     public static final Color DARK_RED = new Color(0.5f, 0f, 0f, 1f);
 
+    public static final String PLAYER_ID = "mozes";
+
     private Constant() {
         throw new IllegalStateException("Constant class");
     }

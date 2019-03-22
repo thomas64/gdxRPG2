@@ -5,6 +5,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ObjectMap;
+import nl.t64.game.rpg.constants.Constant;
 
 import java.util.*;
 
@@ -12,7 +13,7 @@ import java.util.*;
 public class ProfileManager {
 
     private static final String SAVE_PATH = "savegame/";
-    private static final String DEFAULT_PROFILE = "mozes";
+    private static final String DEFAULT_PROFILE = Constant.PLAYER_ID;
     private static final String SAVEGAME_SUFFIX = ".dat";
 
     private List<ProfileObserver> observers = new ArrayList<>();

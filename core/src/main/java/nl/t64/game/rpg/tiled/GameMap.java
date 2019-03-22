@@ -73,8 +73,8 @@ public class GameMap {
     public void setPlayerSpawnLocationForNewLoad(MapTitle mapTitle) {
         MapObject dummyObject = new RectangleMapObject();
         dummyObject.setName(mapTitle.name());
-        Portal startOfGamePortal = new Portal(dummyObject, mapTitle);
-        setPlayerSpawnLocation(startOfGamePortal);
+        Portal spawnForNewLoadPortal = new Portal(dummyObject, mapTitle);
+        setPlayerSpawnLocation(spawnForNewLoadPortal);
     }
 
     public void setPlayerSpawnLocation(Portal portal) {

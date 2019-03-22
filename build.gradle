@@ -35,19 +35,6 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
 
-    dependencies {
-        implementation "org.projectlombok:lombok:1.18.2"
-
-        testImplementation "org.assertj:assertj-core:3.11.1"
-        testImplementation "org.mockito:mockito-core:2.23.0"
-        testImplementation "org.junit.jupiter:junit-jupiter-api:5.1.1"
-
-        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.1.1"
-    }
-
-    test {
-        useJUnitPlatform()
-    }
 }
 
 project(":desktop") {
@@ -66,6 +53,9 @@ project(":desktop") {
 
 project(":core") {
     dependencies {
+        compileOnly "org.projectlombok:lombok:1.18.6"
+        annotationProcessor "org.projectlombok:lombok:1.18.6"
+
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
@@ -81,5 +71,17 @@ project(":core") {
         implementation "com.github.czyzby:gdx-kiwi:1.9.1.9.6"
         implementation "com.github.czyzby:gdx-lml:1.9.1.9.6"
         implementation "com.github.czyzby:gdx-lml-vis:1.9.1.9.6"
+
+        implementation "com.fasterxml.jackson.core:jackson-databind:2.9.8"
+
+        testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+        testImplementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+        testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+
+        testImplementation "org.assertj:assertj-core:3.11.1"
+        testImplementation "org.mockito:mockito-core:2.23.0"
+        testImplementation "org.junit.jupiter:junit-jupiter-api:5.1.1"
+
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.1.1"
     }
 }
