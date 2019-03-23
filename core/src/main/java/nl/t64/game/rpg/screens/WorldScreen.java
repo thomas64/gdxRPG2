@@ -17,7 +17,6 @@ import nl.t64.game.rpg.components.character.*;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.GameState;
-import nl.t64.game.rpg.constants.MapTitle;
 import nl.t64.game.rpg.events.character.StartDirectionEvent;
 import nl.t64.game.rpg.events.character.StartPositionEvent;
 import nl.t64.game.rpg.events.character.StartStateEvent;
@@ -37,7 +36,6 @@ public class WorldScreen implements Screen, ProfileObserver {
 
     private static final String TAG = WorldScreen.class.getSimpleName();
     private static final Color TRANSPARENT = new Color(0f, 0f, 0f, 0.5f);
-    private static final MapTitle START_OF_GAME_MAP = MapTitle.MAP4;
 
     private static boolean showGrid = false;
     private static boolean showObjects = false;
@@ -69,22 +67,21 @@ public class WorldScreen implements Screen, ProfileObserver {
 
     @Override
     public void onNotifyCreate(ProfileManager profileManager) {
-        loadMap(START_OF_GAME_MAP);
-        currentMap.setPlayerSpawnLocationForNewLoad(START_OF_GAME_MAP);
+        loadMap(Constant.STARTING_MAP);
+        currentMap.setPlayerSpawnLocationForNewLoad(Constant.STARTING_MAP);
         onNotifySave(profileManager);
     }
 
     @Override
     public void onNotifySave(ProfileManager profileManager) {
-        profileManager.setProperty("MapTitle", currentMap.getMapTitle().name());
+        profileManager.setProperty("mapTitle", currentMap.getMapTitle());
     }
 
     @Override
     public void onNotifyLoad(ProfileManager profileManager) {
-        String mapTitleString = profileManager.getProperty("MapTitle", String.class);
-        MapTitle mapTitleEnum = MapTitle.valueOf(mapTitleString);
-        loadMap(mapTitleEnum);
-        currentMap.setPlayerSpawnLocationForNewLoad(mapTitleEnum);
+        String mapTitle = profileManager.getProperty("mapTitle", String.class);
+        loadMap(mapTitle);
+        currentMap.setPlayerSpawnLocationForNewLoad(mapTitle);
     }
 
     @Override
@@ -111,7 +108,7 @@ public class WorldScreen implements Screen, ProfileObserver {
         renderDebugBox(dt);
     }
 
-    public void loadMap(MapTitle mapTitle) {
+    public void loadMap(String mapTitle) {
         disposeOldMap();
         currentMap = new GameMap(mapTitle);
         isMapChanged = true;

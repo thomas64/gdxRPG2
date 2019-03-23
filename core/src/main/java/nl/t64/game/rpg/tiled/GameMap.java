@@ -13,7 +13,6 @@ import lombok.Getter;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
-import nl.t64.game.rpg.constants.MapTitle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +24,9 @@ public class GameMap {
 
     private static final String TAG = GameMap.class.getSimpleName();
 
+    private static final String MAP_PATH = "maps/";
+    private static final String MAPFILE_SUFFIX = ".tmx";
+
     private static final String SAVE_LAYER = "save_layer"; // todo, possible temporary maplayer
     private static final String NPC_LAYER = "npc_layer";
     private static final String COLLISION_LAYER = "collision_layer";
@@ -32,7 +34,7 @@ public class GameMap {
     private static final String SPAWN_LAYER = "spawn_layer";
 
     private TiledMap tiledMap;
-    private MapTitle mapTitle;
+    private String mapTitle;
     private TiledMapTileLayer bottomLayer;
 
     private Vector2 playerSpawnLocation;
@@ -45,9 +47,9 @@ public class GameMap {
     private List<SpawnPoint> spawnPoints = new ArrayList<>();
 
 
-    public GameMap(MapTitle mapTitle) {
+    public GameMap(String mapTitle) {
         this.mapTitle = mapTitle;
-        this.tiledMap = Utility.getMapAsset(mapTitle.getMapPath());
+        this.tiledMap = Utility.getMapAsset(MAP_PATH + mapTitle + MAPFILE_SUFFIX);
         this.bottomLayer = (TiledMapTileLayer) this.tiledMap.getLayers().get(0);
         this.playerSpawnLocation = new Vector2(0, 0);
 
@@ -70,9 +72,9 @@ public class GameMap {
         return savePoints.stream().anyMatch(characterRect::overlaps);
     }
 
-    public void setPlayerSpawnLocationForNewLoad(MapTitle mapTitle) {
+    public void setPlayerSpawnLocationForNewLoad(String mapTitle) {
         MapObject dummyObject = new RectangleMapObject();
-        dummyObject.setName(mapTitle.name());
+        dummyObject.setName(mapTitle);
         Portal spawnForNewLoadPortal = new Portal(dummyObject, mapTitle);
         setPlayerSpawnLocation(spawnForNewLoadPortal);
     }

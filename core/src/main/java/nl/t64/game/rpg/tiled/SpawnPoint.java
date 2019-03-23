@@ -5,7 +5,6 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import lombok.Getter;
 import nl.t64.game.rpg.constants.Direction;
-import nl.t64.game.rpg.constants.MapTitle;
 
 import java.util.Optional;
 
@@ -14,7 +13,7 @@ public class SpawnPoint {
 
     @Getter
     private final Rectangle rectangle;
-    private final MapTitle fromMapName;
+    private final String fromMapName;
     private final String fromMapLocation;
     @Getter
     private final Direction direction;
@@ -23,7 +22,7 @@ public class SpawnPoint {
         RectangleMapObject rectObject = (RectangleMapObject) mapObject;
 
         this.rectangle = rectObject.getRectangle();
-        this.fromMapName = MapTitle.valueOf(rectObject.getName().toUpperCase());
+        this.fromMapName = rectObject.getName();
         this.fromMapLocation = createFromMapLocation(rectObject);
         this.direction = createDirection(rectObject);
     }

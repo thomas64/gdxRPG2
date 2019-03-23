@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
 import nl.t64.game.rpg.constants.Direction;
-import nl.t64.game.rpg.constants.MapTitle;
 
 import java.util.Optional;
 
@@ -15,18 +14,18 @@ import java.util.Optional;
 public class Portal {
 
     private final Rectangle rectangle;
-    private final MapTitle fromMapName;
-    private final MapTitle toMapName;
+    private final String fromMapName;
+    private final String toMapName;
     private final String toMapLocation;
     @Setter
     private Direction enterDirection;
 
-    public Portal(MapObject mapObject, MapTitle fromMapName) {
+    public Portal(MapObject mapObject, String fromMapName) {
         RectangleMapObject rectObject = (RectangleMapObject) mapObject;
 
         this.rectangle = rectObject.getRectangle();
         this.fromMapName = fromMapName;
-        this.toMapName = MapTitle.valueOf(rectObject.getName().toUpperCase());
+        this.toMapName = rectObject.getName();
         this.toMapLocation = createToMapLocation(rectObject);
     }
 
