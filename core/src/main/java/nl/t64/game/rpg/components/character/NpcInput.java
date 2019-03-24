@@ -16,8 +16,6 @@ public class NpcInput extends InputComponent {
 
     private CharacterState state;
     private Direction direction;
-
-    private boolean stateWasImmobile = false;
     private Direction originalDirection;
 
     @Override
@@ -27,6 +25,7 @@ public class NpcInput extends InputComponent {
         }
         if (event instanceof StartDirectionEvent) {
             direction = ((StartDirectionEvent) event).getDirection();
+            originalDirection = direction;
         }
         if (event instanceof CollisionEvent) {
             stateTime = 0f;
@@ -45,19 +44,10 @@ public class NpcInput extends InputComponent {
     public void update(Character npcCharacter, float dt) {
         stateTime -= dt;
         if (stateTime < 0) {
-            if (stateWasImmobile) {
-                restoreOriginal();
-            } else {
-                setRandom();
-            }
+            setRandom();
         }
         npcCharacter.send(new StateEvent(state));
         npcCharacter.send(new DirectionEvent(direction));
-    }
-
-    private void restoreOriginal() {
-        direction = originalDirection;
-        stateWasImmobile = false;
     }
 
     private void setRandom() {
@@ -72,7 +62,7 @@ public class NpcInput extends InputComponent {
                 direction = Direction.getRandom();
                 break;
             case IMMOBILE:
-                // keep on being immobile.
+                direction = originalDirection;
                 break;
             default:
                 throw new IllegalArgumentException(String.format("CharacterState '%s' not usable.", state));
@@ -83,10 +73,7 @@ public class NpcInput extends InputComponent {
         Vector2 npcPosition = event.getNpcPosition();
         Vector2 playerPosition = event.getPlayerPosition();
         stateTime = 5f;
-        if (state == CharacterState.IMMOBILE && !stateWasImmobile) {
-            stateWasImmobile = true;
-            originalDirection = direction;
-        } else if (state == CharacterState.WALKING) {
+        if (state == CharacterState.WALKING) {
             state = CharacterState.IDLE;
         }
         turnToPlayer(npcPosition, playerPosition);
