@@ -23,7 +23,9 @@ import nl.t64.game.rpg.events.character.StartStateEvent;
 import nl.t64.game.rpg.listeners.WorldScreenListener;
 import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.profile.ProfileObserver;
+import nl.t64.game.rpg.screens.menu.PauseMenu;
 import nl.t64.game.rpg.tiled.GameMap;
+import nl.t64.game.rpg.tiled.Hero;
 import nl.t64.game.rpg.tiled.Npc;
 
 import java.util.ArrayList;
@@ -49,7 +51,9 @@ public class WorldScreen implements Screen, ProfileObserver {
     private GameMap currentMap;
     private OrthogonalTiledMapRenderer mapRenderer;
     private InputMultiplexer multiplexer;
+    @Getter
     private Character player;
+    @Getter
     private List<Character> npcCharacters;
     private ShapeRenderer shapeRenderer;
 
@@ -110,7 +114,7 @@ public class WorldScreen implements Screen, ProfileObserver {
 
     public void loadMap(String mapTitle) {
         disposeOldMap();
-        currentMap = new GameMap(mapTitle);
+        currentMap = new GameMap(mapTitle, engine.getData());
         isMapChanged = true;
     }
 
@@ -136,21 +140,41 @@ public class WorldScreen implements Screen, ProfileObserver {
         for (Npc npc : currentMap.getNpcs()) {
             String spriteId = npc.getName();
             var npcCharacter = new Character(new NpcInput(), new NpcPhysics(), new NpcGraphics(spriteId));
-            npcCharacters.add(npcCharacter);
-            npcCharacter.send(new StartStateEvent(npc.getState()));
-            npcCharacter.send(new StartDirectionEvent(npc.getDirection()));
-            npcCharacter.send(new StartPositionEvent(npc.getPosition()));
-            if (npc.getState() == CharacterState.IMMOBILE) {
-                currentMap.addToBlockers(npcCharacter.getBoundingBox());
-            }
+            loadNpcCharacter(npc, npcCharacter);
+        }
+        for (Hero hero : currentMap.getHeroes()) {
+            String spriteId = hero.getName();
+            var heroCharacter = new Character(new NpcInput(), new HeroPhysics(spriteId), new NpcGraphics(spriteId));
+            loadNpcCharacter(hero, heroCharacter);
         }
     }
 
+    private void loadNpcCharacter(Npc npc, Character npcCharacter) {
+        npcCharacters.add(npcCharacter);
+        npcCharacter.send(new StartStateEvent(npc.getState()));
+        npcCharacter.send(new StartDirectionEvent(npc.getDirection()));
+        npcCharacter.send(new StartPositionEvent(npc.getPosition()));
+        if (npc.getState() == CharacterState.IMMOBILE) {
+            currentMap.addToBlockers(npcCharacter.getBoundingBox());
+        }
+    }
+
+    public void removeNpcCharacter(Character npcCharacter) {
+        npcCharacters.remove(npcCharacter);
+        currentMap.removeFromBlockers(npcCharacter.getBoundingBox());
+    }
+
+    public List<Character> createCopyOfCharactersWithPlayerButWithoutThisNpc(Character thisNpcCharacter) {
+        var theOtherCharacters = new ArrayList<>(npcCharacters);
+        theOtherCharacters.add(player);
+        theOtherCharacters.remove(thisNpcCharacter);
+        return theOtherCharacters;
+    }
+
     private void updateCharacters(float dt) {
-        player.update(engine, npcCharacters, dt);
-        var copyCharacters = new ArrayList<>(npcCharacters);
-        copyCharacters.add(player);
-        npcCharacters.forEach(npcCharacter -> npcCharacter.update(engine, copyCharacters, dt));
+        player.update(engine, dt);
+        var npcCharactersCopy = new ArrayList<>(npcCharacters);
+        npcCharactersCopy.forEach(npcCharacter -> npcCharacter.update(engine, dt));
     }
 
     private void updateCameraPosition() {
@@ -176,7 +200,7 @@ public class WorldScreen implements Screen, ProfileObserver {
 
     private void openPauseMenu() {
         player.resetInput();
-        var pauseMenu = engine.getPauseMenuScreen();
+        PauseMenu pauseMenu = engine.getPauseMenuScreen();
         pauseMenu.setBackground();
         engine.setScreen(pauseMenu);
         pauseMenu.updateIndex(0);
@@ -263,10 +287,10 @@ public class WorldScreen implements Screen, ProfileObserver {
             shapeRenderer.setColor(TRANSPARENT);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
-            int w = 300;
-            int h = 600;
-            int x = 0 - (Constant.SCREEN_WIDTH / 2);
-            int y = 0 - (Constant.SCREEN_HEIGHT / 2) + (Constant.SCREEN_HEIGHT - h);
+            int w = 150;
+            int h = 300;
+            int x = 0 - (Constant.SCREEN_WIDTH / 4);
+            int y = 0 - (Constant.SCREEN_HEIGHT / 4) + ((Constant.SCREEN_HEIGHT / 2) - h);
             shapeRenderer.rect(x, y, w, h);
             shapeRenderer.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);

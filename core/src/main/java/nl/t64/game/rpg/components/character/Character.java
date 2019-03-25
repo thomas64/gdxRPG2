@@ -38,9 +38,9 @@ public class Character {
         components.forEach(component -> component.receive(event));
     }
 
-    public void update(Engine engine, List<Character> npcCharacters, float dt) {
+    public void update(Engine engine, float dt) {
         inputComponent.update(this, dt);
-        physicsComponent.update(this, engine, npcCharacters, dt);
+        physicsComponent.update(engine, this, dt);
         graphicsComponent.update();
     }
 

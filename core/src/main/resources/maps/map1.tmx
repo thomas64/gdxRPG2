@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="44" height="40" tilewidth="24" tileheight="24" infinite="0" nextlayerid="15" nextobjectid="58">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="44" height="40" tilewidth="24" tileheight="24" infinite="0" nextlayerid="16" nextobjectid="74">
  <tileset firstgid="1" source="tilesets/fsm_town01_a2.tsx"/>
  <tileset firstgid="769" source="tilesets/fsm_town01_b.tsx"/>
  <tileset firstgid="1793" source="tilesets/fsm_forest01_a1.tsx"/>
@@ -399,6 +399,73 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="15" name="hero_layer">
+  <object id="58" name="luana" x="408" y="96" width="48" height="48">
+   <properties>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="59" name="reignald" x="480" y="96" width="48" height="48">
+   <properties>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="60" name="ryiah" x="552" y="96" width="48" height="48">
+   <properties>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="64" name="valter" x="624" y="96" width="48" height="48">
+   <properties>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="65" name="galen" x="696" y="96" width="48" height="48">
+   <properties>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="66" name="jaspar" x="768" y="96" width="48" height="48">
+   <properties>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="67" name="kiara" x="768" y="168" width="48" height="48">
+   <properties>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="68" name="luthais" x="768" y="240" width="48" height="48">
+   <properties>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="69" name="elias" x="840" y="240" width="48" height="48">
+   <properties>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="70" name="onarr" x="912" y="240" width="48" height="48">
+   <properties>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="71" name="duilio" x="912" y="312" width="48" height="48">
+   <properties>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="72" name="iellwen" x="912" y="384" width="48" height="48">
+   <properties>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="73" name="faeron" type="w" x="912" y="456" width="48" height="48">
+   <properties>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup id="10" name="npc_layer">
   <object id="44" name="youngwoman01" type="w" x="96" y="216" width="48" height="48"/>
   <object id="43" name="youngman01" type="w" x="264" y="312" width="48" height="48"/>

@@ -3,8 +3,8 @@ package nl.t64.game.rpg.components.party;
 import nl.t64.game.rpg.Data;
 import nl.t64.game.rpg.GameTest;
 import nl.t64.game.rpg.constants.Constant;
-import nl.t64.game.rpg.interactors.PartyManager;
 import nl.t64.game.rpg.profile.ProfileManager;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -12,13 +12,42 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class HeroTest extends GameTest {
 
-    private ProfileManager profileManager = new ProfileManager();
+    private Data data;
+    private HeroContainer heroes;
+    private PartyContainer party;
+
+    @BeforeEach
+    private void setup() {
+        final var profileManager = new ProfileManager();
+        data = new Data();
+        data.onNotifyCreate(profileManager);
+        heroes = data.getHeroes();
+        party = data.getParty();
+    }
+
+    private void addHeroToParty(String id) {
+        HeroItem hero = heroes.getHero(id);
+        heroes.removeHero(id);
+        try {
+            party.addHero(hero);
+        } catch (PartyContainer.FullException e) {
+            heroes.addHero(e.getRejectedHero());
+            // Visual warning message.
+        }
+    }
+
+    private void removeHeroFromParty(String id) {
+        HeroItem hero = party.getHero(id);
+        try {
+            party.removeHero(id);
+            heroes.addHero(hero);
+        } catch (PartyContainer.PlayerRemovalException e) {
+            // Visual warning message.
+        }
+    }
 
     @Test
     void whenDataIsCreated_ShouldContainMozes() {
-        final var data = new Data();
-        data.onNotifyCreate(profileManager);
-
         assertThat(data.getHeroes().contains(Constant.PLAYER_ID)).isFalse();
         assertThat(data.getHeroes().getSize()).isEqualTo(13);
         assertThat(data.getParty().contains(Constant.PLAYER_ID)).isTrue();
@@ -27,11 +56,10 @@ class HeroTest extends GameTest {
 
     @Test
     void whenMozesIsRemovedFromParty_ShouldNotSucceed() {
-        final var data = new Data();
-        data.onNotifyCreate(profileManager);
-        final var partyManager = new PartyManager(data);
+        assertThat(data.getParty().contains(Constant.PLAYER_ID)).isTrue();
+        assertThat(data.getParty().getSize()).isEqualTo(1);
 
-        partyManager.removeHeroFromParty(Constant.PLAYER_ID);
+        removeHeroFromParty(Constant.PLAYER_ID);
 
         assertThat(data.getParty().contains(Constant.PLAYER_ID)).isTrue();
         assertThat(data.getParty().getSize()).isEqualTo(1);
@@ -39,9 +67,6 @@ class HeroTest extends GameTest {
 
     @Test
     void whenHeroIsAddedToParty_ShouldBeRemovedFromHeroContainer() {
-        final var data = new Data();
-        data.onNotifyCreate(profileManager);
-        final var partyManager = new PartyManager(data);
         final String luana = "luana";
 
         assertThat(data.getHeroes().getSize()).isEqualTo(13);
@@ -49,7 +74,7 @@ class HeroTest extends GameTest {
         assertThat(data.getParty().getSize()).isEqualTo(1);
         assertThat(data.getParty().contains(luana)).isFalse();
 
-        partyManager.addHeroToParty(luana);
+        addHeroToParty(luana);
 
         assertThat(data.getHeroes().getSize()).isEqualTo(12);
         assertThat(data.getHeroes().contains(luana)).isFalse();
@@ -59,19 +84,16 @@ class HeroTest extends GameTest {
 
     @Test
     void whenHeroIsRemovedFromParty_ShouldBeAddedToHeroContainer() {
-        final var data = new Data();
-        data.onNotifyCreate(profileManager);
-        final var partyManager = new PartyManager(data);
         final String luana = "luana";
 
-        partyManager.addHeroToParty(luana);
+        addHeroToParty(luana);
 
         assertThat(data.getHeroes().getSize()).isEqualTo(12);
         assertThat(data.getHeroes().contains(luana)).isFalse();
         assertThat(data.getParty().getSize()).isEqualTo(2);
         assertThat(data.getParty().contains(luana)).isTrue();
 
-        partyManager.removeHeroFromParty(luana);
+        removeHeroFromParty(luana);
 
         assertThat(data.getHeroes().getSize()).isEqualTo(13);
         assertThat(data.getHeroes().contains(luana)).isTrue();
@@ -81,19 +103,15 @@ class HeroTest extends GameTest {
 
     @Test
     void whenPartyIsFull_ShouldRejectNewHero() {
-        final var data = new Data();
-        data.onNotifyCreate(profileManager);
-        final var partyManager = new PartyManager(data);
-
-        partyManager.addHeroToParty("luana");
-        partyManager.addHeroToParty("reignald");
-        partyManager.addHeroToParty("ryiah");
-        partyManager.addHeroToParty("valter");
+        addHeroToParty("luana");
+        addHeroToParty("reignald");
+        addHeroToParty("ryiah");
+        addHeroToParty("valter");
 
         assertThat(data.getHeroes().getSize()).isEqualTo(9);
         assertThat(data.getParty().getSize()).isEqualTo(5);
 
-        partyManager.addHeroToParty("galen");
+        addHeroToParty("galen");
 
         assertThat(data.getHeroes().getSize()).isEqualTo(9);
         assertThat(data.getParty().getSize()).isEqualTo(5);

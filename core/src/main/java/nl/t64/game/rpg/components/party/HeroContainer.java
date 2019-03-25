@@ -38,12 +38,12 @@ public class HeroContainer {
         return heroes.get(id);
     }
 
-    int getSize() {
-        return heroes.size();
+    public boolean contains(String id) {
+        return heroes.containsKey(id);
     }
 
-    boolean contains(String id) {
-        return heroes.containsKey(id);
+    int getSize() {
+        return heroes.size();
     }
 
 }

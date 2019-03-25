@@ -17,6 +17,8 @@ public class NpcPhysics extends PhysicsComponent {
     private static final int WANDER_BOX_SIZE = 240;
     private static final int WANDER_BOX_POSITION = -96;
 
+    private Engine engine;
+
     private Rectangle wanderBox;
 
     public NpcPhysics() {
@@ -54,13 +56,11 @@ public class NpcPhysics extends PhysicsComponent {
     }
 
     @Override
-    public void update(Character npcCharacter, Engine engine,
-                       List<Character> npcCharactersPlusLastOnePlayer, float dt) {
-        updateTheseFields(npcCharacter, engine, npcCharactersPlusLastOnePlayer);
+    public void update(Engine engine, Character thisNpcCharacter, float dt) {
+        this.engine = engine;
         relocate(dt);
-        checkObstacles();
-        thisCharacter.send(new PositionEvent(currentPosition));
-        clearTheseFields();
+        checkObstacles(thisNpcCharacter);
+        thisNpcCharacter.send(new PositionEvent(currentPosition));
     }
 
     private void relocate(float dt) {
@@ -69,13 +69,13 @@ public class NpcPhysics extends PhysicsComponent {
         }
     }
 
-    private void checkObstacles() {
+    private void checkObstacles(Character thisNpcCharacter) {
         if (state == CharacterState.WALKING) {
             boolean moveBack1 = checkWanderBox();
             boolean moveBack2 = checkBlocker();
-            boolean moveBack3 = checkOtherCharacters();
+            boolean moveBack3 = checkOtherCharacters(thisNpcCharacter);
             if (moveBack1 || moveBack2 || moveBack3) {
-                thisCharacter.send(new CollisionEvent());
+                thisNpcCharacter.send(new CollisionEvent());
             }
         }
     }
@@ -98,12 +98,11 @@ public class NpcPhysics extends PhysicsComponent {
         return moveBack;
     }
 
-    private boolean checkOtherCharacters() {
+    private boolean checkOtherCharacters(Character thisNpcCharacter) {
         boolean moveBack = false;
+        List<Character> theOtherCharacters = engine.getWorldScreen()
+                                                   .createCopyOfCharactersWithPlayerButWithoutThisNpc(thisNpcCharacter);
         for (Character otherCharacter : theOtherCharacters) {
-            if (otherCharacter.equals(thisCharacter)) {
-                continue;
-            }
             while (boundingBox.overlaps(otherCharacter.getBoundingBox())) {
                 moveBack();
                 moveBack = true;

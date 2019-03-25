@@ -21,6 +21,9 @@ public class PlayerPhysics extends PhysicsComponent {
 
     private static final String TAG = PlayerPhysics.class.getSimpleName();
 
+    private Engine engine;
+    private List<Character> npcCharacters;
+
     private boolean isActionPressed = false;
 
 
@@ -58,13 +61,13 @@ public class PlayerPhysics extends PhysicsComponent {
     }
 
     @Override
-    public void update(Character player, Engine engine, List<Character> npcCharacters, float dt) {
-        updateTheseFields(player, engine, npcCharacters);
+    public void update(Engine engine, Character player, float dt) {
+        this.engine = engine;
+        this.npcCharacters = engine.getWorldScreen().getNpcCharacters();
         checkActionPressed();
         relocate(dt);
         checkObstacles(dt);
-        thisCharacter.send(new PositionEvent(currentPosition));
-        clearTheseFields();
+        player.send(new PositionEvent(currentPosition));
     }
 
     private void checkActionPressed() {
@@ -76,11 +79,10 @@ public class PlayerPhysics extends PhysicsComponent {
     }
 
     private void selectNpcCharacterCandidate() {
-        theOtherCharacters.forEach(npc -> npc.send(new DeselectEvent()));
-        Optional<Character> npcCharacter =
-                theOtherCharacters.stream()
-                                  .filter(npc -> getCheckRect().overlaps(npc.getBoundingBox()))
-                                  .findFirst();
+        npcCharacters.forEach(npc -> npc.send(new DeselectEvent()));
+        Optional<Character> npcCharacter = npcCharacters.stream()
+                                                        .filter(npc -> getCheckRect().overlaps(npc.getBoundingBox()))
+                                                        .findFirst();
         npcCharacter.ifPresent(npc -> {
             npc.send(new SelectEvent());
             npc.send(new WaitEvent(npc.getPosition(), currentPosition));
@@ -113,18 +115,18 @@ public class PlayerPhysics extends PhysicsComponent {
     }
 
     private void turnCharacters() {
-        theOtherCharacters.stream()
-                          .filter(npc -> getALittleBitBiggerBoundingBox().overlaps(npc.getBoundingBox()))
-                          .forEach(npc -> npc.send(new WaitEvent(npc.getPosition(), currentPosition)));
+        npcCharacters.stream()
+                     .filter(npc -> getALittleBitBiggerBoundingBox().overlaps(npc.getBoundingBox()))
+                     .forEach(npc -> npc.send(new WaitEvent(npc.getPosition(), currentPosition)));
     }
 
     private void checkBlocker(float dt) {
         List<Rectangle> blockers = engine.getWorldScreen().getCurrentMap().getBlockers();
         List<Rectangle> walkingBlockers =
-                theOtherCharacters.stream()
-                                  .filter(npcCharacter -> npcCharacter.getState() != CharacterState.IMMOBILE)
-                                  .map(Character::getBoundingBox)
-                                  .collect(Collectors.toList());
+                npcCharacters.stream()
+                             .filter(npcCharacter -> npcCharacter.getState() != CharacterState.IMMOBILE)
+                             .map(Character::getBoundingBox)
+                             .collect(Collectors.toList());
 
         List<Rectangle> copyBlockers = new ArrayList<>(blockers);
         List<Rectangle> copyWalkingBlockers = new ArrayList<>(walkingBlockers);
