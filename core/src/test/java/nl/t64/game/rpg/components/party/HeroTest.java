@@ -1,6 +1,6 @@
 package nl.t64.game.rpg.components.party;
 
-import nl.t64.game.rpg.Data;
+import nl.t64.game.rpg.GameData;
 import nl.t64.game.rpg.GameTest;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.profile.ProfileManager;
@@ -8,78 +8,69 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 
 class HeroTest extends GameTest {
 
-    private Data data;
+    private GameData gameData;
     private HeroContainer heroes;
     private PartyContainer party;
 
     @BeforeEach
     private void setup() {
         final var profileManager = new ProfileManager();
-        data = new Data();
-        data.onNotifyCreate(profileManager);
-        heroes = data.getHeroes();
-        party = data.getParty();
+        gameData = new GameData();
+        gameData.onNotifyCreate(profileManager);
+        heroes = gameData.getHeroes();
+        party = gameData.getParty();
     }
 
     private void addHeroToParty(String id) {
         HeroItem hero = heroes.getHero(id);
         heroes.removeHero(id);
-        try {
-            party.addHero(hero);
-        } catch (PartyContainer.FullException e) {
-            heroes.addHero(e.getRejectedHero());
-            // Visual warning message.
-        }
+        party.addHero(hero);
     }
 
     private void removeHeroFromParty(String id) {
         HeroItem hero = party.getHero(id);
-        try {
-            party.removeHero(id);
-            heroes.addHero(hero);
-        } catch (PartyContainer.PlayerRemovalException e) {
-            // Visual warning message.
-        }
+        party.removeHero(id);
+        heroes.addHero(hero);
     }
 
     @Test
-    void whenDataIsCreated_ShouldContainMozes() {
-        assertThat(data.getHeroes().contains(Constant.PLAYER_ID)).isFalse();
-        assertThat(data.getHeroes().getSize()).isEqualTo(13);
-        assertThat(data.getParty().contains(Constant.PLAYER_ID)).isTrue();
-        assertThat(data.getParty().getSize()).isEqualTo(1);
+    void whenDataIsCreated_ShouldContainPlayer() {
+        assertThat(heroes.contains(Constant.PLAYER_ID)).isFalse();
+        assertThat(heroes.getSize()).isEqualTo(13);
+        assertThat(party.contains(Constant.PLAYER_ID)).isTrue();
+        assertThat(party.getSize()).isEqualTo(1);
     }
 
     @Test
-    void whenMozesIsRemovedFromParty_ShouldNotSucceed() {
-        assertThat(data.getParty().contains(Constant.PLAYER_ID)).isTrue();
-        assertThat(data.getParty().getSize()).isEqualTo(1);
+    void whenPlayerIsRemovedFromParty_ShouldThrowException() {
+        assertThat(party.contains(Constant.PLAYER_ID)).isTrue();
+        assertThat(party.getSize()).isEqualTo(1);
 
-        removeHeroFromParty(Constant.PLAYER_ID);
-
-        assertThat(data.getParty().contains(Constant.PLAYER_ID)).isTrue();
-        assertThat(data.getParty().getSize()).isEqualTo(1);
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> removeHeroFromParty(Constant.PLAYER_ID))
+                .withMessage("Cannot remove player from party.");
     }
 
     @Test
     void whenHeroIsAddedToParty_ShouldBeRemovedFromHeroContainer() {
         final String luana = "luana";
 
-        assertThat(data.getHeroes().getSize()).isEqualTo(13);
-        assertThat(data.getHeroes().contains(luana)).isTrue();
-        assertThat(data.getParty().getSize()).isEqualTo(1);
-        assertThat(data.getParty().contains(luana)).isFalse();
+        assertThat(heroes.getSize()).isEqualTo(13);
+        assertThat(heroes.contains(luana)).isTrue();
+        assertThat(party.getSize()).isEqualTo(1);
+        assertThat(party.contains(luana)).isFalse();
 
         addHeroToParty(luana);
 
-        assertThat(data.getHeroes().getSize()).isEqualTo(12);
-        assertThat(data.getHeroes().contains(luana)).isFalse();
-        assertThat(data.getParty().getSize()).isEqualTo(2);
-        assertThat(data.getParty().contains(luana)).isTrue();
+        assertThat(heroes.getSize()).isEqualTo(12);
+        assertThat(heroes.contains(luana)).isFalse();
+        assertThat(party.getSize()).isEqualTo(2);
+        assertThat(party.contains(luana)).isTrue();
     }
 
     @Test
@@ -88,33 +79,32 @@ class HeroTest extends GameTest {
 
         addHeroToParty(luana);
 
-        assertThat(data.getHeroes().getSize()).isEqualTo(12);
-        assertThat(data.getHeroes().contains(luana)).isFalse();
-        assertThat(data.getParty().getSize()).isEqualTo(2);
-        assertThat(data.getParty().contains(luana)).isTrue();
+        assertThat(heroes.getSize()).isEqualTo(12);
+        assertThat(heroes.contains(luana)).isFalse();
+        assertThat(party.getSize()).isEqualTo(2);
+        assertThat(party.contains(luana)).isTrue();
 
         removeHeroFromParty(luana);
 
-        assertThat(data.getHeroes().getSize()).isEqualTo(13);
-        assertThat(data.getHeroes().contains(luana)).isTrue();
-        assertThat(data.getParty().getSize()).isEqualTo(1);
-        assertThat(data.getParty().contains(luana)).isFalse();
+        assertThat(heroes.getSize()).isEqualTo(13);
+        assertThat(heroes.contains(luana)).isTrue();
+        assertThat(party.getSize()).isEqualTo(1);
+        assertThat(party.contains(luana)).isFalse();
     }
 
     @Test
-    void whenPartyIsFull_ShouldRejectNewHero() {
+    void whenPartyIsFull_ShouldThrowException() {
         addHeroToParty("luana");
         addHeroToParty("reignald");
         addHeroToParty("ryiah");
         addHeroToParty("valter");
 
-        assertThat(data.getHeroes().getSize()).isEqualTo(9);
-        assertThat(data.getParty().getSize()).isEqualTo(5);
+        assertThat(gameData.getHeroes().getSize()).isEqualTo(9);
+        assertThat(gameData.getParty().getSize()).isEqualTo(5);
 
-        addHeroToParty("galen");
-
-        assertThat(data.getHeroes().getSize()).isEqualTo(9);
-        assertThat(data.getParty().getSize()).isEqualTo(5);
+        assertThatExceptionOfType(IllegalStateException.class)
+                .isThrownBy(() -> addHeroToParty("galen"))
+                .withMessage("Party is full.");
     }
 
 }

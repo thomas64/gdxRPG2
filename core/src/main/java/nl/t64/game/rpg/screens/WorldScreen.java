@@ -114,7 +114,7 @@ public class WorldScreen implements Screen, ProfileObserver {
 
     public void loadMap(String mapTitle) {
         disposeOldMap();
-        currentMap = new GameMap(mapTitle, engine.getData());
+        currentMap = new GameMap(mapTitle, engine.getGameData());
         isMapChanged = true;
     }
 

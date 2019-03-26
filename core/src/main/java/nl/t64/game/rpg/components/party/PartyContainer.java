@@ -15,22 +15,26 @@ public class PartyContainer {
         this.party = new LinkedHashMap<>(MAXIMUM);
     }
 
-    public void addHero(HeroItem hero) throws FullException {
-        if (getSize() >= MAXIMUM) {
-            throw new FullException(hero);
+    public void addHero(HeroItem hero) {
+        if (isFull()) {
+            throw new IllegalStateException("Party is full.");
         }
         String id = hero.getName().toLowerCase();
         party.put(id, hero);
     }
 
-    public void removeHero(String id) throws PlayerRemovalException {
+    public void removeHero(String id) {
         if (id.equals(Constant.PLAYER_ID)) {
-            throw new PlayerRemovalException();
+            throw new IllegalArgumentException("Cannot remove player from party.");
         }
         party.remove(id);
     }
 
-    public HeroItem getHero(String id) {
+    public boolean isFull() {
+        return getSize() >= MAXIMUM;
+    }
+
+    HeroItem getHero(String id) {
         return party.get(id);
     }
 
@@ -40,24 +44,6 @@ public class PartyContainer {
 
     boolean contains(String id) {
         return party.containsKey(id);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public static class FullException extends Exception {
-
-        private final HeroItem hero;
-
-        public FullException(HeroItem hero) {
-            this.hero = hero;
-        }
-
-        public HeroItem getRejectedHero() {
-            return this.hero;
-        }
-    }
-
-    public static class PlayerRemovalException extends Exception {
     }
 
 }

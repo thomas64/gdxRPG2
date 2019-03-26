@@ -10,7 +10,7 @@ import nl.t64.game.rpg.profile.ProfileObserver;
 
 
 @Getter
-public class Data implements ProfileObserver {
+public class GameData implements ProfileObserver {
 
     private HeroContainer heroes;
     private PartyContainer party;
@@ -38,11 +38,7 @@ public class Data implements ProfileObserver {
     private void addFirstHeroToParty() {
         HeroItem hero = heroes.getHero(Constant.PLAYER_ID);
         heroes.removeHero(Constant.PLAYER_ID);
-        try {
-            party.addHero(hero);
-        } catch (PartyContainer.FullException e) {
-            throw new IllegalStateException();
-        }
+        party.addHero(hero);
     }
 
 }

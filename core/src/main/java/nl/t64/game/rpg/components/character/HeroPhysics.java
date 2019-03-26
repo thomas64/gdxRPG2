@@ -39,24 +39,19 @@ public class HeroPhysics extends NpcPhysics {
     }
 
     private void tryToAddHeroToParty(Character heroCharacter, float dt) {
-        HeroContainer heroes = engine.getData().getHeroes();
-        PartyContainer party = engine.getData().getParty();
+        HeroContainer heroes = engine.getGameData().getHeroes();
+        PartyContainer party = engine.getGameData().getParty();
         HeroItem hero = heroes.getHero(heroId);
 
-        heroes.removeHero(heroId);
-        try {
+        if (!party.isFull()) {
+            heroes.removeHero(heroId);
             party.addHero(hero);
-            removeHeroSpriteFromVisualMap(heroCharacter);
-        } catch (PartyContainer.FullException e) {
-            heroes.addHero(e.getRejectedHero());
+            isSelected = false;
+            engine.getWorldScreen().removeNpcCharacter(heroCharacter);
+        } else {
             // Visual warning message.
             super.update(engine, heroCharacter, dt);
         }
-    }
-
-    private void removeHeroSpriteFromVisualMap(Character heroCharacter) {
-        isSelected = false;
-        engine.getWorldScreen().removeNpcCharacter(heroCharacter);
     }
 
 }

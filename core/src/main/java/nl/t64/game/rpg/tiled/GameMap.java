@@ -10,7 +10,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import lombok.Getter;
-import nl.t64.game.rpg.Data;
+import nl.t64.game.rpg.GameData;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
@@ -28,7 +28,7 @@ public class GameMap {
     private static final String MAP_PATH = "maps/";
     private static final String MAPFILE_SUFFIX = ".tmx";
 
-    private static final String SAVE_LAYER = "save_layer"; // todo, possible temporary maplayer
+    private static final String SAVE_LAYER = "save_layer";
     private static final String NPC_LAYER = "npc_layer";
     private static final String HERO_LAYER = "hero_layer";
     private static final String COLLISION_LAYER = "collision_layer";
@@ -50,7 +50,7 @@ public class GameMap {
     private List<SpawnPoint> spawnPoints = new ArrayList<>();
 
 
-    public GameMap(String mapTitle, Data data) {
+    public GameMap(String mapTitle, GameData gameData) {
         this.mapTitle = mapTitle;
         this.tiledMap = Utility.getMapAsset(MAP_PATH + mapTitle + MAPFILE_SUFFIX);
         this.bottomLayer = (TiledMapTileLayer) this.tiledMap.getLayers().get(0);
@@ -58,7 +58,7 @@ public class GameMap {
 
         loadSavePoints();
         loadNpcs();
-        loadHeroes(data);
+        loadHeroes(gameData);
         loadBlockers();
         loadPortals();
         loadSpawnPoints();
@@ -130,11 +130,11 @@ public class GameMap {
         });
     }
 
-    private void loadHeroes(Data data) {
+    private void loadHeroes(GameData gameData) {
         getMapLayer(HERO_LAYER).ifPresent(mapLayer -> {
             for (MapObject mapObject : mapLayer.getObjects()) {
                 String heroId = mapObject.getName();
-                if (data.getHeroes().contains(heroId)) {
+                if (gameData.getHeroes().contains(heroId)) {
                     heroes.add(new Hero(mapObject));
                 }
             }
