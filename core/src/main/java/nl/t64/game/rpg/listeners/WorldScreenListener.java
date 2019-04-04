@@ -9,10 +9,14 @@ public class WorldScreenListener implements InputProcessor {
 
     private final Runnable openMenuFunction;
     private final Runnable openInventoryFunction;
+    private final Runnable showHidePartyWindowFunction;
 
-    public WorldScreenListener(Runnable openMenuFunction, Runnable openInventoryFunction) {
+    public WorldScreenListener(Runnable openMenuFunction,
+                               Runnable openInventoryFunction,
+                               Runnable showHidePartyWindowFunction) {
         this.openMenuFunction = openMenuFunction;
         this.openInventoryFunction = openInventoryFunction;
+        this.showHidePartyWindowFunction = showHidePartyWindowFunction;
     }
 
     @Override
@@ -23,6 +27,9 @@ public class WorldScreenListener implements InputProcessor {
                 break;
             case Input.Keys.I:
                 openInventoryFunction.run();
+                break;
+            case Input.Keys.P:
+                showHidePartyWindowFunction.run();
                 break;
             default:
                 break;

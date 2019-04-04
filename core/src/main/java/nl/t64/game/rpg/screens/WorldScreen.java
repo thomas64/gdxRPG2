@@ -56,6 +56,7 @@ public class WorldScreen implements Screen, ProfileObserver {
     @Getter
     private List<Character> npcCharacters;
     private ShapeRenderer shapeRenderer;
+    private PartyWindow partyWindow;
 
     private boolean isMapChanged = false;
 
@@ -64,15 +65,19 @@ public class WorldScreen implements Screen, ProfileObserver {
         this.camera = new Camera();
         this.mapRenderer = new OrthogonalTiledMapRenderer(null);
         this.multiplexer = new InputMultiplexer();
-        this.multiplexer.addProcessor(new WorldScreenListener(this::openPauseMenu, this::openInventoryScreen));
+        this.multiplexer.addProcessor(new WorldScreenListener(this::openPauseMenu,
+                                                              this::openInventoryScreen,
+                                                              this::showHidePartyWindow));
         this.player = new Character(new PlayerInput(this.multiplexer), new PlayerPhysics(), new PlayerGraphics());
         this.shapeRenderer = new ShapeRenderer();
+        this.partyWindow = new PartyWindow();
     }
 
     @Override
     public void onNotifyCreate(ProfileManager profileManager) {
         loadMap(Constant.STARTING_MAP);
         currentMap.setPlayerSpawnLocationForNewLoad(Constant.STARTING_MAP);
+        partyWindow.setParty(engine.getGameData().getParty());
         onNotifySave(profileManager);
     }
 
@@ -86,6 +91,7 @@ public class WorldScreen implements Screen, ProfileObserver {
         String mapTitle = profileManager.getProperty("mapTitle", String.class);
         loadMap(mapTitle);
         currentMap.setPlayerSpawnLocationForNewLoad(mapTitle);
+        partyWindow.setParty(engine.getGameData().getParty());
     }
 
     @Override
@@ -110,6 +116,7 @@ public class WorldScreen implements Screen, ProfileObserver {
         renderGrid();
         renderObjects();
         renderDebugBox(dt);
+        partyWindow.render(dt);
     }
 
     public void loadMap(String mapTitle) {
@@ -211,6 +218,9 @@ public class WorldScreen implements Screen, ProfileObserver {
         engine.setScreen(new InventoryScreen(engine));
     }
 
+    private void showHidePartyWindow() {
+        partyWindow.showHide();
+    }
 
     public static void setShowGrid() {
         showGrid = !showGrid;

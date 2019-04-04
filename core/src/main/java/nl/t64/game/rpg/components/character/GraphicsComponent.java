@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import nl.t64.game.rpg.Engine;
+import nl.t64.game.rpg.SpriteConfig;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
@@ -72,7 +73,7 @@ public abstract class GraphicsComponent implements Component {
     }
 
     void loadWalkingAnimation(SpriteConfig spriteConfig) {
-        var path = spriteConfig.getPath();
+        var path = spriteConfig.getCharPath();
         var row = spriteConfig.getRow() - 1;
         var col = spriteConfig.getCol() - 1;
         Texture texture = Utility.getTextureAsset(path);

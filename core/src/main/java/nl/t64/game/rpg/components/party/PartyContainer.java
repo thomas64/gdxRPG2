@@ -2,7 +2,9 @@ package nl.t64.game.rpg.components.party;
 
 import nl.t64.game.rpg.constants.Constant;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -13,6 +15,10 @@ public class PartyContainer {
 
     public PartyContainer() {
         this.party = new LinkedHashMap<>(MAXIMUM);
+    }
+
+    public List<String> getAllHeroIds() {
+        return new ArrayList<>(party.keySet());
     }
 
     public void addHero(HeroItem hero) {

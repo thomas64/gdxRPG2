@@ -1,5 +1,6 @@
 package nl.t64.game.rpg;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -13,7 +14,6 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ObjectMap;
-import nl.t64.game.rpg.components.character.SpriteConfig;
 
 
 public final class Utility {
@@ -88,7 +88,7 @@ public final class Utility {
     @SuppressWarnings("unchecked")
     private static void loadSpriteConfigs() {
         Json json = new Json();
-        FileHandle[] configFiles = FILE_PATH_RESOLVER.resolve("configs/sprites").list(".json");
+        FileHandle[] configFiles = Gdx.files.local("configs/sprites").list(".json");
         for (FileHandle file : configFiles) {
             ObjectMap<String, SpriteConfig> spriteConfigs = json.fromJson(ObjectMap.class, SpriteConfig.class, file);
             SPRITE_CONFIGS.putAll(spriteConfigs);
