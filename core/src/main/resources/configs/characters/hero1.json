@@ -1,44 +1,86 @@
 {
   "mozes": {
-    "name": "Mozes"
+    "name": "Mozes",
+    "level": 1,
+    "endurance": 15,
+    "stamina": 30
   },
   "luana": {
-    "name": "Luana"
+    "name": "Luana",
+    "level": 1,
+    "endurance": 10,
+    "stamina": 20
   },
   "reignald": {
-    "name": "Reignald"
+    "name": "Reignald",
+    "level": 8,
+    "endurance": 20,
+    "stamina": 40
   },
   "ryiah": {
-    "name": "Ryiah"
+    "name": "Ryiah",
+    "level": 3,
+    "endurance": 16,
+    "stamina": 31
   },
   "valter": {
-    "name": "Valter"
+    "name": "Valter",
+    "level": 2,
+    "endurance": 15,
+    "stamina": 20
   },
   "galen": {
-    "name": "Galen"
+    "name": "Galen",
+    "level": 4,
+    "endurance": 20,
+    "stamina": 40
   },
   "jaspar": {
-    "name": "Jaspar"
+    "name": "Jaspar",
+    "level": 12,
+    "endurance": 30,
+    "stamina": 60
   },
   "kiara": {
-    "name": "Kiara"
+    "name": "Kiara",
+    "level": 12,
+    "endurance": 20,
+    "stamina": 40
   },
   "luthais": {
-    "name": "Luthais"
+    "name": "Luthais",
+    "level": 20,
+    "endurance": 18,
+    "stamina": 50
   },
   "elias": {
-    "name": "Elias"
+    "name": "Elias",
+    "level": 18,
+    "endurance": 30,
+    "stamina": 60
   },
   "onarr": {
-    "name": "Onarr"
+    "name": "Onarr",
+    "level": 18,
+    "endurance": 30,
+    "stamina": 60
   },
   "duilio": {
-    "name": "Duilio"
+    "name": "Duilio",
+    "level": 22,
+    "endurance": 25,
+    "stamina": 75
   },
   "iellwen": {
-    "name": "Iellwen"
+    "name": "Iellwen",
+    "level": 20,
+    "endurance": 30,
+    "stamina": 60
   },
   "faeron": {
-    "name": "Faeron"
+    "name": "Faeron",
+    "level": 25,
+    "endurance": 25,
+    "stamina": 80
   }
 }

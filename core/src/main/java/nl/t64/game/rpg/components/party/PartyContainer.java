@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class PartyContainer {
@@ -19,6 +20,28 @@ public class PartyContainer {
 
     public List<String> getAllHeroIds() {
         return new ArrayList<>(party.keySet());
+    }
+
+    public List<String> getAllHeroNames() {
+        return party.values()
+                    .stream()
+                    .map(HeroItem::getName)
+                    .collect(Collectors.toList());
+    }
+
+    public List<Integer> getAllHeroLevels() {
+        return party.values()
+                    .stream()
+                    .map(HeroItem::getLevel)
+                    .collect(Collectors.toList());
+    }
+
+    public HeroItem getHero(int index) {
+        return getAllHeroes().get(index);
+    }
+
+    public List<HeroItem> getAllHeroes() {
+        return new ArrayList<>(party.values());
     }
 
     public void addHero(HeroItem hero) {
@@ -40,12 +63,12 @@ public class PartyContainer {
         return getSize() >= MAXIMUM;
     }
 
-    HeroItem getHero(String id) {
-        return party.get(id);
+    public int getSize() {
+        return party.size();
     }
 
-    int getSize() {
-        return party.size();
+    HeroItem getHero(String id) {
+        return party.get(id);
     }
 
     boolean contains(String id) {
