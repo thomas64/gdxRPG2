@@ -17,7 +17,7 @@ import nl.t64.game.rpg.listeners.ConfirmKeyListener;
 import nl.t64.game.rpg.listeners.HorizontalKeyListener;
 
 
-public class QuestionDialog {
+class QuestionDialog {
 
     private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
     private static final String MENU_FONT = "fonts/fff_tusj.ttf";
@@ -63,7 +63,7 @@ public class QuestionDialog {
         updateIndex(EXIT_INDEX);
     }
 
-    public void render(float dt) {  // handmade equivalent of a Screen.render() method.
+    void render(float dt) {  // handmade equivalent of a Screen.render() method.
         horizontalKeyListener.updateSelectedIndex(selectedIndex);
     }
 

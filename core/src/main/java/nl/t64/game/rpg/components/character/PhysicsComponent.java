@@ -10,7 +10,7 @@ import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
 
 
-public abstract class PhysicsComponent implements Component {
+abstract class PhysicsComponent implements Component {
 
     @Getter
     CharacterState state;

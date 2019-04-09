@@ -13,7 +13,6 @@ import nl.t64.game.rpg.events.character.*;
 
 public class PlayerInput extends InputComponent implements InputProcessor {
 
-    private static final String TAG = PlayerInput.class.getSimpleName();
     private static final float TURN_DELAY_TIME = 8f / 60f; // of a second
 
     private boolean pressUp;

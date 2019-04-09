@@ -13,7 +13,6 @@ import java.util.List;
 
 public class NpcPhysics extends PhysicsComponent {
 
-    private static final String TAG = NpcPhysics.class.getSimpleName();
     private static final int WANDER_BOX_SIZE = 240;
     private static final int WANDER_BOX_POSITION = -96;
 
@@ -114,7 +113,9 @@ public class NpcPhysics extends PhysicsComponent {
     @Override
     public void debug(ShapeRenderer shapeRenderer) {
         shapeRenderer.setColor(Color.PURPLE);
-        shapeRenderer.rect(wanderBox.x, wanderBox.y, wanderBox.width, wanderBox.height);
+        if (state != CharacterState.IMMOBILE) {
+            shapeRenderer.rect(wanderBox.x, wanderBox.y, wanderBox.width, wanderBox.height);
+        }
         shapeRenderer.setColor(Color.YELLOW);
         shapeRenderer.rect(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
     }

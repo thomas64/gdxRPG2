@@ -3,7 +3,6 @@ package nl.t64.game.rpg.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -12,16 +11,14 @@ import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.listeners.InventoryScreenListener;
 
 
-public class InventoryScreen implements Screen {
+class InventoryScreen implements Screen {
 
     private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
 
     private Engine engine;
     private Stage stage;
 
-    private Image background;
-
-    public InventoryScreen(Engine engine) {
+    InventoryScreen(Engine engine) {
         this.engine = engine;
         this.stage = new Stage();
     }
@@ -73,9 +70,9 @@ public class InventoryScreen implements Screen {
     }
 
     private void setBackground() {
-        Texture texture = Utility.getTextureAsset(SPRITE_PARCHMENT);
-        Sprite sprite = new Sprite(texture);
-        background = new Image(sprite);
+        var texture = Utility.getTextureAsset(SPRITE_PARCHMENT);
+        var sprite = new Sprite(texture);
+        var background = new Image(sprite);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage.addActor(background);
     }

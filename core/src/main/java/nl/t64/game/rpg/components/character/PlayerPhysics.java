@@ -9,7 +9,6 @@ import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.*;
-import nl.t64.game.rpg.tiled.Portal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +17,6 @@ import java.util.stream.Collectors;
 
 
 public class PlayerPhysics extends PhysicsComponent {
-
-    private static final String TAG = PlayerPhysics.class.getSimpleName();
 
     private Engine engine;
     private List<Character> npcCharacters;
@@ -188,14 +185,12 @@ public class PlayerPhysics extends PhysicsComponent {
     }
 
     private void checkPortals() {
-        for (Portal portal : engine.getWorldScreen().getCurrentMap().getPortals()) {
-            if (boundingBox.overlaps(portal.getRectangle())) {
-                portal.setEnterDirection(direction);
-                engine.getWorldScreen().loadMap(portal.getToMapName());
-                engine.getWorldScreen().getCurrentMap().setPlayerSpawnLocation(portal);
-                return;
-            }
-        }
+        engine.getWorldScreen().getCurrentMap().getPortalOnCollisionBy(boundingBox)
+              .ifPresent(portal -> {
+                  portal.setEnterDirection(direction);
+                  engine.getWorldScreen().loadMap(portal.getToMapName());
+                  engine.getWorldScreen().getCurrentMap().setPlayerSpawnLocation(portal);
+              });
     }
 
     private void moveSide(Rectangle blocker, float dt) {

@@ -76,8 +76,14 @@ public class GameMap {
         return blockers.stream().anyMatch(characterRect::overlaps);
     }
 
-    public boolean areSavePointsBeingCheckedBy(Rectangle characterRect) {
-        return savePoints.stream().anyMatch(characterRect::overlaps);
+    public boolean areSavePointsBeingCheckedBy(Rectangle checkRect) {
+        return savePoints.stream().anyMatch(checkRect::overlaps);
+    }
+
+    public Optional<Portal> getPortalOnCollisionBy(Rectangle playerRect) {
+        return portals.stream()
+                      .filter(portal -> playerRect.overlaps(portal.getRectangle()))
+                      .findFirst();
     }
 
     public void setPlayerSpawnLocationForNewLoad(String mapTitle) {

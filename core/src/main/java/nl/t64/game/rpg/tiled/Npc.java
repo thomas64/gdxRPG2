@@ -19,7 +19,7 @@ public class Npc {
     private final CharacterState state;
     private final Direction direction;
 
-    public Npc(MapObject mapObject) {
+    Npc(MapObject mapObject) {
         RectangleMapObject rectObject = (RectangleMapObject) mapObject;
 
         this.rectangle = rectObject.getRectangle();

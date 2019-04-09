@@ -5,7 +5,7 @@ import com.badlogic.gdx.maps.MapObject;
 
 public class Hero extends Npc {
 
-    public Hero(MapObject mapObject) {
+    Hero(MapObject mapObject) {
         super(mapObject);
     }
 

@@ -10,8 +10,6 @@ import nl.t64.game.rpg.events.character.*;
 
 public class NpcInput extends InputComponent {
 
-    private static final String TAG = NpcInput.class.getSimpleName();
-
     private float stateTime = 0f;
 
     private CharacterState state;

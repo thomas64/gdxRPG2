@@ -2,6 +2,7 @@ package nl.t64.game.rpg.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -23,11 +24,13 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 
-public class PartyWindow {
+class PartyWindow {
 
-    private static final String FONT_PATH = "fonts/keep_singing.ttf";
-    private static final Color TRANSPARENT_BLACK = new Color(0f, 0f, 0f, 0.65f);
-    private static final Color TRANSPARENT_WHITE = new Color(1f, 1f, 1f, 0.5f);
+    private static final String FONT_PATH = "fonts/spectral.ttf";
+    private static final Color TRANSPARENT_BLACK = new Color(0f, 0f, 0f, 0.7f);
+    private static final Color TRANSPARENT_WHITE = new Color(1f, 1f, 1f, 0.2f);
+    private static final Color TRANSPARENT_FACES = new Color(1f, 1f, 1f, 0.6f);
+
     private static final int FONT_SIZE = 22;
     private static final int MAX_PARTY_SIZE = 5;
 
@@ -41,7 +44,7 @@ public class PartyWindow {
     private static final float HIGH_Y = 0f;
     private static final float LOW_Y = -WINDOW_HEIGHT;
 
-    private static final float BAR_X = 55f;
+    private static final float BAR_X = 50f;
     private static final float BAR_Y = -4f;
     private static final float BAR_WIDTH = 85f;
     private static final float BAR_HEIGHT = 12f;
@@ -60,7 +63,7 @@ public class PartyWindow {
     private boolean isMovingDown = false;
 
 
-    public PartyWindow() {
+    PartyWindow() {
         createFonts();
         this.shapeRenderer = new ShapeRenderer();
         this.yPos = LOW_Y;
@@ -75,7 +78,7 @@ public class PartyWindow {
         this.stage.addActor(this.window);
     }
 
-    public void showHide() {
+    void showHide() {
         if (!isMovingDown && !isMovingUp) {
 
             if (window.isVisible()) {
@@ -88,7 +91,7 @@ public class PartyWindow {
         }
     }
 
-    public void render(float dt) {
+    void render(float dt) {
         if (isMovingUp) {
             yPos += VELOCITY * dt;
             if (yPos >= HIGH_Y) {
@@ -129,38 +132,52 @@ public class PartyWindow {
 
     private void renderWindow() {
         window.clear();
-        renderBorders();
+        renderBackgrounds();
+        renderSquares();
+        renderHorizontalLines();
         renderFaces();
         renderNames();
-        renderLevels();
+        renderLevelLabels();
         renderHpLabels();
         renderHpBars();
         renderXpLabels();
         renderXpBars();
     }
 
-    private void renderBorders() {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(TRANSPARENT_BLACK);
-        renderSquares();
-        renderHorizontalLines();
+    private void renderBackgrounds() {
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(TRANSPARENT_WHITE);
+        IntStream.rangeClosed(0, MAX_PARTY_SIZE - 1)
+                 .forEach(i -> shapeRenderer.rect(window.getX() + (i * FACE_SIZE) + (i * PADDING),
+                                                  yPos + PADDING,
+                                                  FACE_SIZE,
+                                                  FACE_Y - PADDING));
         shapeRenderer.end();
+        Gdx.gl.glDisable(GL20.GL_BLEND);
     }
 
     private void renderSquares() {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(TRANSPARENT_BLACK);
         IntStream.rangeClosed(0, MAX_PARTY_SIZE - 1)
                  .forEach(i -> shapeRenderer.rect(window.getX() + (i * FACE_SIZE) + (i * PADDING),
                                                   yPos + PADDING,
                                                   FACE_SIZE,
                                                   WINDOW_HEIGHT - PADDING));
+        shapeRenderer.end();
     }
 
     private void renderHorizontalLines() {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(TRANSPARENT_BLACK);
         IntStream.rangeClosed(0, party.getSize() - 1)
                  .forEach(i -> shapeRenderer.line(window.getX() + (i * FACE_SIZE) + (i * PADDING),
                                                   yPos + FACE_Y,
                                                   window.getX() + (i * FACE_SIZE) + (i * PADDING) + FACE_SIZE,
                                                   yPos + FACE_Y));
+        shapeRenderer.end();
     }
 
     private void renderFaces() {
@@ -176,7 +193,7 @@ public class PartyWindow {
             TextureRegion heroFace = splitOfEight[row][col];
             var sprite = new Sprite(heroFace);
             var image = new Image(sprite);
-            image.setColor(TRANSPARENT_WHITE);
+            image.setColor(TRANSPARENT_FACES);
             image.setPosition((i * FACE_SIZE) + (i * PADDING), yPos + FACE_Y);
             window.addActor(image);
             i++;
@@ -189,19 +206,19 @@ public class PartyWindow {
         for (String heroName : party.getAllHeroNames()) {
             var heroLabel = new Label(heroName, labelStyle);
             heroLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
-                                  yPos + FACE_Y);
+                                  yPos + FACE_Y - PADDING_SMALL);
             window.addActor(heroLabel);
             i++;
         }
     }
 
-    private void renderLevels() {
+    private void renderLevelLabels() {
         var labelStyle = new Label.LabelStyle(font, TRANSPARENT_BLACK);
         int i = 0;
         for (Integer level : party.getAllHeroLevels()) {
             var levelLabel = new Label("Level: " + level.toString(), labelStyle);
             levelLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
-                                   yPos + FACE_Y - (1f * LINE_HEIGHT) - PADDING);
+                                   yPos + FACE_Y - PADDING_SMALL - (1f * LINE_HEIGHT) - PADDING);
             window.addActor(levelLabel);
             i++;
         }
@@ -213,7 +230,7 @@ public class PartyWindow {
                  .forEach(partyNumber -> {
                      var hpLabel = new Label("HP: ", labelStyle);
                      hpLabel.setPosition(partyNumber * FACE_SIZE + (partyNumber * PADDING) + PADDING_SMALL,
-                                         yPos + FACE_Y - (2f * LINE_HEIGHT) - PADDING);
+                                         yPos + FACE_Y - PADDING_SMALL - (2f * LINE_HEIGHT) - PADDING);
                      window.addActor(hpLabel);
                  });
     }
@@ -257,14 +274,14 @@ public class PartyWindow {
                  .forEach(partyNumber -> {
                      var xpLabel = new Label("XP: ", labelStyle);
                      xpLabel.setPosition(partyNumber * FACE_SIZE + (partyNumber * PADDING) + PADDING_SMALL,
-                                         yPos + FACE_Y - (3f * LINE_HEIGHT) - PADDING);
+                                         yPos + FACE_Y - PADDING_SMALL - (3f * LINE_HEIGHT) - PADDING);
                      window.addActor(xpLabel);
                  });
     }
 
     private void renderXpBars() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.GOLD);
+        shapeRenderer.setColor(Color.TAN);
         IntStream.rangeClosed(0, party.getSize() - 1)
                  .forEach(partyNumber -> renderBar(partyNumber, 3f, calculateXpBarWidth(partyNumber)));
         shapeRenderer.end();

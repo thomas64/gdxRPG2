@@ -9,7 +9,7 @@ import nl.t64.game.rpg.constants.Direction;
 import java.util.Optional;
 
 
-public class SpawnPoint {
+class SpawnPoint {
 
     @Getter
     private final Rectangle rectangle;
@@ -18,7 +18,7 @@ public class SpawnPoint {
     @Getter
     private final Direction direction;
 
-    public SpawnPoint(MapObject mapObject) {
+    SpawnPoint(MapObject mapObject) {
         RectangleMapObject rectObject = (RectangleMapObject) mapObject;
 
         this.rectangle = rectObject.getRectangle();
@@ -27,16 +27,16 @@ public class SpawnPoint {
         this.direction = createDirection(rectObject);
     }
 
-    public boolean isInConnectionWith(Portal portal) {
+    boolean isInConnectionWith(Portal portal) {
         return (fromMapName.equals(portal.getFromMapName()) &&
                 fromMapLocation.equalsIgnoreCase(portal.getToMapLocation()));
     }
 
-    public float getX() {
+    float getX() {
         return rectangle.getX();
     }
 
-    public float getY() {
+    float getY() {
         return rectangle.getY();
     }
 

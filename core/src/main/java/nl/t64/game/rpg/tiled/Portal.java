@@ -20,7 +20,7 @@ public class Portal {
     @Setter
     private Direction enterDirection;
 
-    public Portal(MapObject mapObject, String fromMapName) {
+    Portal(MapObject mapObject, String fromMapName) {
         RectangleMapObject rectObject = (RectangleMapObject) mapObject;
 
         this.rectangle = rectObject.getRectangle();

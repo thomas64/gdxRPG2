@@ -14,8 +14,6 @@ import java.util.List;
 
 public class Character {
 
-    private static final String TAG = Character.class.getSimpleName();
-
     private static final int MAX_COMPONENTS = 3;
     private List<Component> components;
 
@@ -24,14 +22,14 @@ public class Character {
     private GraphicsComponent graphicsComponent;
 
     public Character(InputComponent input, PhysicsComponent physics, GraphicsComponent graphics) {
-        inputComponent = input;
-        physicsComponent = physics;
-        graphicsComponent = graphics;
+        this.inputComponent = input;
+        this.physicsComponent = physics;
+        this.graphicsComponent = graphics;
 
-        components = new ArrayList<>(MAX_COMPONENTS);
-        components.add(inputComponent);
-        components.add(physicsComponent);
-        components.add(graphicsComponent);
+        this.components = new ArrayList<>(MAX_COMPONENTS);
+        this.components.add(this.inputComponent);
+        this.components.add(this.physicsComponent);
+        this.components.add(this.graphicsComponent);
     }
 
     public void send(Event event) {
