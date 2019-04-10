@@ -27,17 +27,22 @@ import java.util.stream.IntStream;
 class PartyWindow {
 
     private static final String FONT_PATH = "fonts/spectral.ttf";
+    private static final String FONT_BIG_PATH = "fonts/spectral_big.ttf";
     private static final Color TRANSPARENT_BLACK = new Color(0f, 0f, 0f, 0.7f);
     private static final Color TRANSPARENT_WHITE = new Color(1f, 1f, 1f, 0.2f);
     private static final Color TRANSPARENT_FACES = new Color(1f, 1f, 1f, 0.6f);
 
-    private static final int FONT_SIZE = 22;
+    private static final int FONT_BIG_SIZE = 28;
+    private static final int FONT_SIZE = 20;
     private static final int MAX_PARTY_SIZE = 5;
 
     private static final float LINE_HEIGHT = 22f;
     private static final float FACE_SIZE = 144f;
     private static final float PADDING = 10f;
     private static final float PADDING_SMALL = 5f;
+    private static final float PADDING_NAME = 7f;
+    private static final float PADDING_LEVEL = 12f;
+    private static final float PADDING_LINE = PADDING + PADDING_SMALL;
     private static final float FACE_Y = 90f;
     private static final float WINDOW_WIDTH = (FACE_SIZE * MAX_PARTY_SIZE) + (PADDING * (MAX_PARTY_SIZE - 1f));
     private static final float WINDOW_HEIGHT = FACE_Y + FACE_SIZE;
@@ -56,6 +61,7 @@ class PartyWindow {
     private Stage stage;
     private Window window;
     private BitmapFont font;
+    private BitmapFont fontBig;
     private ShapeRenderer shapeRenderer;
 
     private float yPos;
@@ -118,6 +124,7 @@ class PartyWindow {
 
     private void createFonts() {
         font = Utility.getTrueTypeAsset(FONT_PATH, FONT_SIZE);
+        fontBig = Utility.getTrueTypeAsset(FONT_BIG_PATH, FONT_BIG_SIZE);
     }
 
     private Window createWindow() {
@@ -201,12 +208,12 @@ class PartyWindow {
     }
 
     private void renderNames() {
-        var labelStyle = new Label.LabelStyle(font, TRANSPARENT_BLACK);
+        var labelStyle = new Label.LabelStyle(fontBig, TRANSPARENT_BLACK);
         int i = 0;
         for (String heroName : party.getAllHeroNames()) {
             var heroLabel = new Label(heroName, labelStyle);
             heroLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
-                                  yPos + FACE_Y - PADDING_SMALL);
+                                  yPos + FACE_Y - PADDING_NAME);
             window.addActor(heroLabel);
             i++;
         }
@@ -218,7 +225,7 @@ class PartyWindow {
         for (Integer level : party.getAllHeroLevels()) {
             var levelLabel = new Label("Level: " + level.toString(), labelStyle);
             levelLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
-                                   yPos + FACE_Y - PADDING_SMALL - (1f * LINE_HEIGHT) - PADDING);
+                                   yPos + FACE_Y - (1f * LINE_HEIGHT) - PADDING_LEVEL);
             window.addActor(levelLabel);
             i++;
         }
@@ -230,7 +237,7 @@ class PartyWindow {
                  .forEach(partyNumber -> {
                      var hpLabel = new Label("HP: ", labelStyle);
                      hpLabel.setPosition(partyNumber * FACE_SIZE + (partyNumber * PADDING) + PADDING_SMALL,
-                                         yPos + FACE_Y - PADDING_SMALL - (2f * LINE_HEIGHT) - PADDING);
+                                         yPos + FACE_Y - (2f * LINE_HEIGHT) - PADDING_LINE);
                      window.addActor(hpLabel);
                  });
     }
@@ -274,7 +281,7 @@ class PartyWindow {
                  .forEach(partyNumber -> {
                      var xpLabel = new Label("XP: ", labelStyle);
                      xpLabel.setPosition(partyNumber * FACE_SIZE + (partyNumber * PADDING) + PADDING_SMALL,
-                                         yPos + FACE_Y - PADDING_SMALL - (3f * LINE_HEIGHT) - PADDING);
+                                         yPos + FACE_Y - (3f * LINE_HEIGHT) - PADDING_LINE);
                      window.addActor(xpLabel);
                  });
     }
