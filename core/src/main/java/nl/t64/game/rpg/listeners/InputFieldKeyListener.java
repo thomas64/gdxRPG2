@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 
 public class InputFieldKeyListener extends InputListener {
 
-    private static final String VALID_CHARACTERS = "1234567890abcdefghijklmnopqrstuvwxyz";
+    private static final String VALID_CHARACTERS = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     private final Consumer<StringBuilder> updateInputFunction;
     private final int maxSizeOfInput;
@@ -30,7 +30,7 @@ public class InputFieldKeyListener extends InputListener {
         for (char c : VALID_CHARACTERS.toCharArray()) {
             if (character == c) {
                 if (inputField.length() < maxSizeOfInput) {
-                    inputField.insert(inputField.length() - 1, character);
+                    inputField.insert(inputField.length() - 1, Character.toLowerCase(character));
                     updateInputFunction.accept(inputField);
                 }
                 break;

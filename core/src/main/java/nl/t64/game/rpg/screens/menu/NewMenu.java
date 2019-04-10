@@ -232,6 +232,7 @@ public class NewMenu implements Screen {
 
         // actor
         var textField = new TextField("", textFieldStyle);
+        textField.setDisabled(true);
         textField.setMaxLength(PROFILE_INPUT_LENGTH);
         textField.setAlignment(Align.center);
         return textField;
