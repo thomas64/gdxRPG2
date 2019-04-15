@@ -77,18 +77,18 @@ public class NewMenu implements Screen {
     private void setupScreen() {
         engine.getProfileManager().loadAllProfiles();
 
-        this.table = createTable();
-        this.overwriteDialog = new QuestionDialog(this::createNewGame, DIALOG_MESSAGE);
+        table = createTable();
+        overwriteDialog = new QuestionDialog(this::createNewGame, DIALOG_MESSAGE);
 
         applyListeners();
-        this.stage.addActor(this.table);
-        this.stage.setKeyboardFocus(this.table);
+        stage.addActor(table);
+        stage.setKeyboardFocus(table);
 
-        this.finalProfileName = "";
-        this.profileName = new StringBuilder("_");
-        updateInput(this.profileName);
+        finalProfileName = "";
+        profileName = new StringBuilder("_");
+        updateInput(profileName);
 
-        this.selectedIndex = 0;
+        selectedIndex = 0;
         setCurrentTextButtonToRed();
     }
 
@@ -105,7 +105,7 @@ public class NewMenu implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().setScreenSize(width, height);
+        // empty
     }
 
     @Override

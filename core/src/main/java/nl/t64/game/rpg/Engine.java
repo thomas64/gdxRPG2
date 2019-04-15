@@ -14,6 +14,7 @@ public class Engine extends Game {
     @Getter
     private static float runTime = 0f;
 
+    private Settings settings;
     private ProfileManager profileManager;
     private GameData gameData;
 
@@ -23,6 +24,10 @@ public class Engine extends Game {
     private SettingsMenu settingsMenuScreen;
     private WorldScreen worldScreen;
     private PauseMenu pauseMenuScreen;
+
+    public Engine(Settings settings) {
+        this.settings = settings;
+    }
 
     private static void updateRunTime() {
         runTime += Gdx.graphics.getDeltaTime();

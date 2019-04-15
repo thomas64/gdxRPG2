@@ -25,7 +25,7 @@ public class SettingsMenu implements Screen {
     private static final int MENU_SIZE = 30;
     private static final int MENU_SPACE_BOTTOM = 10;
 
-    private static final String MENU_ITEM_FULL_SCREEN = "Toggle full screen";
+    private static final String MENU_ITEM_FULL_SCREEN = "Toggle fullscreen";
     private static final String MENU_ITEM_BACK = "Back";
 
     private static final int NUMBER_OF_ITEMS = 2;
@@ -42,23 +42,21 @@ public class SettingsMenu implements Screen {
 
     private BitmapFont menuFont;
     private Table table;
-    private TextButton fullScreenButton;
+    private TextButton fullscreenButton;
     private TextButton backButton;
 
     private VerticalKeyListener verticalKeyListener;
 
     private int selectedIndex;
-    private boolean isFullScreen;
 
     public SettingsMenu(Engine engine) {
         this.engine = engine;
         this.stage = new Stage();
         createFonts();
         this.selectedIndex = 1;
-        this.isFullScreen = false;
     }
 
-    public void setBackground(Image screenshot, Image blur) {
+    void setBackground(Image screenshot, Image blur) {
         this.screenshot = screenshot;
         this.blur = blur;
         stage.addActor(screenshot);
@@ -72,10 +70,10 @@ public class SettingsMenu implements Screen {
     }
 
     private void setupScreen() {
-        this.table = createTable();
+        table = createTable();
         applyListeners();
-        this.stage.addActor(this.table);
-        this.stage.setKeyboardFocus(this.table);
+        stage.addActor(table);
+        stage.setKeyboardFocus(table);
         setCurrentTextButtonToRed();
     }
 
@@ -90,7 +88,7 @@ public class SettingsMenu implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().setScreenSize(width, height);
+        // empty
     }
 
     @Override
@@ -125,7 +123,7 @@ public class SettingsMenu implements Screen {
     private void selectMenuItem() {
         switch (selectedIndex) {
             case 0:
-                processToggleButton();
+                processFullscreenButton();
                 break;
             case 1:
                 processBackButton();
@@ -135,13 +133,8 @@ public class SettingsMenu implements Screen {
         }
     }
 
-    private void processToggleButton() {
-        if (isFullScreen) {
-            Gdx.graphics.setWindowedMode(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGHT);
-        } else {
-            Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
-        }
-        isFullScreen = !isFullScreen;
+    private void processFullscreenButton() {
+        engine.getSettings().toggleFullscreen();
     }
 
     private void processBackButton() {
@@ -173,13 +166,13 @@ public class SettingsMenu implements Screen {
         buttonStyle.fontColor = Color.WHITE;
 
         // actors
-        fullScreenButton = new TextButton(MENU_ITEM_FULL_SCREEN, new TextButton.TextButtonStyle(buttonStyle));
+        fullscreenButton = new TextButton(MENU_ITEM_FULL_SCREEN, new TextButton.TextButtonStyle(buttonStyle));
         backButton = new TextButton(MENU_ITEM_BACK, new TextButton.TextButtonStyle(buttonStyle));
 
         // table
         Table newTable = new Table();
         newTable.setFillParent(true);
-        newTable.add(fullScreenButton).spaceBottom(MENU_SPACE_BOTTOM).row();
+        newTable.add(fullscreenButton).spaceBottom(MENU_SPACE_BOTTOM).row();
         newTable.add(backButton).spaceBottom(MENU_SPACE_BOTTOM).row();
         return newTable;
     }
@@ -188,7 +181,7 @@ public class SettingsMenu implements Screen {
         verticalKeyListener = new VerticalKeyListener(this::updateIndex, NUMBER_OF_ITEMS);
         table.addListener(verticalKeyListener);
         table.addListener(new ConfirmKeyListener(this::updateIndex, this::selectMenuItem, EXIT_INDEX));
-        fullScreenButton.addListener(createButtonMouseListener(0));
+        fullscreenButton.addListener(createButtonMouseListener(0));
         backButton.addListener(createButtonMouseListener(1));
     }
 

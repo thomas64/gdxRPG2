@@ -6,11 +6,15 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import nl.t64.game.rpg.constants.Constant;
 
+import java.io.IOException;
+
 
 public class DesktopLauncher {
 
-    public static void main(String[] arg) {
-        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+    public static void main(String[] arg) throws IOException {
+        Settings settings = Settings.getSettingsFromFile();
+
+        var config = new LwjglApplicationConfiguration();
 
         config.title = Constant.TITLE;
         config.width = Constant.SCREEN_WIDTH;
@@ -18,10 +22,13 @@ public class DesktopLauncher {
         config.useGL30 = false;
         config.resizable = false;
         config.foregroundFPS = 60;
-        config.fullscreen = false;
+        config.fullscreen = settings.isFullscreen();
 
-        Gdx.app = new LwjglApplication(new Engine(), config);
+        Gdx.app = new LwjglApplication(new Engine(settings), config);
         Gdx.app.setLogLevel(Application.LOG_ERROR);
+        if (config.fullscreen) {
+            Gdx.input.setCursorCatched(true);
+        }
     }
 
 }

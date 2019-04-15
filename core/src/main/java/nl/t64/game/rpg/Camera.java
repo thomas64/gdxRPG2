@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 
@@ -14,9 +14,9 @@ public class Camera extends OrthographicCamera {
     private float mapHeight;
 
     public Camera() {
-        Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), this);
+        Viewport viewport = new ScreenViewport(this);
         viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        zoom = 0.5f;
+        super.zoom = 0.5f;
     }
 
     public void setPosition(Vector2 playerPosition) {

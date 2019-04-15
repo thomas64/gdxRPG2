@@ -67,7 +67,7 @@ public class PauseMenu implements Screen {
         setBackground(createScreenshot(), createBlur());
     }
 
-    public void setBackground(Image screenshot, Image blur) {
+    void setBackground(Image screenshot, Image blur) {
         this.screenshot = screenshot;
         this.blur = blur;
         stage.addActor(screenshot);
@@ -81,11 +81,11 @@ public class PauseMenu implements Screen {
     }
 
     private void setupScreen() {
-        this.table = createTable();
-        this.progressLostDialog = new QuestionDialog(this::openMainMenu, DIALOG_MESSAGE);
+        table = createTable();
+        progressLostDialog = new QuestionDialog(this::openMainMenu, DIALOG_MESSAGE);
         applyListeners();
-        this.stage.addActor(this.table);
-        this.stage.setKeyboardFocus(this.table);
+        stage.addActor(table);
+        stage.setKeyboardFocus(table);
         setCurrentTextButtonToRed();
     }
 
@@ -101,7 +101,7 @@ public class PauseMenu implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().setScreenSize(width, height);
+        // empty
     }
 
     @Override
@@ -176,12 +176,12 @@ public class PauseMenu implements Screen {
 
     private Image createScreenshot() {
         var image = new Image(ScreenUtils.getFrameBufferTexture());
-        image.setSize(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGHT);
+        image.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         return image;
     }
 
     private Image createBlur() {
-        var pixmap = new Pixmap(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGHT, Pixmap.Format.Alpha);
+        var pixmap = new Pixmap(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Pixmap.Format.Alpha);
         pixmap.setColor(TRANSPARENT);
         pixmap.fill();
         return new Image(new Texture(pixmap));

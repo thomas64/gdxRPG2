@@ -34,7 +34,6 @@ public class LoadMenu implements Screen {
     private static final int TITLE_SPACE_BOTTOM = 30;
     private static final int TOP_TABLE_Y = 50;
     private static final int SCROLL_PANE_HEIGHT = 380;
-    private static final int BOTTOM_TABLE_Y = 100;
     private static final int BUTTON_SPACE_RIGHT = 150;
 
     private static final int NUMBER_OF_ITEMS = 3;
@@ -78,7 +77,7 @@ public class LoadMenu implements Screen {
         createFonts();
     }
 
-    public void setBackground(Image screenshot, Image blur) {
+    void setBackground(Image screenshot, Image blur) {
         this.screenshot = screenshot;
         this.blur = blur;
         stage.addActor(screenshot);
@@ -96,19 +95,19 @@ public class LoadMenu implements Screen {
         profiles = engine.getProfileManager().getProfileList();
 
         createTables();
-        this.progressLostDialog = new QuestionDialog(this::openWorldScreen, LOAD_MESSAGE);
-        this.deleteFileDialog = new QuestionDialog(this::deleteSaveFile, DELETE_MESSAGE);
+        progressLostDialog = new QuestionDialog(this::openWorldScreen, LOAD_MESSAGE);
+        deleteFileDialog = new QuestionDialog(this::deleteSaveFile, DELETE_MESSAGE);
         applyListeners();
 
-        this.stage.addActor(this.topTable);
-        this.stage.addActor(this.bottomTable);
-        this.stage.setKeyboardFocus(this.scrollPane);
-        this.stage.setScrollFocus(this.scrollPane);
+        stage.addActor(topTable);
+        stage.addActor(bottomTable);
+        stage.setKeyboardFocus(scrollPane);
+        stage.setScrollFocus(scrollPane);
 
-        this.lastSelectedListIndex = 0;
-        this.currentSelectedListIndex = 0;
+        lastSelectedListIndex = 0;
+        currentSelectedListIndex = 0;
 
-        this.selectedMenuIndex = 0;
+        selectedMenuIndex = 0;
         setCurrentTextButtonToRed();
     }
 
@@ -143,7 +142,7 @@ public class LoadMenu implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().setScreenSize(width, height);
+        // empty
     }
 
     @Override
@@ -297,9 +296,10 @@ public class LoadMenu implements Screen {
         topTable.getCell(scrollPane).height(SCROLL_PANE_HEIGHT);
 
         bottomTable = new Table();
+        bottomTable.setFillParent(true);
         bottomTable.setHeight(loadButton.getHeight());
-        bottomTable.setWidth(Constant.SCREEN_WIDTH);
-        bottomTable.setY(BOTTOM_TABLE_Y);
+        bottomTable.setWidth(Gdx.graphics.getWidth());
+        bottomTable.setY(-(TOP_TABLE_Y + (SCROLL_PANE_HEIGHT / 2f)));
         bottomTable.add(loadButton).spaceRight(BUTTON_SPACE_RIGHT);
         bottomTable.add(deleteButton).spaceRight(BUTTON_SPACE_RIGHT);
         bottomTable.add(backButton);

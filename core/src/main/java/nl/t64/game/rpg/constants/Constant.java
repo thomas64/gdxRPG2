@@ -8,6 +8,8 @@ public class Constant {
     public static final String TITLE = "gdxRPG2";
     public static final int SCREEN_WIDTH = 1920;
     public static final int SCREEN_HEIGHT = 1080;
+//    public static final int SCREEN_WIDTH = 1280;
+//    public static final int SCREEN_HEIGHT = 720;
 
     public static final float TILE_SIZE = 48f;
 

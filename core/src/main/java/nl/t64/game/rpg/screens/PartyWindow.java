@@ -3,7 +3,6 @@ package nl.t64.game.rpg.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -13,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import lombok.Setter;
 import nl.t64.game.rpg.SpriteConfig;
 import nl.t64.game.rpg.Utility;
@@ -73,10 +71,7 @@ class PartyWindow {
         createFonts();
         this.shapeRenderer = new ShapeRenderer();
         this.yPos = LOW_Y;
-        var camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        var viewport = new ScreenViewport(camera);
-        this.stage = new Stage(viewport);
+        this.stage = new Stage();
 
         this.window = createWindow();
         this.window.setPosition((Gdx.graphics.getWidth() - WINDOW_WIDTH) / 2f, 0f);

@@ -299,8 +299,8 @@ public class WorldScreen implements Screen, ProfileObserver {
 
             int w = 150;
             int h = 300;
-            int x = 0 - (Constant.SCREEN_WIDTH / 4);
-            int y = 0 - (Constant.SCREEN_HEIGHT / 4) + ((Constant.SCREEN_HEIGHT / 2) - h);
+            int x = 0 - (Gdx.graphics.getWidth() / 4);
+            int y = 0 - (Gdx.graphics.getHeight() / 4) + ((Gdx.graphics.getHeight() / 2) - h);
             shapeRenderer.rect(x, y, w, h);
             shapeRenderer.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
