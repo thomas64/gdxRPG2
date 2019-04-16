@@ -1,4 +1,4 @@
-package nl.t64.game.rpg;
+package nl.t64.game.rpg.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -8,24 +8,24 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 
-public class Camera extends OrthographicCamera {
+class Camera extends OrthographicCamera {
 
     private float mapWidth;
     private float mapHeight;
 
-    public Camera() {
+    Camera() {
         Viewport viewport = new ScreenViewport(this);
         viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         super.zoom = 0.5f;
     }
 
-    public void setPosition(Vector2 playerPosition) {
+    void setPosition(Vector2 playerPosition) {
         focusCameraOn(playerPosition);
         setCameraOnMapEdge();
         update();
     }
 
-    public void setNewMapSize(float mapWidth, float mapHeight) {
+    void setNewMapSize(float mapWidth, float mapHeight) {
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
     }

@@ -9,8 +9,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.ScreenUtils;
 import lombok.Getter;
-import nl.t64.game.rpg.Camera;
 import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.components.character.Character;
 import nl.t64.game.rpg.components.character.*;
@@ -208,14 +209,20 @@ public class WorldScreen implements Screen, ProfileObserver {
     private void openPauseMenu() {
         player.resetInput();
         PauseMenu pauseMenu = engine.getPauseMenuScreen();
-        pauseMenu.setBackground();
+        pauseMenu.setBackground(createScreenshot());
         engine.setScreen(pauseMenu);
         pauseMenu.updateIndex(0);
     }
 
     private void openInventoryScreen() {
         player.resetInput();
-        engine.setScreen(new InventoryScreen(engine));
+        InventoryScreen inventoryScreen = new InventoryScreen(engine);
+        inventoryScreen.setBackground(createScreenshot());
+        engine.setScreen(inventoryScreen);
+    }
+
+    private Image createScreenshot() {
+        return new Image(ScreenUtils.getFrameBufferTexture());
     }
 
     private void showHidePartyWindow() {

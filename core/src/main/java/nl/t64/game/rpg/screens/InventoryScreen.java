@@ -26,7 +26,6 @@ class InventoryScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-        setBackground();
         applyListeners();
     }
 
@@ -69,12 +68,13 @@ class InventoryScreen implements Screen {
         engine.setScreen(engine.getWorldScreen());
     }
 
-    private void setBackground() {
+    void setBackground(Image screenshot) {
         var texture = Utility.getTextureAsset(SPRITE_PARCHMENT);
         var sprite = new Sprite(texture);
-        var background = new Image(sprite);
-        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        stage.addActor(background);
+        var parchment = new Image(sprite);
+        parchment.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        stage.addActor(screenshot);
+        stage.addActor(parchment);
     }
 
     private void applyListeners() {

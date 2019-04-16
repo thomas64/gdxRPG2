@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.utils.ScreenUtils;
 import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
@@ -63,8 +62,8 @@ public class PauseMenu implements Screen {
         this.selectedIndex = 0;
     }
 
-    public void setBackground() {
-        setBackground(createScreenshot(), createBlur());
+    public void setBackground(Image background) {
+        setBackground(background, createBlur());
     }
 
     void setBackground(Image screenshot, Image blur) {
@@ -172,12 +171,6 @@ public class PauseMenu implements Screen {
 
     private void createFonts() {
         menuFont = Utility.getTrueTypeAsset(MENU_FONT, MENU_SIZE);
-    }
-
-    private Image createScreenshot() {
-        var image = new Image(ScreenUtils.getFrameBufferTexture());
-        image.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        return image;
     }
 
     private Image createBlur() {
