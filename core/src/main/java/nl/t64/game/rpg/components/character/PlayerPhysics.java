@@ -103,11 +103,11 @@ public class PlayerPhysics extends PhysicsComponent {
 
     private void checkObstacles(float dt) {
         if (state == CharacterState.WALKING) {
-            checkPortals();
             if (velocity != Constant.MOVE_SPEED_4) {
                 turnCharacters();
                 checkBlocker(dt);
             }
+            checkPortals();
         }
     }
 
