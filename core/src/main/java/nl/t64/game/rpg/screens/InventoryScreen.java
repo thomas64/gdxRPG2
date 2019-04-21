@@ -8,17 +8,18 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.Utility;
+import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.listeners.InventoryScreenListener;
 
 
-class InventoryScreen implements Screen {
+public class InventoryScreen implements Screen {
 
     private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
 
     private Engine engine;
     private Stage stage;
 
-    InventoryScreen(Engine engine) {
+    public InventoryScreen(Engine engine) {
         this.engine = engine;
         this.stage = new Stage();
     }
@@ -54,18 +55,18 @@ class InventoryScreen implements Screen {
 
     @Override
     public void hide() {
-        dispose();
+        stage.clear();
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override
     public void dispose() {
         stage.clear();
         stage.dispose();
-        Gdx.input.setInputProcessor(null);
     }
 
     private void closeScreen() {
-        engine.setScreen(engine.getWorldScreen());
+        engine.setScreen(ScreenType.WORLD);
     }
 
     void setBackground(Image screenshot) {

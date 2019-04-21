@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.listeners.ButtonMouseListener;
 import nl.t64.game.rpg.listeners.ConfirmKeyListener;
 import nl.t64.game.rpg.listeners.VerticalKeyListener;
@@ -135,17 +136,19 @@ public class PauseMenu implements Screen {
     private void selectMenuItem() {
         switch (selectedIndex) {
             case 0:
-                engine.setScreen(engine.getWorldScreen());
+                engine.setScreen(ScreenType.WORLD);
                 break;
             case 1:
-                engine.getLoadGameMenuScreen().setBackground(screenshot, blur);
-                engine.setScreen(engine.getLoadGameMenuScreen());
-                engine.getLoadGameMenuScreen().setFromScreen(this);
+                var loadMenu = (LoadMenu) engine.getScreen(ScreenType.LOAD_MENU);
+                loadMenu.setBackground(screenshot, blur);
+                engine.setScreen(loadMenu);
+                loadMenu.setFromScreen(this);
                 break;
             case 2:
-                engine.getSettingsMenuScreen().setBackground(screenshot, blur);
-                engine.setScreen(engine.getSettingsMenuScreen());
-                engine.getSettingsMenuScreen().setFromScreen(this);
+                var settingsMenu = (SettingsMenu) engine.getScreen(ScreenType.SETTINGS_MENU);
+                settingsMenu.setBackground(screenshot, blur);
+                engine.setScreen(settingsMenu);
+                settingsMenu.setFromScreen(this);
                 break;
             case 3:
                 progressLostDialog.show(stage);
@@ -156,7 +159,7 @@ public class PauseMenu implements Screen {
     }
 
     private void openMainMenu() {
-        engine.setScreen(engine.getMainMenuScreen());
+        engine.setScreen(ScreenType.MAIN_MENU);
     }
 
     private void setAllTextButtonsToWhite() {

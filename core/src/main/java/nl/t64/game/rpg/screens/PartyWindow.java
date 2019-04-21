@@ -79,6 +79,14 @@ class PartyWindow {
         this.stage.addActor(this.window);
     }
 
+    void dispose() {
+        stage.clear();
+        stage.dispose();
+        font.dispose();
+        fontBig.dispose();
+        shapeRenderer.dispose();
+    }
+
     void showHide() {
         if (!isMovingDown && !isMovingUp) {
 

@@ -2,28 +2,30 @@ package nl.t64.game.rpg;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.ReflectionException;
 import lombok.Getter;
+import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.screens.WorldScreen;
-import nl.t64.game.rpg.screens.menu.*;
+
+import java.util.EnumMap;
 
 
-@Getter
 public class Engine extends Game {
 
     @Getter
     private static float runTime = 0f;
 
+    @Getter
     private Settings settings;
+    @Getter
     private ProfileManager profileManager;
+    @Getter
     private GameData gameData;
-
-    private MainMenu mainMenuScreen;
-    private NewMenu newGameMenuScreen;
-    private LoadMenu loadGameMenuScreen;
-    private SettingsMenu settingsMenuScreen;
-    private WorldScreen worldScreen;
-    private PauseMenu pauseMenuScreen;
+    private EnumMap<ScreenType, Screen> screenCache;
 
     public Engine(Settings settings) {
         this.settings = settings;
@@ -37,18 +39,12 @@ public class Engine extends Game {
     public void create() {
         profileManager = new ProfileManager();
         gameData = new GameData();
-
-        mainMenuScreen = new MainMenu(this);
-        newGameMenuScreen = new NewMenu(this);
-        loadGameMenuScreen = new LoadMenu(this);
-        settingsMenuScreen = new SettingsMenu(this);
-        worldScreen = new WorldScreen(this);
-        pauseMenuScreen = new PauseMenu(this);
+        screenCache = new EnumMap<>(ScreenType.class);
 
         profileManager.addObserver(gameData);
-        profileManager.addObserver(worldScreen);
+        profileManager.addObserver(getWorldScreen());
 
-        setScreen(mainMenuScreen);
+        setScreen(ScreenType.MAIN_MENU);
     }
 
     @Override
@@ -59,12 +55,36 @@ public class Engine extends Game {
 
     @Override
     public void dispose() {
-        mainMenuScreen.dispose();
-        newGameMenuScreen.dispose();
-        loadGameMenuScreen.dispose();
-        settingsMenuScreen.dispose();
-        worldScreen.dispose();
-        pauseMenuScreen.dispose();
+        for (Screen screen : screenCache.values()) {
+            screen.dispose();
+        }
+        screenCache.clear();
+    }
+
+    public WorldScreen getWorldScreen() {
+        return (WorldScreen) getScreen(ScreenType.WORLD);
+    }
+
+    public Screen getScreen(ScreenType screenType) {
+        ifNotInScreenCacheAdd(screenType);
+        return screenCache.get(screenType);
+    }
+
+    public void setScreen(ScreenType screenType) {
+        ifNotInScreenCacheAdd(screenType);
+        super.setScreen(screenCache.get(screenType));
+    }
+
+    private void ifNotInScreenCacheAdd(ScreenType screenType) {
+        if (!screenCache.containsKey(screenType)) {
+            try {
+                Screen newScreen = (Screen) ClassReflection.getConstructor(screenType.getScreenClass(), Engine.class)
+                                                           .newInstance(this);
+                screenCache.put(screenType, newScreen);
+            } catch (ReflectionException e) {
+                throw new GdxRuntimeException("Screen " + screenType + " could not be created.", e);
+            }
+        }
     }
 
 }

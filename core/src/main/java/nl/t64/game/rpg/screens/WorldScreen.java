@@ -18,6 +18,7 @@ import nl.t64.game.rpg.components.character.*;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.GameState;
+import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.events.character.StartDirectionEvent;
 import nl.t64.game.rpg.events.character.StartPositionEvent;
 import nl.t64.game.rpg.events.character.StartStateEvent;
@@ -208,7 +209,7 @@ public class WorldScreen implements Screen, ProfileObserver {
 
     private void openPauseMenu() {
         player.resetInput();
-        PauseMenu pauseMenu = engine.getPauseMenuScreen();
+        var pauseMenu = (PauseMenu) engine.getScreen(ScreenType.PAUSE_MENU);
         pauseMenu.setBackground(createScreenshot());
         engine.setScreen(pauseMenu);
         pauseMenu.updateIndex(0);
@@ -216,7 +217,7 @@ public class WorldScreen implements Screen, ProfileObserver {
 
     private void openInventoryScreen() {
         player.resetInput();
-        InventoryScreen inventoryScreen = new InventoryScreen(engine);
+        var inventoryScreen = (InventoryScreen) engine.getScreen(ScreenType.INVENTORY);
         inventoryScreen.setBackground(createScreenshot());
         engine.setScreen(inventoryScreen);
     }
@@ -267,6 +268,7 @@ public class WorldScreen implements Screen, ProfileObserver {
         player.dispose();
         mapRenderer.dispose();
         shapeRenderer.dispose();
+        partyWindow.dispose();
     }
 
     private void renderGrid() {

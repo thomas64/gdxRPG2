@@ -15,6 +15,7 @@ import lombok.Setter;
 import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.listeners.*;
 
 
@@ -228,7 +229,7 @@ public class LoadMenu implements Screen {
     private void openWorldScreen() {
         Object profileName = listItems.getSelected();
         engine.getProfileManager().loadProfile(profileName.toString());
-        engine.setScreen(engine.getWorldScreen());
+        engine.setScreen(ScreenType.WORLD);
     }
 
     private void deleteSaveFile() {

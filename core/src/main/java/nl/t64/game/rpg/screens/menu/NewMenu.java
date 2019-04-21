@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.listeners.ButtonMouseListener;
 import nl.t64.game.rpg.listeners.ConfirmKeyListener;
 import nl.t64.game.rpg.listeners.HorizontalKeyListener;
@@ -148,7 +149,7 @@ public class NewMenu implements Screen {
                 processStartButton();
                 break;
             case 1:
-                engine.setScreen(engine.getMainMenuScreen());
+                engine.setScreen(ScreenType.MAIN_MENU);
                 break;
             default:
                 throw new IllegalArgumentException("SelectedIndex not found.");
@@ -167,7 +168,7 @@ public class NewMenu implements Screen {
 
     private void createNewGame() {
         engine.getProfileManager().createNewProfile(finalProfileName);
-        engine.setScreen(engine.getWorldScreen());
+        engine.setScreen(ScreenType.WORLD);
     }
 
     private void setAllTextButtonsToWhite() {
