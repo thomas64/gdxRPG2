@@ -31,6 +31,7 @@ import nl.t64.game.rpg.tiled.Hero;
 import nl.t64.game.rpg.tiled.Npc;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -177,13 +178,12 @@ public class WorldScreen implements Screen, ProfileObserver {
         var theOtherCharacters = new ArrayList<>(npcCharacters);
         theOtherCharacters.add(player);
         theOtherCharacters.remove(thisNpcCharacter);
-        return theOtherCharacters;
+        return Collections.unmodifiableList(theOtherCharacters);
     }
 
     private void updateCharacters(float dt) {
         player.update(engine, dt);
-        var npcCharactersCopy = new ArrayList<>(npcCharacters);
-        npcCharactersCopy.forEach(npcCharacter -> npcCharacter.update(engine, dt));
+        List.copyOf(npcCharacters).forEach(npcCharacter -> npcCharacter.update(engine, dt));
     }
 
     private void updateCameraPosition() {

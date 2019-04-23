@@ -2,7 +2,6 @@ package nl.t64.game.rpg.components.party;
 
 import nl.t64.game.rpg.constants.Constant;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,21 +18,21 @@ public class PartyContainer {
     }
 
     public List<String> getAllHeroIds() {
-        return new ArrayList<>(party.keySet());
+        return List.copyOf(party.keySet());
     }
 
     public List<String> getAllHeroNames() {
         return party.values()
                     .stream()
                     .map(HeroItem::getName)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toUnmodifiableList());
     }
 
     public List<Integer> getAllHeroLevels() {
         return party.values()
                     .stream()
                     .map(HeroItem::getLevel)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toUnmodifiableList());
     }
 
     public HeroItem getHero(int index) {
@@ -41,7 +40,7 @@ public class PartyContainer {
     }
 
     public List<HeroItem> getAllHeroes() {
-        return new ArrayList<>(party.values());
+        return List.copyOf(party.values());
     }
 
     public void addHero(HeroItem hero) {
