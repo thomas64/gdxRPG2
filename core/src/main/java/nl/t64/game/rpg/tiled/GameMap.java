@@ -30,8 +30,9 @@ public class GameMap {
     private static final String NPC_LAYER = "npc_layer";
     private static final String HERO_LAYER = "hero_layer";
     private static final String COLLISION_LAYER = "collision_layer";
-    private static final String PORTAL_LAYER = "portal_layer";
     private static final String SPAWN_LAYER = "spawn_layer";
+    private static final String PORTAL_LAYER = "portal_layer";
+    private static final String WARP_LAYER = "warp_layer";
 
     private TiledMap tiledMap;
     private String mapTitle;
@@ -44,8 +45,9 @@ public class GameMap {
     private List<Npc> npcs = new ArrayList<>();
     private List<Hero> heroes = new ArrayList<>();
     private List<Rectangle> blockers = new ArrayList<>();
-    private List<Portal> portals = new ArrayList<>();
     private List<SpawnPoint> spawnPoints = new ArrayList<>();
+    private List<Portal> portals = new ArrayList<>();
+    private List<WarpPoint> warpPoints = new ArrayList<>();
 
 
     public GameMap(String mapTitle, GameData gameData) {
@@ -58,8 +60,9 @@ public class GameMap {
         loadNpcs();
         loadHeroes(gameData);
         loadBlockers();
-        loadPortals();
         loadSpawnPoints();
+        loadPortals();
+        loadWarpPoints();
     }
 
     public void addToBlockers(Rectangle immobileNpc) {
@@ -82,6 +85,12 @@ public class GameMap {
         return portals.stream()
                       .filter(portal -> playerRect.overlaps(portal.getRectangle()))
                       .findFirst();
+    }
+
+    public Optional<WarpPoint> getWarpPointBeingCheckedBy(Rectangle checkRect) {
+        return warpPoints.stream()
+                         .filter(warpPoint -> checkRect.overlaps(warpPoint.getRectangle()))
+                         .findFirst();
     }
 
     public void setPlayerSpawnLocationForNewLoad(String mapTitle) {
@@ -154,6 +163,14 @@ public class GameMap {
         });
     }
 
+    private void loadSpawnPoints() {
+        getMapLayer(SPAWN_LAYER).ifPresent(mapLayer -> {
+            for (MapObject mapObject : mapLayer.getObjects()) {
+                spawnPoints.add(new SpawnPoint(mapObject));
+            }
+        });
+    }
+
     private void loadPortals() {
         getMapLayer(PORTAL_LAYER).ifPresent(mapLayer -> {
             for (MapObject mapObject : mapLayer.getObjects()) {
@@ -162,10 +179,10 @@ public class GameMap {
         });
     }
 
-    private void loadSpawnPoints() {
-        getMapLayer(SPAWN_LAYER).ifPresent(mapLayer -> {
+    private void loadWarpPoints() {
+        getMapLayer(WARP_LAYER).ifPresent(mapLayer -> {
             for (MapObject mapObject : mapLayer.getObjects()) {
-                spawnPoints.add(new SpawnPoint(mapObject));
+                warpPoints.add(new WarpPoint(mapObject, mapTitle));
             }
         });
     }

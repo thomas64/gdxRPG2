@@ -70,7 +70,8 @@ public class PlayerPhysics extends PhysicsComponent {
     private void checkActionPressed() {
         if (isActionPressed) {
             selectNpcCharacterCandidate();
-            checkSavePoint();
+            checkSavePoints();
+            checkWarpPoints();
             isActionPressed = false;
         }
     }
@@ -86,10 +87,19 @@ public class PlayerPhysics extends PhysicsComponent {
         });
     }
 
-    private void checkSavePoint() {
+    private void checkSavePoints() {
         if (engine.getWorldScreen().getCurrentMap().areSavePointsBeingCheckedBy(getCheckRect())) {
             engine.getProfileManager().saveProfile();
         }
+    }
+
+    private void checkWarpPoints() {
+        engine.getWorldScreen().getCurrentMap().getWarpPointBeingCheckedBy(getCheckRect())
+              .ifPresent(warpPoint -> {
+                  warpPoint.setEnterDirection(direction);
+                  engine.getWorldScreen().loadMap(warpPoint.getToMapName());
+                  engine.getWorldScreen().getCurrentMap().setPlayerSpawnLocation(warpPoint);
+              });
     }
 
     private void relocate(float dt) {
