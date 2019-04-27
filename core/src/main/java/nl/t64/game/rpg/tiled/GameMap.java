@@ -23,8 +23,6 @@ import java.util.Optional;
 @Getter
 public class GameMap {
 
-    private static final String TAG = GameMap.class.getSimpleName();
-
     private static final String MAP_PATH = "maps/";
     private static final String MAPFILE_SUFFIX = ".tmx";
 

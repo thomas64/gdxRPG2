@@ -11,11 +11,6 @@ import nl.t64.game.rpg.events.character.*;
 
 public class PlayerGraphics extends GraphicsComponent {
 
-    private static final float SLOW_FRAMES = 0.50f;
-    private static final float NORMAL_FRAMES = 0.25f;
-    private static final float FAST_FRAMES = 0.15f;
-    private static final float NO_FRAMES = 0f;
-
     public PlayerGraphics() {
         SpriteConfig spriteConfig = Utility.getSpriteConfig(Constant.PLAYER_ID);
         loadWalkingAnimation(spriteConfig);
@@ -47,8 +42,8 @@ public class PlayerGraphics extends GraphicsComponent {
     }
 
     @Override
-    public void update() {
-        setFrame();
+    public void update(float dt) {
+        setFrame(dt);
     }
 
     @Override
@@ -58,13 +53,13 @@ public class PlayerGraphics extends GraphicsComponent {
 
     private void setFrameDuration(float moveSpeed) {
         if (moveSpeed == Constant.MOVE_SPEED_1) {
-            frameDuration = SLOW_FRAMES;
+            frameDuration = Constant.SLOW_FRAMES;
         } else if (moveSpeed == Constant.MOVE_SPEED_2) {
-            frameDuration = NORMAL_FRAMES;
+            frameDuration = Constant.NORMAL_FRAMES;
         } else if (moveSpeed == Constant.MOVE_SPEED_3) {
-            frameDuration = FAST_FRAMES;
+            frameDuration = Constant.FAST_FRAMES;
         } else if (moveSpeed == Constant.MOVE_SPEED_4) {
-            frameDuration = NO_FRAMES;
+            frameDuration = Constant.NO_FRAMES;
         }
         walkNorthAnimation.setFrameDuration(frameDuration);
         walkSouthAnimation.setFrameDuration(frameDuration);

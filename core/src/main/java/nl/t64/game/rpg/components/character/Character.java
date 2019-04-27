@@ -39,7 +39,7 @@ public class Character {
     public void update(Engine engine, float dt) {
         inputComponent.update(this, dt);
         physicsComponent.update(engine, this, dt);
-        graphicsComponent.update();
+        graphicsComponent.update(dt);
     }
 
     public void render(Batch batch, ShapeRenderer shapeRenderer) {

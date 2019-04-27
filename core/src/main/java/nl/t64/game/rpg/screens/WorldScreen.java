@@ -39,7 +39,6 @@ import java.util.stream.IntStream;
 
 public class WorldScreen implements Screen, ProfileObserver {
 
-    private static final String TAG = WorldScreen.class.getSimpleName();
     private static final Color TRANSPARENT = new Color(0f, 0f, 0f, 0.5f);
 
     private static boolean showGrid = false;

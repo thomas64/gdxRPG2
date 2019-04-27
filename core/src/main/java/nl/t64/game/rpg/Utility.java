@@ -3,7 +3,6 @@ package nl.t64.game.rpg;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
-import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -22,16 +21,12 @@ public final class Utility {
         throw new IllegalStateException("Utility class");
     }
 
-    private static final String TAG = Utility.class.getSimpleName();
     private static final AssetManager ASSET_MANAGER = new AssetManager();
-    private static final InternalFileHandleResolver FILE_PATH_RESOLVER = new InternalFileHandleResolver();
     private static final ObjectMap<String, SpriteConfig> SPRITE_CONFIGS = new ObjectMap<>();
 
     public static void unloadAsset(String assetFilenamePath) {
         if (ASSET_MANAGER.isLoaded(assetFilenamePath)) {
             ASSET_MANAGER.unload(assetFilenamePath);
-        } else {
-            Logger.assetUnloadingFailed(TAG, assetFilenamePath);
         }
     }
 
@@ -43,7 +38,7 @@ public final class Utility {
     }
 
     private static void loadMapAsset(String mapFilenamePath) {
-        ASSET_MANAGER.setLoader(TiledMap.class, new TmxMapLoader(FILE_PATH_RESOLVER));
+        ASSET_MANAGER.setLoader(TiledMap.class, new TmxMapLoader(ASSET_MANAGER.getFileHandleResolver()));
         ASSET_MANAGER.load(mapFilenamePath, TiledMap.class);
         ASSET_MANAGER.finishLoadingAsset(mapFilenamePath);
     }
@@ -56,8 +51,8 @@ public final class Utility {
     }
 
     private static void loadTrueTypeAsset(String trueTypeFilenamePath, int fontSize) {
-        ASSET_MANAGER.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(FILE_PATH_RESOLVER));
-        ASSET_MANAGER.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(FILE_PATH_RESOLVER));
+        ASSET_MANAGER.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(ASSET_MANAGER.getFileHandleResolver()));
+        ASSET_MANAGER.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(ASSET_MANAGER.getFileHandleResolver()));
         var parameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         parameter.fontFileName = trueTypeFilenamePath;
         parameter.fontParameters.size = fontSize;
@@ -73,7 +68,7 @@ public final class Utility {
     }
 
     private static void loadTextureAsset(String textureFilenamePath) {
-        ASSET_MANAGER.setLoader(Texture.class, new TextureLoader(FILE_PATH_RESOLVER));
+        ASSET_MANAGER.setLoader(Texture.class, new TextureLoader(ASSET_MANAGER.getFileHandleResolver()));
         ASSET_MANAGER.load(textureFilenamePath, Texture.class);
         ASSET_MANAGER.finishLoadingAsset(textureFilenamePath);
     }

@@ -18,6 +18,11 @@ public class Constant {
     public static final float MOVE_SPEED_3 = 240f; // 48 * 5
     public static final float MOVE_SPEED_4 = 960f; // 48 * 20
 
+    public static final float SLOW_FRAMES = 0.50f;
+    public static final float NORMAL_FRAMES = 0.25f;
+    public static final float FAST_FRAMES = 0.15f;
+    public static final float NO_FRAMES = 0f;
+
     public static final Color DARK_RED = new Color(0.5f, 0f, 0f, 1f);
 
     public static final String PLAYER_ID = "mozes";

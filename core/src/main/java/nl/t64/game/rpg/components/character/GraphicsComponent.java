@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.SpriteConfig;
 import nl.t64.game.rpg.Utility;
 import nl.t64.game.rpg.constants.CharacterState;
@@ -20,6 +19,7 @@ abstract class GraphicsComponent implements Component {
     private static final int SPRITE_GROUP_WIDTH = 144;
     private static final int SPRITE_GROUP_HEIGHT = 192;
 
+    private float frameTime = 0f;
     float frameDuration;
     TextureRegion currentFrame = null;
     CharacterState state;
@@ -30,22 +30,25 @@ abstract class GraphicsComponent implements Component {
     Animation<TextureRegion> walkWestAnimation;
     Animation<TextureRegion> walkEastAnimation;
 
-    public abstract void update();
+    public abstract void update(float dt);
 
     public abstract void render(Character character, Batch batch, ShapeRenderer shapeRenderer);
 
-    void setFrame() {
+    void setFrame(float dt) {
         switch (state) {
             case IDLE:
             case ALIGNING:
             case IMMOBILE:
-                setCurrentFrame(0f);
+                setCurrentFrame(Constant.NO_FRAMES);
+                // the next line sets player always just 1 dt moment before the end of normal stance when standing still.
+                frameTime = frameDuration - dt;
                 break;
             case WALKING:
-                if (frameDuration == 0f) { // no player animation when high speed moving.
-                    setCurrentFrame(0f);
+                frameTime = (frameTime + dt) % 12; // dividable by 0.15, 0.25 and 0.5, these are player speed frames.
+                if (frameDuration == Constant.NO_FRAMES) { // no player animation when high speed moving.
+                    setCurrentFrame(Constant.NO_FRAMES);
                 } else {
-                    setCurrentFrame(Engine.getRunTime());
+                    setCurrentFrame(frameTime);
                 }
                 break;
             default:

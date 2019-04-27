@@ -17,7 +17,7 @@ public class NpcGraphics extends GraphicsComponent {
     private boolean isSelected = false;
 
     public NpcGraphics(String spriteId) {
-        this.frameDuration = 0.25f;
+        this.frameDuration = Constant.NORMAL_FRAMES;
         SpriteConfig spriteConfig = Utility.getSpriteConfig(spriteId);
         loadWalkingAnimation(spriteConfig);
     }
@@ -54,8 +54,8 @@ public class NpcGraphics extends GraphicsComponent {
     }
 
     @Override
-    public void update() {
-        setFrame();
+    public void update(float dt) {
+        setFrame(dt);
     }
 
     @Override
