@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.events.Event;
 
@@ -15,11 +14,11 @@ import java.util.List;
 public class Character {
 
     private static final int MAX_COMPONENTS = 3;
-    private List<Component> components;
+    private final List<Component> components;
 
-    private InputComponent inputComponent;
-    private PhysicsComponent physicsComponent;
-    private GraphicsComponent graphicsComponent;
+    private final InputComponent inputComponent;
+    private final PhysicsComponent physicsComponent;
+    private final GraphicsComponent graphicsComponent;
 
     public Character(InputComponent input, PhysicsComponent physics, GraphicsComponent graphics) {
         this.inputComponent = input;
@@ -36,9 +35,9 @@ public class Character {
         components.forEach(component -> component.receive(event));
     }
 
-    public void update(Engine engine, float dt) {
+    public void update(float dt) {
         inputComponent.update(this, dt);
-        physicsComponent.update(engine, this, dt);
+        physicsComponent.update(this, dt);
         graphicsComponent.update(dt);
     }
 
@@ -59,15 +58,15 @@ public class Character {
     }
 
     public Rectangle getBoundingBox() {
-        return physicsComponent.getBoundingBox();
+        return physicsComponent.boundingBox;
     }
 
     public Vector2 getPosition() {
-        return physicsComponent.getCurrentPosition();
+        return physicsComponent.currentPosition;
     }
 
     public CharacterState getState() {
-        return physicsComponent.getState();
+        return physicsComponent.state;
     }
 
 }

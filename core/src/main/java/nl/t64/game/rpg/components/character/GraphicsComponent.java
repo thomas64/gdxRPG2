@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import nl.t64.game.rpg.SpriteConfig;
-import nl.t64.game.rpg.Utility;
+import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
@@ -80,7 +80,7 @@ abstract class GraphicsComponent implements Component {
         int row = spriteConfig.getRow() - 1;
         int col = spriteConfig.getCol() - 1;
 
-        Texture texture = Utility.getTextureAsset(path);
+        Texture texture = Utils.getResourceManager().getTextureAsset(path);
         TextureRegion[][] splitOfEight = TextureRegion.split(texture, SPRITE_GROUP_WIDTH, SPRITE_GROUP_HEIGHT);
         TextureRegion personSprite = splitOfEight[row][col];
         TextureRegion[][] textureFrames = personSprite.split((int) Constant.TILE_SIZE, (int) Constant.TILE_SIZE);

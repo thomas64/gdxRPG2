@@ -1,0 +1,198 @@
+package nl.t64.game.rpg.screens.menu;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.constants.ScreenType;
+
+
+public class MenuPause extends MenuScreen {
+
+    private static final Color TRANSPARENT = new Color(0f, 0f, 0f, 0.85f);
+    private static final String MENU_FONT = "fonts/fff_tusj.ttf";
+    private static final int MENU_SIZE = 30;
+    private static final int MENU_SPACE_BOTTOM = 10;
+
+    private static final String MENU_ITEM_CONTINUE = "Continue";
+    private static final String MENU_ITEM_LOAD_GAME = "Load Game";
+    private static final String MENU_ITEM_SETTINGS = "Settings";
+    private static final String MENU_ITEM_MAIN_MENU = "Main Menu";
+
+    private static final int NUMBER_OF_ITEMS = 4;
+    private static final int EXIT_INDEX = 0;
+
+    private static final String DIALOG_MESSAGE = "Any unsaved progress will be lost.\nAre you sure?";
+
+    private Stage stage;
+
+    private Image screenshot;
+    private Image blur;
+
+    private BitmapFont menuFont;
+    private Table table;
+    private TextButton continueButton;
+    private TextButton loadGameButton;
+    private TextButton settingsButton;
+    private TextButton mainMenuButton;
+    private DialogQuestion progressLostDialog;
+
+    private ListenerKeyVertical listenerKeyVertical;
+
+    private int selectedIndex;
+
+    public MenuPause() {
+        this.stage = new Stage();
+        createFonts();
+        this.selectedIndex = 0;
+    }
+
+    public void setBackground(Image background) {
+        setBackground(background, createBlur());
+    }
+
+    @Override
+    void setBackground(Image screenshot, Image blur) {
+        this.screenshot = screenshot;
+        this.blur = blur;
+        stage.addActor(screenshot);
+        stage.addActor(blur);
+    }
+
+    @Override
+    public void show() {
+        Gdx.input.setInputProcessor(stage);
+        setupScreen();
+    }
+
+    private void setupScreen() {
+        table = createTable();
+        progressLostDialog = new DialogQuestion(this::openMenuMain, DIALOG_MESSAGE);
+        applyListeners();
+        stage.addActor(table);
+        stage.setKeyboardFocus(table);
+        setCurrentTextButtonToRed();
+    }
+
+    @Override
+    public void render(float dt) {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.act(dt);
+        listenerKeyVertical.updateSelectedIndex(selectedIndex);
+        progressLostDialog.render(dt); // for updating the index in de listener.
+        stage.draw();
+    }
+
+    @Override
+    public void hide() {
+        stage.clear();
+        Gdx.input.setInputProcessor(null);
+    }
+
+    @Override
+    public void dispose() {
+        // menuFont.dispose(); is already disposed in MenuMain?
+        stage.clear();
+        stage.dispose();
+    }
+
+    public void updateIndex(Integer newIndex) {
+        selectedIndex = newIndex;
+        setAllTextButtonsToWhite();
+        setCurrentTextButtonToRed();
+    }
+
+    private void selectMenuItem() {
+        var screenManager = Utils.getScreenManager();
+        switch (selectedIndex) {
+            case 0:
+                Utils.getScreenManager().setScreen(ScreenType.WORLD);
+                break;
+            case 1:
+                var menuLoad = screenManager.getMenuScreen(ScreenType.MENU_LOAD);
+                menuLoad.setFromScreen(ScreenType.MENU_PAUSE);
+                menuLoad.setBackground(screenshot, blur);
+                screenManager.setScreen(ScreenType.MENU_LOAD);
+                break;
+            case 2:
+                var menuSettings = screenManager.getMenuScreen(ScreenType.MENU_SETTINGS);
+                menuSettings.setFromScreen(ScreenType.MENU_PAUSE);
+                menuSettings.setBackground(screenshot, blur);
+                screenManager.setScreen(ScreenType.MENU_SETTINGS);
+                break;
+            case 3:
+                progressLostDialog.show(stage);
+                break;
+            default:
+                throw new IllegalArgumentException("SelectedIndex not found.");
+        }
+    }
+
+    private void openMenuMain() {
+        Utils.getScreenManager().setScreen(ScreenType.MENU_MAIN);
+    }
+
+    private void setAllTextButtonsToWhite() {
+        for (Actor actor : table.getChildren()) {
+            ((TextButton) actor).getStyle().fontColor = Color.WHITE;
+        }
+    }
+
+    private void setCurrentTextButtonToRed() {
+        ((TextButton) table.getChildren().get(selectedIndex)).getStyle().fontColor = Constant.DARK_RED;
+    }
+
+    private void createFonts() {
+        menuFont = Utils.getResourceManager().getTrueTypeAsset(MENU_FONT, MENU_SIZE);
+    }
+
+    private Image createBlur() {
+        var pixmap = new Pixmap(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Pixmap.Format.Alpha);
+        pixmap.setColor(TRANSPARENT);
+        pixmap.fill();
+        return new Image(new Texture(pixmap));
+    }
+
+    private Table createTable() {
+        // styles
+        var buttonStyle = new TextButton.TextButtonStyle();
+        buttonStyle.font = menuFont;
+        buttonStyle.fontColor = Color.WHITE;
+
+        // actors
+        continueButton = new TextButton(MENU_ITEM_CONTINUE, new TextButton.TextButtonStyle(buttonStyle));
+        loadGameButton = new TextButton(MENU_ITEM_LOAD_GAME, new TextButton.TextButtonStyle(buttonStyle));
+        settingsButton = new TextButton(MENU_ITEM_SETTINGS, new TextButton.TextButtonStyle(buttonStyle));
+        mainMenuButton = new TextButton(MENU_ITEM_MAIN_MENU, new TextButton.TextButtonStyle(buttonStyle));
+
+        // table
+        var newTable = new Table();
+        newTable.setFillParent(true);
+        newTable.add(continueButton).spaceBottom(MENU_SPACE_BOTTOM).row();
+        newTable.add(loadGameButton).spaceBottom(MENU_SPACE_BOTTOM).row();
+        newTable.add(settingsButton).spaceBottom(MENU_SPACE_BOTTOM).row();
+        newTable.add(mainMenuButton).spaceBottom(MENU_SPACE_BOTTOM).row();
+        return newTable;
+    }
+
+    private void applyListeners() {
+        listenerKeyVertical = new ListenerKeyVertical(this::updateIndex, NUMBER_OF_ITEMS);
+        table.addListener(listenerKeyVertical);
+        table.addListener(new ListenerKeyConfirm(this::updateIndex, this::selectMenuItem, EXIT_INDEX));
+        continueButton.addListener(new ListenerMouseTextButton(this::updateIndex, this::selectMenuItem, 0));
+        loadGameButton.addListener(new ListenerMouseTextButton(this::updateIndex, this::selectMenuItem, 1));
+        settingsButton.addListener(new ListenerMouseTextButton(this::updateIndex, this::selectMenuItem, 2));
+        mainMenuButton.addListener(new ListenerMouseTextButton(this::updateIndex, this::selectMenuItem, 3));
+    }
+
+}

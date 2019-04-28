@@ -24,7 +24,7 @@ public class PartyContainer {
     public List<String> getAllHeroNames() {
         return party.values()
                     .stream()
-                    .map(HeroItem::getName)
+                    .map(heroItem -> heroItem.name)
                     .collect(Collectors.toUnmodifiableList());
     }
 
@@ -47,7 +47,7 @@ public class PartyContainer {
         if (isFull()) {
             throw new IllegalStateException("Party is full.");
         }
-        String id = hero.getName().toLowerCase();
+        String id = hero.name.toLowerCase();
         party.put(id, hero);
     }
 

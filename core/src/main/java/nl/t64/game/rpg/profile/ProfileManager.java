@@ -16,10 +16,10 @@ public class ProfileManager {
     private static final String DEFAULT_PROFILE = Constant.PLAYER_ID;
     private static final String SAVEGAME_SUFFIX = ".dat";
 
-    private List<ProfileObserver> observers = new ArrayList<>();
+    private final List<ProfileObserver> observers = new ArrayList<>();
 
-    private Json json = new Json();
-    private Map<String, FileHandle> profiles = new HashMap<>();
+    private final Json json = new Json();
+    private final Map<String, FileHandle> profiles = new HashMap<>();
     private ObjectMap<String, Object> profileProperties = new ObjectMap<>();
     private String profileName = null;
 

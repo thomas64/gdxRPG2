@@ -27,7 +27,7 @@ public class HeroContainer {
     }
 
     public void addHero(HeroItem hero) {
-        String id = hero.getName().toLowerCase();
+        String id = hero.name.toLowerCase();
         heroes.put(id, hero);
     }
 

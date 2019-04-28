@@ -3,8 +3,6 @@ package nl.t64.game.rpg.components.character;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import lombok.Getter;
-import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
@@ -12,25 +10,23 @@ import nl.t64.game.rpg.constants.Direction;
 
 abstract class PhysicsComponent implements Component {
 
-    @Getter
     CharacterState state;
-    Direction direction = null;
+    Direction direction;
     float velocity;
-    Vector2 oldPosition;
-    @Getter
-    Vector2 currentPosition;
-    @Getter
     Rectangle boundingBox;
+    Vector2 oldPosition;
+    Vector2 currentPosition;
     float boundingBoxWidthPercentage;
     float boundingBoxHeightPercentage;
 
     PhysicsComponent() {
+        this.direction = null;
         this.boundingBox = new Rectangle();
         this.oldPosition = new Vector2();
         this.currentPosition = new Vector2();
     }
 
-    public abstract void update(Engine engine, Character character, float dt);
+    public abstract void update(Character character, float dt);
 
     public abstract void debug(ShapeRenderer shapeRenderer);
 

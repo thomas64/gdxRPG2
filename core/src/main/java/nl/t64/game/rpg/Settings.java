@@ -5,7 +5,6 @@ import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import lombok.Getter;
-import lombok.Setter;
 import nl.t64.game.rpg.constants.Constant;
 
 import java.io.IOException;
@@ -20,12 +19,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
-@Getter
-@Setter
 public class Settings {
 
     private static final String SETTINGS_FILE = "settings/settings.dat";
 
+    @Getter
     private boolean fullscreen;
 
     private Settings() {

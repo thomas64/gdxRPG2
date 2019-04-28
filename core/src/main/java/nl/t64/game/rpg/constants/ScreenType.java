@@ -4,18 +4,18 @@ import com.badlogic.gdx.Screen;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import nl.t64.game.rpg.screens.InventoryScreen;
-import nl.t64.game.rpg.screens.WorldScreen;
 import nl.t64.game.rpg.screens.menu.*;
+import nl.t64.game.rpg.screens.world.WorldScreen;
 
 
 @AllArgsConstructor
 public enum ScreenType {
 
-    MAIN_MENU(MainMenu.class),
-    NEW_MENU(NewMenu.class),
-    LOAD_MENU(LoadMenu.class),
-    SETTINGS_MENU(SettingsMenu.class),
-    PAUSE_MENU(PauseMenu.class),
+    MENU_MAIN(MenuMain.class),
+    MENU_NEW(MenuNew.class),
+    MENU_LOAD(MenuLoad.class),
+    MENU_SETTINGS(MenuSettings.class),
+    MENU_PAUSE(MenuPause.class),
     WORLD(WorldScreen.class),
     INVENTORY(InventoryScreen.class);
 

@@ -2,33 +2,30 @@ package nl.t64.game.rpg;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.reflect.ClassReflection;
-import com.badlogic.gdx.utils.reflect.ReflectionException;
-import lombok.Getter;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.profile.ProfileManager;
-import nl.t64.game.rpg.screens.WorldScreen;
-
-import java.util.EnumMap;
+import nl.t64.game.rpg.screens.ScreenManager;
+import nl.t64.game.rpg.screens.world.MapManager;
 
 
 public class Engine extends Game {
 
-    @Getter
-    private static float runTime = 0f;
+    public static float runTime = 0f;
 
-    @Getter
-    private Settings settings;
-    @Getter
-    private ProfileManager profileManager;
-    @Getter
-    private GameData gameData;
-    private EnumMap<ScreenType, Screen> screenCache;
+    final ResourceManager resourceManager;
+    final Settings settings;
+    final ProfileManager profileManager;
+    final GameData gameData;
+    final ScreenManager screenManager;
+    final MapManager mapManager;
 
     public Engine(Settings settings) {
+        this.resourceManager = new ResourceManager();
         this.settings = settings;
+        this.profileManager = new ProfileManager();
+        this.gameData = new GameData();
+        this.screenManager = new ScreenManager();
+        this.mapManager = new MapManager();
     }
 
     private static void updateRunTime() {
@@ -37,14 +34,10 @@ public class Engine extends Game {
 
     @Override
     public void create() {
-        profileManager = new ProfileManager();
-        gameData = new GameData();
-        screenCache = new EnumMap<>(ScreenType.class);
-
         profileManager.addObserver(gameData);
-        profileManager.addObserver(getWorldScreen());
+        profileManager.addObserver(mapManager);
 
-        setScreen(ScreenType.MAIN_MENU);
+        screenManager.setScreen(ScreenType.MENU_MAIN);
     }
 
     @Override
@@ -55,36 +48,7 @@ public class Engine extends Game {
 
     @Override
     public void dispose() {
-        for (Screen screen : screenCache.values()) {
-            screen.dispose();
-        }
-        screenCache.clear();
-    }
-
-    public WorldScreen getWorldScreen() {
-        return (WorldScreen) getScreen(ScreenType.WORLD);
-    }
-
-    public Screen getScreen(ScreenType screenType) {
-        ifNotInScreenCacheAdd(screenType);
-        return screenCache.get(screenType);
-    }
-
-    public void setScreen(ScreenType screenType) {
-        ifNotInScreenCacheAdd(screenType);
-        super.setScreen(screenCache.get(screenType));
-    }
-
-    private void ifNotInScreenCacheAdd(ScreenType screenType) {
-        if (!screenCache.containsKey(screenType)) {
-            try {
-                Screen newScreen = (Screen) ClassReflection.getConstructor(screenType.getScreenClass(), Engine.class)
-                                                           .newInstance(this);
-                screenCache.put(screenType, newScreen);
-            } catch (ReflectionException e) {
-                throw new GdxRuntimeException("Screen " + screenType + " could not be created.", e);
-            }
-        }
+        screenManager.dispose();
     }
 
 }
