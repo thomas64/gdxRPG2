@@ -5,14 +5,11 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.ScreenUtils;
 import lombok.Getter;
-import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.character.Character;
 import nl.t64.game.rpg.components.character.GraphicsPlayer;
@@ -29,13 +26,9 @@ import nl.t64.game.rpg.screens.menu.MenuPause;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 
 public class WorldScreen implements Screen, MapObserver {
-
-    private static final Color TRANSPARENT = new Color(0f, 0f, 0f, 0.5f);
 
     private static boolean showGrid = false;
     private static boolean showObjects = false;
@@ -52,6 +45,8 @@ public class WorldScreen implements Screen, MapObserver {
     private ShapeRenderer shapeRenderer;
     private PartyWindow partyWindow;
 
+    private DebugBox debugBox;
+
     public WorldScreen() {
         this.camera = new Camera();
         this.mapRenderer = new OrthogonalTiledMapRenderer(null);
@@ -62,6 +57,8 @@ public class WorldScreen implements Screen, MapObserver {
         this.player = new Character(new InputPlayer(this.multiplexer), new PhysicsPlayer(), new GraphicsPlayer());
         this.shapeRenderer = new ShapeRenderer();
         this.partyWindow = new PartyWindow();
+
+        this.debugBox = new DebugBox(this.player);
 
         Utils.getMapManager().addObserver(this);
     }
@@ -186,6 +183,7 @@ public class WorldScreen implements Screen, MapObserver {
         mapRenderer.dispose();
         shapeRenderer.dispose();
         partyWindow.dispose();
+        debugBox.dispose();
     }
 
     static void setShowGrid() {
@@ -229,84 +227,7 @@ public class WorldScreen implements Screen, MapObserver {
 
     private void renderDebugBox(float dt) {
         if (showDebug) {
-            Gdx.gl.glEnable(GL20.GL_BLEND);
-            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            shapeRenderer.setProjectionMatrix(camera.projection);
-            shapeRenderer.setColor(TRANSPARENT);
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-
-            int w = 150;
-            int h = 300;
-            int x = 0 - (Gdx.graphics.getWidth() / 4);
-            int y = 0 - (Gdx.graphics.getHeight() / 4) + ((Gdx.graphics.getHeight() / 2) - h);
-            shapeRenderer.rect(x, y, w, h);
-            shapeRenderer.end();
-            Gdx.gl.glDisable(GL20.GL_BLEND);
-            shapeRenderer.setProjectionMatrix(camera.combined);
-
-            String debug1 = "" +
-                    "FPS:\n" +
-                    "dt:\n" +
-                    "runTime:\n" +
-                    "\n" +
-//                    "timeUp:\n" +
-//                    "timeDown:\n" +
-//                    "timeLeft:\n" +
-//                    "timeRight:\n" +
-//                    "timeDelay:\n" +
-//                    "\n" +
-//                    "oldPositionX:\n" +
-//                    "oldPositionY:\n" +
-//                    "\n" +
-                    "currentPositionX:\n" +
-                    "currentPositionY:\n" +
-                    "\n" +
-                    "currentPositionTiledX:\n" +
-                    "currentPositionTiledY:\n" +
-                    "\n";
-//                    "direction:\n" +
-//                    "state:\n";
-
-            String runTime = String.valueOf(Engine.runTime);
-            String debug2 = "" +
-                    Gdx.graphics.getFramesPerSecond() + "\n" +
-                    String.valueOf(dt).substring(0, 5) + "\n" +
-                    runTime.substring(0, runTime.length() - 4) + "\n" +
-                    "\n" +
-//                    player.getInputComponent().getTimeUp() + "\n" +
-//                    player.getInputComponent().getTimeDown() + "\n" +
-//                    player.getInputComponent().getTimeLeft() + "\n" +
-//                    player.getInputComponent().getTimeRight() + "\n" +
-//                    player.getInputComponent().getTimeDelay() + "\n" +
-//                    "\n" +
-//                    player.getOldPosition().x + "\n" +
-//                    player.getOldPosition().y + "\n" +
-//                    "\n" +
-                    player.getPosition().x + "\n" +
-                    player.getPosition().y + "\n" +
-                    "\n" +
-                    (int) player.getPosition().x / Constant.TILE_SIZE + "\n" +
-                    (int) player.getPosition().y / Constant.TILE_SIZE + "\n" +
-                    "\n";
-//                    player.getPhysicsComponent().getDirection() + "\n" +
-//                    player.getState() + "\n";
-
-            var lines1 = debug1.lines().collect(Collectors.toList());
-            var lines2 = debug2.lines().collect(Collectors.toList());
-            var batch = new SpriteBatch();
-            var font = new BitmapFont();
-            font.setColor(Color.WHITE);
-            batch.begin();
-            int lineHeight = 15;
-            int xFirstColumn = 0;
-            int xSecondColumn = 200;
-            IntStream.range(0, lines1.size()).forEach(i -> {
-                font.draw(batch, lines1.get(i), xFirstColumn, Gdx.graphics.getHeight() - (i * lineHeight));
-                font.draw(batch, lines2.get(i), xSecondColumn, Gdx.graphics.getHeight() - (i * lineHeight));
-            });
-            batch.end();
-            batch.dispose();
-            font.dispose();
+            debugBox.render(dt);
         }
     }
 
