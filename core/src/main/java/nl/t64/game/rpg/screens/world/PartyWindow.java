@@ -87,18 +87,26 @@ class PartyWindow {
 
     void showHide() {
         if (!isMovingDown && !isMovingUp) {
+            setVisibility();
+        }
+    }
 
-            if (window.isVisible()) {
-                isMovingDown = true;
-            } else {
-                window.setVisible(true);
-                isMovingUp = true;
-            }
-
+    private void setVisibility() {
+        if (window.isVisible()) {
+            isMovingDown = true;
+        } else {
+            window.setVisible(true);
+            isMovingUp = true;
         }
     }
 
     void render(float dt) {
+        handleMovingUp(dt);
+        handleMovingDown(dt);
+        handleRendering(dt);
+    }
+
+    private void handleMovingUp(float dt) {
         if (isMovingUp) {
             yPos += VELOCITY * dt;
             if (yPos >= HIGH_Y) {
@@ -106,7 +114,9 @@ class PartyWindow {
                 isMovingUp = false;
             }
         }
+    }
 
+    private void handleMovingDown(float dt) {
         if (isMovingDown) {
             yPos -= VELOCITY * dt;
             if (yPos <= LOW_Y) {
@@ -115,7 +125,9 @@ class PartyWindow {
                 window.setVisible(false);
             }
         }
+    }
 
+    private void handleRendering(float dt) {
         if (window.isVisible()) {
             renderWindow();
             stage.act(dt);
@@ -158,7 +170,7 @@ class PartyWindow {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(TRANSPARENT_WHITE);
-        IntStream.rangeClosed(0, MAX_PARTY_SIZE - 1)
+        IntStream.rangeClosed(0, party.getSize() - 1)
                  .forEach(i -> shapeRenderer.rect(window.getX() + (i * FACE_SIZE) + (i * PADDING),
                                                   yPos + PADDING,
                                                   FACE_SIZE,
@@ -236,9 +248,9 @@ class PartyWindow {
     private void renderHpLabels() {
         var labelStyle = new Label.LabelStyle(font, TRANSPARENT_BLACK);
         IntStream.rangeClosed(0, party.getSize() - 1)
-                 .forEach(partyNumber -> {
+                 .forEach(i -> {
                      var hpLabel = new Label("HP: ", labelStyle);
-                     hpLabel.setPosition(partyNumber * FACE_SIZE + (partyNumber * PADDING) + PADDING_SMALL,
+                     hpLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
                                          yPos + FACE_Y - (2f * LINE_HEIGHT) - PADDING_LINE);
                      window.addActor(hpLabel);
                  });
@@ -280,9 +292,9 @@ class PartyWindow {
     private void renderXpLabels() {
         var labelStyle = new Label.LabelStyle(font, TRANSPARENT_BLACK);
         IntStream.rangeClosed(0, party.getSize() - 1)
-                 .forEach(partyNumber -> {
+                 .forEach(i -> {
                      var xpLabel = new Label("XP: ", labelStyle);
-                     xpLabel.setPosition(partyNumber * FACE_SIZE + (partyNumber * PADDING) + PADDING_SMALL,
+                     xpLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
                                          yPos + FACE_Y - (3f * LINE_HEIGHT) - PADDING_LINE);
                      window.addActor(xpLabel);
                  });
@@ -292,7 +304,7 @@ class PartyWindow {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.TAN);
         IntStream.rangeClosed(0, party.getSize() - 1)
-                 .forEach(partyNumber -> renderBar(partyNumber, 3f, calculateXpBarWidth(partyNumber)));
+                 .forEach(i -> renderBar(i, 3f, calculateXpBarWidth(i)));
         shapeRenderer.end();
 
         renderBarOutline(3f);
@@ -309,7 +321,7 @@ class PartyWindow {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(TRANSPARENT_BLACK);
         IntStream.rangeClosed(0, party.getSize() - 1)
-                 .forEach(partyNumber -> renderBar(partyNumber, linePosition, BAR_WIDTH));
+                 .forEach(i -> renderBar(i, linePosition, BAR_WIDTH));
         shapeRenderer.end();
     }
 
