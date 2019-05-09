@@ -3,10 +3,8 @@ package nl.t64.game.rpg.screens.menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Array;
@@ -18,8 +16,6 @@ import nl.t64.game.rpg.constants.ScreenType;
 public class MenuLoad extends MenuScreen {
 
     private static final String SPRITE_TRANSPARENT = "sprites/transparent.png";
-    private static final String MENU_FONT = "fonts/fff_tusj.ttf";
-    private static final int MENU_SIZE = 30;
 
     private static final String TITLE_LABEL = "Select your profile:";
     private static final String MENU_ITEM_LOAD = "Load";
@@ -37,16 +33,10 @@ public class MenuLoad extends MenuScreen {
     private static final int DELETE_INDEX = 1;
     private static final int EXIT_INDEX = 2;
 
-    private Stage stage;
-
     private ScreenType fromScreen;
 
     private Array<String> profiles;
 
-    private Image screenshot;
-    private Image blur;
-
-    private BitmapFont menuFont;
     private Table topTable;
     private List listItems;
     private ScrollPane scrollPane;
@@ -67,8 +57,7 @@ public class MenuLoad extends MenuScreen {
     private boolean isMouseScrolled = false;
 
     public MenuLoad() {
-        this.stage = new Stage();
-        createFonts();
+        super();
     }
 
     @Override
@@ -76,21 +65,7 @@ public class MenuLoad extends MenuScreen {
         this.fromScreen = screenType;
     }
 
-    @Override
-    void setBackground(Image screenshot, Image blur) {
-        this.screenshot = screenshot;
-        this.blur = blur;
-        stage.addActor(screenshot);
-        stage.addActor(blur);
-    }
-
-    @Override
-    public void show() {
-        Gdx.input.setInputProcessor(stage);
-        setupScreen();
-    }
-
-    private void setupScreen() {
+    void setupScreen() {
         Utils.getProfileManager().loadAllProfiles();
         profiles = Utils.getProfileManager().getProfileList();
 
@@ -138,19 +113,6 @@ public class MenuLoad extends MenuScreen {
             scrollPane.scrollTo(0, yScroll, 0, 0);
             lastSelectedListIndex = currentSelectedListIndex;
         }
-    }
-
-    @Override
-    public void hide() {
-        stage.clear();
-        Gdx.input.setInputProcessor(null);
-    }
-
-    @Override
-    public void dispose() {
-        // menuFont.dispose(); is already disposed in MenuMain?
-        stage.clear();
-        stage.dispose();
     }
 
     private void busyScrolling() {
@@ -205,7 +167,7 @@ public class MenuLoad extends MenuScreen {
     private void processBackButton() {
         if (fromScreen == ScreenType.MENU_PAUSE) {
             var menuPause = Utils.getScreenManager().getMenuScreen(fromScreen);
-            menuPause.setBackground(screenshot, blur);
+            menuPause.setBackground(screenshot);
         }
         Utils.getScreenManager().setScreen(fromScreen);
         fromScreen = null;
@@ -239,10 +201,6 @@ public class MenuLoad extends MenuScreen {
 
     private void setCurrentTextButtonToRed() {
         ((TextButton) bottomTable.getChildren().get(selectedMenuIndex)).getStyle().fontColor = Constant.DARK_RED;
-    }
-
-    private void createFonts() {
-        menuFont = Utils.getResourceManager().getTrueTypeAsset(MENU_FONT, MENU_SIZE);
     }
 
     private void createTables() {

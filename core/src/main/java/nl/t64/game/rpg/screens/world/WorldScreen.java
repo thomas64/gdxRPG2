@@ -149,7 +149,9 @@ public class WorldScreen implements Screen, MapObserver {
     }
 
     private Image createScreenshot() {
-        return new Image(ScreenUtils.getFrameBufferTexture());
+        var screenshot = new Image(ScreenUtils.getFrameBufferTexture());
+        screenshot.setColor(Color.DARK_GRAY);
+        return screenshot;
     }
 
     private void showHidePartyWindow() {

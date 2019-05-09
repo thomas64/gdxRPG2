@@ -3,10 +3,8 @@ package nl.t64.game.rpg.screens.menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -21,8 +19,6 @@ import nl.t64.game.rpg.constants.ScreenType;
 public class MenuNew extends MenuScreen {
 
     private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
-    private static final String MENU_FONT = "fonts/fff_tusj.ttf";
-    private static final int MENU_SIZE = 30;
 
     private static final String PROFILE_LABEL = "Enter Profile Name:";
     private static final int PROFILE_INPUT_LENGTH = 8 + 1;
@@ -40,9 +36,6 @@ public class MenuNew extends MenuScreen {
     private static final int NUMBER_OF_ITEMS = 2;
     private static final int EXIT_INDEX = 1;
 
-    private Stage stage;
-
-    private BitmapFont menuFont;
     private Table table;
     private TextField profileText;
     private TextButton startButton;
@@ -57,17 +50,10 @@ public class MenuNew extends MenuScreen {
     private int selectedIndex;
 
     public MenuNew() {
-        this.stage = new Stage();
-        createFonts();
+        super();
     }
 
-    @Override
-    public void show() {
-        Gdx.input.setInputProcessor(stage);
-        setupScreen();
-    }
-
-    private void setupScreen() {
+    void setupScreen() {
         Utils.getProfileManager().loadAllProfiles();
 
         table = createTable();
@@ -94,19 +80,6 @@ public class MenuNew extends MenuScreen {
         listenerKeyHorizontal.updateSelectedIndex(selectedIndex);
         overwriteDialog.render(dt); // for updating the index in de listener.
         stage.draw();
-    }
-
-    @Override
-    public void hide() {
-        stage.clear();
-        Gdx.input.setInputProcessor(null);
-    }
-
-    @Override
-    public void dispose() {
-        // menuFont.dispose(); is already disposed in MenuMain?
-        stage.clear();
-        stage.dispose();
     }
 
     private void updateInput(StringBuilder newInput) {
@@ -158,10 +131,6 @@ public class MenuNew extends MenuScreen {
     private void setCurrentTextButtonToRed() {
         Table lowerTable = (Table) table.getChildren().get(1); // two tables inside the table, get the second.
         ((TextButton) lowerTable.getChildren().get(selectedIndex)).getStyle().fontColor = Constant.DARK_RED;
-    }
-
-    private void createFonts() {
-        menuFont = Utils.getResourceManager().getTrueTypeAsset(MENU_FONT, MENU_SIZE);
     }
 
     private Table createTable() {

@@ -3,9 +3,7 @@ package nl.t64.game.rpg.screens.menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -16,12 +14,7 @@ import nl.t64.game.rpg.constants.ScreenType;
 
 public class MenuMain extends MenuScreen {
 
-    private static final String TITLE_FONT = "fonts/colonna.ttf";
-    private static final int TITLE_SIZE = 200;
     private static final int TITLE_SPACE_BOTTOM = 75;
-
-    private static final String MENU_FONT = "fonts/fff_tusj.ttf";
-    private static final int MENU_SIZE = 30;
     private static final int MENU_SPACE_BOTTOM = 10;
 
     private static final String TITLE_LABEL = "gdxRPG2";
@@ -34,10 +27,6 @@ public class MenuMain extends MenuScreen {
     private static final int NUMBER_OF_ITEMS = 4;
     private static final int EXIT_INDEX = 3;
 
-    private Stage stage;
-
-    private BitmapFont titleFont;
-    private BitmapFont menuFont;
     private Table table;
     private TextButton newGameButton;
     private TextButton loadGameButton;
@@ -49,22 +38,16 @@ public class MenuMain extends MenuScreen {
     private int selectedIndex;
 
     public MenuMain() {
-        this.stage = new Stage();
-
-        createFonts();
-        this.table = createTable();
-
-        applyListeners();
-        this.stage.addActor(this.table);
-        this.stage.setKeyboardFocus(this.table);
-
+        super();
         this.selectedIndex = 0;
-        setCurrentTextButtonToRed();
     }
 
-    @Override
-    public void show() {
-        Gdx.input.setInputProcessor(stage);
+    void setupScreen() {
+        table = createTable();
+        applyListeners();
+        stage.addActor(table);
+        stage.setKeyboardFocus(table);
+        setCurrentTextButtonToRed();
     }
 
     @Override
@@ -74,19 +57,6 @@ public class MenuMain extends MenuScreen {
         stage.act(dt);
         listenerKeyVertical.updateSelectedIndex(selectedIndex);
         stage.draw();
-    }
-
-    @Override
-    public void hide() {
-        Gdx.input.setInputProcessor(null);
-    }
-
-    @Override
-    public void dispose() {
-        titleFont.dispose();
-        menuFont.dispose();
-        stage.clear();
-        stage.dispose();
     }
 
     private void updateIndex(Integer newIndex) {
@@ -131,11 +101,6 @@ public class MenuMain extends MenuScreen {
         selectedIndex += 1; // because the title is also in the table.
         ((TextButton) table.getChildren().get(selectedIndex)).getStyle().fontColor = Constant.DARK_RED;
         selectedIndex -= 1;
-    }
-
-    private void createFonts() {
-        titleFont = Utils.getResourceManager().getTrueTypeAsset(TITLE_FONT, TITLE_SIZE);
-        menuFont = Utils.getResourceManager().getTrueTypeAsset(MENU_FONT, MENU_SIZE);
     }
 
     private Table createTable() {

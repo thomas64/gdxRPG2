@@ -3,12 +3,7 @@ package nl.t64.game.rpg.screens.menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import nl.t64.game.rpg.Utils;
@@ -18,9 +13,6 @@ import nl.t64.game.rpg.constants.ScreenType;
 
 public class MenuPause extends MenuScreen {
 
-    private static final Color TRANSPARENT = new Color(0f, 0f, 0f, 0.85f);
-    private static final String MENU_FONT = "fonts/fff_tusj.ttf";
-    private static final int MENU_SIZE = 30;
     private static final int MENU_SPACE_BOTTOM = 10;
 
     private static final String MENU_ITEM_CONTINUE = "Continue";
@@ -33,12 +25,6 @@ public class MenuPause extends MenuScreen {
 
     private static final String DIALOG_MESSAGE = "Any unsaved progress will be lost.\nAre you sure?";
 
-    private Stage stage;
-
-    private Image screenshot;
-    private Image blur;
-
-    private BitmapFont menuFont;
     private Table table;
     private TextButton continueButton;
     private TextButton loadGameButton;
@@ -51,30 +37,11 @@ public class MenuPause extends MenuScreen {
     private int selectedIndex;
 
     public MenuPause() {
-        this.stage = new Stage();
-        createFonts();
+        super();
         this.selectedIndex = 0;
     }
 
-    public void setBackground(Image background) {
-        setBackground(background, createBlur());
-    }
-
-    @Override
-    void setBackground(Image screenshot, Image blur) {
-        this.screenshot = screenshot;
-        this.blur = blur;
-        stage.addActor(screenshot);
-        stage.addActor(blur);
-    }
-
-    @Override
-    public void show() {
-        Gdx.input.setInputProcessor(stage);
-        setupScreen();
-    }
-
-    private void setupScreen() {
+    void setupScreen() {
         table = createTable();
         progressLostDialog = new DialogQuestion(this::openMenuMain, DIALOG_MESSAGE);
         applyListeners();
@@ -93,19 +60,6 @@ public class MenuPause extends MenuScreen {
         stage.draw();
     }
 
-    @Override
-    public void hide() {
-        stage.clear();
-        Gdx.input.setInputProcessor(null);
-    }
-
-    @Override
-    public void dispose() {
-        // menuFont.dispose(); is already disposed in MenuMain?
-        stage.clear();
-        stage.dispose();
-    }
-
     public void updateIndex(Integer newIndex) {
         selectedIndex = newIndex;
         setAllTextButtonsToWhite();
@@ -121,13 +75,13 @@ public class MenuPause extends MenuScreen {
             case 1:
                 var menuLoad = screenManager.getMenuScreen(ScreenType.MENU_LOAD);
                 menuLoad.setFromScreen(ScreenType.MENU_PAUSE);
-                menuLoad.setBackground(screenshot, blur);
+                menuLoad.setBackground(screenshot);
                 screenManager.setScreen(ScreenType.MENU_LOAD);
                 break;
             case 2:
                 var menuSettings = screenManager.getMenuScreen(ScreenType.MENU_SETTINGS);
                 menuSettings.setFromScreen(ScreenType.MENU_PAUSE);
-                menuSettings.setBackground(screenshot, blur);
+                menuSettings.setBackground(screenshot);
                 screenManager.setScreen(ScreenType.MENU_SETTINGS);
                 break;
             case 3:
@@ -150,17 +104,6 @@ public class MenuPause extends MenuScreen {
 
     private void setCurrentTextButtonToRed() {
         ((TextButton) table.getChildren().get(selectedIndex)).getStyle().fontColor = Constant.DARK_RED;
-    }
-
-    private void createFonts() {
-        menuFont = Utils.getResourceManager().getTrueTypeAsset(MENU_FONT, MENU_SIZE);
-    }
-
-    private Image createBlur() {
-        var pixmap = new Pixmap(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Pixmap.Format.Alpha);
-        pixmap.setColor(TRANSPARENT);
-        pixmap.fill();
-        return new Image(new Texture(pixmap));
     }
 
     private Table createTable() {

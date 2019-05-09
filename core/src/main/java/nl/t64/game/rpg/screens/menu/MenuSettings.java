@@ -3,10 +3,7 @@ package nl.t64.game.rpg.screens.menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import nl.t64.game.rpg.Utils;
@@ -16,8 +13,6 @@ import nl.t64.game.rpg.constants.ScreenType;
 
 public class MenuSettings extends MenuScreen {
 
-    private static final String MENU_FONT = "fonts/fff_tusj.ttf";
-    private static final int MENU_SIZE = 30;
     private static final int MENU_SPACE_BOTTOM = 10;
 
     private static final String MENU_ITEM_FULL_SCREEN = "Toggle fullscreen";
@@ -26,14 +21,8 @@ public class MenuSettings extends MenuScreen {
     private static final int NUMBER_OF_ITEMS = 2;
     private static final int EXIT_INDEX = 1;
 
-    private Stage stage;
-
     private ScreenType fromScreen;
 
-    private Image screenshot;
-    private Image blur;
-
-    private BitmapFont menuFont;
     private Table table;
     private TextButton fullscreenButton;
     private TextButton backButton;
@@ -43,8 +32,7 @@ public class MenuSettings extends MenuScreen {
     private int selectedIndex;
 
     public MenuSettings() {
-        this.stage = new Stage();
-        createFonts();
+        super();
         this.selectedIndex = 1;
     }
 
@@ -53,21 +41,7 @@ public class MenuSettings extends MenuScreen {
         this.fromScreen = screenType;
     }
 
-    @Override
-    void setBackground(Image screenshot, Image blur) {
-        this.screenshot = screenshot;
-        this.blur = blur;
-        stage.addActor(screenshot);
-        stage.addActor(blur);
-    }
-
-    @Override
-    public void show() {
-        Gdx.input.setInputProcessor(stage);
-        setupScreen();
-    }
-
-    private void setupScreen() {
+    void setupScreen() {
         table = createTable();
         applyListeners();
         stage.addActor(table);
@@ -82,19 +56,6 @@ public class MenuSettings extends MenuScreen {
         stage.act(dt);
         listenerKeyVertical.updateSelectedIndex(selectedIndex);
         stage.draw();
-    }
-
-    @Override
-    public void hide() {
-        stage.clear();
-        Gdx.input.setInputProcessor(null);
-    }
-
-    @Override
-    public void dispose() {
-        // menuFont.dispose(); is already disposed in MenuMain?
-        stage.clear();
-        stage.dispose();
     }
 
     private void updateIndex(Integer newIndex) {
@@ -123,7 +84,7 @@ public class MenuSettings extends MenuScreen {
     private void processBackButton() {
         if (fromScreen == ScreenType.MENU_PAUSE) {
             var menuPause = Utils.getScreenManager().getMenuScreen(fromScreen);
-            menuPause.setBackground(screenshot, blur);
+            menuPause.setBackground(screenshot);
         }
         Utils.getScreenManager().setScreen(fromScreen);
         fromScreen = null;
@@ -137,10 +98,6 @@ public class MenuSettings extends MenuScreen {
 
     private void setCurrentTextButtonToRed() {
         ((TextButton) table.getChildren().get(selectedIndex)).getStyle().fontColor = Constant.DARK_RED;
-    }
-
-    private void createFonts() {
-        menuFont = Utils.getResourceManager().getTrueTypeAsset(MENU_FONT, MENU_SIZE);
     }
 
     private Table createTable() {
