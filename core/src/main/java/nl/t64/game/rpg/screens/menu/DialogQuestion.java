@@ -23,9 +23,7 @@ class DialogQuestion {
     private static final String DIALOG_YES = "Yes";
     private static final String DIALOG_NO = "No";
 
-    private static final int DIALOG_WIDTH = 620;
     private static final int DIALOG_INIT_HEIGHT = 150;
-    private static final int LINE_HEIGHT = 30;
     private static final int DIALOG_PAD_TOP = 20;
     private static final int DIALOG_PAD_BOTTOM = 40;
     private static final int BUTTON_SPACE_RIGHT = 100;
@@ -48,7 +46,7 @@ class DialogQuestion {
 
     DialogQuestion(Runnable yesFunction, String message) {
         this.message = message;
-        this.dialogHeight = ((message.lines().count()) * LINE_HEIGHT) + DIALOG_INIT_HEIGHT;
+        this.dialogHeight = ((message.lines().count()) * MENU_SIZE) + DIALOG_INIT_HEIGHT;
         this.yesFunction = yesFunction;
         createFonts();
         this.dialog = createDialog();
@@ -101,7 +99,7 @@ class DialogQuestion {
 
     private Dialog createDialog() {
         // styles
-        var menuStyle = new Label.LabelStyle(menuFont, Color.BLACK);
+        var labelStyle = new Label.LabelStyle(menuFont, Color.BLACK);
         var buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = menuFont;
         buttonStyle.fontColor = Color.BLACK;
@@ -110,8 +108,8 @@ class DialogQuestion {
         windowStyle.titleFontColor = Color.BLACK;
 
         // actors
-        var overwriteLabel = new Label(message, menuStyle);
-        overwriteLabel.setAlignment(Align.center);
+        var label = new Label(message, labelStyle);
+        label.setAlignment(Align.center);
         yesButton = new TextButton(DIALOG_YES, new TextButton.TextButtonStyle(buttonStyle));
         noButton = new TextButton(DIALOG_NO, new TextButton.TextButtonStyle(buttonStyle));
 
@@ -120,7 +118,7 @@ class DialogQuestion {
         newDialog.getTitleLabel().setAlignment(Align.center);
         newDialog.padTop(DIALOG_PAD_TOP);
         newDialog.padBottom(DIALOG_PAD_BOTTOM);
-        newDialog.getContentTable().defaults().width(DIALOG_WIDTH);
+        newDialog.getContentTable().defaults().width(label.getPrefWidth() + BUTTON_SPACE_RIGHT);
 
         var sprite = new Sprite(Utils.getResourceManager().getTextureAsset(SPRITE_PARCHMENT));
         newDialog.background(new SpriteDrawable(sprite));
@@ -130,7 +128,7 @@ class DialogQuestion {
         newDialog.setModal(true);
         newDialog.setMovable(false);
         newDialog.setResizable(false);
-        newDialog.text(overwriteLabel);
+        newDialog.text(label);
 
         newDialog.getButtonTable().add(yesButton).spaceRight(BUTTON_SPACE_RIGHT);
         newDialog.getButtonTable().add(noButton);
