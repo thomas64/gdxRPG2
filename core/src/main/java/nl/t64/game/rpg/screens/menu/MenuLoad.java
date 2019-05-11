@@ -104,13 +104,8 @@ public class MenuLoad extends MenuScreen {
         if (!isMouseScrolled) {
             float itemHeight = listItems.getItemHeight();
             float listHeight = itemHeight * listItems.getItems().size;
-            float yScroll;
-            if (lastSelectedListIndex < currentSelectedListIndex) {
-                yScroll = (listHeight - (itemHeight * 2)) - (itemHeight * currentSelectedListIndex);
-            } else {
-                yScroll = (listHeight + itemHeight) - (itemHeight * currentSelectedListIndex);
-            }
-            scrollPane.scrollTo(0, yScroll, 0, 0);
+            float selectedY = listHeight - (itemHeight * (currentSelectedListIndex + 1f));
+            scrollPane.scrollTo(0, selectedY, 0, 0, false, true);
             lastSelectedListIndex = currentSelectedListIndex;
         }
     }
