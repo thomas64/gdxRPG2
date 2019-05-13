@@ -236,8 +236,6 @@ public class MenuLoad extends MenuScreen {
 
         bottomTable = new Table();
         bottomTable.setFillParent(true);
-        bottomTable.setHeight(loadButton.getHeight());
-        bottomTable.setWidth(Gdx.graphics.getWidth());
         bottomTable.setY(-(TOP_TABLE_Y + (SCROLL_PANE_HEIGHT / 2f)));
         bottomTable.add(loadButton).spaceRight(BUTTON_SPACE_RIGHT);
         bottomTable.add(deleteButton).spaceRight(BUTTON_SPACE_RIGHT);

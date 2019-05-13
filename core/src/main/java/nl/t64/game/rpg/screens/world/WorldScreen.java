@@ -136,7 +136,7 @@ public class WorldScreen implements Screen, MapObserver {
     private void openMenuPause() {
         player.resetInput();
         var menuPause = (MenuPause) Utils.getScreenManager().getScreen(ScreenType.MENU_PAUSE);
-        menuPause.setBackground(createScreenshot());
+        menuPause.setBackground(createScreenshot(true));
         Utils.getScreenManager().setScreen(ScreenType.MENU_PAUSE);
         menuPause.updateIndex(0);
     }
@@ -144,13 +144,13 @@ public class WorldScreen implements Screen, MapObserver {
     private void openInventoryScreen() {
         player.resetInput();
         var inventoryScreen = (InventoryScreen) Utils.getScreenManager().getScreen(ScreenType.INVENTORY);
-        inventoryScreen.setBackground(createScreenshot());
+        inventoryScreen.setBackground(createScreenshot(false));
         Utils.getScreenManager().setScreen(ScreenType.INVENTORY);
     }
 
-    private Image createScreenshot() {
+    private Image createScreenshot(boolean withBlur) {
         var screenshot = new Image(ScreenUtils.getFrameBufferTexture());
-        screenshot.setColor(Color.DARK_GRAY);
+        if (withBlur) screenshot.setColor(Color.DARK_GRAY);
         return screenshot;
     }
 
