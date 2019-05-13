@@ -5,13 +5,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import nl.t64.game.rpg.SpriteConfig;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
@@ -41,10 +40,10 @@ class PartyWindow {
     private static final float PADDING_LEVEL = 12f;
     private static final float PADDING_LINE = PADDING + PADDING_SMALL;
     private static final float FACE_Y = 90f;
-    private static final float WINDOW_WIDTH = (FACE_SIZE * MAX_PARTY_SIZE) + (PADDING * (MAX_PARTY_SIZE - 1f));
-    private static final float WINDOW_HEIGHT = FACE_Y + FACE_SIZE;
+    private static final float TABLE_WIDTH = (FACE_SIZE * MAX_PARTY_SIZE) + (PADDING * (MAX_PARTY_SIZE - 1f));
+    private static final float TABLE_HEIGHT = FACE_Y + FACE_SIZE;
     private static final float HIGH_Y = 0f;
-    private static final float LOW_Y = -WINDOW_HEIGHT;
+    private static final float LOW_Y = -TABLE_HEIGHT;
 
     private static final float BAR_X = 50f;
     private static final float BAR_Y = -4f;
@@ -55,7 +54,7 @@ class PartyWindow {
 
     private PartyContainer party;
     private Stage stage;
-    private Window window;
+    private Table table;
     private BitmapFont font;
     private BitmapFont fontBig;
     private ShapeRenderer shapeRenderer;
@@ -71,10 +70,11 @@ class PartyWindow {
         this.yPos = LOW_Y;
         this.stage = new Stage();
 
-        this.window = createWindow();
-        this.window.setPosition((Gdx.graphics.getWidth() - WINDOW_WIDTH) / 2f, 0f);
-        this.window.setVisible(false);
-        this.stage.addActor(this.window);
+        this.table = new Table();
+        this.table.setSize(TABLE_WIDTH, TABLE_HEIGHT);
+        this.table.setPosition((Gdx.graphics.getWidth() - TABLE_WIDTH) / 2f, 0f);
+        this.table.setVisible(false);
+        this.stage.addActor(this.table);
     }
 
     void dispose() {
@@ -92,10 +92,10 @@ class PartyWindow {
     }
 
     private void setVisibility() {
-        if (window.isVisible()) {
+        if (table.isVisible()) {
             isMovingDown = true;
         } else {
-            window.setVisible(true);
+            table.setVisible(true);
             isMovingUp = true;
         }
     }
@@ -122,14 +122,14 @@ class PartyWindow {
             if (yPos <= LOW_Y) {
                 yPos = LOW_Y;
                 isMovingDown = false;
-                window.setVisible(false);
+                table.setVisible(false);
             }
         }
     }
 
     private void handleRendering(float dt) {
-        if (window.isVisible()) {
-            renderWindow();
+        if (table.isVisible()) {
+            renderTable();
             stage.act(dt);
             stage.draw();
         }
@@ -140,19 +140,9 @@ class PartyWindow {
         fontBig = Utils.getResourceManager().getTrueTypeAsset(FONT_BIG_PATH, FONT_BIG_SIZE);
     }
 
-    private Window createWindow() {
-        var windowStyle = new Window.WindowStyle();
-        windowStyle.titleFont = font;
-        windowStyle.titleFontColor = Color.BLACK;
-
-        var newWindow = new Window("", windowStyle);
-        newWindow.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-        return newWindow;
-    }
-
-    private void renderWindow() {
+    private void renderTable() {
         party = Utils.getGameData().getParty();
-        window.clear();
+        table.clear();
         renderBackgrounds();
         renderSquares();
         renderHorizontalLines();
@@ -171,7 +161,7 @@ class PartyWindow {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(TRANSPARENT_WHITE);
         IntStream.rangeClosed(0, party.getSize() - 1)
-                 .forEach(i -> shapeRenderer.rect(window.getX() + (i * FACE_SIZE) + (i * PADDING),
+                 .forEach(i -> shapeRenderer.rect(table.getX() + (i * FACE_SIZE) + (i * PADDING),
                                                   yPos + PADDING,
                                                   FACE_SIZE,
                                                   FACE_Y - PADDING));
@@ -183,10 +173,10 @@ class PartyWindow {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(TRANSPARENT_BLACK);
         IntStream.rangeClosed(0, MAX_PARTY_SIZE - 1)
-                 .forEach(i -> shapeRenderer.rect(window.getX() + (i * FACE_SIZE) + (i * PADDING),
+                 .forEach(i -> shapeRenderer.rect(table.getX() + (i * FACE_SIZE) + (i * PADDING),
                                                   yPos + PADDING,
                                                   FACE_SIZE,
-                                                  WINDOW_HEIGHT - PADDING));
+                                                  TABLE_HEIGHT - PADDING));
         shapeRenderer.end();
     }
 
@@ -194,9 +184,9 @@ class PartyWindow {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(TRANSPARENT_BLACK);
         IntStream.rangeClosed(0, party.getSize() - 1)
-                 .forEach(i -> shapeRenderer.line(window.getX() + (i * FACE_SIZE) + (i * PADDING),
+                 .forEach(i -> shapeRenderer.line(table.getX() + (i * FACE_SIZE) + (i * PADDING),
                                                   yPos + FACE_Y,
-                                                  window.getX() + (i * FACE_SIZE) + (i * PADDING) + FACE_SIZE,
+                                                  table.getX() + (i * FACE_SIZE) + (i * PADDING) + FACE_SIZE,
                                                   yPos + FACE_Y));
         shapeRenderer.end();
     }
@@ -212,11 +202,10 @@ class PartyWindow {
             Texture texture = Utils.getResourceManager().getTextureAsset(path);
             TextureRegion[][] splitOfEight = TextureRegion.split(texture, (int) FACE_SIZE, (int) FACE_SIZE);
             TextureRegion heroFace = splitOfEight[row][col];
-            var sprite = new Sprite(heroFace);
-            var image = new Image(sprite);
+            var image = new Image(heroFace);
             image.setColor(TRANSPARENT_FACES);
             image.setPosition((i * FACE_SIZE) + (i * PADDING), yPos + FACE_Y);
-            window.addActor(image);
+            table.addActor(image);
             i++;
         }
     }
@@ -228,7 +217,7 @@ class PartyWindow {
             var heroLabel = new Label(heroName, labelStyle);
             heroLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
                                   yPos + FACE_Y - PADDING_NAME);
-            window.addActor(heroLabel);
+            table.addActor(heroLabel);
             i++;
         }
     }
@@ -240,7 +229,7 @@ class PartyWindow {
             var levelLabel = new Label("Level: " + level.toString(), labelStyle);
             levelLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
                                    yPos + FACE_Y - (1f * LINE_HEIGHT) - PADDING_LEVEL);
-            window.addActor(levelLabel);
+            table.addActor(levelLabel);
             i++;
         }
     }
@@ -252,7 +241,7 @@ class PartyWindow {
                      var hpLabel = new Label("HP: ", labelStyle);
                      hpLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
                                          yPos + FACE_Y - (2f * LINE_HEIGHT) - PADDING_LINE);
-                     window.addActor(hpLabel);
+                     table.addActor(hpLabel);
                  });
     }
 
@@ -296,7 +285,7 @@ class PartyWindow {
                      var xpLabel = new Label("XP: ", labelStyle);
                      xpLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
                                          yPos + FACE_Y - (3f * LINE_HEIGHT) - PADDING_LINE);
-                     window.addActor(xpLabel);
+                     table.addActor(xpLabel);
                  });
     }
 
@@ -326,7 +315,7 @@ class PartyWindow {
     }
 
     private void renderBar(int partyNumber, float linePosition, float barWidth) {
-        shapeRenderer.rect(window.getX() + (partyNumber * FACE_SIZE) + (partyNumber * PADDING) + BAR_X,
+        shapeRenderer.rect(table.getX() + (partyNumber * FACE_SIZE) + (partyNumber * PADDING) + BAR_X,
                            yPos + FACE_Y - (linePosition * LINE_HEIGHT) + BAR_Y,
                            barWidth,
                            BAR_HEIGHT);
