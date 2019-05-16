@@ -41,6 +41,7 @@ public class MenuSettings extends MenuScreen {
         this.fromScreen = screenType;
     }
 
+    @Override
     void setupScreen() {
         table = createTable();
         applyListeners();

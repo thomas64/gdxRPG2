@@ -53,6 +53,7 @@ public class MenuNew extends MenuScreen {
         super();
     }
 
+    @Override
     void setupScreen() {
         Utils.getProfileManager().loadAllProfiles();
 

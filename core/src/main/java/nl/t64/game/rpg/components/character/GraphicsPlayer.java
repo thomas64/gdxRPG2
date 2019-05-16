@@ -37,11 +37,6 @@ public class GraphicsPlayer extends GraphicsComponent {
     }
 
     @Override
-    public void dispose() {
-        // empty
-    }
-
-    @Override
     public void update(float dt) {
         setFrame(dt);
     }

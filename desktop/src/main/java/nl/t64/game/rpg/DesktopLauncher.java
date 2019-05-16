@@ -9,7 +9,11 @@ import nl.t64.game.rpg.constants.Constant;
 import java.io.IOException;
 
 
-public class DesktopLauncher {
+public final class DesktopLauncher {
+
+    private DesktopLauncher() {
+        throw new IllegalStateException("DesktopLauncher class");
+    }
 
     public static void main(String[] arg) throws IOException {
         Settings settings = Settings.getSettingsFromFile();

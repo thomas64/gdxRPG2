@@ -50,8 +50,7 @@ public class MenuLoad extends MenuScreen {
     private ListenerKeyVertical listenerKeyVertical;
     private ListenerKeyHorizontal listenerKeyHorizontal;
 
-    private int lastSelectedListIndex;
-    private int currentSelectedListIndex;
+    private int selectedListIndex;
     private int selectedMenuIndex;
 
     private boolean isMouseScrolled = false;
@@ -65,6 +64,7 @@ public class MenuLoad extends MenuScreen {
         this.fromScreen = screenType;
     }
 
+    @Override
     void setupScreen() {
         Utils.getProfileManager().loadAllProfiles();
         profiles = Utils.getProfileManager().getProfileList();
@@ -79,9 +79,7 @@ public class MenuLoad extends MenuScreen {
         stage.setKeyboardFocus(scrollPane);
         stage.setScrollFocus(scrollPane);
 
-        lastSelectedListIndex = 0;
-        currentSelectedListIndex = 0;
-
+        selectedListIndex = 0;
         selectedMenuIndex = 0;
         setCurrentTextButtonToRed();
     }
@@ -91,9 +89,9 @@ public class MenuLoad extends MenuScreen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(dt);
-        currentSelectedListIndex = listItems.getSelectedIndex();
+        selectedListIndex = listItems.getSelectedIndex();
         scrollScrollPane();
-        listenerKeyVertical.updateSelectedIndex(currentSelectedListIndex);
+        listenerKeyVertical.updateSelectedIndex(selectedListIndex);
         listenerKeyHorizontal.updateSelectedIndex(selectedMenuIndex);
         progressLostDialog.render(dt); // for updating the index in de listener.
         deleteFileDialog.render(dt);
@@ -104,9 +102,8 @@ public class MenuLoad extends MenuScreen {
         if (!isMouseScrolled) {
             float itemHeight = listItems.getItemHeight();
             float listHeight = itemHeight * listItems.getItems().size;
-            float selectedY = listHeight - (itemHeight * (currentSelectedListIndex + 1f));
+            float selectedY = listHeight - (itemHeight * (selectedListIndex + 1f));
             scrollPane.scrollTo(0, selectedY, 0, 0, false, true);
-            lastSelectedListIndex = currentSelectedListIndex;
         }
     }
 

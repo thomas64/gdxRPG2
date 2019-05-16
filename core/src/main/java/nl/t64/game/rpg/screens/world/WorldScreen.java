@@ -150,7 +150,9 @@ public class WorldScreen implements Screen, MapObserver {
 
     private Image createScreenshot(boolean withBlur) {
         var screenshot = new Image(ScreenUtils.getFrameBufferTexture());
-        if (withBlur) screenshot.setColor(Color.DARK_GRAY);
+        if (withBlur) {
+            screenshot.setColor(Color.DARK_GRAY);
+        }
         return screenshot;
     }
 

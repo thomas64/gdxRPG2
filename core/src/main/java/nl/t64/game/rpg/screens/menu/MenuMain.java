@@ -42,6 +42,7 @@ public class MenuMain extends MenuScreen {
         this.selectedIndex = 0;
     }
 
+    @Override
     void setupScreen() {
         table = createTable();
         applyListeners();

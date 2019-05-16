@@ -41,6 +41,7 @@ public class MenuPause extends MenuScreen {
         this.selectedIndex = 0;
     }
 
+    @Override
     void setupScreen() {
         table = createTable();
         progressLostDialog = new DialogQuestion(this::openMenuMain, DIALOG_MESSAGE);

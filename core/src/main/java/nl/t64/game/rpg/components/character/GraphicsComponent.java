@@ -34,6 +34,11 @@ abstract class GraphicsComponent implements Component {
 
     public abstract void render(Character character, Batch batch, ShapeRenderer shapeRenderer);
 
+    @Override
+    public void dispose() {
+        // empty
+    }
+
     void setFrame(float dt) {
         switch (state) {
             case IDLE:

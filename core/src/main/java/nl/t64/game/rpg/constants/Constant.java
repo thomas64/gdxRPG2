@@ -3,7 +3,7 @@ package nl.t64.game.rpg.constants;
 import com.badlogic.gdx.graphics.Color;
 
 
-public class Constant {
+public final class Constant {
 
     public static final String TITLE = "gdxRPG2";
     public static final int SCREEN_WIDTH = 1920;
