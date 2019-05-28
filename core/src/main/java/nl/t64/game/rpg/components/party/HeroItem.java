@@ -1,6 +1,7 @@
 package nl.t64.game.rpg.components.party;
 
 import lombok.Setter;
+import nl.t64.game.rpg.components.inventory.PersonalContainer;
 
 import java.util.Map;
 
@@ -10,6 +11,8 @@ public class HeroItem {
 
     String name;
     private Level level;
+    private PersonalContainer inventory;
+    private Strength strength;
     private Endurance endurance;
     private Stamina stamina;
 
@@ -45,6 +48,14 @@ public class HeroItem {
 
     public int getCurrentHp() {
         return level.hitpoints + stamina.hitpoints + endurance.hitpoints + endurance.bonus;
+    }
+
+    int getProtectionWithShield() {
+        return inventory.getSumOfProtectionWithShield();
+    }
+
+    int getStrength() {
+        return strength.current + strength.bonus;
     }
 
 }

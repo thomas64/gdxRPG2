@@ -17,6 +17,9 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 public class ResourceManager {
 
+    private static final String SPRITE_CONFIGS = "configs/sprites";
+    private static final String SUFFIX = ".json";
+
     private final AssetManager assetManager;
     private final ObjectMap<String, SpriteConfig> spriteConfigs;
 
@@ -84,7 +87,7 @@ public class ResourceManager {
     @SuppressWarnings("unchecked")
     private void loadSpriteConfigs() {
         Json json = new Json();
-        FileHandle[] configFiles = Gdx.files.local("configs/sprites").list(".json");
+        FileHandle[] configFiles = Gdx.files.local(SPRITE_CONFIGS).list(SUFFIX);
         for (FileHandle file : configFiles) {
             ObjectMap<String, SpriteConfig> configs = json.fromJson(ObjectMap.class, SpriteConfig.class, file);
             spriteConfigs.putAll(configs);

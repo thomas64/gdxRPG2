@@ -1,0 +1,10 @@
+{
+  "gold": {
+    "name": "Gold",
+    "group": "RESOURCE"
+  },
+  "herbs": {
+    "name": "Herbs",
+    "group": "RESOURCE"
+  }
+}

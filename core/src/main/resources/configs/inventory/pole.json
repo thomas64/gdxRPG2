@@ -1,0 +1,138 @@
+{
+  "mage_s_staff": {
+    "name": "Mage's Staff",
+    "group": "WEAPON",
+    "skill": "POLE",
+    "min_strength": 8,
+    "hit_chance": 80,
+    "damage": 10
+  },
+  "basic_staff": {
+    "name": "Basic Staff",
+    "group": "WEAPON",
+    "skill": "POLE",
+    "min_strength": 8,
+    "hit_chance": 50,
+    "damage": 4
+  },
+  "standard_staff": {
+    "name": "Standard Staff",
+    "group": "WEAPON",
+    "skill": "POLE",
+    "min_strength": 9,
+    "hit_chance": 60,
+    "damage": 7
+  },
+  "specialist_staff": {
+    "name": "Specialist Staff",
+    "group": "WEAPON",
+    "skill": "POLE",
+    "min_strength": 10,
+    "hit_chance": 70,
+    "damage": 10
+  },
+  "masterwork_staff": {
+    "name": "Masterwork Staff",
+    "group": "WEAPON",
+    "skill": "POLE",
+    "min_strength": 11,
+    "hit_chance": 80,
+    "damage": 13
+  },
+  "basic_spear": {
+    "name": "Basic Spear",
+    "group": "WEAPON",
+    "skill": "POLE",
+    "min_strength": 11,
+    "hit_chance": 50,
+    "damage": 5
+  },
+  "standard_spear": {
+    "name": "Standard Spear",
+    "group": "WEAPON",
+    "skill": "POLE",
+    "min_strength": 12,
+    "hit_chance": 60,
+    "damage": 8
+  },
+  "specialist_spear": {
+    "name": "Specialist Spear",
+    "group": "WEAPON",
+    "skill": "POLE",
+    "min_strength": 13,
+    "hit_chance": 70,
+    "damage": 11
+  },
+  "masterwork_spear": {
+    "name": "Masterwork Spear",
+    "group": "WEAPON",
+    "skill": "POLE",
+    "min_strength": 14,
+    "hit_chance": 80,
+    "damage": 14
+  },
+  "basic_pike": {
+    "name": "Basic Pike",
+    "group": "WEAPON",
+    "skill": "POLE",
+    "min_strength": 14,
+    "hit_chance": 50,
+    "damage": 7
+  },
+  "standard_pike": {
+    "name": "Standard Pike",
+    "group": "WEAPON",
+    "skill": "POLE",
+    "min_strength": 15,
+    "hit_chance": 60,
+    "damage": 9
+  },
+  "specialist_pike": {
+    "name": "Specialist Pike",
+    "group": "WEAPON",
+    "skill": "POLE",
+    "min_strength": 16,
+    "hit_chance": 70,
+    "damage": 12
+  },
+  "masterwork_pike": {
+    "name": "Masterwork Pike",
+    "group": "WEAPON",
+    "skill": "POLE",
+    "min_strength": 17,
+    "hit_chance": 80,
+    "damage": 15
+  },
+  "basic_lance": {
+    "name": "Basic Lance",
+    "group": "WEAPON",
+    "skill": "POLE",
+    "min_strength": 17,
+    "hit_chance": 50,
+    "damage": 8
+  },
+  "standard_lance": {
+    "name": "Standard Lance",
+    "group": "WEAPON",
+    "skill": "POLE",
+    "min_strength": 18,
+    "hit_chance": 60,
+    "damage": 11
+  },
+  "specialist_lance": {
+    "name": "Specialist Lance",
+    "group": "WEAPON",
+    "skill": "POLE",
+    "min_strength": 19,
+    "hit_chance": 70,
+    "damage": 13
+  },
+  "masterwork_lance": {
+    "name": "Masterwork Lance",
+    "group": "WEAPON",
+    "skill": "POLE",
+    "min_strength": 20,
+    "hit_chance": 80,
+    "damage": 16
+  }
+}

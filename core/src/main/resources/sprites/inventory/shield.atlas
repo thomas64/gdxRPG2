@@ -1,0 +1,90 @@
+
+shield.png
+size: 248,186
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+heavy_aspis_shield
+  rotate: false
+  xy: 0, 0
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+heavy_buckler_shield
+  rotate: false
+  xy: 62, 0
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+heavy_heater_shield
+  rotate: false
+  xy: 124, 0
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+heavy_magic_shield
+  rotate: false
+  xy: 186, 0
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+heavy_targe_shield
+  rotate: false
+  xy: 0, 62
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+heavy_tower_shield
+  rotate: false
+  xy: 62, 62
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+light_aspis_shield
+  rotate: false
+  xy: 124, 62
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+light_buckler_shield
+  rotate: false
+  xy: 186, 62
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+light_heater_shield
+  rotate: false
+  xy: 0, 124
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+light_magic_shield
+  rotate: false
+  xy: 62, 124
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+light_targe_shield
+  rotate: false
+  xy: 124, 124
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+light_tower_shield
+  rotate: false
+  xy: 186, 124
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1

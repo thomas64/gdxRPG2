@@ -2,84 +2,168 @@
   "mozes": {
     "name": "Mozes",
     "level": 1,
+    "inventory": {
+      "weapon": "basic_shortsword",
+      "shield": "light_buckler_shield",
+      "chest": "medium_basic_chest"
+    },
+    "strength": 15,
     "endurance": 15,
     "stamina": 30
   },
   "luana": {
     "name": "Luana",
     "level": 1,
+    "inventory": {
+      "weapon": "basic_dagger",
+      "shield": null,
+      "chest": "light_basic_chest"
+    },
+    "strength": 8,
     "endurance": 10,
     "stamina": 20
   },
   "reignald": {
     "name": "Reignald",
     "level": 8,
+    "inventory": {
+      "weapon": "standard_shortsword",
+      "shield": "heavy_buckler_shield",
+      "chest": "medium_standard_chest"
+    },
+    "strength": 20,
     "endurance": 20,
     "stamina": 40
   },
   "ryiah": {
     "name": "Ryiah",
     "level": 3,
+    "inventory": {
+      "weapon": "basic_staff",
+      "shield": null,
+      "chest": "light_basic_chest"
+    },
+    "strength": 10,
     "endurance": 16,
     "stamina": 31
   },
   "valter": {
     "name": "Valter",
     "level": 2,
+    "inventory": {
+      "weapon": "basic_dagger",
+      "shield": null,
+      "chest": "light_basic_chest"
+    },
+    "strength": 10,
     "endurance": 15,
     "stamina": 20
   },
   "galen": {
     "name": "Galen",
     "level": 4,
+    "inventory": {
+      "weapon": "basic_axe",
+      "shield": "heavy_targe_shield",
+      "chest": "medium_basic_chest"
+    },
+    "strength": 25,
     "endurance": 20,
     "stamina": 40
   },
   "jaspar": {
     "name": "Jaspar",
     "level": 12,
+    "inventory": {
+      "weapon": "basic_greatsword",
+      "shield": "heavy_heater_shield",
+      "chest": "heavy_basic_chest"
+    },
+    "strength": 30,
     "endurance": 30,
     "stamina": 60
   },
   "kiara": {
     "name": "Kiara",
     "level": 12,
+    "inventory": {
+      "weapon": "standard_dagger",
+      "shield": null,
+      "chest": "light_standard_chest"
+    },
+    "strength": 15,
     "endurance": 20,
     "stamina": 40
   },
   "luthais": {
     "name": "Luthais",
     "level": 20,
+    "inventory": {
+      "weapon": "mage_s_staff",
+      "shield": null,
+      "chest": "light_specialist_chest"
+    },
+    "strength": 8,
     "endurance": 18,
     "stamina": 50
   },
   "elias": {
     "name": "Elias",
     "level": 18,
+    "inventory": {
+      "weapon": "standard_longsword",
+      "shield": null,
+      "chest": "medium_standard_chest"
+    },
+    "strength": 20,
     "endurance": 30,
     "stamina": 60
   },
   "onarr": {
     "name": "Onarr",
     "level": 18,
+    "inventory": {
+      "weapon": "standard_morningstar",
+      "shield": "heavy_aspis_shield",
+      "chest": "heavy_standard_chest"
+    },
+    "strength": 25,
     "endurance": 30,
     "stamina": 60
   },
   "duilio": {
     "name": "Duilio",
     "level": 22,
+    "inventory": {
+      "weapon": "specialist_shortsword",
+      "shield": "light_aspis_shield",
+      "chest": "medium_specialist_chest"
+    },
+    "strength": 25,
     "endurance": 25,
     "stamina": 75
   },
   "iellwen": {
     "name": "Iellwen",
     "level": 20,
+    "inventory": {
+      "weapon": "specialist_shortsword",
+      "shield": null,
+      "chest": "medium_specialist_chest"
+    },
+    "strength": 20,
     "endurance": 30,
     "stamina": 60
   },
   "faeron": {
     "name": "Faeron",
     "level": 25,
+    "inventory": {
+      "weapon": "spellbreaker_axe",
+      "shield": null,
+      "chest": "light_masterwork_chest"
+    },
+    "strength": 15,
     "endurance": 25,
     "stamina": 80
   }
