@@ -3,6 +3,7 @@ package nl.t64.game.rpg.profile;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ObjectMap;
 import nl.t64.game.rpg.constants.Constant;
@@ -69,7 +70,7 @@ public class ProfileManager {
         String fullFilename = selectedProfileName + SAVEGAME_SUFFIX;
         boolean doesProfileExist = Gdx.files.local(SAVE_PATH + fullFilename).exists();
         if (!doesProfileExist) {
-            return;
+            throw new GdxRuntimeException("Profile does not exist.");
         }
         profileName = selectedProfileName;
         profileProperties = json.fromJson(ObjectMap.class, profiles.get(profileName));
