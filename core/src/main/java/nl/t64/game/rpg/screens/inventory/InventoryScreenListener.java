@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens;
+package nl.t64.game.rpg.screens.inventory;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;

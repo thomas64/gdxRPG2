@@ -40,7 +40,8 @@ public class InventoryDatabase {
             }
         }
         InventoryItem item = inventoryItems.get(id);
-        return new InventoryItem(id, item);
+        item.setId(id);
+        return new InventoryItem(item);
     }
 
     private void loadInventoryItems() throws IOException {

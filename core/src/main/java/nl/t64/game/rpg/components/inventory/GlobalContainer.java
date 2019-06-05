@@ -1,19 +1,19 @@
 package nl.t64.game.rpg.components.inventory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+
 
 public class GlobalContainer {
+
+    private static final int NUMBER_OF_SLOTS = 84;
 
     private final List<InventoryItem> inventory;
 
     public GlobalContainer() {
-        this.inventory = new ArrayList<>(Collections.nCopies(84, null));
+        this.inventory = new ArrayList<>(Collections.nCopies(NUMBER_OF_SLOTS, null));
     }
 
-    int getAmountOfItemAt(int index) {
+    public int getAmountOfItemAt(int index) {
         InventoryItem targetItem = inventory.get(index);
         if (targetItem == null) {
             return 0;
@@ -22,34 +22,34 @@ public class GlobalContainer {
         }
     }
 
-    public void setItemAt(int index, InventoryItem sourceItem) {
+    public Optional<InventoryItem> getItemAt(int index) {
+        return Optional.ofNullable(inventory.get(index));
+    }
+
+    public void forceSetItemAt(int index, InventoryItem newItem) {
+        inventory.set(index, newItem);
+    }
+
+    public int getSize() {
+        return inventory.size();
+    }
+
+    void setItemAt(int index, InventoryItem sourceItem) {
         InventoryItem targetItem = inventory.get(index);
         if (targetItem == null) {
             inventory.set(index, sourceItem);
         } else {
-            setItemAtFilledSpot(sourceItem, targetItem);
-        }
-    }
-
-    private void setItemAtFilledSpot(InventoryItem sourceItem, InventoryItem targetItem) {
-        if (sourceItem.group.equals(InventoryGroup.RESOURCE)) {
-            if (sourceItem.id.equals(targetItem.id)) {
-                targetItem.amount += sourceItem.amount;
-            } else {
-                throw new UnsupportedOperationException();
-            }
-        } else {
-            throw new UnsupportedOperationException();
+            targetItem.receiveInventoryItem(sourceItem);
         }
     }
 
     boolean contains(String id) {
         return inventory.stream()
                         .filter(Objects::nonNull)
-                        .anyMatch(item -> item.id.equals(id));
+                        .anyMatch(item -> item.hasSameIdAs(id));
     }
 
-    long getSize() {
+    long getNumberOfFilledSlots() {
         return inventory.stream()
                         .filter(Objects::nonNull)
                         .count();

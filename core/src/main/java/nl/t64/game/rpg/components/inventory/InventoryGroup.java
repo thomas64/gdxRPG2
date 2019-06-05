@@ -6,15 +6,17 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum InventoryGroup {
 
+    EVERYTHING(""),
+
     WEAPON("Weapon"),
     SHIELD("Shield"),               // 12 prt / 30 def
     ACCESSORY("Accessory"),
 
     HELMET("Helmet"),               // 12 prt
-    SHOULDERS("Shoulders"),         // 12 prt
     NECKLACE("Necklace"),
-    CLOAK("Cloak"),                 // 2 prt
+    SHOULDERS("Shoulders"),         // 12 prt
     CHEST("Chest"),                 // 12 prt
+    CLOAK("Cloak"),                 // 2 prt
     BRACERS("Bracers"),             // 12 prt
     GLOVES("Gloves"),               // 12 prt
     RING("Ring"),
@@ -24,6 +26,6 @@ public enum InventoryGroup {
 
     RESOURCE("");
 
-    final String name;
+    final String title;
 
 }

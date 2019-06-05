@@ -20,7 +20,7 @@ import nl.t64.game.rpg.constants.GameState;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.events.character.StartDirectionEvent;
 import nl.t64.game.rpg.events.character.StartPositionEvent;
-import nl.t64.game.rpg.screens.InventoryScreen;
+import nl.t64.game.rpg.screens.inventory.InventoryScreen;
 import nl.t64.game.rpg.screens.menu.MenuPause;
 
 import java.util.ArrayList;

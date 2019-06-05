@@ -1,6 +1,7 @@
 package nl.t64.game.rpg.components.inventory;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -9,9 +10,11 @@ import lombok.Setter;
 @Setter
 public class InventoryItem {
 
+    @Getter
     String id;
     String name;
     int amount;
+    @Getter
     InventoryGroup group;
     WeaponType skill;
     int weight;
@@ -25,8 +28,8 @@ public class InventoryItem {
     int dexterity;
     int stealth;
 
-    InventoryItem(String id, InventoryItem item) {
-        this.id = id;
+    public InventoryItem(InventoryItem item) {
+        this.id = item.id;
         this.name = item.name;
         this.amount = 1;
         this.group = item.group;
@@ -39,6 +42,34 @@ public class InventoryItem {
         this.damage = item.damage;
         this.dexterity = item.dexterity;
         this.stealth = item.stealth;
+    }
+
+    public boolean hasSameIdAs(String candidateId) {
+        return id.equalsIgnoreCase(candidateId);
+    }
+
+    public boolean isStackable() {
+        return group.equals(InventoryGroup.RESOURCE);
+    }
+
+    public String getDescription() {
+        return name;
+    }
+
+    void receiveInventoryItem(InventoryItem sourceItem) {
+        if (sourceItem.group.equals(InventoryGroup.RESOURCE)) {
+            if (hasSameIdAs(sourceItem.id)) {
+                increaseAmountWith(sourceItem);
+            } else {
+                throw new UnsupportedOperationException();
+            }
+        } else {
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    private void increaseAmountWith(InventoryItem sourceItem) {
+        amount += sourceItem.amount;
     }
 
 }

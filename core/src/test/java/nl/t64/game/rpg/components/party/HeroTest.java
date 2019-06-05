@@ -8,20 +8,20 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static nl.t64.game.rpg.components.inventory.InventoryGroup.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 
 class HeroTest extends GameTest {
 
-    private GameData gameData;
     private HeroContainer heroes;
     private PartyContainer party;
 
     @BeforeEach
     private void setup() {
         final var profileManager = new ProfileManager();
-        gameData = new GameData();
+        final var gameData = new GameData();
         gameData.onNotifyCreate(profileManager);
         heroes = gameData.getHeroes();
         party = gameData.getParty();
@@ -100,8 +100,8 @@ class HeroTest extends GameTest {
         addHeroToParty("ryiah");
         addHeroToParty("valter");
 
-        assertThat(gameData.getHeroes().getSize()).isEqualTo(9);
-        assertThat(gameData.getParty().getSize()).isEqualTo(5);
+        assertThat(heroes.getSize()).isEqualTo(9);
+        assertThat(party.getSize()).isEqualTo(5);
 
         assertThatExceptionOfType(IllegalStateException.class)
                 .isThrownBy(() -> addHeroToParty("galen"))
@@ -133,6 +133,10 @@ class HeroTest extends GameTest {
         softly.assertThat(mozes.getMaximumHp()).isEqualTo(46);
         softly.assertThat(mozes.getStrength()).isEqualTo(15);
         softly.assertThat(mozes.getProtectionWithShield()).isEqualTo(6);
+        softly.assertThat(mozes.getInventoryItem(WEAPON)).get().hasFieldOrPropertyWithValue("id", "basic_shortsword");
+        softly.assertThat(mozes.getInventoryItem(SHIELD)).get().hasFieldOrPropertyWithValue("id", "light_buckler_shield");
+        softly.assertThat(mozes.getInventoryItem(HELMET)).isEmpty();
+        softly.assertThat(mozes.getInventoryItem(CHEST)).get().hasFieldOrPropertyWithValue("id", "medium_basic_chest");
 
         softly.assertThat(luana.getLevel()).isEqualTo(1);
         softly.assertThat(luana.getTotalXp()).isEqualTo(5);
@@ -141,6 +145,10 @@ class HeroTest extends GameTest {
         softly.assertThat(luana.getMaximumHp()).isEqualTo(31);
         softly.assertThat(luana.getStrength()).isEqualTo(8);
         softly.assertThat(luana.getProtectionWithShield()).isEqualTo(1);
+        softly.assertThat(luana.getInventoryItem(WEAPON)).get().hasFieldOrPropertyWithValue("id", "basic_dagger");
+        softly.assertThat(luana.getInventoryItem(SHIELD)).isEmpty();
+        softly.assertThat(luana.getInventoryItem(HELMET)).isEmpty();
+        softly.assertThat(luana.getInventoryItem(CHEST)).get().hasFieldOrPropertyWithValue("id", "light_basic_chest");
 
         softly.assertThat(reignald.getLevel()).isEqualTo(8);
         softly.assertThat(reignald.getTotalXp()).isEqualTo(1020);

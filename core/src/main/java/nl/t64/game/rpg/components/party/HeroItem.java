@@ -1,9 +1,12 @@
 package nl.t64.game.rpg.components.party;
 
 import lombok.Setter;
+import nl.t64.game.rpg.components.inventory.InventoryGroup;
+import nl.t64.game.rpg.components.inventory.InventoryItem;
 import nl.t64.game.rpg.components.inventory.PersonalContainer;
 
 import java.util.Map;
+import java.util.Optional;
 
 
 @Setter
@@ -48,6 +51,14 @@ public class HeroItem {
 
     public int getCurrentHp() {
         return level.hitpoints + stamina.hitpoints + endurance.hitpoints + endurance.bonus;
+    }
+
+    public Optional<InventoryItem> getInventoryItem(InventoryGroup inventoryGroup) {
+        return inventory.getInventoryItem(inventoryGroup);
+    }
+
+    public void forceSetInventoryItem(InventoryGroup inventoryGroup, InventoryItem inventoryItem) {
+        inventory.forceSetInventoryItem(inventoryGroup, inventoryItem);
     }
 
     int getProtectionWithShield() {

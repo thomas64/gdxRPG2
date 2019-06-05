@@ -6,6 +6,8 @@ import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
@@ -14,18 +16,26 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ObjectMap;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 public class ResourceManager {
 
     private static final String SPRITE_CONFIGS = "configs/sprites";
-    private static final String SUFFIX = ".json";
+    private static final String CONFIG_SUFFIX = ".json";
+    private static final String ATLAS_FILES = "sprites/inventory";
+    private static final String ATLAS_SUFFIX = ".atlas";
 
     private final AssetManager assetManager;
     private final ObjectMap<String, SpriteConfig> spriteConfigs;
+    private final List<TextureAtlas> atlasList;
 
     public ResourceManager() {
         this.assetManager = new AssetManager();
         this.spriteConfigs = new ObjectMap<>();
+        this.atlasList = new ArrayList<>();
     }
 
     public void unloadAsset(String assetFilenamePath) {
@@ -87,11 +97,32 @@ public class ResourceManager {
     @SuppressWarnings("unchecked")
     private void loadSpriteConfigs() {
         Json json = new Json();
-        FileHandle[] configFiles = Gdx.files.local(SPRITE_CONFIGS).list(SUFFIX);
+        FileHandle[] configFiles = Gdx.files.local(SPRITE_CONFIGS).list(CONFIG_SUFFIX);
         for (FileHandle file : configFiles) {
             ObjectMap<String, SpriteConfig> configs = json.fromJson(ObjectMap.class, SpriteConfig.class, file);
             spriteConfigs.putAll(configs);
         }
+    }
+
+    public TextureRegion getAtlasTexture(String inventoryItemId) {
+        if (atlasList.isEmpty()) {
+            loadAtlasTexture();
+        }
+        TextureRegion textureRegion = null;
+        for (TextureAtlas atlas : atlasList) {
+            textureRegion = atlas.findRegion(inventoryItemId);
+            if (textureRegion != null) {
+                break;
+            }
+        }
+        return textureRegion;
+    }
+
+    private void loadAtlasTexture() {
+        FileHandle[] atlasFiles = Gdx.files.local(ATLAS_FILES).list(ATLAS_SUFFIX);
+        Arrays.stream(atlasFiles)
+              .map(TextureAtlas::new)
+              .forEach(atlasList::add);
     }
 
 }

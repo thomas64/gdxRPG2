@@ -12,22 +12,23 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 class InventoryTest extends GameTest {
 
-    private GameData gameData;
     private GlobalContainer inventory;
 
     @BeforeEach
     private void setup() {
         final var profileManager = new ProfileManager();
-        gameData = new GameData();
+        final var gameData = new GameData();
         gameData.onNotifyCreate(profileManager);
         inventory = gameData.getInventory();
     }
 
     @Test
     void whenDataIsCreated_ShouldContainItems() {
-        assertThat(inventory.getSize()).isEqualTo(2);
+        assertThat(inventory.getNumberOfFilledSlots()).isEqualTo(2);
         assertThat(inventory.contains("gold")).isTrue();
+        assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(1);
         assertThat(inventory.contains("basic_mace")).isTrue();
+        assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(1);
     }
 
     @Test
