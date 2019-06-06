@@ -23,10 +23,10 @@ class DialogQuestion {
     private static final String DIALOG_YES = "Yes";
     private static final String DIALOG_NO = "No";
 
-    private static final int DIALOG_INIT_HEIGHT = 150;
-    private static final int DIALOG_PAD_TOP = 20;
-    private static final int DIALOG_PAD_BOTTOM = 40;
-    private static final int BUTTON_SPACE_RIGHT = 100;
+    private static final long DIALOG_INIT_HEIGHT = 150L;
+    private static final float DIALOG_PAD_TOP = 20f;
+    private static final float DIALOG_PAD_BOTTOM = 40f;
+    private static final float BUTTON_SPACE_RIGHT = 100f;
 
     private static final int NUMBER_OF_ITEMS = 2;
     private static final int EXIT_INDEX = 1;

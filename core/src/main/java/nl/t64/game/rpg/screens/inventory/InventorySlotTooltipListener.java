@@ -8,8 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 
 class InventorySlotTooltipListener extends InputListener {
 
-    private static final int OFFSET_X = 20;
-    private static final int OFFSET_Y = 10;
+    private static final float OFFSET_X = 20f;
+    private static final float OFFSET_Y = 10f;
 
     private InventorySlotTooltip toolTip;
     private boolean isInside;

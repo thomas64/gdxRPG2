@@ -14,8 +14,8 @@ import nl.t64.game.rpg.constants.ScreenType;
 
 public class MenuMain extends MenuScreen {
 
-    private static final int TITLE_SPACE_BOTTOM = 75;
-    private static final int MENU_SPACE_BOTTOM = 10;
+    private static final float TITLE_SPACE_BOTTOM = 75f;
+    private static final float MENU_SPACE_BOTTOM = 10f;
 
     private static final String TITLE_LABEL = "gdxRPG2";
 
@@ -53,7 +53,7 @@ public class MenuMain extends MenuScreen {
 
     @Override
     public void render(float dt) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(dt);
         listenerKeyVertical.updateSelectedIndex(selectedIndex);

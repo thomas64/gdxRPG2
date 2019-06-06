@@ -13,8 +13,8 @@ import static nl.t64.game.rpg.components.inventory.InventoryGroup.*;
 
 class EquipSlotsTable {
 
-    private static final int SLOT_SIZE = 64;
-    private static final int EQUIP_SPACING = 10;
+    private static final float SLOT_SIZE = 64f;
+    private static final float EQUIP_SPACING = 10f;
     private static final int PARTY_INDEX = 0;
 
     Table equipSlots;

@@ -13,7 +13,7 @@ import nl.t64.game.rpg.Utils;
 class InventorySlotTooltip {
 
     private static final String SPRITE_SLOT = "sprites/inventoryslot.png";
-    private static final int PADDING = 10;
+    private static final float PADDING = 10f;
 
     Window window;
     private Label description;

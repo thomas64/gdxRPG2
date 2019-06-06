@@ -3,9 +3,13 @@ package nl.t64.game.rpg.screens.inventory;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.profile.ProfileManager;
@@ -15,10 +19,21 @@ import nl.t64.game.rpg.profile.ProfileObserver;
 public class InventoryScreen implements Screen, ProfileObserver {
 
     private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
+    private static final String BUTTON_CLOSE_UP = "close_up";
+    private static final String BUTTON_CLOSE_OVER = "close_over";
+    private static final String BUTTON_CLOSE_DOWN = "close_down";
+    private static final String BUTTON_RESET_UP = "reset_up";
+    private static final String BUTTON_RESET_OVER = "reset_over";
+    private static final String BUTTON_RESET_DOWN = "reset_down";
+
     private static final float INVENTORY_SLOT_POSITION_X = 1530f;
     private static final float INVENTORY_SLOT_POSITION_Y = 75f;
     private static final float PLAYER_SLOT_POSITION_X = 1130f;
     private static final float PLAYER_SLOT_POSITION_Y = 75f;
+    private static final float BUTTON_SIZE = 32f;
+    private static final float BUTTON_SPACE = 10f;
+    private static final float RIGHT_SPACE = 26f;
+    private static final float TOP_SPACE = 36f;
 
     private Stage stage;
     private InventoryUI inventoryUI;
@@ -52,7 +67,8 @@ public class InventoryScreen implements Screen, ProfileObserver {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-        applyListeners();
+        stage.addListener(new InventoryScreenListener(this::closeScreen));
+        createButtonTable();
 
         inventoryUI = new InventoryUI();
         inventoryUI.inventorySlotsWindow.setPosition(inventorySlotPosition.x, inventorySlotPosition.y);
@@ -62,7 +78,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
 
     @Override
     public void render(float dt) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(dt);
         stage.draw();
@@ -95,13 +111,6 @@ public class InventoryScreen implements Screen, ProfileObserver {
         stage.dispose();
     }
 
-    private void closeScreen() {
-        storeWindowPositions();
-        InventoryCloser.setGlobalInventory(inventoryUI.inventorySlotsWindow);
-        InventoryCloser.setPersonalInventory(inventoryUI.equipSlotsTable);
-        Utils.getScreenManager().setScreen(ScreenType.WORLD);
-    }
-
     public void setBackground(Image screenshot) {
         var texture = Utils.getResourceManager().getTextureAsset(SPRITE_PARCHMENT);
         var parchment = new Image(texture);
@@ -110,8 +119,26 @@ public class InventoryScreen implements Screen, ProfileObserver {
         stage.addActor(parchment);
     }
 
-    private void applyListeners() {
-        stage.addListener(new InventoryScreenListener(this::closeScreen));
+    private void createButtonTable() {
+        var closeButton = createImageButton(BUTTON_CLOSE_UP, BUTTON_CLOSE_OVER, BUTTON_CLOSE_DOWN);
+        var resetButton = createImageButton(BUTTON_RESET_UP, BUTTON_RESET_OVER, BUTTON_RESET_DOWN);
+        closeButton.addListener(new ListenerMouseImageButton(this::closeScreen));
+        resetButton.addListener(new ListenerMouseImageButton(this::resetWindowsPositions));
+
+        var buttonTable = new Table();
+        buttonTable.add(closeButton).width(BUTTON_SIZE).height(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
+        buttonTable.add(resetButton).width(BUTTON_SIZE).height(BUTTON_SIZE);
+        buttonTable.pack();
+        buttonTable.setPosition(Gdx.graphics.getWidth() - buttonTable.getWidth() - RIGHT_SPACE,
+                                Gdx.graphics.getHeight() - buttonTable.getHeight() - TOP_SPACE);
+        stage.addActor(buttonTable);
+    }
+
+    private void closeScreen() {
+        storeWindowPositions();
+        InventoryCloser.setGlobalInventory(inventoryUI.inventorySlotsWindow);
+        InventoryCloser.setPersonalInventory(inventoryUI.equipSlotsTable);
+        Utils.getScreenManager().setScreen(ScreenType.WORLD);
     }
 
     private void storeWindowPositions() {
@@ -119,6 +146,23 @@ public class InventoryScreen implements Screen, ProfileObserver {
         inventorySlotPosition.y = inventoryUI.inventorySlotsWindow.getY();
         playerSlotPosition.x = inventoryUI.playerSlotsWindow.getX();
         playerSlotPosition.y = inventoryUI.playerSlotsWindow.getY();
+    }
+
+    private void resetWindowsPositions() {
+        inventoryUI.inventorySlotsWindow.setPosition(INVENTORY_SLOT_POSITION_X, INVENTORY_SLOT_POSITION_Y);
+        inventoryUI.playerSlotsWindow.setPosition(PLAYER_SLOT_POSITION_X, PLAYER_SLOT_POSITION_Y);
+    }
+
+    private ImageButton createImageButton(String up, String over, String down) {
+        var button = new ImageButton(createDrawable(up), createDrawable(down));
+        button.getStyle().imageOver = createDrawable(over);
+        return button;
+    }
+
+    private NinePatchDrawable createDrawable(String atlasId) {
+        var textureRegion = Utils.getResourceManager().getAtlasTexture(atlasId);
+        var ninePatch = new NinePatch(textureRegion, 1, 1, 1, 1);
+        return new NinePatchDrawable(ninePatch);
     }
 
 }

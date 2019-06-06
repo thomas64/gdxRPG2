@@ -52,7 +52,7 @@ public class MenuSettings extends MenuScreen {
 
     @Override
     public void render(float dt) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(dt);
         listenerKeyVertical.updateSelectedIndex(selectedIndex);

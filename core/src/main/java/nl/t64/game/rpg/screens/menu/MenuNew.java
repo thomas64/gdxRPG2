@@ -27,11 +27,11 @@ public class MenuNew extends MenuScreen {
     private static final String MENU_ITEM_START = "Start";
     private static final String MENU_ITEM_BACK = "Back";
 
-    private static final int PROFILE_LABEL_SPACE_RIGHT = 20;
-    private static final int PROFILE_INPUT_WIDTH = 280;
-    private static final int PROFILE_INPUT_HEIGHT = 75;
-    private static final int START_BUTTON_SPACE_RIGHT = 150;
-    private static final int UPPER_TABLE_SPACE_BOTTOM = 50;
+    private static final float PROFILE_LABEL_SPACE_RIGHT = 20f;
+    private static final float PROFILE_INPUT_WIDTH = 280f;
+    private static final float PROFILE_INPUT_HEIGHT = 75f;
+    private static final float START_BUTTON_SPACE_RIGHT = 150f;
+    private static final float UPPER_TABLE_SPACE_BOTTOM = 50f;
 
     private static final int NUMBER_OF_ITEMS = 2;
     private static final int EXIT_INDEX = 1;
@@ -74,7 +74,7 @@ public class MenuNew extends MenuScreen {
 
     @Override
     public void render(float dt) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(dt);
         listenerKeyInputField.updateInputField(profileName);

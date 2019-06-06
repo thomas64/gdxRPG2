@@ -84,7 +84,7 @@ public class WorldScreen implements Screen, MapObserver {
             return;
         }
 
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         updateCharacters(dt);

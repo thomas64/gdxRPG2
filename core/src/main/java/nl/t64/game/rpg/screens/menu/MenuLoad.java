@@ -24,10 +24,10 @@ public class MenuLoad extends MenuScreen {
     private static final String LOAD_MESSAGE = "Any unsaved progress will be lost.\nAre you sure?";
     private static final String DELETE_MESSAGE = "This save file will be removed.\nAre you sure?";
 
-    private static final int TITLE_SPACE_BOTTOM = 30;
-    private static final int TOP_TABLE_Y = 50;
-    private static final int SCROLL_PANE_HEIGHT = 380;
-    private static final int BUTTON_SPACE_RIGHT = 150;
+    private static final float TITLE_SPACE_BOTTOM = 30f;
+    private static final float TOP_TABLE_Y = 50f;
+    private static final float SCROLL_PANE_HEIGHT = 380f;
+    private static final float BUTTON_SPACE_RIGHT = 150f;
 
     private static final int NUMBER_OF_ITEMS = 3;
     private static final int DELETE_INDEX = 1;
@@ -86,7 +86,7 @@ public class MenuLoad extends MenuScreen {
 
     @Override
     public void render(float dt) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(dt);
         selectedListIndex = listItems.getSelectedIndex();

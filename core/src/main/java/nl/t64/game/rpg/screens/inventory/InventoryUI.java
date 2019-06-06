@@ -24,9 +24,9 @@ class InventoryUI {
     private static final String SPRITE_SILHOUETTE = "sprites/silhouette.png";
     private static final String SPRITE_BORDER = "sprites/border.png";
 
-    private static final int SLOT_SIZE = 64;
+    private static final float SLOT_SIZE = 64f;
     private static final int SLOTS_IN_ROW = 5;
-    private static final int TITLE_PADDING = 50;
+    private static final float TITLE_PADDING = 50f;
 
     private DragAndDrop dragAndDrop;
     private InventorySlotTooltip tooltip;

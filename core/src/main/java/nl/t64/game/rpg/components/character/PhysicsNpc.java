@@ -13,8 +13,8 @@ import java.util.List;
 
 public class PhysicsNpc extends PhysicsComponent {
 
-    private static final int WANDER_BOX_SIZE = 240;
-    private static final int WANDER_BOX_POSITION = -96;
+    private static final float WANDER_BOX_SIZE = 240f;
+    private static final float WANDER_BOX_POSITION = -96f;
 
     private Rectangle wanderBox;
 

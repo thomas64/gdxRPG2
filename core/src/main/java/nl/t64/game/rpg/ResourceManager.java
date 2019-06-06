@@ -25,7 +25,8 @@ public class ResourceManager {
 
     private static final String SPRITE_CONFIGS = "configs/sprites";
     private static final String CONFIG_SUFFIX = ".json";
-    private static final String ATLAS_FILES = "sprites/inventory";
+    private static final String ATLAS_FILES = "sprites";
+    private static final String ATLAS_FILES2 = "sprites/inventory";
     private static final String ATLAS_SUFFIX = ".atlas";
 
     private final AssetManager assetManager;
@@ -104,13 +105,14 @@ public class ResourceManager {
         }
     }
 
-    public TextureRegion getAtlasTexture(String inventoryItemId) {
+    public TextureRegion getAtlasTexture(String atlasId) {
         if (atlasList.isEmpty()) {
-            loadAtlasTexture();
+            loadAtlasTexture(ATLAS_FILES);
+            loadAtlasTexture(ATLAS_FILES2);
         }
         TextureRegion textureRegion = null;
         for (TextureAtlas atlas : atlasList) {
-            textureRegion = atlas.findRegion(inventoryItemId);
+            textureRegion = atlas.findRegion(atlasId);
             if (textureRegion != null) {
                 break;
             }
@@ -118,8 +120,8 @@ public class ResourceManager {
         return textureRegion;
     }
 
-    private void loadAtlasTexture() {
-        FileHandle[] atlasFiles = Gdx.files.local(ATLAS_FILES).list(ATLAS_SUFFIX);
+    private void loadAtlasTexture(String path) {
+        FileHandle[] atlasFiles = Gdx.files.local(path).list(ATLAS_SUFFIX);
         Arrays.stream(atlasFiles)
               .map(TextureAtlas::new)
               .forEach(atlasList::add);
