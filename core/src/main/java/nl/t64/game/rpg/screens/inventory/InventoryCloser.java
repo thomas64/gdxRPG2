@@ -16,14 +16,12 @@ final class InventoryCloser {
         throw new IllegalStateException("InventoryCloser class");
     }
 
-    static void setGlobalInventory(Table inventorySlotsTable) {
-        int i = 0;
-        for (Actor actor : inventorySlotsTable.getChildren()) {
-            InventorySlot slot = (InventorySlot) actor;
+    static void setGlobalInventory(Table inventorySlotsWindow) {
+        for (int i = 0; i < inventorySlotsWindow.getChildren().size - 1; i++) {
+            InventorySlot slot = (InventorySlot) inventorySlotsWindow.getChildren().get(i + 1); // zero is the label
             slot.getPossibleInventoryImage().ifPresentOrElse(
                     addItemToGlobalInventory(i, slot),
                     addNullToGlobalInventory(i));
-            i++;
         }
     }
 

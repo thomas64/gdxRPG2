@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 
 class InventoryTest extends GameTest {
@@ -25,51 +24,75 @@ class InventoryTest extends GameTest {
     @Test
     void whenDataIsCreated_ShouldContainItems() {
         assertThat(inventory.getNumberOfFilledSlots()).isEqualTo(2);
+
         assertThat(inventory.contains("gold")).isTrue();
         assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(1);
+        assertThat(inventory.getItemAt(0)).get().hasFieldOrPropertyWithValue("id", "gold");
+
         assertThat(inventory.contains("basic_mace")).isTrue();
-        assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(1);
+        assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex())).isEqualTo(1);
+        assertThat(inventory.getItemAt(inventory.getLastIndex()))
+                .get().hasFieldOrPropertyWithValue("id", "basic_mace");
     }
 
     @Test
-    void whenEquipmentItemIsAdded_ShouldBeAddedToInventory() {
+    void whenResourceItemIsAdded_ShouldBeAddedToStartOfInventory() {
+        InventoryItem herbs = InventoryDatabase.getInstance().getInventoryItem("herbs");
+        assertThat(inventory.contains("herbs")).isFalse();
+        inventory.autoSetItem(herbs);
+        assertThat(inventory.contains("herbs")).isTrue();
+        assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(1);
+        assertThat(inventory.getItemAt(1)).get().hasFieldOrPropertyWithValue("id", "herbs");
+    }
+
+    @Test
+    void whenEquipmentItemIsAdded_ShouldBeAddedToEndOfInventory() {
         InventoryItem chest = InventoryDatabase.getInstance().getInventoryItem("light_basic_chest");
         assertThat(inventory.contains("light_basic_chest")).isFalse();
-        inventory.setItemAt(2, chest);
+        inventory.autoSetItem(chest);
+        assertThat(inventory.contains("light_basic_chest")).isTrue();
+        assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex() - 1)).isEqualTo(1);
+        assertThat(inventory.getItemAt(inventory.getLastIndex() - 1))
+                .get().hasFieldOrPropertyWithValue("id", "light_basic_chest");
+    }
+
+    @Test
+    void whenItemIsForceSet_ShouldOverwriteExistingItem() {
+        InventoryItem chest = InventoryDatabase.getInstance().getInventoryItem("light_basic_chest");
+        assertThat(inventory.contains("basic_mace")).isTrue();
+        assertThat(inventory.contains("light_basic_chest")).isFalse();
+
+        inventory.forceSetItemAt(inventory.getLastIndex(), chest);
+
+        assertThat(inventory.contains("basic_mace")).isFalse();
         assertThat(inventory.contains("light_basic_chest")).isTrue();
     }
 
     @Test
-    void whenEquipmentItemIsAddedTwice_ShouldThrowException() {
-        InventoryItem chest = InventoryDatabase.getInstance().getInventoryItem("light_basic_chest");
-        inventory.setItemAt(2, chest);
-        assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(
-                () -> inventory.setItemAt(2, chest)
-        );
-    }
-
-    @Test
-    void whenResourceItemIsAdded_ShouldBeAddedToInventory() {
-        InventoryItem gold = InventoryDatabase.getInstance().getInventoryItem("gold");
-        assertThat(inventory.getAmountOfItemAt(2)).isEqualTo(0);
-        inventory.setItemAt(2, gold);
-        assertThat(inventory.getAmountOfItemAt(2)).isEqualTo(1);
-    }
-
-    @Test
-    void whenResourceItemIsAddedTwice_ShouldBeAddedToInventory() {
+    void whenSameResourceItemIsAdded_ShouldIncreaseAmount() {
         InventoryItem gold = InventoryDatabase.getInstance().getInventoryItem("gold");
         assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(1);
-        inventory.setItemAt(0, gold);
+        inventory.autoSetItem(gold);
         assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(2);
     }
 
     @Test
-    void whenOtherResourceItemIsAddedOnSameSpot_ShouldThrowException() {
-        InventoryItem herbs = InventoryDatabase.getInstance().getInventoryItem("herbs");
-        assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(
-                () -> inventory.setItemAt(0, herbs)
-        );
+    void whenSameResourceItemOfMultipleIsAdded_ShouldIncreaseTheFirstAmount() {
+        InventoryItem gold1 = InventoryDatabase.getInstance().getInventoryItem("gold");
+        InventoryItem gold2 = InventoryDatabase.getInstance().getInventoryItem("gold");
+        InventoryItem gold3 = InventoryDatabase.getInstance().getInventoryItem("gold");
+        inventory.forceSetItemAt(0, gold1);
+        inventory.forceSetItemAt(1, gold2);
+        inventory.forceSetItemAt(2, gold3);
+        assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(1);
+        assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(1);
+        assertThat(inventory.getAmountOfItemAt(2)).isEqualTo(1);
+
+        InventoryItem moreGold = InventoryDatabase.getInstance().getInventoryItem("gold");
+        inventory.autoSetItem(moreGold);
+        assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(2);
+        assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(1);
+        assertThat(inventory.getAmountOfItemAt(2)).isEqualTo(1);
     }
 
 }

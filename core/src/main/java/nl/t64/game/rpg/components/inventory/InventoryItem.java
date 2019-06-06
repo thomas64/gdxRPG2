@@ -56,19 +56,7 @@ public class InventoryItem {
         return name;
     }
 
-    void receiveInventoryItem(InventoryItem sourceItem) {
-        if (sourceItem.group.equals(InventoryGroup.RESOURCE)) {
-            if (hasSameIdAs(sourceItem.id)) {
-                increaseAmountWith(sourceItem);
-            } else {
-                throw new UnsupportedOperationException();
-            }
-        } else {
-            throw new UnsupportedOperationException();
-        }
-    }
-
-    private void increaseAmountWith(InventoryItem sourceItem) {
+    void increaseAmountWith(InventoryItem sourceItem) {
         amount += sourceItem.amount;
     }
 

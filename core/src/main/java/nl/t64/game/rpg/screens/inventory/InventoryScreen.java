@@ -2,28 +2,51 @@ package nl.t64.game.rpg.screens.inventory;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.ScreenType;
+import nl.t64.game.rpg.profile.ProfileManager;
+import nl.t64.game.rpg.profile.ProfileObserver;
 
 
-public class InventoryScreen implements Screen {
+public class InventoryScreen implements Screen, ProfileObserver {
 
     private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
-    private static final int INVENTORY_UI_X = 64;
-    private static final int INVENTORY_UI_Y = 64;
+    private static final float INVENTORY_SLOT_POSITION_X = 1530f;
+    private static final float INVENTORY_SLOT_POSITION_Y = 75f;
+    private static final float PLAYER_SLOT_POSITION_X = 1130f;
+    private static final float PLAYER_SLOT_POSITION_Y = 75f;
 
     private Stage stage;
-    private ShapeRenderer shapeRenderer;
     private InventoryUI inventoryUI;
+
+    private Vector2 inventorySlotPosition;
+    private Vector2 playerSlotPosition;
 
     public InventoryScreen() {
         this.stage = new Stage();
-        this.shapeRenderer = new ShapeRenderer();
+    }
+
+    @Override
+    public void onNotifyCreate(ProfileManager profileManager) {
+        inventorySlotPosition = new Vector2(INVENTORY_SLOT_POSITION_X, INVENTORY_SLOT_POSITION_Y);
+        playerSlotPosition = new Vector2(PLAYER_SLOT_POSITION_X, PLAYER_SLOT_POSITION_Y);
+        onNotifySave(profileManager);
+    }
+
+    @Override
+    public void onNotifySave(ProfileManager profileManager) {
+        profileManager.setProperty("inventorySlotPosition", inventorySlotPosition);
+        profileManager.setProperty("playerSlotPosition", playerSlotPosition);
+    }
+
+    @Override
+    public void onNotifyLoad(ProfileManager profileManager) {
+        inventorySlotPosition = profileManager.getProperty("inventorySlotPosition", Vector2.class);
+        playerSlotPosition = profileManager.getProperty("playerSlotPosition", Vector2.class);
     }
 
     @Override
@@ -32,7 +55,8 @@ public class InventoryScreen implements Screen {
         applyListeners();
 
         inventoryUI = new InventoryUI();
-        inventoryUI.setPosition(INVENTORY_UI_X, INVENTORY_UI_Y);  // todo, weg?
+        inventoryUI.inventorySlotsWindow.setPosition(inventorySlotPosition.x, inventorySlotPosition.y);
+        inventoryUI.playerSlotsWindow.setPosition(playerSlotPosition.x, playerSlotPosition.y);
         inventoryUI.addToStage(stage);
     }
 
@@ -42,23 +66,6 @@ public class InventoryScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(dt);
         stage.draw();
-//        renderInventoryUIBorder();
-    }
-
-    private void renderInventoryUIBorder() {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.BLACK);
-        shapeRenderer.rect(INVENTORY_UI_X, INVENTORY_UI_Y,
-                           inventoryUI.inventorySlotsTable.getWidth() + 1f,
-                           inventoryUI.inventorySlotsTable.getHeight() + 1f);
-        shapeRenderer.rect(INVENTORY_UI_X - 1f, INVENTORY_UI_Y - 1f,
-                           inventoryUI.inventorySlotsTable.getWidth() + 3f,
-                           inventoryUI.inventorySlotsTable.getHeight() + 3f);
-        shapeRenderer.rect(inventoryUI.playerSlotsTable.getX(),
-                           inventoryUI.playerSlotsTable.getY(),
-                           inventoryUI.playerSlotsTable.getWidth() + 125f,      // todo, anders.
-                           inventoryUI.playerSlotsTable.getHeight() + 125f);
-        shapeRenderer.end();
     }
 
     @Override
@@ -89,7 +96,8 @@ public class InventoryScreen implements Screen {
     }
 
     private void closeScreen() {
-        InventoryCloser.setGlobalInventory(inventoryUI.inventorySlotsTable);
+        storeWindowPositions();
+        InventoryCloser.setGlobalInventory(inventoryUI.inventorySlotsWindow);
         InventoryCloser.setPersonalInventory(inventoryUI.equipSlotsTable);
         Utils.getScreenManager().setScreen(ScreenType.WORLD);
     }
@@ -104,6 +112,13 @@ public class InventoryScreen implements Screen {
 
     private void applyListeners() {
         stage.addListener(new InventoryScreenListener(this::closeScreen));
+    }
+
+    private void storeWindowPositions() {
+        inventorySlotPosition.x = inventoryUI.inventorySlotsWindow.getX();
+        inventorySlotPosition.y = inventoryUI.inventorySlotsWindow.getY();
+        playerSlotPosition.x = inventoryUI.playerSlotsWindow.getX();
+        playerSlotPosition.y = inventoryUI.playerSlotsWindow.getY();
     }
 
 }
