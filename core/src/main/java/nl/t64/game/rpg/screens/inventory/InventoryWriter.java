@@ -2,7 +2,9 @@ package nl.t64.game.rpg.screens.inventory;
 
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.inventory.InventoryItem;
 import nl.t64.game.rpg.components.party.HeroItem;
@@ -10,13 +12,25 @@ import nl.t64.game.rpg.components.party.HeroItem;
 import java.util.function.Consumer;
 
 
-final class InventoryCloser {
+final class InventoryWriter {
 
-    private InventoryCloser() {
-        throw new IllegalStateException("InventoryCloser class");
+    private InventoryWriter() {
+        throw new IllegalStateException("InventoryWriter class");
     }
 
-    static void setGlobalInventory(Table inventorySlotsWindow) {
+    static void storeToGameData(Group group) {
+        if (group instanceof Window) {
+            setGlobalInventory((Table) group);
+        } else if (group.getParent() instanceof Window) {
+            setPersonalInventory((Table) group);
+        } else if (group.getParent().getParent() instanceof Window) {
+            setPersonalInventory((Table) group.getParent());
+        } else {
+            throw new IllegalStateException("Cannot store inventory to GameData.");
+        }
+    }
+
+    private static void setGlobalInventory(Table inventorySlotsWindow) {
         for (int i = 0; i < inventorySlotsWindow.getChildren().size - 1; i++) {
             InventorySlot slot = (InventorySlot) inventorySlotsWindow.getChildren().get(i + 1); // zero is the label
             slot.getPossibleInventoryImage().ifPresentOrElse(
@@ -37,7 +51,7 @@ final class InventoryCloser {
         return () -> Utils.getGameData().getInventory().forceSetItemAt(index, null);
     }
 
-    static void setPersonalInventory(Table equipSlotsTable) {
+    private static void setPersonalInventory(Table equipSlotsTable) {
         HeroItem heroItem = Utils.getGameData().getParty().getHero(0); // todo, fix index.
         for (Actor actor : equipSlotsTable.getChildren()) {
             if (actor instanceof Table) {

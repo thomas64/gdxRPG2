@@ -26,14 +26,14 @@ public class InventoryScreen implements Screen, ProfileObserver {
     private static final String BUTTON_RESET_OVER = "reset_over";
     private static final String BUTTON_RESET_DOWN = "reset_down";
 
-    private static final float INVENTORY_SLOT_POSITION_X = 1530f;
-    private static final float INVENTORY_SLOT_POSITION_Y = 75f;
-    private static final float PLAYER_SLOT_POSITION_X = 1130f;
-    private static final float PLAYER_SLOT_POSITION_Y = 75f;
+    private static final float INVENTORY_SLOT_POSITION_X = 1462f;
+    private static final float INVENTORY_SLOT_POSITION_Y = 66f;
+    private static final float PLAYER_SLOT_POSITION_X = 1090f;
+    private static final float PLAYER_SLOT_POSITION_Y = 66f;
     private static final float BUTTON_SIZE = 32f;
     private static final float BUTTON_SPACE = 10f;
     private static final float RIGHT_SPACE = 26f;
-    private static final float TOP_SPACE = 36f;
+    private static final float TOP_SPACE = 40f;
 
     private Stage stage;
     private InventoryUI inventoryUI;
@@ -136,8 +136,6 @@ public class InventoryScreen implements Screen, ProfileObserver {
 
     private void closeScreen() {
         storeWindowPositions();
-        InventoryCloser.setGlobalInventory(inventoryUI.inventorySlotsWindow);
-        InventoryCloser.setPersonalInventory(inventoryUI.equipSlotsTable);
         Utils.getScreenManager().setScreen(ScreenType.WORLD);
     }
 

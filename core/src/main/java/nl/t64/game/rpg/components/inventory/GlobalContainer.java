@@ -5,7 +5,7 @@ import java.util.*;
 
 public class GlobalContainer {
 
-    private static final int NUMBER_OF_SLOTS = 70;
+    private static final int NUMBER_OF_SLOTS = 84;
 
     private final List<InventoryItem> inventory;
 

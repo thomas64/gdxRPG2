@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
@@ -25,13 +24,12 @@ class InventoryUI {
     private static final String SPRITE_BORDER = "sprites/border.png";
 
     private static final float SLOT_SIZE = 64f;
-    private static final int SLOTS_IN_ROW = 5;
+    private static final int SLOTS_IN_ROW = 6;
     private static final float TITLE_PADDING = 50f;
 
     private DragAndDrop dragAndDrop;
     private InventorySlotTooltip tooltip;
 
-    Table equipSlotsTable;
     Window inventorySlotsWindow;
     Window playerSlotsWindow;
 
@@ -81,7 +79,7 @@ class InventoryUI {
         var texture = Utils.getResourceManager().getTextureAsset(SPRITE_SILHOUETTE);
         var sprite = new Sprite(texture);
         var silhouette = new SpriteDrawable(sprite);
-        equipSlotsTable = new EquipSlotsTable(dragAndDrop, tooltip).equipSlots;
+        var equipSlotsTable = new EquipSlotsTable(dragAndDrop, tooltip).equipSlots;
         equipSlotsTable.setBackground(silhouette);
         playerSlotsWindow.add(equipSlotsTable);
 
