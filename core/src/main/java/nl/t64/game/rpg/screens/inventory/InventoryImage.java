@@ -8,6 +8,9 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.inventory.InventoryGroup;
 import nl.t64.game.rpg.components.inventory.InventoryItem;
 
+import java.util.List;
+import java.util.Map;
+
 
 class InventoryImage extends Image {
 
@@ -30,7 +33,30 @@ class InventoryImage extends Image {
         return inventoryItem.isStackable();
     }
 
-    String getDescription() {
-        return inventoryItem.getDescription();
+    String getDescriptionKeys() {
+        List<Map.Entry<String, String>> description = inventoryItem.getDescription();
+
+        var sb = new StringBuilder();
+        for (Map.Entry<String, String> pair : description) {
+            sb.append(pair.getKey()).append("\n");
+        }
+        sb.reverse();
+        sb.delete(0, 1);
+        sb.reverse();
+        return sb.toString();
     }
+
+    String getDescriptionValues() {
+        List<Map.Entry<String, String>> description = inventoryItem.getDescription();
+
+        var sb = new StringBuilder();
+        for (Map.Entry<String, String> pair : description) {
+            sb.append(pair.getValue()).append("\n");
+        }
+        sb.reverse();
+        sb.delete(0, 1);
+        sb.reverse();
+        return sb.toString();
+    }
+
 }

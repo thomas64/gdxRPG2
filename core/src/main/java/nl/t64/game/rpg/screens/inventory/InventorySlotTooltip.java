@@ -14,15 +14,19 @@ class InventorySlotTooltip {
 
     private static final String SPRITE_SLOT = "sprites/inventoryslot.png";
     private static final float PADDING = 10f;
+    private static final float SPACING = 20f;
 
     Window window;
-    private Label description;
+    private Label descriptionLeft;
+    private Label descriptionRight;
 
     InventorySlotTooltip() {
         this.window = new Window("", createWindowSkin());
-        this.description = new Label("", createLabelSkin());
+        this.descriptionLeft = new Label("", createLabelSkin());
+        this.descriptionRight = new Label("", createLabelSkin());
 
-        this.window.add(this.description);
+        this.window.add(this.descriptionLeft).spaceRight(SPACING);
+        this.window.add(this.descriptionRight);
         this.window.pad(PADDING);
         this.window.pack();
         this.window.setVisible(false);
@@ -55,10 +59,12 @@ class InventorySlotTooltip {
 
     void updateDescription(InventorySlot inventorySlot) {
         if (inventorySlot.hasItem()) {
-            description.setText(inventorySlot.getCertainInventoryImage().getDescription());
+            descriptionLeft.setText(inventorySlot.getCertainInventoryImage().getDescriptionKeys());
+            descriptionRight.setText(inventorySlot.getCertainInventoryImage().getDescriptionValues());
             window.pack();
         } else {
-            description.setText("");
+            descriptionLeft.setText("");
+            descriptionRight.setText("");
             window.pack();
         }
     }

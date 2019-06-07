@@ -6,10 +6,12 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum WeaponType {
 
-    SWORD,
-    HAFTED,
-    POLE,
-    MISSILE,
-    THROWN
+    SWORD("Sword"),
+    HAFTED("Hafted"),
+    POLE("Pole"),
+    MISSILE("Missile"),
+    THROWN("Thrown");
+
+    final String title;
 
 }

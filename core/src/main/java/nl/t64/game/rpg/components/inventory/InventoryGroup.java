@@ -24,7 +24,7 @@ public enum InventoryGroup {
     PANTS("Pants"),                 // 12 prt   sum of totaal: prt / 3 ?
     BOOTS("Boots"),                 // 12 prt   bij complete set agi omhoog.
 
-    RESOURCE("");
+    RESOURCE("Resource");
 
     final String title;
 

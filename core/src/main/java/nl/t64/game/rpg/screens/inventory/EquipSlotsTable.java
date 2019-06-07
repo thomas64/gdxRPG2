@@ -108,7 +108,7 @@ class EquipSlotsTable {
     }
 
     private void addToSlots() {
-        HeroItem heroItem = Utils.getGameData().getParty().getHero(PARTY_INDEX);
+        HeroItem heroItem = Utils.getGameData().getParty().getHero(PARTY_INDEX);    // todo, fix index.
 
         heroItem.getInventoryItem(HELMET).ifPresent(addToSlot(helmetSlot));
         heroItem.getInventoryItem(NECKLACE).ifPresent(addToSlot(necklaceSlot));

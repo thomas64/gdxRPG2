@@ -4,7 +4,7 @@
     "group": "WEAPON",
     "skill": "SWORD",
     "min_strength": 7,
-    "hit_chance": 40,
+    "base_hit": 40,
     "damage": 11
   },
   "standard_dagger": {
@@ -12,7 +12,7 @@
     "group": "WEAPON",
     "skill": "SWORD",
     "min_strength": 8,
-    "hit_chance": 50,
+    "base_hit": 50,
     "damage": 14
   },
   "specialist_dagger": {
@@ -20,7 +20,7 @@
     "group": "WEAPON",
     "skill": "SWORD",
     "min_strength": 9,
-    "hit_chance": 60,
+    "base_hit": 60,
     "damage": 17
   },
   "masterwork_dagger": {
@@ -28,7 +28,7 @@
     "group": "WEAPON",
     "skill": "SWORD",
     "min_strength": 10,
-    "hit_chance": 70,
+    "base_hit": 70,
     "damage": 20
   },
   "basic_shortsword": {
@@ -36,7 +36,7 @@
     "group": "WEAPON",
     "skill": "SWORD",
     "min_strength": 12,
-    "hit_chance": 40,
+    "base_hit": 40,
     "damage": 12
   },
   "standard_shortsword": {
@@ -44,7 +44,7 @@
     "group": "WEAPON",
     "skill": "SWORD",
     "min_strength": 13,
-    "hit_chance": 50,
+    "base_hit": 50,
     "damage": 15
   },
   "specialist_shortsword": {
@@ -52,7 +52,7 @@
     "group": "WEAPON",
     "skill": "SWORD",
     "min_strength": 14,
-    "hit_chance": 60,
+    "base_hit": 60,
     "damage": 18
   },
   "masterwork_shortsword": {
@@ -60,7 +60,7 @@
     "group": "WEAPON",
     "skill": "SWORD",
     "min_strength": 15,
-    "hit_chance": 70,
+    "base_hit": 70,
     "damage": 21
   },
   "basic_longsword": {
@@ -68,7 +68,7 @@
     "group": "WEAPON",
     "skill": "SWORD",
     "min_strength": 17,
-    "hit_chance": 40,
+    "base_hit": 40,
     "damage": 13
   },
   "standard_longsword": {
@@ -76,7 +76,7 @@
     "group": "WEAPON",
     "skill": "SWORD",
     "min_strength": 18,
-    "hit_chance": 50,
+    "base_hit": 50,
     "damage": 16
   },
   "specialist_longsword": {
@@ -84,7 +84,7 @@
     "group": "WEAPON",
     "skill": "SWORD",
     "min_strength": 19,
-    "hit_chance": 60,
+    "base_hit": 60,
     "damage": 19
   },
   "masterwork_longsword": {
@@ -92,7 +92,7 @@
     "group": "WEAPON",
     "skill": "SWORD",
     "min_strength": 20,
-    "hit_chance": 70,
+    "base_hit": 70,
     "damage": 22
   },
   "basic_greatsword": {
@@ -100,7 +100,7 @@
     "group": "WEAPON",
     "skill": "SWORD",
     "min_strength": 22,
-    "hit_chance": 40,
+    "base_hit": 40,
     "damage": 14
   },
   "standard_greatsword": {
@@ -108,7 +108,7 @@
     "group": "WEAPON",
     "skill": "SWORD",
     "min_strength": 23,
-    "hit_chance": 50,
+    "base_hit": 50,
     "damage": 17
   },
   "specialist_greatsword": {
@@ -116,7 +116,7 @@
     "group": "WEAPON",
     "skill": "SWORD",
     "min_strength": 24,
-    "hit_chance": 60,
+    "base_hit": 60,
     "damage": 20
   },
   "masterwork_greatsword": {
@@ -124,7 +124,7 @@
     "group": "WEAPON",
     "skill": "SWORD",
     "min_strength": 25,
-    "hit_chance": 70,
+    "base_hit": 70,
     "damage": 23
   }
 }

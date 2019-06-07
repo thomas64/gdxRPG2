@@ -4,7 +4,7 @@
     "group": "WEAPON",
     "skill": "HAFTED",
     "min_strength": 15,
-    "hit_chance": 60,
+    "base_hit": 60,
     "damage": 28
   },
   "basic_mace": {
@@ -12,7 +12,7 @@
     "group": "WEAPON",
     "skill": "HAFTED",
     "min_strength": 15,
-    "hit_chance": 30,
+    "base_hit": 30,
     "damage": 18
   },
   "standard_mace": {
@@ -20,7 +20,7 @@
     "group": "WEAPON",
     "skill": "HAFTED",
     "min_strength": 16,
-    "hit_chance": 40,
+    "base_hit": 40,
     "damage": 21
   },
   "specialist_mace": {
@@ -28,7 +28,7 @@
     "group": "WEAPON",
     "skill": "HAFTED",
     "min_strength": 17,
-    "hit_chance": 50,
+    "base_hit": 50,
     "damage": 24
   },
   "masterwork_mace": {
@@ -36,7 +36,7 @@
     "group": "WEAPON",
     "skill": "HAFTED",
     "min_strength": 18,
-    "hit_chance": 60,
+    "base_hit": 60,
     "damage": 27
   },
   "basic_axe": {
@@ -44,7 +44,7 @@
     "group": "WEAPON",
     "skill": "HAFTED",
     "min_strength": 19,
-    "hit_chance": 30,
+    "base_hit": 30,
     "damage": 19
   },
   "standard_axe": {
@@ -52,7 +52,7 @@
     "group": "WEAPON",
     "skill": "HAFTED",
     "min_strength": 20,
-    "hit_chance": 40,
+    "base_hit": 40,
     "damage": 22
   },
   "specialist_axe": {
@@ -60,7 +60,7 @@
     "group": "WEAPON",
     "skill": "HAFTED",
     "min_strength": 21,
-    "hit_chance": 50,
+    "base_hit": 50,
     "damage": 25
   },
   "masterwork_axe": {
@@ -68,7 +68,7 @@
     "group": "WEAPON",
     "skill": "HAFTED",
     "min_strength": 22,
-    "hit_chance": 60,
+    "base_hit": 60,
     "damage": 28
   },
   "basic_morningstar": {
@@ -76,7 +76,7 @@
     "group": "WEAPON",
     "skill": "HAFTED",
     "min_strength": 23,
-    "hit_chance": 30,
+    "base_hit": 30,
     "damage": 20
   },
   "standard_morningstar": {
@@ -84,7 +84,7 @@
     "group": "WEAPON",
     "skill": "HAFTED",
     "min_strength": 24,
-    "hit_chance": 40,
+    "base_hit": 40,
     "damage": 23
   },
   "specialist_morningstar": {
@@ -92,7 +92,7 @@
     "group": "WEAPON",
     "skill": "HAFTED",
     "min_strength": 25,
-    "hit_chance": 50,
+    "base_hit": 50,
     "damage": 26
   },
   "masterwork_morningstar": {
@@ -100,7 +100,7 @@
     "group": "WEAPON",
     "skill": "HAFTED",
     "min_strength": 26,
-    "hit_chance": 60,
+    "base_hit": 60,
     "damage": 29
   },
   "basic_maul": {
@@ -108,7 +108,7 @@
     "group": "WEAPON",
     "skill": "HAFTED",
     "min_strength": 27,
-    "hit_chance": 30,
+    "base_hit": 30,
     "damage": 21
   },
   "standard_maul": {
@@ -116,7 +116,7 @@
     "group": "WEAPON",
     "skill": "HAFTED",
     "min_strength": 28,
-    "hit_chance": 40,
+    "base_hit": 40,
     "damage": 24
   },
   "specialist_maul": {
@@ -124,7 +124,7 @@
     "group": "WEAPON",
     "skill": "HAFTED",
     "min_strength": 29,
-    "hit_chance": 50,
+    "base_hit": 50,
     "damage": 27
   },
   "masterwork_maul": {
@@ -132,7 +132,7 @@
     "group": "WEAPON",
     "skill": "HAFTED",
     "min_strength": 30,
-    "hit_chance": 60,
+    "base_hit": 60,
     "damage": 30
   }
 }
