@@ -13,7 +13,7 @@
     "skill": "SWORD",
     "min_strength": 8,
     "base_hit": 50,
-    "damage": 14
+    "damage": 13
   },
   "specialist_dagger": {
     "name": "Specialist Dagger",
@@ -21,7 +21,7 @@
     "skill": "SWORD",
     "min_strength": 9,
     "base_hit": 60,
-    "damage": 17
+    "damage": 15
   },
   "masterwork_dagger": {
     "name": "Masterwork Dagger",
@@ -29,7 +29,7 @@
     "skill": "SWORD",
     "min_strength": 10,
     "base_hit": 70,
-    "damage": 20
+    "damage": 17
   },
   "basic_shortsword": {
     "name": "Basic Shortsword",
@@ -37,7 +37,7 @@
     "skill": "SWORD",
     "min_strength": 12,
     "base_hit": 40,
-    "damage": 12
+    "damage": 13
   },
   "standard_shortsword": {
     "name": "Standard Shortsword",
@@ -53,7 +53,7 @@
     "skill": "SWORD",
     "min_strength": 14,
     "base_hit": 60,
-    "damage": 18
+    "damage": 17
   },
   "masterwork_shortsword": {
     "name": "Masterwork Shortsword",
@@ -61,7 +61,7 @@
     "skill": "SWORD",
     "min_strength": 15,
     "base_hit": 70,
-    "damage": 21
+    "damage": 19
   },
   "basic_longsword": {
     "name": "Basic Longsword",
@@ -69,7 +69,7 @@
     "skill": "SWORD",
     "min_strength": 17,
     "base_hit": 40,
-    "damage": 13
+    "damage": 15
   },
   "standard_longsword": {
     "name": "Standard Longsword",
@@ -77,7 +77,7 @@
     "skill": "SWORD",
     "min_strength": 18,
     "base_hit": 50,
-    "damage": 16
+    "damage": 17
   },
   "specialist_longsword": {
     "name": "Specialist Longsword",
@@ -93,7 +93,7 @@
     "skill": "SWORD",
     "min_strength": 20,
     "base_hit": 70,
-    "damage": 22
+    "damage": 21
   },
   "basic_greatsword": {
     "name": "Basic Greatsword",
@@ -101,7 +101,7 @@
     "skill": "SWORD",
     "min_strength": 22,
     "base_hit": 40,
-    "damage": 14
+    "damage": 17
   },
   "standard_greatsword": {
     "name": "Standard Greatsword",
@@ -109,7 +109,7 @@
     "skill": "SWORD",
     "min_strength": 23,
     "base_hit": 50,
-    "damage": 17
+    "damage": 19
   },
   "specialist_greatsword": {
     "name": "Specialist Greatsword",
@@ -117,7 +117,7 @@
     "skill": "SWORD",
     "min_strength": 24,
     "base_hit": 60,
-    "damage": 20
+    "damage": 21
   },
   "masterwork_greatsword": {
     "name": "Masterwork Greatsword",

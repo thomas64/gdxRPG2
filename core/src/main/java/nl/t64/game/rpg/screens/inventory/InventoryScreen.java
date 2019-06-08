@@ -26,20 +26,23 @@ public class InventoryScreen implements Screen, ProfileObserver {
     private static final String BUTTON_RESET_OVER = "reset_over";
     private static final String BUTTON_RESET_DOWN = "reset_down";
 
-    private static final float INVENTORY_SLOT_POSITION_X = 1462f;
-    private static final float INVENTORY_SLOT_POSITION_Y = 66f;
-    private static final float PLAYER_SLOT_POSITION_X = 1090f;
-    private static final float PLAYER_SLOT_POSITION_Y = 66f;
+    private static final float INVENTORY_WINDOW_POSITION_X = 1468f;
+    private static final float INVENTORY_WINDOW_POSITION_Y = 67f;
+    private static final float PLAYER_WINDOW_POSITION_X = 1098f;
+    private static final float PLAYER_WINDOW_POSITION_Y = 67f;
+    private static final float STATS_WINDOW_POSITION_X = 100f;
+    private static final float STATS_WINDOW_POSITION_Y = 67f;
     private static final float BUTTON_SIZE = 32f;
     private static final float BUTTON_SPACE = 10f;
     private static final float RIGHT_SPACE = 26f;
-    private static final float TOP_SPACE = 40f;
+    private static final float TOP_SPACE = 35f;
 
     private Stage stage;
     private InventoryUI inventoryUI;
 
-    private Vector2 inventorySlotPosition;
-    private Vector2 playerSlotPosition;
+    private Vector2 inventoryWindowPosition;
+    private Vector2 playerWindowPosition;
+    private Vector2 statsWindowPosition;
 
     public InventoryScreen() {
         this.stage = new Stage();
@@ -47,21 +50,24 @@ public class InventoryScreen implements Screen, ProfileObserver {
 
     @Override
     public void onNotifyCreate(ProfileManager profileManager) {
-        inventorySlotPosition = new Vector2(INVENTORY_SLOT_POSITION_X, INVENTORY_SLOT_POSITION_Y);
-        playerSlotPosition = new Vector2(PLAYER_SLOT_POSITION_X, PLAYER_SLOT_POSITION_Y);
+        inventoryWindowPosition = new Vector2(INVENTORY_WINDOW_POSITION_X, INVENTORY_WINDOW_POSITION_Y);
+        playerWindowPosition = new Vector2(PLAYER_WINDOW_POSITION_X, PLAYER_WINDOW_POSITION_Y);
+        statsWindowPosition = new Vector2(STATS_WINDOW_POSITION_X, STATS_WINDOW_POSITION_Y);
         onNotifySave(profileManager);
     }
 
     @Override
     public void onNotifySave(ProfileManager profileManager) {
-        profileManager.setProperty("inventorySlotPosition", inventorySlotPosition);
-        profileManager.setProperty("playerSlotPosition", playerSlotPosition);
+        profileManager.setProperty("inventoryWindowPosition", inventoryWindowPosition);
+        profileManager.setProperty("playerWindowPosition", playerWindowPosition);
+        profileManager.setProperty("statsWindowPosition", statsWindowPosition);
     }
 
     @Override
     public void onNotifyLoad(ProfileManager profileManager) {
-        inventorySlotPosition = profileManager.getProperty("inventorySlotPosition", Vector2.class);
-        playerSlotPosition = profileManager.getProperty("playerSlotPosition", Vector2.class);
+        inventoryWindowPosition = profileManager.getProperty("inventoryWindowPosition", Vector2.class);
+        playerWindowPosition = profileManager.getProperty("playerWindowPosition", Vector2.class);
+        statsWindowPosition = profileManager.getProperty("statsWindowPosition", Vector2.class);
     }
 
     @Override
@@ -71,8 +77,9 @@ public class InventoryScreen implements Screen, ProfileObserver {
         createButtonTable();
 
         inventoryUI = new InventoryUI();
-        inventoryUI.inventorySlotsWindow.setPosition(inventorySlotPosition.x, inventorySlotPosition.y);
-        inventoryUI.playerSlotsWindow.setPosition(playerSlotPosition.x, playerSlotPosition.y);
+        inventoryUI.inventoryWindow.setPosition(inventoryWindowPosition.x, inventoryWindowPosition.y);
+        inventoryUI.playerWindow.setPosition(playerWindowPosition.x, playerWindowPosition.y);
+        inventoryUI.statsWindow.setPosition(statsWindowPosition.x, statsWindowPosition.y);
         inventoryUI.addToStage(stage);
     }
 
@@ -140,15 +147,18 @@ public class InventoryScreen implements Screen, ProfileObserver {
     }
 
     private void storeWindowPositions() {
-        inventorySlotPosition.x = inventoryUI.inventorySlotsWindow.getX();
-        inventorySlotPosition.y = inventoryUI.inventorySlotsWindow.getY();
-        playerSlotPosition.x = inventoryUI.playerSlotsWindow.getX();
-        playerSlotPosition.y = inventoryUI.playerSlotsWindow.getY();
+        inventoryWindowPosition.x = inventoryUI.inventoryWindow.getX();
+        inventoryWindowPosition.y = inventoryUI.inventoryWindow.getY();
+        playerWindowPosition.x = inventoryUI.playerWindow.getX();
+        playerWindowPosition.y = inventoryUI.playerWindow.getY();
+        statsWindowPosition.x = inventoryUI.statsWindow.getX();
+        statsWindowPosition.y = inventoryUI.statsWindow.getY();
     }
 
     private void resetWindowsPositions() {
-        inventoryUI.inventorySlotsWindow.setPosition(INVENTORY_SLOT_POSITION_X, INVENTORY_SLOT_POSITION_Y);
-        inventoryUI.playerSlotsWindow.setPosition(PLAYER_SLOT_POSITION_X, PLAYER_SLOT_POSITION_Y);
+        inventoryUI.inventoryWindow.setPosition(INVENTORY_WINDOW_POSITION_X, INVENTORY_WINDOW_POSITION_Y);
+        inventoryUI.playerWindow.setPosition(PLAYER_WINDOW_POSITION_X, PLAYER_WINDOW_POSITION_Y);
+        inventoryUI.statsWindow.setPosition(STATS_WINDOW_POSITION_X, STATS_WINDOW_POSITION_Y);
     }
 
     private ImageButton createImageButton(String up, String over, String down) {

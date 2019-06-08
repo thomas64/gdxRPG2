@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.components.inventory;
+package nl.t64.game.rpg.components.party;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,10 +8,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static nl.t64.game.rpg.components.inventory.InventoryGroup.*;
+import static nl.t64.game.rpg.components.party.InventoryGroup.*;
 
 
-public class PersonalContainer {
+class PersonalContainer {
 
     private static final int NUMBER_OF_EQUIPMENT_SLOTS = 14;
 
@@ -48,7 +48,15 @@ public class PersonalContainer {
         this.equipment.put(CHEST.name(), database.getInventoryItem(chestId));
     }
 
-    public int getSumOfProtectionWithShield() {
+    Optional<InventoryItem> getInventoryItem(InventoryGroup inventoryGroup) {
+        return Optional.ofNullable(equipment.get(inventoryGroup.name()));
+    }
+
+    void forceSetInventoryItem(InventoryGroup inventoryGroup, InventoryItem inventoryItem) {
+        equipment.replace(inventoryGroup.name(), inventoryItem);
+    }
+
+    int getSumOfProtectionWithShield() {
         return equipment.values()
                         .stream()
                         .filter(Objects::nonNull)
@@ -56,12 +64,16 @@ public class PersonalContainer {
                         .sum();
     }
 
-    public Optional<InventoryItem> getInventoryItem(InventoryGroup inventoryGroup) {
-        return Optional.ofNullable(equipment.get(inventoryGroup.name()));
+    int getWeaponBaseHit() {
+        return getInventoryItem(WEAPON).map(item -> item.baseHit).orElse(0);
     }
 
-    public void forceSetInventoryItem(InventoryGroup inventoryGroup, InventoryItem inventoryItem) {
-        equipment.replace(inventoryGroup.name(), inventoryItem);
+    int getWeaponDamage() {
+        return getInventoryItem(WEAPON).map(item -> item.damage).orElse(0);
+    }
+
+    int getShieldDefense() {
+        return getInventoryItem(SHIELD).map(item -> item.defense).orElse(0);
     }
 
 }

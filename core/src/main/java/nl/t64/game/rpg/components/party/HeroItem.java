@@ -1,9 +1,6 @@
 package nl.t64.game.rpg.components.party;
 
 import lombok.Setter;
-import nl.t64.game.rpg.components.inventory.InventoryGroup;
-import nl.t64.game.rpg.components.inventory.InventoryItem;
-import nl.t64.game.rpg.components.inventory.PersonalContainer;
 
 import java.util.Map;
 import java.util.Optional;
@@ -27,8 +24,12 @@ public class HeroItem {
         return level.getXpDeltaBetweenLevels();
     }
 
-    int getTotalXp() {
+    public int getTotalXp() {
         return level.totalXp;
+    }
+
+    public int getXpRemaining() {
+        return level.xpForUpgrades;
     }
 
     int getLevel() {
@@ -67,6 +68,30 @@ public class HeroItem {
 
     int getStrength() {
         return strength.current + strength.bonus;
+    }
+
+    public int getWeaponBaseHit() {
+        return inventory.getWeaponBaseHit();
+    }
+
+    public int getWeaponDamage() {
+        return inventory.getWeaponDamage();
+    }
+
+    public int getShieldDefense() {
+        return inventory.getShieldDefense();
+    }
+
+    public int getOwnEndurance() {
+        return endurance.current;
+    }
+
+    public int getOwnStrength() {
+        return strength.current;
+    }
+
+    public int getOwnStamina() {
+        return stamina.current;
     }
 
 }

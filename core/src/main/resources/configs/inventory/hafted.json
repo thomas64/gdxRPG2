@@ -21,7 +21,7 @@
     "skill": "HAFTED",
     "min_strength": 16,
     "base_hit": 40,
-    "damage": 21
+    "damage": 20
   },
   "specialist_mace": {
     "name": "Specialist Mace",
@@ -29,7 +29,7 @@
     "skill": "HAFTED",
     "min_strength": 17,
     "base_hit": 50,
-    "damage": 24
+    "damage": 22
   },
   "masterwork_mace": {
     "name": "Masterwork Mace",
@@ -37,7 +37,7 @@
     "skill": "HAFTED",
     "min_strength": 18,
     "base_hit": 60,
-    "damage": 27
+    "damage": 24
   },
   "basic_axe": {
     "name": "Basic Axe",
@@ -45,7 +45,7 @@
     "skill": "HAFTED",
     "min_strength": 19,
     "base_hit": 30,
-    "damage": 19
+    "damage": 20
   },
   "standard_axe": {
     "name": "Standard Axe",
@@ -61,7 +61,7 @@
     "skill": "HAFTED",
     "min_strength": 21,
     "base_hit": 50,
-    "damage": 25
+    "damage": 24
   },
   "masterwork_axe": {
     "name": "Masterwork Axe",
@@ -69,7 +69,7 @@
     "skill": "HAFTED",
     "min_strength": 22,
     "base_hit": 60,
-    "damage": 28
+    "damage": 26
   },
   "basic_morningstar": {
     "name": "Basic Morningstar",
@@ -77,7 +77,7 @@
     "skill": "HAFTED",
     "min_strength": 23,
     "base_hit": 30,
-    "damage": 20
+    "damage": 22
   },
   "standard_morningstar": {
     "name": "Standard Morningstar",
@@ -85,7 +85,7 @@
     "skill": "HAFTED",
     "min_strength": 24,
     "base_hit": 40,
-    "damage": 23
+    "damage": 24
   },
   "specialist_morningstar": {
     "name": "Specialist Morningstar",
@@ -101,7 +101,7 @@
     "skill": "HAFTED",
     "min_strength": 26,
     "base_hit": 60,
-    "damage": 29
+    "damage": 28
   },
   "basic_maul": {
     "name": "Basic Maul",
@@ -109,7 +109,7 @@
     "skill": "HAFTED",
     "min_strength": 27,
     "base_hit": 30,
-    "damage": 21
+    "damage": 24
   },
   "standard_maul": {
     "name": "Standard Maul",
@@ -117,7 +117,7 @@
     "skill": "HAFTED",
     "min_strength": 28,
     "base_hit": 40,
-    "damage": 24
+    "damage": 26
   },
   "specialist_maul": {
     "name": "Specialist Maul",
@@ -125,7 +125,7 @@
     "skill": "HAFTED",
     "min_strength": 29,
     "base_hit": 50,
-    "damage": 27
+    "damage": 28
   },
   "masterwork_maul": {
     "name": "Masterwork Maul",

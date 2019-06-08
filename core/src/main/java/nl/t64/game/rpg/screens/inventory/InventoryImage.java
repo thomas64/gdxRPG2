@@ -5,8 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import nl.t64.game.rpg.Utils;
-import nl.t64.game.rpg.components.inventory.InventoryGroup;
-import nl.t64.game.rpg.components.inventory.InventoryItem;
+import nl.t64.game.rpg.components.party.InventoryGroup;
+import nl.t64.game.rpg.components.party.InventoryItem;
 
 import java.util.List;
 import java.util.Map;
@@ -16,10 +16,12 @@ class InventoryImage extends Image {
 
     final InventoryGroup inventoryGroup;
     final InventoryItem inventoryItem;
+    private List<Map.Entry<String, String>> description;
 
     InventoryImage(InventoryItem inventoryItem) {
         this.inventoryItem = inventoryItem;
         this.inventoryGroup = inventoryItem.getGroup();
+        this.description = null;
         TextureRegion textureRegion = Utils.getResourceManager().getAtlasTexture(inventoryItem.getId());
         super.setDrawable(new TextureRegionDrawable(textureRegion));
         super.setScaling(Scaling.none);
@@ -34,7 +36,9 @@ class InventoryImage extends Image {
     }
 
     String getDescriptionKeys() {
-        List<Map.Entry<String, String>> description = inventoryItem.getDescription();
+        if (description == null) {
+            description = inventoryItem.createDescription();
+        }
 
         var sb = new StringBuilder();
         for (Map.Entry<String, String> pair : description) {
@@ -47,7 +51,9 @@ class InventoryImage extends Image {
     }
 
     String getDescriptionValues() {
-        List<Map.Entry<String, String>> description = inventoryItem.getDescription();
+        if (description == null) {
+            description = inventoryItem.createDescription();
+        }
 
         var sb = new StringBuilder();
         for (Map.Entry<String, String> pair : description) {

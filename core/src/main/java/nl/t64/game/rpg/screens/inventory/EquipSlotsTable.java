@@ -3,12 +3,12 @@ package nl.t64.game.rpg.screens.inventory;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import nl.t64.game.rpg.Utils;
-import nl.t64.game.rpg.components.inventory.InventoryItem;
 import nl.t64.game.rpg.components.party.HeroItem;
+import nl.t64.game.rpg.components.party.InventoryItem;
 
 import java.util.function.Consumer;
 
-import static nl.t64.game.rpg.components.inventory.InventoryGroup.*;
+import static nl.t64.game.rpg.components.party.InventoryGroup.*;
 
 
 class EquipSlotsTable {

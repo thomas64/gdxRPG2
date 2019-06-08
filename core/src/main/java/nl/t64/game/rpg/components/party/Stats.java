@@ -11,13 +11,13 @@ class Level {
     int current;
     int hitpoints;
     int totalXp;
-    int remainingXp;
+    int xpForUpgrades;
 
     Level(int current) {
         this.current = current;
         this.hitpoints = current;
         this.totalXp = getTotalXpForLevel(current);
-        this.remainingXp = 0;
+        this.xpForUpgrades = 0;
     }
 
     private static int getTotalXpForLevel(float level) {

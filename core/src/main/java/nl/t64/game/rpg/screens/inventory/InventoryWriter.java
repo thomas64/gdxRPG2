@@ -6,8 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import nl.t64.game.rpg.Utils;
-import nl.t64.game.rpg.components.inventory.InventoryItem;
 import nl.t64.game.rpg.components.party.HeroItem;
+import nl.t64.game.rpg.components.party.InventoryItem;
 
 import java.util.function.Consumer;
 

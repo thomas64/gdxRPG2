@@ -6,11 +6,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Utils;
-import nl.t64.game.rpg.components.inventory.InventoryGroup;
+import nl.t64.game.rpg.components.party.InventoryGroup;
 
 import java.util.Optional;
 
@@ -55,9 +54,8 @@ class InventorySlot extends Stack {
     }
 
     private void createNumberOfItemsLabel() {
-        var labelSkin = new Skin();
-        labelSkin.add("default", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        amountLabel = new Label(String.valueOf(amount), labelSkin);
+        var labelStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+        amountLabel = new Label(String.valueOf(amount), labelStyle);
         amountLabel.setAlignment(Align.bottomRight);
         amountLabel.setVisible(false);
         addToStack(amountLabel);

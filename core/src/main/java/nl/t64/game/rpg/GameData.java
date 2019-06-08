@@ -1,12 +1,7 @@
 package nl.t64.game.rpg;
 
 import lombok.Getter;
-import nl.t64.game.rpg.components.inventory.GlobalContainer;
-import nl.t64.game.rpg.components.inventory.InventoryDatabase;
-import nl.t64.game.rpg.components.inventory.InventoryItem;
-import nl.t64.game.rpg.components.party.HeroContainer;
-import nl.t64.game.rpg.components.party.HeroItem;
-import nl.t64.game.rpg.components.party.PartyContainer;
+import nl.t64.game.rpg.components.party.*;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.profile.ProfileObserver;

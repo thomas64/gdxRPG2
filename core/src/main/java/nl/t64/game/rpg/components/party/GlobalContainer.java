@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.components.inventory;
+package nl.t64.game.rpg.components.party;
 
 import java.util.*;
 
@@ -14,12 +14,8 @@ public class GlobalContainer {
     }
 
     public int getAmountOfItemAt(int index) {
-        InventoryItem targetItem = inventory.get(index);
-        if (targetItem == null) {
-            return 0;
-        } else {
-            return targetItem.amount;
-        }
+        return getItemAt(index).map(item -> item.amount)
+                               .orElse(0);
     }
 
     public Optional<InventoryItem> getItemAt(int index) {

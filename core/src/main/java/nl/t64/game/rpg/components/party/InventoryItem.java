@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.components.inventory;
+package nl.t64.game.rpg.components.party;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import static nl.t64.game.rpg.components.party.InventoryAttribute.*;
+import static nl.t64.game.rpg.components.party.InventoryGroup.*;
 
 
 @NoArgsConstructor
@@ -27,14 +30,11 @@ public class InventoryItem {
     int minStrength;
     @JsonProperty("base_hit")
     int baseHit;
+    int damage;
     int protection;
     int defense;
-    int damage;
     int dexterity;
     int stealth;
-
-    @Getter
-    private List<Map.Entry<String, String>> description;
 
     public InventoryItem(InventoryItem item) {
         this.id = item.id;
@@ -45,13 +45,11 @@ public class InventoryItem {
         this.weight = item.weight;
         this.minStrength = item.minStrength;
         this.baseHit = item.baseHit;
+        this.damage = item.damage;
         this.protection = item.protection;
         this.defense = item.defense;
-        this.damage = item.damage;
         this.dexterity = item.dexterity;
         this.stealth = item.stealth;
-
-        this.description = createDescription();
     }
 
     public boolean hasSameIdAs(String candidateId) {
@@ -59,14 +57,14 @@ public class InventoryItem {
     }
 
     public boolean isStackable() {
-        return group.equals(InventoryGroup.RESOURCE);
+        return group.equals(RESOURCE);
     }
 
     void increaseAmountWith(InventoryItem sourceItem) {
         amount += sourceItem.amount;
     }
 
-    private List<Map.Entry<String, String>> createDescription() {
+    public List<Map.Entry<String, String>> createDescription() {
         List<Map.Entry<String, String>> attributes = createListOfPairsWithTitlesAndValues();
         return createFilter(attributes);
     }
@@ -74,38 +72,38 @@ public class InventoryItem {
     private List<Map.Entry<String, String>> createListOfPairsWithTitlesAndValues() {
         return Arrays.asList(
                 Map.entry(group.title, name),
-                Map.entry("Skill", skill == null ? "0" : skill.title),
-                Map.entry("Weight", String.valueOf(weight)),
-                Map.entry("Min. Strength", String.valueOf(minStrength)),
-                Map.entry("Base Hit", String.valueOf(baseHit) + "%"),
-                Map.entry("Protection", String.valueOf(protection)),
-                Map.entry("Defense", String.valueOf(defense)),
-                Map.entry("Damage", String.valueOf(damage)),
-                Map.entry("Dexterity", String.valueOf(dexterity)),
-                Map.entry("Stealth", String.valueOf(stealth))
+                Map.entry(SKILL.title, skill == null ? "0" : skill.title),
+                Map.entry(WEIGHT.title, String.valueOf(weight)),
+                Map.entry(MIN_STRENGTH.title, String.valueOf(minStrength)),
+                Map.entry(BASE_HIT.title, String.valueOf(baseHit) + "%"),
+                Map.entry(DAMAGE.title, String.valueOf(damage)),
+                Map.entry(PROTECTION.title, String.valueOf(protection)),
+                Map.entry(DEFENSE.title, String.valueOf(defense)),
+                Map.entry(DEXTERITY.title, String.valueOf(dexterity)),
+                Map.entry(STEALTH.title, String.valueOf(stealth))
         );
     }
 
     private List<Map.Entry<String, String>> createFilter(List<Map.Entry<String, String>> attributes) {
         List<Map.Entry<String, String>> filtered = new ArrayList<>();
         attributes.forEach(attribute -> {
-            if (attribute.getKey().equals("Dexterity") &&
-                    group.equals(InventoryGroup.SHIELD)) {
+            if (attribute.getKey().equals(DEXTERITY.title) &&
+                    group.equals(SHIELD)) {
                 filtered.add(attribute);
                 return;
             }
-            if (attribute.getKey().equals("Stealth") &&
-                    group.equals(InventoryGroup.CHEST)) {
+            if (attribute.getKey().equals(STEALTH.title) &&
+                    group.equals(CHEST)) {
                 filtered.add(attribute);
                 return;
             }
-            if (attribute.getKey().equals("Weight") &&
-                    (group.equals(InventoryGroup.SHIELD) ||
-                            group.equals(InventoryGroup.WEAPON) ||
-                            group.equals(InventoryGroup.RESOURCE))) {
+            if (attribute.getKey().equals(WEIGHT.title) &&
+                    (group.equals(SHIELD) ||
+                            group.equals(WEAPON) ||
+                            group.equals(RESOURCE))) {
                 return;
             }
-            if (attribute.getKey().equals("Weight")) {
+            if (attribute.getKey().equals(WEIGHT.title)) {
                 filtered.add(attribute);
                 return;
             }

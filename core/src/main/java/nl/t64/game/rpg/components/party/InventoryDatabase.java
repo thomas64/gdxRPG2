@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.components.inventory;
+package nl.t64.game.rpg.components.party;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;

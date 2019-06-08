@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import nl.t64.game.rpg.Utils;
@@ -21,9 +20,11 @@ class InventorySlotTooltip {
     private Label descriptionRight;
 
     InventorySlotTooltip() {
-        this.window = new Window("", createWindowSkin());
-        this.descriptionLeft = new Label("", createLabelSkin());
-        this.descriptionRight = new Label("", createLabelSkin());
+        var windowStyle = createWindowStyle();
+        var labelStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+        this.window = new Window("", windowStyle);
+        this.descriptionLeft = new Label("", labelStyle);
+        this.descriptionRight = new Label("", labelStyle);
 
         this.window.add(this.descriptionLeft).spaceRight(SPACING);
         this.window.add(this.descriptionRight);
@@ -32,19 +33,11 @@ class InventorySlotTooltip {
         this.window.setVisible(false);
     }
 
-    private static Skin createWindowSkin() {
-        var windowSkin = new Skin();
+    private static Window.WindowStyle createWindowStyle() {
         var texture = Utils.getResourceManager().getTextureAsset(SPRITE_SLOT);
         var ninepatch = new NinePatch(texture, 1, 1, 1, 1);
         var drawable = new NinePatchDrawable(ninepatch);
-        windowSkin.add("default", new Window.WindowStyle(new BitmapFont(), Color.GREEN, drawable));
-        return windowSkin;
-    }
-
-    private static Skin createLabelSkin() {
-        var labelSkin = new Skin();
-        labelSkin.add("default", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        return labelSkin;
+        return new Window.WindowStyle(new BitmapFont(), Color.GREEN, drawable);
     }
 
     void setVisible(InventorySlot inventorySlot, boolean visible) {
@@ -59,8 +52,9 @@ class InventorySlotTooltip {
 
     void updateDescription(InventorySlot inventorySlot) {
         if (inventorySlot.hasItem()) {
-            descriptionLeft.setText(inventorySlot.getCertainInventoryImage().getDescriptionKeys());
-            descriptionRight.setText(inventorySlot.getCertainInventoryImage().getDescriptionValues());
+            InventoryImage inventoryImage = inventorySlot.getCertainInventoryImage();
+            descriptionLeft.setText(inventoryImage.getDescriptionKeys());
+            descriptionRight.setText(inventoryImage.getDescriptionValues());
             window.pack();
         } else {
             descriptionLeft.setText("");

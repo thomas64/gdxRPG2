@@ -1,10 +1,10 @@
-package nl.t64.game.rpg.components.inventory;
+package nl.t64.game.rpg.components.party;
 
 import lombok.AllArgsConstructor;
 
 
 @AllArgsConstructor
-public enum WeaponType {
+enum WeaponType {
 
     SWORD("Sword"),
     HAFTED("Hafted"),
