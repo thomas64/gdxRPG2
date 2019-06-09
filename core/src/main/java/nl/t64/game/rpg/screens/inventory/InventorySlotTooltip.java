@@ -15,9 +15,9 @@ class InventorySlotTooltip {
     private static final float PADDING = 10f;
     private static final float SPACING = 20f;
 
-    Window window;
-    private Label descriptionLeft;
-    private Label descriptionRight;
+    final Window window;
+    private final Label descriptionLeft;
+    private final Label descriptionRight;
 
     InventorySlotTooltip() {
         var windowStyle = createWindowStyle();

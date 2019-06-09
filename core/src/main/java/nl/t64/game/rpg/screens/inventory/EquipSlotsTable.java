@@ -20,25 +20,25 @@ class EquipSlotsTable {
     private static final float EQUIP_SPACING = 10f;
     private static final int PARTY_INDEX = 0;
 
-    Table equipSlots;
+    final Table equipSlots;
 
-    private DragAndDrop dragAndDrop;
-    private InventorySlotTooltip tooltip;
+    private final DragAndDrop dragAndDrop;
+    private final InventorySlotTooltip tooltip;
 
-    private InventorySlot helmetSlot;
-    private InventorySlot necklaceSlot;
-    private InventorySlot shouldersSlot;
-    private InventorySlot chestSlot;
-    private InventorySlot cloakSlot;
-    private InventorySlot bracersSlot;
-    private InventorySlot glovesSlot;
-    private InventorySlot weaponSlot;
-    private InventorySlot accessorySlot;
-    private InventorySlot ringSlot;
-    private InventorySlot shieldSlot;
-    private InventorySlot beltSlot;
-    private InventorySlot pantsSlot;
-    private InventorySlot bootsSlot;
+    private final InventorySlot helmetSlot;
+    private final InventorySlot necklaceSlot;
+    private final InventorySlot shouldersSlot;
+    private final InventorySlot chestSlot;
+    private final InventorySlot cloakSlot;
+    private final InventorySlot bracersSlot;
+    private final InventorySlot glovesSlot;
+    private final InventorySlot weaponSlot;
+    private final InventorySlot accessorySlot;
+    private final InventorySlot ringSlot;
+    private final InventorySlot shieldSlot;
+    private final InventorySlot beltSlot;
+    private final InventorySlot pantsSlot;
+    private final InventorySlot bootsSlot;
 
     EquipSlotsTable(DragAndDrop dragAndDrop, InventorySlotTooltip tooltip) {
         this.dragAndDrop = dragAndDrop;

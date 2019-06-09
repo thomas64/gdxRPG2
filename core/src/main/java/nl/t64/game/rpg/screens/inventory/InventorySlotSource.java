@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 class InventorySlotSource extends Source {
 
     InventorySlot sourceSlot;
-    private DragAndDrop dragAndDrop;
+    private final DragAndDrop dragAndDrop;
 
     InventorySlotSource(InventoryImage inventoryImage, DragAndDrop dragAndDrop) {
         super(inventoryImage); // = setSourceActor

@@ -32,4 +32,5 @@ class ListenerMouseImageButton extends InputListener {
     public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
         hasFocus = false;
     }
+
 }

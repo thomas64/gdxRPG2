@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
@@ -22,23 +23,24 @@ class InventoryUI {
     private static final String TITLE_STATS = "Stats";
     private static final float TITLE_PADDING = 50f;
 
-    private DragAndDrop dragAndDrop;
-    private InventorySlotTooltip tooltip;
-    Window equipWindow;
-    private Window.WindowStyle windowStyle;
-
-    Window inventoryWindow;
-    private StatsTable statsTable;
-    Window statsWindow;
+    final Window inventoryWindow;
+    final Window equipWindow;
+    final Window statsWindow;
+    private final InventorySlotTooltip tooltip;
+    private final StatsTable statsTable;
 
     InventoryUI() {
-        this.dragAndDrop = new DragAndDrop();
+        final var dragAndDrop = new DragAndDrop();
         this.tooltip = new InventorySlotTooltip();
-        this.windowStyle = createWindowStyle();
 
-        createInventoryWindow();
-        createPlayerWindow();
-        createStatsWindow();
+        final var inventorySlotsTable = new InventorySlotsTable(dragAndDrop, tooltip);
+        this.inventoryWindow = createWindow(TITLE_GLOBAL, inventorySlotsTable.inventorySlots);
+        final var equipSlotsTable = new EquipSlotsTable(dragAndDrop, tooltip);
+        this.equipWindow = createWindow(TITLE_PERSONAL, equipSlotsTable.equipSlots);
+        this.statsTable = new StatsTable();
+        this.statsWindow = createWindow(TITLE_STATS, this.statsTable.stats);
+
+        inventorySlotsTable.addObserver(this.statsTable);
     }
 
     private static Window.WindowStyle createWindowStyle() {
@@ -61,37 +63,14 @@ class InventoryUI {
         statsWindow.pack();
     }
 
-    private void createInventoryWindow() {
-        inventoryWindow = new Window(TITLE_GLOBAL, windowStyle);
-        var inventorySlotsTable = new InventorySlotsTable(dragAndDrop, tooltip);
-        inventoryWindow.add(inventorySlotsTable.inventorySlots);
-
-//        inventoryWindow.debugAll();
-        inventoryWindow.padTop(TITLE_PADDING);
-        inventoryWindow.getTitleLabel().setAlignment(Align.center);
-        inventoryWindow.pack();
-    }
-
-    private void createPlayerWindow() {
-        equipWindow = new Window(TITLE_PERSONAL, windowStyle);
-        var equipSlotsTable = new EquipSlotsTable(dragAndDrop, tooltip);
-        equipWindow.add(equipSlotsTable.equipSlots);
-
-//        equipWindow.debugAll();
-        equipWindow.padTop(TITLE_PADDING);
-        equipWindow.getTitleLabel().setAlignment(Align.center);
-        equipWindow.pack();
-    }
-
-    private void createStatsWindow() {
-        statsWindow = new Window(TITLE_STATS, windowStyle);
-        statsTable = new StatsTable();
-        statsWindow.add(statsTable.stats);
-
-//        statsWindow.debugAll();
-        statsWindow.padTop(TITLE_PADDING);
-        statsWindow.getTitleLabel().setAlignment(Align.center);
-        statsWindow.pack();
+    private Window createWindow(String title, Table table) {
+        var window = new Window(title, createWindowStyle());
+        window.add(table);
+//        window.debugAll();
+        window.padTop(TITLE_PADDING);
+        window.getTitleLabel().setAlignment(Align.center);
+        window.pack();
+        return window;
     }
 
 }

@@ -7,13 +7,11 @@ import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.events.Event;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class Character {
 
-    private static final int MAX_COMPONENTS = 3;
     private final List<Component> components;
 
     private final InputComponent inputComponent;
@@ -25,10 +23,9 @@ public class Character {
         this.physicsComponent = physics;
         this.graphicsComponent = graphics;
 
-        this.components = new ArrayList<>(MAX_COMPONENTS);
-        this.components.add(this.inputComponent);
-        this.components.add(this.physicsComponent);
-        this.components.add(this.graphicsComponent);
+        this.components = List.of(this.inputComponent,
+                                  this.physicsComponent,
+                                  this.graphicsComponent);
     }
 
     public void send(Event event) {

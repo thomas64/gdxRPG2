@@ -11,10 +11,10 @@ class InventorySlotTooltipListener extends InputListener {
     private static final float OFFSET_X = 20f;
     private static final float OFFSET_Y = 10f;
 
-    private InventorySlotTooltip toolTip;
+    private final InventorySlotTooltip toolTip;
+    private final Vector2 currentCoords;
+    private final Vector2 offset;
     private boolean isInside;
-    private Vector2 currentCoords;
-    private Vector2 offset;
     private boolean touchDown;
 
     InventorySlotTooltipListener(InventorySlotTooltip toolTip) {

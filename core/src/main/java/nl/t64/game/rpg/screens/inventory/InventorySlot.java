@@ -20,21 +20,26 @@ class InventorySlot extends Stack {
     private static final int STANDARD_STACK_SIZE = 2;
     private static final Color TRANSPARENT = new Color(1f, 1f, 1f, 0.3f);
 
-    private Stack imagesBackground;
-    Label amountLabel;
+    final Label amountLabel;
+    final InventoryGroup filterGroup;
+    private final Stack imagesBackground;
     int amount = 0;
-    InventoryGroup filterGroup;
 
     InventorySlot(InventoryGroup filterGroup) {
-        this();
         this.filterGroup = filterGroup;
-        this.imagesBackground.add(createShadowImage(filterGroup));
+        this.imagesBackground = createImageBackground();
+        this.imagesBackground.add(createShadowImage(this.filterGroup));
+        addToStack(this.imagesBackground);
+        this.amountLabel = createNumberOfItemsLabel();
+        addToStack(this.amountLabel);
     }
 
     InventorySlot() {
         this.filterGroup = InventoryGroup.EVERYTHING;
-        createImageBackground();
-        createNumberOfItemsLabel();
+        this.imagesBackground = createImageBackground();
+        addToStack(this.imagesBackground);
+        this.amountLabel = createNumberOfItemsLabel();
+        addToStack(this.amountLabel);
     }
 
     private static Image createShadowImage(InventoryGroup inventoryGroup) {
@@ -45,20 +50,20 @@ class InventorySlot extends Stack {
         return image;
     }
 
-    private void createImageBackground() {
-        imagesBackground = new Stack();
+    private Stack createImageBackground() {
+        var stack = new Stack();
         var texture = Utils.getResourceManager().getTextureAsset(SPRITE_BACKGROUND);
         var background = new Image(texture);
-        imagesBackground.add(background);
-        addToStack(imagesBackground);
+        stack.add(background);
+        return stack;
     }
 
-    private void createNumberOfItemsLabel() {
+    private Label createNumberOfItemsLabel() {
         var labelStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
-        amountLabel = new Label(String.valueOf(amount), labelStyle);
-        amountLabel.setAlignment(Align.bottomRight);
-        amountLabel.setVisible(false);
-        addToStack(amountLabel);
+        var label = new Label(String.valueOf(amount), labelStyle);
+        label.setAlignment(Align.bottomRight);
+        label.setVisible(false);
+        return label;
     }
 
     boolean hasItem() {

@@ -64,16 +64,4 @@ class PersonalContainer {
                         .sum();
     }
 
-    int getWeaponBaseHit() {
-        return getInventoryItem(WEAPON).map(item -> item.baseHit).orElse(0);
-    }
-
-    int getWeaponDamage() {
-        return getInventoryItem(WEAPON).map(item -> item.damage).orElse(0);
-    }
-
-    int getShieldDefense() {
-        return getInventoryItem(SHIELD).map(item -> item.defense).orElse(0);
-    }
-
 }

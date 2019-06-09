@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.GlobalContainer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.IntStream;
 
 
@@ -16,12 +18,13 @@ class InventorySlotsTable {
     private static final float SLOT_SIZE = 64f;
     private static final int SLOTS_IN_ROW = 6;
 
-    Table inventorySlots;
-
-    private DragAndDrop dragAndDrop;
-    private InventorySlotTooltip tooltip;
+    final Table inventorySlots;
+    private final List<SlotOverObserver> observers;
+    private final DragAndDrop dragAndDrop;
+    private final InventorySlotTooltip tooltip;
 
     InventorySlotsTable(DragAndDrop dragAndDrop, InventorySlotTooltip tooltip) {
+        this.observers = new ArrayList<>();
         this.dragAndDrop = dragAndDrop;
         this.tooltip = tooltip;
         this.inventorySlots = new Table();
@@ -36,9 +39,14 @@ class InventorySlotsTable {
         this.inventorySlots.setBackground(drawable);
     }
 
+    void addObserver(SlotOverObserver observer) {
+        observers.add(observer);
+    }
+
     private void createInventorySlot(GlobalContainer container, int index) {
         var inventorySlot = new InventorySlot();
         inventorySlot.addListener(new InventorySlotTooltipListener(tooltip));
+        inventorySlot.addListener(new InventorySlotPreviewListener(this::sendInventoryItem));
         dragAndDrop.addTarget(new InventorySlotTarget(inventorySlot));
         dragAndDrop.addSource(new InventorySlotSource(inventorySlot.amountLabel, dragAndDrop));
         container.getItemAt(index).ifPresent(inventoryItem -> {
@@ -50,6 +58,12 @@ class InventorySlotsTable {
         if ((index + 1) % SLOTS_IN_ROW == 0) {
             inventorySlots.row();
         }
+    }
+
+    private void sendInventoryItem(InventorySlot inventorySlot) {
+        inventorySlot.getPossibleInventoryImage().ifPresentOrElse(
+                inventoryImage -> observers.forEach(observer -> observer.receive(inventoryImage.inventoryItem)),
+                () -> observers.forEach(observer -> observer.receive(null)));
     }
 
 }

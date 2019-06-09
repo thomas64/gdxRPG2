@@ -16,19 +16,15 @@ public abstract class MenuScreen implements Screen {
     private static final String MENU_FONT = "fonts/fff_tusj.ttf";
     private static final int MENU_SIZE = 30;
     private static boolean disposedOnce = false;
-    BitmapFont titleFont;
-    BitmapFont menuFont;
-    Stage stage;
+    final BitmapFont titleFont;
+    final BitmapFont menuFont;
+    final Stage stage;
     Image screenshot;
 
     MenuScreen() {
         this.stage = new Stage();
-        createFonts();
-    }
-
-    private void createFonts() {
-        titleFont = Utils.getResourceManager().getTrueTypeAsset(TITLE_FONT, TITLE_SIZE);
-        menuFont = Utils.getResourceManager().getTrueTypeAsset(MENU_FONT, MENU_SIZE);
+        this.titleFont = Utils.getResourceManager().getTrueTypeAsset(TITLE_FONT, TITLE_SIZE);
+        this.menuFont = Utils.getResourceManager().getTrueTypeAsset(MENU_FONT, MENU_SIZE);
     }
 
     void setFromScreen(ScreenType screenType) {

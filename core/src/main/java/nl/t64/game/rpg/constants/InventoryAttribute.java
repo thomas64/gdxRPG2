@@ -1,10 +1,10 @@
-package nl.t64.game.rpg.components.party;
+package nl.t64.game.rpg.constants;
 
 import lombok.AllArgsConstructor;
 
 
 @AllArgsConstructor
-enum InventoryAttribute {
+public enum InventoryAttribute {
 
     SKILL("Skill"),
     WEIGHT("Weight"),
@@ -16,6 +16,6 @@ enum InventoryAttribute {
     DEXTERITY("Dexterity"),
     STEALTH("Stealth");
 
-    final String title;
+    public final String title;
 
 }

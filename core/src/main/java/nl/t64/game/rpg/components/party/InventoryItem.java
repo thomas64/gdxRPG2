@@ -4,14 +4,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import nl.t64.game.rpg.constants.InventoryAttribute;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static nl.t64.game.rpg.components.party.InventoryAttribute.*;
 import static nl.t64.game.rpg.components.party.InventoryGroup.*;
+import static nl.t64.game.rpg.constants.InventoryAttribute.*;
 
 
 @NoArgsConstructor
@@ -50,6 +51,19 @@ public class InventoryItem {
         this.defense = item.defense;
         this.dexterity = item.dexterity;
         this.stealth = item.stealth;
+    }
+
+    public int getAttribute(InventoryAttribute attribute) {
+        switch (attribute) {
+            case BASE_HIT:
+                return baseHit;
+            case DAMAGE:
+                return damage;
+            case DEFENSE:
+                return defense;
+            default:
+                throw new IllegalArgumentException(String.format("InventoryAttribute '%s' not usable.", attribute));
+        }
     }
 
     public boolean hasSameIdAs(String candidateId) {

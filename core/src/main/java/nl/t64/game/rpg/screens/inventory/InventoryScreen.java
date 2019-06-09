@@ -37,7 +37,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
     private static final float RIGHT_SPACE = 26f;
     private static final float TOP_SPACE = 35f;
 
-    private Stage stage;
+    private final Stage stage;
     private InventoryUI inventoryUI;
 
     private Vector2 inventoryWindowPosition;

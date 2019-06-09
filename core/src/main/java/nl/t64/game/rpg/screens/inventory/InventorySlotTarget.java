@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 
 class InventorySlotTarget extends Target {
 
-    private InventorySlot targetSlot;
+    private final InventorySlot targetSlot;
 
     InventorySlotTarget(InventorySlot targetSlot) {
         super(targetSlot);

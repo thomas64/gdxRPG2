@@ -1,6 +1,7 @@
 package nl.t64.game.rpg.components.party;
 
 import lombok.Setter;
+import nl.t64.game.rpg.constants.InventoryAttribute;
 
 import java.util.Map;
 import java.util.Optional;
@@ -54,6 +55,11 @@ public class HeroItem {
         return level.hitpoints + stamina.hitpoints + endurance.hitpoints + endurance.bonus;
     }
 
+    public int getAttributeValueOf(InventoryGroup inventoryGroup, InventoryAttribute inventoryAttribute) {
+        return getInventoryItem(inventoryGroup).map(inventoryItem -> inventoryItem.getAttribute(inventoryAttribute))
+                                               .orElse(0);
+    }
+
     public Optional<InventoryItem> getInventoryItem(InventoryGroup inventoryGroup) {
         return inventory.getInventoryItem(inventoryGroup);
     }
@@ -68,18 +74,6 @@ public class HeroItem {
 
     int getStrength() {
         return strength.current + strength.bonus;
-    }
-
-    public int getWeaponBaseHit() {
-        return inventory.getWeaponBaseHit();
-    }
-
-    public int getWeaponDamage() {
-        return inventory.getWeaponDamage();
-    }
-
-    public int getShieldDefense() {
-        return inventory.getShieldDefense();
     }
 
     public int getOwnEndurance() {
