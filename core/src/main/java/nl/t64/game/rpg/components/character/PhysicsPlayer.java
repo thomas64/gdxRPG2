@@ -87,10 +87,6 @@ public class PhysicsPlayer extends PhysicsComponent {
         });
     }
 
-    private Predicate<Character> checkRectOverlapsNpc() {
-        return npcCharacter -> getCheckRect().overlaps(npcCharacter.getBoundingBox());
-    }
-
     private void checkSavePoints() {
         Utils.getMapManager().checkSavePoints(getCheckRect());
     }
@@ -115,13 +111,19 @@ public class PhysicsPlayer extends PhysicsComponent {
                 checkBlocker(dt);
             }
             checkPortals();
+        } else if (state == CharacterState.IDLE) {
+            turnCharacters();
         }
     }
 
     private void turnCharacters() {
         npcCharacters.stream()
-                     .filter(littleBitBiggerBoxOverlapsNpc())
+                     .filter(littleBitBiggerBoxOverlapsNpc().or(checkRectOverlapsNpc()))
                      .forEach(sendWaitEvent());
+    }
+
+    private Predicate<Character> checkRectOverlapsNpc() {
+        return npcCharacter -> getCheckRect().overlaps(npcCharacter.getBoundingBox());
     }
 
     private Predicate<Character> littleBitBiggerBoxOverlapsNpc() {
@@ -274,6 +276,7 @@ public class PhysicsPlayer extends PhysicsComponent {
         switch (direction) {
             case NORTH:
                 checkRect.setWidth(boundingBox.width / 4);
+                checkRect.setHeight(boundingBox.height * 2);
                 checkRect.setX(boundingBox.x + (boundingBox.width / 2) - (boundingBox.width / 8));
                 checkRect.setY(boundingBox.y + (Constant.TILE_SIZE / 2f));
                 break;
