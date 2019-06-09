@@ -28,8 +28,8 @@ public class InventoryScreen implements Screen, ProfileObserver {
 
     private static final float INVENTORY_WINDOW_POSITION_X = 1468f;
     private static final float INVENTORY_WINDOW_POSITION_Y = 67f;
-    private static final float PLAYER_WINDOW_POSITION_X = 1098f;
-    private static final float PLAYER_WINDOW_POSITION_Y = 67f;
+    private static final float EQUIP_WINDOW_POSITION_X = 1098f;
+    private static final float EQUIP_WINDOW_POSITION_Y = 67f;
     private static final float STATS_WINDOW_POSITION_X = 100f;
     private static final float STATS_WINDOW_POSITION_Y = 67f;
     private static final float BUTTON_SIZE = 32f;
@@ -41,7 +41,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
     private InventoryUI inventoryUI;
 
     private Vector2 inventoryWindowPosition;
-    private Vector2 playerWindowPosition;
+    private Vector2 equipWindowPosition;
     private Vector2 statsWindowPosition;
 
     public InventoryScreen() {
@@ -51,7 +51,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
     @Override
     public void onNotifyCreate(ProfileManager profileManager) {
         inventoryWindowPosition = new Vector2(INVENTORY_WINDOW_POSITION_X, INVENTORY_WINDOW_POSITION_Y);
-        playerWindowPosition = new Vector2(PLAYER_WINDOW_POSITION_X, PLAYER_WINDOW_POSITION_Y);
+        equipWindowPosition = new Vector2(EQUIP_WINDOW_POSITION_X, EQUIP_WINDOW_POSITION_Y);
         statsWindowPosition = new Vector2(STATS_WINDOW_POSITION_X, STATS_WINDOW_POSITION_Y);
         onNotifySave(profileManager);
     }
@@ -59,14 +59,14 @@ public class InventoryScreen implements Screen, ProfileObserver {
     @Override
     public void onNotifySave(ProfileManager profileManager) {
         profileManager.setProperty("inventoryWindowPosition", inventoryWindowPosition);
-        profileManager.setProperty("playerWindowPosition", playerWindowPosition);
+        profileManager.setProperty("equipWindowPosition", equipWindowPosition);
         profileManager.setProperty("statsWindowPosition", statsWindowPosition);
     }
 
     @Override
     public void onNotifyLoad(ProfileManager profileManager) {
         inventoryWindowPosition = profileManager.getProperty("inventoryWindowPosition", Vector2.class);
-        playerWindowPosition = profileManager.getProperty("playerWindowPosition", Vector2.class);
+        equipWindowPosition = profileManager.getProperty("equipWindowPosition", Vector2.class);
         statsWindowPosition = profileManager.getProperty("statsWindowPosition", Vector2.class);
     }
 
@@ -78,7 +78,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
 
         inventoryUI = new InventoryUI();
         inventoryUI.inventoryWindow.setPosition(inventoryWindowPosition.x, inventoryWindowPosition.y);
-        inventoryUI.playerWindow.setPosition(playerWindowPosition.x, playerWindowPosition.y);
+        inventoryUI.equipWindow.setPosition(equipWindowPosition.x, equipWindowPosition.y);
         inventoryUI.statsWindow.setPosition(statsWindowPosition.x, statsWindowPosition.y);
         inventoryUI.addToStage(stage);
     }
@@ -87,6 +87,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
     public void render(float dt) {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        inventoryUI.render();
         stage.act(dt);
         stage.draw();
     }
@@ -149,15 +150,15 @@ public class InventoryScreen implements Screen, ProfileObserver {
     private void storeWindowPositions() {
         inventoryWindowPosition.x = inventoryUI.inventoryWindow.getX();
         inventoryWindowPosition.y = inventoryUI.inventoryWindow.getY();
-        playerWindowPosition.x = inventoryUI.playerWindow.getX();
-        playerWindowPosition.y = inventoryUI.playerWindow.getY();
+        equipWindowPosition.x = inventoryUI.equipWindow.getX();
+        equipWindowPosition.y = inventoryUI.equipWindow.getY();
         statsWindowPosition.x = inventoryUI.statsWindow.getX();
         statsWindowPosition.y = inventoryUI.statsWindow.getY();
     }
 
     private void resetWindowsPositions() {
         inventoryUI.inventoryWindow.setPosition(INVENTORY_WINDOW_POSITION_X, INVENTORY_WINDOW_POSITION_Y);
-        inventoryUI.playerWindow.setPosition(PLAYER_WINDOW_POSITION_X, PLAYER_WINDOW_POSITION_Y);
+        inventoryUI.equipWindow.setPosition(EQUIP_WINDOW_POSITION_X, EQUIP_WINDOW_POSITION_Y);
         inventoryUI.statsWindow.setPosition(STATS_WINDOW_POSITION_X, STATS_WINDOW_POSITION_Y);
     }
 

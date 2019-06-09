@@ -4,7 +4,6 @@ package nl.t64.game.rpg.screens.inventory;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.InventoryItem;
@@ -14,25 +13,28 @@ import java.util.function.Consumer;
 
 final class InventoryWriter {
 
+    private static final int AMOUNT_BODY_SLOTS = 2;
+
     private InventoryWriter() {
         throw new IllegalStateException("InventoryWriter class");
     }
 
     static void storeToGameData(Group group) {
-        if (group instanceof Window) {
-            setGlobalInventory((Table) group);
-        } else if (group.getParent() instanceof Window) {
-            setPersonalInventory((Table) group);
-        } else if (group.getParent().getParent() instanceof Window) {
-            setPersonalInventory((Table) group.getParent());
+        Table table = (Table) group;
+
+        int globalInventorySize = Utils.getGameData().getInventory().getSize();
+        if (table.getChildren().size == globalInventorySize) {
+            setGlobalInventory(table);
+        } else if (table.getChildren().size == AMOUNT_BODY_SLOTS) {
+            setPersonalInventory((Table) table.getParent());
         } else {
-            throw new IllegalStateException("Cannot store inventory to GameData.");
+            setPersonalInventory(table);
         }
     }
 
-    private static void setGlobalInventory(Table inventorySlotsWindow) {
-        for (int i = 0; i < inventorySlotsWindow.getChildren().size - 1; i++) {
-            InventorySlot slot = (InventorySlot) inventorySlotsWindow.getChildren().get(i + 1); // zero is the label
+    private static void setGlobalInventory(Table inventorySlotsTable) {
+        for (int i = 0; i <= inventorySlotsTable.getChildren().size - 1; i++) {
+            InventorySlot slot = (InventorySlot) inventorySlotsTable.getChildren().get(i);
             slot.getPossibleInventoryImage().ifPresentOrElse(
                     addItemToGlobalInventory(i, slot),
                     addNullToGlobalInventory(i));

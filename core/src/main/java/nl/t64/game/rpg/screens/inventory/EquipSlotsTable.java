@@ -1,7 +1,9 @@
 package nl.t64.game.rpg.screens.inventory;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.InventoryItem;
@@ -13,6 +15,7 @@ import static nl.t64.game.rpg.components.party.InventoryGroup.*;
 
 class EquipSlotsTable {
 
+    private static final String SPRITE_SILHOUETTE = "sprites/silhouette.png";
     private static final float SLOT_SIZE = 64f;
     private static final float EQUIP_SPACING = 10f;
     private static final int PARTY_INDEX = 0;
@@ -65,12 +68,20 @@ class EquipSlotsTable {
     }
 
     private void createTable() {
-//        equipSlots.debugAll();
-        equipSlots.defaults().space(EQUIP_SPACING).size(SLOT_SIZE, SLOT_SIZE);
+        setDefaults();
         addListeners();
         addTargets();
         addToSlots();
         fillTable();
+    }
+
+    private void setDefaults() {
+//        equipSlots.debugAll();
+        equipSlots.defaults().space(EQUIP_SPACING).size(SLOT_SIZE, SLOT_SIZE);
+        var texture = Utils.getResourceManager().getTextureAsset(SPRITE_SILHOUETTE);
+        var sprite = new Sprite(texture);
+        var silhouette = new SpriteDrawable(sprite);
+        equipSlots.setBackground(silhouette);
     }
 
     private void addListeners() {

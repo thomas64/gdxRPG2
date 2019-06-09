@@ -35,7 +35,11 @@ public class GlobalContainer {
     }
 
     public int getLastIndex() {
-        return inventory.size() - 1;
+        return getSize() - 1;
+    }
+
+    public int getSize() {
+        return inventory.size();
     }
 
     boolean contains(String id) {

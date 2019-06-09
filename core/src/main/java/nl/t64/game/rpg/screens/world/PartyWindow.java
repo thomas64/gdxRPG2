@@ -160,7 +160,7 @@ class PartyWindow {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(TRANSPARENT_WHITE);
-        IntStream.rangeClosed(0, party.getSize() - 1)
+        IntStream.rangeClosed(0, party.getLastIndex())
                  .forEach(i -> shapeRenderer.rect(table.getX() + (i * FACE_SIZE) + (i * PADDING),
                                                   yPos + PADDING,
                                                   FACE_SIZE,
@@ -183,7 +183,7 @@ class PartyWindow {
     private void renderHorizontalLines() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(TRANSPARENT_BLACK);
-        IntStream.rangeClosed(0, party.getSize() - 1)
+        IntStream.rangeClosed(0, party.getLastIndex())
                  .forEach(i -> shapeRenderer.line(table.getX() + (i * FACE_SIZE) + (i * PADDING),
                                                   yPos + FACE_Y,
                                                   table.getX() + (i * FACE_SIZE) + (i * PADDING) + FACE_SIZE,
@@ -236,7 +236,7 @@ class PartyWindow {
 
     private void renderHpLabels() {
         var labelStyle = new Label.LabelStyle(font, TRANSPARENT_BLACK);
-        IntStream.rangeClosed(0, party.getSize() - 1)
+        IntStream.rangeClosed(0, party.getLastIndex())
                  .forEach(i -> {
                      var hpLabel = new Label("HP: ", labelStyle);
                      hpLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
@@ -280,7 +280,7 @@ class PartyWindow {
 
     private void renderXpLabels() {
         var labelStyle = new Label.LabelStyle(font, TRANSPARENT_BLACK);
-        IntStream.rangeClosed(0, party.getSize() - 1)
+        IntStream.rangeClosed(0, party.getLastIndex())
                  .forEach(i -> {
                      var xpLabel = new Label("XP: ", labelStyle);
                      xpLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
@@ -292,7 +292,7 @@ class PartyWindow {
     private void renderXpBars() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.TAN);
-        IntStream.rangeClosed(0, party.getSize() - 1)
+        IntStream.rangeClosed(0, party.getLastIndex())
                  .forEach(i -> renderBar(i, 3f, calculateXpBarWidth(i)));
         shapeRenderer.end();
 
@@ -309,7 +309,7 @@ class PartyWindow {
     private void renderBarOutline(float linePosition) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(TRANSPARENT_BLACK);
-        IntStream.rangeClosed(0, party.getSize() - 1)
+        IntStream.rangeClosed(0, party.getLastIndex())
                  .forEach(i -> renderBar(i, linePosition, BAR_WIDTH));
         shapeRenderer.end();
     }

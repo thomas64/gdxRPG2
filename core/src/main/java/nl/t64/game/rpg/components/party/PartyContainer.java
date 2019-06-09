@@ -62,7 +62,11 @@ public class PartyContainer {
         return getSize() >= MAXIMUM;
     }
 
-    public int getSize() {
+    public int getLastIndex() {
+        return getSize() - 1;
+    }
+
+    int getSize() {
         return party.size();
     }
 
