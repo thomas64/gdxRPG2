@@ -21,13 +21,16 @@ class InventoryUI {
     private static final String TITLE_GLOBAL = "Global Inventory";
     private static final String TITLE_PERSONAL = "Personal Inventory";
     private static final String TITLE_STATS = "Stats";
+    private static final String TITLE_HEROES = "Heroes";
     private static final float TITLE_PADDING = 50f;
 
     final Window inventoryWindow;
     final Window equipWindow;
     final Window statsWindow;
+    final Window heroesWindow;
     private final InventorySlotTooltip tooltip;
     private final StatsTable statsTable;
+    private final HeroesTable heroesTable;
 
     InventoryUI() {
         final var dragAndDrop = new DragAndDrop();
@@ -39,6 +42,8 @@ class InventoryUI {
         this.equipWindow = createWindow(TITLE_PERSONAL, equipSlotsTable.equipSlots);
         this.statsTable = new StatsTable();
         this.statsWindow = createWindow(TITLE_STATS, this.statsTable.stats);
+        this.heroesTable = new HeroesTable();
+        this.heroesWindow = createWindow(TITLE_HEROES, this.heroesTable.heroes);
 
         inventorySlotsTable.addObserver(this.statsTable);
     }
@@ -55,12 +60,15 @@ class InventoryUI {
         stage.addActor(inventoryWindow);
         stage.addActor(equipWindow);
         stage.addActor(statsWindow);
+        stage.addActor(heroesWindow);
         stage.addActor(tooltip.window);
     }
 
     void render() {
         statsTable.render();
+        heroesTable.render();
         statsWindow.pack();
+        heroesWindow.pack();
     }
 
     private Window createWindow(String title, Table table) {

@@ -1,6 +1,8 @@
 package nl.t64.game.rpg.components.party;
 
+import lombok.Getter;
 import lombok.Setter;
+import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.InventoryAttribute;
 
 import java.util.Map;
@@ -10,12 +12,17 @@ import java.util.Optional;
 @Setter
 public class HeroItem {
 
+    @Getter
     String name;
     private Level level;
     private PersonalContainer inventory;
     private Strength strength;
     private Endurance endurance;
     private Stamina stamina;
+
+    public boolean isLastInParty() {
+        return Utils.getGameData().getParty().isHeroLast(this);
+    }
 
     public int getNeededXpForNextLevel() {
         return level.getNeededXpForNextLevel();
@@ -33,7 +40,7 @@ public class HeroItem {
         return level.xpForUpgrades;
     }
 
-    int getLevel() {
+    public int getLevel() {
         return level.current;
     }
 

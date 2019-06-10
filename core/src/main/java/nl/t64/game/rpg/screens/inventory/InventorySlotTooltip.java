@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import nl.t64.game.rpg.Utils;
 
 
@@ -43,7 +44,8 @@ class InventorySlotTooltip {
     void setVisible(InventorySlot inventorySlot, boolean visible) {
         window.setVisible(visible);
         if (inventorySlot == null) {
-            return;
+            throw new GdxRuntimeException("");
+//            return; // todo, kan de if weg?
         }
         if (!inventorySlot.hasItem()) {
             window.setVisible(false);

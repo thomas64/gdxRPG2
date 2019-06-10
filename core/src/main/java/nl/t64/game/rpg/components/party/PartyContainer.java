@@ -5,6 +5,7 @@ import nl.t64.game.rpg.constants.Constant;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -15,6 +16,17 @@ public class PartyContainer {
 
     public PartyContainer() {
         this.party = new LinkedHashMap<>(MAXIMUM);
+    }
+
+    public String getHeroId(HeroItem hero) {
+        return party.entrySet()
+                    .stream()
+                    .filter(entry -> Objects.equals(hero, entry.getValue()))
+                    .findFirst()
+                    .map(Map.Entry::getKey)
+                    .orElseThrow(() -> {
+                        throw new IllegalArgumentException(String.format("Hero %s is not in party.", hero.name));
+                    });
     }
 
     public List<String> getAllHeroIds() {
@@ -64,6 +76,10 @@ public class PartyContainer {
 
     public int getLastIndex() {
         return getSize() - 1;
+    }
+
+    boolean isHeroLast(HeroItem hero) {
+        return getAllHeroes().indexOf(hero) == getLastIndex();
     }
 
     int getSize() {

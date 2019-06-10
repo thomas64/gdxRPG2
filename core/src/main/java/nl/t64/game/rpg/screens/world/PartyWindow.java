@@ -53,11 +53,11 @@ class PartyWindow {
     private static final float VELOCITY = 800f;
 
     private PartyContainer party;
-    private Stage stage;
-    private Table table;
-    private BitmapFont font;
-    private BitmapFont fontBig;
-    private ShapeRenderer shapeRenderer;
+    private final Stage stage;
+    private final Table table;
+    private final BitmapFont font;
+    private final BitmapFont fontBig;
+    private final ShapeRenderer shapeRenderer;
 
     private float yPos;
     private boolean isMovingUp = false;
@@ -65,7 +65,8 @@ class PartyWindow {
 
 
     PartyWindow() {
-        createFonts();
+        this.font = Utils.getResourceManager().getTrueTypeAsset(FONT_PATH, FONT_SIZE);
+        this.fontBig = Utils.getResourceManager().getTrueTypeAsset(FONT_BIG_PATH, FONT_BIG_SIZE);
         this.shapeRenderer = new ShapeRenderer();
         this.yPos = LOW_Y;
         this.stage = new Stage();
@@ -133,11 +134,6 @@ class PartyWindow {
             stage.act(dt);
             stage.draw();
         }
-    }
-
-    private void createFonts() {
-        font = Utils.getResourceManager().getTrueTypeAsset(FONT_PATH, FONT_SIZE);
-        fontBig = Utils.getResourceManager().getTrueTypeAsset(FONT_BIG_PATH, FONT_BIG_SIZE);
     }
 
     private void renderTable() {

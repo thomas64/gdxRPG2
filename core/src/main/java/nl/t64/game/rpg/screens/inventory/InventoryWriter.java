@@ -54,33 +54,33 @@ final class InventoryWriter {
     }
 
     private static void setPersonalInventory(Table equipSlotsTable) {
-        HeroItem heroItem = Utils.getGameData().getParty().getHero(0); // todo, fix index.
+        HeroItem hero = Utils.getGameData().getParty().getHero(0); // todo, fix index.
         for (Actor actor : equipSlotsTable.getChildren()) {
             if (actor instanceof Table) {
                 for (Actor deepActor : ((Table) actor).getChildren()) {
-                    addToPersonalInventory(heroItem, (InventorySlot) deepActor);
+                    addToPersonalInventory(hero, (InventorySlot) deepActor);
                 }
             } else {
-                addToPersonalInventory(heroItem, (InventorySlot) actor);
+                addToPersonalInventory(hero, (InventorySlot) actor);
             }
         }
     }
 
-    private static void addToPersonalInventory(HeroItem heroItem, InventorySlot slot) {
+    private static void addToPersonalInventory(HeroItem hero, InventorySlot slot) {
         slot.getPossibleInventoryImage().ifPresentOrElse(
-                addItemToPersonalInventory(heroItem, slot),
-                addNullToPersonalInventory(heroItem, slot));
+                addItemToPersonalInventory(hero, slot),
+                addNullToPersonalInventory(hero, slot));
     }
 
-    private static Consumer<InventoryImage> addItemToPersonalInventory(HeroItem heroItem, InventorySlot slot) {
+    private static Consumer<InventoryImage> addItemToPersonalInventory(HeroItem hero, InventorySlot slot) {
         return inventoryImage -> {
             InventoryItem item = inventoryImage.inventoryItem;
-            heroItem.forceSetInventoryItem(slot.filterGroup, item);
+            hero.forceSetInventoryItem(slot.filterGroup, item);
         };
     }
 
-    private static Runnable addNullToPersonalInventory(HeroItem heroItem, InventorySlot slot) {
-        return () -> heroItem.forceSetInventoryItem(slot.filterGroup, null);
+    private static Runnable addNullToPersonalInventory(HeroItem hero, InventorySlot slot) {
+        return () -> hero.forceSetInventoryItem(slot.filterGroup, null);
     }
 
 }

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -97,6 +98,15 @@ class InventoryTest extends GameTest {
         assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(2);
         assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(1);
         assertThat(inventory.getAmountOfItemAt(2)).isEqualTo(1);
+    }
+
+    @Test
+    void whenInventoryIsFull_ShouldNotThrowError() {
+        InventoryItem gold = InventoryDatabase.getInstance().getInventoryItem("gold");
+        InventoryItem herbs = InventoryDatabase.getInstance().getInventoryItem("herbs");
+        IntStream.range(0, inventory.getLastIndex())
+                 .forEach(i -> inventory.forceSetItemAt(i, gold));
+        inventory.autoSetItem(herbs);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")

@@ -56,7 +56,7 @@ public class GlobalContainer {
 
     private void addResource(InventoryItem newItem) {
         getItem(newItem.id).ifPresentOrElse(
-                inventoryItem -> inventoryItem.increaseAmountWith(newItem),
+                inventoryItem -> inventoryItem.increaseAmountWith(newItem), // todo, aanpassen, mag niet oneindig ophogen
                 addResourceAtEmptySlot(newItem)
         );
     }
