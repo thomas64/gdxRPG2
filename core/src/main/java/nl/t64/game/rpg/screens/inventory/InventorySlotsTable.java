@@ -16,7 +16,7 @@ class InventorySlotsTable {
 
     private static final String SPRITE_TOP_BORDER = "sprites/top_border.png";
     private static final float SLOT_SIZE = 64f;
-    private static final int SLOTS_IN_ROW = 6;
+    private static final int SLOTS_IN_ROW = 7;
 
     final Table inventorySlots;
     private final List<SlotOverObserver> observers;

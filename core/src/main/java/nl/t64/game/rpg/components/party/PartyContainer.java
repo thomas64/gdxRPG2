@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class PartyContainer {
 
-    private static final int MAXIMUM = 5;
+    public static final int MAXIMUM = 6;
     private final Map<String, HeroItem> party;
 
     public PartyContainer() {
@@ -51,6 +51,10 @@ public class PartyContainer {
         return getAllHeroes().get(index);
     }
 
+    public int getIndex(HeroItem hero) {
+        return getAllHeroes().indexOf(hero);
+    }
+
     public List<HeroItem> getAllHeroes() {
         return List.copyOf(party.values());
     }
@@ -79,7 +83,7 @@ public class PartyContainer {
     }
 
     boolean isHeroLast(HeroItem hero) {
-        return getAllHeroes().indexOf(hero) == getLastIndex();
+        return getIndex(hero) == getLastIndex();
     }
 
     int getSize() {

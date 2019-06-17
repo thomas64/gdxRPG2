@@ -5,7 +5,7 @@ import java.util.*;
 
 public class GlobalContainer {
 
-    private static final int NUMBER_OF_SLOTS = 84;
+    private static final int NUMBER_OF_SLOTS = 77;
 
     private final List<InventoryItem> inventory;
 
@@ -62,7 +62,7 @@ public class GlobalContainer {
     }
 
     private Runnable addResourceAtEmptySlot(InventoryItem newItem) {
-        return () -> findFirstEmptySlot().ifPresentOrElse(
+        return () -> findLastEmptySlot().ifPresentOrElse(
                 index -> slotIsEmptySoSetItemAt(index, newItem),
                 () -> {
                     throw new IllegalStateException("Inventory is full.");
@@ -70,7 +70,7 @@ public class GlobalContainer {
     }
 
     private void addEquipmentAtEmptySlot(InventoryItem newItem) {
-        findLastEmptySlot().ifPresentOrElse(
+        findFirstEmptySlot().ifPresentOrElse(
                 index -> slotIsEmptySoSetItemAt(index, newItem),
                 () -> {
                     throw new IllegalStateException("Inventory is full.");

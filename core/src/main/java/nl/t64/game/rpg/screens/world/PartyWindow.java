@@ -30,7 +30,6 @@ class PartyWindow {
 
     private static final int FONT_BIG_SIZE = 28;
     private static final int FONT_SIZE = 20;
-    private static final int MAX_PARTY_SIZE = 5;
 
     private static final float LINE_HEIGHT = 22f;
     private static final float FACE_SIZE = 144f;
@@ -40,7 +39,8 @@ class PartyWindow {
     private static final float PADDING_LEVEL = 12f;
     private static final float PADDING_LINE = PADDING + PADDING_SMALL;
     private static final float FACE_Y = 90f;
-    private static final float TABLE_WIDTH = (FACE_SIZE * MAX_PARTY_SIZE) + (PADDING * (MAX_PARTY_SIZE - 1f));
+    private static final float TABLE_WIDTH =
+            (FACE_SIZE * PartyContainer.MAXIMUM) + (PADDING * (PartyContainer.MAXIMUM - 1f));
     private static final float TABLE_HEIGHT = FACE_Y + FACE_SIZE;
     private static final float HIGH_Y = 0f;
     private static final float LOW_Y = -TABLE_HEIGHT;
@@ -168,7 +168,7 @@ class PartyWindow {
     private void renderSquares() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(TRANSPARENT_BLACK);
-        IntStream.rangeClosed(0, MAX_PARTY_SIZE - 1)
+        IntStream.rangeClosed(0, PartyContainer.MAXIMUM - 1)
                  .forEach(i -> shapeRenderer.rect(table.getX() + (i * FACE_SIZE) + (i * PADDING),
                                                   yPos + PADDING,
                                                   FACE_SIZE,

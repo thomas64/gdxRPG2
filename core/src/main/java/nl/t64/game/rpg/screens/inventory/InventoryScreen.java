@@ -26,18 +26,18 @@ public class InventoryScreen implements Screen, ProfileObserver {
     private static final String BUTTON_RESET_OVER = "reset_over";
     private static final String BUTTON_RESET_DOWN = "reset_down";
 
-    private static final float INVENTORY_WINDOW_POSITION_X = 1468f;
-    private static final float INVENTORY_WINDOW_POSITION_Y = 67f;
-    private static final float EQUIP_WINDOW_POSITION_X = 1098f;
-    private static final float EQUIP_WINDOW_POSITION_Y = 67f;
-    private static final float STATS_WINDOW_POSITION_X = 100f;
-    private static final float STATS_WINDOW_POSITION_Y = 67f;
-    private static final float HEROES_WINDOW_POSITION_X = 100f;
-    private static final float HEROES_WINDOW_POSITION_Y = 827f;
+    private static final float INVENTORY_WINDOW_POSITION_X = 1408;
+    private static final float INVENTORY_WINDOW_POSITION_Y = 50f;
+    private static final float EQUIP_WINDOW_POSITION_X = 1038f;
+    private static final float EQUIP_WINDOW_POSITION_Y = 50f;
+    private static final float STATS_WINDOW_POSITION_X = 63f;
+    private static final float STATS_WINDOW_POSITION_Y = 50f;
+    private static final float HEROES_WINDOW_POSITION_X = 63f;
+    private static final float HEROES_WINDOW_POSITION_Y = 834f;
     private static final float BUTTON_SIZE = 32f;
-    private static final float BUTTON_SPACE = 10f;
-    private static final float RIGHT_SPACE = 26f;
-    private static final float TOP_SPACE = 35f;
+    private static final float BUTTON_SPACE = 5f;
+    private static final float RIGHT_SPACE = 25f;
+    private static final float TOP_SPACE = 50f;
 
     private final Stage stage;
     private InventoryUI inventoryUI;
@@ -94,9 +94,9 @@ public class InventoryScreen implements Screen, ProfileObserver {
     public void render(float dt) {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        inventoryUI.render();
         stage.act(dt);
         stage.draw();
+        inventoryUI.render();
     }
 
     @Override
