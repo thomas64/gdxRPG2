@@ -4,756 +4,756 @@ size: 558,744
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-heavy_basic_belt
+basic_heavy_belt
   rotate: false
   xy: 0, 0
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_basic_boots
+basic_heavy_boots
   rotate: false
   xy: 62, 0
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_basic_bracers
+basic_heavy_bracers
   rotate: false
   xy: 124, 0
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_basic_chest
+basic_heavy_chest
   rotate: false
   xy: 186, 0
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_basic_cloak
+basic_heavy_cloak
   rotate: false
   xy: 248, 0
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_basic_gloves
+basic_heavy_gloves
   rotate: false
   xy: 310, 0
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_basic_helmet
+basic_heavy_helmet
   rotate: false
   xy: 372, 0
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_basic_pants
+basic_heavy_pants
   rotate: false
   xy: 434, 0
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_basic_shoulders
+basic_heavy_shoulders
   rotate: false
   xy: 496, 0
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_masterwork_belt
+basic_light_belt
   rotate: false
   xy: 0, 62
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_masterwork_boots
+basic_light_boots
   rotate: false
   xy: 62, 62
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_masterwork_bracers
+basic_light_bracers
   rotate: false
   xy: 124, 62
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_masterwork_chest
+basic_light_chest
   rotate: false
   xy: 186, 62
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_masterwork_cloak
+basic_light_cloak
   rotate: false
   xy: 248, 62
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_masterwork_gloves
+basic_light_gloves
   rotate: false
   xy: 310, 62
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_masterwork_helmet
+basic_light_helmet
   rotate: false
   xy: 372, 62
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_masterwork_pants
+basic_light_pants
   rotate: false
   xy: 434, 62
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_masterwork_shoulders
+basic_light_shoulders
   rotate: false
   xy: 496, 62
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_specialist_belt
+basic_medium_belt
   rotate: false
   xy: 0, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_specialist_boots
+basic_medium_boots
   rotate: false
   xy: 62, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_specialist_bracers
+basic_medium_bracers
   rotate: false
   xy: 124, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_specialist_chest
+basic_medium_chest
   rotate: false
   xy: 186, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_specialist_cloak
+basic_medium_cloak
   rotate: false
   xy: 248, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_specialist_gloves
+basic_medium_gloves
   rotate: false
   xy: 310, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_specialist_helmet
+basic_medium_helmet
   rotate: false
   xy: 372, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_specialist_pants
+basic_medium_pants
   rotate: false
   xy: 434, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_specialist_shoulders
+basic_medium_shoulders
   rotate: false
   xy: 496, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_standard_belt
+masterwork_light_belt
   rotate: false
   xy: 0, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_standard_boots
+masterwork_light_boots
   rotate: false
   xy: 62, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_standard_bracers
+masterwork_light_bracers
   rotate: false
   xy: 124, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_standard_chest
+masterwork_light_chest
   rotate: false
   xy: 186, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_standard_cloak
+masterwork_light_cloak
   rotate: false
   xy: 248, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_standard_gloves
+masterwork_light_gloves
   rotate: false
   xy: 310, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_standard_helmet
+masterwork_light_helmet
   rotate: false
   xy: 372, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_standard_pants
+masterwork_light_pants
   rotate: false
   xy: 434, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-heavy_standard_shoulders
+masterwork_light_shoulders
   rotate: false
   xy: 496, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_basic_belt
+masterwork_medium_belt
   rotate: false
   xy: 0, 248
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_basic_boots
+masterwork_medium_boots
   rotate: false
   xy: 62, 248
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_basic_bracers
+masterwork_medium_bracers
   rotate: false
   xy: 124, 248
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_basic_chest
+masterwork_medium_chest
   rotate: false
   xy: 186, 248
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_basic_cloak
+masterwork_medium_cloak
   rotate: false
   xy: 248, 248
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_basic_gloves
+masterwork_medium_gloves
   rotate: false
   xy: 310, 248
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_basic_helmet
+masterwork_medium_helmet
   rotate: false
   xy: 372, 248
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_basic_pants
+masterwork_medium_pants
   rotate: false
   xy: 434, 248
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_basic_shoulders
+masterwork_medium_shoulders
   rotate: false
   xy: 496, 248
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_masterwork_belt
+mastwork_heavy_belt
   rotate: false
   xy: 0, 310
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_masterwork_boots
+mastwork_heavy_boots
   rotate: false
   xy: 62, 310
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_masterwork_bracers
+mastwork_heavy_bracers
   rotate: false
   xy: 124, 310
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_masterwork_chest
+mastwork_heavy_chest
   rotate: false
   xy: 186, 310
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_masterwork_cloak
+mastwork_heavy_cloak
   rotate: false
   xy: 248, 310
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_masterwork_gloves
+mastwork_heavy_gloves
   rotate: false
   xy: 310, 310
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_masterwork_helmet
+mastwork_heavy_helmet
   rotate: false
   xy: 372, 310
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_masterwork_pants
+mastwork_heavy_pants
   rotate: false
   xy: 434, 310
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_masterwork_shoulders
+mastwork_heavy_shoulders
   rotate: false
   xy: 496, 310
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_specialist_belt
+ordinary_heavy_belt
   rotate: false
   xy: 0, 372
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_specialist_boots
+ordinary_heavy_boots
   rotate: false
   xy: 62, 372
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_specialist_bracers
+ordinary_heavy_bracers
   rotate: false
   xy: 124, 372
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_specialist_chest
+ordinary_heavy_chest
   rotate: false
   xy: 186, 372
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_specialist_cloak
+ordinary_heavy_cloak
   rotate: false
   xy: 248, 372
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_specialist_gloves
+ordinary_heavy_gloves
   rotate: false
   xy: 310, 372
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_specialist_helmet
+ordinary_heavy_helmet
   rotate: false
   xy: 372, 372
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_specialist_pants
+ordinary_heavy_pants
   rotate: false
   xy: 434, 372
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_specialist_shoulders
+ordinary_heavy_shoulders
   rotate: false
   xy: 496, 372
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_standard_belt
+ordinary_light_belt
   rotate: false
   xy: 0, 434
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_standard_boots
+ordinary_light_boots
   rotate: false
   xy: 62, 434
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_standard_bracers
+ordinary_light_bracers
   rotate: false
   xy: 124, 434
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_standard_chest
+ordinary_light_chest
   rotate: false
   xy: 186, 434
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_standard_cloak
+ordinary_light_cloak
   rotate: false
   xy: 248, 434
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_standard_gloves
+ordinary_light_gloves
   rotate: false
   xy: 310, 434
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_standard_helmet
+ordinary_light_helmet
   rotate: false
   xy: 372, 434
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_standard_pants
+ordinary_light_pants
   rotate: false
   xy: 434, 434
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-light_standard_shoulders
+ordinary_light_shoulders
   rotate: false
   xy: 496, 434
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_basic_belt
+ordinary_medium_belt
   rotate: false
   xy: 0, 496
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_basic_boots
+ordinary_medium_boots
   rotate: false
   xy: 62, 496
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_basic_bracers
+ordinary_medium_bracers
   rotate: false
   xy: 124, 496
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_basic_chest
+ordinary_medium_chest
   rotate: false
   xy: 186, 496
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_basic_cloak
+ordinary_medium_cloak
   rotate: false
   xy: 248, 496
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_basic_gloves
+ordinary_medium_gloves
   rotate: false
   xy: 310, 496
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_basic_helmet
+ordinary_medium_helmet
   rotate: false
   xy: 372, 496
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_basic_pants
+ordinary_medium_pants
   rotate: false
   xy: 434, 496
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_basic_shoulders
+ordinary_medium_shoulders
   rotate: false
   xy: 496, 496
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_masterwork_belt
+specialist_heavy_belt
   rotate: false
   xy: 0, 558
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_masterwork_boots
+specialist_heavy_boots
   rotate: false
   xy: 62, 558
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_masterwork_bracers
+specialist_heavy_bracers
   rotate: false
   xy: 124, 558
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_masterwork_chest
+specialist_heavy_chest
   rotate: false
   xy: 186, 558
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_masterwork_cloak
+specialist_heavy_cloak
   rotate: false
   xy: 248, 558
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_masterwork_gloves
+specialist_heavy_gloves
   rotate: false
   xy: 310, 558
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_masterwork_helmet
+specialist_heavy_helmet
   rotate: false
   xy: 372, 558
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_masterwork_pants
+specialist_heavy_pants
   rotate: false
   xy: 434, 558
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_masterwork_shoulders
+specialist_heavy_shoulders
   rotate: false
   xy: 496, 558
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_specialist_belt
+specialist_light_belt
   rotate: false
   xy: 0, 620
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_specialist_boots
+specialist_light_boots
   rotate: false
   xy: 62, 620
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_specialist_bracers
+specialist_light_bracers
   rotate: false
   xy: 124, 620
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_specialist_chest
+specialist_light_chest
   rotate: false
   xy: 186, 620
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_specialist_cloak
+specialist_light_cloak
   rotate: false
   xy: 248, 620
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_specialist_gloves
+specialist_light_gloves
   rotate: false
   xy: 310, 620
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_specialist_helmet
+specialist_light_helmet
   rotate: false
   xy: 372, 620
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_specialist_pants
+specialist_light_pants
   rotate: false
   xy: 434, 620
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_specialist_shoulders
+specialist_light_shoulders
   rotate: false
   xy: 496, 620
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_standard_belt
+specialist_medium_belt
   rotate: false
   xy: 0, 682
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_standard_boots
+specialist_medium_boots
   rotate: false
   xy: 62, 682
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_standard_bracers
+specialist_medium_bracers
   rotate: false
   xy: 124, 682
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_standard_chest
+specialist_medium_chest
   rotate: false
   xy: 186, 682
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_standard_cloak
+specialist_medium_cloak
   rotate: false
   xy: 248, 682
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_standard_gloves
+specialist_medium_gloves
   rotate: false
   xy: 310, 682
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_standard_helmet
+specialist_medium_helmet
   rotate: false
   xy: 372, 682
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_standard_pants
+specialist_medium_pants
   rotate: false
   xy: 434, 682
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-medium_standard_shoulders
+specialist_medium_shoulders
   rotate: false
   xy: 496, 682
   size: 62, 62

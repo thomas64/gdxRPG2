@@ -4,15 +4,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
-import nl.t64.game.rpg.SpriteConfig;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.PartyContainer;
@@ -24,6 +23,7 @@ class HeroesTable {
 
     private static final String SPRITE_TOP_BORDER = "sprites/top_border.png";
     private static final String SPRITE_RIGHT_BORDER = "sprites/right_border.png";
+    private static final String SPRITE_GREY = "sprites/grey.png";
     private static final String FONT_PATH = "fonts/spectral.ttf";
     private static final String FONT_BIG_PATH = "fonts/spectral_big.ttf";
     private static final int FONT_BIG_SIZE = 28;
@@ -39,76 +39,93 @@ class HeroesTable {
 
     final Table heroes;
     private final ShapeRenderer shapeRenderer;
-    private final BitmapFont font;
-    private final BitmapFont fontBig;
     private final Label.LabelStyle nameStyle;
     private final Label.LabelStyle levelStyle;
     private PartyContainer party;
 
     HeroesTable() {
         this.shapeRenderer = new ShapeRenderer();
-        this.font = Utils.getResourceManager().getTrueTypeAsset(FONT_PATH, FONT_SIZE);
-        this.fontBig = Utils.getResourceManager().getTrueTypeAsset(FONT_BIG_PATH, FONT_BIG_SIZE);
-        this.nameStyle = new Label.LabelStyle(this.fontBig, Color.BLACK);
-        this.levelStyle = new Label.LabelStyle(this.font, Color.BLACK);
+        BitmapFont font = Utils.getResourceManager().getTrueTypeAsset(FONT_PATH, FONT_SIZE);
+        BitmapFont fontBig = Utils.getResourceManager().getTrueTypeAsset(FONT_BIG_PATH, FONT_BIG_SIZE);
+        this.nameStyle = new Label.LabelStyle(fontBig, Color.BLACK);
+        this.levelStyle = new Label.LabelStyle(font, Color.BLACK);
         this.heroes = new Table();
         setTopBorder();
-//        this.heroes.debugAll();
     }
 
     void dispose() {
         shapeRenderer.dispose();
-        font.dispose();
-        fontBig.dispose();
     }
 
+    @SuppressWarnings("LibGDXFlushInsideLoop")
     void render() {
         party = Utils.getGameData().getParty();
         heroes.clear();
         for (HeroItem hero : party.getAllHeroes()) {
-            addFace(hero);
-            addStats(hero);
+            createFace(hero);
+            createStats(hero);
         }
     }
 
-    private void addFace(HeroItem hero) {
-        String heroId = party.getHeroId(hero);
-        SpriteConfig faceConfig = Utils.getResourceManager().getSpriteConfig(heroId);
-        String path = faceConfig.getFacePath();
-        int row = faceConfig.getRow() - 1;
-        int col = faceConfig.getCol() - 1;
-
-        Texture texture = Utils.getResourceManager().getTextureAsset(path);
-        TextureRegion[][] splitOfEight = TextureRegion.split(texture, (int) FACE_SIZE, (int) FACE_SIZE);
-        TextureRegion heroFace = splitOfEight[row][col];
-        var image = new Image(heroFace);
-        heroes.add(image);
+    private void createFace(HeroItem hero) {
+        Stack stack = new Stack();
+        stack.addListener(new HeroesTableSelectListener(DynamicVars::updateHeroIndex, party.getIndex(hero)));
+        addPossibleGreyBackgroundTo(stack, hero);
+        addFaceImageTo(stack, hero);
+        heroes.add(stack);
     }
 
-    private void addStats(HeroItem hero) {
-        var statsTable = new Table();
-//        statsTable.debugAll();
-        statsTable.defaults().align(Align.left);
-        statsTable.columnDefaults(0).width(STATS_COLUMN_WIDTH);
+    private void addFaceImageTo(Stack stack, HeroItem hero) {
+        String heroId = party.getHeroId(hero);
+        Image faceImage = Utils.getFaceImage(heroId);
+        stack.add(faceImage);
+    }
 
+    private void createStats(HeroItem hero) {
+        Table statsTable = createStatsTable(hero);
+        Stack stack = new Stack();
+        stack.addListener(new HeroesTableSelectListener(DynamicVars::updateHeroIndex, party.getIndex(hero)));
+        addPossibleGreyBackgroundTo(stack, hero);
+        addLabelsTo(statsTable, hero);
+        stack.add(statsTable);
+        heroes.add(stack);
+        addHpBarTo(statsTable, hero);
+    }
+
+    private Table createStatsTable(HeroItem hero) {
+        var statsTable = new Table();
+        statsTable.defaults().align(Align.left).top();
+        statsTable.columnDefaults(0).width(STATS_COLUMN_PAD_LEFT);
+        statsTable.columnDefaults(1).width(STATS_COLUMN_WIDTH);
         if (!hero.isLastInParty()) {
             setRightBorder(statsTable);
         }
-        addLabels(statsTable, hero);
-        heroes.add(statsTable).padLeft(STATS_COLUMN_PAD_LEFT).top();
-        addHpBar(statsTable, hero);
+        return statsTable;
     }
 
-    private void addLabels(Table statsTable, HeroItem hero) {
+    private void addPossibleGreyBackgroundTo(Stack stack, HeroItem hero) {
+        if (party.getIndex(hero) == DynamicVars.heroIndex) {
+            Texture textureGrey = Utils.getResourceManager().getTextureAsset(SPRITE_GREY);
+            Image imageGrey = new Image(textureGrey);
+            stack.add(imageGrey);
+        }
+    }
+
+    private void addLabelsTo(Table statsTable, HeroItem hero) {
+        statsTable.add(new Label("", nameStyle));
         var nameLabel = new Label(hero.getName(), nameStyle);
         statsTable.add(nameLabel).row();
+        statsTable.add(new Label("", levelStyle));
         var levelLabel = new Label("Level:   " + hero.getLevel(), levelStyle);
         statsTable.add(levelLabel).row();
+        statsTable.add(new Label("", levelStyle));
         var hpLabel = new Label("HP:  " + hero.getCurrentHp() + "/ " + hero.getMaximumHp(), levelStyle);
-        statsTable.add(hpLabel).padBottom(HP_LABEL_PAD_BOTTOM).row();
+        statsTable.add(hpLabel).row();
+        statsTable.add(new Label("", levelStyle)).height(HP_LABEL_PAD_BOTTOM);
+        statsTable.add(new Label("", levelStyle)).height(HP_LABEL_PAD_BOTTOM);
     }
 
-    private void addHpBar(Table table, HeroItem hero) {
+    private void addHpBarTo(Table table, HeroItem hero) {
         int index = party.getIndex(hero);
         Vector2 tablePosition = table.localToStageCoordinates(new Vector2(table.getX(), table.getY()));
         float columnX = tablePosition.x + index * FULL_COLUMN_WIDTH;
@@ -121,7 +138,7 @@ class HeroesTable {
     private void renderBar(HeroItem hero, float columnX, float columnY) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         Map<String, Integer> hpStats = hero.getAllHpStats();
-        Color color = getHpColor(hpStats);
+        Color color = Utils.getHpColor(hpStats);
         shapeRenderer.setColor(color);
         float barWidth = (BAR_WIDTH / hero.getMaximumHp()) * hero.getCurrentHp();
         shapeRenderer.rect(columnX + FACE_SIZE + STATS_COLUMN_PAD_LEFT,
@@ -137,23 +154,6 @@ class HeroesTable {
                            columnY + STATS_COLUMN_PAD_LEFT,
                            BAR_WIDTH, BAR_HEIGHT);
         shapeRenderer.end();
-    }
-
-    private Color getHpColor(Map<String, Integer> hpStats) {
-        Color color = Color.ROYAL;
-        if (hpStats.get("lvlHp") < hpStats.get("lvlCur")) {
-            color = Color.LIME;
-        }
-        if (hpStats.get("staHp") < hpStats.get("staCur")) {
-            color = Color.YELLOW;
-        }
-        if (hpStats.get("eduHp") < hpStats.get("eduCur")) {
-            color = Color.FIREBRICK;
-            if (hpStats.get("staHp") > 0) {
-                color = Color.ORANGE;
-            }
-        }
-        return color;
     }
 
     private void setTopBorder() {

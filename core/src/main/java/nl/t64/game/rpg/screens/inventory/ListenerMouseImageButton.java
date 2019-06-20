@@ -2,10 +2,10 @@ package nl.t64.game.rpg.screens.inventory;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 
-class ListenerMouseImageButton extends InputListener {
+class ListenerMouseImageButton extends ClickListener {
 
     private final Runnable functionToExecute;
     private boolean hasFocus;

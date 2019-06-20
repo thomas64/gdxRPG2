@@ -100,12 +100,13 @@ class HeroTest extends GameTest {
         addHeroToParty("reignald");
         addHeroToParty("ryiah");
         addHeroToParty("valter");
+        addHeroToParty("galen");
 
-        assertThat(heroes.getSize()).isEqualTo(9);
-        assertThat(party.getSize()).isEqualTo(5);
+        assertThat(heroes.getSize()).isEqualTo(8);
+        assertThat(party.getSize()).isEqualTo(6);
 
         assertThatExceptionOfType(IllegalStateException.class)
-                .isThrownBy(() -> addHeroToParty("galen"))
+                .isThrownBy(() -> addHeroToParty("jaspar"))
                 .withMessage("Party is full.");
     }
 
@@ -145,12 +146,12 @@ class HeroTest extends GameTest {
         softly.assertThat(mozes.getStrength()).isEqualTo(15);
         softly.assertThat(mozes.getAttributeValueOf(WEAPON, BASE_HIT)).isEqualTo(40);
         softly.assertThat(mozes.getAttributeValueOf(WEAPON, DAMAGE)).isEqualTo(13);
-        softly.assertThat(mozes.getAttributeValueOf(SHIELD, DEFENSE)).isEqualTo(4);
+        softly.assertThat(mozes.getAttributeValueOf(SHIELD, DEFENSE)).isEqualTo(5);
         softly.assertThat(mozes.getProtectionWithShield()).isEqualTo(6);
         softly.assertThat(mozes.getInventoryItem(WEAPON)).get().hasFieldOrPropertyWithValue("id", "basic_shortsword");
-        softly.assertThat(mozes.getInventoryItem(SHIELD)).get().hasFieldOrPropertyWithValue("id", "light_buckler_shield");
+        softly.assertThat(mozes.getInventoryItem(SHIELD)).get().hasFieldOrPropertyWithValue("id", "basic_light_shield");
         softly.assertThat(mozes.getInventoryItem(HELMET)).isEmpty();
-        softly.assertThat(mozes.getInventoryItem(CHEST)).get().hasFieldOrPropertyWithValue("id", "medium_basic_chest");
+        softly.assertThat(mozes.getInventoryItem(CHEST)).get().hasFieldOrPropertyWithValue("id", "basic_medium_chest");
 
         softly.assertThat(luana.getLevel()).isEqualTo(1);
         softly.assertThat(luana.getTotalXp()).isEqualTo(5);
@@ -165,7 +166,7 @@ class HeroTest extends GameTest {
         softly.assertThat(luana.getInventoryItem(WEAPON)).get().hasFieldOrPropertyWithValue("id", "basic_dagger");
         softly.assertThat(luana.getInventoryItem(SHIELD)).isEmpty();
         softly.assertThat(luana.getInventoryItem(HELMET)).isEmpty();
-        softly.assertThat(luana.getInventoryItem(CHEST)).get().hasFieldOrPropertyWithValue("id", "light_basic_chest");
+        softly.assertThat(luana.getInventoryItem(CHEST)).get().hasFieldOrPropertyWithValue("id", "basic_light_chest");
 
         softly.assertThat(reignald.getLevel()).isEqualTo(8);
         softly.assertThat(reignald.getTotalXp()).isEqualTo(1020);
@@ -175,8 +176,8 @@ class HeroTest extends GameTest {
         softly.assertThat(reignald.getStrength()).isEqualTo(20);
         softly.assertThat(reignald.getAttributeValueOf(WEAPON, BASE_HIT)).isEqualTo(50);
         softly.assertThat(reignald.getAttributeValueOf(WEAPON, DAMAGE)).isEqualTo(15);
-        softly.assertThat(reignald.getAttributeValueOf(SHIELD, DEFENSE)).isEqualTo(5);
-        softly.assertThat(reignald.getProtectionWithShield()).isEqualTo(13);
+        softly.assertThat(reignald.getAttributeValueOf(SHIELD, DEFENSE)).isEqualTo(10);
+        softly.assertThat(reignald.getProtectionWithShield()).isEqualTo(8);
 
         softly.assertThat(ryiah.getLevel()).isEqualTo(3);
         softly.assertThat(ryiah.getTotalXp()).isEqualTo(70);
@@ -209,7 +210,7 @@ class HeroTest extends GameTest {
         softly.assertThat(galen.getAttributeValueOf(WEAPON, BASE_HIT)).isEqualTo(30);
         softly.assertThat(galen.getAttributeValueOf(WEAPON, DAMAGE)).isEqualTo(20);
         softly.assertThat(galen.getAttributeValueOf(SHIELD, DEFENSE)).isEqualTo(10);
-        softly.assertThat(galen.getProtectionWithShield()).isEqualTo(13);
+        softly.assertThat(galen.getProtectionWithShield()).isEqualTo(10);
 
         softly.assertThat(jaspar.getLevel()).isEqualTo(12);
         softly.assertThat(jaspar.getTotalXp()).isEqualTo(3250);
@@ -219,8 +220,8 @@ class HeroTest extends GameTest {
         softly.assertThat(jaspar.getStrength()).isEqualTo(30);
         softly.assertThat(jaspar.getAttributeValueOf(WEAPON, BASE_HIT)).isEqualTo(40);
         softly.assertThat(jaspar.getAttributeValueOf(WEAPON, DAMAGE)).isEqualTo(17);
-        softly.assertThat(jaspar.getAttributeValueOf(SHIELD, DEFENSE)).isEqualTo(20);
-        softly.assertThat(jaspar.getProtectionWithShield()).isEqualTo(19);
+        softly.assertThat(jaspar.getAttributeValueOf(SHIELD, DEFENSE)).isEqualTo(15);
+        softly.assertThat(jaspar.getProtectionWithShield()).isEqualTo(18);
 
         softly.assertThat(kiara.getLevel()).isEqualTo(12);
         softly.assertThat(kiara.getTotalXp()).isEqualTo(3250);
@@ -264,7 +265,7 @@ class HeroTest extends GameTest {
         softly.assertThat(onarr.getAttributeValueOf(WEAPON, BASE_HIT)).isEqualTo(40);
         softly.assertThat(onarr.getAttributeValueOf(WEAPON, DAMAGE)).isEqualTo(24);
         softly.assertThat(onarr.getAttributeValueOf(SHIELD, DEFENSE)).isEqualTo(15);
-        softly.assertThat(onarr.getProtectionWithShield()).isEqualTo(19);
+        softly.assertThat(onarr.getProtectionWithShield()).isEqualTo(16);
 
         softly.assertThat(duilio.getLevel()).isEqualTo(22);
         softly.assertThat(duilio.getTotalXp()).isEqualTo(18975);
@@ -274,7 +275,7 @@ class HeroTest extends GameTest {
         softly.assertThat(duilio.getStrength()).isEqualTo(25);
         softly.assertThat(duilio.getAttributeValueOf(WEAPON, BASE_HIT)).isEqualTo(60);
         softly.assertThat(duilio.getAttributeValueOf(WEAPON, DAMAGE)).isEqualTo(17);
-        softly.assertThat(duilio.getAttributeValueOf(SHIELD, DEFENSE)).isEqualTo(12);
+        softly.assertThat(duilio.getAttributeValueOf(SHIELD, DEFENSE)).isEqualTo(15);
         softly.assertThat(duilio.getProtectionWithShield()).isEqualTo(10);
 
         softly.assertThat(iellwen.getLevel()).isEqualTo(20);
@@ -295,7 +296,7 @@ class HeroTest extends GameTest {
         softly.assertThat(faeron.getMaximumHp()).isEqualTo(130);
         softly.assertThat(faeron.getStrength()).isEqualTo(15);
         softly.assertThat(faeron.getAttributeValueOf(WEAPON, BASE_HIT)).isEqualTo(60);
-        softly.assertThat(faeron.getAttributeValueOf(WEAPON, DAMAGE)).isEqualTo(28);
+        softly.assertThat(faeron.getAttributeValueOf(WEAPON, DAMAGE)).isEqualTo(24);
         softly.assertThat(faeron.getAttributeValueOf(SHIELD, DEFENSE)).isEqualTo(0);
         softly.assertThat(faeron.getProtectionWithShield()).isEqualTo(4);
         softly.assertAll();

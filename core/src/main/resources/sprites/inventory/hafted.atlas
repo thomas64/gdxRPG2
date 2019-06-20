@@ -32,93 +32,100 @@ basic_morningstar
   orig: 62, 62
   offset: 0, 0
   index: -1
-masterwork_axe
+epic_axe
   rotate: false
   xy: 0, 62
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-masterwork_mace
+epic_mace
   rotate: false
   xy: 62, 62
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-masterwork_maul
+masterwork_axe
   rotate: false
   xy: 124, 62
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-masterwork_morningstar
+masterwork_mace
   rotate: false
   xy: 186, 62
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-specialist_axe
+masterwork_maul
   rotate: false
   xy: 0, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-specialist_mace
+masterwork_morningstar
   rotate: false
   xy: 62, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-specialist_maul
+ordinary_axe
   rotate: false
   xy: 124, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-specialist_morningstar
+ordinary_mace
   rotate: false
   xy: 186, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-spellbreaker_axe
+ordinary_maul
   rotate: false
   xy: 0, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-standard_axe
+ordinary_morningstar
   rotate: false
   xy: 62, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-standard_mace
+specialist_axe
   rotate: false
   xy: 124, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-standard_maul
+specialist_mace
   rotate: false
   xy: 186, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-standard_moringstar
+specialist_maul
   rotate: false
   xy: 0, 248
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+specialist_morningstar
+  rotate: false
+  xy: 62, 248
   size: 62, 62
   orig: 62, 62
   offset: 0, 0

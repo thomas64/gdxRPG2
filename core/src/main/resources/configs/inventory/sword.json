@@ -7,8 +7,8 @@
     "base_hit": 40,
     "damage": 11
   },
-  "standard_dagger": {
-    "name": "Standard Dagger",
+  "ordinary_dagger": {
+    "name": "Ordinary Dagger",
     "group": "WEAPON",
     "skill": "SWORD",
     "min_strength": 8,
@@ -39,8 +39,8 @@
     "base_hit": 40,
     "damage": 13
   },
-  "standard_shortsword": {
-    "name": "Standard Shortsword",
+  "ordinary_shortsword": {
+    "name": "Ordinary Shortsword",
     "group": "WEAPON",
     "skill": "SWORD",
     "min_strength": 13,
@@ -71,8 +71,8 @@
     "base_hit": 40,
     "damage": 15
   },
-  "standard_longsword": {
-    "name": "Standard Longsword",
+  "ordinary_longsword": {
+    "name": "Ordinary Longsword",
     "group": "WEAPON",
     "skill": "SWORD",
     "min_strength": 18,
@@ -103,8 +103,8 @@
     "base_hit": 40,
     "damage": 17
   },
-  "standard_greatsword": {
-    "name": "Standard Greatsword",
+  "ordinary_greatsword": {
+    "name": "Ordinary Greatsword",
     "group": "WEAPON",
     "skill": "SWORD",
     "min_strength": 23,

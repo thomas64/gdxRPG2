@@ -3,10 +3,10 @@ package nl.t64.game.rpg.screens.inventory;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 
-class InventorySlotTooltipListener extends InputListener {
+class InventorySlotTooltipListener extends ClickListener {
 
     private static final float OFFSET_X = 20f;
     private static final float OFFSET_Y = 10f;
@@ -37,9 +37,9 @@ class InventorySlotTooltipListener extends InputListener {
 
     @Override
     public void touchDragged(InputEvent event, float x, float y, int pointer) {
-        touchDown = true;
         InventorySlot inventorySlot = (InventorySlot) event.getListenerActor();
         toolTip.setVisible(inventorySlot, false);
+        touchDown = false;
     }
 
     @Override

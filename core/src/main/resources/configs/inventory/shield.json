@@ -1,110 +1,110 @@
 {
-  "light_buckler_shield": {
-    "name": "Light Buckler",
+  "basic_light_shield": {
+    "name": "Basic Light Shield",
     "group": "SHIELD",
     "min_strength": 14,
     "protection": 1,
-    "defense": 4,
-    "dexterity": 0,
-    "stealth": -2
+    "defense": 5,
+    "dexterity": -2,
+    "stealth": -5
   },
-  "light_targe_shield": {
-    "name": "Light Targe",
+  "ordinary_light_shield": {
+    "name": "Ordinary Light Shield",
     "group": "SHIELD",
     "min_strength": 16,
     "protection": 2,
-    "defense": 8,
-    "dexterity": -1,
+    "defense": 10,
+    "dexterity": -2,
     "stealth": -5
   },
-  "light_aspis_shield": {
-    "name": "Light Aspis",
+  "specialist_light_shield": {
+    "name": "Specialist Light Shield",
     "group": "SHIELD",
     "min_strength": 18,
     "protection": 3,
-    "defense": 12,
+    "defense": 15,
     "dexterity": -2,
-    "stealth": -8
+    "stealth": -5
   },
-  "light_heater_shield": {
-    "name": "Light Heater",
+  "masterwork_light_shield": {
+    "name": "Masterwork Light Shield",
     "group": "SHIELD",
     "min_strength": 20,
     "protection": 4,
-    "defense": 16,
-    "dexterity": -3,
-    "stealth": -11
-  },
-  "light_tower_shield": {
-    "name": "Light Tower Shield",
-    "group": "SHIELD",
-    "min_strength": 22,
-    "protection": 5,
     "defense": 20,
-    "dexterity": -4,
-    "stealth": -14
-  },
-  "light_magic_shield": {
-    "name": "Light Magic Shield",
-    "group": "SHIELD",
-    "min_strength": 24,
-    "protection": 6,
-    "defense": 24,
-    "dexterity": -5,
-    "stealth": -17
-  },
-  "heavy_buckler_shield": {
-    "name": "Heavy Buckler",
-    "group": "SHIELD",
-    "min_strength": 20,
-    "protection": 7,
-    "defense": 5,
     "dexterity": -2,
-    "stealth": -3
+    "stealth": -5
   },
-  "heavy_targe_shield": {
-    "name": "Heavy Targe",
+  "basic_medium_shield": {
+    "name": "Basic Medium Shield",
     "group": "SHIELD",
-    "min_strength": 22,
-    "protection": 8,
+    "min_strength": 19,
+    "protection": 5,
     "defense": 10,
-    "dexterity": -3,
-    "stealth": -6
+    "dexterity": -6,
+    "stealth": -10
   },
-  "heavy_aspis_shield": {
-    "name": "Heavy Aspis",
+  "ordinary_medium_shield": {
+    "name": "Ordinary Medium Shield",
+    "group": "SHIELD",
+    "min_strength": 21,
+    "protection": 6,
+    "defense": 15,
+    "dexterity": -6,
+    "stealth": -10
+  },
+  "specialist_medium_shield": {
+    "name": "Specialist Medium Shield",
+    "group": "SHIELD",
+    "min_strength": 23,
+    "protection": 7,
+    "defense": 20,
+    "dexterity": -6,
+    "stealth": -10
+  },
+  "masterwork_medium_shield": {
+    "name": "Masterwork Medium Shield",
+    "group": "SHIELD",
+    "min_strength": 25,
+    "protection": 8,
+    "defense": 25,
+    "dexterity": -6,
+    "stealth": -10
+  },
+  "basic_heavy_shield": {
+    "name": "Basic Heavy Shield",
     "group": "SHIELD",
     "min_strength": 24,
     "protection": 9,
     "defense": 15,
-    "dexterity": -4,
-    "stealth": -9
+    "dexterity": -10,
+    "stealth": -15
   },
-  "heavy_heater_shield": {
-    "name": "Heavy Heater",
+  "ordinary_heavy_shield": {
+    "name": "Ordinary Heavy Shield",
     "group": "SHIELD",
     "min_strength": 26,
     "protection": 10,
     "defense": 20,
-    "dexterity": -5,
-    "stealth": -12
+    "dexterity": -10,
+    "stealth": -15
   },
-  "heavy_tower_shield": {
-    "name": "Heavy Tower Shield",
+  "specialist_heavy_shield": {
+    "name": "Specialist Heavy Shield",
     "group": "SHIELD",
     "min_strength": 28,
     "protection": 11,
     "defense": 25,
-    "dexterity": -6,
+    "dexterity": -10,
     "stealth": -15
   },
-  "heavy_magic_shield": {
-    "name": "Heavy Magic Shield",
+  "masterwork_heavy_shield": {
+    "name": "Masterwork Heavy Shield",
     "group": "SHIELD",
     "min_strength": 30,
     "protection": 12,
     "defense": 30,
-    "dexterity": -7,
-    "stealth": -18
+    "dexterity": -10,
+    "stealth": -15
   }
 }

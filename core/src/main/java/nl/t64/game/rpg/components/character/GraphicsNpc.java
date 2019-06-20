@@ -1,6 +1,7 @@
 package nl.t64.game.rpg.components.character;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -13,6 +14,8 @@ import nl.t64.game.rpg.events.character.*;
 
 
 public class GraphicsNpc extends GraphicsComponent {
+
+    private static final Color SELECTION = new Color(0f, 1f, 1f, 0.5f);
 
     private boolean isSelected;
 
@@ -68,7 +71,7 @@ public class GraphicsNpc extends GraphicsComponent {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(0f, 1f, 1f, 0.5f);
+        shapeRenderer.setColor(SELECTION);
         float width = boundingBox.getWidth();
         float height = boundingBox.getHeight() / 3f;
         float x = boundingBox.x;

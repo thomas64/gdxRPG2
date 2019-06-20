@@ -10,6 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.components.party.PartyContainer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 class InventoryUI {
@@ -24,10 +28,13 @@ class InventoryUI {
     private static final String TITLE_HEROES = "Heroes";
     private static final float TITLE_PADDING = 50f;
 
+    final InventorySlotsTable inventorySlotsTable;
+
     final Window inventoryWindow;
     final Window equipWindow;
     final Window statsWindow;
     final Window heroesWindow;
+    final List<EquipSlotsTable> equipSlotsTables;
     private final InventorySlotTooltip tooltip;
     private final StatsTable statsTable;
     private final HeroesTable heroesTable;
@@ -36,16 +43,21 @@ class InventoryUI {
         final var dragAndDrop = new DragAndDrop();
         this.tooltip = new InventorySlotTooltip();
 
-        final var inventorySlotsTable = new InventorySlotsTable(dragAndDrop, tooltip);
-        this.inventoryWindow = createWindow(TITLE_GLOBAL, inventorySlotsTable.inventorySlots);
-        final var equipSlotsTable = new EquipSlotsTable(dragAndDrop, tooltip);
-        this.equipWindow = createWindow(TITLE_PERSONAL, equipSlotsTable.equipSlots);
+        this.inventorySlotsTable = new InventorySlotsTable(dragAndDrop, this.tooltip);
+        this.inventoryWindow = createWindow(TITLE_GLOBAL, this.inventorySlotsTable.inventorySlots);
+
+        this.equipSlotsTables = new ArrayList<>(PartyContainer.MAXIMUM);
+        for (int i = 0; i <= Utils.getGameData().getParty().getLastIndex(); i++) {
+            this.equipSlotsTables.add(new EquipSlotsTable(i, dragAndDrop, this.tooltip));
+        }
+        this.equipWindow = createWindow(TITLE_PERSONAL, this.equipSlotsTables.get(DynamicVars.getHeroIndex()).equipSlots);
+        this.equipWindow.addListener(new EquipWindowListener(DynamicVars::clearHoveredItem));
+
         this.statsTable = new StatsTable();
         this.statsWindow = createWindow(TITLE_STATS, this.statsTable.stats);
+
         this.heroesTable = new HeroesTable();
         this.heroesWindow = createWindow(TITLE_HEROES, this.heroesTable.heroes);
-
-        inventorySlotsTable.addObserver(this.statsTable);
     }
 
     private static Window.WindowStyle createWindowStyle() {
@@ -66,15 +78,18 @@ class InventoryUI {
 
     void render() {
         statsTable.render();
-        heroesTable.render();
         statsWindow.pack();
+        heroesTable.render();
         heroesWindow.pack();
+    }
+
+    void dispose() {
+        heroesTable.dispose();
     }
 
     private Window createWindow(String title, Table table) {
         var window = new Window(title, createWindowStyle());
         window.add(table);
-//        window.debugAll();
         window.padTop(TITLE_PADDING);
         window.getTitleLabel().setAlignment(Align.center);
         window.pack();

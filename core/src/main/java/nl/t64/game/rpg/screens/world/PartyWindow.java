@@ -3,15 +3,12 @@ package nl.t64.game.rpg.screens.world;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import nl.t64.game.rpg.SpriteConfig;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.PartyContainer;
@@ -190,15 +187,7 @@ class PartyWindow {
     private void renderFaces() {
         int i = 0;
         for (String heroId : party.getAllHeroIds()) {
-            SpriteConfig faceConfig = Utils.getResourceManager().getSpriteConfig(heroId);
-            String path = faceConfig.getFacePath();
-            int row = faceConfig.getRow() - 1;
-            int col = faceConfig.getCol() - 1;
-
-            Texture texture = Utils.getResourceManager().getTextureAsset(path);
-            TextureRegion[][] splitOfEight = TextureRegion.split(texture, (int) FACE_SIZE, (int) FACE_SIZE);
-            TextureRegion heroFace = splitOfEight[row][col];
-            var image = new Image(heroFace);
+            Image image = Utils.getFaceImage(heroId);
             image.setColor(TRANSPARENT_FACES);
             image.setPosition((i * FACE_SIZE) + (i * PADDING), yPos + FACE_Y);
             table.addActor(image);
@@ -246,7 +235,7 @@ class PartyWindow {
         int i = 0;
         for (HeroItem hero : party.getAllHeroes()) {
             Map<String, Integer> hpStats = hero.getAllHpStats();
-            Color color = getHpColor(hpStats);
+            Color color = Utils.getHpColor(hpStats);
             shapeRenderer.setColor(color);
             float barWidth = (BAR_WIDTH / hero.getMaximumHp()) * hero.getCurrentHp();
             renderBar(i, 2f, barWidth);
@@ -255,23 +244,6 @@ class PartyWindow {
         shapeRenderer.end();
 
         renderBarOutline(2f);
-    }
-
-    private Color getHpColor(Map<String, Integer> hpStats) {
-        Color color = Color.ROYAL;
-        if (hpStats.get("lvlHp") < hpStats.get("lvlCur")) {
-            color = Color.LIME;
-        }
-        if (hpStats.get("staHp") < hpStats.get("staCur")) {
-            color = Color.YELLOW;
-        }
-        if (hpStats.get("eduHp") < hpStats.get("eduCur")) {
-            color = Color.FIREBRICK;
-            if (hpStats.get("staHp") > 0) {
-                color = Color.ORANGE;
-            }
-        }
-        return color;
     }
 
     private void renderXpLabels() {

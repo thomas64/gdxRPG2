@@ -60,56 +60,56 @@ masterwork_shortsword
   orig: 62, 62
   offset: 0, 0
   index: -1
-specialist_dagger
+ordinary_dagger
   rotate: false
   xy: 0, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-specialist_greatsword
+ordinary_greatsword
   rotate: false
   xy: 62, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-specialist_longsword
+ordinary_longsword
   rotate: false
   xy: 124, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-specialist_shortsword
+ordinary_shortsword
   rotate: false
   xy: 186, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-standard_dagger
+specialist_dagger
   rotate: false
   xy: 0, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-standard_greatsword
+specialist_greatsword
   rotate: false
   xy: 62, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-standard_longsword
+specialist_longsword
   rotate: false
   xy: 124, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-standard_shortsword
+specialist_shortsword
   rotate: false
   xy: 186, 186
   size: 62, 62

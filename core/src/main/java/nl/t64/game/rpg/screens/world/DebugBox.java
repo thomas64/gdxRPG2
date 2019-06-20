@@ -23,9 +23,9 @@ class DebugBox {
     private static final float TABLE_WIDTH = 200f;
     private static final float SECOND_COLUMN_WIDTH = 100f;
 
-    private Stage stage;
-    private Table table;
-    private Character player;
+    private final Stage stage;
+    private final Table table;
+    private final Character player;
 
 
     DebugBox(Character player) {

@@ -40,7 +40,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
     private static final float TOP_SPACE = 50f;
 
     private final Stage stage;
-    private InventoryUI inventoryUI;
+    InventoryUI inventoryUI;
 
     private Vector2 inventoryWindowPosition;
     private Vector2 equipWindowPosition;
@@ -118,6 +118,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
     public void hide() {
         stage.clear();
         Gdx.input.setInputProcessor(null);
+        inventoryUI.dispose();
     }
 
     @Override

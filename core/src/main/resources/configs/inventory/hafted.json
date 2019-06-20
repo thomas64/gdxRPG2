@@ -1,12 +1,4 @@
 {
-  "spellbreaker_axe": {
-    "name": "Spellbreaker Axe",
-    "group": "WEAPON",
-    "skill": "HAFTED",
-    "min_strength": 15,
-    "base_hit": 60,
-    "damage": 28
-  },
   "basic_mace": {
     "name": "Basic Mace",
     "group": "WEAPON",
@@ -15,8 +7,8 @@
     "base_hit": 30,
     "damage": 18
   },
-  "standard_mace": {
-    "name": "Standard Mace",
+  "ordinary_mace": {
+    "name": "Ordinary Mace",
     "group": "WEAPON",
     "skill": "HAFTED",
     "min_strength": 16,
@@ -39,6 +31,14 @@
     "base_hit": 60,
     "damage": 24
   },
+  "epic_mace": {
+    "name": "Epic Mace",
+    "group": "WEAPON",
+    "skill": "HAFTED",
+    "min_strength": 15,
+    "base_hit": 60,
+    "damage": 24
+  },
   "basic_axe": {
     "name": "Basic Axe",
     "group": "WEAPON",
@@ -47,8 +47,8 @@
     "base_hit": 30,
     "damage": 20
   },
-  "standard_axe": {
-    "name": "Standard Axe",
+  "ordinary_axe": {
+    "name": "Ordinary Axe",
     "group": "WEAPON",
     "skill": "HAFTED",
     "min_strength": 20,
@@ -71,6 +71,14 @@
     "base_hit": 60,
     "damage": 26
   },
+  "epic_axe": {
+    "name": "Epic Axe",
+    "group": "WEAPON",
+    "skill": "HAFTED",
+    "min_strength": 19,
+    "base_hit": 60,
+    "damage": 26
+  },
   "basic_morningstar": {
     "name": "Basic Morningstar",
     "group": "WEAPON",
@@ -79,8 +87,8 @@
     "base_hit": 30,
     "damage": 22
   },
-  "standard_morningstar": {
-    "name": "Standard Morningstar",
+  "ordinary_morningstar": {
+    "name": "Ordinary Morningstar",
     "group": "WEAPON",
     "skill": "HAFTED",
     "min_strength": 24,
@@ -111,8 +119,8 @@
     "base_hit": 30,
     "damage": 24
   },
-  "standard_maul": {
-    "name": "Standard Maul",
+  "ordinary_maul": {
+    "name": "Ordinary Maul",
     "group": "WEAPON",
     "skill": "HAFTED",
     "min_strength": 28,

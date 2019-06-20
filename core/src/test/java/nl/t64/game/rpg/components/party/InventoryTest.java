@@ -30,55 +30,68 @@ class InventoryTest extends GameTest {
     void whenDataIsCreated_ShouldContainItems() {
         assertThat(inventory.getNumberOfFilledSlots()).isEqualTo(2);
 
-        assertThat(inventory.contains("gold")).isTrue();
-        assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(1);
-        assertThat(inventory.getItemAt(0)).get().hasFieldOrPropertyWithValue("id", "gold");
-
         assertThat(inventory.contains("basic_mace")).isTrue();
+        assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(1);
+        assertThat(inventory.getItemAt(0)).get().hasFieldOrPropertyWithValue("id", "basic_mace");
+
+        assertThat(inventory.contains("gold")).isTrue();
         assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex())).isEqualTo(1);
         assertThat(inventory.getItemAt(inventory.getLastIndex()))
-                .get().hasFieldOrPropertyWithValue("id", "basic_mace");
+                .get().hasFieldOrPropertyWithValue("id", "gold");
     }
 
     @Test
-    void whenResourceItemIsAdded_ShouldBeAddedToStartOfInventory() {
-        InventoryItem herbs = InventoryDatabase.getInstance().getInventoryItem("herbs");
-        assertThat(inventory.contains("herbs")).isFalse();
+    void whenResourceItemIsAdded_ShouldBeAddedToEndOfInventory() {
+        String itemId = "herbs";
+        InventoryItem herbs = InventoryDatabase.getInstance().getInventoryItem(itemId);
+        assertThat(inventory.contains(itemId)).isFalse();
+        assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex() - 1)).isEqualTo(0);
         inventory.autoSetItem(herbs);
-        assertThat(inventory.contains("herbs")).isTrue();
-        assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(1);
-        assertThat(inventory.getItemAt(1)).get().hasFieldOrPropertyWithValue("id", "herbs");
-    }
-
-    @Test
-    void whenEquipmentItemIsAdded_ShouldBeAddedToEndOfInventory() {
-        InventoryItem chest = InventoryDatabase.getInstance().getInventoryItem("light_basic_chest");
-        assertThat(inventory.contains("light_basic_chest")).isFalse();
-        inventory.autoSetItem(chest);
-        assertThat(inventory.contains("light_basic_chest")).isTrue();
+        assertThat(inventory.contains(itemId)).isTrue();
         assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex() - 1)).isEqualTo(1);
         assertThat(inventory.getItemAt(inventory.getLastIndex() - 1))
-                .get().hasFieldOrPropertyWithValue("id", "light_basic_chest");
+                .get().hasFieldOrPropertyWithValue("id", itemId);
+    }
+
+    @Test
+    void whenEquipmentItemIsAdded_ShouldBeAddedToStartOfInventory() {
+        String itemId = "basic_light_chest";
+        InventoryItem chest = InventoryDatabase.getInstance().getInventoryItem(itemId);
+        assertThat(inventory.contains(itemId)).isFalse();
+        inventory.autoSetItem(chest);
+        assertThat(inventory.contains(itemId)).isTrue();
+        assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(1);
+        assertThat(inventory.getItemAt(1)).get().hasFieldOrPropertyWithValue("id", itemId);
     }
 
     @Test
     void whenItemIsForceSet_ShouldOverwriteExistingItem() {
-        InventoryItem chest = InventoryDatabase.getInstance().getInventoryItem("light_basic_chest");
+        InventoryItem chest = InventoryDatabase.getInstance().getInventoryItem("basic_light_chest");
         assertThat(inventory.contains("basic_mace")).isTrue();
-        assertThat(inventory.contains("light_basic_chest")).isFalse();
+        assertThat(inventory.contains("basic_light_chest")).isFalse();
 
-        inventory.forceSetItemAt(inventory.getLastIndex(), chest);
+        inventory.forceSetItemAt(0, chest);
 
         assertThat(inventory.contains("basic_mace")).isFalse();
-        assertThat(inventory.contains("light_basic_chest")).isTrue();
+        assertThat(inventory.contains("basic_light_chest")).isTrue();
     }
 
     @Test
     void whenSameResourceItemIsAdded_ShouldIncreaseAmount() {
         InventoryItem gold = InventoryDatabase.getInstance().getInventoryItem("gold");
-        assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(1);
+        assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex())).isEqualTo(1);
         inventory.autoSetItem(gold);
-        assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(2);
+        assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex())).isEqualTo(2);
+    }
+
+    @Test
+    void whenSameEquipmentItemIsAdded_ShouldNotIncreaseAmount() {
+        InventoryItem basic_mace = InventoryDatabase.getInstance().getInventoryItem("basic_mace");
+        assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(1);
+        assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(0);
+        inventory.autoSetItem(basic_mace);
+        assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(1);
+        assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(1);
     }
 
     @Test
@@ -130,30 +143,30 @@ class InventoryTest extends GameTest {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Test
     void whenInventoryItemShield_ShouldCreateDescription() {
-        InventoryItem weapon = InventoryDatabase.getInstance().getInventoryItem("light_buckler_shield");
+        InventoryItem weapon = InventoryDatabase.getInstance().getInventoryItem("basic_light_shield");
         List<Map.Entry<String, String>> description = weapon.createDescription();
         assertThat(description.get(0).getKey()).isEqualTo("Shield");
-        assertThat(description.get(0).getValue()).isEqualTo("Light Buckler");
+        assertThat(description.get(0).getValue()).isEqualTo("Basic Light Shield");
         assertThat(description.get(1).getKey()).isEqualTo("Min. Strength");
         assertThat(description.get(1).getValue()).isEqualTo("14");
         assertThat(description.get(2).getKey()).isEqualTo("Protection");
         assertThat(description.get(2).getValue()).isEqualTo("1");
         assertThat(description.get(3).getKey()).isEqualTo("Defense");
-        assertThat(description.get(3).getValue()).isEqualTo("4");
+        assertThat(description.get(3).getValue()).isEqualTo("5");
         assertThat(description.get(4).getKey()).isEqualTo("Dexterity");
-        assertThat(description.get(4).getValue()).isEqualTo("0");
+        assertThat(description.get(4).getValue()).isEqualTo("-2");
         assertThat(description.get(5).getKey()).isEqualTo("Stealth");
-        assertThat(description.get(5).getValue()).isEqualTo("-2");
+        assertThat(description.get(5).getValue()).isEqualTo("-5");
         assertThatExceptionOfType(IndexOutOfBoundsException.class).isThrownBy(() -> description.get(6));
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Test
     void whenInventoryItemChest_ShouldCreateDescription() {
-        InventoryItem weapon = InventoryDatabase.getInstance().getInventoryItem("light_basic_chest");
+        InventoryItem weapon = InventoryDatabase.getInstance().getInventoryItem("basic_light_chest");
         List<Map.Entry<String, String>> description = weapon.createDescription();
         assertThat(description.get(0).getKey()).isEqualTo("Chest");
-        assertThat(description.get(0).getValue()).isEqualTo("Light Basic Chest");
+        assertThat(description.get(0).getValue()).isEqualTo("Basic Light Chest");
         assertThat(description.get(1).getKey()).isEqualTo("Weight");
         assertThat(description.get(1).getValue()).isEqualTo("1");
         assertThat(description.get(2).getKey()).isEqualTo("Protection");

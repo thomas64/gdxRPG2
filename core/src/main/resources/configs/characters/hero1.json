@@ -4,8 +4,8 @@
     "level": 1,
     "inventory": {
       "weapon": "basic_shortsword",
-      "shield": "light_buckler_shield",
-      "chest": "medium_basic_chest"
+      "shield": "basic_light_shield",
+      "chest": "basic_medium_chest"
     },
     "strength": 15,
     "endurance": 15,
@@ -17,7 +17,7 @@
     "inventory": {
       "weapon": "basic_dagger",
       "shield": null,
-      "chest": "light_basic_chest"
+      "chest": "basic_light_chest"
     },
     "strength": 8,
     "endurance": 10,
@@ -27,9 +27,9 @@
     "name": "Reignald",
     "level": 8,
     "inventory": {
-      "weapon": "standard_shortsword",
-      "shield": "heavy_buckler_shield",
-      "chest": "medium_standard_chest"
+      "weapon": "ordinary_shortsword",
+      "shield": "ordinary_light_shield",
+      "chest": "ordinary_medium_chest"
     },
     "strength": 20,
     "endurance": 20,
@@ -41,7 +41,7 @@
     "inventory": {
       "weapon": "basic_staff",
       "shield": null,
-      "chest": "light_basic_chest"
+      "chest": "basic_light_chest"
     },
     "strength": 10,
     "endurance": 16,
@@ -53,7 +53,7 @@
     "inventory": {
       "weapon": "basic_dagger",
       "shield": null,
-      "chest": "light_basic_chest"
+      "chest": "basic_light_chest"
     },
     "strength": 10,
     "endurance": 15,
@@ -64,8 +64,8 @@
     "level": 4,
     "inventory": {
       "weapon": "basic_axe",
-      "shield": "heavy_targe_shield",
-      "chest": "medium_basic_chest"
+      "shield": "basic_medium_shield",
+      "chest": "basic_medium_chest"
     },
     "strength": 25,
     "endurance": 20,
@@ -76,8 +76,8 @@
     "level": 12,
     "inventory": {
       "weapon": "basic_greatsword",
-      "shield": "heavy_heater_shield",
-      "chest": "heavy_basic_chest"
+      "shield": "basic_heavy_shield",
+      "chest": "basic_heavy_chest"
     },
     "strength": 30,
     "endurance": 30,
@@ -87,9 +87,9 @@
     "name": "Kiara",
     "level": 12,
     "inventory": {
-      "weapon": "standard_dagger",
+      "weapon": "ordinary_dagger",
       "shield": null,
-      "chest": "light_standard_chest"
+      "chest": "ordinary_light_chest"
     },
     "strength": 15,
     "endurance": 20,
@@ -99,9 +99,9 @@
     "name": "Luthais",
     "level": 20,
     "inventory": {
-      "weapon": "mage_s_staff",
+      "weapon": "epic_staff",
       "shield": null,
-      "chest": "light_specialist_chest"
+      "chest": "specialist_light_chest"
     },
     "strength": 8,
     "endurance": 18,
@@ -111,9 +111,9 @@
     "name": "Elias",
     "level": 18,
     "inventory": {
-      "weapon": "standard_longsword",
+      "weapon": "ordinary_longsword",
       "shield": null,
-      "chest": "medium_standard_chest"
+      "chest": "ordinary_medium_chest"
     },
     "strength": 20,
     "endurance": 30,
@@ -123,9 +123,9 @@
     "name": "Onarr",
     "level": 18,
     "inventory": {
-      "weapon": "standard_morningstar",
-      "shield": "heavy_aspis_shield",
-      "chest": "heavy_standard_chest"
+      "weapon": "ordinary_morningstar",
+      "shield": "ordinary_medium_shield",
+      "chest": "ordinary_heavy_chest"
     },
     "strength": 25,
     "endurance": 30,
@@ -136,8 +136,8 @@
     "level": 22,
     "inventory": {
       "weapon": "specialist_shortsword",
-      "shield": "light_aspis_shield",
-      "chest": "medium_specialist_chest"
+      "shield": "specialist_light_shield",
+      "chest": "specialist_medium_chest"
     },
     "strength": 25,
     "endurance": 25,
@@ -149,7 +149,7 @@
     "inventory": {
       "weapon": "specialist_shortsword",
       "shield": null,
-      "chest": "medium_specialist_chest"
+      "chest": "specialist_medium_chest"
     },
     "strength": 20,
     "endurance": 30,
@@ -159,9 +159,9 @@
     "name": "Faeron",
     "level": 25,
     "inventory": {
-      "weapon": "spellbreaker_axe",
+      "weapon": "epic_mace",
       "shield": null,
-      "chest": "light_masterwork_chest"
+      "chest": "masterwork_light_chest"
     },
     "strength": 15,
     "endurance": 25,

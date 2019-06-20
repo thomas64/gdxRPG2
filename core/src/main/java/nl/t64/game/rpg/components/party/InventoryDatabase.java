@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class InventoryDatabase {
+public final class InventoryDatabase {
 
     private static final String INVENTORY_CONFIGS = "configs/inventory";
     private static final String SUFFIX = ".json";
@@ -47,10 +47,11 @@ public class InventoryDatabase {
     private void loadInventoryItems() throws IOException {
         var mapper = new ObjectMapper();
         FileHandle[] configFiles = Gdx.files.local(INVENTORY_CONFIGS).list(SUFFIX);
+        TypeReference<HashMap<String, InventoryItem>> typeReference = new TypeReference<>() {
+        };
         for (FileHandle file : configFiles) {
             String json = file.readString();
-            inventoryItems.putAll(mapper.readValue(json, new TypeReference<HashMap<String, InventoryItem>>() {
-            }));
+            inventoryItems.putAll(mapper.readValue(json, typeReference));
         }
     }
 

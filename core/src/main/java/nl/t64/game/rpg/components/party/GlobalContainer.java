@@ -38,10 +38,6 @@ public class GlobalContainer {
         return getSize() - 1;
     }
 
-    public int getSize() {
-        return inventory.size();
-    }
-
     boolean contains(String id) {
         return inventory.stream()
                         .filter(Objects::nonNull)
@@ -52,6 +48,10 @@ public class GlobalContainer {
         return inventory.stream()
                         .filter(Objects::nonNull)
                         .count();
+    }
+
+    private int getSize() {
+        return inventory.size();
     }
 
     private void addResource(InventoryItem newItem) {

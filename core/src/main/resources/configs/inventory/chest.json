@@ -1,83 +1,83 @@
 {
-  "light_basic_chest": {
-    "name": "Light Basic Chest",
+  "basic_light_chest": {
+    "name": "Basic Light Chest",
     "group": "CHEST",
     "weight": 1,
     "protection": 1,
     "stealth": 0
   },
-  "light_standard_chest": {
-    "name": "Light Standard Chest",
+  "ordinary_light_chest": {
+    "name": "Ordinary Light Chest",
     "group": "CHEST",
     "weight": 1,
     "protection": 2,
     "stealth": 0
   },
-  "light_specialist_chest": {
-    "name": "Light Specialist Chest",
+  "specialist_light_chest": {
+    "name": "Specialist Light Chest",
     "group": "CHEST",
     "weight": 1,
     "protection": 3,
     "stealth": 0
   },
-  "light_masterwork_chest": {
-    "name": "Light Masterwork Chest",
+  "masterwork_light_chest": {
+    "name": "Masterwork Light Chest",
     "group": "CHEST",
     "weight": 1,
     "protection": 4,
     "stealth": 0
   },
-  "medium_basic_chest": {
-    "name": "Medium Basic Chest",
+  "basic_medium_chest": {
+    "name": "Basic Medium Chest",
     "group": "CHEST",
     "weight": 2,
     "protection": 5,
     "stealth": -1
   },
-  "medium_standard_chest": {
-    "name": "Medium Standard Chest",
+  "ordinary_medium_chest": {
+    "name": "Ordinary Medium Chest",
     "group": "CHEST",
     "weight": 2,
     "protection": 6,
     "stealth": -1
   },
-  "medium_specialist_chest": {
-    "name": "Medium Specialist Chest",
+  "specialist_medium_chest": {
+    "name": "Specialist Medium Chest",
     "group": "CHEST",
     "weight": 2,
     "protection": 7,
     "stealth": -1
   },
-  "medium_masterwork_chest": {
-    "name": "Medium Masterwork Chest",
+  "masterwork_medium_chest": {
+    "name": "Masterwork Medium Chest",
     "group": "CHEST",
     "weight": 2,
     "protection": 8,
     "stealth": -1
   },
-  "heavy_basic_chest": {
-    "name": "Heavy Basic Chest",
+  "basic_heavy_chest": {
+    "name": "Basic Heavy Chest",
     "group": "CHEST",
     "weight": 3,
     "protection": 9,
     "stealth": -2
   },
-  "heavy_standard_chest": {
-    "name": "Heavy Standard Chest",
+  "ordinary_heavy_chest": {
+    "name": "Ordinary Heavy Chest",
     "group": "CHEST",
     "weight": 3,
     "protection": 10,
     "stealth": -2
   },
-  "heavy_specialist_chest": {
-    "name": "Heavy Specialist Chest",
+  "specialist_heavy_chest": {
+    "name": "Specialist Heavy Chest",
     "group": "CHEST",
     "weight": 3,
     "protection": 11,
     "stealth": -2
   },
-  "heavy_masterwork_chest": {
-    "name": "Heavy Masterwork Chest",
+  "masterwork_heavy_chest": {
+    "name": "Masterwork Heavy Chest",
     "group": "CHEST",
     "weight": 3,
     "protection": 12,

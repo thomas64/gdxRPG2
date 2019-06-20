@@ -18,10 +18,9 @@ class EquipSlotsTable {
     private static final String SPRITE_SILHOUETTE = "sprites/silhouette.png";
     private static final float SLOT_SIZE = 64f;
     private static final float EQUIP_SPACING = 10f;
-    private static final int PARTY_INDEX = 0;
 
     final Table equipSlots;
-
+    private final int thisHeroIndex;
     private final DragAndDrop dragAndDrop;
     private final InventorySlotTooltip tooltip;
 
@@ -40,7 +39,8 @@ class EquipSlotsTable {
     private final InventorySlot pantsSlot;
     private final InventorySlot bootsSlot;
 
-    EquipSlotsTable(DragAndDrop dragAndDrop, InventorySlotTooltip tooltip) {
+    EquipSlotsTable(int thisHeroIndex, DragAndDrop dragAndDrop, InventorySlotTooltip tooltip) {
+        this.thisHeroIndex = thisHeroIndex;
         this.dragAndDrop = dragAndDrop;
         this.tooltip = tooltip;
         this.equipSlots = new Table();
@@ -76,7 +76,6 @@ class EquipSlotsTable {
     }
 
     private void setDefaults() {
-//        equipSlots.debugAll();
         equipSlots.defaults().space(EQUIP_SPACING).size(SLOT_SIZE, SLOT_SIZE);
         var texture = Utils.getResourceManager().getTextureAsset(SPRITE_SILHOUETTE);
         var sprite = new Sprite(texture);
@@ -119,7 +118,7 @@ class EquipSlotsTable {
     }
 
     private void addToSlots() {
-        HeroItem hero = Utils.getGameData().getParty().getHero(PARTY_INDEX);    // todo, fix index.
+        HeroItem hero = Utils.getGameData().getParty().getHero(thisHeroIndex);
 
         hero.getInventoryItem(HELMET).ifPresent(addToSlot(helmetSlot));
         hero.getInventoryItem(NECKLACE).ifPresent(addToSlot(necklaceSlot));
@@ -151,7 +150,6 @@ class EquipSlotsTable {
         equipSlots.row();
 
         Table bodySlots = new Table();
-//        bodySlots.debugAll();
         bodySlots.defaults().space(EQUIP_SPACING).size(SLOT_SIZE, SLOT_SIZE);
         bodySlots.add(chestSlot);
         bodySlots.add(cloakSlot);

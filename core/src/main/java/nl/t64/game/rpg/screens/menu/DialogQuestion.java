@@ -35,7 +35,7 @@ class DialogQuestion {
     private final String message;
     private final long dialogHeight;
 
-    private BitmapFont menuFont;
+    private final BitmapFont menuFont;
     private Dialog dialog;
     private TextButton yesButton;
     private TextButton noButton;
@@ -48,7 +48,7 @@ class DialogQuestion {
         this.message = message;
         this.dialogHeight = ((message.lines().count()) * MENU_SIZE) + DIALOG_INIT_HEIGHT;
         this.yesFunction = yesFunction;
-        createFonts();
+        this.menuFont = Utils.getResourceManager().getTrueTypeAsset(MENU_FONT, MENU_SIZE);
         this.dialog = createDialog();
         applyListeners();
     }
@@ -91,10 +91,6 @@ class DialogQuestion {
     private void setCurrentTextButtonToRed() {
         ((TextButton) dialog.getButtonTable().getChildren().get(selectedIndex))
                 .getStyle().fontColor = Constant.DARK_RED;
-    }
-
-    private void createFonts() {
-        menuFont = Utils.getResourceManager().getTrueTypeAsset(MENU_FONT, MENU_SIZE);
     }
 
     private Dialog createDialog() {

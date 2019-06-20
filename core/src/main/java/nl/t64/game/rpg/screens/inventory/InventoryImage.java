@@ -42,7 +42,7 @@ class InventoryImage extends Image {
 
         var sb = new StringBuilder();
         for (Map.Entry<String, String> pair : description) {
-            sb.append(pair.getKey()).append("\n");
+            sb.append(pair.getKey()).append('\n');
         }
         sb.reverse();
         sb.delete(0, 1);
@@ -57,7 +57,7 @@ class InventoryImage extends Image {
 
         var sb = new StringBuilder();
         for (Map.Entry<String, String> pair : description) {
-            sb.append(pair.getValue()).append("\n");
+            sb.append(pair.getValue()).append('\n');
         }
         sb.reverse();
         sb.delete(0, 1);

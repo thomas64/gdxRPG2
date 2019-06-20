@@ -2,12 +2,12 @@ package nl.t64.game.rpg.screens.inventory;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import java.util.function.Consumer;
 
 
-public class InventorySlotPreviewListener extends InputListener {
+class InventorySlotPreviewListener extends ClickListener {
 
     private final Consumer<InventorySlot> functionToExecute;
 

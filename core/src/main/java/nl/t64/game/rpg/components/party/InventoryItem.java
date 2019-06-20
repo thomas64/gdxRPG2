@@ -121,7 +121,7 @@ public class InventoryItem {
                 filtered.add(attribute);
                 return;
             }
-            if (attribute.getValue().startsWith("0")) {
+            if (attribute.getValue().charAt(0) == '0') {
                 return;
             }
             filtered.add(attribute);

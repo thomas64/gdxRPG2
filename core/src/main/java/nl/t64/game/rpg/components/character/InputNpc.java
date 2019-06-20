@@ -10,6 +10,8 @@ import nl.t64.game.rpg.events.character.*;
 
 public class InputNpc extends InputComponent {
 
+    private static final float DEFAULT_STATE_TIME = 5f;
+
     private float stateTime = 0f;
 
     private CharacterState state;
@@ -70,7 +72,7 @@ public class InputNpc extends InputComponent {
     private void handleEvent(WaitEvent event) {
         Vector2 npcPosition = event.npcPosition;
         Vector2 playerPosition = event.playerPosition;
-        stateTime = 5f;
+        stateTime = DEFAULT_STATE_TIME;
         if (state == CharacterState.WALKING) {
             state = CharacterState.IDLE;
         }

@@ -32,7 +32,7 @@ basic_staff
   orig: 62, 62
   offset: 0, 0
   index: -1
-mage_s_staff
+epic_staff
   rotate: false
   xy: 0, 62
   size: 62, 62
@@ -67,59 +67,59 @@ masterwork_staff
   orig: 62, 62
   offset: 0, 0
   index: -1
-specialist_lance
+ordinary_lance
   rotate: false
   xy: 62, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-specialist_pike
+ordinary_pike
   rotate: false
   xy: 124, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-specialist_spear
+ordinary_spear
   rotate: false
   xy: 186, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-specialist_staff
+ordinary_staff
   rotate: false
   xy: 0, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-standard_lance
+specialist_lance
   rotate: false
   xy: 62, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-standard_pike
+specialist_pike
   rotate: false
   xy: 124, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-standard_spear
+specialist_spear
   rotate: false
   xy: 186, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-standard_staff
+specialist_staff
   rotate: false
   xy: 0, 248
-  size: 61, 62
-  orig: 61, 62
+  size: 62, 62
+  orig: 62, 62
   offset: 0, 0
   index: -1

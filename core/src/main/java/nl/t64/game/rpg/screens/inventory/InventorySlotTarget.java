@@ -34,8 +34,7 @@ class InventorySlotTarget extends Target {
         }
         if (targetSlot.doesAcceptInventoryGroup(draggedItem.inventoryGroup)) {
             checkTargetItem(draggedItem, sourceSlot);
-            InventoryWriter.storeToGameData(sourceSlot.getParent());
-            InventoryWriter.storeToGameData(targetSlot.getParent());
+            InventoryWriter.storeToGameData();
         } else {
             sourceSlot.putItemBack(draggedItem);
         }

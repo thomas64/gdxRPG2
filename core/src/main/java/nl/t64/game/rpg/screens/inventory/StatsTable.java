@@ -18,7 +18,7 @@ import static nl.t64.game.rpg.components.party.InventoryGroup.WEAPON;
 import static nl.t64.game.rpg.constants.InventoryAttribute.*;
 
 
-class StatsTable implements SlotOverObserver {
+class StatsTable {
 
     private static final String SPRITE_TOP_BORDER = "sprites/top_border.png";
     private static final String TEXT_FONT = "fonts/spectral.ttf";
@@ -32,37 +32,34 @@ class StatsTable implements SlotOverObserver {
 
     final Table stats;
     private final BitmapFont font;
-    private InventoryItem hoveredItem;
 
     StatsTable() {
-        var statsSkin = new Skin();
         this.font = Utils.getResourceManager().getTrueTypeAsset(TEXT_FONT, TEXT_SIZE);
-        statsSkin.add("default", new Label.LabelStyle(this.font, Color.BLACK));
-
-        this.stats = new Table(statsSkin);
+        this.stats = new Table(createSkin());
         this.stats.defaults().height(LINE_HEIGHT).align(Align.left);
         this.stats.columnDefaults(0).width(FIRST_COLUMN_WIDTH);
         this.stats.columnDefaults(1).width(SECOND_COLUMN_WIDTH);
         this.stats.columnDefaults(2).width(THIRD_COLUMN_WIDTH);
         this.stats.columnDefaults(3).width(FOURTH_COLUMN_WIDTH);
         this.stats.pad(PADDING);
-//        this.stats.debugAll();
+        setTopBorder();
+    }
 
+    private Skin createSkin() {
+        Skin statsSkin = new Skin();
+        statsSkin.add("default", new Label.LabelStyle(font, Color.BLACK));
+        return statsSkin;
+    }
+
+    private void setTopBorder() {
         var texture = Utils.getResourceManager().getTextureAsset(SPRITE_TOP_BORDER);
         var ninepatch = new NinePatch(texture, 0, 0, 1, 0);
         var drawable = new NinePatchDrawable(ninepatch);
-        this.stats.setBackground(drawable);
-
-        this.hoveredItem = null;
-    }
-
-    @Override
-    public void receive(InventoryItem inventoryItem) {
-        hoveredItem = inventoryItem;
+        stats.setBackground(drawable);
     }
 
     void render() {
-        HeroItem hero = Utils.getGameData().getParty().getHero(0);    // todo, fix index.
+        HeroItem hero = Utils.getGameData().getParty().getHero(DynamicVars.heroIndex);
         stats.clear();
 
         stats.add("Intelligence");
@@ -120,11 +117,11 @@ class StatsTable implements SlotOverObserver {
         stats.add("Base Hit");
         stats.add(String.valueOf(hero.getAttributeValueOf(WEAPON, BASE_HIT) + "%"));
         stats.add("");
-        createPreview(hero, BASE_HIT);
+        createPreview(BASE_HIT, hero);
         stats.add("Damage");
         stats.add(String.valueOf(hero.getAttributeValueOf(WEAPON, DAMAGE)));
         stats.add("");
-        createPreview(hero, DAMAGE);
+        createPreview(DAMAGE, hero);
         stats.add("Protection");
         stats.add("?");
         stats.add("");
@@ -132,10 +129,12 @@ class StatsTable implements SlotOverObserver {
         stats.add("Defense");
         stats.add(String.valueOf(hero.getAttributeValueOf(SHIELD, DEFENSE)));
         stats.add("");
-        createPreview(hero, DEFENSE);
+        createPreview(DEFENSE, hero);
     }
 
-    private void createPreview(HeroItem hero, InventoryAttribute attribute) {
+    private void createPreview(InventoryAttribute attribute, HeroItem hero) {
+        InventoryItem hoveredItem = DynamicVars.hoveredItem;
+
         if (hoveredItem == null) {
             stats.add("").row();
         } else {

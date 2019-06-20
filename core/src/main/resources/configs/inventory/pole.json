@@ -1,12 +1,4 @@
 {
-  "mage_s_staff": {
-    "name": "Mage's Staff",
-    "group": "WEAPON",
-    "skill": "POLE",
-    "min_strength": 8,
-    "base_hit": 80,
-    "damage": 10
-  },
   "basic_staff": {
     "name": "Basic Staff",
     "group": "WEAPON",
@@ -15,8 +7,8 @@
     "base_hit": 50,
     "damage": 4
   },
-  "standard_staff": {
-    "name": "Standard Staff",
+  "ordinary_staff": {
+    "name": "Ordinary Staff",
     "group": "WEAPON",
     "skill": "POLE",
     "min_strength": 9,
@@ -39,6 +31,14 @@
     "base_hit": 80,
     "damage": 10
   },
+  "epic_staff": {
+    "name": "Epic Staff",
+    "group": "WEAPON",
+    "skill": "POLE",
+    "min_strength": 8,
+    "base_hit": 80,
+    "damage": 10
+  },
   "basic_spear": {
     "name": "Basic Spear",
     "group": "WEAPON",
@@ -47,8 +47,8 @@
     "base_hit": 50,
     "damage": 6
   },
-  "standard_spear": {
-    "name": "Standard Spear",
+  "ordinary_spear": {
+    "name": "Ordinary Spear",
     "group": "WEAPON",
     "skill": "POLE",
     "min_strength": 12,
@@ -79,8 +79,8 @@
     "base_hit": 50,
     "damage": 8
   },
-  "standard_pike": {
-    "name": "Standard Pike",
+  "ordinary_pike": {
+    "name": "Ordinary Pike",
     "group": "WEAPON",
     "skill": "POLE",
     "min_strength": 15,
@@ -111,8 +111,8 @@
     "base_hit": 50,
     "damage": 10
   },
-  "standard_lance": {
-    "name": "Standard Lance",
+  "ordinary_lance": {
+    "name": "Ordinary Lance",
     "group": "WEAPON",
     "skill": "POLE",
     "min_strength": 18,

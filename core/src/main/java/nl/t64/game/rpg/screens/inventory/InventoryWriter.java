@@ -2,34 +2,28 @@ package nl.t64.game.rpg.screens.inventory;
 
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.InventoryItem;
+import nl.t64.game.rpg.constants.ScreenType;
 
 import java.util.function.Consumer;
 
 
 final class InventoryWriter {
 
-    private static final int AMOUNT_BODY_SLOTS = 2;
-
     private InventoryWriter() {
         throw new IllegalStateException("InventoryWriter class");
     }
 
-    static void storeToGameData(Group group) {
-        Table table = (Table) group;
+    static void storeToGameData() {
+        InventoryScreen inventoryScreen = ((InventoryScreen) Utils.getScreenManager().getScreen(ScreenType.INVENTORY));
+        Table inventorySlotsTable = inventoryScreen.inventoryUI.inventorySlotsTable.inventorySlots;
+        Table equipSlotsTable = inventoryScreen.inventoryUI.equipSlotsTables.get(DynamicVars.heroIndex).equipSlots;
 
-        int globalInventorySize = Utils.getGameData().getInventory().getSize();
-        if (table.getChildren().size == globalInventorySize) {
-            setGlobalInventory(table);
-        } else if (table.getChildren().size == AMOUNT_BODY_SLOTS) {
-            setPersonalInventory((Table) table.getParent());
-        } else {
-            setPersonalInventory(table);
-        }
+        setGlobalInventory(inventorySlotsTable);
+        setPersonalInventory(equipSlotsTable);
     }
 
     private static void setGlobalInventory(Table inventorySlotsTable) {
@@ -54,7 +48,7 @@ final class InventoryWriter {
     }
 
     private static void setPersonalInventory(Table equipSlotsTable) {
-        HeroItem hero = Utils.getGameData().getParty().getHero(0); // todo, fix index.
+        HeroItem hero = Utils.getGameData().getParty().getHero(DynamicVars.heroIndex);
         for (Actor actor : equipSlotsTable.getChildren()) {
             if (actor instanceof Table) {
                 for (Actor deepActor : ((Table) actor).getChildren()) {

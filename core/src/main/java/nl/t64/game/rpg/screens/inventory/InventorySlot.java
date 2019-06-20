@@ -101,7 +101,7 @@ class InventorySlot extends Stack {
         if (filterGroup.equals(InventoryGroup.EVERYTHING)) {
             return true;
         } else {
-            return filterGroup == itemGroup;
+            return filterGroup.equals(itemGroup);
         }
     }
 
