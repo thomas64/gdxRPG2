@@ -35,9 +35,19 @@
     "name": "Epic Staff",
     "group": "WEAPON",
     "skill": "POLE",
+    "min_intelligence": 26,
     "min_strength": 8,
     "base_hit": 80,
     "damage": 10
+  },
+  "legendary_staff": {
+    "name": "Legendary Staff",
+    "group": "WEAPON",
+    "skill": "POLE",
+    "min_intelligence": 30,
+    "min_strength": 12,
+    "base_hit": 90,
+    "damage": 12
   },
   "basic_spear": {
     "name": "Basic Spear",

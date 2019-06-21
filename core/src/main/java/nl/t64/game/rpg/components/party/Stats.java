@@ -41,6 +41,21 @@ class Level {
 }
 
 @NoArgsConstructor
+class Intelligence {
+    private static final int MAXIMUM = 30;
+    private static final float UPGRADE = 0.12f;
+
+    int current;
+    int bonus;
+
+    Intelligence(int current) {
+        this.current = current;
+        this.bonus = 0;
+    }
+
+}
+
+@NoArgsConstructor
 class Strength {
 
     private static final int MAXIMUM = 30;

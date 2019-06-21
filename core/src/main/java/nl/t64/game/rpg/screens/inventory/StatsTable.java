@@ -63,7 +63,7 @@ class StatsTable {
         stats.clear();
 
         stats.add("Intelligence");
-        stats.add("?");
+        stats.add(String.valueOf(hero.getOwnIntelligence()));
         stats.add("");
         stats.add("").row();
         stats.add("Willpower");

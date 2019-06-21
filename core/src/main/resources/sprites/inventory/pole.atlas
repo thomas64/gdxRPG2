@@ -39,86 +39,93 @@ epic_staff
   orig: 62, 62
   offset: 0, 0
   index: -1
-masterwork_lance
+legendary_staff
   rotate: false
   xy: 62, 62
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-masterwork_pike
+masterwork_lance
   rotate: false
   xy: 124, 62
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-masterwork_spear
+masterwork_pike
   rotate: false
   xy: 186, 62
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-masterwork_staff
+masterwork_spear
   rotate: false
   xy: 0, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-ordinary_lance
+masterwork_staff
   rotate: false
   xy: 62, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-ordinary_pike
+ordinary_lance
   rotate: false
   xy: 124, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-ordinary_spear
+ordinary_pike
   rotate: false
   xy: 186, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-ordinary_staff
+ordinary_spear
   rotate: false
   xy: 0, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-specialist_lance
+ordinary_staff
   rotate: false
   xy: 62, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-specialist_pike
+specialist_lance
   rotate: false
   xy: 124, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-specialist_spear
+specialist_pike
   rotate: false
   xy: 186, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-specialist_staff
+specialist_spear
   rotate: false
   xy: 0, 248
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+specialist_staff
+  rotate: false
+  xy: 62, 248
   size: 62, 62
   orig: 62, 62
   offset: 0, 0

@@ -143,6 +143,7 @@ class HeroTest extends GameTest {
         softly.assertThat(mozes.getNeededXpForNextLevel()).isEqualTo(20);
         softly.assertThat(mozes.getCurrentHp()).isEqualTo(46);
         softly.assertThat(mozes.getMaximumHp()).isEqualTo(46);
+        softly.assertThat(mozes.getIntelligence()).isEqualTo(18);
         softly.assertThat(mozes.getStrength()).isEqualTo(15);
         softly.assertThat(mozes.getAttributeValueOf(WEAPON, BASE_HIT)).isEqualTo(40);
         softly.assertThat(mozes.getAttributeValueOf(WEAPON, DAMAGE)).isEqualTo(13);
@@ -158,6 +159,7 @@ class HeroTest extends GameTest {
         softly.assertThat(luana.getNeededXpForNextLevel()).isEqualTo(20);
         softly.assertThat(luana.getCurrentHp()).isEqualTo(31);
         softly.assertThat(luana.getMaximumHp()).isEqualTo(31);
+        softly.assertThat(luana.getIntelligence()).isEqualTo(14);
         softly.assertThat(luana.getStrength()).isEqualTo(8);
         softly.assertThat(luana.getAttributeValueOf(WEAPON, BASE_HIT)).isEqualTo(40);
         softly.assertThat(luana.getAttributeValueOf(WEAPON, DAMAGE)).isEqualTo(11);
@@ -173,6 +175,7 @@ class HeroTest extends GameTest {
         softly.assertThat(reignald.getNeededXpForNextLevel()).isEqualTo(405);
         softly.assertThat(reignald.getCurrentHp()).isEqualTo(68);
         softly.assertThat(reignald.getMaximumHp()).isEqualTo(68);
+        softly.assertThat(reignald.getIntelligence()).isEqualTo(10);
         softly.assertThat(reignald.getStrength()).isEqualTo(20);
         softly.assertThat(reignald.getAttributeValueOf(WEAPON, BASE_HIT)).isEqualTo(50);
         softly.assertThat(reignald.getAttributeValueOf(WEAPON, DAMAGE)).isEqualTo(15);
@@ -184,6 +187,7 @@ class HeroTest extends GameTest {
         softly.assertThat(ryiah.getNeededXpForNextLevel()).isEqualTo(80);
         softly.assertThat(ryiah.getCurrentHp()).isEqualTo(50);
         softly.assertThat(ryiah.getMaximumHp()).isEqualTo(50);
+        softly.assertThat(ryiah.getIntelligence()).isEqualTo(22);
         softly.assertThat(ryiah.getStrength()).isEqualTo(10);
         softly.assertThat(ryiah.getAttributeValueOf(WEAPON, BASE_HIT)).isEqualTo(50);
         softly.assertThat(ryiah.getAttributeValueOf(WEAPON, DAMAGE)).isEqualTo(4);
@@ -195,6 +199,7 @@ class HeroTest extends GameTest {
         softly.assertThat(valter.getNeededXpForNextLevel()).isEqualTo(45);
         softly.assertThat(valter.getCurrentHp()).isEqualTo(37);
         softly.assertThat(valter.getMaximumHp()).isEqualTo(37);
+        softly.assertThat(valter.getIntelligence()).isEqualTo(22);
         softly.assertThat(valter.getStrength()).isEqualTo(10);
         softly.assertThat(valter.getAttributeValueOf(WEAPON, BASE_HIT)).isEqualTo(40);
         softly.assertThat(valter.getAttributeValueOf(WEAPON, DAMAGE)).isEqualTo(11);
@@ -206,6 +211,7 @@ class HeroTest extends GameTest {
         softly.assertThat(galen.getNeededXpForNextLevel()).isEqualTo(125);
         softly.assertThat(galen.getCurrentHp()).isEqualTo(64);
         softly.assertThat(galen.getMaximumHp()).isEqualTo(64);
+        softly.assertThat(galen.getIntelligence()).isEqualTo(15);
         softly.assertThat(galen.getStrength()).isEqualTo(25);
         softly.assertThat(galen.getAttributeValueOf(WEAPON, BASE_HIT)).isEqualTo(30);
         softly.assertThat(galen.getAttributeValueOf(WEAPON, DAMAGE)).isEqualTo(20);
@@ -217,6 +223,7 @@ class HeroTest extends GameTest {
         softly.assertThat(jaspar.getNeededXpForNextLevel()).isEqualTo(845);
         softly.assertThat(jaspar.getCurrentHp()).isEqualTo(102);
         softly.assertThat(jaspar.getMaximumHp()).isEqualTo(102);
+        softly.assertThat(jaspar.getIntelligence()).isEqualTo(6);
         softly.assertThat(jaspar.getStrength()).isEqualTo(30);
         softly.assertThat(jaspar.getAttributeValueOf(WEAPON, BASE_HIT)).isEqualTo(40);
         softly.assertThat(jaspar.getAttributeValueOf(WEAPON, DAMAGE)).isEqualTo(17);
@@ -228,6 +235,7 @@ class HeroTest extends GameTest {
         softly.assertThat(kiara.getNeededXpForNextLevel()).isEqualTo(845);
         softly.assertThat(kiara.getCurrentHp()).isEqualTo(72);
         softly.assertThat(kiara.getMaximumHp()).isEqualTo(72);
+        softly.assertThat(kiara.getIntelligence()).isEqualTo(15);
         softly.assertThat(kiara.getStrength()).isEqualTo(15);
         softly.assertThat(kiara.getAttributeValueOf(WEAPON, BASE_HIT)).isEqualTo(50);
         softly.assertThat(kiara.getAttributeValueOf(WEAPON, DAMAGE)).isEqualTo(13);
@@ -239,6 +247,7 @@ class HeroTest extends GameTest {
         softly.assertThat(luthais.getNeededXpForNextLevel()).isEqualTo(2205);
         softly.assertThat(luthais.getCurrentHp()).isEqualTo(88);
         softly.assertThat(luthais.getMaximumHp()).isEqualTo(88);
+        softly.assertThat(luthais.getIntelligence()).isEqualTo(30);
         softly.assertThat(luthais.getStrength()).isEqualTo(8);
         softly.assertThat(luthais.getAttributeValueOf(WEAPON, BASE_HIT)).isEqualTo(80);
         softly.assertThat(luthais.getAttributeValueOf(WEAPON, DAMAGE)).isEqualTo(10);
@@ -250,6 +259,7 @@ class HeroTest extends GameTest {
         softly.assertThat(elias.getNeededXpForNextLevel()).isEqualTo(1805);
         softly.assertThat(elias.getCurrentHp()).isEqualTo(108);
         softly.assertThat(elias.getMaximumHp()).isEqualTo(108);
+        softly.assertThat(elias.getIntelligence()).isEqualTo(30);
         softly.assertThat(elias.getStrength()).isEqualTo(20);
         softly.assertThat(elias.getAttributeValueOf(WEAPON, BASE_HIT)).isEqualTo(50);
         softly.assertThat(elias.getAttributeValueOf(WEAPON, DAMAGE)).isEqualTo(17);
@@ -261,6 +271,7 @@ class HeroTest extends GameTest {
         softly.assertThat(onarr.getNeededXpForNextLevel()).isEqualTo(1805);
         softly.assertThat(onarr.getCurrentHp()).isEqualTo(108);
         softly.assertThat(onarr.getMaximumHp()).isEqualTo(108);
+        softly.assertThat(onarr.getIntelligence()).isEqualTo(30);
         softly.assertThat(onarr.getStrength()).isEqualTo(25);
         softly.assertThat(onarr.getAttributeValueOf(WEAPON, BASE_HIT)).isEqualTo(40);
         softly.assertThat(onarr.getAttributeValueOf(WEAPON, DAMAGE)).isEqualTo(24);
@@ -272,6 +283,7 @@ class HeroTest extends GameTest {
         softly.assertThat(duilio.getNeededXpForNextLevel()).isEqualTo(2645);
         softly.assertThat(duilio.getCurrentHp()).isEqualTo(122);
         softly.assertThat(duilio.getMaximumHp()).isEqualTo(122);
+        softly.assertThat(duilio.getIntelligence()).isEqualTo(25);
         softly.assertThat(duilio.getStrength()).isEqualTo(25);
         softly.assertThat(duilio.getAttributeValueOf(WEAPON, BASE_HIT)).isEqualTo(60);
         softly.assertThat(duilio.getAttributeValueOf(WEAPON, DAMAGE)).isEqualTo(17);
@@ -283,6 +295,7 @@ class HeroTest extends GameTest {
         softly.assertThat(iellwen.getNeededXpForNextLevel()).isEqualTo(2205);
         softly.assertThat(iellwen.getCurrentHp()).isEqualTo(110);
         softly.assertThat(iellwen.getMaximumHp()).isEqualTo(110);
+        softly.assertThat(iellwen.getIntelligence()).isEqualTo(30);
         softly.assertThat(iellwen.getStrength()).isEqualTo(20);
         softly.assertThat(iellwen.getAttributeValueOf(WEAPON, BASE_HIT)).isEqualTo(60);
         softly.assertThat(iellwen.getAttributeValueOf(WEAPON, DAMAGE)).isEqualTo(17);
@@ -294,6 +307,7 @@ class HeroTest extends GameTest {
         softly.assertThat(faeron.getNeededXpForNextLevel()).isEqualTo(3380);
         softly.assertThat(faeron.getCurrentHp()).isEqualTo(130);
         softly.assertThat(faeron.getMaximumHp()).isEqualTo(130);
+        softly.assertThat(faeron.getIntelligence()).isEqualTo(30);
         softly.assertThat(faeron.getStrength()).isEqualTo(15);
         softly.assertThat(faeron.getAttributeValueOf(WEAPON, BASE_HIT)).isEqualTo(60);
         softly.assertThat(faeron.getAttributeValueOf(WEAPON, DAMAGE)).isEqualTo(24);

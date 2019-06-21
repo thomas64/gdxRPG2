@@ -8,6 +8,7 @@ public enum InventoryAttribute {
 
     SKILL("Skill"),
     WEIGHT("Weight"),
+    MIN_INTELLIGENCE("Min. Intelligence"),
     MIN_STRENGTH("Min. Strength"),
     BASE_HIT("Base Hit"),
     DAMAGE("Damage"),

@@ -7,6 +7,7 @@
       "shield": "basic_light_shield",
       "chest": "basic_medium_chest"
     },
+    "intelligence": 18,
     "strength": 15,
     "endurance": 15,
     "stamina": 30
@@ -19,6 +20,7 @@
       "shield": null,
       "chest": "basic_light_chest"
     },
+    "intelligence": 14,
     "strength": 8,
     "endurance": 10,
     "stamina": 20
@@ -31,6 +33,7 @@
       "shield": "ordinary_light_shield",
       "chest": "ordinary_medium_chest"
     },
+    "intelligence": 10,
     "strength": 20,
     "endurance": 20,
     "stamina": 40
@@ -43,6 +46,7 @@
       "shield": null,
       "chest": "basic_light_chest"
     },
+    "intelligence": 22,
     "strength": 10,
     "endurance": 16,
     "stamina": 31
@@ -55,6 +59,7 @@
       "shield": null,
       "chest": "basic_light_chest"
     },
+    "intelligence": 22,
     "strength": 10,
     "endurance": 15,
     "stamina": 20
@@ -67,6 +72,7 @@
       "shield": "basic_medium_shield",
       "chest": "basic_medium_chest"
     },
+    "intelligence": 15,
     "strength": 25,
     "endurance": 20,
     "stamina": 40
@@ -79,6 +85,7 @@
       "shield": "basic_heavy_shield",
       "chest": "basic_heavy_chest"
     },
+    "intelligence": 6,
     "strength": 30,
     "endurance": 30,
     "stamina": 60
@@ -91,6 +98,7 @@
       "shield": null,
       "chest": "ordinary_light_chest"
     },
+    "intelligence": 15,
     "strength": 15,
     "endurance": 20,
     "stamina": 40
@@ -103,6 +111,7 @@
       "shield": null,
       "chest": "specialist_light_chest"
     },
+    "intelligence": 30,
     "strength": 8,
     "endurance": 18,
     "stamina": 50
@@ -115,6 +124,7 @@
       "shield": null,
       "chest": "ordinary_medium_chest"
     },
+    "intelligence": 30,
     "strength": 20,
     "endurance": 30,
     "stamina": 60
@@ -127,6 +137,7 @@
       "shield": "ordinary_medium_shield",
       "chest": "ordinary_heavy_chest"
     },
+    "intelligence": 30,
     "strength": 25,
     "endurance": 30,
     "stamina": 60
@@ -139,6 +150,7 @@
       "shield": "specialist_light_shield",
       "chest": "specialist_medium_chest"
     },
+    "intelligence": 25,
     "strength": 25,
     "endurance": 25,
     "stamina": 75
@@ -151,6 +163,7 @@
       "shield": null,
       "chest": "specialist_medium_chest"
     },
+    "intelligence": 30,
     "strength": 20,
     "endurance": 30,
     "stamina": 60
@@ -163,6 +176,7 @@
       "shield": null,
       "chest": "masterwork_light_chest"
     },
+    "intelligence": 30,
     "strength": 15,
     "endurance": 25,
     "stamina": 80

@@ -16,6 +16,7 @@ public class HeroItem {
     String name;
     private Level level;
     private PersonalContainer inventory;
+    private Intelligence intelligence;
     private Strength strength;
     private Endurance endurance;
     private Stamina stamina;
@@ -79,8 +80,16 @@ public class HeroItem {
         return inventory.getSumOfProtectionWithShield();
     }
 
+    int getIntelligence() {
+        return intelligence.current + intelligence.bonus;
+    }
+
     int getStrength() {
         return strength.current + strength.bonus;
+    }
+
+    public int getOwnIntelligence() {
+        return intelligence.current;
     }
 
     public int getOwnEndurance() {

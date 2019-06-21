@@ -27,6 +27,8 @@ public class InventoryItem {
     InventoryGroup group;
     WeaponType skill;
     int weight;
+    @JsonProperty("min_intelligence")
+    int minIntelligence;
     @JsonProperty("min_strength")
     int minStrength;
     @JsonProperty("base_hit")
@@ -44,6 +46,7 @@ public class InventoryItem {
         this.group = item.group;
         this.skill = item.skill;
         this.weight = item.weight;
+        this.minIntelligence = item.minIntelligence;
         this.minStrength = item.minStrength;
         this.baseHit = item.baseHit;
         this.damage = item.damage;
@@ -88,6 +91,7 @@ public class InventoryItem {
                 Map.entry(group.title, name),
                 Map.entry(SKILL.title, skill == null ? "0" : skill.title),
                 Map.entry(WEIGHT.title, String.valueOf(weight)),
+                Map.entry(MIN_INTELLIGENCE.title, String.valueOf(minIntelligence)),
                 Map.entry(MIN_STRENGTH.title, String.valueOf(minStrength)),
                 Map.entry(BASE_HIT.title, String.valueOf(baseHit) + "%"),
                 Map.entry(DAMAGE.title, String.valueOf(damage)),
