@@ -69,14 +69,14 @@ class HeroesTable {
 
     private void createFace(HeroItem hero) {
         Stack stack = new Stack();
-        stack.addListener(new HeroesTableSelectListener(DynamicVars::updateHeroIndex, party.getIndex(hero)));
+        stack.addListener(new HeroesTableSelectListener(DynamicVars::updateSelectedHero, hero));
         addPossibleGreyBackgroundTo(stack, hero);
         addFaceImageTo(stack, hero);
         heroes.add(stack);
     }
 
     private void addFaceImageTo(Stack stack, HeroItem hero) {
-        String heroId = party.getHeroId(hero);
+        String heroId = hero.getId();
         Image faceImage = Utils.getFaceImage(heroId);
         stack.add(faceImage);
     }
@@ -84,7 +84,7 @@ class HeroesTable {
     private void createStats(HeroItem hero) {
         Table statsTable = createStatsTable(hero);
         Stack stack = new Stack();
-        stack.addListener(new HeroesTableSelectListener(DynamicVars::updateHeroIndex, party.getIndex(hero)));
+        stack.addListener(new HeroesTableSelectListener(DynamicVars::updateSelectedHero, hero));
         addPossibleGreyBackgroundTo(stack, hero);
         addLabelsTo(statsTable, hero);
         stack.add(statsTable);
@@ -104,7 +104,7 @@ class HeroesTable {
     }
 
     private void addPossibleGreyBackgroundTo(Stack stack, HeroItem hero) {
-        if (party.getIndex(hero) == DynamicVars.heroIndex) {
+        if (hero == DynamicVars.selectedHero) {
             Texture textureGrey = Utils.getResourceManager().getTextureAsset(SPRITE_GREY);
             Image imageGrey = new Image(textureGrey);
             stack.add(imageGrey);

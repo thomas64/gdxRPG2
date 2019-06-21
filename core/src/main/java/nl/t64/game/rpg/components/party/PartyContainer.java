@@ -5,7 +5,6 @@ import nl.t64.game.rpg.constants.Constant;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -16,17 +15,6 @@ public class PartyContainer {
 
     public PartyContainer() {
         this.party = new LinkedHashMap<>(MAXIMUM);
-    }
-
-    public String getHeroId(HeroItem hero) {
-        return party.entrySet()
-                    .stream()
-                    .filter(entry -> Objects.equals(hero, entry.getValue()))
-                    .findFirst()
-                    .map(Map.Entry::getKey)
-                    .orElseThrow(() -> {
-                        throw new IllegalArgumentException(String.format("Hero %s is not in party.", hero.name));
-                    });
     }
 
     public List<String> getAllHeroIds() {
@@ -63,15 +51,14 @@ public class PartyContainer {
         if (isFull()) {
             throw new IllegalStateException("Party is full.");
         }
-        String id = hero.name.toLowerCase();
-        party.put(id, hero);
+        party.put(hero.id, hero);
     }
 
-    public void removeHero(String id) {
-        if (id.equals(Constant.PLAYER_ID)) {
+    public void removeHero(String heroId) {
+        if (heroId.equals(Constant.PLAYER_ID)) {
             throw new IllegalArgumentException("Cannot remove player from party.");
         }
-        party.remove(id);
+        party.remove(heroId);
     }
 
     public boolean isFull() {
@@ -82,6 +69,13 @@ public class PartyContainer {
         return getSize() - 1;
     }
 
+    public boolean contains(HeroItem hero) {
+        if (hero == null) {
+            return false;
+        }
+        return contains(hero.id);
+    }
+
     boolean isHeroLast(HeroItem hero) {
         return getIndex(hero) == getLastIndex();
     }
@@ -90,12 +84,12 @@ public class PartyContainer {
         return party.size();
     }
 
-    HeroItem getHero(String id) {
-        return party.get(id);
+    HeroItem getHero(String heroId) {
+        return party.get(heroId);
     }
 
-    boolean contains(String id) {
-        return party.containsKey(id);
+    boolean contains(String heroId) {
+        return party.containsKey(heroId);
     }
 
 }

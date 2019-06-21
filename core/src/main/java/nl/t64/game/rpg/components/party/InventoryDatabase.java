@@ -31,7 +31,7 @@ public final class InventoryDatabase {
         return instance;
     }
 
-    public InventoryItem getInventoryItem(String id) {
+    public InventoryItem getInventoryItem(String itemId) {
         if (inventoryItems.isEmpty()) {
             try {
                 loadInventoryItems();
@@ -39,9 +39,9 @@ public final class InventoryDatabase {
                 throw new UncheckedIOException(e);
             }
         }
-        InventoryItem item = inventoryItems.get(id);
-        item.setId(id);
-        return new InventoryItem(item);
+        InventoryItem inventoryItem = inventoryItems.get(itemId);
+        inventoryItem.setId(itemId);
+        return new InventoryItem(inventoryItem);
     }
 
     private void loadInventoryItems() throws IOException {

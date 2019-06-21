@@ -38,10 +38,10 @@ public class GlobalContainer {
         return getSize() - 1;
     }
 
-    boolean contains(String id) {
+    boolean contains(String itemId) {
         return inventory.stream()
                         .filter(Objects::nonNull)
-                        .anyMatch(item -> item.hasSameIdAs(id));
+                        .anyMatch(item -> item.hasSameIdAs(itemId));
     }
 
     long getNumberOfFilledSlots() {
@@ -81,10 +81,10 @@ public class GlobalContainer {
         forceSetItemAt(index, newItem);
     }
 
-    private Optional<InventoryItem> getItem(String id) {
+    private Optional<InventoryItem> getItem(String itemId) {
         return inventory.stream()
                         .filter(Objects::nonNull)
-                        .filter(item -> item.hasSameIdAs(id))
+                        .filter(item -> item.hasSameIdAs(itemId))
                         .findFirst();
     }
 

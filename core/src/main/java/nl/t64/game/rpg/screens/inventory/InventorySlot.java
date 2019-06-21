@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.InventoryGroup;
+import nl.t64.game.rpg.components.party.InventoryMessage;
 
 import java.util.Optional;
 
@@ -97,11 +98,23 @@ class InventorySlot extends Stack {
         return (InventoryImage) super.getChildren().items[super.getChildren().size - 2];
     }
 
-    boolean doesAcceptInventoryGroup(InventoryGroup itemGroup) {
+    boolean doesAcceptItem(InventoryImage draggedItem) {
         if (filterGroup.equals(InventoryGroup.EVERYTHING)) {
             return true;
+        }
+        if (filterGroup.equals(draggedItem.inventoryGroup)) {
+            return doesHeroAcceptItem(draggedItem);
+        }
+        return false;
+    }
+
+    private boolean doesHeroAcceptItem(InventoryImage draggedItem) {
+        InventoryMessage isHeroAbleToEquip = DynamicVars.selectedHero.isAbleToEquip(draggedItem.inventoryItem);
+        if (isHeroAbleToEquip.isSuccessful()) {
+            return true;
         } else {
-            return filterGroup.equals(itemGroup);
+            new MessageDialog(isHeroAbleToEquip.getMessage()).show(getStage());
+            return false;
         }
     }
 

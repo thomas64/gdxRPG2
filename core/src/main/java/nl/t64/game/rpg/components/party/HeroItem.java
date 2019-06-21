@@ -13,6 +13,8 @@ import java.util.Optional;
 public class HeroItem {
 
     @Getter
+    String id;
+    @Getter
     String name;
     private Level level;
     private PersonalContainer inventory;
@@ -74,6 +76,19 @@ public class HeroItem {
 
     public void forceSetInventoryItem(InventoryGroup inventoryGroup, InventoryItem inventoryItem) {
         inventory.forceSetInventoryItem(inventoryGroup, inventoryItem);
+    }
+
+    public InventoryMessage isAbleToEquip(InventoryItem inventoryItem) {
+        String message = String.format("%s needs %s %s%nto equip that %s.", name, "%s", "%s", inventoryItem.name);
+        if (inventoryItem.minIntelligence > getOwnIntelligence()) {
+            String intelligenceMessage = String.format(message, inventoryItem.minIntelligence, "Intelligence");
+            return new InventoryMessage(false, intelligenceMessage);
+        }
+        if (inventoryItem.minStrength > getOwnStrength()) {
+            String strengthMessage = String.format(message, inventoryItem.minStrength, "Strength");
+            return new InventoryMessage(false, strengthMessage);
+        }
+        return new InventoryMessage(true, null);
     }
 
     int getProtectionWithShield() {

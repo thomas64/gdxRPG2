@@ -20,7 +20,8 @@ final class InventoryWriter {
     static void storeToGameData() {
         InventoryScreen inventoryScreen = ((InventoryScreen) Utils.getScreenManager().getScreen(ScreenType.INVENTORY));
         Table inventorySlotsTable = inventoryScreen.inventoryUI.inventorySlotsTable.inventorySlots;
-        Table equipSlotsTable = inventoryScreen.inventoryUI.equipSlotsTables.get(DynamicVars.heroIndex).equipSlots;
+        Table equipSlotsTable =
+                inventoryScreen.inventoryUI.equipSlotsTables.get(DynamicVars.selectedHero.getId()).equipSlots;
 
         setGlobalInventory(inventorySlotsTable);
         setPersonalInventory(equipSlotsTable);
@@ -37,9 +38,9 @@ final class InventoryWriter {
 
     private static Consumer<InventoryImage> addItemToGlobalInventory(int index, InventorySlot slot) {
         return inventoryImage -> {
-            InventoryItem item = new InventoryItem(inventoryImage.inventoryItem);
-            item.setAmount(slot.amount);
-            Utils.getGameData().getInventory().forceSetItemAt(index, item);
+            InventoryItem inventoryItem = new InventoryItem(inventoryImage.inventoryItem);
+            inventoryItem.setAmount(slot.amount);
+            Utils.getGameData().getInventory().forceSetItemAt(index, inventoryItem);
         };
     }
 
@@ -48,14 +49,13 @@ final class InventoryWriter {
     }
 
     private static void setPersonalInventory(Table equipSlotsTable) {
-        HeroItem hero = Utils.getGameData().getParty().getHero(DynamicVars.heroIndex);
         for (Actor actor : equipSlotsTable.getChildren()) {
             if (actor instanceof Table) {
                 for (Actor deepActor : ((Table) actor).getChildren()) {
-                    addToPersonalInventory(hero, (InventorySlot) deepActor);
+                    addToPersonalInventory(DynamicVars.selectedHero, (InventorySlot) deepActor);
                 }
             } else {
-                addToPersonalInventory(hero, (InventorySlot) actor);
+                addToPersonalInventory(DynamicVars.selectedHero, (InventorySlot) actor);
             }
         }
     }
@@ -68,8 +68,8 @@ final class InventoryWriter {
 
     private static Consumer<InventoryImage> addItemToPersonalInventory(HeroItem hero, InventorySlot slot) {
         return inventoryImage -> {
-            InventoryItem item = inventoryImage.inventoryItem;
-            hero.forceSetInventoryItem(slot.filterGroup, item);
+            InventoryItem inventoryItem = inventoryImage.inventoryItem;
+            hero.forceSetInventoryItem(slot.filterGroup, inventoryItem);
         };
     }
 

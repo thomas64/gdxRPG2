@@ -32,7 +32,7 @@ class InventorySlotTarget extends Target {
             throw new GdxRuntimeException("");
 //            return; // todo, kan de if weg?
         }
-        if (targetSlot.doesAcceptInventoryGroup(draggedItem.inventoryGroup)) {
+        if (targetSlot.doesAcceptItem(draggedItem)) {
             checkTargetItem(draggedItem, sourceSlot);
             InventoryWriter.storeToGameData();
         } else {
@@ -76,9 +76,11 @@ class InventorySlotTarget extends Target {
         }
     }
 
-    private boolean doTargetAndSourceAcceptEachOther(InventorySlot sourceSlot, InventorySlot targetSlot, InventoryImage draggedItem) {
-        return targetSlot.doesAcceptInventoryGroup(draggedItem.inventoryGroup) &&
-                sourceSlot.doesAcceptInventoryGroup(targetSlot.getCertainInventoryImage().inventoryGroup);
+    private boolean doTargetAndSourceAcceptEachOther(InventorySlot sourceSlot,
+                                                     InventorySlot targetSlot,
+                                                     InventoryImage draggedItem) {
+        return targetSlot.doesAcceptItem(draggedItem) &&
+                sourceSlot.doesAcceptItem(targetSlot.getCertainInventoryImage());
     }
 
 }

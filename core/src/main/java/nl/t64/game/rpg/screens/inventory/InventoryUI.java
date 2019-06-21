@@ -10,10 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.PartyContainer;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 
 class InventoryUI {
@@ -34,7 +35,7 @@ class InventoryUI {
     final Window equipWindow;
     final Window statsWindow;
     final Window heroesWindow;
-    final List<EquipSlotsTable> equipSlotsTables;
+    final Map<String, EquipSlotsTable> equipSlotsTables;
     private final InventorySlotTooltip tooltip;
     private final StatsTable statsTable;
     private final HeroesTable heroesTable;
@@ -46,11 +47,12 @@ class InventoryUI {
         this.inventorySlotsTable = new InventorySlotsTable(dragAndDrop, this.tooltip);
         this.inventoryWindow = createWindow(TITLE_GLOBAL, this.inventorySlotsTable.inventorySlots);
 
-        this.equipSlotsTables = new ArrayList<>(PartyContainer.MAXIMUM);
-        for (int i = 0; i <= Utils.getGameData().getParty().getLastIndex(); i++) {
-            this.equipSlotsTables.add(new EquipSlotsTable(i, dragAndDrop, this.tooltip));
+        this.equipSlotsTables = new HashMap<>(PartyContainer.MAXIMUM);
+        for (HeroItem hero : Utils.getGameData().getParty().getAllHeroes()) {
+            this.equipSlotsTables.put(hero.getId(), new EquipSlotsTable(hero, dragAndDrop, this.tooltip));
         }
-        this.equipWindow = createWindow(TITLE_PERSONAL, this.equipSlotsTables.get(DynamicVars.getHeroIndex()).equipSlots);
+        this.equipWindow = createWindow(TITLE_PERSONAL,
+                                        this.equipSlotsTables.get(DynamicVars.getSelectedHeroId()).equipSlots);
         this.equipWindow.addListener(new EquipWindowListener(DynamicVars::clearHoveredItem));
 
         this.statsTable = new StatsTable();

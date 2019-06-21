@@ -20,7 +20,7 @@ class EquipSlotsTable {
     private static final float EQUIP_SPACING = 10f;
 
     final Table equipSlots;
-    private final int thisHeroIndex;
+    private final HeroItem heroItem;
     private final DragAndDrop dragAndDrop;
     private final InventorySlotTooltip tooltip;
 
@@ -39,8 +39,8 @@ class EquipSlotsTable {
     private final InventorySlot pantsSlot;
     private final InventorySlot bootsSlot;
 
-    EquipSlotsTable(int thisHeroIndex, DragAndDrop dragAndDrop, InventorySlotTooltip tooltip) {
-        this.thisHeroIndex = thisHeroIndex;
+    EquipSlotsTable(HeroItem heroItem, DragAndDrop dragAndDrop, InventorySlotTooltip tooltip) {
+        this.heroItem = heroItem;
         this.dragAndDrop = dragAndDrop;
         this.tooltip = tooltip;
         this.equipSlots = new Table();
@@ -118,22 +118,20 @@ class EquipSlotsTable {
     }
 
     private void addToSlots() {
-        HeroItem hero = Utils.getGameData().getParty().getHero(thisHeroIndex);
-
-        hero.getInventoryItem(HELMET).ifPresent(addToSlot(helmetSlot));
-        hero.getInventoryItem(NECKLACE).ifPresent(addToSlot(necklaceSlot));
-        hero.getInventoryItem(SHOULDERS).ifPresent(addToSlot(shouldersSlot));
-        hero.getInventoryItem(CHEST).ifPresent(addToSlot(chestSlot));
-        hero.getInventoryItem(CLOAK).ifPresent(addToSlot(cloakSlot));
-        hero.getInventoryItem(BRACERS).ifPresent(addToSlot(bracersSlot));
-        hero.getInventoryItem(GLOVES).ifPresent(addToSlot(glovesSlot));
-        hero.getInventoryItem(WEAPON).ifPresent(addToSlot(weaponSlot));
-        hero.getInventoryItem(ACCESSORY).ifPresent(addToSlot(accessorySlot));
-        hero.getInventoryItem(RING).ifPresent(addToSlot(ringSlot));
-        hero.getInventoryItem(SHIELD).ifPresent(addToSlot(shieldSlot));
-        hero.getInventoryItem(BELT).ifPresent(addToSlot(beltSlot));
-        hero.getInventoryItem(PANTS).ifPresent(addToSlot(pantsSlot));
-        hero.getInventoryItem(BOOTS).ifPresent(addToSlot(bootsSlot));
+        heroItem.getInventoryItem(HELMET).ifPresent(addToSlot(helmetSlot));
+        heroItem.getInventoryItem(NECKLACE).ifPresent(addToSlot(necklaceSlot));
+        heroItem.getInventoryItem(SHOULDERS).ifPresent(addToSlot(shouldersSlot));
+        heroItem.getInventoryItem(CHEST).ifPresent(addToSlot(chestSlot));
+        heroItem.getInventoryItem(CLOAK).ifPresent(addToSlot(cloakSlot));
+        heroItem.getInventoryItem(BRACERS).ifPresent(addToSlot(bracersSlot));
+        heroItem.getInventoryItem(GLOVES).ifPresent(addToSlot(glovesSlot));
+        heroItem.getInventoryItem(WEAPON).ifPresent(addToSlot(weaponSlot));
+        heroItem.getInventoryItem(ACCESSORY).ifPresent(addToSlot(accessorySlot));
+        heroItem.getInventoryItem(RING).ifPresent(addToSlot(ringSlot));
+        heroItem.getInventoryItem(SHIELD).ifPresent(addToSlot(shieldSlot));
+        heroItem.getInventoryItem(BELT).ifPresent(addToSlot(beltSlot));
+        heroItem.getInventoryItem(PANTS).ifPresent(addToSlot(pantsSlot));
+        heroItem.getInventoryItem(BOOTS).ifPresent(addToSlot(bootsSlot));
     }
 
     private void fillTable() {

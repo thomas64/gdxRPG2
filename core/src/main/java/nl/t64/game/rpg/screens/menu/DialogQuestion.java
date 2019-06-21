@@ -36,7 +36,7 @@ class DialogQuestion {
     private final long dialogHeight;
 
     private final BitmapFont menuFont;
-    private Dialog dialog;
+    private final Dialog dialog;
     private TextButton yesButton;
     private TextButton noButton;
 

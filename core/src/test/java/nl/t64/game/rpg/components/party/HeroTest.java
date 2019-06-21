@@ -28,15 +28,15 @@ class HeroTest extends GameTest {
         party = gameData.getParty();
     }
 
-    private void addHeroToParty(String id) {
-        HeroItem hero = heroes.getHero(id);
-        heroes.removeHero(id);
+    private void addHeroToParty(String heroId) {
+        HeroItem hero = heroes.getHero(heroId);
+        heroes.removeHero(heroId);
         party.addHero(hero);
     }
 
-    private void removeHeroFromParty(String id) {
-        HeroItem hero = party.getHero(id);
-        party.removeHero(id);
+    private void removeHeroFromParty(String heroId) {
+        HeroItem hero = party.getHero(heroId);
+        party.removeHero(heroId);
         heroes.addHero(hero);
     }
 
@@ -56,6 +56,17 @@ class HeroTest extends GameTest {
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> removeHeroFromParty(Constant.PLAYER_ID))
                 .withMessage("Cannot remove player from party.");
+    }
+
+    @Test
+    void whenHeroIsAddedToParty_ShouldBeLastInParty() {
+        final HeroItem mozes = party.getHero("mozes");
+        assertThat(party.isHeroLast(mozes)).isTrue();
+
+        final String luana = "luana";
+        addHeroToParty(luana);
+        assertThat(party.isHeroLast(mozes)).isFalse();
+        assertThat(party.isHeroLast(party.getHero(luana))).isTrue();
     }
 
     @Test
@@ -112,32 +123,54 @@ class HeroTest extends GameTest {
 
     @Test
     void whenImpossibleItemIsForceSet_ShouldOverwriteExistingItem() {
-        HeroItem mozes = party.getHero("mozes");
+        final HeroItem mozes = party.getHero("mozes");
         assertThat(mozes.getInventoryItem(WEAPON)).get().hasFieldOrPropertyWithValue("id", "basic_shortsword");
 
-        InventoryItem newWeapon = InventoryDatabase.getInstance().getInventoryItem("masterwork_lance");
+        final InventoryItem newWeapon = InventoryDatabase.getInstance().getInventoryItem("masterwork_lance");
         mozes.forceSetInventoryItem(WEAPON, newWeapon);
         assertThat(mozes.getInventoryItem(WEAPON)).get().hasFieldOrPropertyWithValue("id", "masterwork_lance");
     }
 
     @Test
+    void whenImpossibleItemIsChecked_ShouldGetMessage() {
+        final HeroItem mozes = party.getHero("mozes");
+
+        final InventoryItem legendaryStaff = InventoryDatabase.getInstance().getInventoryItem("legendary_staff");
+        final InventoryMessage message1 = mozes.isAbleToEquip(legendaryStaff);
+        assertThat(message1.isSuccessful()).isFalse();
+        assertThat(message1.getMessage()).isEqualToIgnoringNewLines("Mozes needs 30 Intelligence\nto equip that Legendary Staff.");
+
+        final InventoryItem masterworkLance = InventoryDatabase.getInstance().getInventoryItem("masterwork_lance");
+        final InventoryMessage message2 = mozes.isAbleToEquip(masterworkLance);
+        assertThat(message2.isSuccessful()).isFalse();
+        assertThat(message2.getMessage()).isEqualToIgnoringNewLines("Mozes needs 20 Strength\nto equip that Masterwork Lance.");
+
+        final InventoryItem basicDagger = InventoryDatabase.getInstance().getInventoryItem("basic_dagger");
+        final InventoryMessage message3 = mozes.isAbleToEquip(basicDagger);
+        assertThat(message3.isSuccessful()).isTrue();
+        assertThat(message3.getMessage()).isNull();
+    }
+
+    @Test
     void whenHeroesAreCreated_ShouldHaveRightStats() {
-        HeroItem mozes = party.getHero("mozes");
-        HeroItem luana = heroes.getHero("luana");
-        HeroItem reignald = heroes.getHero("reignald");
-        HeroItem ryiah = heroes.getHero("ryiah");
-        HeroItem valter = heroes.getHero("valter");
-        HeroItem galen = heroes.getHero("galen");
-        HeroItem jaspar = heroes.getHero("jaspar");
-        HeroItem kiara = heroes.getHero("kiara");
-        HeroItem luthais = heroes.getHero("luthais");
-        HeroItem elias = heroes.getHero("elias");
-        HeroItem onarr = heroes.getHero("onarr");
-        HeroItem duilio = heroes.getHero("duilio");
-        HeroItem iellwen = heroes.getHero("iellwen");
-        HeroItem faeron = heroes.getHero("faeron");
+        final HeroItem mozes = party.getHero("mozes");
+        final HeroItem luana = heroes.getHero("luana");
+        final HeroItem reignald = heroes.getHero("reignald");
+        final HeroItem ryiah = heroes.getHero("ryiah");
+        final HeroItem valter = heroes.getHero("valter");
+        final HeroItem galen = heroes.getHero("galen");
+        final HeroItem jaspar = heroes.getHero("jaspar");
+        final HeroItem kiara = heroes.getHero("kiara");
+        final HeroItem luthais = heroes.getHero("luthais");
+        final HeroItem elias = heroes.getHero("elias");
+        final HeroItem onarr = heroes.getHero("onarr");
+        final HeroItem duilio = heroes.getHero("duilio");
+        final HeroItem iellwen = heroes.getHero("iellwen");
+        final HeroItem faeron = heroes.getHero("faeron");
 
         SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(party.contains(mozes)).isTrue();
+
         softly.assertThat(mozes.getLevel()).isEqualTo(1);
         softly.assertThat(mozes.getTotalXp()).isEqualTo(5);
         softly.assertThat(mozes.getNeededXpForNextLevel()).isEqualTo(20);

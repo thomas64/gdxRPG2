@@ -24,23 +24,23 @@ public class HeroContainer {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+        this.heroes.forEach((heroId, hero) -> hero.setId(heroId));
     }
 
     public void addHero(HeroItem hero) {
-        String id = hero.name.toLowerCase();
-        heroes.put(id, hero);
+        heroes.put(hero.id, hero);
     }
 
-    public void removeHero(String id) {
-        heroes.remove(id);
+    public void removeHero(String heroId) {
+        heroes.remove(heroId);
     }
 
-    public HeroItem getHero(String id) {
-        return heroes.get(id);
+    public HeroItem getHero(String heroId) {
+        return heroes.get(heroId);
     }
 
-    public boolean contains(String id) {
-        return heroes.containsKey(id);
+    public boolean contains(String heroId) {
+        return heroes.containsKey(heroId);
     }
 
     int getSize() {

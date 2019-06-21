@@ -59,11 +59,11 @@ class StatsTable {
     }
 
     void render() {
-        HeroItem hero = Utils.getGameData().getParty().getHero(DynamicVars.heroIndex);
+        HeroItem selectedHero = DynamicVars.selectedHero;
         stats.clear();
 
         stats.add("Intelligence");
-        stats.add(String.valueOf(hero.getOwnIntelligence()));
+        stats.add(String.valueOf(selectedHero.getOwnIntelligence()));
         stats.add("");
         stats.add("").row();
         stats.add("Willpower");
@@ -79,29 +79,29 @@ class StatsTable {
         stats.add("");
         stats.add("").row();
         stats.add("Endurance");
-        stats.add(String.valueOf(hero.getOwnEndurance()));
+        stats.add(String.valueOf(selectedHero.getOwnEndurance()));
         stats.add("");
         stats.add("").row();
         stats.add("Strength");
-        stats.add(String.valueOf(hero.getOwnStrength()));
+        stats.add(String.valueOf(selectedHero.getOwnStrength()));
         stats.add("");
         stats.add("").row();
         stats.add("Stamina");
-        stats.add(String.valueOf(hero.getOwnStamina()));
+        stats.add(String.valueOf(selectedHero.getOwnStamina()));
         stats.add("");
         stats.add("").row();
         stats.add("").row();
 
         stats.add("XP Remaining");
-        stats.add(String.valueOf(hero.getXpRemaining()));
+        stats.add(String.valueOf(selectedHero.getXpRemaining()));
         stats.add("");
         stats.add("").row();
         stats.add("Total XP");
-        stats.add(String.valueOf(hero.getTotalXp()));
+        stats.add(String.valueOf(selectedHero.getTotalXp()));
         stats.add("");
         stats.add("").row();
         stats.add("Next Level");
-        stats.add(String.valueOf(hero.getNeededXpForNextLevel())); // todo, is dit de juiste van de 2 methodes?
+        stats.add(String.valueOf(selectedHero.getNeededXpForNextLevel())); // todo, is dit de juiste van de 2 methodes?
         stats.add("");
         stats.add("").row();
         stats.add("").row();
@@ -115,30 +115,30 @@ class StatsTable {
         stats.add("");
         stats.add("").row();
         stats.add("Base Hit");
-        stats.add(String.valueOf(hero.getAttributeValueOf(WEAPON, BASE_HIT) + "%"));
+        stats.add(String.valueOf(selectedHero.getAttributeValueOf(WEAPON, BASE_HIT) + "%"));
         stats.add("");
-        createPreview(BASE_HIT, hero);
+        createPreview(BASE_HIT, selectedHero);
         stats.add("Damage");
-        stats.add(String.valueOf(hero.getAttributeValueOf(WEAPON, DAMAGE)));
+        stats.add(String.valueOf(selectedHero.getAttributeValueOf(WEAPON, DAMAGE)));
         stats.add("");
-        createPreview(DAMAGE, hero);
+        createPreview(DAMAGE, selectedHero);
         stats.add("Protection");
         stats.add("?");
         stats.add("");
         stats.add("").row();
         stats.add("Defense");
-        stats.add(String.valueOf(hero.getAttributeValueOf(SHIELD, DEFENSE)));
+        stats.add(String.valueOf(selectedHero.getAttributeValueOf(SHIELD, DEFENSE)));
         stats.add("");
-        createPreview(DEFENSE, hero);
+        createPreview(DEFENSE, selectedHero);
     }
 
-    private void createPreview(InventoryAttribute attribute, HeroItem hero) {
+    private void createPreview(InventoryAttribute attribute, HeroItem selectedHero) {
         InventoryItem hoveredItem = DynamicVars.hoveredItem;
 
         if (hoveredItem == null) {
             stats.add("").row();
         } else {
-            int equippedValue = hero.getAttributeValueOf(hoveredItem.getGroup(), attribute);
+            int equippedValue = selectedHero.getAttributeValueOf(hoveredItem.getGroup(), attribute);
             int hoveredValue = hoveredItem.getAttribute(attribute);
             int difference = hoveredValue - equippedValue;
             if (difference > 0) {
