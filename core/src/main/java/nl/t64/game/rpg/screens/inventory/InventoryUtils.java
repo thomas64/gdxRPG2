@@ -11,6 +11,7 @@ final class InventoryUtils {
 
     static HeroItem selectedHero = null;
     static InventoryItem hoveredItem = null;
+    static boolean shiftPressed = false;
 
     private InventoryUtils() {
         throw new IllegalStateException("InventoryUtils class");

@@ -20,9 +20,19 @@ class InventoryScreenListener extends InputListener {
             case Input.Keys.ESCAPE:
                 closeScreenFunction.run();
                 break;
+            case Input.Keys.SHIFT_LEFT:
+            case Input.Keys.SHIFT_RIGHT:
+                InventoryUtils.shiftPressed = true;
+                break;
             default:
                 break;
         }
+        return true;
+    }
+
+    @Override
+    public boolean keyUp(InputEvent event, int keycode) {
+        InventoryUtils.shiftPressed = false;
         return true;
     }
 

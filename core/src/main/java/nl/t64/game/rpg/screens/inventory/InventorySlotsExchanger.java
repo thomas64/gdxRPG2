@@ -20,31 +20,36 @@ class InventorySlotsExchanger {
 //            return; // todo, kan de if weg?
         }
         if (targetSlot.doesAcceptItem(draggedItem)) {
-            checkTargetItem(draggedItem, sourceSlot);
+            checkTargetItem();
             InventoryWriter.storeToGameData();
         } else {
             sourceSlot.putItemBack(draggedItem);
         }
     }
 
-    private void checkTargetItem(InventoryImage draggedItem, InventorySlot sourceSlot) {
+    private void checkTargetItem() {
         Optional<InventoryImage> possibleItemAtTarget = targetSlot.getPossibleInventoryImage();
-        possibleItemAtTarget.ifPresentOrElse(checkForSameItemAndStackable(draggedItem, sourceSlot),
-                                             () -> targetSlot.putItemInEmptySlot(draggedItem));
+        possibleItemAtTarget.ifPresentOrElse(checkForSameItemAndStackable(),
+                                             this::putItemInEmptySlot);
     }
 
-    private Consumer<InventoryImage> checkForSameItemAndStackable(InventoryImage draggedItem, InventorySlot sourceSlot) {
+    private Consumer<InventoryImage> checkForSameItemAndStackable() {
         return itemAtTarget -> {
-            if (draggedItem.isSameItemAs(itemAtTarget) && draggedItem.isStackable()) {
+            if (InventoryUtils.shiftPressed
+                    && draggedItem.isSameItemAs(itemAtTarget)
+                    && draggedItem.isStackable()) {
+                dragAllItemsToFilledSlot();
+            } else if (draggedItem.isSameItemAs(itemAtTarget)
+                    && draggedItem.isStackable()) {
                 targetSlot.incrementAmount();
             } else {
-                swapStacks(sourceSlot, targetSlot, draggedItem);
+                swapStacks();
             }
         };
     }
 
-    private void swapStacks(InventorySlot sourceSlot, InventorySlot targetSlot, InventoryImage draggedItem) {
-        if (doTargetAndSourceAcceptEachOther(sourceSlot, targetSlot, draggedItem)) {
+    private void swapStacks() {
+        if (doTargetAndSourceAcceptEachOther()) {
             InventoryImage sourceImage = sourceSlot.getPossibleInventoryImage().orElse(draggedItem);
             int sourceAmount = sourceSlot.amount + 1;
             InventoryImage targetImage = targetSlot.getCertainInventoryImage();
@@ -62,9 +67,29 @@ class InventorySlotsExchanger {
         }
     }
 
-    private boolean doTargetAndSourceAcceptEachOther(InventorySlot sourceSlot,
-                                                     InventorySlot targetSlot,
-                                                     InventoryImage draggedItem) {
+    private void putItemInEmptySlot() {
+        if (InventoryUtils.shiftPressed
+                && draggedItem.isStackable()
+                && sourceSlot.amount >= 1) {
+            dragAllItemsToEmptySlot();
+        } else {
+            targetSlot.putItemInEmptySlot(draggedItem);
+        }
+    }
+
+    private void dragAllItemsToEmptySlot() {
+        targetSlot.amount = sourceSlot.amount + 1;
+        targetSlot.addToStack(draggedItem);
+        sourceSlot.clearStack();
+    }
+
+    private void dragAllItemsToFilledSlot() {
+        targetSlot.amount = targetSlot.amount + sourceSlot.amount;
+        targetSlot.incrementAmount();
+        sourceSlot.clearStack();
+    }
+
+    private boolean doTargetAndSourceAcceptEachOther() {
         return targetSlot.doesAcceptItem(draggedItem) &&
                 sourceSlot.doesAcceptItem(targetSlot.getCertainInventoryImage());
     }

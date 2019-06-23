@@ -85,6 +85,7 @@ class InventorySlot extends Stack {
             super.getChildren().removeIndex(1);
         }
         amount = 0;
+        refreshSlot();
     }
 
     Optional<InventoryImage> getPossibleInventoryImage() {
