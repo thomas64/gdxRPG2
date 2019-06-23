@@ -21,9 +21,9 @@ class PartyWindow {
 
     private static final String FONT_PATH = "fonts/spectral.ttf";
     private static final String FONT_BIG_PATH = "fonts/spectral_big.ttf";
-    private static final Color TRANSPARENT_BLACK = new Color(0f, 0f, 0f, 0.7f);
-    private static final Color TRANSPARENT_WHITE = new Color(1f, 1f, 1f, 0.2f);
-    private static final Color TRANSPARENT_FACES = new Color(1f, 1f, 1f, 0.6f);
+    private static final Color TRANSPARENT_BLACK = new Color(0f, 0f, 0f, 0.8f);
+    private static final Color TRANSPARENT_WHITE = new Color(1f, 1f, 1f, 0.3f);
+    private static final Color TRANSPARENT_FACES = new Color(1f, 1f, 1f, 0.7f);
 
     private static final int FONT_BIG_SIZE = 28;
     private static final int FONT_SIZE = 20;
@@ -134,18 +134,21 @@ class PartyWindow {
     }
 
     private void renderTable() {
-        party = Utils.getGameData().getParty();
+        party = Utils.getGameData().getParty(); // todo, hij hoeft de party niet bij elke fps op te halen.
         table.clear();
         renderBackgrounds();
         renderSquares();
-        renderHorizontalLines();
-        renderFaces();
-        renderNames();
-        renderLevelLabels();
-        renderHpLabels();
-        renderHpBars();
-        renderXpLabels();
-        renderXpBars();
+        IntStream.range(0, party.getSize())
+                 .forEach(i -> {
+                     renderHorizontalLine(i);
+                     renderFace(i);
+                     renderName(i);
+                     renderLevelLabel(i);
+                     renderHpLabel(i);
+                     renderHpBar(i);
+                     renderXpLabel(i);
+                     renderXpBar(i);
+                 });
     }
 
     private void renderBackgrounds() {
@@ -153,7 +156,7 @@ class PartyWindow {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(TRANSPARENT_WHITE);
-        IntStream.rangeClosed(0, party.getLastIndex())
+        IntStream.range(0, party.getSize())
                  .forEach(i -> shapeRenderer.rect(table.getX() + (i * FACE_SIZE) + (i * PADDING),
                                                   yPos + PADDING,
                                                   FACE_SIZE,
@@ -165,7 +168,7 @@ class PartyWindow {
     private void renderSquares() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(TRANSPARENT_BLACK);
-        IntStream.rangeClosed(0, PartyContainer.MAXIMUM - 1)
+        IntStream.range(0, PartyContainer.MAXIMUM)
                  .forEach(i -> shapeRenderer.rect(table.getX() + (i * FACE_SIZE) + (i * PADDING),
                                                   yPos + PADDING,
                                                   FACE_SIZE,
@@ -173,98 +176,78 @@ class PartyWindow {
         shapeRenderer.end();
     }
 
-    private void renderHorizontalLines() {
+    private void renderHorizontalLine(int i) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(TRANSPARENT_BLACK);
-        IntStream.rangeClosed(0, party.getLastIndex())
-                 .forEach(i -> shapeRenderer.line(table.getX() + (i * FACE_SIZE) + (i * PADDING),
-                                                  yPos + FACE_Y,
-                                                  table.getX() + (i * FACE_SIZE) + (i * PADDING) + FACE_SIZE,
-                                                  yPos + FACE_Y));
+        shapeRenderer.line(table.getX() + (i * FACE_SIZE) + (i * PADDING),
+                           yPos + FACE_Y,
+                           table.getX() + (i * FACE_SIZE) + (i * PADDING) + FACE_SIZE,
+                           yPos + FACE_Y);
         shapeRenderer.end();
     }
 
-    private void renderFaces() {
-        int i = 0;
-        for (String heroId : party.getAllHeroIds()) {
-            Image image = Utils.getFaceImage(heroId);
-            image.setColor(TRANSPARENT_FACES);
-            image.setPosition((i * FACE_SIZE) + (i * PADDING), yPos + FACE_Y);
-            table.addActor(image);
-            i++;
-        }
+    private void renderFace(int i) {
+        String heroId = party.getHero(i).getId();
+        Image image = Utils.getFaceImage(heroId);
+        image.setColor(TRANSPARENT_FACES);
+        image.setPosition((i * FACE_SIZE) + (i * PADDING), yPos + FACE_Y);
+        table.addActor(image);
     }
 
-    private void renderNames() {
+    private void renderName(int i) {
         var labelStyle = new Label.LabelStyle(fontBig, TRANSPARENT_BLACK);
-        int i = 0;
-        for (String heroName : party.getAllHeroNames()) {
-            var heroLabel = new Label(heroName, labelStyle);
-            heroLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
-                                  yPos + FACE_Y - PADDING_NAME);
-            table.addActor(heroLabel);
-            i++;
-        }
+        String heroName = party.getHero(i).getName();
+        var heroLabel = new Label(heroName, labelStyle);
+        heroLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
+                              yPos + FACE_Y - PADDING_NAME);
+        table.addActor(heroLabel);
     }
 
-    private void renderLevelLabels() {
+    private void renderLevelLabel(int i) {
         var labelStyle = new Label.LabelStyle(font, TRANSPARENT_BLACK);
-        int i = 0;
-        for (Integer level : party.getAllHeroLevels()) {
-            var levelLabel = new Label("Level: " + level.toString(), labelStyle);
-            levelLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
-                                   yPos + FACE_Y - (1f * LINE_HEIGHT) - PADDING_LEVEL);
-            table.addActor(levelLabel);
-            i++;
-        }
+        int heroLevel = party.getHero(i).getLevel();
+        var levelLabel = new Label("Level: " + heroLevel, labelStyle);
+        levelLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
+                               yPos + FACE_Y - (1f * LINE_HEIGHT) - PADDING_LEVEL);
+        table.addActor(levelLabel);
     }
 
-    private void renderHpLabels() {
+    private void renderHpLabel(int i) {
         var labelStyle = new Label.LabelStyle(font, TRANSPARENT_BLACK);
-        IntStream.rangeClosed(0, party.getLastIndex())
-                 .forEach(i -> {
-                     var hpLabel = new Label("HP: ", labelStyle);
-                     hpLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
-                                         yPos + FACE_Y - (2f * LINE_HEIGHT) - PADDING_LINE);
-                     table.addActor(hpLabel);
-                 });
+        var hpLabel = new Label("HP: ", labelStyle);
+        hpLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
+                            yPos + FACE_Y - (2f * LINE_HEIGHT) - PADDING_LINE);
+        table.addActor(hpLabel);
     }
 
-    private void renderHpBars() {
+    private void renderHpBar(int i) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        int i = 0;
-        for (HeroItem hero : party.getAllHeroes()) {
-            Map<String, Integer> hpStats = hero.getAllHpStats();
-            Color color = Utils.getHpColor(hpStats);
-            shapeRenderer.setColor(color);
-            float barWidth = (BAR_WIDTH / hero.getMaximumHp()) * hero.getCurrentHp();
-            renderBar(i, 2f, barWidth);
-            i++;
-        }
+        HeroItem hero = party.getHero(i);
+        Map<String, Integer> hpStats = hero.getAllHpStats();
+        Color color = Utils.getHpColor(hpStats);
+        shapeRenderer.setColor(color);
+        float barWidth = (BAR_WIDTH / hero.getMaximumHp()) * hero.getCurrentHp();
+        renderBar(i, 2f, barWidth);
         shapeRenderer.end();
 
-        renderBarOutline(2f);
+        renderBarOutline(i, 2f);
     }
 
-    private void renderXpLabels() {
+    private void renderXpLabel(int i) {
         var labelStyle = new Label.LabelStyle(font, TRANSPARENT_BLACK);
-        IntStream.rangeClosed(0, party.getLastIndex())
-                 .forEach(i -> {
-                     var xpLabel = new Label("XP: ", labelStyle);
-                     xpLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
-                                         yPos + FACE_Y - (3f * LINE_HEIGHT) - PADDING_LINE);
-                     table.addActor(xpLabel);
-                 });
+        var xpLabel = new Label("XP: ", labelStyle);
+        xpLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
+                            yPos + FACE_Y - (3f * LINE_HEIGHT) - PADDING_LINE);
+        table.addActor(xpLabel);
     }
 
-    private void renderXpBars() {
+    private void renderXpBar(int i) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.TAN);
-        IntStream.rangeClosed(0, party.getLastIndex())
-                 .forEach(i -> renderBar(i, 3f, calculateXpBarWidth(i)));
+        renderBar(i, 3f, calculateXpBarWidth(i));
         shapeRenderer.end();
 
-        renderBarOutline(3f);
+        renderBarOutline(i, 3f);
     }
 
     private float calculateXpBarWidth(int i) {
@@ -274,11 +257,10 @@ class PartyWindow {
         return (BAR_WIDTH / maxXp) * currentXp;
     }
 
-    private void renderBarOutline(float linePosition) {
+    private void renderBarOutline(int i, float linePosition) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(TRANSPARENT_BLACK);
-        IntStream.rangeClosed(0, party.getLastIndex())
-                 .forEach(i -> renderBar(i, linePosition, BAR_WIDTH));
+        renderBar(i, linePosition, BAR_WIDTH);
         shapeRenderer.end();
     }
 

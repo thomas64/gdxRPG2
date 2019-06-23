@@ -109,7 +109,7 @@ class InventorySlot extends Stack {
     }
 
     private boolean doesHeroAcceptItem(InventoryImage draggedItem) {
-        InventoryMessage isHeroAbleToEquip = DynamicVars.selectedHero.isAbleToEquip(draggedItem.inventoryItem);
+        InventoryMessage isHeroAbleToEquip = InventoryUtils.selectedHero.isAbleToEquip(draggedItem.inventoryItem);
         if (isHeroAbleToEquip.isSuccessful()) {
             return true;
         } else {

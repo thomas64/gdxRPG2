@@ -10,9 +10,17 @@ import java.util.function.Consumer;
 class InventorySlotPreviewListener extends ClickListener {
 
     private final Consumer<InventorySlot> functionToExecute;
+    private boolean touchDown;
 
     InventorySlotPreviewListener(Consumer<InventorySlot> functionToExecute) {
         this.functionToExecute = functionToExecute;
+        this.touchDown = false;
+    }
+
+    @Override
+    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+        touchDown = true;
+        return true;
     }
 
     @Override
@@ -23,7 +31,10 @@ class InventorySlotPreviewListener extends ClickListener {
 
     @Override
     public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-        functionToExecute.accept(new InventorySlot());
+        if (!touchDown) {
+            functionToExecute.accept(new InventorySlot());
+        }
+        touchDown = false;
     }
 
 }

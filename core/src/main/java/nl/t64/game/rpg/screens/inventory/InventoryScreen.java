@@ -123,6 +123,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
 
     @Override
     public void dispose() {
+        // todo, de buttons bewaren hun mouse-over state op de een of andere vage manier.
         stage.clear();
         stage.dispose();
     }
@@ -174,9 +175,11 @@ public class InventoryScreen implements Screen, ProfileObserver {
     }
 
     private ImageButton createImageButton(String up, String over, String down) {
-        var button = new ImageButton(createDrawable(up), createDrawable(down));
-        button.getStyle().imageOver = createDrawable(over);
-        return button;
+        var buttonStyle = new ImageButton.ImageButtonStyle();
+        buttonStyle.up = createDrawable(up);
+        buttonStyle.down = createDrawable(down);
+        buttonStyle.over = createDrawable(over);
+        return new ImageButton(buttonStyle);
     }
 
     private NinePatchDrawable createDrawable(String atlasId) {

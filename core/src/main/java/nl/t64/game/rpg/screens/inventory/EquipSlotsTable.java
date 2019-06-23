@@ -1,13 +1,16 @@
 package nl.t64.game.rpg.screens.inventory;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
+import nl.t64.game.rpg.components.party.InventoryGroup;
 import nl.t64.game.rpg.components.party.InventoryItem;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import static nl.t64.game.rpg.components.party.InventoryGroup.*;
@@ -67,6 +70,25 @@ class EquipSlotsTable {
         this.createTable();
     }
 
+    Optional<InventorySlot> getPossibleSlotOfGroup(InventoryGroup inventoryGroup) {
+        for (Actor actor : equipSlots.getChildren()) {
+            if (actor instanceof Table) {
+                for (Actor deepActor : ((Table) actor).getChildren()) {
+                    InventorySlot slot = (InventorySlot) deepActor;
+                    if (slot.filterGroup.equals(inventoryGroup)) {
+                        return Optional.of(slot);
+                    }
+                }
+            } else {
+                InventorySlot slot = (InventorySlot) actor;
+                if (slot.filterGroup.equals(inventoryGroup)) {
+                    return Optional.of(slot);
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
     private void createTable() {
         setDefaults();
         addListeners();
@@ -98,6 +120,21 @@ class EquipSlotsTable {
         beltSlot.addListener(new InventorySlotTooltipListener(tooltip));
         pantsSlot.addListener(new InventorySlotTooltipListener(tooltip));
         bootsSlot.addListener(new InventorySlotTooltipListener(tooltip));
+
+        helmetSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
+        necklaceSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
+        shouldersSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
+        chestSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
+        cloakSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
+        bracersSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
+        glovesSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
+        weaponSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
+        accessorySlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
+        ringSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
+        shieldSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
+        beltSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
+        pantsSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
+        bootsSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
     }
 
     private void addTargets() {

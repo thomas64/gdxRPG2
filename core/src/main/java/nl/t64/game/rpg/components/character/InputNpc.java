@@ -73,7 +73,7 @@ public class InputNpc extends InputComponent {
         Vector2 npcPosition = event.npcPosition;
         Vector2 playerPosition = event.playerPosition;
         stateTime = DEFAULT_STATE_TIME;
-        if (state == CharacterState.WALKING) {
+        if (state.equals(CharacterState.WALKING)) {
             state = CharacterState.IDLE;
         }
         turnToPlayer(npcPosition, playerPosition);

@@ -59,7 +59,7 @@ class StatsTable {
     }
 
     void render() {
-        HeroItem selectedHero = DynamicVars.selectedHero;
+        HeroItem selectedHero = InventoryUtils.selectedHero;
         stats.clear();
 
         stats.add("Intelligence");
@@ -133,7 +133,7 @@ class StatsTable {
     }
 
     private void createPreview(InventoryAttribute attribute, HeroItem selectedHero) {
-        InventoryItem hoveredItem = DynamicVars.hoveredItem;
+        InventoryItem hoveredItem = InventoryUtils.hoveredItem;
 
         if (hoveredItem == null) {
             stats.add("").row();

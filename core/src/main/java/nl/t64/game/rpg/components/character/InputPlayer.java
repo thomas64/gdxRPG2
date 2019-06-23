@@ -279,19 +279,19 @@ public class InputPlayer extends InputComponent implements InputProcessor {
     }
 
     private boolean pressUpButDirectionisNotYetNorth() {
-        return pressUp && direction != Direction.NORTH;
+        return pressUp && !direction.equals(Direction.NORTH);
     }
 
     private boolean pressDownButDirectionIsNotYetSouth() {
-        return pressDown && direction != Direction.SOUTH;
+        return pressDown && !direction.equals(Direction.SOUTH);
     }
 
     private boolean pressLeftButDirectionIsNotYetWest() {
-        return pressLeft && direction != Direction.WEST;
+        return pressLeft && !direction.equals(Direction.WEST);
     }
 
     private boolean pressRightButDirectionIsNotYetEast() {
-        return pressRight && direction != Direction.EAST;
+        return pressRight && !direction.equals(Direction.EAST);
     }
 
     private boolean timeRightIsLess() {

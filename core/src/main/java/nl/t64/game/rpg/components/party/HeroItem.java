@@ -2,7 +2,6 @@ package nl.t64.game.rpg.components.party;
 
 import lombok.Getter;
 import lombok.Setter;
-import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.InventoryAttribute;
 
 import java.util.Map;
@@ -23,8 +22,8 @@ public class HeroItem {
     private Endurance endurance;
     private Stamina stamina;
 
-    public boolean isLastInParty() {
-        return Utils.getGameData().getParty().isHeroLast(this);
+    public boolean equalsHero(HeroItem otherHero) {
+        return id.equals(otherHero.id);
     }
 
     public int getNeededXpForNextLevel() {

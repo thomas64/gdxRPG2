@@ -83,7 +83,7 @@ public class MenuSettings extends MenuScreen {
     }
 
     private void processBackButton() {
-        if (fromScreen == ScreenType.MENU_PAUSE) {
+        if (fromScreen.equals(ScreenType.MENU_PAUSE)) {
             var menuPause = Utils.getScreenManager().getMenuScreen(fromScreen);
             menuPause.setBackground(screenshot);
         }

@@ -96,22 +96,22 @@ public class PhysicsPlayer extends PhysicsComponent {
     }
 
     private void relocate(float dt) {
-        if (state == CharacterState.WALKING) {
+        if (state.equals(CharacterState.WALKING)) {
             move(dt);
         }
-        if (state == CharacterState.ALIGNING) {
+        if (state.equals(CharacterState.ALIGNING)) {
             alignToGrid();
         }
     }
 
     private void checkObstacles(float dt) {
-        if (state == CharacterState.WALKING) {
+        if (state.equals(CharacterState.WALKING)) {
             if (velocity != Constant.MOVE_SPEED_4) {
                 turnCharacters();
                 checkBlocker(dt);
             }
             checkPortals();
-        } else if (state == CharacterState.IDLE) {
+        } else if (state.equals(CharacterState.IDLE)) {
             turnCharacters();
         }
     }
@@ -153,7 +153,7 @@ public class PhysicsPlayer extends PhysicsComponent {
     }
 
     private Predicate<Character> stateIsNotImmobile() {
-        return npcCharacter -> npcCharacter.getState() != CharacterState.IMMOBILE;
+        return npcCharacter -> !npcCharacter.getState().equals(CharacterState.IMMOBILE);
     }
 
     private void possibleMoveSide(List<Rectangle> copyBlockers, List<Rectangle> copyWalkingBlockers, float dt) {
@@ -211,10 +211,10 @@ public class PhysicsPlayer extends PhysicsComponent {
     }
 
     private void moveSide(Rectangle blocker, float dt) {
-        if (direction == Direction.NORTH || direction == Direction.SOUTH) {
+        if (direction.equals(Direction.NORTH) || direction.equals(Direction.SOUTH)) {
             playerIsEastOf(blocker, dt);
             playerIsWestOf(blocker, dt);
-        } else if (direction == Direction.WEST || direction == Direction.EAST) {
+        } else if (direction.equals(Direction.WEST) || direction.equals(Direction.EAST)) {
             playerIsSouthOf(blocker, dt);
             playerIsNorthOf(blocker, dt);
         }

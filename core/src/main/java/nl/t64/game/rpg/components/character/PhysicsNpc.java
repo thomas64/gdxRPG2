@@ -60,13 +60,13 @@ public class PhysicsNpc extends PhysicsComponent {
     }
 
     private void relocate(float dt) {
-        if (state == CharacterState.WALKING) {
+        if (state.equals(CharacterState.WALKING)) {
             move(dt);
         }
     }
 
     private void checkObstacles(Character thisNpcCharacter) {
-        if (state == CharacterState.WALKING) {
+        if (state.equals(CharacterState.WALKING)) {
             boolean moveBack1 = checkWanderBox();
             boolean moveBack2 = checkBlocker();
             boolean moveBack3 = checkOtherCharacters(thisNpcCharacter);
@@ -110,7 +110,7 @@ public class PhysicsNpc extends PhysicsComponent {
     @Override
     public void debug(ShapeRenderer shapeRenderer) {
         shapeRenderer.setColor(Color.PURPLE);
-        if (state != CharacterState.IMMOBILE) {
+        if (!state.equals(CharacterState.IMMOBILE)) {
             shapeRenderer.rect(wanderBox.x, wanderBox.y, wanderBox.width, wanderBox.height);
         }
         shapeRenderer.setColor(Color.YELLOW);

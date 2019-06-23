@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.GlobalContainer;
 
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 
@@ -19,8 +20,10 @@ class InventorySlotsTable {
     final Table inventorySlots;
     private final DragAndDrop dragAndDrop;
     private final InventorySlotTooltip tooltip;
+    private final GlobalContainer inventory;
 
     InventorySlotsTable(DragAndDrop dragAndDrop, InventorySlotTooltip tooltip) {
+        this.inventory = Utils.getGameData().getInventory();
         this.dragAndDrop = dragAndDrop;
         this.tooltip = tooltip;
         this.inventorySlots = new Table();
@@ -28,10 +31,14 @@ class InventorySlotsTable {
         setTopBorder();
     }
 
+    Optional<InventorySlot> getPossibleEmptySlot() {
+        return inventory.findFirstEmptySlot()
+                        .map(i -> (InventorySlot) inventorySlots.getChildren().get(i));
+    }
+
     private void fillInventorySlots() {
-        GlobalContainer container = Utils.getGameData().getInventory();
-        IntStream.rangeClosed(0, container.getLastIndex())
-                 .forEach(index -> createInventorySlot(container, index));
+        IntStream.range(0, inventory.getSize())
+                 .forEach(this::createInventorySlot);
     }
 
     private void setTopBorder() {
@@ -41,14 +48,15 @@ class InventorySlotsTable {
         inventorySlots.setBackground(drawable);
     }
 
-    private void createInventorySlot(GlobalContainer container, int index) {
+    private void createInventorySlot(int index) {
         var inventorySlot = new InventorySlot();
         inventorySlot.addListener(new InventorySlotTooltipListener(tooltip));
-        inventorySlot.addListener(new InventorySlotPreviewListener(DynamicVars::updateHoveredItem));
+        inventorySlot.addListener(new InventorySlotPreviewListener(InventoryUtils::updateHoveredItem));
+        inventorySlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickInventory));
         dragAndDrop.addTarget(new InventorySlotTarget(inventorySlot));
         dragAndDrop.addSource(new InventorySlotSource(inventorySlot.amountLabel, dragAndDrop));
-        container.getItemAt(index).ifPresent(inventoryItem -> {
-            inventorySlot.amount = container.getAmountOfItemAt(index);
+        inventory.getItemAt(index).ifPresent(inventoryItem -> {
+            inventorySlot.amount = inventory.getAmountOfItemAt(index);
             inventorySlot.addToStack(new InventoryImage(inventoryItem));
             dragAndDrop.addSource(new InventorySlotSource(inventorySlot.getCertainInventoryImage(), dragAndDrop));
         });

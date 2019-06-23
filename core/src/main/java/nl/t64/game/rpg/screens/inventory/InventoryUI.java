@@ -52,8 +52,8 @@ class InventoryUI {
             this.equipSlotsTables.put(hero.getId(), new EquipSlotsTable(hero, dragAndDrop, this.tooltip));
         }
         this.equipWindow = createWindow(TITLE_PERSONAL,
-                                        this.equipSlotsTables.get(DynamicVars.getSelectedHeroId()).equipSlots);
-        this.equipWindow.addListener(new EquipWindowListener(DynamicVars::clearHoveredItem));
+                                        this.equipSlotsTables.get(InventoryUtils.getSelectedHeroId()).equipSlots);
+        this.equipWindow.addListener(new EquipWindowListener(InventoryUtils::clearHoveredItem));
 
         this.statsTable = new StatsTable();
         this.statsWindow = createWindow(TITLE_STATS, this.statsTable.stats);

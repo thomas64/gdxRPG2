@@ -9,6 +9,7 @@ import nl.t64.game.rpg.components.party.InventoryItem;
 import nl.t64.game.rpg.constants.ScreenType;
 
 import java.util.function.Consumer;
+import java.util.stream.IntStream;
 
 
 final class InventoryWriter {
@@ -21,19 +22,19 @@ final class InventoryWriter {
         InventoryScreen inventoryScreen = ((InventoryScreen) Utils.getScreenManager().getScreen(ScreenType.INVENTORY));
         Table inventorySlotsTable = inventoryScreen.inventoryUI.inventorySlotsTable.inventorySlots;
         Table equipSlotsTable =
-                inventoryScreen.inventoryUI.equipSlotsTables.get(DynamicVars.selectedHero.getId()).equipSlots;
+                inventoryScreen.inventoryUI.equipSlotsTables.get(InventoryUtils.selectedHero.getId()).equipSlots;
 
         setGlobalInventory(inventorySlotsTable);
         setPersonalInventory(equipSlotsTable);
     }
 
     private static void setGlobalInventory(Table inventorySlotsTable) {
-        for (int i = 0; i <= inventorySlotsTable.getChildren().size - 1; i++) {
-            InventorySlot slot = (InventorySlot) inventorySlotsTable.getChildren().get(i);
-            slot.getPossibleInventoryImage().ifPresentOrElse(
-                    addItemToGlobalInventory(i, slot),
-                    addNullToGlobalInventory(i));
-        }
+        IntStream.range(0, inventorySlotsTable.getChildren().size)
+                 .forEach(i -> {
+                     InventorySlot slot = (InventorySlot) inventorySlotsTable.getChildren().get(i);
+                     slot.getPossibleInventoryImage().ifPresentOrElse(addItemToGlobalInventory(i, slot),
+                                                                      addNullToGlobalInventory(i));
+                 });
     }
 
     private static Consumer<InventoryImage> addItemToGlobalInventory(int index, InventorySlot slot) {
@@ -52,18 +53,17 @@ final class InventoryWriter {
         for (Actor actor : equipSlotsTable.getChildren()) {
             if (actor instanceof Table) {
                 for (Actor deepActor : ((Table) actor).getChildren()) {
-                    addToPersonalInventory(DynamicVars.selectedHero, (InventorySlot) deepActor);
+                    addToPersonalInventory(InventoryUtils.selectedHero, (InventorySlot) deepActor);
                 }
             } else {
-                addToPersonalInventory(DynamicVars.selectedHero, (InventorySlot) actor);
+                addToPersonalInventory(InventoryUtils.selectedHero, (InventorySlot) actor);
             }
         }
     }
 
     private static void addToPersonalInventory(HeroItem hero, InventorySlot slot) {
-        slot.getPossibleInventoryImage().ifPresentOrElse(
-                addItemToPersonalInventory(hero, slot),
-                addNullToPersonalInventory(hero, slot));
+        slot.getPossibleInventoryImage().ifPresentOrElse(addItemToPersonalInventory(hero, slot),
+                                                         addNullToPersonalInventory(hero, slot));
     }
 
     private static Consumer<InventoryImage> addItemToPersonalInventory(HeroItem hero, InventorySlot slot) {

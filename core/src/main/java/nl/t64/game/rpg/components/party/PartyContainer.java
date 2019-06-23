@@ -5,7 +5,6 @@ import nl.t64.game.rpg.constants.Constant;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 public class PartyContainer {
@@ -15,24 +14,6 @@ public class PartyContainer {
 
     public PartyContainer() {
         this.party = new LinkedHashMap<>(MAXIMUM);
-    }
-
-    public List<String> getAllHeroIds() {
-        return List.copyOf(party.keySet());
-    }
-
-    public List<String> getAllHeroNames() {
-        return party.values()
-                    .stream()
-                    .map(heroItem -> heroItem.name)
-                    .collect(Collectors.toUnmodifiableList());
-    }
-
-    public List<Integer> getAllHeroLevels() {
-        return party.values()
-                    .stream()
-                    .map(HeroItem::getLevel)
-                    .collect(Collectors.toUnmodifiableList());
     }
 
     public HeroItem getHero(int index) {
@@ -65,10 +46,6 @@ public class PartyContainer {
         return getSize() >= MAXIMUM;
     }
 
-    public int getLastIndex() {
-        return getSize() - 1;
-    }
-
     public boolean contains(HeroItem hero) {
         if (hero == null) {
             return false;
@@ -76,11 +53,11 @@ public class PartyContainer {
         return contains(hero.id);
     }
 
-    boolean isHeroLast(HeroItem hero) {
+    public boolean isHeroLast(HeroItem hero) {
         return getIndex(hero) == getLastIndex();
     }
 
-    int getSize() {
+    public int getSize() {
         return party.size();
     }
 
@@ -90,6 +67,10 @@ public class PartyContainer {
 
     boolean contains(String heroId) {
         return party.containsKey(heroId);
+    }
+
+    private int getLastIndex() {
+        return getSize() - 1;
     }
 
 }

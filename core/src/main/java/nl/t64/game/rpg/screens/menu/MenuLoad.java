@@ -141,7 +141,7 @@ public class MenuLoad extends MenuScreen {
     private void processLoadButton() {
         Object profileName = listItems.getSelected();
         if (profileName != null) {
-            if (fromScreen == ScreenType.MENU_PAUSE) {
+            if (fromScreen.equals(ScreenType.MENU_PAUSE)) {
                 progressLostDialog.show(stage);
             } else {
                 openWorldScreen();
@@ -157,7 +157,7 @@ public class MenuLoad extends MenuScreen {
     }
 
     private void processBackButton() {
-        if (fromScreen == ScreenType.MENU_PAUSE) {
+        if (fromScreen.equals(ScreenType.MENU_PAUSE)) {
             var menuPause = Utils.getScreenManager().getMenuScreen(fromScreen);
             menuPause.setBackground(screenshot);
         }

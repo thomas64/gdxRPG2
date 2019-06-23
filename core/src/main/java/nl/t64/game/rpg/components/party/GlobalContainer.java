@@ -34,7 +34,11 @@ public class GlobalContainer {
         inventory.set(index, newItem);
     }
 
-    public int getLastIndex() {
+    public int getSize() {
+        return inventory.size();
+    }
+
+    int getLastIndex() {
         return getSize() - 1;
     }
 
@@ -50,31 +54,24 @@ public class GlobalContainer {
                         .count();
     }
 
-    private int getSize() {
-        return inventory.size();
-    }
-
     private void addResource(InventoryItem newItem) {
-        getItem(newItem.id).ifPresentOrElse(
-                inventoryItem -> inventoryItem.increaseAmountWith(newItem), // todo, aanpassen, mag niet oneindig ophogen
-                addResourceAtEmptySlot(newItem)
+        getItem(newItem.id).ifPresentOrElse(inventoryItem -> inventoryItem.increaseAmountWith(newItem), // todo, aanpassen, mag niet oneindig ophogen
+                                            addResourceAtEmptySlot(newItem)
         );
     }
 
     private Runnable addResourceAtEmptySlot(InventoryItem newItem) {
-        return () -> findLastEmptySlot().ifPresentOrElse(
-                index -> slotIsEmptySoSetItemAt(index, newItem),
-                () -> {
-                    throw new IllegalStateException("Inventory is full.");
-                });
+        return () -> findLastEmptySlot().ifPresentOrElse(index -> slotIsEmptySoSetItemAt(index, newItem),
+                                                         () -> {
+                                                             throw new IllegalStateException("Inventory is full.");
+                                                         });
     }
 
     private void addEquipmentAtEmptySlot(InventoryItem newItem) {
-        findFirstEmptySlot().ifPresentOrElse(
-                index -> slotIsEmptySoSetItemAt(index, newItem),
-                () -> {
-                    throw new IllegalStateException("Inventory is full.");
-                });
+        findFirstEmptySlot().ifPresentOrElse(index -> slotIsEmptySoSetItemAt(index, newItem),
+                                             () -> {
+                                                 throw new IllegalStateException("Inventory is full.");
+                                             });
     }
 
     private void slotIsEmptySoSetItemAt(int index, InventoryItem newItem) {
@@ -88,22 +85,22 @@ public class GlobalContainer {
                         .findFirst();
     }
 
-    private OptionalInt findFirstEmptySlot() {
-        for (int i = 0; i <= getLastIndex(); i++) {
+    public Optional<Integer> findFirstEmptySlot() {
+        for (int i = 0; i < getSize(); i++) {
             if (isSlotEmpty(i)) {
-                return OptionalInt.of(i);
+                return Optional.of(i);
             }
         }
-        return OptionalInt.empty();
+        return Optional.empty();
     }
 
-    private OptionalInt findLastEmptySlot() {
-        for (int i = getLastIndex(); i > -1; i--) {
+    private Optional<Integer> findLastEmptySlot() {
+        for (int i = getLastIndex(); i >= 0; i--) {
             if (isSlotEmpty(i)) {
-                return OptionalInt.of(i);
+                return Optional.of(i);
             }
         }
-        return OptionalInt.empty();
+        return Optional.empty();
     }
 
     private boolean isSlotEmpty(int index) {

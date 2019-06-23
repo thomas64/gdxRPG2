@@ -117,7 +117,7 @@ class InventoryTest extends GameTest {
     void whenInventoryIsFull_ShouldNotThrowError() {
         InventoryItem gold = InventoryDatabase.getInstance().getInventoryItem("gold");
         InventoryItem herbs = InventoryDatabase.getInstance().getInventoryItem("herbs");
-        IntStream.range(0, inventory.getLastIndex())
+        IntStream.range(0, inventory.getSize())
                  .forEach(i -> inventory.forceSetItemAt(i, gold));
         inventory.autoSetItem(herbs);
     }

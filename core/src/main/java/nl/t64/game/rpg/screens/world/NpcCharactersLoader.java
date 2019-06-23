@@ -48,7 +48,7 @@ class NpcCharactersLoader {
         npcCharacter.send(new StartStateEvent(gameMapNpc.state));
         npcCharacter.send(new StartDirectionEvent(gameMapNpc.direction));
         npcCharacter.send(new StartPositionEvent(gameMapNpc.getPosition()));
-        if (gameMapNpc.state == CharacterState.IMMOBILE) {
+        if (gameMapNpc.state.equals(CharacterState.IMMOBILE)) {
             currentMap.addToBlockers(npcCharacter.getBoundingBox());
         }
     }

@@ -80,7 +80,7 @@ public class WorldScreen implements Screen, MapObserver {
 
     @Override
     public void render(float dt) {
-        if (gameState == GameState.PAUSED) {
+        if (gameState.equals(GameState.PAUSED)) {
             return;
         }
 

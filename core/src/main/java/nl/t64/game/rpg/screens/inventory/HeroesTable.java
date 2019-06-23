@@ -41,9 +41,10 @@ class HeroesTable {
     private final ShapeRenderer shapeRenderer;
     private final Label.LabelStyle nameStyle;
     private final Label.LabelStyle levelStyle;
-    private PartyContainer party;
+    private final PartyContainer party;
 
     HeroesTable() {
+        this.party = Utils.getGameData().getParty();
         this.shapeRenderer = new ShapeRenderer();
         BitmapFont font = Utils.getResourceManager().getTrueTypeAsset(FONT_PATH, FONT_SIZE);
         BitmapFont fontBig = Utils.getResourceManager().getTrueTypeAsset(FONT_BIG_PATH, FONT_BIG_SIZE);
@@ -59,7 +60,6 @@ class HeroesTable {
 
     @SuppressWarnings("LibGDXFlushInsideLoop")
     void render() {
-        party = Utils.getGameData().getParty();
         heroes.clear();
         for (HeroItem hero : party.getAllHeroes()) {
             createFace(hero);
@@ -69,7 +69,7 @@ class HeroesTable {
 
     private void createFace(HeroItem hero) {
         Stack stack = new Stack();
-        stack.addListener(new HeroesTableSelectListener(DynamicVars::updateSelectedHero, hero));
+        stack.addListener(new HeroesTableSelectListener(InventoryUtils::updateSelectedHero, hero));
         addPossibleGreyBackgroundTo(stack, hero);
         addFaceImageTo(stack, hero);
         heroes.add(stack);
@@ -84,7 +84,7 @@ class HeroesTable {
     private void createStats(HeroItem hero) {
         Table statsTable = createStatsTable(hero);
         Stack stack = new Stack();
-        stack.addListener(new HeroesTableSelectListener(DynamicVars::updateSelectedHero, hero));
+        stack.addListener(new HeroesTableSelectListener(InventoryUtils::updateSelectedHero, hero));
         addPossibleGreyBackgroundTo(stack, hero);
         addLabelsTo(statsTable, hero);
         stack.add(statsTable);
@@ -97,14 +97,14 @@ class HeroesTable {
         statsTable.defaults().align(Align.left).top();
         statsTable.columnDefaults(0).width(STATS_COLUMN_PAD_LEFT);
         statsTable.columnDefaults(1).width(STATS_COLUMN_WIDTH);
-        if (!hero.isLastInParty()) {
+        if (!party.isHeroLast(hero)) {
             setRightBorder(statsTable);
         }
         return statsTable;
     }
 
     private void addPossibleGreyBackgroundTo(Stack stack, HeroItem hero) {
-        if (hero == DynamicVars.selectedHero) {
+        if (hero.equalsHero(InventoryUtils.selectedHero)) {
             Texture textureGrey = Utils.getResourceManager().getTextureAsset(SPRITE_GREY);
             Image imageGrey = new Image(textureGrey);
             stack.add(imageGrey);

@@ -108,7 +108,7 @@ class GameMap {
     }
 
     private void setPlayerSpawnDirection(GameMapPortal portal, GameMapSpawnPoint spawnPoint) {
-        if (spawnPoint.direction == Direction.NONE) {
+        if (spawnPoint.direction.equals(Direction.NONE)) {
             playerSpawnDirection = portal.enterDirection;
         } else {
             playerSpawnDirection = spawnPoint.direction;
