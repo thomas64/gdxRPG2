@@ -24,20 +24,20 @@ final class InventoryWriter {
         Table equipSlotsTable =
                 inventoryScreen.inventoryUI.equipSlotsTables.get(InventoryUtils.selectedHero.getId()).equipSlots;
 
-        setGlobalInventory(inventorySlotsTable);
-        setPersonalInventory(equipSlotsTable);
+        setInventoryContainer(inventorySlotsTable);
+        setEquipContainer(equipSlotsTable);
     }
 
-    private static void setGlobalInventory(Table inventorySlotsTable) {
+    private static void setInventoryContainer(Table inventorySlotsTable) {
         IntStream.range(0, inventorySlotsTable.getChildren().size)
                  .forEach(i -> {
                      InventorySlot slot = (InventorySlot) inventorySlotsTable.getChildren().get(i);
-                     slot.getPossibleInventoryImage().ifPresentOrElse(addItemToGlobalInventory(i, slot),
-                                                                      addNullToGlobalInventory(i));
+                     slot.getPossibleInventoryImage().ifPresentOrElse(addItemToInventoryContainer(i, slot),
+                                                                      addNullToInventoryContainer(i));
                  });
     }
 
-    private static Consumer<InventoryImage> addItemToGlobalInventory(int index, InventorySlot slot) {
+    private static Consumer<InventoryImage> addItemToInventoryContainer(int index, InventorySlot slot) {
         return inventoryImage -> {
             InventoryItem inventoryItem = new InventoryItem(inventoryImage.inventoryItem);
             inventoryItem.setAmount(slot.amount);
@@ -45,35 +45,35 @@ final class InventoryWriter {
         };
     }
 
-    private static Runnable addNullToGlobalInventory(int index) {
+    private static Runnable addNullToInventoryContainer(int index) {
         return () -> Utils.getGameData().getInventory().forceSetItemAt(index, null);
     }
 
-    private static void setPersonalInventory(Table equipSlotsTable) {
+    private static void setEquipContainer(Table equipSlotsTable) {
         for (Actor actor : equipSlotsTable.getChildren()) {
             if (actor instanceof Table) {
                 for (Actor deepActor : ((Table) actor).getChildren()) {
-                    addToPersonalInventory(InventoryUtils.selectedHero, (InventorySlot) deepActor);
+                    addToEquipContainer(InventoryUtils.selectedHero, (InventorySlot) deepActor);
                 }
             } else {
-                addToPersonalInventory(InventoryUtils.selectedHero, (InventorySlot) actor);
+                addToEquipContainer(InventoryUtils.selectedHero, (InventorySlot) actor);
             }
         }
     }
 
-    private static void addToPersonalInventory(HeroItem hero, InventorySlot slot) {
-        slot.getPossibleInventoryImage().ifPresentOrElse(addItemToPersonalInventory(hero, slot),
-                                                         addNullToPersonalInventory(hero, slot));
+    private static void addToEquipContainer(HeroItem hero, InventorySlot slot) {
+        slot.getPossibleInventoryImage().ifPresentOrElse(addItemToEquipContainer(hero, slot),
+                                                         addNullToEquipContainer(hero, slot));
     }
 
-    private static Consumer<InventoryImage> addItemToPersonalInventory(HeroItem hero, InventorySlot slot) {
+    private static Consumer<InventoryImage> addItemToEquipContainer(HeroItem hero, InventorySlot slot) {
         return inventoryImage -> {
             InventoryItem inventoryItem = inventoryImage.inventoryItem;
             hero.forceSetInventoryItem(slot.filterGroup, inventoryItem);
         };
     }
 
-    private static Runnable addNullToPersonalInventory(HeroItem hero, InventorySlot slot) {
+    private static Runnable addNullToEquipContainer(HeroItem hero, InventorySlot slot) {
         return () -> hero.forceSetInventoryItem(slot.filterGroup, null);
     }
 

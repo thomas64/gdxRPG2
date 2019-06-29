@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 class InventoryTest extends GameTest {
 
-    private GlobalContainer inventory;
+    private InventoryContainer inventory;
 
     @BeforeEach
     private void setup() {

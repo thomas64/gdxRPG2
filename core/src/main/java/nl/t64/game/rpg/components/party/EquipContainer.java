@@ -11,13 +11,13 @@ import java.util.Optional;
 import static nl.t64.game.rpg.components.party.InventoryGroup.*;
 
 
-class PersonalContainer {
+class EquipContainer {
 
     private static final int NUMBER_OF_EQUIPMENT_SLOTS = 14;
 
     private final Map<String, InventoryItem> equipment;
 
-    private PersonalContainer() {
+    private EquipContainer() {
         this.equipment = new HashMap<>(NUMBER_OF_EQUIPMENT_SLOTS);
         this.equipment.put(WEAPON.name(), null);
         this.equipment.put(SHIELD.name(), null);
@@ -36,9 +36,9 @@ class PersonalContainer {
     }
 
     @JsonCreator
-    private PersonalContainer(@JsonProperty("weapon") String weaponId,
-                              @JsonProperty("shield") String shieldId,
-                              @JsonProperty("chest") String chestId) {
+    private EquipContainer(@JsonProperty("weapon") String weaponId,
+                           @JsonProperty("shield") String shieldId,
+                           @JsonProperty("chest") String chestId) {
         this();
         var database = InventoryDatabase.getInstance();
         this.equipment.put(WEAPON.name(), database.getInventoryItem(weaponId));

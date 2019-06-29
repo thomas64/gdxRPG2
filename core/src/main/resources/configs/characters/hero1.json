@@ -1,268 +1,324 @@
 {
   "mozes": {
     "name": "Mozes",
-    "level": 1,
+    "stats": {
+      "level": 1,
+      "intelligence": 18,
+      "dexterity": 15,
+      "endurance": 15,
+      "strength": 15,
+      "stamina": 30
+    },
+    "skills": {
+      "stealth": 1,
+      "hafted": 1,
+      "pole": 0,
+      "shield": 3,
+      "sword": 3
+    },
     "inventory": {
       "weapon": "basic_shortsword",
       "shield": "basic_light_shield",
       "chest": "basic_medium_chest"
-    },
-    "intelligence": 18,
-    "dexterity": 15,
-    "strength": 15,
-    "endurance": 15,
-    "stamina": 30,
-    "stealth": 1,
-    "hafted": 1,
-    "pole": 0,
-    "shield": 3,
-    "sword": 3
+    }
   },
   "luana": {
     "name": "Luana",
-    "level": 1,
+    "stats": {
+      "level": 1,
+      "intelligence": 14,
+      "dexterity": 22,
+      "endurance": 10,
+      "strength": 8,
+      "stamina": 20
+    },
+    "skills": {
+      "stealth": 3,
+      "hafted": -1,
+      "pole": 0,
+      "shield": -1,
+      "sword": 1
+    },
     "inventory": {
       "weapon": "basic_dagger",
       "shield": null,
       "chest": "basic_light_chest"
-    },
-    "intelligence": 14,
-    "dexterity": 22,
-    "strength": 8,
-    "endurance": 10,
-    "stamina": 20,
-    "stealth": 3,
-    "hafted": -1,
-    "pole": 0,
-    "shield": -1,
-    "sword": 1
+    }
   },
   "reignald": {
     "name": "Reignald",
-    "level": 8,
+    "stats": {
+      "level": 8,
+      "intelligence": 10,
+      "dexterity": 25,
+      "endurance": 20,
+      "strength": 20,
+      "stamina": 40
+    },
+    "skills": {
+      "stealth": 1,
+      "hafted": 0,
+      "pole": 0,
+      "shield": 2,
+      "sword": 4
+    },
     "inventory": {
       "weapon": "ordinary_shortsword",
       "shield": "ordinary_light_shield",
       "chest": "ordinary_medium_chest"
-    },
-    "intelligence": 10,
-    "dexterity": 25,
-    "strength": 20,
-    "endurance": 20,
-    "stamina": 40,
-    "stealth": 1,
-    "hafted": 0,
-    "pole": 0,
-    "shield": 2,
-    "sword": 4
+    }
   },
   "ryiah": {
     "name": "Ryiah",
-    "level": 3,
+    "stats": {
+      "level": 3,
+      "intelligence": 22,
+      "dexterity": 20,
+      "endurance": 16,
+      "strength": 10,
+      "stamina": 31
+    },
+    "skills": {
+      "stealth": 0,
+      "hafted": 0,
+      "pole": 3,
+      "shield": 0,
+      "sword": 3
+    },
     "inventory": {
       "weapon": "basic_staff",
       "shield": null,
       "chest": "basic_light_chest"
-    },
-    "intelligence": 22,
-    "dexterity": 20,
-    "strength": 10,
-    "endurance": 16,
-    "stamina": 31,
-    "stealth": 0,
-    "hafted": 0,
-    "pole": 3,
-    "shield": 0,
-    "sword": 3
+    }
   },
   "valter": {
     "name": "Valter",
-    "level": 2,
+    "stats": {
+      "level": 2,
+      "intelligence": 22,
+      "dexterity": 15,
+      "endurance": 15,
+      "strength": 10,
+      "stamina": 20
+    },
+    "skills": {
+      "stealth": 0,
+      "hafted": -1,
+      "pole": 0,
+      "shield": -1,
+      "sword": 1
+    },
     "inventory": {
       "weapon": "basic_dagger",
       "shield": null,
       "chest": "basic_light_chest"
-    },
-    "intelligence": 22,
-    "dexterity": 15,
-    "strength": 10,
-    "endurance": 15,
-    "stamina": 20,
-    "stealth": 0,
-    "hafted": -1,
-    "pole": 0,
-    "shield": -1,
-    "sword": 1
+    }
   },
   "galen": {
     "name": "Galen",
-    "level": 4,
+    "stats": {
+      "level": 4,
+      "intelligence": 15,
+      "dexterity": 18,
+      "endurance": 20,
+      "strength": 25,
+      "stamina": 40
+    },
+    "skills": {
+      "stealth": 3,
+      "hafted": 5,
+      "pole": 0,
+      "shield": 3,
+      "sword": -1
+    },
     "inventory": {
       "weapon": "basic_axe",
       "shield": "basic_medium_shield",
       "chest": "basic_medium_chest"
-    },
-    "intelligence": 15,
-    "dexterity": 18,
-    "strength": 25,
-    "endurance": 20,
-    "stamina": 40,
-    "stealth": 3,
-    "hafted": 5,
-    "pole": 0,
-    "shield": 3,
-    "sword": -1
+    }
   },
   "jaspar": {
     "name": "Jaspar",
-    "level": 12,
+    "stats": {
+      "level": 12,
+      "intelligence": 6,
+      "dexterity": 14,
+      "endurance": 30,
+      "strength": 30,
+      "stamina": 60
+    },
+    "skills": {
+      "stealth": 1,
+      "hafted": 0,
+      "pole": 6,
+      "shield": 4,
+      "sword": 6
+    },
     "inventory": {
       "weapon": "basic_greatsword",
       "shield": "basic_heavy_shield",
       "chest": "basic_heavy_chest"
-    },
-    "intelligence": 6,
-    "dexterity": 14,
-    "strength": 30,
-    "endurance": 30,
-    "stamina": 60,
-    "stealth": 1,
-    "hafted": 0,
-    "pole": 6,
-    "shield": 4,
-    "sword": 6
+    }
   },
   "kiara": {
     "name": "Kiara",
-    "level": 12,
+    "stats": {
+      "level": 12,
+      "intelligence": 15,
+      "dexterity": 30,
+      "endurance": 20,
+      "strength": 15,
+      "stamina": 40
+    },
+    "skills": {
+      "stealth": 5,
+      "hafted": -1,
+      "pole": 2,
+      "shield": -1,
+      "sword": 7
+    },
     "inventory": {
       "weapon": "ordinary_dagger",
       "shield": null,
       "chest": "ordinary_light_chest"
-    },
-    "intelligence": 15,
-    "dexterity": 30,
-    "strength": 15,
-    "endurance": 20,
-    "stamina": 40,
-    "stealth": 5,
-    "hafted": -1,
-    "pole": 2,
-    "shield": -1,
-    "sword": 7
+    }
   },
   "luthais": {
     "name": "Luthais",
-    "level": 20,
+    "stats": {
+      "level": 20,
+      "intelligence": 30,
+      "dexterity": 20,
+      "endurance": 18,
+      "strength": 8,
+      "stamina": 50
+    },
+    "skills": {
+      "stealth": 5,
+      "hafted": 0,
+      "pole": 8,
+      "shield": -1,
+      "sword": 0
+    },
     "inventory": {
       "weapon": "epic_staff",
       "shield": null,
       "chest": "specialist_light_chest"
-    },
-    "intelligence": 30,
-    "dexterity": 20,
-    "strength": 8,
-    "endurance": 18,
-    "stamina": 50,
-    "stealth": 5,
-    "hafted": 0,
-    "pole": 8,
-    "shield": -1,
-    "sword": 0
+    }
   },
   "elias": {
     "name": "Elias",
-    "level": 18,
+    "stats": {
+      "level": 18,
+      "intelligence": 30,
+      "dexterity": 25,
+      "endurance": 30,
+      "strength": 20,
+      "stamina": 60
+    },
+    "skills": {
+      "stealth": 0,
+      "hafted": 5,
+      "pole": 5,
+      "shield": -1,
+      "sword": 7
+    },
     "inventory": {
       "weapon": "ordinary_longsword",
       "shield": null,
       "chest": "ordinary_medium_chest"
-    },
-    "intelligence": 30,
-    "dexterity": 25,
-    "strength": 20,
-    "endurance": 30,
-    "stamina": 60,
-    "stealth": 0,
-    "hafted": 5,
-    "pole": 5,
-    "shield": -1,
-    "sword": 7
+    }
   },
   "onarr": {
     "name": "Onarr",
-    "level": 18,
+    "stats": {
+      "level": 18,
+      "intelligence": 30,
+      "dexterity": 23,
+      "endurance": 30,
+      "strength": 25,
+      "stamina": 60
+    },
+    "skills": {
+      "stealth": 0,
+      "hafted": 8,
+      "pole": 8,
+      "shield": 9,
+      "sword": 5
+    },
     "inventory": {
       "weapon": "ordinary_morningstar",
       "shield": "ordinary_medium_shield",
       "chest": "ordinary_heavy_chest"
-    },
-    "intelligence": 30,
-    "dexterity": 23,
-    "strength": 25,
-    "endurance": 30,
-    "stamina": 60,
-    "stealth": 0,
-    "hafted": 8,
-    "pole": 8,
-    "shield": 9,
-    "sword": 5
+    }
   },
   "duilio": {
     "name": "Duilio",
-    "level": 22,
+    "stats": {
+      "level": 22,
+      "intelligence": 25,
+      "dexterity": 30,
+      "endurance": 25,
+      "strength": 25,
+      "stamina": 75
+    },
+    "skills": {
+      "stealth": 5,
+      "hafted": 10,
+      "pole": 10,
+      "shield": 10,
+      "sword": 10
+    },
     "inventory": {
       "weapon": "specialist_shortsword",
       "shield": "specialist_light_shield",
       "chest": "specialist_medium_chest"
-    },
-    "intelligence": 25,
-    "dexterity": 30,
-    "strength": 25,
-    "endurance": 25,
-    "stamina": 75,
-    "stealth": 5,
-    "hafted": 10,
-    "pole": 10,
-    "shield": 10,
-    "sword": 10
+    }
   },
   "iellwen": {
     "name": "Iellwen",
-    "level": 20,
+    "stats": {
+      "level": 20,
+      "intelligence": 35,
+      "dexterity": 30,
+      "endurance": 30,
+      "strength": 20,
+      "stamina": 60
+    },
+    "skills": {
+      "stealth": 6,
+      "hafted": 5,
+      "pole": 0,
+      "shield": -1,
+      "sword": 10
+    },
     "inventory": {
       "weapon": "specialist_shortsword",
       "shield": null,
       "chest": "specialist_medium_chest"
-    },
-    "intelligence": 35,
-    "dexterity": 30,
-    "strength": 20,
-    "endurance": 30,
-    "stamina": 60,
-    "stealth": 6,
-    "hafted": 5,
-    "pole": 0,
-    "shield": -1,
-    "sword": 10
+    }
   },
   "faeron": {
     "name": "Faeron",
-    "level": 25,
+    "stats": {
+      "level": 25,
+      "intelligence": 30,
+      "dexterity": 30,
+      "endurance": 25,
+      "strength": 15,
+      "stamina": 80
+    },
+    "skills": {
+      "stealth": 10,
+      "hafted": 10,
+      "pole": -1,
+      "shield": 0,
+      "sword": 10
+    },
     "inventory": {
       "weapon": "epic_mace",
       "shield": null,
       "chest": "masterwork_light_chest"
-    },
-    "intelligence": 30,
-    "dexterity": 30,
-    "strength": 15,
-    "endurance": 25,
-    "stamina": 80,
-    "stealth": 10,
-    "hafted": 10,
-    "pole": -1,
-    "shield": 0,
-    "sword": 10
+    }
   }
 }

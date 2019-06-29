@@ -3,13 +3,13 @@ package nl.t64.game.rpg.components.party;
 import java.util.*;
 
 
-public class GlobalContainer {
+public class InventoryContainer {
 
     private static final int NUMBER_OF_SLOTS = 77;
 
     private final List<InventoryItem> inventory;
 
-    public GlobalContainer() {
+    public InventoryContainer() {
         this.inventory = new ArrayList<>(Collections.nCopies(NUMBER_OF_SLOTS, null));
     }
 

@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import nl.t64.game.rpg.Utils;
-import nl.t64.game.rpg.components.party.GlobalContainer;
+import nl.t64.game.rpg.components.party.InventoryContainer;
 
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -20,7 +20,7 @@ class InventorySlotsTable {
     final Table inventorySlots;
     private final DragAndDrop dragAndDrop;
     private final InventorySlotTooltip tooltip;
-    private final GlobalContainer inventory;
+    private final InventoryContainer inventory;
 
     InventorySlotsTable(DragAndDrop dragAndDrop, InventorySlotTooltip tooltip) {
         this.inventory = Utils.getGameData().getInventory();

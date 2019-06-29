@@ -12,13 +12,13 @@ public class GameData implements ProfileObserver {
 
     private HeroContainer heroes;
     private PartyContainer party;
-    private GlobalContainer inventory;
+    private InventoryContainer inventory;
 
     @Override
     public void onNotifyCreate(ProfileManager profileManager) {
         heroes = new HeroContainer();
         party = new PartyContainer();
-        inventory = new GlobalContainer();
+        inventory = new InventoryContainer();
         addFirstHeroToParty();
         addFirstItemsToInventory();
         onNotifySave(profileManager);
@@ -35,7 +35,7 @@ public class GameData implements ProfileObserver {
     public void onNotifyLoad(ProfileManager profileManager) {
         heroes = profileManager.getProperty("heroes", HeroContainer.class);
         party = profileManager.getProperty("party", PartyContainer.class);
-        inventory = profileManager.getProperty("inventory", GlobalContainer.class);
+        inventory = profileManager.getProperty("inventory", InventoryContainer.class);
     }
 
     private void addFirstHeroToParty() {
