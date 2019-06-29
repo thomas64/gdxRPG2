@@ -11,11 +11,10 @@ import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.InventoryItem;
-import nl.t64.game.rpg.constants.InventoryAttribute;
+import nl.t64.game.rpg.components.party.StatType;
 
 import static nl.t64.game.rpg.components.party.InventoryGroup.SHIELD;
 import static nl.t64.game.rpg.components.party.InventoryGroup.WEAPON;
-import static nl.t64.game.rpg.constants.InventoryAttribute.*;
 
 
 class StatsTable {
@@ -62,32 +61,32 @@ class StatsTable {
         HeroItem selectedHero = InventoryUtils.selectedHero;
         stats.clear();
 
-        stats.add("Intelligence");
-        stats.add(String.valueOf(selectedHero.getOwnIntelligence()));
+        stats.add(StatType.INTELLIGENCE.getTitle());
+        stats.add(String.valueOf(selectedHero.getOwnStatOf(StatType.INTELLIGENCE)));
         stats.add("");
         stats.add("").row();
         stats.add("Willpower");
         stats.add("?");
         stats.add("");
         stats.add("").row();
-        stats.add("Dexterity");
-        stats.add("?");
-        stats.add("");
-        stats.add("").row();
+        stats.add(StatType.DEXTERITY.getTitle());
+        stats.add(String.valueOf(selectedHero.getOwnStatOf(StatType.DEXTERITY)));
+        createBonusFromInventory(StatType.DEXTERITY, selectedHero);
+        createPreview(StatType.DEXTERITY, selectedHero);
         stats.add("Agility");
         stats.add("?");
         stats.add("");
         stats.add("").row();
-        stats.add("Endurance");
-        stats.add(String.valueOf(selectedHero.getOwnEndurance()));
+        stats.add(StatType.ENDURANCE.getTitle());
+        stats.add(String.valueOf(selectedHero.getOwnStatOf(StatType.ENDURANCE)));
         stats.add("");
         stats.add("").row();
-        stats.add("Strength");
-        stats.add(String.valueOf(selectedHero.getOwnStrength()));
+        stats.add(StatType.STRENGTH.getTitle());
+        stats.add(String.valueOf(selectedHero.getOwnStatOf(StatType.STRENGTH)));
         stats.add("");
         stats.add("").row();
-        stats.add("Stamina");
-        stats.add(String.valueOf(selectedHero.getOwnStamina()));
+        stats.add(StatType.STAMINA.getTitle());
+        stats.add(String.valueOf(selectedHero.getOwnStatOf(StatType.STAMINA)));
         stats.add("");
         stats.add("").row();
         stats.add("").row();
@@ -114,32 +113,45 @@ class StatsTable {
         stats.add("?");
         stats.add("");
         stats.add("").row();
-        stats.add("Base Hit");
-        stats.add(String.valueOf(selectedHero.getAttributeValueOf(WEAPON, BASE_HIT) + "%"));
+        stats.add(StatType.BASE_HIT.getTitle());
+        stats.add(String.format("%s%%", selectedHero.getStatValueOf(WEAPON, StatType.BASE_HIT)));
         stats.add("");
-        createPreview(BASE_HIT, selectedHero);
-        stats.add("Damage");
-        stats.add(String.valueOf(selectedHero.getAttributeValueOf(WEAPON, DAMAGE)));
+        createPreview(StatType.BASE_HIT, selectedHero);
+        stats.add(StatType.DAMAGE.getTitle());
+        stats.add(String.valueOf(selectedHero.getStatValueOf(WEAPON, StatType.DAMAGE)));
         stats.add("");
-        createPreview(DAMAGE, selectedHero);
+        createPreview(StatType.DAMAGE, selectedHero);
         stats.add("Protection");
         stats.add("?");
         stats.add("");
         stats.add("").row();
-        stats.add("Defense");
-        stats.add(String.valueOf(selectedHero.getAttributeValueOf(SHIELD, DEFENSE)));
+        stats.add(StatType.DEFENSE.getTitle());
+        stats.add(String.valueOf(selectedHero.getStatValueOf(SHIELD, StatType.DEFENSE)));
         stats.add("");
-        createPreview(DEFENSE, selectedHero);
+        createPreview(StatType.DEFENSE, selectedHero);
     }
 
-    private void createPreview(InventoryAttribute attribute, HeroItem selectedHero) {
+    private void createBonusFromInventory(StatType statType, HeroItem selectedHero) {
+        int totalFromInventory = selectedHero.getTotalInventoryStatOf(statType);
+        if (totalFromInventory > 0) {
+            var label = new Label(String.format("+%s", totalFromInventory), new Label.LabelStyle(font, Color.FOREST));
+            stats.add(label);
+        } else if (totalFromInventory < 0) {
+            var label = new Label(String.valueOf(totalFromInventory), new Label.LabelStyle(font, Color.FIREBRICK));
+            stats.add(label);
+        } else {
+            stats.add("");
+        }
+    }
+
+    private void createPreview(StatType statType, HeroItem selectedHero) {
         InventoryItem hoveredItem = InventoryUtils.hoveredItem;
 
         if (hoveredItem == null) {
             stats.add("").row();
         } else {
-            int equippedValue = selectedHero.getAttributeValueOf(hoveredItem.getGroup(), attribute);
-            int hoveredValue = hoveredItem.getAttribute(attribute);
+            int equippedValue = selectedHero.getStatValueOf(hoveredItem.getGroup(), statType);
+            int hoveredValue = hoveredItem.getAttributeOfStatType(statType);
             int difference = hoveredValue - equippedValue;
             if (difference > 0) {
                 var label = new Label(String.format("+%s", difference), new Label.LabelStyle(font, Color.LIME));

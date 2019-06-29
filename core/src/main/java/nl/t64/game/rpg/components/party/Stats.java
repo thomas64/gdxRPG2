@@ -56,6 +56,20 @@ class Intelligence {
 }
 
 @NoArgsConstructor
+class Dexterity {
+    private static final int MAXIMUM = 30;
+    private static final float UPGRADE = 0.24f;
+
+    int current;
+    int bonus;
+
+    Dexterity(int current) {
+        this.current = current;
+        this.bonus = 0;
+    }
+}
+
+@NoArgsConstructor
 class Strength {
 
     private static final int MAXIMUM = 30;

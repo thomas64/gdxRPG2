@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 
 
 @AllArgsConstructor
-public enum InventoryGroup {
+public enum InventoryGroup implements SuperEnum {
 
     EVERYTHING(""),
 
@@ -26,6 +26,10 @@ public enum InventoryGroup {
 
     RESOURCE("Resource");
 
-    final String title;
+    private final String title;
 
+    @Override
+    public String getTitle() {
+        return title;
+    }
 }

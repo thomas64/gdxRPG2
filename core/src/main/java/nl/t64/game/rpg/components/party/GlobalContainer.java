@@ -23,7 +23,7 @@ public class GlobalContainer {
     }
 
     public void autoSetItem(InventoryItem newItem) {
-        if (newItem.group.equals(InventoryGroup.RESOURCE)) {
+        if (newItem.isStackable()) {
             addResource(newItem);
         } else {
             addEquipmentAtEmptySlot(newItem);

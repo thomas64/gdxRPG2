@@ -6,8 +6,13 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.components.party.InventoryDescription;
+import nl.t64.game.rpg.components.party.SkillType;
+import nl.t64.game.rpg.components.party.StatType;
+import nl.t64.game.rpg.components.party.SuperEnum;
 
 
 class InventorySlotTooltip {
@@ -17,18 +22,11 @@ class InventorySlotTooltip {
     private static final float SPACING = 20f;
 
     final Window window;
-    private final Label descriptionLeft;
-    private final Label descriptionRight;
 
     InventorySlotTooltip() {
         var windowStyle = createWindowStyle();
-        var labelStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
         this.window = new Window("", windowStyle);
-        this.descriptionLeft = new Label("", labelStyle);
-        this.descriptionRight = new Label("", labelStyle);
-
-        this.window.add(this.descriptionLeft).spaceRight(SPACING);
-        this.window.add(this.descriptionRight);
+        this.window.defaults().align(Align.left);
         this.window.pad(PADDING);
         this.window.pack();
         this.window.setVisible(false);
@@ -53,15 +51,42 @@ class InventorySlotTooltip {
     }
 
     void updateDescription(InventorySlot inventorySlot) {
+        window.clear();
         if (inventorySlot.hasItem()) {
-            InventoryImage inventoryImage = inventorySlot.getCertainInventoryImage();
-            descriptionLeft.setText(inventoryImage.getDescriptionKeys());
-            descriptionRight.setText(inventoryImage.getDescriptionValues());
-            window.pack();
+            addAttributesForDescription(inventorySlot.getCertainInventoryImage());
+        }
+        window.pack();
+    }
+
+    private void addAttributesForDescription(InventoryImage inventoryImage) {
+        for (InventoryDescription attribute : inventoryImage.getDescription()) {
+            var labelStyle = createLabelStyle(attribute);
+            window.add(new Label(getKey(attribute), labelStyle)).spaceRight(SPACING);
+            window.add(new Label(getValue(attribute), labelStyle)).row();
+        }
+    }
+
+    private Label.LabelStyle createLabelStyle(InventoryDescription attribute) {
+        Color color;
+        if (attribute.isEnough()) {
+            color = Color.WHITE;
         } else {
-            descriptionLeft.setText("");
-            descriptionRight.setText("");
-            window.pack();
+            color = Color.RED;
+        }
+        return new Label.LabelStyle(new BitmapFont(), color);
+    }
+
+    private String getKey(InventoryDescription attribute) {
+        return ((SuperEnum) attribute.getKey()).getTitle();
+    }
+
+    private String getValue(InventoryDescription attribute) {
+        if (attribute.getValue() instanceof SkillType) {
+            return ((SkillType) attribute.getValue()).getTitle();
+        } else if (attribute.getKey().equals(StatType.BASE_HIT)) {
+            return String.format("%s%%", attribute.getValue());
+        } else {
+            return String.valueOf(attribute.getValue());
         }
     }
 

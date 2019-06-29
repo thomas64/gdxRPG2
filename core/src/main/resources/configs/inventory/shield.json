@@ -2,6 +2,7 @@
   "basic_light_shield": {
     "name": "Basic Light Shield",
     "group": "SHIELD",
+    "skill": "SHIELD",
     "min_strength": 14,
     "protection": 1,
     "defense": 5,
@@ -11,6 +12,7 @@
   "ordinary_light_shield": {
     "name": "Ordinary Light Shield",
     "group": "SHIELD",
+    "skill": "SHIELD",
     "min_strength": 16,
     "protection": 2,
     "defense": 10,
@@ -20,6 +22,7 @@
   "specialist_light_shield": {
     "name": "Specialist Light Shield",
     "group": "SHIELD",
+    "skill": "SHIELD",
     "min_strength": 18,
     "protection": 3,
     "defense": 15,
@@ -29,6 +32,7 @@
   "masterwork_light_shield": {
     "name": "Masterwork Light Shield",
     "group": "SHIELD",
+    "skill": "SHIELD",
     "min_strength": 20,
     "protection": 4,
     "defense": 20,
@@ -38,6 +42,7 @@
   "basic_medium_shield": {
     "name": "Basic Medium Shield",
     "group": "SHIELD",
+    "skill": "SHIELD",
     "min_strength": 19,
     "protection": 5,
     "defense": 10,
@@ -47,6 +52,7 @@
   "ordinary_medium_shield": {
     "name": "Ordinary Medium Shield",
     "group": "SHIELD",
+    "skill": "SHIELD",
     "min_strength": 21,
     "protection": 6,
     "defense": 15,
@@ -56,6 +62,7 @@
   "specialist_medium_shield": {
     "name": "Specialist Medium Shield",
     "group": "SHIELD",
+    "skill": "SHIELD",
     "min_strength": 23,
     "protection": 7,
     "defense": 20,
@@ -65,6 +72,7 @@
   "masterwork_medium_shield": {
     "name": "Masterwork Medium Shield",
     "group": "SHIELD",
+    "skill": "SHIELD",
     "min_strength": 25,
     "protection": 8,
     "defense": 25,
@@ -74,6 +82,7 @@
   "basic_heavy_shield": {
     "name": "Basic Heavy Shield",
     "group": "SHIELD",
+    "skill": "SHIELD",
     "min_strength": 24,
     "protection": 9,
     "defense": 15,
@@ -83,6 +92,7 @@
   "ordinary_heavy_shield": {
     "name": "Ordinary Heavy Shield",
     "group": "SHIELD",
+    "skill": "SHIELD",
     "min_strength": 26,
     "protection": 10,
     "defense": 20,
@@ -92,6 +102,7 @@
   "specialist_heavy_shield": {
     "name": "Specialist Heavy Shield",
     "group": "SHIELD",
+    "skill": "SHIELD",
     "min_strength": 28,
     "protection": 11,
     "defense": 25,
@@ -101,6 +112,7 @@
   "masterwork_heavy_shield": {
     "name": "Masterwork Heavy Shield",
     "group": "SHIELD",
+    "skill": "SHIELD",
     "min_strength": 30,
     "protection": 12,
     "defense": 30,

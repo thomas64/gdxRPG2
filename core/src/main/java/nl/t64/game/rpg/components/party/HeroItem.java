@@ -2,7 +2,6 @@ package nl.t64.game.rpg.components.party;
 
 import lombok.Getter;
 import lombok.Setter;
-import nl.t64.game.rpg.constants.InventoryAttribute;
 
 import java.util.Map;
 import java.util.Optional;
@@ -17,10 +16,18 @@ public class HeroItem {
     String name;
     private Level level;
     private PersonalContainer inventory;
+
     private Intelligence intelligence;
+    private Dexterity dexterity;
     private Strength strength;
     private Endurance endurance;
     private Stamina stamina;
+
+    private Stealth stealth;
+    private Hafted hafted;
+    private Pole pole;
+    private Shield shield;
+    private Sword sword;
 
     public boolean equalsHero(HeroItem otherHero) {
         return id.equals(otherHero.id);
@@ -64,9 +71,8 @@ public class HeroItem {
         return level.hitpoints + stamina.hitpoints + endurance.hitpoints + endurance.bonus;
     }
 
-    public int getAttributeValueOf(InventoryGroup inventoryGroup, InventoryAttribute inventoryAttribute) {
-        return getInventoryItem(inventoryGroup).map(inventoryItem -> inventoryItem.getAttribute(inventoryAttribute))
-                                               .orElse(0);
+    public int getStatValueOf(InventoryGroup inventoryGroup, StatType statType) {
+        return inventory.getStatValueOf(inventoryGroup, statType);
     }
 
     public Optional<InventoryItem> getInventoryItem(InventoryGroup inventoryGroup) {
@@ -77,45 +83,102 @@ public class HeroItem {
         inventory.forceSetInventoryItem(inventoryGroup, inventoryItem);
     }
 
-    public InventoryMessage isAbleToEquip(InventoryItem inventoryItem) {
-        String message = String.format("%s needs %s %s%nto equip that %s.", name, "%s", "%s", inventoryItem.name);
-        if (inventoryItem.minIntelligence > getOwnIntelligence()) {
-            String intelligenceMessage = String.format(message, inventoryItem.minIntelligence, "Intelligence");
-            return new InventoryMessage(false, intelligenceMessage);
+    public Optional<String> isAbleToEquip(InventoryItem inventoryItem) {
+        for (InventoryMinimal minimal : InventoryMinimal.values()) {
+            Optional<String> message = minimal.createMessageIfHeroHasNotEnoughFor(inventoryItem, this);
+            if (message.isPresent()) {
+                return message;
+            }
         }
-        if (inventoryItem.minStrength > getOwnStrength()) {
-            String strengthMessage = String.format(message, inventoryItem.minStrength, "Strength");
-            return new InventoryMessage(false, strengthMessage);
+        return Optional.empty();
+    }
+
+//    int getProtectionWithShield() { // todo, protection without shield.
+//        return inventory.getSumOfProtectionWithShield();
+//    }
+
+    int getTotalStatOf(StatType statType) {
+        return getOwnStatOf(statType) + getTotalInventoryStatOf(statType) + getBonusStatOf(statType);
+    }
+
+    int getTotalSkillOf(SkillType skillType) {
+        int ownskill = getOwnSkillOf(skillType);
+        if (ownskill <= 0) {
+            return 0;
         }
-        return new InventoryMessage(true, null);
+        return ownskill + getTotalInventorySkillOf(skillType) + getBonusSkillOf(skillType);
     }
 
-    int getProtectionWithShield() {
-        return inventory.getSumOfProtectionWithShield();
+    public int getOwnStatOf(StatType statType) {
+        switch (statType) {
+            case PROTECTION:
+                return 0;
+            case INTELLIGENCE:
+                return intelligence.current;
+            case DEXTERITY:
+                return dexterity.current;
+            case ENDURANCE:
+                return endurance.current;
+            case STRENGTH:
+                return strength.current;
+            case STAMINA:
+                return stamina.current;
+            default:
+                throw new IllegalArgumentException(String.format("StatType '%s' not usable.", statType));
+        }
     }
 
-    int getIntelligence() {
-        return intelligence.current + intelligence.bonus;
+    public int getTotalInventoryStatOf(StatType statType) {
+        return inventory.getSumOfStat(statType);
     }
 
-    int getStrength() {
-        return strength.current + strength.bonus;
+    private int getBonusStatOf(StatType statType) {
+        switch (statType) {
+            case PROTECTION:
+                return 0; // todo, er moet nog wel een bonus komen voor protection. bijv met een protection spell.
+            case INTELLIGENCE:
+                return intelligence.bonus;
+            case DEXTERITY:
+                return dexterity.bonus;
+            case ENDURANCE:
+                return endurance.bonus;
+            case STRENGTH:
+                return strength.bonus;
+            case STAMINA:
+                return 0;
+            default:
+                throw new IllegalArgumentException(String.format("StatType '%s' not usable.", statType));
+        }
     }
 
-    public int getOwnIntelligence() {
-        return intelligence.current;
+    public int getOwnSkillOf(SkillType skillType) {
+        switch (skillType) {
+            case STEALTH:
+                return stealth.current;
+            case HAFTED:
+                return hafted.current;
+            case POLE:
+                return pole.current;
+            case SHIELD:
+                return shield.current;
+            case SWORD:
+                return sword.current;
+            default:
+                throw new IllegalArgumentException(String.format("SkillType '%s' not usable.", skillType));
+        }
     }
 
-    public int getOwnEndurance() {
-        return endurance.current;
+    public int getTotalInventorySkillOf(SkillType skillType) {
+        return inventory.getSumOfSkill(skillType);
     }
 
-    public int getOwnStrength() {
-        return strength.current;
-    }
-
-    public int getOwnStamina() {
-        return stamina.current;
+    public int getBonusSkillOf(SkillType skillType) {
+        switch (skillType) {
+            case STEALTH:
+                return stealth.bonus;
+            default:
+                return 0;
+        }
     }
 
 }

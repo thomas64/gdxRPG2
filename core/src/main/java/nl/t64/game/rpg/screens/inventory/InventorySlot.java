@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.InventoryGroup;
-import nl.t64.game.rpg.components.party.InventoryMessage;
 
 import java.util.Optional;
 
@@ -110,12 +109,12 @@ class InventorySlot extends Stack {
     }
 
     private boolean doesHeroAcceptItem(InventoryImage draggedItem) {
-        InventoryMessage isHeroAbleToEquip = InventoryUtils.selectedHero.isAbleToEquip(draggedItem.inventoryItem);
-        if (isHeroAbleToEquip.isSuccessful()) {
-            return true;
-        } else {
-            new MessageDialog(isHeroAbleToEquip.getMessage()).show(getStage());
+        Optional<String> message = InventoryUtils.selectedHero.isAbleToEquip(draggedItem.inventoryItem);
+        if (message.isPresent()) {
+            new MessageDialog(message.get()).show(getStage());
             return false;
+        } else {
+            return true;
         }
     }
 

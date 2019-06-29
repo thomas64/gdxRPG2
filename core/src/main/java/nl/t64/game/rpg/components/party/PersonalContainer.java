@@ -56,11 +56,24 @@ class PersonalContainer {
         equipment.replace(inventoryGroup.name(), inventoryItem);
     }
 
-    int getSumOfProtectionWithShield() {
+    int getStatValueOf(InventoryGroup inventoryGroup, StatType statType) {
+        return getInventoryItem(inventoryGroup).map(inventoryItem -> inventoryItem.getAttributeOfStatType(statType))
+                                               .orElse(0);
+    }
+
+    int getSumOfStat(StatType statType) {
         return equipment.values()
                         .stream()
                         .filter(Objects::nonNull)
-                        .mapToInt(item -> item.protection)
+                        .mapToInt(inventoryItem -> inventoryItem.getAttributeOfStatType(statType))
+                        .sum();
+    }
+
+    int getSumOfSkill(SkillType skillType) {
+        return equipment.values()
+                        .stream()
+                        .filter(Objects::nonNull)
+                        .mapToInt(inventoryItem -> inventoryItem.getAttributeOfSkillType(skillType))
                         .sum();
     }
 

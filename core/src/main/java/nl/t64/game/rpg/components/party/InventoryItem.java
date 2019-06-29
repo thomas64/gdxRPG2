@@ -4,15 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import nl.t64.game.rpg.constants.InventoryAttribute;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-
-import static nl.t64.game.rpg.components.party.InventoryGroup.*;
-import static nl.t64.game.rpg.constants.InventoryAttribute.*;
+import java.util.Objects;
 
 
 @NoArgsConstructor
@@ -25,7 +20,7 @@ public class InventoryItem {
     int amount;
     @Getter
     InventoryGroup group;
-    WeaponType skill;
+    SkillType skill;
     int weight;
     @JsonProperty("min_intelligence")
     int minIntelligence;
@@ -56,16 +51,44 @@ public class InventoryItem {
         this.stealth = item.stealth;
     }
 
-    public int getAttribute(InventoryAttribute attribute) {
-        switch (attribute) {
+    public Object getAttributeOfMinimal(InventoryMinimal minimal) {
+        switch (minimal) {
+            case SKILL:
+                return Objects.requireNonNullElse(skill, 0);
+            case MIN_INTELLIGENCE:
+                return minIntelligence;
+            case MIN_STRENGTH:
+                return minStrength;
+            default:
+                throw new IllegalArgumentException(String.format("InventoryMinimal '%s' not usable.", minimal));
+        }
+    }
+
+    public int getAttributeOfStatType(StatType statType) {
+        switch (statType) {
+            case WEIGHT:
+                return weight;
             case BASE_HIT:
                 return baseHit;
             case DAMAGE:
                 return damage;
+            case PROTECTION:
+                return protection;
             case DEFENSE:
                 return defense;
+            case DEXTERITY:
+                return dexterity;
             default:
-                throw new IllegalArgumentException(String.format("InventoryAttribute '%s' not usable.", attribute));
+                return 0;
+        }
+    }
+
+    public int getAttributeOfSkillType(SkillType skillType) {
+        switch (skillType) {
+            case STEALTH:
+                return stealth;
+            default:
+                return 0;
         }
     }
 
@@ -74,58 +97,59 @@ public class InventoryItem {
     }
 
     public boolean isStackable() {
-        return group.equals(RESOURCE);
+        return group.equals(InventoryGroup.RESOURCE);
     }
 
     void increaseAmountWith(InventoryItem sourceItem) {
         amount += sourceItem.amount;
     }
 
-    public List<Map.Entry<String, String>> createDescription() {
-        List<Map.Entry<String, String>> attributes = createListOfPairsWithTitlesAndValues();
+    public List<InventoryDescription> createDescriptionFor(HeroItem hero) {
+        List<InventoryDescription> attributes = new ArrayList<>();
+        attributes.add(new InventoryDescription(group, name, this, hero));
+
+        for (InventoryMinimal minimal : InventoryMinimal.values()) {
+            attributes.add(new InventoryDescription(minimal, getAttributeOfMinimal(minimal), this, hero));
+        }
+        for (StatType statType : StatType.values()) {
+            attributes.add(new InventoryDescription(statType, getAttributeOfStatType(statType), this, hero));
+        }
+        for (SkillType skillType : SkillType.values()) {
+            attributes.add(new InventoryDescription(skillType, getAttributeOfSkillType(skillType), this, hero));
+        }
         return createFilter(attributes);
     }
 
-    private List<Map.Entry<String, String>> createListOfPairsWithTitlesAndValues() {
-        return Arrays.asList(
-                Map.entry(group.title, name),
-                Map.entry(SKILL.title, skill == null ? "0" : skill.title),
-                Map.entry(WEIGHT.title, String.valueOf(weight)),
-                Map.entry(MIN_INTELLIGENCE.title, String.valueOf(minIntelligence)),
-                Map.entry(MIN_STRENGTH.title, String.valueOf(minStrength)),
-                Map.entry(BASE_HIT.title, String.valueOf(baseHit) + "%"),
-                Map.entry(DAMAGE.title, String.valueOf(damage)),
-                Map.entry(PROTECTION.title, String.valueOf(protection)),
-                Map.entry(DEFENSE.title, String.valueOf(defense)),
-                Map.entry(DEXTERITY.title, String.valueOf(dexterity)),
-                Map.entry(STEALTH.title, String.valueOf(stealth))
-        );
-    }
-
-    private List<Map.Entry<String, String>> createFilter(List<Map.Entry<String, String>> attributes) {
-        List<Map.Entry<String, String>> filtered = new ArrayList<>();
+    private List<InventoryDescription> createFilter(List<InventoryDescription> attributes) {
+        List<InventoryDescription> filtered = new ArrayList<>();
         attributes.forEach(attribute -> {
-            if (attribute.getKey().equals(DEXTERITY.title) &&
-                    group.equals(SHIELD)) {
+            if (attribute.key instanceof InventoryGroup) {
                 filtered.add(attribute);
                 return;
             }
-            if (attribute.getKey().equals(STEALTH.title) &&
-                    group.equals(CHEST)) {
+            if (attribute.value instanceof SkillType) {
                 filtered.add(attribute);
                 return;
             }
-            if (attribute.getKey().equals(WEIGHT.title) &&
-                    (group.equals(SHIELD) ||
-                            group.equals(WEAPON) ||
-                            group.equals(RESOURCE))) {
-                return;
-            }
-            if (attribute.getKey().equals(WEIGHT.title)) {
+            if (attribute.key.equals(StatType.DEXTERITY) && group.equals(InventoryGroup.SHIELD)) {
                 filtered.add(attribute);
                 return;
             }
-            if (attribute.getValue().charAt(0) == '0') {
+            if (attribute.key.equals(SkillType.STEALTH) && group.equals(InventoryGroup.CHEST)) {
+                filtered.add(attribute);
+                return;
+            }
+            if (attribute.key.equals(StatType.WEIGHT)
+                    && (group.equals(InventoryGroup.SHIELD)
+                    || group.equals(InventoryGroup.WEAPON)
+                    || group.equals(InventoryGroup.RESOURCE))) {
+                return;
+            }
+            if (attribute.key.equals(StatType.WEIGHT)) {
+                filtered.add(attribute);
+                return;
+            }
+            if (attribute.value.equals(0)) {
                 return;
             }
             filtered.add(attribute);
@@ -134,4 +158,3 @@ public class InventoryItem {
     }
 
 }
-
