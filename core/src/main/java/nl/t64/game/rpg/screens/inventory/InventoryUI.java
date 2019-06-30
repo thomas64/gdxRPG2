@@ -26,6 +26,7 @@ class InventoryUI {
     private static final String TITLE_GLOBAL = "Global Inventory";
     private static final String TITLE_PERSONAL = "Personal Inventory";
     private static final String TITLE_STATS = "Stats";
+    private static final String TITLE_CALC_STATS = "Calculated Stats";
     private static final String TITLE_HEROES = "Heroes";
     private static final float TITLE_PADDING = 50f;
 
@@ -34,10 +35,12 @@ class InventoryUI {
     final Window inventoryWindow;
     final Window equipWindow;
     final Window statsWindow;
+    final Window calcStatsWindow;
     final Window heroesWindow;
     final Map<String, EquipSlotsTable> equipSlotsTables;
     private final InventorySlotTooltip tooltip;
     private final StatsTable statsTable;
+    private final StatsTable calcStatsTable;
     private final HeroesTable heroesTable;
 
     InventoryUI() {
@@ -58,6 +61,9 @@ class InventoryUI {
         this.statsTable = new StatsTable();
         this.statsWindow = createWindow(TITLE_STATS, this.statsTable.stats);
 
+        this.calcStatsTable = new StatsTable();
+        this.calcStatsWindow = createWindow(TITLE_CALC_STATS, this.calcStatsTable.stats);
+
         this.heroesTable = new HeroesTable();
         this.heroesWindow = createWindow(TITLE_HEROES, this.heroesTable.heroes);
     }
@@ -74,14 +80,17 @@ class InventoryUI {
         stage.addActor(inventoryWindow);
         stage.addActor(equipWindow);
         stage.addActor(statsWindow);
+        stage.addActor(calcStatsWindow);
         stage.addActor(heroesWindow);
         stage.addActor(tooltip.window);
     }
 
     void render() {
-        statsTable.render();
-        statsWindow.pack();
+        statsTable.renderStats();
+        calcStatsTable.renderCalcStats();
         heroesTable.render();
+        statsWindow.pack();
+        calcStatsWindow.pack();
         heroesWindow.pack();
     }
 

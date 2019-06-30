@@ -31,7 +31,9 @@ public class InventoryScreen implements Screen, ProfileObserver {
     private static final float EQUIP_WINDOW_POSITION_X = 1038f;
     private static final float EQUIP_WINDOW_POSITION_Y = 50f;
     private static final float STATS_WINDOW_POSITION_X = 63f;
-    private static final float STATS_WINDOW_POSITION_Y = 50f;
+    private static final float STATS_WINDOW_POSITION_Y = 430f;
+    private static final float CALC_STATS_WINDOW_POSITION_X = 63f;
+    private static final float CALC_STATS_WINDOW_POSITION_Y = 50f;
     private static final float HEROES_WINDOW_POSITION_X = 63f;
     private static final float HEROES_WINDOW_POSITION_Y = 834f;
     private static final float BUTTON_SIZE = 32f;
@@ -45,6 +47,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
     private Vector2 inventoryWindowPosition;
     private Vector2 equipWindowPosition;
     private Vector2 statsWindowPosition;
+    private Vector2 calcStatsWindowPosition;
     private Vector2 heroesWindowPosition;
 
     public InventoryScreen() {
@@ -56,6 +59,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
         inventoryWindowPosition = new Vector2(INVENTORY_WINDOW_POSITION_X, INVENTORY_WINDOW_POSITION_Y);
         equipWindowPosition = new Vector2(EQUIP_WINDOW_POSITION_X, EQUIP_WINDOW_POSITION_Y);
         statsWindowPosition = new Vector2(STATS_WINDOW_POSITION_X, STATS_WINDOW_POSITION_Y);
+        calcStatsWindowPosition = new Vector2(CALC_STATS_WINDOW_POSITION_X, CALC_STATS_WINDOW_POSITION_Y);
         heroesWindowPosition = new Vector2(HEROES_WINDOW_POSITION_X, HEROES_WINDOW_POSITION_Y);
         onNotifySave(profileManager);
     }
@@ -65,6 +69,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
         profileManager.setProperty("inventoryWindowPosition", inventoryWindowPosition);
         profileManager.setProperty("equipWindowPosition", equipWindowPosition);
         profileManager.setProperty("statsWindowPosition", statsWindowPosition);
+        profileManager.setProperty("calcStatsWindowPosition", calcStatsWindowPosition);
         profileManager.setProperty("heroesWindowPosition", heroesWindowPosition);
     }
 
@@ -73,6 +78,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
         inventoryWindowPosition = profileManager.getProperty("inventoryWindowPosition", Vector2.class);
         equipWindowPosition = profileManager.getProperty("equipWindowPosition", Vector2.class);
         statsWindowPosition = profileManager.getProperty("statsWindowPosition", Vector2.class);
+        calcStatsWindowPosition = profileManager.getProperty("calcStatsWindowPosition", Vector2.class);
         heroesWindowPosition = profileManager.getProperty("heroesWindowPosition", Vector2.class);
     }
 
@@ -86,6 +92,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
         inventoryUI.inventoryWindow.setPosition(inventoryWindowPosition.x, inventoryWindowPosition.y);
         inventoryUI.equipWindow.setPosition(equipWindowPosition.x, equipWindowPosition.y);
         inventoryUI.statsWindow.setPosition(statsWindowPosition.x, statsWindowPosition.y);
+        inventoryUI.calcStatsWindow.setPosition(calcStatsWindowPosition.x, calcStatsWindowPosition.y);
         inventoryUI.heroesWindow.setPosition(heroesWindowPosition.x, heroesWindowPosition.y);
         inventoryUI.addToStage(stage);
     }
@@ -163,6 +170,8 @@ public class InventoryScreen implements Screen, ProfileObserver {
         equipWindowPosition.y = inventoryUI.equipWindow.getY();
         statsWindowPosition.x = inventoryUI.statsWindow.getX();
         statsWindowPosition.y = inventoryUI.statsWindow.getY();
+        calcStatsWindowPosition.x = inventoryUI.calcStatsWindow.getX();
+        calcStatsWindowPosition.y = inventoryUI.calcStatsWindow.getY();
         heroesWindowPosition.x = inventoryUI.heroesWindow.getX();
         heroesWindowPosition.y = inventoryUI.heroesWindow.getY();
     }
@@ -171,6 +180,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
         inventoryUI.inventoryWindow.setPosition(INVENTORY_WINDOW_POSITION_X, INVENTORY_WINDOW_POSITION_Y);
         inventoryUI.equipWindow.setPosition(EQUIP_WINDOW_POSITION_X, EQUIP_WINDOW_POSITION_Y);
         inventoryUI.statsWindow.setPosition(STATS_WINDOW_POSITION_X, STATS_WINDOW_POSITION_Y);
+        inventoryUI.calcStatsWindow.setPosition(CALC_STATS_WINDOW_POSITION_X, CALC_STATS_WINDOW_POSITION_Y);
         inventoryUI.heroesWindow.setPosition(HEROES_WINDOW_POSITION_X, HEROES_WINDOW_POSITION_Y);
     }
 

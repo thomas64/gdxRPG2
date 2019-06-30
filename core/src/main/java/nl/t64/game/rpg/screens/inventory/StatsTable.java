@@ -23,10 +23,10 @@ class StatsTable {
     private static final String TEXT_FONT = "fonts/spectral.ttf";
     private static final int TEXT_SIZE = 20;
     private static final float LINE_HEIGHT = 26f;
-    private static final float FIRST_COLUMN_WIDTH = 200f;
-    private static final float SECOND_COLUMN_WIDTH = 50f;
-    private static final float THIRD_COLUMN_WIDTH = 50f;
-    private static final float FOURTH_COLUMN_WIDTH = 50f;
+    private static final float FIRST_COLUMN_WIDTH = 190f;
+    private static final float SECOND_COLUMN_WIDTH = 40f;
+    private static final float THIRD_COLUMN_WIDTH = 30f;
+    private static final float FOURTH_COLUMN_WIDTH = 30f;
     private static final float PADDING = 20f;
 
     final Table stats;
@@ -57,7 +57,7 @@ class StatsTable {
         stats.setBackground(drawable);
     }
 
-    void render() {
+    void renderStats() {
         HeroItem selectedHero = InventoryUtils.selectedHero;
         stats.clear();
 
@@ -103,32 +103,51 @@ class StatsTable {
         stats.add(String.valueOf(selectedHero.getNeededXpForNextLevel())); // todo, is dit de juiste van de 2 methodes?
         stats.add("");
         stats.add("").row();
-        stats.add("").row();
+    }
+
+    void renderCalcStats() {
+        HeroItem selectedHero = InventoryUtils.selectedHero;
+        stats.clear();
 
         stats.add("Weight");
         stats.add("?");
         stats.add("");
         stats.add("").row();
+
         stats.add("Movepoints");
         stats.add("?");
         stats.add("");
         stats.add("").row();
+
         stats.add(StatType.BASE_HIT.getTitle());
         stats.add(String.format("%s%%", selectedHero.getStatValueOf(WEAPON, StatType.BASE_HIT)));
         stats.add("");
         createPreview(StatType.BASE_HIT, selectedHero);
+
         stats.add(StatType.DAMAGE.getTitle());
         stats.add(String.valueOf(selectedHero.getStatValueOf(WEAPON, StatType.DAMAGE)));
         stats.add("");
         createPreview(StatType.DAMAGE, selectedHero);
-        stats.add("Protection");
-        stats.add("?");
+
+        stats.add(String.format("Total %s", StatType.PROTECTION.getTitle()));
+        stats.add(String.valueOf(selectedHero.getTotalStatOf(StatType.PROTECTION)));
         stats.add("");
-        stats.add("").row();
+        createPreview(StatType.PROTECTION, selectedHero);
+
+        stats.add(String.format("Shield %s", StatType.PROTECTION.getTitle()));
+        stats.add(String.valueOf(selectedHero.getStatValueOf(SHIELD, StatType.PROTECTION)));
+        stats.add("");
+        createShieldPreview(StatType.PROTECTION, selectedHero);
+
         stats.add(StatType.DEFENSE.getTitle());
         stats.add(String.valueOf(selectedHero.getStatValueOf(SHIELD, StatType.DEFENSE)));
         stats.add("");
         createPreview(StatType.DEFENSE, selectedHero);
+
+        stats.add("Spell Battery");
+        stats.add("?");
+        stats.add("");
+        stats.add("").row();
     }
 
     private void createBonusFromInventory(StatType statType, HeroItem selectedHero) {
@@ -141,6 +160,17 @@ class StatsTable {
             stats.add(label);
         } else {
             stats.add("");
+        }
+    }
+
+    private void createShieldPreview(StatType statType, HeroItem selectedHero) {
+        InventoryItem hoveredItem = InventoryUtils.hoveredItem;
+        if (hoveredItem == null) {
+            stats.add("").row();
+        } else if (hoveredItem.getGroup().equals(SHIELD)) {
+            createPreview(statType, selectedHero);
+        } else {
+            stats.add("").row();
         }
     }
 

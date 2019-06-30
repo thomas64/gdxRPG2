@@ -76,11 +76,7 @@ public class HeroItem {
         return Optional.empty();
     }
 
-//    int getProtectionWithShield() { // todo, protection without shield.
-//        return inventory.getSumOfProtectionWithShield();
-//    }
-
-    int getTotalStatOf(StatType statType) {
+    public int getTotalStatOf(StatType statType) {
         return getOwnStatOf(statType) + getTotalInventoryStatOf(statType) + stats.getBonusStatOf(statType);
     }
 
