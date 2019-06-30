@@ -94,10 +94,6 @@ class InventoryUI {
         heroesWindow.pack();
     }
 
-    void dispose() {
-        heroesTable.dispose();
-    }
-
     private Window createWindow(String title, Table table) {
         var window = new Window(title, createWindowStyle());
         window.add(table);

@@ -125,7 +125,6 @@ public class InventoryScreen implements Screen, ProfileObserver {
     public void hide() {
         stage.clear();
         Gdx.input.setInputProcessor(null);
-        inventoryUI.dispose();
     }
 
     @Override
