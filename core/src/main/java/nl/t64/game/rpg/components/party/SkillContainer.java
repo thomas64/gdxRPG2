@@ -2,6 +2,10 @@ package nl.t64.game.rpg.components.party;
 
 import lombok.Setter;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Setter
 class SkillContainer {
@@ -12,20 +16,27 @@ class SkillContainer {
     private Shield shield;
     private Sword sword;
 
+    List<SkillType> getAllAboveZero() {
+        return Arrays.stream(SkillType.values())
+                     .filter(this::hasPositiveQuantity)
+                     .collect(Collectors.toList());
+    }
+
     int getOwnSkillOf(SkillType skillType) {
         switch (skillType) {
             case STEALTH:
-                return stealth.current;
+                return stealth.actual;
             case HAFTED:
-                return hafted.current;
+                return hafted.actual;
             case POLE:
-                return pole.current;
+                return pole.actual;
             case SHIELD:
-                return shield.current;
+                return shield.actual;
             case SWORD:
-                return sword.current;
+                return sword.actual;
             default:
-                throw new IllegalArgumentException(String.format("SkillType '%s' not usable.", skillType));
+                return 0; // todo, deze vervangen door onderstaande regel uiteindelijk, wanneer ze allemaal in deze lijst staan.
+//                throw new IllegalArgumentException(String.format("SkillType '%s' not usable.", skillType));
         }
     }
 
@@ -36,6 +47,10 @@ class SkillContainer {
             default:
                 return 0;
         }
+    }
+
+    private boolean hasPositiveQuantity(SkillType skillType) {
+        return getOwnSkillOf(skillType) > 0;
     }
 
 }

@@ -8,11 +8,11 @@ class Stealth {
     private static final int MAXIMUM = 10;
     private static final float UPGRADE = 4f;
 
-    int current;
+    int actual;
     int bonus;
 
-    Stealth(int current) {
-        this.current = current;
+    Stealth(int actual) {
+        this.actual = actual;
         this.bonus = 0;
     }
 
@@ -23,10 +23,10 @@ class Hafted {
     private static final int MAXIMUM = 10;
     private static final float UPGRADE = 3.2f;
 
-    int current;
+    int actual;
 
-    Hafted(int current) {
-        this.current = current;
+    Hafted(int actual) {
+        this.actual = actual;
     }
 
 }
@@ -36,10 +36,10 @@ class Pole {
     private static final int MAXIMUM = 10;
     private static final float UPGRADE = 3.2f;
 
-    int current;
+    int actual;
 
-    Pole(int current) {
-        this.current = current;
+    Pole(int actual) {
+        this.actual = actual;
     }
 
 }
@@ -49,10 +49,10 @@ class Shield {
     private static final int MAXIMUM = 10;
     private static final float UPGRADE = 4f;
 
-    int current;
+    int actual;
 
-    Shield(int current) {
-        this.current = current;
+    Shield(int actual) {
+        this.actual = actual;
     }
 
 }
@@ -62,10 +62,10 @@ class Sword {
     private static final int MAXIMUM = 10;
     private static final float UPGRADE = 4.8f;
 
-    int current;
+    int actual;
 
-    Sword(int current) {
-        this.current = current;
+    Sword(int actual) {
+        this.actual = actual;
     }
 
 }

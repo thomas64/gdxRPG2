@@ -204,10 +204,10 @@ class HeroTest extends GameTest {
         softly.assertThat(mozes.getOwnSkillOf(SkillType.SWORD)).isEqualTo(3);
         softly.assertThat(mozes.getTotalSkillOf(SkillType.SWORD)).isEqualTo(3);
 
-        softly.assertThat(mozes.getStatValueOf(WEAPON, StatType.BASE_HIT)).isEqualTo(40);
-        softly.assertThat(mozes.getStatValueOf(WEAPON, StatType.DAMAGE)).isEqualTo(13);
-        softly.assertThat(mozes.getStatValueOf(SHIELD, StatType.DEFENSE)).isEqualTo(5);
-        softly.assertThat(mozes.getTotalStatOf(StatType.PROTECTION)).isEqualTo(6);
+        softly.assertThat(mozes.getCalcValueOf(WEAPON, CalcType.BASE_HIT)).isEqualTo(40);
+        softly.assertThat(mozes.getCalcValueOf(WEAPON, CalcType.DAMAGE)).isEqualTo(13);
+        softly.assertThat(mozes.getCalcValueOf(SHIELD, CalcType.DEFENSE)).isEqualTo(5);
+        softly.assertThat(mozes.getTotalCalcOf(CalcType.PROTECTION)).isEqualTo(6);
 
         softly.assertThat(mozes.getInventoryItem(WEAPON)).get().hasFieldOrPropertyWithValue("id", "basic_shortsword");
         softly.assertThat(mozes.getInventoryItem(SHIELD)).get().hasFieldOrPropertyWithValue("id", "basic_light_shield");
@@ -244,10 +244,10 @@ class HeroTest extends GameTest {
         softly.assertThat(luana.getOwnSkillOf(SkillType.SWORD)).isEqualTo(1);
         softly.assertThat(luana.getTotalSkillOf(SkillType.SWORD)).isEqualTo(1);
 
-        softly.assertThat(luana.getStatValueOf(WEAPON, StatType.BASE_HIT)).isEqualTo(40);
-        softly.assertThat(luana.getStatValueOf(WEAPON, StatType.DAMAGE)).isEqualTo(11);
-        softly.assertThat(luana.getStatValueOf(SHIELD, StatType.DEFENSE)).isEqualTo(0);
-        softly.assertThat(luana.getTotalStatOf(StatType.PROTECTION)).isEqualTo(1);
+        softly.assertThat(luana.getCalcValueOf(WEAPON, CalcType.BASE_HIT)).isEqualTo(40);
+        softly.assertThat(luana.getCalcValueOf(WEAPON, CalcType.DAMAGE)).isEqualTo(11);
+        softly.assertThat(luana.getCalcValueOf(SHIELD, CalcType.DEFENSE)).isEqualTo(0);
+        softly.assertThat(luana.getTotalCalcOf(CalcType.PROTECTION)).isEqualTo(1);
 
         softly.assertThat(luana.getInventoryItem(WEAPON)).get().hasFieldOrPropertyWithValue("id", "basic_dagger");
         softly.assertThat(luana.getInventoryItem(SHIELD)).isEmpty();
@@ -284,10 +284,10 @@ class HeroTest extends GameTest {
         softly.assertThat(reignald.getOwnSkillOf(SkillType.SWORD)).isEqualTo(4);
         softly.assertThat(reignald.getTotalSkillOf(SkillType.SWORD)).isEqualTo(4);
 
-        softly.assertThat(reignald.getStatValueOf(WEAPON, StatType.BASE_HIT)).isEqualTo(50);
-        softly.assertThat(reignald.getStatValueOf(WEAPON, StatType.DAMAGE)).isEqualTo(15);
-        softly.assertThat(reignald.getStatValueOf(SHIELD, StatType.DEFENSE)).isEqualTo(10);
-        softly.assertThat(reignald.getTotalStatOf(StatType.PROTECTION)).isEqualTo(8);
+        softly.assertThat(reignald.getCalcValueOf(WEAPON, CalcType.BASE_HIT)).isEqualTo(50);
+        softly.assertThat(reignald.getCalcValueOf(WEAPON, CalcType.DAMAGE)).isEqualTo(15);
+        softly.assertThat(reignald.getCalcValueOf(SHIELD, CalcType.DEFENSE)).isEqualTo(10);
+        softly.assertThat(reignald.getTotalCalcOf(CalcType.PROTECTION)).isEqualTo(8);
 
         //////
 
@@ -319,10 +319,10 @@ class HeroTest extends GameTest {
         softly.assertThat(ryiah.getOwnSkillOf(SkillType.SWORD)).isEqualTo(3);
         softly.assertThat(ryiah.getTotalSkillOf(SkillType.SWORD)).isEqualTo(3);
 
-        softly.assertThat(ryiah.getStatValueOf(WEAPON, StatType.BASE_HIT)).isEqualTo(50);
-        softly.assertThat(ryiah.getStatValueOf(WEAPON, StatType.DAMAGE)).isEqualTo(4);
-        softly.assertThat(ryiah.getStatValueOf(SHIELD, StatType.DEFENSE)).isEqualTo(0);
-        softly.assertThat(ryiah.getTotalStatOf(StatType.PROTECTION)).isEqualTo(1);
+        softly.assertThat(ryiah.getCalcValueOf(WEAPON, CalcType.BASE_HIT)).isEqualTo(50);
+        softly.assertThat(ryiah.getCalcValueOf(WEAPON, CalcType.DAMAGE)).isEqualTo(4);
+        softly.assertThat(ryiah.getCalcValueOf(SHIELD, CalcType.DEFENSE)).isEqualTo(0);
+        softly.assertThat(ryiah.getTotalCalcOf(CalcType.PROTECTION)).isEqualTo(1);
 
         //////
 
@@ -354,10 +354,10 @@ class HeroTest extends GameTest {
         softly.assertThat(valter.getOwnSkillOf(SkillType.SWORD)).isEqualTo(1);
         softly.assertThat(valter.getTotalSkillOf(SkillType.SWORD)).isEqualTo(1);
 
-        softly.assertThat(valter.getStatValueOf(WEAPON, StatType.BASE_HIT)).isEqualTo(40);
-        softly.assertThat(valter.getStatValueOf(WEAPON, StatType.DAMAGE)).isEqualTo(11);
-        softly.assertThat(valter.getStatValueOf(SHIELD, StatType.DEFENSE)).isEqualTo(0);
-        softly.assertThat(valter.getTotalStatOf(StatType.PROTECTION)).isEqualTo(1);
+        softly.assertThat(valter.getCalcValueOf(WEAPON, CalcType.BASE_HIT)).isEqualTo(40);
+        softly.assertThat(valter.getCalcValueOf(WEAPON, CalcType.DAMAGE)).isEqualTo(11);
+        softly.assertThat(valter.getCalcValueOf(SHIELD, CalcType.DEFENSE)).isEqualTo(0);
+        softly.assertThat(valter.getTotalCalcOf(CalcType.PROTECTION)).isEqualTo(1);
 
         //////
 
@@ -389,10 +389,10 @@ class HeroTest extends GameTest {
         softly.assertThat(galen.getOwnSkillOf(SkillType.SWORD)).isEqualTo(-1);
         softly.assertThat(galen.getTotalSkillOf(SkillType.SWORD)).isEqualTo(0);
 
-        softly.assertThat(galen.getStatValueOf(WEAPON, StatType.BASE_HIT)).isEqualTo(30);
-        softly.assertThat(galen.getStatValueOf(WEAPON, StatType.DAMAGE)).isEqualTo(20);
-        softly.assertThat(galen.getStatValueOf(SHIELD, StatType.DEFENSE)).isEqualTo(10);
-        softly.assertThat(galen.getTotalStatOf(StatType.PROTECTION)).isEqualTo(10);
+        softly.assertThat(galen.getCalcValueOf(WEAPON, CalcType.BASE_HIT)).isEqualTo(30);
+        softly.assertThat(galen.getCalcValueOf(WEAPON, CalcType.DAMAGE)).isEqualTo(20);
+        softly.assertThat(galen.getCalcValueOf(SHIELD, CalcType.DEFENSE)).isEqualTo(10);
+        softly.assertThat(galen.getTotalCalcOf(CalcType.PROTECTION)).isEqualTo(10);
 
         //////
 
@@ -424,10 +424,10 @@ class HeroTest extends GameTest {
         softly.assertThat(jaspar.getOwnSkillOf(SkillType.SWORD)).isEqualTo(6);
         softly.assertThat(jaspar.getTotalSkillOf(SkillType.SWORD)).isEqualTo(6);
 
-        softly.assertThat(jaspar.getStatValueOf(WEAPON, StatType.BASE_HIT)).isEqualTo(40);
-        softly.assertThat(jaspar.getStatValueOf(WEAPON, StatType.DAMAGE)).isEqualTo(17);
-        softly.assertThat(jaspar.getStatValueOf(SHIELD, StatType.DEFENSE)).isEqualTo(15);
-        softly.assertThat(jaspar.getTotalStatOf(StatType.PROTECTION)).isEqualTo(18);
+        softly.assertThat(jaspar.getCalcValueOf(WEAPON, CalcType.BASE_HIT)).isEqualTo(40);
+        softly.assertThat(jaspar.getCalcValueOf(WEAPON, CalcType.DAMAGE)).isEqualTo(17);
+        softly.assertThat(jaspar.getCalcValueOf(SHIELD, CalcType.DEFENSE)).isEqualTo(15);
+        softly.assertThat(jaspar.getTotalCalcOf(CalcType.PROTECTION)).isEqualTo(18);
 
         //////
 
@@ -459,10 +459,10 @@ class HeroTest extends GameTest {
         softly.assertThat(kiara.getOwnSkillOf(SkillType.SWORD)).isEqualTo(7);
         softly.assertThat(kiara.getTotalSkillOf(SkillType.SWORD)).isEqualTo(7);
 
-        softly.assertThat(kiara.getStatValueOf(WEAPON, StatType.BASE_HIT)).isEqualTo(50);
-        softly.assertThat(kiara.getStatValueOf(WEAPON, StatType.DAMAGE)).isEqualTo(13);
-        softly.assertThat(kiara.getStatValueOf(SHIELD, StatType.DEFENSE)).isEqualTo(0);
-        softly.assertThat(kiara.getTotalStatOf(StatType.PROTECTION)).isEqualTo(2);
+        softly.assertThat(kiara.getCalcValueOf(WEAPON, CalcType.BASE_HIT)).isEqualTo(50);
+        softly.assertThat(kiara.getCalcValueOf(WEAPON, CalcType.DAMAGE)).isEqualTo(13);
+        softly.assertThat(kiara.getCalcValueOf(SHIELD, CalcType.DEFENSE)).isEqualTo(0);
+        softly.assertThat(kiara.getTotalCalcOf(CalcType.PROTECTION)).isEqualTo(2);
 
         //////
 
@@ -494,10 +494,10 @@ class HeroTest extends GameTest {
         softly.assertThat(luthais.getOwnSkillOf(SkillType.SWORD)).isEqualTo(0);
         softly.assertThat(luthais.getTotalSkillOf(SkillType.SWORD)).isEqualTo(0);
 
-        softly.assertThat(luthais.getStatValueOf(WEAPON, StatType.BASE_HIT)).isEqualTo(80);
-        softly.assertThat(luthais.getStatValueOf(WEAPON, StatType.DAMAGE)).isEqualTo(10);
-        softly.assertThat(luthais.getStatValueOf(SHIELD, StatType.DEFENSE)).isEqualTo(0);
-        softly.assertThat(luthais.getTotalStatOf(StatType.PROTECTION)).isEqualTo(3);
+        softly.assertThat(luthais.getCalcValueOf(WEAPON, CalcType.BASE_HIT)).isEqualTo(80);
+        softly.assertThat(luthais.getCalcValueOf(WEAPON, CalcType.DAMAGE)).isEqualTo(10);
+        softly.assertThat(luthais.getCalcValueOf(SHIELD, CalcType.DEFENSE)).isEqualTo(0);
+        softly.assertThat(luthais.getTotalCalcOf(CalcType.PROTECTION)).isEqualTo(3);
 
         //////
 
@@ -529,10 +529,10 @@ class HeroTest extends GameTest {
         softly.assertThat(elias.getOwnSkillOf(SkillType.SWORD)).isEqualTo(7);
         softly.assertThat(elias.getTotalSkillOf(SkillType.SWORD)).isEqualTo(7);
 
-        softly.assertThat(elias.getStatValueOf(WEAPON, StatType.BASE_HIT)).isEqualTo(50);
-        softly.assertThat(elias.getStatValueOf(WEAPON, StatType.DAMAGE)).isEqualTo(17);
-        softly.assertThat(elias.getStatValueOf(SHIELD, StatType.DEFENSE)).isEqualTo(0);
-        softly.assertThat(elias.getTotalStatOf(StatType.PROTECTION)).isEqualTo(6);
+        softly.assertThat(elias.getCalcValueOf(WEAPON, CalcType.BASE_HIT)).isEqualTo(50);
+        softly.assertThat(elias.getCalcValueOf(WEAPON, CalcType.DAMAGE)).isEqualTo(17);
+        softly.assertThat(elias.getCalcValueOf(SHIELD, CalcType.DEFENSE)).isEqualTo(0);
+        softly.assertThat(elias.getTotalCalcOf(CalcType.PROTECTION)).isEqualTo(6);
 
         //////
 
@@ -564,10 +564,10 @@ class HeroTest extends GameTest {
         softly.assertThat(onarr.getOwnSkillOf(SkillType.SWORD)).isEqualTo(5);
         softly.assertThat(onarr.getTotalSkillOf(SkillType.SWORD)).isEqualTo(5);
 
-        softly.assertThat(onarr.getStatValueOf(WEAPON, StatType.BASE_HIT)).isEqualTo(40);
-        softly.assertThat(onarr.getStatValueOf(WEAPON, StatType.DAMAGE)).isEqualTo(24);
-        softly.assertThat(onarr.getStatValueOf(SHIELD, StatType.DEFENSE)).isEqualTo(15);
-        softly.assertThat(onarr.getTotalStatOf(StatType.PROTECTION)).isEqualTo(16);
+        softly.assertThat(onarr.getCalcValueOf(WEAPON, CalcType.BASE_HIT)).isEqualTo(40);
+        softly.assertThat(onarr.getCalcValueOf(WEAPON, CalcType.DAMAGE)).isEqualTo(24);
+        softly.assertThat(onarr.getCalcValueOf(SHIELD, CalcType.DEFENSE)).isEqualTo(15);
+        softly.assertThat(onarr.getTotalCalcOf(CalcType.PROTECTION)).isEqualTo(16);
 
         //////
 
@@ -599,10 +599,10 @@ class HeroTest extends GameTest {
         softly.assertThat(duilio.getOwnSkillOf(SkillType.SWORD)).isEqualTo(10);
         softly.assertThat(duilio.getTotalSkillOf(SkillType.SWORD)).isEqualTo(10);
 
-        softly.assertThat(duilio.getStatValueOf(WEAPON, StatType.BASE_HIT)).isEqualTo(60);
-        softly.assertThat(duilio.getStatValueOf(WEAPON, StatType.DAMAGE)).isEqualTo(17);
-        softly.assertThat(duilio.getStatValueOf(SHIELD, StatType.DEFENSE)).isEqualTo(15);
-        softly.assertThat(duilio.getTotalStatOf(StatType.PROTECTION)).isEqualTo(10);
+        softly.assertThat(duilio.getCalcValueOf(WEAPON, CalcType.BASE_HIT)).isEqualTo(60);
+        softly.assertThat(duilio.getCalcValueOf(WEAPON, CalcType.DAMAGE)).isEqualTo(17);
+        softly.assertThat(duilio.getCalcValueOf(SHIELD, CalcType.DEFENSE)).isEqualTo(15);
+        softly.assertThat(duilio.getTotalCalcOf(CalcType.PROTECTION)).isEqualTo(10);
 
         //////
 
@@ -634,10 +634,10 @@ class HeroTest extends GameTest {
         softly.assertThat(iellwen.getOwnSkillOf(SkillType.SWORD)).isEqualTo(10);
         softly.assertThat(iellwen.getTotalSkillOf(SkillType.SWORD)).isEqualTo(10);
 
-        softly.assertThat(iellwen.getStatValueOf(WEAPON, StatType.BASE_HIT)).isEqualTo(60);
-        softly.assertThat(iellwen.getStatValueOf(WEAPON, StatType.DAMAGE)).isEqualTo(17);
-        softly.assertThat(iellwen.getStatValueOf(SHIELD, StatType.DEFENSE)).isEqualTo(0);
-        softly.assertThat(iellwen.getTotalStatOf(StatType.PROTECTION)).isEqualTo(7);
+        softly.assertThat(iellwen.getCalcValueOf(WEAPON, CalcType.BASE_HIT)).isEqualTo(60);
+        softly.assertThat(iellwen.getCalcValueOf(WEAPON, CalcType.DAMAGE)).isEqualTo(17);
+        softly.assertThat(iellwen.getCalcValueOf(SHIELD, CalcType.DEFENSE)).isEqualTo(0);
+        softly.assertThat(iellwen.getTotalCalcOf(CalcType.PROTECTION)).isEqualTo(7);
 
         //////
 
@@ -669,10 +669,10 @@ class HeroTest extends GameTest {
         softly.assertThat(faeron.getOwnSkillOf(SkillType.SWORD)).isEqualTo(10);
         softly.assertThat(faeron.getTotalSkillOf(SkillType.SWORD)).isEqualTo(10);
 
-        softly.assertThat(faeron.getStatValueOf(WEAPON, StatType.BASE_HIT)).isEqualTo(60);
-        softly.assertThat(faeron.getStatValueOf(WEAPON, StatType.DAMAGE)).isEqualTo(24);
-        softly.assertThat(faeron.getStatValueOf(SHIELD, StatType.DEFENSE)).isEqualTo(0);
-        softly.assertThat(faeron.getTotalStatOf(StatType.PROTECTION)).isEqualTo(4);
+        softly.assertThat(faeron.getCalcValueOf(WEAPON, CalcType.BASE_HIT)).isEqualTo(60);
+        softly.assertThat(faeron.getCalcValueOf(WEAPON, CalcType.DAMAGE)).isEqualTo(24);
+        softly.assertThat(faeron.getCalcValueOf(SHIELD, CalcType.DEFENSE)).isEqualTo(0);
+        softly.assertThat(faeron.getTotalCalcOf(CalcType.PROTECTION)).isEqualTo(4);
 
         //////
 

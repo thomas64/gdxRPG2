@@ -134,9 +134,9 @@ class InventoryTest extends GameTest {
         assertThat(description.get(1).value).isEqualTo(SkillType.HAFTED);
         assertThat(description.get(2).key).isEqualTo(InventoryMinimal.MIN_STRENGTH);
         assertThat(description.get(2).value).isEqualTo(15);
-        assertThat(description.get(3).key).isEqualTo(StatType.BASE_HIT);
+        assertThat(description.get(3).key).isEqualTo(CalcType.BASE_HIT);
         assertThat(description.get(3).value).isEqualTo(30);
-        assertThat(description.get(4).key).isEqualTo(StatType.DAMAGE);
+        assertThat(description.get(4).key).isEqualTo(CalcType.DAMAGE);
         assertThat(description.get(4).value).isEqualTo(18);
         assertThatExceptionOfType(IndexOutOfBoundsException.class).isThrownBy(() -> description.get(5));
     }
@@ -153,9 +153,9 @@ class InventoryTest extends GameTest {
         assertThat(description.get(1).value).isEqualTo(SkillType.SHIELD);
         assertThat(description.get(2).key).isEqualTo(InventoryMinimal.MIN_STRENGTH);
         assertThat(description.get(2).value).isEqualTo(14);
-        assertThat(description.get(3).key).isEqualTo(StatType.PROTECTION);
+        assertThat(description.get(3).key).isEqualTo(CalcType.PROTECTION);
         assertThat(description.get(3).value).isEqualTo(1);
-        assertThat(description.get(4).key).isEqualTo(StatType.DEFENSE);
+        assertThat(description.get(4).key).isEqualTo(CalcType.DEFENSE);
         assertThat(description.get(4).value).isEqualTo(5);
         assertThat(description.get(5).key).isEqualTo(StatType.DEXTERITY);
         assertThat(description.get(5).value).isEqualTo(-2);
@@ -172,9 +172,9 @@ class InventoryTest extends GameTest {
         List<InventoryDescription> description = weapon.createDescriptionFor(heroMock);
         assertThat(description.get(0).key).isEqualTo(InventoryGroup.CHEST);
         assertThat(description.get(0).value).isEqualTo("Basic Light Chest");
-        assertThat(description.get(1).key).isEqualTo(StatType.WEIGHT);
+        assertThat(description.get(1).key).isEqualTo(CalcType.WEIGHT);
         assertThat(description.get(1).value).isEqualTo(1);
-        assertThat(description.get(2).key).isEqualTo(StatType.PROTECTION);
+        assertThat(description.get(2).key).isEqualTo(CalcType.PROTECTION);
         assertThat(description.get(2).value).isEqualTo(1);
         assertThat(description.get(3).key).isEqualTo(SkillType.STEALTH);
         assertThat(description.get(3).value).isEqualTo(0);

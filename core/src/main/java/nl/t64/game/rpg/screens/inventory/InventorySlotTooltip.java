@@ -9,9 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.components.party.CalcType;
 import nl.t64.game.rpg.components.party.InventoryDescription;
 import nl.t64.game.rpg.components.party.SkillType;
-import nl.t64.game.rpg.components.party.StatType;
 import nl.t64.game.rpg.components.party.SuperEnum;
 
 
@@ -83,7 +83,7 @@ class InventorySlotTooltip {
     private String getValue(InventoryDescription attribute) {
         if (attribute.getValue() instanceof SkillType) {
             return ((SkillType) attribute.getValue()).getTitle();
-        } else if (attribute.getKey().equals(StatType.BASE_HIT)) {
+        } else if (attribute.getKey().equals(CalcType.BASE_HIT)) {
             return String.format("%s%%", attribute.getValue());
         } else {
             return String.valueOf(attribute.getValue());

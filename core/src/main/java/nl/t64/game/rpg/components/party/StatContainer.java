@@ -33,41 +33,39 @@ class StatContainer {
     }
 
     int getLevel() {
-        return level.current;
+        return level.actual;
     }
 
     Map<String, Integer> getAllHpStats() {
-        return Map.of("lvlCur", level.current,
-                      "lvlHp", level.hitpoints,
-                      "staCur", stamina.current,
-                      "staHp", stamina.hitpoints,
-                      "eduCur", endurance.current,
-                      "eduHp", endurance.hitpoints,
+        return Map.of("lvlCur", level.actual,
+                      "lvlHp", level.variable,
+                      "staCur", stamina.actual,
+                      "staHp", stamina.variable,
+                      "eduCur", endurance.actual,
+                      "eduHp", endurance.variable,
                       "eduBon", endurance.bonus);
     }
 
     int getMaximumHp() {
-        return level.current + stamina.current + endurance.current + endurance.bonus;
+        return level.actual + stamina.actual + endurance.actual + endurance.bonus;
     }
 
     int getCurrentHp() {
-        return level.hitpoints + stamina.hitpoints + endurance.hitpoints + endurance.bonus;
+        return level.variable + stamina.variable + endurance.variable + endurance.bonus;
     }
 
     int getOwnStatOf(StatType statType) {
         switch (statType) {
-            case PROTECTION:
-                return 0;
             case INTELLIGENCE:
-                return intelligence.current;
+                return intelligence.actual;
             case DEXTERITY:
-                return dexterity.current;
+                return dexterity.actual;
             case ENDURANCE:
-                return endurance.current;
+                return endurance.actual;
             case STRENGTH:
-                return strength.current;
+                return strength.actual;
             case STAMINA:
-                return stamina.current;
+                return stamina.actual;
             default:
                 throw new IllegalArgumentException(String.format("StatType '%s' not usable.", statType));
         }
@@ -75,8 +73,6 @@ class StatContainer {
 
     int getBonusStatOf(StatType statType) {
         switch (statType) {
-            case PROTECTION:
-                return 0; // todo, er moet nog wel een bonus komen voor protection. bijv met een protection spell.
             case INTELLIGENCE:
                 return intelligence.bonus;
             case DEXTERITY:
@@ -86,7 +82,7 @@ class StatContainer {
             case STRENGTH:
                 return strength.bonus;
             case STAMINA:
-                return 0;
+                return 0;   // todo, stamina heeft wel negatieve bonus wanneer gebruikt door spells of tegenaanvallen.
             default:
                 throw new IllegalArgumentException(String.format("StatType '%s' not usable.", statType));
         }

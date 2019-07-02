@@ -25,8 +25,9 @@ class InventoryUI {
 
     private static final String TITLE_GLOBAL = "Global Inventory";
     private static final String TITLE_PERSONAL = "Personal Inventory";
+    private static final String TITLE_SKILLS = "Skills";
     private static final String TITLE_STATS = "Stats";
-    private static final String TITLE_CALC_STATS = "Calculated Stats";
+    private static final String TITLE_CALCS = "Calcs";
     private static final String TITLE_HEROES = "Heroes";
     private static final float TITLE_PADDING = 50f;
 
@@ -34,13 +35,15 @@ class InventoryUI {
 
     final Window inventoryWindow;
     final Window equipWindow;
+    final Window skillsWindow;
     final Window statsWindow;
-    final Window calcStatsWindow;
+    final Window calcsWindow;
     final Window heroesWindow;
     final Map<String, EquipSlotsTable> equipSlotsTables;
     private final InventorySlotTooltip tooltip;
+    private final SkillsTable skillsTable;
     private final StatsTable statsTable;
-    private final StatsTable calcStatsTable;
+    private final CalcsTable calcsTable;
     private final HeroesTable heroesTable;
 
     InventoryUI() {
@@ -58,11 +61,14 @@ class InventoryUI {
                                         this.equipSlotsTables.get(InventoryUtils.getSelectedHeroId()).equipSlots);
         this.equipWindow.addListener(new EquipWindowListener(InventoryUtils::clearHoveredItem));
 
-        this.statsTable = new StatsTable();
-        this.statsWindow = createWindow(TITLE_STATS, this.statsTable.stats);
+        this.skillsTable = new SkillsTable();
+        this.skillsWindow = createWindow(TITLE_SKILLS, this.skillsTable.table);
 
-        this.calcStatsTable = new StatsTable();
-        this.calcStatsWindow = createWindow(TITLE_CALC_STATS, this.calcStatsTable.stats);
+        this.statsTable = new StatsTable();
+        this.statsWindow = createWindow(TITLE_STATS, this.statsTable.table);
+
+        this.calcsTable = new CalcsTable();
+        this.calcsWindow = createWindow(TITLE_CALCS, this.calcsTable.table);
 
         this.heroesTable = new HeroesTable();
         this.heroesWindow = createWindow(TITLE_HEROES, this.heroesTable.heroes);
@@ -79,18 +85,22 @@ class InventoryUI {
     void addToStage(Stage stage) {
         stage.addActor(inventoryWindow);
         stage.addActor(equipWindow);
+        stage.addActor(skillsWindow);
         stage.addActor(statsWindow);
-        stage.addActor(calcStatsWindow);
+        stage.addActor(calcsWindow);
         stage.addActor(heroesWindow);
         stage.addActor(tooltip.window);
     }
 
     void render() {
-        statsTable.renderStats();
-        calcStatsTable.renderCalcStats();
+        statsTable.render();
+        calcsTable.render();
+        skillsTable.render();
         heroesTable.render();
+
         statsWindow.pack();
-        calcStatsWindow.pack();
+        calcsWindow.pack();
+        skillsWindow.pack();
         heroesWindow.pack();
     }
 

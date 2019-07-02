@@ -61,6 +61,16 @@ class EquipContainer {
                                                .orElse(0);
     }
 
+    int getSkillValueOf(InventoryGroup inventoryGroup, SkillType skillType) {
+        return getInventoryItem(inventoryGroup).map(inventoryItem -> inventoryItem.getAttributeOfSkillType(skillType))
+                                               .orElse(0);
+    }
+
+    int getCalcValueOf(InventoryGroup inventoryGroup, CalcType calcType) {
+        return getInventoryItem(inventoryGroup).map(inventoryItem -> inventoryItem.getAttributeOfCalcType(calcType))
+                                               .orElse(0);
+    }
+
     int getSumOfStat(StatType statType) {
         return equipment.values()
                         .stream()
@@ -74,6 +84,14 @@ class EquipContainer {
                         .stream()
                         .filter(Objects::nonNull)
                         .mapToInt(inventoryItem -> inventoryItem.getAttributeOfSkillType(skillType))
+                        .sum();
+    }
+
+    int getSumOfCalc(CalcType calcType) {
+        return equipment.values()
+                        .stream()
+                        .filter(Objects::nonNull)
+                        .mapToInt(inventoryItem -> inventoryItem.getAttributeOfCalcType(calcType))
                         .sum();
     }
 

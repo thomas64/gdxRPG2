@@ -66,16 +66,6 @@ public class InventoryItem {
 
     public int getAttributeOfStatType(StatType statType) {
         switch (statType) {
-            case WEIGHT:
-                return weight;
-            case BASE_HIT:
-                return baseHit;
-            case DAMAGE:
-                return damage;
-            case PROTECTION:
-                return protection;
-            case DEFENSE:
-                return defense;
             case DEXTERITY:
                 return dexterity;
             default:
@@ -89,6 +79,23 @@ public class InventoryItem {
                 return stealth;
             default:
                 return 0;
+        }
+    }
+
+    public int getAttributeOfCalcType(CalcType calcType) {
+        switch (calcType) {
+            case WEIGHT:
+                return weight;
+            case BASE_HIT:
+                return baseHit;
+            case DAMAGE:
+                return damage;
+            case PROTECTION:
+                return protection;
+            case DEFENSE:
+                return defense;
+            default:
+                throw new IllegalArgumentException(String.format("CalcType '%s' not usable.", calcType));
         }
     }
 
@@ -110,6 +117,9 @@ public class InventoryItem {
 
         for (InventoryMinimal minimal : InventoryMinimal.values()) {
             attributes.add(new InventoryDescription(minimal, getAttributeOfMinimal(minimal), this, hero));
+        }
+        for (CalcType calcType : CalcType.values()) {
+            attributes.add(new InventoryDescription(calcType, getAttributeOfCalcType(calcType), this, hero));
         }
         for (StatType statType : StatType.values()) {
             attributes.add(new InventoryDescription(statType, getAttributeOfStatType(statType), this, hero));
@@ -139,13 +149,13 @@ public class InventoryItem {
                 filtered.add(attribute);
                 return;
             }
-            if (attribute.key.equals(StatType.WEIGHT)
+            if (attribute.key.equals(CalcType.WEIGHT)
                     && (group.equals(InventoryGroup.SHIELD)
                     || group.equals(InventoryGroup.WEAPON)
                     || group.equals(InventoryGroup.RESOURCE))) {
                 return;
             }
-            if (attribute.key.equals(StatType.WEIGHT)) {
+            if (attribute.key.equals(CalcType.WEIGHT)) {
                 filtered.add(attribute);
                 return;
             }

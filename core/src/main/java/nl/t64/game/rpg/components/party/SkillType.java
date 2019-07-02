@@ -32,4 +32,5 @@ public enum SkillType implements SuperEnum {
     public String getTitle() {
         return title;
     }
+
 }

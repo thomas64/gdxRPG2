@@ -4,13 +4,15 @@ import lombok.AllArgsConstructor;
 
 
 @AllArgsConstructor
-public enum StatType implements SuperEnum {
+public enum CalcType implements SuperEnum {
 
-    INTELLIGENCE("Intelligence"),
-    DEXTERITY("Dexterity"),
-    ENDURANCE("Endurance"),
-    STRENGTH("Strength"),
-    STAMINA("Stamina");
+    WEIGHT("Weight"),
+
+    BASE_HIT("Base Hit"),
+    DAMAGE("Damage"),
+
+    PROTECTION("Protection"),
+    DEFENSE("Defense");
 
     final String title;
 

@@ -8,15 +8,15 @@ class Level {
 
     private static final int MAXIMUM = 40;
 
-    int current;
-    int hitpoints;
+    int actual;
+    int variable;
     int totalXp;
     int xpForUpgrades;
 
-    Level(int current) {
-        this.current = current;
-        this.hitpoints = current;
-        this.totalXp = getTotalXpForLevel(current);
+    Level(int actual) {
+        this.actual = actual;
+        this.variable = actual;
+        this.totalXp = getTotalXpForLevel(actual);
         this.xpForUpgrades = 0;
     }
 
@@ -25,15 +25,15 @@ class Level {
     }
 
     int getXpDeltaBetweenLevels() {
-        int nextLevel = current + 1;
-        return getTotalXpForLevel(nextLevel) - getTotalXpForLevel(current);
+        int nextLevel = actual + 1;
+        return getTotalXpForLevel(nextLevel) - getTotalXpForLevel(actual);
     }
 
     int getNeededXpForNextLevel() {
-        if (current >= MAXIMUM) {
+        if (actual >= MAXIMUM) {
             return 1;
         } else {
-            int nextLevel = current + 1;
+            int nextLevel = actual + 1;
             return getTotalXpForLevel(nextLevel) - totalXp;
         }
     }
@@ -45,11 +45,11 @@ class Intelligence {
     private static final int MAXIMUM = 30;
     private static final float UPGRADE = 0.12f;
 
-    int current;
+    int actual;
     int bonus;
 
-    Intelligence(int current) {
-        this.current = current;
+    Intelligence(int actual) {
+        this.actual = actual;
         this.bonus = 0;
     }
 
@@ -60,11 +60,11 @@ class Dexterity {
     private static final int MAXIMUM = 30;
     private static final float UPGRADE = 0.24f;
 
-    int current;
+    int actual;
     int bonus;
 
-    Dexterity(int current) {
-        this.current = current;
+    Dexterity(int actual) {
+        this.actual = actual;
         this.bonus = 0;
     }
 }
@@ -75,11 +75,11 @@ class Strength {
     private static final int MAXIMUM = 30;
     private static final float UPGRADE = 0.12f;
 
-    int current;
+    int actual;
     int bonus;
 
-    Strength(int current) {
-        this.current = current;
+    Strength(int actual) {
+        this.actual = actual;
         this.bonus = 0;
     }
 
@@ -91,13 +91,13 @@ class Endurance {
     private static final int MAXIMUM = 40;
     private static final float UPGRADE = 0.12f;
 
-    int current;
-    int hitpoints;
+    int actual;
+    int variable;
     int bonus;
 
-    Endurance(int current) {
-        this.current = current;
-        this.hitpoints = current;
+    Endurance(int actual) {
+        this.actual = actual;
+        this.variable = actual;
         this.bonus = 0;
     }
 
@@ -109,12 +109,12 @@ class Stamina {
     private static final int MAXIMUM = 90;
     private static final float UPGRADE = 0.04f;
 
-    int current;
-    int hitpoints;
+    int actual;
+    int variable;
 
-    Stamina(int current) {
-        this.current = current;
-        this.hitpoints = current;
+    Stamina(int actual) {
+        this.actual = actual;
+        this.variable = actual;
     }
 
 }

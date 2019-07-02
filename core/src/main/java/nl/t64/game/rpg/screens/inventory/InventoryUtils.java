@@ -51,6 +51,7 @@ final class InventoryUtils {
             equipSlotsTable.getPossibleSlotOfGroup(inventoryImage.inventoryGroup).ifPresent(targetSlot -> {
                 clickedSlot.decrementAmount();
                 new InventorySlotsExchanger(inventoryImage, clickedSlot, targetSlot).exchange();
+                clearHoveredItem();
             });
         });
     }
