@@ -176,9 +176,7 @@ public class HeroItem {
         } else {
             int equippedValue = getCalcValueOf(hoveredItem.getGroup(), calcType);
             int hoveredValue = hoveredItem.getAttributeOfCalcType(calcType);
-            int difference = hoveredValue - equippedValue;
-            int extra = getOwnCalcOf(calcType) + getExtraCalcForVisualOf(calcType);
-            return getPreviewForVisual(difference, extra);
+            return hoveredValue - equippedValue;
         }
     }
 

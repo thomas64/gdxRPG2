@@ -33,26 +33,24 @@ class StatsTable extends BaseTable {
     }
 
     private void fillRows() {
+        fillStats();
+        fillExperience();
+    }
+
+    private void fillStats() {
         for (StatType statType : StatType.values()) {
             ownStat = selectedHero.getOwnStatOf(statType);
             totalBonus = selectedHero.getExtraStatForVisualOf(statType);
             difference = selectedHero.getPreviewStatForVisualOf(statType, hoveredItem);
             fillRow(statType);
         }
+    }
 
+    private void fillExperience() {
         table.add("").row();
-        table.add("XP Remaining");
-        table.add(String.valueOf(selectedHero.getXpRemaining()));
-        table.add("");
-        table.add("").row();
-        table.add("Total XP");
-        table.add(String.valueOf(selectedHero.getTotalXp()));
-        table.add("");
-        table.add("").row();
-        table.add("Next Level");
-        table.add(String.valueOf(selectedHero.getNeededXpForNextLevel())); // todo, is dit de juiste van de 2 methodes?
-        table.add("");
-        table.add("");
+        fillRow("XP Remaining", selectedHero.getXpRemaining());
+        fillRow("Total XP", selectedHero.getTotalXp());
+        fillRow("Next Level", selectedHero.getNeededXpForNextLevel()); // todo, is dit de juiste van de 2 methodes?
     }
 
     private void fillRow(StatType statType) {
@@ -60,6 +58,13 @@ class StatsTable extends BaseTable {
         table.add(String.valueOf(ownStat));
         createBonusFromInventory(totalBonus);
         createPreview(difference);
+    }
+
+    private void fillRow(String key, int value) {
+        table.add(key);
+        table.add(String.valueOf(value));
+        table.add("");
+        table.add("").row();
     }
 
 }
