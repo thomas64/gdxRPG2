@@ -23,6 +23,7 @@ class StatsTable extends BaseTable {
         this.table.columnDefaults(1).width(SECOND_COLUMN_WIDTH);
         this.table.columnDefaults(2).width(THIRD_COLUMN_WIDTH);
         this.table.columnDefaults(3).width(FOURTH_COLUMN_WIDTH);
+        setTopBorder(this.table);
     }
 
     void render() {

@@ -52,7 +52,20 @@ class Intelligence {
         this.actual = actual;
         this.bonus = 0;
     }
+}
 
+@NoArgsConstructor
+class Willpower {
+    private static final int MAXIMUM = 30;
+    private static final float UPGRADE = 0.12f;
+
+    int actual;
+    int bonus;
+
+    Willpower(int actual) {
+        this.actual = actual;
+        this.bonus = 0;
+    }
 }
 
 @NoArgsConstructor
@@ -70,8 +83,21 @@ class Dexterity {
 }
 
 @NoArgsConstructor
-class Strength {
+class Agility {
+    private static final int MAXIMUM = 30;
+    private static final float UPGRADE = 0.24f;
 
+    int actual;
+    int bonus;
+
+    Agility(int actual) {
+        this.actual = actual;
+        this.bonus = 0;
+    }
+}
+
+@NoArgsConstructor
+class Strength {
     private static final int MAXIMUM = 30;
     private static final float UPGRADE = 0.12f;
 
@@ -82,12 +108,10 @@ class Strength {
         this.actual = actual;
         this.bonus = 0;
     }
-
 }
 
 @NoArgsConstructor
 class Endurance {
-
     private static final int MAXIMUM = 40;
     private static final float UPGRADE = 0.12f;
 
@@ -100,12 +124,10 @@ class Endurance {
         this.variable = actual;
         this.bonus = 0;
     }
-
 }
 
 @NoArgsConstructor
 class Stamina {
-
     private static final int MAXIMUM = 90;
     private static final float UPGRADE = 0.04f;
 
@@ -116,5 +138,4 @@ class Stamina {
         this.actual = actual;
         this.variable = actual;
     }
-
 }

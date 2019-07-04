@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Utils;
 
 
@@ -25,9 +24,8 @@ abstract class BaseTable {
     BaseTable() {
         this.font = Utils.getResourceManager().getTrueTypeAsset(TEXT_FONT, TEXT_SIZE);
         this.table = new Table(createSkin());
-        this.table.defaults().height(LINE_HEIGHT).align(Align.left);
+        this.table.defaults().height(LINE_HEIGHT);
         this.table.pad(PADDING);
-        setTopBorder();
     }
 
     abstract void render();
@@ -56,17 +54,17 @@ abstract class BaseTable {
         }
     }
 
-    private Skin createSkin() {
-        Skin statsSkin = new Skin();
-        statsSkin.add("default", new Label.LabelStyle(font, Color.BLACK));
-        return statsSkin;
-    }
-
-    private void setTopBorder() {
+    void setTopBorder(Table table) {
         var texture = Utils.getResourceManager().getTextureAsset(SPRITE_TOP_BORDER);
         var ninepatch = new NinePatch(texture, 0, 0, 1, 0);
         var drawable = new NinePatchDrawable(ninepatch);
         table.setBackground(drawable);
+    }
+
+    private Skin createSkin() {
+        Skin statsSkin = new Skin();
+        statsSkin.add("default", new Label.LabelStyle(font, Color.BLACK));
+        return statsSkin;
     }
 
 }

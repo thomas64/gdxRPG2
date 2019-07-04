@@ -7,7 +7,9 @@ import lombok.AllArgsConstructor;
 public enum StatType implements SuperEnum {
 
     INTELLIGENCE("Intelligence"),
+    WILLPOWER("Willpower"),
     DEXTERITY("Dexterity"),
+    AGILITY("Agility"),
     ENDURANCE("Endurance"),
     STRENGTH("Strength"),
     STAMINA("Stamina");

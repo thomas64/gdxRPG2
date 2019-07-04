@@ -30,10 +30,10 @@ public class InventoryScreen implements Screen, ProfileObserver {
     private static final float INVENTORY_WINDOW_POSITION_Y = 50f;
     private static final float EQUIP_WINDOW_POSITION_X = 1038f;
     private static final float EQUIP_WINDOW_POSITION_Y = 50f;
-    private static final float SKILLS_WINDOW_POSITION_X = 450f;
+    private static final float SKILLS_WINDOW_POSITION_X = 405f;
     private static final float SKILLS_WINDOW_POSITION_Y = 50f;
     private static final float STATS_WINDOW_POSITION_X = 63f;
-    private static final float STATS_WINDOW_POSITION_Y = 430f;
+    private static final float STATS_WINDOW_POSITION_Y = 429f;
     private static final float CALCS_WINDOW_POSITION_X = 63f;
     private static final float CALCS_WINDOW_POSITION_Y = 50f;
     private static final float HEROES_WINDOW_POSITION_X = 63f;
@@ -90,6 +90,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
 
     @Override
     public void show() {
+        Gdx.input.setCursorCatched(false);
         Gdx.input.setInputProcessor(stage);
         stage.addListener(new InventoryScreenListener(this::closeScreen));
         createButtonTable();
@@ -167,6 +168,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
     private void closeScreen() {
         storeWindowPositions();
         Utils.getScreenManager().setScreen(ScreenType.WORLD);
+        Gdx.input.setCursorCatched(true);
     }
 
     private void storeWindowPositions() {

@@ -13,8 +13,6 @@ import nl.t64.game.rpg.components.party.InventoryItem;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import static nl.t64.game.rpg.components.party.InventoryGroup.*;
-
 
 class EquipSlotsTable {
 
@@ -48,24 +46,24 @@ class EquipSlotsTable {
         this.tooltip = tooltip;
         this.equipSlots = new Table();
 
-        this.helmetSlot = new InventorySlot(HELMET);
-        this.necklaceSlot = new InventorySlot(NECKLACE);
-        this.shouldersSlot = new InventorySlot(SHOULDERS);
+        this.helmetSlot = new InventorySlot(InventoryGroup.HELMET);
+        this.necklaceSlot = new InventorySlot(InventoryGroup.NECKLACE);
+        this.shouldersSlot = new InventorySlot(InventoryGroup.SHOULDERS);
 
-        this.chestSlot = new InventorySlot(CHEST);
-        this.cloakSlot = new InventorySlot(CLOAK);
+        this.chestSlot = new InventorySlot(InventoryGroup.CHEST);
+        this.cloakSlot = new InventorySlot(InventoryGroup.CLOAK);
 
-        this.bracersSlot = new InventorySlot(BRACERS);
-        this.glovesSlot = new InventorySlot(GLOVES);
-        this.weaponSlot = new InventorySlot(WEAPON);
+        this.bracersSlot = new InventorySlot(InventoryGroup.BRACERS);
+        this.glovesSlot = new InventorySlot(InventoryGroup.GLOVES);
+        this.weaponSlot = new InventorySlot(InventoryGroup.WEAPON);
 
-        this.accessorySlot = new InventorySlot(ACCESSORY);
-        this.ringSlot = new InventorySlot(RING);
-        this.shieldSlot = new InventorySlot(SHIELD);
+        this.accessorySlot = new InventorySlot(InventoryGroup.ACCESSORY);
+        this.ringSlot = new InventorySlot(InventoryGroup.RING);
+        this.shieldSlot = new InventorySlot(InventoryGroup.SHIELD);
 
-        this.beltSlot = new InventorySlot(BELT);
-        this.pantsSlot = new InventorySlot(PANTS);
-        this.bootsSlot = new InventorySlot(BOOTS);
+        this.beltSlot = new InventorySlot(InventoryGroup.BELT);
+        this.pantsSlot = new InventorySlot(InventoryGroup.PANTS);
+        this.bootsSlot = new InventorySlot(InventoryGroup.BOOTS);
 
         this.createTable();
     }
@@ -155,20 +153,20 @@ class EquipSlotsTable {
     }
 
     private void addToSlots() {
-        heroItem.getInventoryItem(HELMET).ifPresent(addToSlot(helmetSlot));
-        heroItem.getInventoryItem(NECKLACE).ifPresent(addToSlot(necklaceSlot));
-        heroItem.getInventoryItem(SHOULDERS).ifPresent(addToSlot(shouldersSlot));
-        heroItem.getInventoryItem(CHEST).ifPresent(addToSlot(chestSlot));
-        heroItem.getInventoryItem(CLOAK).ifPresent(addToSlot(cloakSlot));
-        heroItem.getInventoryItem(BRACERS).ifPresent(addToSlot(bracersSlot));
-        heroItem.getInventoryItem(GLOVES).ifPresent(addToSlot(glovesSlot));
-        heroItem.getInventoryItem(WEAPON).ifPresent(addToSlot(weaponSlot));
-        heroItem.getInventoryItem(ACCESSORY).ifPresent(addToSlot(accessorySlot));
-        heroItem.getInventoryItem(RING).ifPresent(addToSlot(ringSlot));
-        heroItem.getInventoryItem(SHIELD).ifPresent(addToSlot(shieldSlot));
-        heroItem.getInventoryItem(BELT).ifPresent(addToSlot(beltSlot));
-        heroItem.getInventoryItem(PANTS).ifPresent(addToSlot(pantsSlot));
-        heroItem.getInventoryItem(BOOTS).ifPresent(addToSlot(bootsSlot));
+        heroItem.getInventoryItem(InventoryGroup.HELMET).ifPresent(addToSlot(helmetSlot));
+        heroItem.getInventoryItem(InventoryGroup.NECKLACE).ifPresent(addToSlot(necklaceSlot));
+        heroItem.getInventoryItem(InventoryGroup.SHOULDERS).ifPresent(addToSlot(shouldersSlot));
+        heroItem.getInventoryItem(InventoryGroup.CHEST).ifPresent(addToSlot(chestSlot));
+        heroItem.getInventoryItem(InventoryGroup.CLOAK).ifPresent(addToSlot(cloakSlot));
+        heroItem.getInventoryItem(InventoryGroup.BRACERS).ifPresent(addToSlot(bracersSlot));
+        heroItem.getInventoryItem(InventoryGroup.GLOVES).ifPresent(addToSlot(glovesSlot));
+        heroItem.getInventoryItem(InventoryGroup.WEAPON).ifPresent(addToSlot(weaponSlot));
+        heroItem.getInventoryItem(InventoryGroup.ACCESSORY).ifPresent(addToSlot(accessorySlot));
+        heroItem.getInventoryItem(InventoryGroup.RING).ifPresent(addToSlot(ringSlot));
+        heroItem.getInventoryItem(InventoryGroup.SHIELD).ifPresent(addToSlot(shieldSlot));
+        heroItem.getInventoryItem(InventoryGroup.BELT).ifPresent(addToSlot(beltSlot));
+        heroItem.getInventoryItem(InventoryGroup.PANTS).ifPresent(addToSlot(pantsSlot));
+        heroItem.getInventoryItem(InventoryGroup.BOOTS).ifPresent(addToSlot(bootsSlot));
     }
 
     private void fillTable() {

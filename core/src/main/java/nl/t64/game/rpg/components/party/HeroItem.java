@@ -15,8 +15,10 @@ public class HeroItem {
     String id;
     @Getter
     String name;
+    SchoolType school;
     private StatContainer stats;
     private SkillContainer skills;
+    private SpellContainer spells;
     private EquipContainer inventory;
 
     public boolean equalsHero(HeroItem otherHero) {

@@ -11,7 +11,9 @@ class StatContainer {
     private Level level;
 
     private Intelligence intelligence;
+    private Willpower willpower;
     private Dexterity dexterity;
+    private Agility agility;
     private Endurance endurance;
     private Strength strength;
     private Stamina stamina;
@@ -58,8 +60,12 @@ class StatContainer {
         switch (statType) {
             case INTELLIGENCE:
                 return intelligence.actual;
+            case WILLPOWER:
+                return willpower.actual;
             case DEXTERITY:
                 return dexterity.actual;
+            case AGILITY:
+                return agility.actual;
             case ENDURANCE:
                 return endurance.actual;
             case STRENGTH:
@@ -75,8 +81,12 @@ class StatContainer {
         switch (statType) {
             case INTELLIGENCE:
                 return intelligence.bonus;
+            case WILLPOWER:
+                return willpower.bonus;
             case DEXTERITY:
                 return dexterity.bonus;
+            case AGILITY:
+                return agility.bonus;
             case ENDURANCE:
                 return endurance.bonus;
             case STRENGTH:

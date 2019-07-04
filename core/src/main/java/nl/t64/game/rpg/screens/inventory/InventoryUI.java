@@ -51,7 +51,7 @@ class InventoryUI {
         this.tooltip = new InventorySlotTooltip();
 
         this.inventorySlotsTable = new InventorySlotsTable(dragAndDrop, this.tooltip);
-        this.inventoryWindow = createWindow(TITLE_GLOBAL, this.inventorySlotsTable.inventorySlots);
+        this.inventoryWindow = createWindow(TITLE_GLOBAL, this.inventorySlotsTable.container);
 
         this.equipSlotsTables = new HashMap<>(PartyContainer.MAXIMUM);
         for (HeroItem hero : Utils.getGameData().getParty().getAllHeroes()) {
@@ -62,7 +62,7 @@ class InventoryUI {
         this.equipWindow.addListener(new EquipWindowListener(InventoryUtils::clearHoveredItem));
 
         this.skillsTable = new SkillsTable();
-        this.skillsWindow = createWindow(TITLE_SKILLS, this.skillsTable.table);
+        this.skillsWindow = createWindow(TITLE_SKILLS, this.skillsTable.container);
 
         this.statsTable = new StatsTable();
         this.statsWindow = createWindow(TITLE_STATS, this.statsTable.table);

@@ -1,6 +1,7 @@
 package nl.t64.game.rpg.screens.inventory;
 
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
@@ -16,7 +17,9 @@ class InventorySlotsTable {
     private static final String SPRITE_TOP_BORDER = "sprites/top_border.png";
     private static final float SLOT_SIZE = 64f;
     private static final int SLOTS_IN_ROW = 7;
+    private static final float CONTAINER_HEIGHT = 704f;
 
+    final Table container;
     final Table inventorySlots;
     private final DragAndDrop dragAndDrop;
     private final InventorySlotTooltip tooltip;
@@ -28,6 +31,10 @@ class InventorySlotsTable {
         this.tooltip = tooltip;
         this.inventorySlots = new Table();
         fillInventorySlots();
+
+        ScrollPane scrollPane = new ScrollPane(this.inventorySlots);
+        this.container = new Table();
+        this.container.add(scrollPane).height(CONTAINER_HEIGHT);
         setTopBorder();
     }
 
@@ -45,7 +52,7 @@ class InventorySlotsTable {
         var texture = Utils.getResourceManager().getTextureAsset(SPRITE_TOP_BORDER);
         var ninepatch = new NinePatch(texture, 0, 0, 1, 0);
         var drawable = new NinePatchDrawable(ninepatch);
-        inventorySlots.setBackground(drawable);
+        container.setBackground(drawable);
     }
 
     private void createInventorySlot(int index) {
