@@ -253,7 +253,7 @@
     },
     "spells": {
       "vs_elemental": 2,
-      "remove_poision": 3,
+      "remove_poison": 3,
       "wind": 3
     },
     "inventory": {

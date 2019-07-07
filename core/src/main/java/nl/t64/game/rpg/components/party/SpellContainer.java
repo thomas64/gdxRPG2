@@ -1,51 +1,55 @@
 package nl.t64.game.rpg.components.party;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
-@Setter
+import java.lang.reflect.Constructor;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+
 class SpellContainer {
 
-    @JsonProperty("vs_necromancy")
-    private int vsNecromancy;
-    private int endurance;
-    @JsonProperty("sense_aura")
-    private int senseAura;
-    private int weakness;
+    private final Map<String, SpellItem> spells;
 
-    @JsonProperty("dragon_flames")
-    private int dragonFlames;
+    private SpellContainer() {
+        this.spells = new HashMap<>();
+    }
 
-    @JsonProperty("vs_elemental")
-    private int vsElemental;
-    @JsonProperty("remove_poision")
-    private int removePoision;
-    private int wind;
+    @JsonCreator
+    private SpellContainer(Map<String, Integer> startingSpells) {
+        this();
+        for (Map.Entry<String, Integer> spellSet : startingSpells.entrySet()) {
+            try {
+                putInContainer(spellSet);
+            } catch (ReflectiveOperationException e) {
+                throw new IllegalArgumentException(String.format("SpellType '%s' not usable.", spellSet.getKey()));
+            }
+        }
+    }
 
-    @JsonProperty("vs_star")
-    private int vsStar;
-    private int fireball;
-    private int mirror;
-    @JsonProperty("dispel_necromancy")
-    private int dispelNecromancy;
+    private void putInContainer(Map.Entry<String, Integer> spellSet) throws ReflectiveOperationException {
+        SpellType spellType = SpellType.valueOf(spellSet.getKey().toUpperCase());
+        Constructor<?>[] constructors = spellType.spellClass.getDeclaredConstructors();
+        SpellItem spellItem = (SpellItem) constructors[0].newInstance(spellSet.getValue());
+        spells.put(spellType.name(), spellItem);
+    }
 
-    private int banishing;
-    private int teleportation;
+    int getRankOf(SpellType spellType) {
+        return spells.get(spellType.name()).rank;
+    }
 
-    @JsonProperty("air_shield")
-    private int airShield;
-    private int strength;
-    private int debilitation;
+    List<SpellType> getAll() {
+        return Arrays.stream(SpellType.values())
+                     .filter(this::contains)
+                     .collect(Collectors.toList());
+    }
 
-    @JsonProperty("web_of_starlight")
-    private int webOfStarlight;
-    @JsonProperty("dispel_star")
-    private int dispelStar;
-    @JsonProperty("stellar_gravity")
-    private int stellarGravity;
-    @JsonProperty("dispel_naming")
-    private int dispelNaming;
-    @JsonProperty("solar_wrath")
-    private int solarWrath;
+    private boolean contains(SpellType spellType) {
+        return spells.containsKey(spellType.name());
+    }
+
 
 }

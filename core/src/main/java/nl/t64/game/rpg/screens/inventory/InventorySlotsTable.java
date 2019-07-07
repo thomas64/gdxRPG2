@@ -21,6 +21,7 @@ class InventorySlotsTable {
 
     final Table container;
     final Table inventorySlots;
+    final ScrollPane scrollPane;
     private final DragAndDrop dragAndDrop;
     private final InventorySlotTooltip tooltip;
     private final InventoryContainer inventory;
@@ -32,9 +33,9 @@ class InventorySlotsTable {
         this.inventorySlots = new Table();
         fillInventorySlots();
 
-        ScrollPane scrollPane = new ScrollPane(this.inventorySlots);
+        this.scrollPane = new ScrollPane(this.inventorySlots);
         this.container = new Table();
-        this.container.add(scrollPane).height(CONTAINER_HEIGHT);
+        this.container.add(this.scrollPane).height(CONTAINER_HEIGHT);
         setTopBorder();
     }
 

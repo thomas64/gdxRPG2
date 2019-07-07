@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.beans.ConstructorProperties;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,7 +17,7 @@ class SkillContainer {
     private final Map<String, SkillItem> skills;
 
     private SkillContainer() {
-        this.skills = new LinkedHashMap<>(NUMBER_OF_SKILL_SLOTS);
+        this.skills = new HashMap<>(NUMBER_OF_SKILL_SLOTS);
     }
 
     @JsonCreator

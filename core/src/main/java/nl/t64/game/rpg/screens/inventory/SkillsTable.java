@@ -22,6 +22,7 @@ class SkillsTable extends BaseTable {
     private static final float SECOND_COLUMN_PAD_LEFT = 20f;
 
     final Table container;
+    final ScrollPane scrollPane;
 
     private HeroItem selectedHero;
     private InventoryItem hoveredItem;
@@ -38,9 +39,9 @@ class SkillsTable extends BaseTable {
         this.table.top();
         this.table.defaults().height(ROW_HEIGHT);
 
-        ScrollPane scrollPane = new ScrollPane(this.table);
+        this.scrollPane = new ScrollPane(this.table);
         this.container = new Table();
-        this.container.add(scrollPane).height(CONTAINER_HEIGHT);
+        this.container.add(this.scrollPane).height(CONTAINER_HEIGHT);
         setTopBorder(this.container);
     }
 

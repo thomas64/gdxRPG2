@@ -15,6 +15,7 @@ public class HeroItem {
     String id;
     @Getter
     String name;
+    @Getter
     SchoolType school;
     private StatContainer stats;
     private SkillContainer skills;
@@ -59,6 +60,10 @@ public class HeroItem {
 
     public List<SkillType> getAllSkillsAboveZero() {
         return skills.getAllAboveZero();
+    }
+
+    public List<SpellType> getAllSpells() {
+        return spells.getAll();
     }
 
     public int getStatValueOf(InventoryGroup inventoryGroup, StatType statType) {
@@ -126,6 +131,10 @@ public class HeroItem {
 
     public int getOwnCalcOf(CalcType calcType) {
         return 0;
+    }
+
+    public int getSpellRankOf(SpellType spellType) {
+        return spells.getRankOf(spellType);
     }
 
     public int getExtraStatForVisualOf(StatType statType) {

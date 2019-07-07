@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 
 
 @AllArgsConstructor
-enum SchoolType implements SuperEnum {
+public enum SchoolType implements SuperEnum {
 
-    NONE(""),
+    NONE("No"),
     SPECIAL("Special"),
     NEUTRAL("Neutral"),
     ELEMENTAL("Elemental"),
