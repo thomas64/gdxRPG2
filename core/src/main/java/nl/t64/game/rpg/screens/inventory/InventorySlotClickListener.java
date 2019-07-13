@@ -8,18 +8,29 @@ import java.util.function.Consumer;
 
 class InventorySlotClickListener extends ActorGestureListener {
 
-    private final Consumer<InventorySlot> functionToExecute;
+    private final Consumer<InventorySlot> handleDoubleClickFunction;
+    private boolean isDoubleClicked;
 
-    InventorySlotClickListener(Consumer<InventorySlot> functionToExecute) {
-        this.functionToExecute = functionToExecute;
+    InventorySlotClickListener(Consumer<InventorySlot> handleDoubleClickFunction) {
+        this.handleDoubleClickFunction = handleDoubleClickFunction;
+        this.isDoubleClicked = false;
     }
 
     @Override
     public void tap(InputEvent event, float x, float y, int count, int button) {
         if (count == 2) {
             InventorySlot inventorySlot = (InventorySlot) event.getListenerActor();
-            functionToExecute.accept(inventorySlot);
+            handleDoubleClickFunction.accept(inventorySlot);
+            isDoubleClicked = true;
         }
+    }
+
+    boolean isDoubleClicked() {
+        return isDoubleClicked;
+    }
+
+    void setDoubleClickedToFalse() {
+        isDoubleClicked = false;
     }
 
 }
