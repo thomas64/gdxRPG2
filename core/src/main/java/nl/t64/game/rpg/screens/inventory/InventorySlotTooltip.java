@@ -17,7 +17,7 @@ import nl.t64.game.rpg.components.party.SuperEnum;
 
 class InventorySlotTooltip {
 
-    private static final String SPRITE_SLOT = "sprites/inventoryslot.png";
+    private static final String SPRITE_SLOT = "sprites/tooltip.png";
     private static final float PADDING = 10f;
     private static final float SPACING = 20f;
 

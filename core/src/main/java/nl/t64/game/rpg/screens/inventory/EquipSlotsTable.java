@@ -170,15 +170,13 @@ class EquipSlotsTable {
     }
 
     private void fillTable() {
-        equipSlots.add(helmetSlot).colspan(5);
+        equipSlots.add(helmetSlot).colspan(3);
 
         equipSlots.row();
 
         equipSlots.add();
-        equipSlots.add();
         equipSlots.add(necklaceSlot);
-        equipSlots.add(shouldersSlot);
-        equipSlots.add();
+        equipSlots.add(shouldersSlot).left();
 
         equipSlots.row();
 
@@ -186,34 +184,34 @@ class EquipSlotsTable {
         bodySlots.defaults().space(EQUIP_SPACING).size(SLOT_SIZE, SLOT_SIZE);
         bodySlots.add(chestSlot);
         bodySlots.add(cloakSlot);
-        equipSlots.add(bodySlots).colspan(5);
+        equipSlots.add(bodySlots).colspan(3);
 
         equipSlots.row();
 
-        equipSlots.add(bracersSlot).colspan(2);
+        equipSlots.add(bracersSlot).expandX().left().padLeft(EQUIP_SPACING);
         equipSlots.add();
-        equipSlots.add(accessorySlot).colspan(2);
+        equipSlots.add(accessorySlot).expandX().right().padRight(EQUIP_SPACING);
 
         equipSlots.row();
 
-        equipSlots.add(glovesSlot).colspan(2);
+        equipSlots.add(glovesSlot).expandX().left().padLeft(EQUIP_SPACING);
         equipSlots.add(beltSlot);
-        equipSlots.add(ringSlot).colspan(2);
+        equipSlots.add(ringSlot).expandX().right().padRight(EQUIP_SPACING);
 
         equipSlots.row();
 
-        equipSlots.add(weaponSlot).colspan(2);
+        equipSlots.add(weaponSlot).expandX().left().padLeft(EQUIP_SPACING);
         equipSlots.add(pantsSlot);
-        equipSlots.add(shieldSlot).colspan(2);
+        equipSlots.add(shieldSlot).expandX().right().padRight(EQUIP_SPACING);
 
         equipSlots.row();
 
-        equipSlots.add().colspan(5);
+        equipSlots.add().colspan(3);
         equipSlots.row();
-        equipSlots.add().colspan(5);
+        equipSlots.add().colspan(3);
         equipSlots.row();
 
-        equipSlots.add(bootsSlot).colspan(5);
+        equipSlots.add(bootsSlot).colspan(3);
     }
 
     private Consumer<InventoryItem> addToSlot(InventorySlot inventorySlot) {

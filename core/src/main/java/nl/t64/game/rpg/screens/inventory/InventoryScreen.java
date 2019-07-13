@@ -28,11 +28,11 @@ public class InventoryScreen implements Screen, ProfileObserver {
 
     private static final float INVENTORY_WINDOW_POSITION_X = 1408;
     private static final float INVENTORY_WINDOW_POSITION_Y = 50f;
-    private static final float EQUIP_WINDOW_POSITION_X = 1038f;
+    private static final float EQUIP_WINDOW_POSITION_X = 1113f;
     private static final float EQUIP_WINDOW_POSITION_Y = 50f;
-    private static final float SPELLS_WINDOW_POSITION_X = 780f;
+    private static final float SPELLS_WINDOW_POSITION_X = 734f;
     private static final float SPELLS_WINDOW_POSITION_Y = 50f;
-    private static final float SKILLS_WINDOW_POSITION_X = 405f;
+    private static final float SKILLS_WINDOW_POSITION_X = 394f;
     private static final float SKILLS_WINDOW_POSITION_Y = 50f;
     private static final float STATS_WINDOW_POSITION_X = 63f;
     private static final float STATS_WINDOW_POSITION_Y = 429f;

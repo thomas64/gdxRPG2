@@ -9,7 +9,7 @@ class StatsTable extends BaseTable {
 
     private static final float FIRST_COLUMN_WIDTH = 190f;
     private static final float SECOND_COLUMN_WIDTH = 40f;
-    private static final float THIRD_COLUMN_WIDTH = 30f;
+    private static final float THIRD_COLUMN_WIDTH = 35f;
     private static final float FOURTH_COLUMN_WIDTH = 30f;
 
     private HeroItem selectedHero;

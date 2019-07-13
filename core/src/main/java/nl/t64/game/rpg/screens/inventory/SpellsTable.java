@@ -8,14 +8,13 @@ import nl.t64.game.rpg.components.party.SpellType;
 
 class SpellsTable extends BaseTable {
 
-    private static final float FIRST_COLUMN_WIDTH = 64f;
+    private static final float FIRST_COLUMN_WIDTH = 48f;
     private static final float SECOND_COLUMN_WIDTH = 210;
     private static final float THIRD_COLUMN_WIDTH = 40f;
     private static final float FOURTH_COLUMN_WIDTH = 30f;
-    private static final float FIFTH_COLUMN_WIDTH = 30f;
     private static final float CONTAINER_HEIGHT = 704f;
-    private static final float ROW_HEIGHT = 64f;
-    private static final float SECOND_COLUMN_PAD_LEFT = 20f;
+    private static final float ROW_HEIGHT = 48f;
+    private static final float SECOND_COLUMN_PAD_LEFT = 15f;
 
     final Table container;
     final ScrollPane scrollPane;
@@ -27,7 +26,6 @@ class SpellsTable extends BaseTable {
         this.table.columnDefaults(1).width(SECOND_COLUMN_WIDTH);
         this.table.columnDefaults(2).width(THIRD_COLUMN_WIDTH);
         this.table.columnDefaults(3).width(FOURTH_COLUMN_WIDTH);
-        this.table.columnDefaults(4).width(FIFTH_COLUMN_WIDTH);
         this.table.top();
         this.table.defaults().height(ROW_HEIGHT);
 
@@ -46,10 +44,10 @@ class SpellsTable extends BaseTable {
     }
 
     private void fillSchoolRow() {
-        table.add("");
+        table.add(createImageOf(selectedHero.getSchool().name()));
         table.add(selectedHero.getSchool().getTitle() + " School").padLeft(SECOND_COLUMN_PAD_LEFT);
         table.add("");
-        table.add("");
+        table.add("").row();
         table.add("").row();
     }
 
@@ -60,10 +58,9 @@ class SpellsTable extends BaseTable {
     }
 
     private void fillSpellRow(SpellType spellType) {
-        table.add("");
+        table.add(createImageOf(spellType.name()));
         table.add(spellType.getTitle()).padLeft(SECOND_COLUMN_PAD_LEFT);
         table.add(String.valueOf(selectedHero.getSpellRankOf(spellType)));
-        table.add("");
         table.add("").row();
     }
 

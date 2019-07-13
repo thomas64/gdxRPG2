@@ -1,131 +1,159 @@
 
-skills.png
-size: 240,192
+spells.png
+size: 288,144
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-alchemist
+air_shield
   rotate: false
   xy: 0, 0
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
-diplomat
+banishing
   rotate: false
   xy: 48, 0
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
-hafted
+debilitation
   rotate: false
   xy: 96, 0
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
-healer
+dispel_necromancy
   rotate: false
   xy: 144, 0
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
-loremaster
+dispel_naming
+  rotate: false
+  xy: 144, 0
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+dispel_star
+  rotate: false
+  xy: 144, 0
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+dragon_flames
   rotate: false
   xy: 192, 0
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
-mechanic
+endurance
+  rotate: false
+  xy: 240, 0
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+fireball
   rotate: false
   xy: 0, 48
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
-merchant
+mirror
   rotate: false
   xy: 48, 48
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
-missile
+remove_poison
   rotate: false
   xy: 96, 48
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
-pole
+sense_aura
   rotate: false
   xy: 144, 48
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
-ranger
+solar_wrath
   rotate: false
   xy: 192, 48
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
-shield
+stellar_gravity
+  rotate: false
+  xy: 240, 48
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+strength
   rotate: false
   xy: 0, 96
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
-stealth
+teleportation
   rotate: false
   xy: 48, 96
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
-sword
+vs_elemental
   rotate: false
   xy: 96, 96
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
-thief
+vs_necromancy
+  rotate: false
+  xy: 96, 96
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+vs_star
+  rotate: false
+  xy: 96, 96
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+weakness
   rotate: false
   xy: 144, 96
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
-thrown
+web_of_starlight
   rotate: false
   xy: 192, 96
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
-troubadour
+wind
   rotate: false
-  xy: 0, 144
-  size: 48, 48
-  orig: 48, 48
-  offset: 0, 0
-  index: -1
-warrior
-  rotate: false
-  xy: 48, 144
-  size: 48, 48
-  orig: 48, 48
-  offset: 0, 0
-  index: -1
-wizard
-  rotate: false
-  xy: 96, 144
+  xy: 240, 96
   size: 48, 48
   orig: 48, 48
   offset: 0, 0

@@ -96,20 +96,19 @@ public class HeroItem {
         return Optional.empty();
     }
 
-    int getTotalStatOf(StatType statType) {
-        int totalStat = getOwnStatOf(statType) + getSumInventoryStatOf(statType) + stats.getBonusStatOf(statType);
+    int getCalculatedTotalStatOf(StatType statType) {
+        int totalStat = getRealTotalStatOf(statType);
         if (totalStat <= 0) {
             return 1;
         }
         return totalStat;
     }
 
-    int getTotalSkillOf(SkillType skillType) {
-        int ownSkill = getOwnSkillOf(skillType);
-        if (ownSkill <= 0) {
+    int getCalculatedTotalSkillOf(SkillType skillType) {
+        if (getOwnSkillOf(skillType) <= 0) {
             return 0;
         }
-        int totalSkill = ownSkill + getSumInventorySkillOf(skillType) + skills.getBonusSkillOf(skillType);
+        int totalSkill = getRealTotalSkillOf(skillType);
         if (totalSkill <= 0) {
             return 0;
         }
@@ -164,8 +163,9 @@ public class HeroItem {
             int equippedValue = getStatValueOf(hoveredItem.getGroup(), statType);
             int hoveredValue = hoveredItem.getAttributeOfStatType(statType);
             int difference = hoveredValue - equippedValue;
-            int extra = getOwnStatOf(statType) + getExtraStatForVisualOf(statType);
-            return getPreviewForVisual(difference, extra);
+            int visualTotal = getOwnStatOf(statType) + getExtraStatForVisualOf(statType);
+            int realTotal = getRealTotalStatOf(statType);
+            return getPreviewForVisual(difference, visualTotal, realTotal);
         }
     }
 
@@ -176,8 +176,9 @@ public class HeroItem {
             int equippedValue = getSkillValueOf(hoveredItem.getGroup(), skillType);
             int hoveredValue = hoveredItem.getAttributeOfSkillType(skillType);
             int difference = hoveredValue - equippedValue;
-            int extra = getOwnSkillOf(skillType) + getExtraSkillForVisualOf(skillType);
-            return getPreviewForVisual(difference, extra);
+            int visualTotal = getOwnSkillOf(skillType) + getExtraSkillForVisualOf(skillType);
+            int realTotal = getRealTotalSkillOf(skillType);
+            return getPreviewForVisual(difference, visualTotal, realTotal);
         }
     }
 
@@ -191,13 +192,25 @@ public class HeroItem {
         }
     }
 
-    private int getPreviewForVisual(int difference, int extra) {
-        if (difference < 0 && difference < -extra) {
-            return -extra;
-        } else if (difference > 0 && extra == 0) {
+    private int getPreviewForVisual(int difference, int visualTotal, int realTotal) {
+        if (difference < 0 && difference < -visualTotal) {
+            return -visualTotal;
+        } else if (difference > 0 && difference + realTotal < 0) {
             return 0;
+        } else if (difference > 0 && difference + realTotal == 0) {
+            return 0;
+        } else if (difference > 0 && difference + realTotal > 0 && realTotal < 0) {
+            return realTotal + difference;
         }
         return difference;
+    }
+
+    private int getRealTotalStatOf(StatType statType) {
+        return getOwnStatOf(statType) + getSumInventoryStatOf(statType) + stats.getBonusStatOf(statType);
+    }
+
+    private int getRealTotalSkillOf(SkillType skillType) {
+        return getOwnSkillOf(skillType) + getSumInventorySkillOf(skillType) + skills.getBonusSkillOf(skillType);
     }
 
     private int getSumInventoryStatOf(StatType statType) {

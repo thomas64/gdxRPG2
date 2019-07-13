@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 public enum SchoolType implements SuperEnum {
 
     NONE("No"),
-    SPECIAL("Special"),
+    UNKNOWN("Unknown"),
     NEUTRAL("Neutral"),
     ELEMENTAL("Elemental"),
     NAMING("Naming"),
