@@ -31,7 +31,7 @@ class InventorySlotTooltipListener extends ClickListener {
         if (isInside) {
             currentCoords.set(x, y);
             inventorySlot.localToStageCoordinates(currentCoords);
-            toolTip.window.setPosition(currentCoords.x + offset.x, currentCoords.y + offset.y);
+            toolTip.setPosition(currentCoords.x + offset.x, currentCoords.y + offset.y);
         }
         return false;
     }
@@ -62,8 +62,8 @@ class InventorySlotTooltipListener extends ClickListener {
             inventorySlot.localToStageCoordinates(currentCoords);
 
             toolTip.updateDescription(inventorySlot);
-            toolTip.window.setPosition(currentCoords.x + offset.x, currentCoords.y + offset.y);
-            toolTip.window.toFront();
+            toolTip.setPosition(currentCoords.x + offset.x, currentCoords.y + offset.y);
+            toolTip.toFront();
             toolTip.setVisible(inventorySlot, true);
         }
     }

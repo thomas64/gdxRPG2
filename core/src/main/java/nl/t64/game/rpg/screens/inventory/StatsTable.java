@@ -1,5 +1,6 @@
 package nl.t64.game.rpg.screens.inventory;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.InventoryItem;
 import nl.t64.game.rpg.components.party.StatType;
@@ -12,13 +13,16 @@ class StatsTable extends BaseTable {
     private static final float THIRD_COLUMN_WIDTH = 35f;
     private static final float FOURTH_COLUMN_WIDTH = 30f;
 
+    private final StatTooltip tooltip;
+
     private HeroItem selectedHero;
     private InventoryItem hoveredItem;
-    private int ownStat;
+    private int statRank;
     private int totalBonus;
     private int difference;
 
-    StatsTable() {
+    StatsTable(StatTooltip tooltip) {
+        this.tooltip = tooltip;
         this.table.columnDefaults(0).width(FIRST_COLUMN_WIDTH);
         this.table.columnDefaults(1).width(SECOND_COLUMN_WIDTH);
         this.table.columnDefaults(2).width(THIRD_COLUMN_WIDTH);
@@ -40,7 +44,7 @@ class StatsTable extends BaseTable {
 
     private void fillStats() {
         for (StatType statType : StatType.values()) {
-            ownStat = selectedHero.getOwnStatOf(statType);
+            statRank = selectedHero.getStatRankOf(statType);
             totalBonus = selectedHero.getExtraStatForVisualOf(statType);
             difference = selectedHero.getPreviewStatForVisualOf(statType, hoveredItem);
             fillRow(statType);
@@ -51,12 +55,14 @@ class StatsTable extends BaseTable {
         table.add("").row();
         fillRow("XP Remaining", selectedHero.getXpRemaining());
         fillRow("Total XP", selectedHero.getTotalXp());
-        fillRow("Next Level", selectedHero.getNeededXpForNextLevel()); // todo, is dit de juiste van de 2 methodes?
+        fillRow("Next Level", selectedHero.getXpNeededForNextLevel()); // todo, is dit de juiste van de 2 methodes?
     }
 
     private void fillRow(StatType statType) {
-        table.add(statType.getTitle());
-        table.add(String.valueOf(ownStat));
+        var statTitle = new Label(statType.getTitle(), table.getSkin());
+        statTitle.addListener(new StatTooltipListener(tooltip, statType));
+        table.add(statTitle);
+        table.add(String.valueOf(statRank));
         createBonusFromInventory(totalBonus);
         createPreview(difference);
     }

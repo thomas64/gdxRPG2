@@ -72,9 +72,9 @@ abstract class BaseTable {
     }
 
     private Skin createSkin() {
-        Skin statsSkin = new Skin();
-        statsSkin.add("default", new Label.LabelStyle(font, Color.BLACK));
-        return statsSkin;
+        Skin skin = new Skin();
+        skin.add("default", new Label.LabelStyle(font, Color.BLACK));
+        return skin;
     }
 
 }

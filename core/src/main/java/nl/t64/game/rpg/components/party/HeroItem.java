@@ -26,8 +26,14 @@ public class HeroItem {
         return id.equals(otherHero.id);
     }
 
-    public int getNeededXpForNextLevel() {
-        return stats.getNeededXpForNextLevel();
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    int getXpCostForNextLevelOf(StatType statType) {
+        return stats.getXpCostForNextLevelOf(statType);
+    }
+
+    public int getXpNeededForNextLevel() {
+        return stats.getXpNeededForNextLevel();
     }
 
     public int getXpDeltaBetweenLevels() {
@@ -58,6 +64,8 @@ public class HeroItem {
         return stats.getCurrentHp();
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     public List<SkillType> getAllSkillsAboveZero() {
         return skills.getAllAboveZero();
     }
@@ -65,6 +73,8 @@ public class HeroItem {
     public List<SpellType> getAllSpells() {
         return spells.getAll();
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public int getStatValueOf(InventoryGroup inventoryGroup, StatType statType) {
         return inventory.getStatValueOf(inventoryGroup, statType);
@@ -77,6 +87,8 @@ public class HeroItem {
     public int getCalcValueOf(InventoryGroup inventoryGroup, CalcType calcType) {
         return inventory.getCalcValueOf(inventoryGroup, calcType);
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public Optional<InventoryItem> getInventoryItem(InventoryGroup inventoryGroup) {
         return inventory.getInventoryItem(inventoryGroup);
@@ -96,39 +108,17 @@ public class HeroItem {
         return Optional.empty();
     }
 
-    int getCalculatedTotalStatOf(StatType statType) {
-        int totalStat = getRealTotalStatOf(statType);
-        if (totalStat <= 0) {
-            return 1;
-        }
-        return totalStat;
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public int getStatRankOf(StatType statType) {
+        return stats.getRankOf(statType);
     }
 
-    int getCalculatedTotalSkillOf(SkillType skillType) {
-        if (getOwnSkillOf(skillType) <= 0) {
-            return 0;
-        }
-        int totalSkill = getRealTotalSkillOf(skillType);
-        if (totalSkill <= 0) {
-            return 0;
-        }
-        return totalSkill;
+    public int getSkillRankOf(SkillType skillType) {
+        return skills.getRankOf(skillType);
     }
 
-    public int getTotalCalcOf(CalcType calcType) {
-        // todo, er moet nog wel een bonus komen voor protection en etc. bijv met een protection spell.
-        return getSumInventoryCalcOf(calcType);
-    }
-
-    public int getOwnStatOf(StatType statType) {
-        return stats.getOwnStatOf(statType);
-    }
-
-    public int getOwnSkillOf(SkillType skillType) {
-        return skills.getOwnSkillOf(skillType);
-    }
-
-    public int getOwnCalcOf(CalcType calcType) {
+    public int getCalcRankOf(CalcType calcType) {
         return 0;
     }
 
@@ -136,18 +126,20 @@ public class HeroItem {
         return spells.getRankOf(spellType);
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     public int getExtraStatForVisualOf(StatType statType) {
-        int extra = getSumInventoryStatOf(statType) + stats.getBonusStatOf(statType);
-        if (extra < 0 && extra < -getOwnStatOf(statType)) {
-            return -getOwnStatOf(statType);
+        int extra = inventory.getSumOfStat(statType) + stats.getBonusStatOf(statType);
+        if (extra < 0 && extra < -getStatRankOf(statType)) {
+            return -getStatRankOf(statType);
         }
         return extra;
     }
 
     public int getExtraSkillForVisualOf(SkillType skillType) {
-        int extra = getSumInventorySkillOf(skillType) + skills.getBonusSkillOf(skillType);
-        if (extra < 0 && extra < -getOwnSkillOf(skillType)) {
-            return -getOwnSkillOf(skillType);
+        int extra = inventory.getSumOfSkill(skillType) + skills.getBonusSkillOf(skillType);
+        if (extra < 0 && extra < -getSkillRankOf(skillType)) {
+            return -getSkillRankOf(skillType);
         }
         return extra;
     }
@@ -163,7 +155,7 @@ public class HeroItem {
             int equippedValue = getStatValueOf(hoveredItem.getGroup(), statType);
             int hoveredValue = hoveredItem.getAttributeOfStatType(statType);
             int difference = hoveredValue - equippedValue;
-            int visualTotal = getOwnStatOf(statType) + getExtraStatForVisualOf(statType);
+            int visualTotal = getStatRankOf(statType) + getExtraStatForVisualOf(statType);
             int realTotal = getRealTotalStatOf(statType);
             return getPreviewForVisual(difference, visualTotal, realTotal);
         }
@@ -176,7 +168,7 @@ public class HeroItem {
             int equippedValue = getSkillValueOf(hoveredItem.getGroup(), skillType);
             int hoveredValue = hoveredItem.getAttributeOfSkillType(skillType);
             int difference = hoveredValue - equippedValue;
-            int visualTotal = getOwnSkillOf(skillType) + getExtraSkillForVisualOf(skillType);
+            int visualTotal = getSkillRankOf(skillType) + getExtraSkillForVisualOf(skillType);
             int realTotal = getRealTotalSkillOf(skillType);
             return getPreviewForVisual(difference, visualTotal, realTotal);
         }
@@ -205,23 +197,37 @@ public class HeroItem {
         return difference;
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    int getCalculatedTotalStatOf(StatType statType) {
+        int totalStat = getRealTotalStatOf(statType);
+        if (totalStat <= 0) {
+            return 1;
+        }
+        return totalStat;
+    }
+
+    int getCalculatedTotalSkillOf(SkillType skillType) {
+        if (getSkillRankOf(skillType) <= 0) {
+            return 0;
+        }
+        int totalSkill = getRealTotalSkillOf(skillType);
+        if (totalSkill <= 0) {
+            return 0;
+        }
+        return totalSkill;
+    }
+
     private int getRealTotalStatOf(StatType statType) {
-        return getOwnStatOf(statType) + getSumInventoryStatOf(statType) + stats.getBonusStatOf(statType);
+        return getStatRankOf(statType) + inventory.getSumOfStat(statType) + stats.getBonusStatOf(statType);
     }
 
     private int getRealTotalSkillOf(SkillType skillType) {
-        return getOwnSkillOf(skillType) + getSumInventorySkillOf(skillType) + skills.getBonusSkillOf(skillType);
+        return getSkillRankOf(skillType) + inventory.getSumOfSkill(skillType) + skills.getBonusSkillOf(skillType);
     }
 
-    private int getSumInventoryStatOf(StatType statType) {
-        return inventory.getSumOfStat(statType);
-    }
-
-    private int getSumInventorySkillOf(SkillType skillType) {
-        return inventory.getSumOfSkill(skillType);
-    }
-
-    private int getSumInventoryCalcOf(CalcType calcType) {
+    public int getTotalCalcOf(CalcType calcType) {
+        // todo, er moet nog wel een bonus komen voor protection en etc. bijv met een protection spell.
         return inventory.getSumOfCalc(calcType);
     }
 

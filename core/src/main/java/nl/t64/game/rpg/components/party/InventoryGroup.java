@@ -32,4 +32,10 @@ public enum InventoryGroup implements SuperEnum {
     public String getTitle() {
         return title;
     }
+
+    @Override
+    public String getDescription(HeroItem hero) {
+        return title;
+    }
+
 }

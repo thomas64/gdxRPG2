@@ -55,7 +55,7 @@ class SkillContainer {
                      .collect(Collectors.toList());
     }
 
-    int getOwnSkillOf(SkillType skillType) {
+    int getRankOf(SkillType skillType) {
         return skills.get(skillType.name()).rank;
     }
 
@@ -64,7 +64,7 @@ class SkillContainer {
     }
 
     private boolean hasPositiveQuantity(SkillType skillType) {
-        return getOwnSkillOf(skillType) > 0;
+        return getRankOf(skillType) > 0;
     }
 
 }

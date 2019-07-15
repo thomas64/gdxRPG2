@@ -23,7 +23,7 @@ class SkillsTable extends BaseTable {
 
     private HeroItem selectedHero;
     private InventoryItem hoveredItem;
-    private int ownSkill;
+    private int skillRank;
     private int totalBonus;
     private int difference;
 
@@ -51,7 +51,7 @@ class SkillsTable extends BaseTable {
 
     private void fillRows() {
         for (SkillType skillType : selectedHero.getAllSkillsAboveZero()) {
-            ownSkill = selectedHero.getOwnSkillOf(skillType);
+            skillRank = selectedHero.getSkillRankOf(skillType);
             totalBonus = selectedHero.getExtraSkillForVisualOf(skillType);
             difference = selectedHero.getPreviewSkillForVisualOf(skillType, hoveredItem);
             fillRow(skillType);
@@ -61,7 +61,7 @@ class SkillsTable extends BaseTable {
     private void fillRow(SkillType skillType) {
         table.add(createImageOf(skillType.name()));
         table.add(skillType.getTitle()).padLeft(SECOND_COLUMN_PAD_LEFT);
-        table.add(String.valueOf(ownSkill));
+        table.add(String.valueOf(skillRank));
         createBonusFromInventory(totalBonus);
         createPreview(difference);
     }

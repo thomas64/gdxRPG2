@@ -40,4 +40,9 @@ public enum SpellType implements SuperEnum {
         return title;
     }
 
+    @Override
+    public String getDescription(HeroItem hero) {
+        return title;
+    }
+
 }

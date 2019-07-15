@@ -21,4 +21,9 @@ public enum CalcType implements SuperEnum {
         return title;
     }
 
+    @Override
+    public String getDescription(HeroItem hero) {
+        return title;
+    }
+
 }

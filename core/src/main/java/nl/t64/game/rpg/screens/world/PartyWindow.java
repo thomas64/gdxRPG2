@@ -253,7 +253,7 @@ class PartyWindow {
     private float calculateXpBarWidth(int i) {
         HeroItem hero = party.getHero(i);
         int maxXp = hero.getXpDeltaBetweenLevels();
-        int currentXp = maxXp - hero.getNeededXpForNextLevel();
+        int currentXp = maxXp - hero.getXpNeededForNextLevel();
         return (BAR_WIDTH / maxXp) * currentXp;
     }
 

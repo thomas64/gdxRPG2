@@ -33,4 +33,9 @@ public enum SkillType implements SuperEnum {
         return title;
     }
 
+    @Override
+    public String getDescription(HeroItem hero) {
+        return title;
+    }
+
 }

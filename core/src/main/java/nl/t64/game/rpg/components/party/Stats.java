@@ -8,15 +8,15 @@ class Level {
 
     private static final int MAXIMUM = 40;
 
-    int actual;
+    int rank;
     int variable;
     int totalXp;
     int xpForUpgrades;
 
-    Level(int actual) {
-        this.actual = actual;
-        this.variable = actual;
-        this.totalXp = getTotalXpForLevel(actual);
+    Level(int rank) {
+        this.rank = rank;
+        this.variable = rank;
+        this.totalXp = getTotalXpForLevel(rank);
         this.xpForUpgrades = 0;
     }
 
@@ -25,15 +25,15 @@ class Level {
     }
 
     int getXpDeltaBetweenLevels() {
-        int nextLevel = actual + 1;
-        return getTotalXpForLevel(nextLevel) - getTotalXpForLevel(actual);
+        int nextLevel = rank + 1;
+        return getTotalXpForLevel(nextLevel) - getTotalXpForLevel(rank);
     }
 
-    int getNeededXpForNextLevel() {
-        if (actual >= MAXIMUM) {
+    int getXpNeededForNextLevel() {
+        if (rank >= MAXIMUM) {
             return 1;
         } else {
-            int nextLevel = actual + 1;
+            int nextLevel = rank + 1;
             return getTotalXpForLevel(nextLevel) - totalXp;
         }
     }
@@ -41,101 +41,135 @@ class Level {
 }
 
 @NoArgsConstructor
-class Intelligence {
-    private static final int MAXIMUM = 30;
-    private static final float UPGRADE = 0.12f;
-
-    int actual;
+abstract class StatItem {
+    int rank;
+    int variable;
     int bonus;
 
-    Intelligence(int actual) {
-        this.actual = actual;
-        this.bonus = 0;
+    StatItem(int rank) {
+        this.rank = rank;
+    }
+
+    abstract int getXpCostForNextLevel();
+
+    int getXpCostForNextLevel(int maximum, float upgrade) {
+        if (rank >= maximum) {
+            return 0;
+        }
+        int nextLevel = rank + 1;
+        return Math.round(upgrade * (nextLevel * nextLevel));
     }
 }
 
 @NoArgsConstructor
-class Willpower {
+class Intelligence extends StatItem {
     private static final int MAXIMUM = 30;
     private static final float UPGRADE = 0.12f;
 
-    int actual;
-    int bonus;
+    Intelligence(int rank) {
+        super(rank);
+        super.bonus = 0;
+    }
 
-    Willpower(int actual) {
-        this.actual = actual;
-        this.bonus = 0;
+    @Override
+    int getXpCostForNextLevel() {
+        return getXpCostForNextLevel(MAXIMUM, UPGRADE);
     }
 }
 
 @NoArgsConstructor
-class Dexterity {
+class Willpower extends StatItem {
+    private static final int MAXIMUM = 30;
+    private static final float UPGRADE = 0.12f;
+
+    Willpower(int rank) {
+        super(rank);
+        super.bonus = 0;
+    }
+
+    @Override
+    int getXpCostForNextLevel() {
+        return getXpCostForNextLevel(MAXIMUM, UPGRADE);
+    }
+}
+
+@NoArgsConstructor
+class Dexterity extends StatItem {
     private static final int MAXIMUM = 30;
     private static final float UPGRADE = 0.24f;
 
-    int actual;
-    int bonus;
+    Dexterity(int rank) {
+        super(rank);
+        super.bonus = 0;
+    }
 
-    Dexterity(int actual) {
-        this.actual = actual;
-        this.bonus = 0;
+    @Override
+    int getXpCostForNextLevel() {
+        return getXpCostForNextLevel(MAXIMUM, UPGRADE);
     }
 }
 
 @NoArgsConstructor
-class Agility {
+class Agility extends StatItem {
     private static final int MAXIMUM = 30;
     private static final float UPGRADE = 0.24f;
 
-    int actual;
-    int bonus;
+    Agility(int rank) {
+        super(rank);
+        super.bonus = 0;
+    }
 
-    Agility(int actual) {
-        this.actual = actual;
-        this.bonus = 0;
+    @Override
+    int getXpCostForNextLevel() {
+        return getXpCostForNextLevel(MAXIMUM, UPGRADE);
     }
 }
 
 @NoArgsConstructor
-class Strength {
+class Strength extends StatItem {
     private static final int MAXIMUM = 30;
     private static final float UPGRADE = 0.12f;
 
-    int actual;
-    int bonus;
+    Strength(int rank) {
+        super(rank);
+        super.bonus = 0;
+    }
 
-    Strength(int actual) {
-        this.actual = actual;
-        this.bonus = 0;
+    @Override
+    int getXpCostForNextLevel() {
+        return getXpCostForNextLevel(MAXIMUM, UPGRADE);
     }
 }
 
 @NoArgsConstructor
-class Endurance {
+class Endurance extends StatItem {
     private static final int MAXIMUM = 40;
     private static final float UPGRADE = 0.12f;
 
-    int actual;
-    int variable;
-    int bonus;
+    Endurance(int rank) {
+        super(rank);
+        super.variable = rank;
+        super.bonus = 0;
+    }
 
-    Endurance(int actual) {
-        this.actual = actual;
-        this.variable = actual;
-        this.bonus = 0;
+    @Override
+    int getXpCostForNextLevel() {
+        return getXpCostForNextLevel(MAXIMUM, UPGRADE);
     }
 }
 
 @NoArgsConstructor
-class Stamina {
+class Stamina extends StatItem {
     private static final int MAXIMUM = 90;
     private static final float UPGRADE = 0.04f;
 
-    int actual;
-    int variable;
+    Stamina(int rank) {
+        super(rank);
+        super.variable = rank;
+    }
 
-    Stamina(int actual) {
-        this.actual = actual;
-        this.variable = actual;
+    @Override
+    int getXpCostForNextLevel() {
+        return getXpCostForNextLevel(MAXIMUM, UPGRADE);
     }
 }

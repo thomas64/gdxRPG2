@@ -1,25 +1,43 @@
 package nl.t64.game.rpg.components.party;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Setter;
 
+import java.beans.ConstructorProperties;
+import java.util.HashMap;
 import java.util.Map;
 
 
 @Setter
 class StatContainer {
 
+    private static final int NUMBER_OF_STAT_SLOTS = 7;
+
     private Level level;
+    private final Map<String, StatItem> stats;
 
-    private Intelligence intelligence;
-    private Willpower willpower;
-    private Dexterity dexterity;
-    private Agility agility;
-    private Endurance endurance;
-    private Strength strength;
-    private Stamina stamina;
+    private StatContainer() {
+        this.stats = new HashMap<>(NUMBER_OF_STAT_SLOTS);
+    }
 
-    int getNeededXpForNextLevel() {
-        return level.getNeededXpForNextLevel();
+    @JsonCreator
+    @ConstructorProperties({
+            "level", "intelligence", "willpower", "dexterity",
+            "agility", "endurance", "strength", "stamina"})
+    private StatContainer(int lvl, int inl, int wil, int dex, int agi, int edu, int str, int sta) {
+        this();
+        this.level = new Level(lvl);
+        this.stats.put(StatType.INTELLIGENCE.name(), new Intelligence(inl));
+        this.stats.put(StatType.WILLPOWER.name(), new Willpower(wil));
+        this.stats.put(StatType.DEXTERITY.name(), new Dexterity(dex));
+        this.stats.put(StatType.AGILITY.name(), new Agility(agi));
+        this.stats.put(StatType.ENDURANCE.name(), new Endurance(edu));
+        this.stats.put(StatType.STRENGTH.name(), new Strength(str));
+        this.stats.put(StatType.STAMINA.name(), new Stamina(sta));
+    }
+
+    int getXpNeededForNextLevel() {
+        return level.getXpNeededForNextLevel();
     }
 
     int getXpDeltaBetweenLevels() {
@@ -35,67 +53,44 @@ class StatContainer {
     }
 
     int getLevel() {
-        return level.actual;
+        return level.rank;
     }
 
     Map<String, Integer> getAllHpStats() {
-        return Map.of("lvlCur", level.actual,
-                      "lvlHp", level.variable,
-                      "staCur", stamina.actual,
-                      "staHp", stamina.variable,
-                      "eduCur", endurance.actual,
-                      "eduHp", endurance.variable,
-                      "eduBon", endurance.bonus);
+        return Map.of("lvlRank", level.rank,
+                      "lvlVari", level.variable,
+                      "staRank", stats.get(StatType.STAMINA.name()).rank,
+                      "staVari", stats.get(StatType.STAMINA.name()).variable,
+                      "eduRank", stats.get(StatType.ENDURANCE.name()).rank,
+                      "eduVari", stats.get(StatType.ENDURANCE.name()).variable,
+                      "eduBon", stats.get(StatType.ENDURANCE.name()).bonus);
     }
 
     int getMaximumHp() {
-        return level.actual + stamina.actual + endurance.actual + endurance.bonus;
+        return level.rank
+                + stats.get(StatType.STAMINA.name()).rank
+                + stats.get(StatType.ENDURANCE.name()).rank
+                + stats.get(StatType.ENDURANCE.name()).bonus;
     }
 
     int getCurrentHp() {
-        return level.variable + stamina.variable + endurance.variable + endurance.bonus;
+        return level.variable
+                + stats.get(StatType.STAMINA.name()).variable
+                + stats.get(StatType.ENDURANCE.name()).variable
+                + stats.get(StatType.ENDURANCE.name()).bonus;
     }
 
-    int getOwnStatOf(StatType statType) {
-        switch (statType) {
-            case INTELLIGENCE:
-                return intelligence.actual;
-            case WILLPOWER:
-                return willpower.actual;
-            case DEXTERITY:
-                return dexterity.actual;
-            case AGILITY:
-                return agility.actual;
-            case ENDURANCE:
-                return endurance.actual;
-            case STRENGTH:
-                return strength.actual;
-            case STAMINA:
-                return stamina.actual;
-            default:
-                throw new IllegalArgumentException(String.format("StatType '%s' not usable.", statType));
-        }
+    int getRankOf(StatType statType) {
+        return stats.get(statType.name()).rank;
     }
 
     int getBonusStatOf(StatType statType) {
-        switch (statType) {
-            case INTELLIGENCE:
-                return intelligence.bonus;
-            case WILLPOWER:
-                return willpower.bonus;
-            case DEXTERITY:
-                return dexterity.bonus;
-            case AGILITY:
-                return agility.bonus;
-            case ENDURANCE:
-                return endurance.bonus;
-            case STRENGTH:
-                return strength.bonus;
-            case STAMINA:
-                return 0;   // todo, stamina heeft wel negatieve bonus wanneer gebruikt door spells of tegenaanvallen.
-            default:
-                throw new IllegalArgumentException(String.format("StatType '%s' not usable.", statType));
-        }
+        // todo, wat te doen voor stamina? heeft wel negatieve bonus wanneer gebruikt door spells of tegenaanvallen?
+        return stats.get(statType.name()).bonus;
+    }
+
+    int getXpCostForNextLevelOf(StatType statType) {
+        return stats.get(statType.name()).getXpCostForNextLevel();
     }
 
 }

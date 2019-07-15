@@ -48,18 +48,20 @@ class InventoryUI {
     private final CalcsTable calcsTable;
     private final HeroesTable heroesTable;
 
-    private final InventorySlotTooltip tooltip;
+    private final InventorySlotTooltip inventorySlotTooltip;
+    private final StatTooltip statTooltip;
 
     InventoryUI() {
         final var dragAndDrop = new DragAndDrop();
-        this.tooltip = new InventorySlotTooltip();
+        this.inventorySlotTooltip = new InventorySlotTooltip();
+        this.statTooltip = new StatTooltip();
 
-        this.inventorySlotsTable = new InventorySlotsTable(dragAndDrop, this.tooltip);
+        this.inventorySlotsTable = new InventorySlotsTable(dragAndDrop, this.inventorySlotTooltip);
         this.inventoryWindow = createWindow(TITLE_GLOBAL, this.inventorySlotsTable.container);
 
         this.equipSlotsTables = new HashMap<>(PartyContainer.MAXIMUM);
         for (HeroItem hero : Utils.getGameData().getParty().getAllHeroes()) {
-            this.equipSlotsTables.put(hero.getId(), new EquipSlotsTable(hero, dragAndDrop, this.tooltip));
+            this.equipSlotsTables.put(hero.getId(), new EquipSlotsTable(hero, dragAndDrop, this.inventorySlotTooltip));
         }
         this.equipWindow = createWindow(TITLE_PERSONAL,
                                         this.equipSlotsTables.get(InventoryUtils.getSelectedHeroId()).equipSlots);
@@ -71,7 +73,7 @@ class InventoryUI {
         this.skillsTable = new SkillsTable();
         this.skillsWindow = createWindow(TITLE_SKILLS, this.skillsTable.container);
 
-        this.statsTable = new StatsTable();
+        this.statsTable = new StatsTable(this.statTooltip);
         this.statsWindow = createWindow(TITLE_STATS, this.statsTable.table);
 
         this.calcsTable = new CalcsTable();
@@ -97,7 +99,8 @@ class InventoryUI {
         stage.addActor(statsWindow);
         stage.addActor(calcsWindow);
         stage.addActor(heroesWindow);
-        stage.addActor(tooltip.window);
+        inventorySlotTooltip.addToStage(stage);
+        statTooltip.addToStage(stage);
     }
 
     void applyListeners(Stage stage) {

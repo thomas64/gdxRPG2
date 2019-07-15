@@ -61,15 +61,15 @@ public final class Utils {
 
     public static Color getHpColor(Map<String, Integer> hpStats) {
         Color color = Color.ROYAL;
-        if (hpStats.get("lvlHp") < hpStats.get("lvlCur")) {
+        if (hpStats.get("lvlVari") < hpStats.get("lvlRank")) {
             color = Color.LIME;
         }
-        if (hpStats.get("staHp") < hpStats.get("staCur")) {
+        if (hpStats.get("staVari") < hpStats.get("staRank")) {
             color = Color.YELLOW;
         }
-        if (hpStats.get("eduHp") < hpStats.get("eduCur")) {
+        if (hpStats.get("eduVari") < hpStats.get("eduRank")) {
             color = Color.FIREBRICK;
-            if (hpStats.get("staHp") > 0) {
+            if (hpStats.get("staVari") > 0) {
                 color = Color.ORANGE;
             }
         }
