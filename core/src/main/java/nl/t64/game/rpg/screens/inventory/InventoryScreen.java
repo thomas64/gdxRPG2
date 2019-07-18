@@ -150,7 +150,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
         stage.dispose();
     }
 
-    public void setBackground(Image screenshot) {
+    void setBackground(Image screenshot) {
         var texture = Utils.getResourceManager().getTextureAsset(SPRITE_PARCHMENT);
         var parchment = new Image(texture);
         parchment.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
