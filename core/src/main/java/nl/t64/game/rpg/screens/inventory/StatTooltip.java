@@ -1,7 +1,6 @@
 package nl.t64.game.rpg.screens.inventory;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import nl.t64.game.rpg.components.party.SuperEnum;
 
@@ -16,7 +15,7 @@ class StatTooltip extends BaseToolTip {
         window.clear();
 
         String description = superEnum.getDescription(InventoryUtils.selectedHero);
-        var labelStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+        var labelStyle = new Label.LabelStyle(font, Color.WHITE);
         var label = new Label(description, labelStyle);
         window.add(label);
 

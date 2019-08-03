@@ -23,13 +23,13 @@ class InventoryUI {
     private static final int TITLE_SIZE = 30;
     private static final String SPRITE_BORDER = "sprites/border.png";
 
-    private static final String TITLE_GLOBAL = "Global Inventory";
-    private static final String TITLE_PERSONAL = "Personal Inventory";
-    private static final String TITLE_SPELLS = "Spells";
-    private static final String TITLE_SKILLS = "Skills";
-    private static final String TITLE_STATS = "Stats";
-    private static final String TITLE_CALCS = "Calcs";
-    private static final String TITLE_HEROES = "Heroes";
+    private static final String TITLE_GLOBAL = "   Inventory";
+    private static final String TITLE_PERSONAL = "   Equipment";
+    private static final String TITLE_SPELLS = "   Spells";
+    private static final String TITLE_SKILLS = "   Skills";
+    private static final String TITLE_STATS = "   Stats";
+    private static final String TITLE_CALCS = "   Calcs";
+    private static final String TITLE_HEROES = "   Heroes";
     private static final float TITLE_PADDING = 50f;
 
     final Window inventoryWindow;
@@ -127,7 +127,7 @@ class InventoryUI {
         var window = new Window(title, createWindowStyle());
         window.add(table);
         window.padTop(TITLE_PADDING);
-        window.getTitleLabel().setAlignment(Align.center);
+        window.getTitleLabel().setAlignment(Align.left);
         window.pack();
         return window;
     }

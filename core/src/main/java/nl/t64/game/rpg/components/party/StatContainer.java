@@ -48,8 +48,8 @@ class StatContainer {
         return level.totalXp;
     }
 
-    int getXpRemaining() {
-        return level.xpForUpgrades;
+    int getXpToInvest() {
+        return level.xpToInvest;
     }
 
     int getLevel() {

@@ -11,13 +11,13 @@ class Level {
     int rank;
     int variable;
     int totalXp;
-    int xpForUpgrades;
+    int xpToInvest;
 
     Level(int rank) {
         this.rank = rank;
         this.variable = rank;
         this.totalXp = getTotalXpForLevel(rank);
-        this.xpForUpgrades = 0;
+        this.xpToInvest = 0;
     }
 
     private static int getTotalXpForLevel(float level) {

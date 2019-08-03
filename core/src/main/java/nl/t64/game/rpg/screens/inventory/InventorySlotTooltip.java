@@ -48,7 +48,7 @@ class InventorySlotTooltip extends BaseToolTip {
         } else {
             color = Color.RED;
         }
-        return new Label.LabelStyle(new BitmapFont(), color);
+        return new Label.LabelStyle(font, color);
     }
 
     private String getKey(InventoryDescription attribute) {

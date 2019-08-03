@@ -53,7 +53,7 @@ class StatsTable extends BaseTable {
 
     private void fillExperience() {
         table.add("").row();
-        fillRow("XP Remaining", selectedHero.getXpRemaining());
+        fillRow("XP to Invest", selectedHero.getXpToInvest());
         fillRow("Total XP", selectedHero.getTotalXp());
         fillRow("Next Level", selectedHero.getXpNeededForNextLevel()); // todo, is dit de juiste van de 2 methodes?
     }

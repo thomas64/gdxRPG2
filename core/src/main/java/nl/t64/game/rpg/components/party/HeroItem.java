@@ -44,8 +44,8 @@ public class HeroItem {
         return stats.getTotalXp();
     }
 
-    public int getXpRemaining() {
-        return stats.getXpRemaining();
+    public int getXpToInvest() {
+        return stats.getXpToInvest();
     }
 
     public int getLevel() {
@@ -105,7 +105,7 @@ public class HeroItem {
                 return message;
             }
         }
-        return Optional.empty();
+        return Optional.empty();    // Yes, is able to equip.
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
