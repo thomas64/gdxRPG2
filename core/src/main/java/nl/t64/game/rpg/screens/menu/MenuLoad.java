@@ -93,8 +93,8 @@ public class MenuLoad extends MenuScreen {
         scrollScrollPane();
         listenerKeyVertical.updateSelectedIndex(selectedListIndex);
         listenerKeyHorizontal.updateSelectedIndex(selectedMenuIndex);
-        progressLostDialog.render(dt); // for updating the index in de listener.
-        deleteFileDialog.render(dt);
+        progressLostDialog.update(); // for updating the index in de listener.
+        deleteFileDialog.update();
         stage.draw();
     }
 

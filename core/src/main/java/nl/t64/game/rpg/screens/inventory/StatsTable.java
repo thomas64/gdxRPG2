@@ -30,7 +30,7 @@ class StatsTable extends BaseTable {
         setTopBorder(this.table);
     }
 
-    void render() {
+    void update() {
         selectedHero = InventoryUtils.selectedHero;
         hoveredItem = InventoryUtils.hoveredItem;
         table.clear();

@@ -31,7 +31,7 @@ abstract class BaseTable {
         this.table.pad(PADDING).padRight(PADDING_RIGHT);
     }
 
-    abstract void render();
+    abstract void update();
 
     void createBonusFromInventory(int totalFromInventory) {
         if (totalFromInventory > 0) {

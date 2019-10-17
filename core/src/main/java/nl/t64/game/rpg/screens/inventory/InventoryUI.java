@@ -109,12 +109,12 @@ class InventoryUI {
         skillsWindow.addListener(new ListenerMouseScrollPane(stage, skillsTable.scrollPane));
     }
 
-    void render() {
-        statsTable.render();
-        calcsTable.render();
-        skillsTable.render();
-        spellsTable.render();
-        heroesTable.render();
+    void update() {
+        statsTable.update();
+        calcsTable.update();
+        skillsTable.update();
+        spellsTable.update();
+        heroesTable.update();
 
         statsWindow.pack();
         calcsWindow.pack();

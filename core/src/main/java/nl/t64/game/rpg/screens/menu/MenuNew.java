@@ -79,7 +79,7 @@ public class MenuNew extends MenuScreen {
         stage.act(dt);
         listenerKeyInputField.updateInputField(profileName);
         listenerKeyHorizontal.updateSelectedIndex(selectedIndex);
-        overwriteDialog.render(dt); // for updating the index in de listener.
+        overwriteDialog.update(); // for updating the index in de listener.
         stage.draw();
     }
 

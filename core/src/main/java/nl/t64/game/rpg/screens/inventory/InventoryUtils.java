@@ -66,6 +66,10 @@ final class InventoryUtils {
         });
     }
 
+    static void setShiftPressed(boolean isPressed) {
+        shiftPressed = isPressed;
+    }
+
     private static void setHoveredItem(InventoryImage inventoryImage) {
         hoveredItem = inventoryImage.inventoryItem;
     }

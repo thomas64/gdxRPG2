@@ -42,7 +42,7 @@ class SkillsTable extends BaseTable {
         setTopBorder(this.container);
     }
 
-    void render() {
+    void update() {
         selectedHero = InventoryUtils.selectedHero;
         hoveredItem = InventoryUtils.hoveredItem;
         table.clear();

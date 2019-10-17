@@ -98,7 +98,7 @@ class PartyWindow {
         }
     }
 
-    void render(float dt) {
+    void update(float dt) {
         handleMovingUp(dt);
         handleMovingDown(dt);
         handleRendering(dt);

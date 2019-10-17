@@ -11,7 +11,7 @@ import nl.t64.game.rpg.screens.world.MapManager;
 
 public class Engine extends Game {
 
-    public static float runTime = 0f;
+    private static float runTime = 0f;
 
     final ResourceManager resourceManager;
     final Settings settings;
@@ -31,6 +31,10 @@ public class Engine extends Game {
 
     private static void updateRunTime() {
         runTime += Gdx.graphics.getDeltaTime();
+    }
+
+    public static float getRunTime() {
+        return runTime;
     }
 
     @Override

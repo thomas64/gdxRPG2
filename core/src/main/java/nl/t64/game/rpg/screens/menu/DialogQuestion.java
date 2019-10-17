@@ -58,7 +58,7 @@ class DialogQuestion {
         updateIndex(EXIT_INDEX);
     }
 
-    void render(float dt) {  // handmade equivalent of a Screen.render() method.
+    void update() {
         listenerKeyHorizontal.updateSelectedIndex(selectedIndex);
     }
 

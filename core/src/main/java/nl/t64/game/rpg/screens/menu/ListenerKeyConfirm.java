@@ -4,16 +4,16 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 
-import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 
 class ListenerKeyConfirm extends InputListener {
 
-    private final Consumer<Integer> updateIndexFunction;
+    private final IntConsumer updateIndexFunction;
     private final Runnable selectItemFunction;
     private final int exitIndex;
 
-    ListenerKeyConfirm(Consumer<Integer> updateIndexFunction, Runnable selectItemFunction, int exitIndex) {
+    ListenerKeyConfirm(IntConsumer updateIndexFunction, Runnable selectItemFunction, int exitIndex) {
         this.updateIndexFunction = updateIndexFunction;
         this.selectItemFunction = selectItemFunction;
         this.exitIndex = exitIndex;

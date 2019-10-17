@@ -21,7 +21,7 @@ class CalcsTable extends BaseTable {
         setTopBorder(this.table);
     }
 
-    void render() {
+    void update() {
         HeroItem selectedHero = InventoryUtils.selectedHero;
         InventoryItem hoveredItem = InventoryUtils.hoveredItem;
         table.clear();

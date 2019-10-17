@@ -40,7 +40,7 @@ class DebugBox {
         stage.dispose();
     }
 
-    void render(float dt) {
+    void update(float dt) {
         table.clear();
 
         table.add("FPS:");
@@ -50,7 +50,7 @@ class DebugBox {
         table.add(String.valueOf(dt).substring(0, 5));
         table.row();
         table.add("runTime:");
-        String runTime = String.valueOf(Engine.runTime);
+        String runTime = String.valueOf(Engine.getRunTime());
         table.add(runTime.substring(0, runTime.length() - 4));
         table.row();
         table.add("").row();

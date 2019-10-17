@@ -152,20 +152,14 @@ class InventorySlot extends Stack {
     }
 
     private void setVisibilityOfAmountLabel() {
-        if (amount < STANDARD_STACK_SIZE) {
-            amountLabel.setVisible(false);
-        } else {
-            amountLabel.setVisible(true);
-        }
+        final boolean shouldAmountLabelBeVisible = amount >= STANDARD_STACK_SIZE;
+        amountLabel.setVisible(shouldAmountLabelBeVisible);
     }
 
     private void setVisibilityOfShadow() {
         if (hasShadow()) {
-            if (amount >= 1) {
-                setShadowVisible(false);
-            } else {
-                setShadowVisible(true);
-            }
+            final boolean shouldShadowBeVisible = amount < 1;
+            setShadowVisible(shouldShadowBeVisible);
         }
     }
 

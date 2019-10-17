@@ -22,7 +22,7 @@ class InventoryScreenListener extends InputListener {
                 break;
             case Input.Keys.SHIFT_LEFT:
             case Input.Keys.SHIFT_RIGHT:
-                InventoryUtils.shiftPressed = true;
+                InventoryUtils.setShiftPressed(true);
                 break;
             default:
                 break;
@@ -32,7 +32,7 @@ class InventoryScreenListener extends InputListener {
 
     @Override
     public boolean keyUp(InputEvent event, int keycode) {
-        InventoryUtils.shiftPressed = false;
+        InventoryUtils.setShiftPressed(false);
         return true;
     }
 

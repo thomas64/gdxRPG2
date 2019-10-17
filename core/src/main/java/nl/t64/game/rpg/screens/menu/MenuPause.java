@@ -57,7 +57,7 @@ public class MenuPause extends MenuScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(dt);
         listenerKeyVertical.updateSelectedIndex(selectedIndex);
-        progressLostDialog.render(dt); // for updating the index in de listener.
+        progressLostDialog.update(); // for updating the index in de listener.
         stage.draw();
     }
 

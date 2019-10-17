@@ -92,8 +92,8 @@ public class WorldScreen implements Screen, MapObserver {
         renderMapLayers();
         renderGrid();
         renderObjects();
-        renderDebugBox(dt);
-        partyWindow.render(dt);
+        updateDebugBox(dt);
+        partyWindow.update(dt);
     }
 
     public void removeNpcCharacter(Character npcCharacter) {
@@ -229,9 +229,9 @@ public class WorldScreen implements Screen, MapObserver {
         }
     }
 
-    private void renderDebugBox(float dt) {
+    private void updateDebugBox(float dt) {
         if (showDebug) {
-            debugBox.render(dt);
+            debugBox.update(dt);
         }
     }
 

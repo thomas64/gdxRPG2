@@ -119,7 +119,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(dt);
         stage.draw();
-        inventoryUI.render();
+        inventoryUI.update();
     }
 
     @Override

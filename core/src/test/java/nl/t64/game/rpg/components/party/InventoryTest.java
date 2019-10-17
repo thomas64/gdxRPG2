@@ -16,6 +16,9 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 class InventoryTest extends GameTest {
 
+    private static final String BASIC_MACE = "basic_mace";
+    private static final String BASIC_LIGHT_CHEST = "basic_light_chest";
+
     private InventoryContainer inventory;
 
     @BeforeEach
@@ -30,9 +33,9 @@ class InventoryTest extends GameTest {
     void whenDataIsCreated_ShouldContainItems() {
         assertThat(inventory.getNumberOfFilledSlots()).isEqualTo(2);
 
-        assertThat(inventory.contains("basic_mace")).isTrue();
+        assertThat(inventory.contains(BASIC_MACE)).isTrue();
         assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(1);
-        assertThat(inventory.getItemAt(0)).get().hasFieldOrPropertyWithValue("id", "basic_mace");
+        assertThat(inventory.getItemAt(0)).get().hasFieldOrPropertyWithValue("id", BASIC_MACE);
 
         assertThat(inventory.contains("gold")).isTrue();
         assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex())).isEqualTo(1);
@@ -55,7 +58,7 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenEquipmentItemIsAdded_ShouldBeAddedToStartOfInventory() {
-        String itemId = "basic_light_chest";
+        String itemId = BASIC_LIGHT_CHEST;
         InventoryItem chest = InventoryDatabase.getInstance().getInventoryItem(itemId);
         assertThat(inventory.contains(itemId)).isFalse();
         inventory.autoSetItem(chest);
@@ -66,14 +69,14 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenItemIsForceSet_ShouldOverwriteExistingItem() {
-        InventoryItem chest = InventoryDatabase.getInstance().getInventoryItem("basic_light_chest");
-        assertThat(inventory.contains("basic_mace")).isTrue();
-        assertThat(inventory.contains("basic_light_chest")).isFalse();
+        InventoryItem chest = InventoryDatabase.getInstance().getInventoryItem(BASIC_LIGHT_CHEST);
+        assertThat(inventory.contains(BASIC_MACE)).isTrue();
+        assertThat(inventory.contains(BASIC_LIGHT_CHEST)).isFalse();
 
         inventory.forceSetItemAt(0, chest);
 
-        assertThat(inventory.contains("basic_mace")).isFalse();
-        assertThat(inventory.contains("basic_light_chest")).isTrue();
+        assertThat(inventory.contains(BASIC_MACE)).isFalse();
+        assertThat(inventory.contains(BASIC_LIGHT_CHEST)).isTrue();
     }
 
     @Test
@@ -86,10 +89,10 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenSameEquipmentItemIsAdded_ShouldNotIncreaseAmount() {
-        InventoryItem basic_mace = InventoryDatabase.getInstance().getInventoryItem("basic_mace");
+        InventoryItem basicMace = InventoryDatabase.getInstance().getInventoryItem(BASIC_MACE);
         assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(1);
         assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(0);
-        inventory.autoSetItem(basic_mace);
+        inventory.autoSetItem(basicMace);
         assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(1);
         assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(1);
     }
@@ -125,7 +128,7 @@ class InventoryTest extends GameTest {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Test
     void whenInventoryItemWeapon_ShouldCreateDescription() {
-        InventoryItem weapon = InventoryDatabase.getInstance().getInventoryItem("basic_mace");
+        InventoryItem weapon = InventoryDatabase.getInstance().getInventoryItem(BASIC_MACE);
         HeroItem heroMock = Mockito.mock(HeroItem.class);
         List<InventoryDescription> description = weapon.createDescriptionFor(heroMock);
         assertThat(description.get(0).key).isEqualTo(InventoryGroup.WEAPON);
@@ -167,7 +170,7 @@ class InventoryTest extends GameTest {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Test
     void whenInventoryItemChest_ShouldCreateDescription() {
-        InventoryItem weapon = InventoryDatabase.getInstance().getInventoryItem("basic_light_chest");
+        InventoryItem weapon = InventoryDatabase.getInstance().getInventoryItem(BASIC_LIGHT_CHEST);
         HeroItem heroMock = Mockito.mock(HeroItem.class);
         List<InventoryDescription> description = weapon.createDescriptionFor(heroMock);
         assertThat(description.get(0).key).isEqualTo(InventoryGroup.CHEST);

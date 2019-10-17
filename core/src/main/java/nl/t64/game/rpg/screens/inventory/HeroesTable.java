@@ -49,7 +49,7 @@ class HeroesTable {
         setTopBorder();
     }
 
-    void render() {
+    void update() {
         heroes.clear();
         for (HeroItem hero : party.getAllHeroes()) {
             createFace(hero);

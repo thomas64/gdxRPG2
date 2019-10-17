@@ -1,7 +1,6 @@
 package nl.t64.game.rpg.screens.inventory;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import nl.t64.game.rpg.components.party.CalcType;

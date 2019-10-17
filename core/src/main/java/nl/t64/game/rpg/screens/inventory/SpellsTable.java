@@ -36,7 +36,7 @@ class SpellsTable extends BaseTable {
     }
 
     @Override
-    void render() {
+    void update() {
         selectedHero = InventoryUtils.selectedHero;
         table.clear();
         fillSchoolRow();

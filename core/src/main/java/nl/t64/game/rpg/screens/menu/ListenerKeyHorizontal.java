@@ -4,17 +4,17 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 
-import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 
 class ListenerKeyHorizontal extends InputListener {
 
-    private final Consumer<Integer> updateIndexFunction;
+    private final IntConsumer updateIndexFunction;
     private final int numberOfItems;
 
     private int selectedIndex;
 
-    ListenerKeyHorizontal(Consumer<Integer> updateIndexFunction, int numberOfItems) {
+    ListenerKeyHorizontal(IntConsumer updateIndexFunction, int numberOfItems) {
         this.updateIndexFunction = updateIndexFunction;
         this.numberOfItems = numberOfItems;
     }
