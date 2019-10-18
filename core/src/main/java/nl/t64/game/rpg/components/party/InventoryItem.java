@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 
@@ -51,7 +49,7 @@ public class InventoryItem {
         this.stealth = item.stealth;
     }
 
-    public Object getAttributeOfMinimal(InventoryMinimal minimal) {
+    Object getAttributeOfMinimal(InventoryMinimal minimal) {
         switch (minimal) {
             case SKILL:
                 return Objects.requireNonNullElse(skill, 0);
@@ -64,7 +62,7 @@ public class InventoryItem {
         }
     }
 
-    public int getAttributeOfStatType(StatType statType) {
+    int getAttributeOfStatType(StatType statType) {
         switch (statType) {
             case DEXTERITY:
                 return dexterity;
@@ -73,7 +71,7 @@ public class InventoryItem {
         }
     }
 
-    public int getAttributeOfSkillType(SkillType skillType) {
+    int getAttributeOfSkillType(SkillType skillType) {
         switch (skillType) {
             case STEALTH:
                 return stealth;
@@ -82,7 +80,7 @@ public class InventoryItem {
         }
     }
 
-    public int getAttributeOfCalcType(CalcType calcType) {
+    int getAttributeOfCalcType(CalcType calcType) {
         switch (calcType) {
             case WEIGHT:
                 return weight;
@@ -109,62 +107,6 @@ public class InventoryItem {
 
     void increaseAmountWith(InventoryItem sourceItem) {
         amount += sourceItem.amount;
-    }
-
-    public List<InventoryDescription> createDescriptionFor(HeroItem hero) {
-        List<InventoryDescription> attributes = new ArrayList<>();
-        attributes.add(new InventoryDescription(group, name, this, hero));
-
-        for (InventoryMinimal minimal : InventoryMinimal.values()) {
-            attributes.add(new InventoryDescription(minimal, getAttributeOfMinimal(minimal), this, hero));
-        }
-        for (CalcType calcType : CalcType.values()) {
-            attributes.add(new InventoryDescription(calcType, getAttributeOfCalcType(calcType), this, hero));
-        }
-        for (StatType statType : StatType.values()) {
-            attributes.add(new InventoryDescription(statType, getAttributeOfStatType(statType), this, hero));
-        }
-        for (SkillType skillType : SkillType.values()) {
-            attributes.add(new InventoryDescription(skillType, getAttributeOfSkillType(skillType), this, hero));
-        }
-        return createFilter(attributes);
-    }
-
-    private List<InventoryDescription> createFilter(List<InventoryDescription> attributes) {
-        List<InventoryDescription> filtered = new ArrayList<>();
-        attributes.forEach(attribute -> {
-            if (attribute.key instanceof InventoryGroup) {
-                filtered.add(attribute);
-                return;
-            }
-            if (attribute.value instanceof SkillType) {
-                filtered.add(attribute);
-                return;
-            }
-            if (attribute.key.equals(StatType.DEXTERITY) && group.equals(InventoryGroup.SHIELD)) {
-                filtered.add(attribute);
-                return;
-            }
-            if (attribute.key.equals(SkillType.STEALTH) && group.equals(InventoryGroup.CHEST)) {
-                filtered.add(attribute);
-                return;
-            }
-            if (attribute.key.equals(CalcType.WEIGHT)
-                    && (group.equals(InventoryGroup.SHIELD)
-                    || group.equals(InventoryGroup.WEAPON)
-                    || group.equals(InventoryGroup.RESOURCE))) {
-                return;
-            }
-            if (attribute.key.equals(CalcType.WEIGHT)) {
-                filtered.add(attribute);
-                return;
-            }
-            if (attribute.value.equals(0)) {
-                return;
-            }
-            filtered.add(attribute);
-        });
-        return filtered;
     }
 
 }

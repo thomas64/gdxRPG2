@@ -2,7 +2,6 @@ package nl.t64.game.rpg.screens.inventory;
 
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
-import nl.t64.game.rpg.components.party.InventoryItem;
 import nl.t64.game.rpg.components.party.PartyContainer;
 import nl.t64.game.rpg.constants.ScreenType;
 
@@ -10,7 +9,6 @@ import nl.t64.game.rpg.constants.ScreenType;
 final class InventoryUtils {
 
     static HeroItem selectedHero = null;
-    static InventoryItem hoveredItem = null;
     static boolean shiftPressed = false;
 
     private InventoryUtils() {
@@ -33,15 +31,6 @@ final class InventoryUtils {
         equipWindow.removeActor(equipSlotsTables.get(selectedHero.getId()).equipSlots);
         selectedHero = newSelectedHero;
         equipWindow.add(equipSlotsTables.get(selectedHero.getId()).equipSlots);
-    }
-
-    static void updateHoveredItem(InventorySlot inventorySlot) {
-        inventorySlot.getPossibleInventoryImage().ifPresentOrElse(InventoryUtils::setHoveredItem,
-                                                                  InventoryUtils::clearHoveredItem);
-    }
-
-    static void clearHoveredItem() {
-        hoveredItem = null;
     }
 
     static void handleDoubleClickInventory(InventorySlot clickedSlot) {
@@ -68,10 +57,6 @@ final class InventoryUtils {
 
     static void setShiftPressed(boolean isPressed) {
         shiftPressed = isPressed;
-    }
-
-    private static void setHoveredItem(InventoryImage inventoryImage) {
-        hoveredItem = inventoryImage.inventoryItem;
     }
 
 }

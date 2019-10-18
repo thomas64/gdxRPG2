@@ -148,55 +148,6 @@ public class HeroItem {
         return 0;
     }
 
-    public int getPreviewStatForVisualOf(StatType statType, InventoryItem hoveredItem) {
-        if (hoveredItem == null) {
-            return 0;
-        } else {
-            int equippedValue = getStatValueOf(hoveredItem.getGroup(), statType);
-            int hoveredValue = hoveredItem.getAttributeOfStatType(statType);
-            int difference = hoveredValue - equippedValue;
-            int visualTotal = getStatRankOf(statType) + getExtraStatForVisualOf(statType);
-            int realTotal = getRealTotalStatOf(statType);
-            return getPreviewForVisual(difference, visualTotal, realTotal);
-        }
-    }
-
-    public int getPreviewSkillForVisualOf(SkillType skillType, InventoryItem hoveredItem) {
-        if (hoveredItem == null) {
-            return 0;
-        } else {
-            int equippedValue = getSkillValueOf(hoveredItem.getGroup(), skillType);
-            int hoveredValue = hoveredItem.getAttributeOfSkillType(skillType);
-            int difference = hoveredValue - equippedValue;
-            int visualTotal = getSkillRankOf(skillType) + getExtraSkillForVisualOf(skillType);
-            int realTotal = getRealTotalSkillOf(skillType);
-            return getPreviewForVisual(difference, visualTotal, realTotal);
-        }
-    }
-
-    public int getPreviewCalcForVisualOf(CalcType calcType, InventoryItem hoveredItem) {
-        if (hoveredItem == null) {
-            return 0;
-        } else {
-            int equippedValue = getCalcValueOf(hoveredItem.getGroup(), calcType);
-            int hoveredValue = hoveredItem.getAttributeOfCalcType(calcType);
-            return hoveredValue - equippedValue;
-        }
-    }
-
-    private int getPreviewForVisual(int difference, int visualTotal, int realTotal) {
-        if (difference < 0 && difference < -visualTotal) {
-            return -visualTotal;
-        } else if (difference > 0 && difference + realTotal < 0) {
-            return 0;
-        } else if (difference > 0 && difference + realTotal == 0) {
-            return 0;
-        } else if (difference > 0 && difference + realTotal > 0 && realTotal < 0) {
-            return realTotal + difference;
-        }
-        return difference;
-    }
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     int getCalculatedTotalStatOf(StatType statType) {

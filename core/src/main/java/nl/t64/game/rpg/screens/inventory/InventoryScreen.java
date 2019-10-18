@@ -26,13 +26,13 @@ public class InventoryScreen implements Screen, ProfileObserver {
     private static final String BUTTON_RESET_OVER = "reset_over";
     private static final String BUTTON_RESET_DOWN = "reset_down";
 
-    private static final float INVENTORY_WINDOW_POSITION_X = 1408;
-    private static final float INVENTORY_WINDOW_POSITION_Y = 50f;
-    private static final float EQUIP_WINDOW_POSITION_X = 1113f;
-    private static final float EQUIP_WINDOW_POSITION_Y = 50f;
-    private static final float SPELLS_WINDOW_POSITION_X = 734f;
+    private static final float SPELLS_WINDOW_POSITION_X = 1483f;
     private static final float SPELLS_WINDOW_POSITION_Y = 50f;
-    private static final float SKILLS_WINDOW_POSITION_X = 394f;
+    private static final float INVENTORY_WINDOW_POSITION_X = 1062f;
+    private static final float INVENTORY_WINDOW_POSITION_Y = 50f;
+    private static final float EQUIP_WINDOW_POSITION_X = 736f;
+    private static final float EQUIP_WINDOW_POSITION_Y = 50f;
+    private static final float SKILLS_WINDOW_POSITION_X = 395f;
     private static final float SKILLS_WINDOW_POSITION_Y = 50f;
     private static final float STATS_WINDOW_POSITION_X = 63f;
     private static final float STATS_WINDOW_POSITION_Y = 429f;
@@ -48,9 +48,9 @@ public class InventoryScreen implements Screen, ProfileObserver {
     private final Stage stage;
     InventoryUI inventoryUI;
 
+    private Vector2 spellsWindowPosition;
     private Vector2 inventoryWindowPosition;
     private Vector2 equipWindowPosition;
-    private Vector2 spellsWindowPosition;
     private Vector2 skillsWindowPosition;
     private Vector2 statsWindowPosition;
     private Vector2 calcsWindowPosition;
@@ -62,9 +62,9 @@ public class InventoryScreen implements Screen, ProfileObserver {
 
     @Override
     public void onNotifyCreate(ProfileManager profileManager) {
+        spellsWindowPosition = new Vector2(SPELLS_WINDOW_POSITION_X, SPELLS_WINDOW_POSITION_Y);
         inventoryWindowPosition = new Vector2(INVENTORY_WINDOW_POSITION_X, INVENTORY_WINDOW_POSITION_Y);
         equipWindowPosition = new Vector2(EQUIP_WINDOW_POSITION_X, EQUIP_WINDOW_POSITION_Y);
-        spellsWindowPosition = new Vector2(SPELLS_WINDOW_POSITION_X, SPELLS_WINDOW_POSITION_Y);
         skillsWindowPosition = new Vector2(SKILLS_WINDOW_POSITION_X, SKILLS_WINDOW_POSITION_Y);
         statsWindowPosition = new Vector2(STATS_WINDOW_POSITION_X, STATS_WINDOW_POSITION_Y);
         calcsWindowPosition = new Vector2(CALCS_WINDOW_POSITION_X, CALCS_WINDOW_POSITION_Y);
@@ -74,9 +74,9 @@ public class InventoryScreen implements Screen, ProfileObserver {
 
     @Override
     public void onNotifySave(ProfileManager profileManager) {
+        profileManager.setProperty("spellsWindowPosition", spellsWindowPosition);
         profileManager.setProperty("inventoryWindowPosition", inventoryWindowPosition);
         profileManager.setProperty("equipWindowPosition", equipWindowPosition);
-        profileManager.setProperty("spellsWindowPosition", spellsWindowPosition);
         profileManager.setProperty("skillsWindowPosition", skillsWindowPosition);
         profileManager.setProperty("statsWindowPosition", statsWindowPosition);
         profileManager.setProperty("calcsWindowPosition", calcsWindowPosition);
@@ -85,9 +85,9 @@ public class InventoryScreen implements Screen, ProfileObserver {
 
     @Override
     public void onNotifyLoad(ProfileManager profileManager) {
+        spellsWindowPosition = profileManager.getProperty("spellsWindowPosition", Vector2.class);
         inventoryWindowPosition = profileManager.getProperty("inventoryWindowPosition", Vector2.class);
         equipWindowPosition = profileManager.getProperty("equipWindowPosition", Vector2.class);
-        spellsWindowPosition = profileManager.getProperty("spellsWindowPosition", Vector2.class);
         skillsWindowPosition = profileManager.getProperty("skillsWindowPosition", Vector2.class);
         statsWindowPosition = profileManager.getProperty("statsWindowPosition", Vector2.class);
         calcsWindowPosition = profileManager.getProperty("calcsWindowPosition", Vector2.class);
@@ -102,9 +102,9 @@ public class InventoryScreen implements Screen, ProfileObserver {
         createButtonTable();
 
         inventoryUI = new InventoryUI();
+        inventoryUI.spellsWindow.setPosition(spellsWindowPosition.x, spellsWindowPosition.y);
         inventoryUI.inventoryWindow.setPosition(inventoryWindowPosition.x, inventoryWindowPosition.y);
         inventoryUI.equipWindow.setPosition(equipWindowPosition.x, equipWindowPosition.y);
-        inventoryUI.spellsWindow.setPosition(spellsWindowPosition.x, spellsWindowPosition.y);
         inventoryUI.skillsWindow.setPosition(skillsWindowPosition.x, skillsWindowPosition.y);
         inventoryUI.statsWindow.setPosition(statsWindowPosition.x, statsWindowPosition.y);
         inventoryUI.calcsWindow.setPosition(calcsWindowPosition.x, calcsWindowPosition.y);
@@ -180,12 +180,12 @@ public class InventoryScreen implements Screen, ProfileObserver {
     }
 
     private void storeWindowPositions() {
+        spellsWindowPosition.x = inventoryUI.spellsWindow.getX();
+        spellsWindowPosition.y = inventoryUI.spellsWindow.getY();
         inventoryWindowPosition.x = inventoryUI.inventoryWindow.getX();
         inventoryWindowPosition.y = inventoryUI.inventoryWindow.getY();
         equipWindowPosition.x = inventoryUI.equipWindow.getX();
         equipWindowPosition.y = inventoryUI.equipWindow.getY();
-        spellsWindowPosition.x = inventoryUI.spellsWindow.getX();
-        spellsWindowPosition.y = inventoryUI.spellsWindow.getY();
         skillsWindowPosition.x = inventoryUI.skillsWindow.getX();
         skillsWindowPosition.y = inventoryUI.skillsWindow.getY();
         statsWindowPosition.x = inventoryUI.statsWindow.getX();
@@ -197,9 +197,9 @@ public class InventoryScreen implements Screen, ProfileObserver {
     }
 
     private void resetWindowsPositions() {
+        inventoryUI.spellsWindow.setPosition(SPELLS_WINDOW_POSITION_X, SPELLS_WINDOW_POSITION_Y);
         inventoryUI.inventoryWindow.setPosition(INVENTORY_WINDOW_POSITION_X, INVENTORY_WINDOW_POSITION_Y);
         inventoryUI.equipWindow.setPosition(EQUIP_WINDOW_POSITION_X, EQUIP_WINDOW_POSITION_Y);
-        inventoryUI.spellsWindow.setPosition(SPELLS_WINDOW_POSITION_X, SPELLS_WINDOW_POSITION_Y);
         inventoryUI.skillsWindow.setPosition(SKILLS_WINDOW_POSITION_X, SKILLS_WINDOW_POSITION_Y);
         inventoryUI.statsWindow.setPosition(STATS_WINDOW_POSITION_X, STATS_WINDOW_POSITION_Y);
         inventoryUI.calcsWindow.setPosition(CALCS_WINDOW_POSITION_X, CALCS_WINDOW_POSITION_Y);

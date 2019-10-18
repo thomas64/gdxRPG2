@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Payload;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
-import com.badlogic.gdx.utils.GdxRuntimeException;
 
 
 class InventorySlotSource extends Source {
@@ -29,21 +28,16 @@ class InventorySlotSource extends Source {
     @Override
     public Payload dragStart(InputEvent event, float x, float y, int pointer) {
         sourceSlot = (InventorySlot) super.getActor().getParent();
-        if (sourceSlot.hasItem()) {
-            sourceSlot.decrementAmount();
-            Payload payload = new Payload();
-            payload.setDragActor(sourceSlot.getCertainInventoryImage());
-            dragAndDrop.setDragActorPosition(payload.getDragActor().getWidth() / 2,
-                                             -payload.getDragActor().getHeight() / 2);
-            if (sourceSlot.amount > 0) {
-                sourceSlot.addToStack(new InventoryImage(sourceSlot.getCertainInventoryImage().inventoryItem));
-                dragAndDrop.addSource(new InventorySlotSource(sourceSlot.getCertainInventoryImage(), dragAndDrop));
-            }
-            return payload;
-        } else {
-            throw new GdxRuntimeException("");
-//            return null; // todo, kan de else weg?
+        sourceSlot.decrementAmount();
+        Payload payload = new Payload();
+        payload.setDragActor(sourceSlot.getCertainInventoryImage());
+        dragAndDrop.setDragActorPosition(payload.getDragActor().getWidth() / 2,
+                                         -payload.getDragActor().getHeight() / 2);
+        if (sourceSlot.amount > 0) {
+            sourceSlot.addToStack(new InventoryImage(sourceSlot.getCertainInventoryImage().inventoryItem));
+            dragAndDrop.addSource(new InventorySlotSource(sourceSlot.getCertainInventoryImage(), dragAndDrop));
         }
+        return payload;
     }
 
     @Override

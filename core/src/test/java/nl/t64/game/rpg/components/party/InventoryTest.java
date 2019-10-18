@@ -130,7 +130,7 @@ class InventoryTest extends GameTest {
     void whenInventoryItemWeapon_ShouldCreateDescription() {
         InventoryItem weapon = InventoryDatabase.getInstance().getInventoryItem(BASIC_MACE);
         HeroItem heroMock = Mockito.mock(HeroItem.class);
-        List<InventoryDescription> description = weapon.createDescriptionFor(heroMock);
+        List<InventoryDescription> description = new DescriptionCreator(weapon).createItemDescriptionComparingToHero(heroMock);
         assertThat(description.get(0).key).isEqualTo(InventoryGroup.WEAPON);
         assertThat(description.get(0).value).isEqualTo("Basic Mace");
         assertThat(description.get(1).key).isEqualTo(InventoryMinimal.SKILL);
@@ -149,7 +149,7 @@ class InventoryTest extends GameTest {
     void whenInventoryItemShield_ShouldCreateDescription() {
         InventoryItem weapon = InventoryDatabase.getInstance().getInventoryItem("basic_light_shield");
         HeroItem heroMock = Mockito.mock(HeroItem.class);
-        List<InventoryDescription> description = weapon.createDescriptionFor(heroMock);
+        List<InventoryDescription> description = new DescriptionCreator(weapon).createItemDescriptionComparingToHero(heroMock);
         assertThat(description.get(0).key).isEqualTo(InventoryGroup.SHIELD);
         assertThat(description.get(0).value).isEqualTo("Basic Light Shield");
         assertThat(description.get(1).key).isEqualTo(InventoryMinimal.SKILL);
@@ -172,7 +172,7 @@ class InventoryTest extends GameTest {
     void whenInventoryItemChest_ShouldCreateDescription() {
         InventoryItem weapon = InventoryDatabase.getInstance().getInventoryItem(BASIC_LIGHT_CHEST);
         HeroItem heroMock = Mockito.mock(HeroItem.class);
-        List<InventoryDescription> description = weapon.createDescriptionFor(heroMock);
+        List<InventoryDescription> description = new DescriptionCreator(weapon).createItemDescriptionComparingToHero(heroMock);
         assertThat(description.get(0).key).isEqualTo(InventoryGroup.CHEST);
         assertThat(description.get(0).value).isEqualTo("Basic Light Chest");
         assertThat(description.get(1).key).isEqualTo(CalcType.WEIGHT);

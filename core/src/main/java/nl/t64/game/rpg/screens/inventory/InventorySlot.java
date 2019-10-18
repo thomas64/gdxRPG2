@@ -98,6 +98,10 @@ class InventorySlot extends Stack {
         return (InventoryImage) super.getChildren().items[super.getChildren().size - 2];
     }
 
+    boolean isOnHero() {
+        return !filterGroup.equals(InventoryGroup.EVERYTHING);
+    }
+
     boolean doesAcceptItem(InventoryImage draggedItem) {
         if (filterGroup.equals(InventoryGroup.EVERYTHING)) {
             return true;

@@ -32,17 +32,17 @@ class InventoryUI {
     private static final String TITLE_HEROES = "   Heroes";
     private static final float TITLE_PADDING = 50f;
 
+    final Window spellsWindow;
     final Window inventoryWindow;
     final Window equipWindow;
-    final Window spellsWindow;
     final Window skillsWindow;
     final Window statsWindow;
     final Window calcsWindow;
     final Window heroesWindow;
 
+    private final SpellsTable spellsTable;
     final InventorySlotsTable inventorySlotsTable;
     final Map<String, EquipSlotsTable> equipSlotsTables;
-    private final SpellsTable spellsTable;
     private final SkillsTable skillsTable;
     private final StatsTable statsTable;
     private final CalcsTable calcsTable;
@@ -56,6 +56,9 @@ class InventoryUI {
         this.inventorySlotTooltip = new InventorySlotTooltip();
         this.statTooltip = new StatTooltip();
 
+        this.spellsTable = new SpellsTable();
+        this.spellsWindow = createWindow(TITLE_SPELLS, this.spellsTable.container);
+
         this.inventorySlotsTable = new InventorySlotsTable(dragAndDrop, this.inventorySlotTooltip);
         this.inventoryWindow = createWindow(TITLE_GLOBAL, this.inventorySlotsTable.container);
 
@@ -65,10 +68,6 @@ class InventoryUI {
         }
         this.equipWindow = createWindow(TITLE_PERSONAL,
                                         this.equipSlotsTables.get(InventoryUtils.getSelectedHeroId()).equipSlots);
-        this.equipWindow.addListener(new EquipWindowListener(InventoryUtils::clearHoveredItem));
-
-        this.spellsTable = new SpellsTable();
-        this.spellsWindow = createWindow(TITLE_SPELLS, this.spellsTable.container);
 
         this.skillsTable = new SkillsTable();
         this.skillsWindow = createWindow(TITLE_SKILLS, this.skillsTable.container);
@@ -92,9 +91,9 @@ class InventoryUI {
     }
 
     void addToStage(Stage stage) {
+        stage.addActor(spellsWindow);
         stage.addActor(inventoryWindow);
         stage.addActor(equipWindow);
-        stage.addActor(spellsWindow);
         stage.addActor(skillsWindow);
         stage.addActor(statsWindow);
         stage.addActor(calcsWindow);
@@ -104,22 +103,22 @@ class InventoryUI {
     }
 
     void applyListeners(Stage stage) {
-        inventoryWindow.addListener(new ListenerMouseScrollPane(stage, inventorySlotsTable.scrollPane));
         spellsWindow.addListener(new ListenerMouseScrollPane(stage, spellsTable.scrollPane));
+        inventoryWindow.addListener(new ListenerMouseScrollPane(stage, inventorySlotsTable.scrollPane));
         skillsWindow.addListener(new ListenerMouseScrollPane(stage, skillsTable.scrollPane));
     }
 
     void update() {
+        spellsTable.update();
+        skillsTable.update();
         statsTable.update();
         calcsTable.update();
-        skillsTable.update();
-        spellsTable.update();
         heroesTable.update();
 
+        spellsWindow.pack();
+        skillsWindow.pack();
         statsWindow.pack();
         calcsWindow.pack();
-        skillsWindow.pack();
-        spellsWindow.pack();
         heroesWindow.pack();
     }
 

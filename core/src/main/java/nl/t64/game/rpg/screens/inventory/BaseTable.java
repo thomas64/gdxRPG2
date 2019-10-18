@@ -36,21 +36,9 @@ abstract class BaseTable {
     void createBonusFromInventory(int totalFromInventory) {
         if (totalFromInventory > 0) {
             var label = new Label(String.format("+%s", totalFromInventory), new Label.LabelStyle(font, Color.FOREST));
-            table.add(label);
+            table.add(label).row();
         } else if (totalFromInventory < 0) {
             var label = new Label(String.valueOf(totalFromInventory), new Label.LabelStyle(font, Color.FIREBRICK));
-            table.add(label);
-        } else {
-            table.add("");
-        }
-    }
-
-    void createPreview(int difference) {
-        if (difference > 0) {
-            var label = new Label(String.format("+%s", difference), new Label.LabelStyle(font, Color.LIME));
-            table.add(label).row();
-        } else if (difference < 0) {
-            var label = new Label(String.valueOf(difference), new Label.LabelStyle(font, Color.SCARLET));
             table.add(label).row();
         } else {
             table.add("").row();

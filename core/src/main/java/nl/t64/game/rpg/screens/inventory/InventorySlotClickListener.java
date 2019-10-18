@@ -9,11 +9,9 @@ import java.util.function.Consumer;
 class InventorySlotClickListener extends ActorGestureListener {
 
     private final Consumer<InventorySlot> handleDoubleClickFunction;
-    private boolean isDoubleClicked;
 
     InventorySlotClickListener(Consumer<InventorySlot> handleDoubleClickFunction) {
         this.handleDoubleClickFunction = handleDoubleClickFunction;
-        this.isDoubleClicked = false;
     }
 
     @Override
@@ -21,16 +19,7 @@ class InventorySlotClickListener extends ActorGestureListener {
         if (count == 2) {
             InventorySlot inventorySlot = (InventorySlot) event.getListenerActor();
             handleDoubleClickFunction.accept(inventorySlot);
-            isDoubleClicked = true;
         }
-    }
-
-    boolean isDoubleClicked() {
-        return isDoubleClicked;
-    }
-
-    void setDoubleClickedToFalse() {
-        isDoubleClicked = false;
     }
 
 }

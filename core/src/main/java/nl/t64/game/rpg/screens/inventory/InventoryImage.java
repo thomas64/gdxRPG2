@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.components.party.DescriptionCreator;
 import nl.t64.game.rpg.components.party.InventoryDescription;
 import nl.t64.game.rpg.components.party.InventoryGroup;
 import nl.t64.game.rpg.components.party.InventoryItem;
@@ -34,7 +35,13 @@ class InventoryImage extends Image {
     }
 
     List<InventoryDescription> getDescription() {
-        return inventoryItem.createDescriptionFor(InventoryUtils.selectedHero);
+        final var descriptionCreator = new DescriptionCreator(inventoryItem);
+        return descriptionCreator.createItemDescriptionComparingToHero(InventoryUtils.selectedHero);
+    }
+
+    List<InventoryDescription> getDualDescription(InventoryImage otherItem) {
+        final var descriptionCreator = new DescriptionCreator(inventoryItem);
+        return descriptionCreator.createItemDescriptionComparingToItem(otherItem.inventoryItem);
     }
 
 }

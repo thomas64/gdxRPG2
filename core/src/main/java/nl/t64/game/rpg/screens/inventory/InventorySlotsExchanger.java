@@ -1,6 +1,5 @@
 package nl.t64.game.rpg.screens.inventory;
 
-import com.badlogic.gdx.utils.GdxRuntimeException;
 import lombok.AllArgsConstructor;
 
 import java.util.Optional;
@@ -15,10 +14,6 @@ class InventorySlotsExchanger {
     private final InventorySlot targetSlot;
 
     void exchange() {
-        if (draggedItem == null) {
-            throw new GdxRuntimeException("");
-//            return; // todo, kan de if weg?
-        }
         if (targetSlot.doesAcceptItem(draggedItem)) {
             checkTargetItem();
             InventoryWriter.storeToGameData();

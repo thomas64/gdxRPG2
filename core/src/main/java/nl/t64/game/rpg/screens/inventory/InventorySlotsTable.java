@@ -16,7 +16,7 @@ class InventorySlotsTable {
 
     private static final String SPRITE_TOP_BORDER = "sprites/top_border.png";
     private static final float SLOT_SIZE = 64f;
-    private static final int SLOTS_IN_ROW = 7;
+    private static final int SLOTS_IN_ROW = 6;
     private static final float CONTAINER_HEIGHT = 704f;
 
     final Table container;
@@ -59,7 +59,6 @@ class InventorySlotsTable {
     private void createInventorySlot(int index) {
         var inventorySlot = new InventorySlot();
         inventorySlot.addListener(new InventorySlotTooltipListener(tooltip));
-        inventorySlot.addListener(new InventorySlotPreviewListener(InventoryUtils::updateHoveredItem));
         inventorySlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickInventory));
         dragAndDrop.addTarget(new InventorySlotTarget(inventorySlot));
         dragAndDrop.addSource(new InventorySlotSource(inventorySlot.amountLabel, dragAndDrop));
