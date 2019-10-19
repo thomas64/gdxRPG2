@@ -42,6 +42,8 @@ class Level {
 
 @NoArgsConstructor
 abstract class StatItem {
+    int maximum;    // Constant value for maximum rank possible.
+    float upgrade;  // Constant value for upgrading formula.
     int rank;
     int variable;
     int bonus;
@@ -50,9 +52,7 @@ abstract class StatItem {
         this.rank = rank;
     }
 
-    abstract int getXpCostForNextLevel();
-
-    int getXpCostForNextLevel(int maximum, float upgrade) {
+    int getXpCostForNextLevel() {
         if (rank >= maximum) {
             return 0;
         }
@@ -63,113 +63,71 @@ abstract class StatItem {
 
 @NoArgsConstructor
 class Intelligence extends StatItem {
-    private static final int MAXIMUM = 30;
-    private static final float UPGRADE = 0.12f;
-
     Intelligence(int rank) {
         super(rank);
-        super.bonus = 0;
-    }
-
-    @Override
-    int getXpCostForNextLevel() {
-        return getXpCostForNextLevel(MAXIMUM, UPGRADE);
+        this.maximum = 30;
+        this.upgrade = 0.12f;
+        this.bonus = 0;
     }
 }
 
 @NoArgsConstructor
 class Willpower extends StatItem {
-    private static final int MAXIMUM = 30;
-    private static final float UPGRADE = 0.12f;
-
     Willpower(int rank) {
         super(rank);
-        super.bonus = 0;
-    }
-
-    @Override
-    int getXpCostForNextLevel() {
-        return getXpCostForNextLevel(MAXIMUM, UPGRADE);
+        this.maximum = 30;
+        this.upgrade = 0.12f;
+        this.bonus = 0;
     }
 }
 
 @NoArgsConstructor
 class Dexterity extends StatItem {
-    private static final int MAXIMUM = 30;
-    private static final float UPGRADE = 0.24f;
-
     Dexterity(int rank) {
         super(rank);
-        super.bonus = 0;
-    }
-
-    @Override
-    int getXpCostForNextLevel() {
-        return getXpCostForNextLevel(MAXIMUM, UPGRADE);
+        this.maximum = 30;
+        this.upgrade = 0.24f;
+        this.bonus = 0;
     }
 }
 
 @NoArgsConstructor
 class Agility extends StatItem {
-    private static final int MAXIMUM = 30;
-    private static final float UPGRADE = 0.24f;
-
     Agility(int rank) {
         super(rank);
-        super.bonus = 0;
-    }
-
-    @Override
-    int getXpCostForNextLevel() {
-        return getXpCostForNextLevel(MAXIMUM, UPGRADE);
+        this.maximum = 30;
+        this.upgrade = 0.24f;
+        this.bonus = 0;
     }
 }
 
 @NoArgsConstructor
 class Strength extends StatItem {
-    private static final int MAXIMUM = 30;
-    private static final float UPGRADE = 0.12f;
-
     Strength(int rank) {
         super(rank);
-        super.bonus = 0;
-    }
-
-    @Override
-    int getXpCostForNextLevel() {
-        return getXpCostForNextLevel(MAXIMUM, UPGRADE);
+        this.maximum = 30;
+        this.upgrade = 0.12f;
+        this.bonus = 0;
     }
 }
 
 @NoArgsConstructor
 class Endurance extends StatItem {
-    private static final int MAXIMUM = 40;
-    private static final float UPGRADE = 0.12f;
-
     Endurance(int rank) {
         super(rank);
-        super.variable = rank;
-        super.bonus = 0;
-    }
-
-    @Override
-    int getXpCostForNextLevel() {
-        return getXpCostForNextLevel(MAXIMUM, UPGRADE);
+        this.maximum = 40;
+        this.upgrade = 0.12f;
+        this.variable = rank;
+        this.bonus = 0;
     }
 }
 
 @NoArgsConstructor
 class Stamina extends StatItem {
-    private static final int MAXIMUM = 90;
-    private static final float UPGRADE = 0.04f;
-
     Stamina(int rank) {
         super(rank);
+        this.maximum = 90;
+        this.upgrade = 0.04f;
         super.variable = rank;
-    }
-
-    @Override
-    int getXpCostForNextLevel() {
-        return getXpCostForNextLevel(MAXIMUM, UPGRADE);
     }
 }

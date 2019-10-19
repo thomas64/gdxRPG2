@@ -63,6 +63,15 @@ class SkillContainer {
         return skills.get(skillType.name()).bonus;
     }
 
+    int getXpCostForNextLevelOf(SkillType skillType) {
+        final int totalLoremaster = skills.get(SkillType.LOREMASTER.name()).getTotal();
+        return skills.get(skillType.name()).getXpCostForNextLevel(totalLoremaster);
+    }
+
+    int getGoldCostForNextLevelOf(SkillType skillType) {
+        return skills.get(skillType.name()).getGoldCostForNextLevel();
+    }
+
     private boolean hasPositiveQuantity(SkillType skillType) {
         return getRankOf(skillType) > 0;
     }

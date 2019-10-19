@@ -69,7 +69,7 @@ class InventoryUI {
         this.equipWindow = createWindow(TITLE_PERSONAL,
                                         this.equipSlotsTables.get(InventoryUtils.getSelectedHeroId()).equipSlots);
 
-        this.skillsTable = new SkillsTable();
+        this.skillsTable = new SkillsTable(this.statTooltip);
         this.skillsWindow = createWindow(TITLE_SKILLS, this.skillsTable.container);
 
         this.statsTable = new StatsTable(this.statTooltip);

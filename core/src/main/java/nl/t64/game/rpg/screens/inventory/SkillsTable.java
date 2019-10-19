@@ -1,5 +1,6 @@
 package nl.t64.game.rpg.screens.inventory;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import nl.t64.game.rpg.components.party.HeroItem;
@@ -19,11 +20,14 @@ class SkillsTable extends BaseTable {
     final Table container;
     final ScrollPane scrollPane;
 
+    private final StatTooltip tooltip;
+
     private HeroItem selectedHero;
     private int skillRank;
     private int totalBonus;
 
-    SkillsTable() {
+    SkillsTable(StatTooltip tooltip) {
+        this.tooltip = tooltip;
         this.table.columnDefaults(0).width(FIRST_COLUMN_WIDTH);
         this.table.columnDefaults(1).width(SECOND_COLUMN_WIDTH);
         this.table.columnDefaults(2).width(THIRD_COLUMN_WIDTH);
@@ -53,7 +57,9 @@ class SkillsTable extends BaseTable {
 
     private void fillRow(SkillType skillType) {
         table.add(createImageOf(skillType.name()));
-        table.add(skillType.getTitle()).padLeft(SECOND_COLUMN_PAD_LEFT);
+        var skillTitle = new Label(skillType.getTitle(), table.getSkin());
+        skillTitle.addListener(new StatTooltipListener(tooltip, skillType));
+        table.add(skillTitle).padLeft(SECOND_COLUMN_PAD_LEFT);
         table.add(String.valueOf(skillRank));
         createBonusFromInventory(totalBonus);
     }

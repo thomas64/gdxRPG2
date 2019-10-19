@@ -66,6 +66,14 @@ public class HeroItem {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    int getXpCostForNextLevelOf(SkillType skillType) {
+        return skills.getXpCostForNextLevelOf(skillType);
+    }
+
+    int getGoldCostForNextLevelOf(SkillType skillType) {
+        return skills.getGoldCostForNextLevelOf(skillType);
+    }
+
     public List<SkillType> getAllSkillsAboveZero() {
         return skills.getAllAboveZero();
     }
