@@ -1,10 +1,22 @@
 {
   "gold": {
     "name": "Gold",
-    "group": "RESOURCE"
+    "group": "RESOURCE",
+    "description": "Gold can be used to pay for goods or services."
   },
   "herbs": {
     "name": "Herbs",
-    "group": "RESOURCE"
+    "group": "RESOURCE",
+    "description": "Herbs are used in magical spells (Wizard Skill)\nand in creating potions (Alchemist Skill).\nThey also contain healing possibilities (Healer Skill)."
+  },
+  "spices": {
+    "name": "Spices",
+    "group": "RESOURCE",
+    "description": "Spices are used in magical spells (Wizard Skill)\nand in creating potions (Alchemist Skill)."
+  },
+  "gemstones": {
+    "name": "Gemstones",
+    "group": "RESOURCE",
+    "description": "Gemstones are used in magical spells (Wizard Skill)\nand in creating potions (Alchemist Skill)."
   }
 }

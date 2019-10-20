@@ -15,6 +15,8 @@ public class InventoryItem {
     @Getter
     String id;
     String name;
+    @Getter
+    String description;
     int amount;
     @Getter
     InventoryGroup group;
@@ -35,6 +37,7 @@ public class InventoryItem {
     public InventoryItem(InventoryItem item) {
         this.id = item.id;
         this.name = item.name;
+        this.description = item.description;
         this.amount = 1;
         this.group = item.group;
         this.skill = item.skill;

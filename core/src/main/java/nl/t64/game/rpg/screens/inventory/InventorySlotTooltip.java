@@ -17,7 +17,8 @@ class InventorySlotTooltip extends BaseToolTip {
     private static final String RIGHT_BORDER = "sprites/tooltip_right.png";
     private static final float COLUMN_SPACING = 20f;
     private static final float HALF_SPACING = 10f;
-    private static final String LEFT_TITLE = "";
+    private static final String EMPTY_ROW = "";
+    private static final String LEFT_TITLE = EMPTY_ROW;
     private static final String RIGHT_TITLE = "Currently Equipped";
 
     void setVisible(InventorySlot inventorySlot, boolean visible) {
@@ -39,6 +40,8 @@ class InventorySlotTooltip extends BaseToolTip {
 
             if (inventorySlot.isOnHero()) {
                 createSingleTooltip(hoveredImage);
+            } else if (inventoryGroup.equals(InventoryGroup.RESOURCE)) {
+                createResourceTooltip(hoveredImage);
             } else if (isAbleToEquip.isEmpty() && equippedItem.isPresent()) {
                 createDualTooltip(hoveredImage, new InventoryImage(equippedItem.get()));
             } else {
@@ -46,6 +49,16 @@ class InventorySlotTooltip extends BaseToolTip {
             }
         }
         window.pack();
+    }
+
+    private void createResourceTooltip(InventoryImage inventoryImage) {
+        createSingleTooltip(inventoryImage);
+        window.add().row();
+        window.add(new Label(EMPTY_ROW, new Label.LabelStyle(font, Color.WHITE))).row();
+        final String description = inventoryImage.inventoryItem.getDescription();
+        final var labelStyle = new Label.LabelStyle(font, Color.WHITE);
+        final var label = new Label(description, labelStyle);
+        window.add(label);
     }
 
     private void createSingleTooltip(InventoryImage inventoryImage) {
