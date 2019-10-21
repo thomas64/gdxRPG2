@@ -63,8 +63,12 @@ class SkillContainer {
         return skills.get(skillType.name()).bonus;
     }
 
+    int getCalculatedTotalSkillOf(SkillType skillType) {
+        return skills.get(skillType.name()).getCalculatedTotal();
+    }
+
     int getXpCostForNextLevelOf(SkillType skillType) {
-        final int totalLoremaster = skills.get(SkillType.LOREMASTER.name()).getTotal();
+        final int totalLoremaster = getCalculatedTotalSkillOf(SkillType.LOREMASTER);
         return skills.get(skillType.name()).getXpCostForNextLevel(totalLoremaster);
     }
 

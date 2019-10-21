@@ -4,83 +4,46 @@ import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
 
 
 @AllArgsConstructor
 public class DescriptionCreator {
 
-    private InventoryItem inventoryItem;
+    private final InventoryItem inventoryItem;
 
     public List<InventoryDescription> createItemDescriptionComparingToHero(HeroItem hero) {
-        List<InventoryDescription> attributes = new ArrayList<>();
-        attributes.add(new InventoryDescription(inventoryItem.group,
-                                                inventoryItem.name,
-                                                inventoryItem,
-                                                hero));
-
-        for (InventoryMinimal minimal : InventoryMinimal.values()) {
-            attributes.add(new InventoryDescription(minimal,
-                                                    inventoryItem.getAttributeOfMinimal(minimal),
-                                                    inventoryItem,
-                                                    hero));
-        }
-        for (CalcType calcType : CalcType.values()) {
-            attributes.add(new InventoryDescription(calcType,
-                                                    inventoryItem.getAttributeOfCalcType(calcType),
-                                                    inventoryItem,
-                                                    hero));
-        }
-        for (StatType statType : StatType.values()) {
-            attributes.add(new InventoryDescription(statType,
-                                                    inventoryItem.getAttributeOfStatType(statType),
-                                                    inventoryItem,
-                                                    hero));
-        }
-        for (SkillType skillType : SkillType.values()) {
-            attributes.add(new InventoryDescription(skillType,
-                                                    inventoryItem.getAttributeOfSkillType(skillType),
-                                                    inventoryItem,
-                                                    hero));
-        }
-        return createFilter(attributes);
+        return createDescriptionList((key, value) -> new InventoryDescription(key, value, inventoryItem, hero));
     }
 
     public List<InventoryDescription> createItemDescriptionComparingToItem(InventoryItem otherItem) {
-        List<InventoryDescription> attributes = new ArrayList<>();
-        attributes.add(new InventoryDescription(inventoryItem.group,
-                                                inventoryItem.name,
-                                                inventoryItem,
-                                                otherItem));
+        return createDescriptionList((key, value) -> new InventoryDescription(key, value, inventoryItem, otherItem));
+    }
+
+    private List<InventoryDescription> createDescriptionList(
+            BiFunction<SuperEnum, Object, InventoryDescription> functionToExecute) {
+
+        final List<InventoryDescription> attributes = new ArrayList<>();
+
+        attributes.add(functionToExecute.apply(inventoryItem.group, inventoryItem.name));
 
         for (InventoryMinimal minimal : InventoryMinimal.values()) {
-            attributes.add(new InventoryDescription(minimal,
-                                                    inventoryItem.getAttributeOfMinimal(minimal),
-                                                    inventoryItem,
-                                                    otherItem));
+            attributes.add(functionToExecute.apply(minimal, inventoryItem.getAttributeOfMinimal(minimal)));
         }
         for (CalcType calcType : CalcType.values()) {
-            attributes.add(new InventoryDescription(calcType,
-                                                    inventoryItem.getAttributeOfCalcType(calcType),
-                                                    inventoryItem,
-                                                    otherItem));
+            attributes.add(functionToExecute.apply(calcType, inventoryItem.getAttributeOfCalcType(calcType)));
         }
         for (StatType statType : StatType.values()) {
-            attributes.add(new InventoryDescription(statType,
-                                                    inventoryItem.getAttributeOfStatType(statType),
-                                                    inventoryItem,
-                                                    otherItem));
+            attributes.add(functionToExecute.apply(statType, inventoryItem.getAttributeOfStatType(statType)));
         }
         for (SkillType skillType : SkillType.values()) {
-            attributes.add(new InventoryDescription(skillType,
-                                                    inventoryItem.getAttributeOfSkillType(skillType),
-                                                    inventoryItem,
-                                                    otherItem));
+            attributes.add(functionToExecute.apply(skillType, inventoryItem.getAttributeOfSkillType(skillType)));
         }
         return createFilter(attributes);
     }
 
     private List<InventoryDescription> createFilter(List<InventoryDescription> attributes) {
-        List<InventoryDescription> filtered = new ArrayList<>();
+        final List<InventoryDescription> filtered = new ArrayList<>();
         attributes.forEach(attribute -> {
             if (attribute.key instanceof InventoryGroup) {
                 filtered.add(attribute);

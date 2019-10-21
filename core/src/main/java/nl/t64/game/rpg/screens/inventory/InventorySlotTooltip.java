@@ -20,6 +20,7 @@ class InventorySlotTooltip extends BaseToolTip {
     private static final String EMPTY_ROW = "";
     private static final String LEFT_TITLE = EMPTY_ROW;
     private static final String RIGHT_TITLE = "Currently Equipped";
+    private static final Color ORANGE = new Color(0xFF9000FF);
 
     void setVisible(InventorySlot inventorySlot, boolean visible) {
         window.setVisible(visible);
@@ -127,16 +128,16 @@ class InventorySlotTooltip extends BaseToolTip {
             case SAME:
                 return new Label.LabelStyle(font, Color.WHITE);
             case LESS:
-                return new Label.LabelStyle(font, Color.RED);
+                return new Label.LabelStyle(font, ORANGE);
             case MORE:
-                return new Label.LabelStyle(font, Color.GREEN);
+                return new Label.LabelStyle(font, Color.LIME);
             default:
                 throw new IllegalArgumentException(String.format("Attribute '%s' not usable.", attribute));
         }
     }
 
     private String getKey(InventoryDescription attribute) {
-        return ((SuperEnum) attribute.getKey()).getTitle();
+        return attribute.getKey().getTitle();
     }
 
     private String getValue(InventoryDescription attribute) {

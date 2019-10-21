@@ -2,6 +2,7 @@ package nl.t64.game.rpg.components.party;
 
 import nl.t64.game.rpg.GameData;
 import nl.t64.game.rpg.GameTest;
+import nl.t64.game.rpg.constants.ThreeState;
 import nl.t64.game.rpg.profile.ProfileManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,15 @@ class InventoryTest extends GameTest {
         final var gameData = new GameData();
         gameData.onNotifyCreate(profileManager);
         inventory = gameData.getInventory();
+    }
+
+    @Test
+    void whenResourceItemIsCreated_ShouldHaveVariables() {
+        final String itemId = "gold";
+        final InventoryItem gold = InventoryDatabase.getInstance().getInventoryItem(itemId);
+        assertThat(gold.name).isEqualTo("Gold");
+        assertThat(gold.getGroup()).isEqualTo(InventoryGroup.RESOURCE);
+        assertThat(gold.getDescription()).isEqualTo("Gold can be used to pay for goods or services.");
     }
 
     @Test
@@ -182,6 +192,46 @@ class InventoryTest extends GameTest {
         assertThat(description.get(3).key).isEqualTo(SkillType.STEALTH);
         assertThat(description.get(3).value).isEqualTo(0);
         assertThatExceptionOfType(IndexOutOfBoundsException.class).isThrownBy(() -> description.get(4));
+    }
+
+    @Test
+    void whenItemIsComparedToHero_ShouldReturnSpecificThreeStates() {
+        InventoryItem weapon = InventoryDatabase.getInstance().getInventoryItem(BASIC_MACE);
+        HeroItem heroMock = Mockito.mock(HeroItem.class);
+        Mockito.when(heroMock.getSkillRankOf(SkillType.HAFTED)).thenReturn(1);
+        Mockito.when(heroMock.getStatRankOf(StatType.STRENGTH)).thenReturn(10);
+        List<InventoryDescription> description = new DescriptionCreator(weapon).createItemDescriptionComparingToHero(heroMock);
+        assertThat(description.get(1).key).isEqualTo(InventoryMinimal.SKILL);
+        assertThat(description.get(1).compare).isEqualTo(ThreeState.SAME);
+        assertThat(description.get(2).key).isEqualTo(InventoryMinimal.MIN_STRENGTH);
+        assertThat(description.get(2).compare).isEqualTo(ThreeState.LESS);
+    }
+
+    @Test
+    void whenWeaponIsComparedToOtherWeapon_ShouldReturnSpecificThreeStates() {
+        InventoryItem mace = InventoryDatabase.getInstance().getInventoryItem(BASIC_MACE);
+        InventoryItem sword = InventoryDatabase.getInstance().getInventoryItem("basic_shortsword");
+        List<InventoryDescription> description = new DescriptionCreator(mace).createItemDescriptionComparingToItem(sword);
+        assertThat(description.get(3).key).isEqualTo(CalcType.BASE_HIT);
+        assertThat(description.get(3).compare).isEqualTo(ThreeState.LESS);
+        assertThat(description.get(4).key).isEqualTo(CalcType.DAMAGE);
+        assertThat(description.get(4).compare).isEqualTo(ThreeState.MORE);
+    }
+
+    @Test
+    void whenShieldIsComparedToOtherShield_ShouldReturnSpecificThreeStates() {
+        InventoryItem light = InventoryDatabase.getInstance().getInventoryItem("basic_light_shield");
+        InventoryItem medium = InventoryDatabase.getInstance().getInventoryItem("basic_medium_shield");
+        List<InventoryDescription> description1 = new DescriptionCreator(light).createItemDescriptionComparingToItem(medium);
+        assertThat(description1.get(5).key).isEqualTo(StatType.DEXTERITY);
+        assertThat(description1.get(5).compare).isEqualTo(ThreeState.MORE);
+        assertThat(description1.get(6).key).isEqualTo(SkillType.STEALTH);
+        assertThat(description1.get(6).compare).isEqualTo(ThreeState.MORE);
+        List<InventoryDescription> description2 = new DescriptionCreator(medium).createItemDescriptionComparingToItem(light);
+        assertThat(description2.get(5).key).isEqualTo(StatType.DEXTERITY);
+        assertThat(description2.get(5).compare).isEqualTo(ThreeState.LESS);
+        assertThat(description2.get(6).key).isEqualTo(SkillType.STEALTH);
+        assertThat(description2.get(6).compare).isEqualTo(ThreeState.LESS);
     }
 
 }

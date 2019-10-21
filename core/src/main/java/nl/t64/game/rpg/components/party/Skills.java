@@ -37,7 +37,7 @@ abstract class SkillItem {
         return TRAINING_COSTS.get(nextLevel - 1);
     }
 
-    int getTotal() {
+    int getCalculatedTotal() {
         final int total = rank + bonus;
         if (total < 0 || !isHeroAbleToLearn()) {
             return 0;

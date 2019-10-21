@@ -24,7 +24,7 @@ class SkillsTable extends BaseTable {
 
     private HeroItem selectedHero;
     private int skillRank;
-    private int totalBonus;
+    private int totalExtra;
 
     SkillsTable(StatTooltip tooltip) {
         this.tooltip = tooltip;
@@ -50,7 +50,7 @@ class SkillsTable extends BaseTable {
     private void fillRows() {
         for (SkillType skillType : selectedHero.getAllSkillsAboveZero()) {
             skillRank = selectedHero.getSkillRankOf(skillType);
-            totalBonus = selectedHero.getExtraSkillForVisualOf(skillType);
+            totalExtra = selectedHero.getExtraSkillForVisualOf(skillType);
             fillRow(skillType);
         }
     }
@@ -61,7 +61,7 @@ class SkillsTable extends BaseTable {
         skillTitle.addListener(new StatTooltipListener(tooltip, skillType));
         table.add(skillTitle).padLeft(SECOND_COLUMN_PAD_LEFT);
         table.add(String.valueOf(skillRank));
-        createBonusFromInventory(totalBonus);
+        addToTable(totalExtra);
     }
 
 }

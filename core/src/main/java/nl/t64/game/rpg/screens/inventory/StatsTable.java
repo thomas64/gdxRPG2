@@ -15,7 +15,7 @@ class StatsTable extends BaseTable {
 
     private HeroItem selectedHero;
     private int statRank;
-    private int totalBonus;
+    private int totalExtra;
 
     StatsTable(StatTooltip tooltip) {
         this.tooltip = tooltip;
@@ -39,7 +39,7 @@ class StatsTable extends BaseTable {
     private void fillStats() {
         for (StatType statType : StatType.values()) {
             statRank = selectedHero.getStatRankOf(statType);
-            totalBonus = selectedHero.getExtraStatForVisualOf(statType);
+            totalExtra = selectedHero.getExtraStatForVisualOf(statType);
             fillRow(statType);
         }
     }
@@ -56,7 +56,7 @@ class StatsTable extends BaseTable {
         statTitle.addListener(new StatTooltipListener(tooltip, statType));
         table.add(statTitle);
         table.add(String.valueOf(statRank));
-        createBonusFromInventory(totalBonus);
+        addToTable(totalExtra);
     }
 
     private void fillRow(String key, int value) {
