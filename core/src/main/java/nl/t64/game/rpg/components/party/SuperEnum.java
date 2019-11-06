@@ -5,6 +5,4 @@ public interface SuperEnum {
 
     String getTitle();
 
-    String getDescription(HeroItem hero);
-
 }

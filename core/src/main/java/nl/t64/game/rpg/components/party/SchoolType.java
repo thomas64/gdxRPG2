@@ -21,9 +21,4 @@ public enum SchoolType implements SuperEnum {
         return title;
     }
 
-    @Override
-    public String getDescription(HeroItem hero) {
-        return title;
-    }
-
 }

@@ -1,15 +1,19 @@
 package nl.t64.game.rpg.components.party;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 
+@Getter
 @NoArgsConstructor
-abstract class SkillItem {
+public abstract class SkillItem implements PersonalityItem {
     private static final List<Integer> TRAINING_COSTS = List.of(20, 8, 12, 16, 20, 24, 28, 32, 36, 40, 0);
     private static final int MAXIMUM = 10;
 
+    SkillItemId id; // Constant value
+    String name;    // Constant value
     float upgrade;  // Constant value for upgrading formula.
     int rank;
     int bonus;
@@ -19,10 +23,32 @@ abstract class SkillItem {
         this.bonus = 0;
     }
 
-    int getXpCostForNextLevel(int totalLoremaster) {
-        if (!isHeroAbleToLearn()) {
-            return 0;
+    @Override
+    public String getDescription(int totalLoremaster) {
+        return getDescription() + "\n\n"
+                + getNeededXpForNextLevel(totalLoremaster) + "\n"
+                + getNeededGoldForNextLevel();
+    }
+
+    abstract String getDescription();
+
+    private String getNeededXpForNextLevel(int totalLoremaster) {
+        String xpNeeded = String.valueOf(getXpCostForNextLevel(totalLoremaster));
+        if (xpNeeded.equals("0")) {
+            xpNeeded = "Max";
         }
+        return "XP needed for next level: " + xpNeeded;
+    }
+
+    private String getNeededGoldForNextLevel() {
+        String goldNeeded = String.valueOf(getGoldCostForNextLevel());
+        if (goldNeeded.equals("0")) {
+            goldNeeded = "Max";
+        }
+        return "Gold needed for next level: " + goldNeeded;
+    }
+
+    int getXpCostForNextLevel(int totalLoremaster) {
         if (rank >= MAXIMUM) {
             return 0;
         }
@@ -30,29 +56,13 @@ abstract class SkillItem {
     }
 
     int getGoldCostForNextLevel() {
-        if (!isHeroAbleToLearn()) {
-            return 0;
-        }
         final int nextLevel = rank + 1;
         return TRAINING_COSTS.get(nextLevel - 1);
-    }
-
-    int getCalculatedTotal() {
-        final int total = rank + bonus;
-        if (total < 0 || !isHeroAbleToLearn()) {
-            return 0;
-        } else {
-            return total;
-        }
     }
 
     private float getUpgradeFormula() {
         final int nextLevel = rank + 1;
         return upgrade * (nextLevel * nextLevel);
-    }
-
-    private boolean isHeroAbleToLearn() {
-        return rank >= 0;
     }
 
 }
@@ -61,7 +71,14 @@ abstract class SkillItem {
 class Alchemist extends SkillItem {
     Alchemist(int rank) {
         super(rank);
+        this.id = SkillItemId.ALCHEMIST;
+        this.name = getClass().getSimpleName();
         this.upgrade = 12f;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
     }
 }
 
@@ -69,7 +86,14 @@ class Alchemist extends SkillItem {
 class Diplomat extends SkillItem {
     Diplomat(int rank) {
         super(rank);
+        this.id = SkillItemId.DIPLOMAT;
+        this.name = getClass().getSimpleName();
         this.upgrade = 4f;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
     }
 }
 
@@ -77,7 +101,14 @@ class Diplomat extends SkillItem {
 class Healer extends SkillItem {
     Healer(int rank) {
         super(rank);
+        this.id = SkillItemId.HEALER;
+        this.name = getClass().getSimpleName();
         this.upgrade = 8f;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
     }
 }
 
@@ -85,7 +116,14 @@ class Healer extends SkillItem {
 class Loremaster extends SkillItem {
     Loremaster(int rank) {
         super(rank);
+        this.id = SkillItemId.LOREMASTER;
+        this.name = getClass().getSimpleName();
         this.upgrade = 6f;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
     }
 }
 
@@ -93,7 +131,14 @@ class Loremaster extends SkillItem {
 class Mechanic extends SkillItem {
     Mechanic(int rank) {
         super(rank);
+        this.id = SkillItemId.MECHANIC;
+        this.name = getClass().getSimpleName();
         this.upgrade = 4f;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
     }
 }
 
@@ -101,7 +146,14 @@ class Mechanic extends SkillItem {
 class Merchant extends SkillItem {
     Merchant(int rank) {
         super(rank);
+        this.id = SkillItemId.MERCHANT;
+        this.name = getClass().getSimpleName();
         this.upgrade = 6f;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
     }
 }
 
@@ -109,7 +161,14 @@ class Merchant extends SkillItem {
 class Ranger extends SkillItem {
     Ranger(int rank) {
         super(rank);
+        this.id = SkillItemId.RANGER;
+        this.name = getClass().getSimpleName();
         this.upgrade = 8f;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
     }
 }
 
@@ -117,7 +176,14 @@ class Ranger extends SkillItem {
 class Stealth extends SkillItem {
     Stealth(int rank) {
         super(rank);
+        this.id = SkillItemId.STEALTH;
+        this.name = getClass().getSimpleName();
         this.upgrade = 4f;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
     }
 }
 
@@ -125,7 +191,14 @@ class Stealth extends SkillItem {
 class Thief extends SkillItem {
     Thief(int rank) {
         super(rank);
+        this.id = SkillItemId.THIEF;
+        this.name = getClass().getSimpleName();
         this.upgrade = 8f;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
     }
 }
 
@@ -133,7 +206,14 @@ class Thief extends SkillItem {
 class Troubadour extends SkillItem {
     Troubadour(int rank) {
         super(rank);
+        this.id = SkillItemId.TROUBADOUR;
+        this.name = getClass().getSimpleName();
         this.upgrade = 8f;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
     }
 }
 
@@ -141,7 +221,14 @@ class Troubadour extends SkillItem {
 class Warrior extends SkillItem {
     Warrior(int rank) {
         super(rank);
+        this.id = SkillItemId.WARRIOR;
+        this.name = getClass().getSimpleName();
         this.upgrade = 8f;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
     }
 }
 
@@ -149,7 +236,14 @@ class Warrior extends SkillItem {
 class Wizard extends SkillItem {
     Wizard(int rank) {
         super(rank);
+        this.id = SkillItemId.WIZARD;
+        this.name = getClass().getSimpleName();
         this.upgrade = 12f;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
     }
 }
 
@@ -157,7 +251,14 @@ class Wizard extends SkillItem {
 class Hafted extends SkillItem {
     Hafted(int rank) {
         super(rank);
+        this.id = SkillItemId.HAFTED;
+        this.name = getClass().getSimpleName();
         this.upgrade = 3.2f;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
     }
 }
 
@@ -165,7 +266,14 @@ class Hafted extends SkillItem {
 class Missile extends SkillItem {
     Missile(int rank) {
         super(rank);
+        this.id = SkillItemId.MISSILE;
+        this.name = getClass().getSimpleName();
         this.upgrade = 4.8f;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
     }
 }
 
@@ -173,7 +281,14 @@ class Missile extends SkillItem {
 class Pole extends SkillItem {
     Pole(int rank) {
         super(rank);
+        this.id = SkillItemId.POLE;
+        this.name = getClass().getSimpleName();
         this.upgrade = 3.2f;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
     }
 }
 
@@ -181,7 +296,14 @@ class Pole extends SkillItem {
 class Shield extends SkillItem {
     Shield(int rank) {
         super(rank);
+        this.id = SkillItemId.SHIELD;
+        this.name = getClass().getSimpleName();
         this.upgrade = 4f;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
     }
 }
 
@@ -189,7 +311,14 @@ class Shield extends SkillItem {
 class Sword extends SkillItem {
     Sword(int rank) {
         super(rank);
+        this.id = SkillItemId.SWORD;
+        this.name = getClass().getSimpleName();
         this.upgrade = 4.8f;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
     }
 }
 
@@ -197,6 +326,13 @@ class Sword extends SkillItem {
 class Thrown extends SkillItem {
     Thrown(int rank) {
         super(rank);
+        this.id = SkillItemId.THROWN;
+        this.name = getClass().getSimpleName();
         this.upgrade = 3.2f;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
     }
 }

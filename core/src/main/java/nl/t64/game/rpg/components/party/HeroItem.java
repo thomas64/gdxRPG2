@@ -28,10 +28,6 @@ public class HeroItem {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    int getXpCostForNextLevelOf(StatItemId statItemId) {
-        return stats.getXpCostForNextLevelOf(statItemId);
-    }
-
     public int getXpNeededForNextLevel() {
         return stats.getXpNeededForNextLevel();
     }
@@ -66,19 +62,23 @@ public class HeroItem {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    int getXpCostForNextLevelOf(SkillItemId skillItemId) {
-        return skills.getXpCostForNextLevelOf(skillItemId);
+    StatItem getStatById(StatItemId statItemId) {
+        return stats.getById(statItemId);
     }
 
-    int getGoldCostForNextLevelOf(SkillItemId skillItemId) {
-        return skills.getGoldCostForNextLevelOf(skillItemId);
+    SkillItem getSkillById(SkillItemId skillItemId) {
+        return skills.getById(skillItemId);
     }
 
-    public List<SkillItemId> getAllSkillsAboveZero() {
+    public List<StatItem> getAllStats() {
+        return stats.getAll();
+    }
+
+    public List<SkillItem> getAllSkillsAboveZero() {
         return skills.getAllAboveZero();
     }
 
-    public List<SpellType> getAllSpells() {
+    public List<SpellItem> getAllSpells() {
         return spells.getAll();
     }
 
@@ -118,71 +118,51 @@ public class HeroItem {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public int getStatRankOf(StatItemId statItemId) {
-        return stats.getRankOf(statItemId);
-    }
-
-    public int getSkillRankOf(SkillItemId skillItemId) {
-        return skills.getRankOf(skillItemId);
-    }
-
-    public int getCalcRankOf(CalcAttributeId calcAttributeId) {
-        return 0;
-    }
-
-    public int getSpellRankOf(SpellType spellType) {
-        return spells.getRankOf(spellType);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public int getExtraStatForVisualOf(StatItemId statItemId) {
-        int extra = inventory.getSumOfStat(statItemId) + stats.getBonusStatOf(statItemId);
-        if (extra < 0 && extra < -getStatRankOf(statItemId)) {
-            return -getStatRankOf(statItemId);
+    public int getExtraStatForVisualOf(StatItem statItem) {
+        final int extra = inventory.getSumOfStat(statItem.getId()) + statItem.bonus;
+        if (extra < 0 && extra < -statItem.rank) {
+            return -statItem.rank;
         }
         return extra;
     }
 
-    public int getExtraSkillForVisualOf(SkillItemId skillItemId) {
-        int extra = inventory.getSumOfSkill(skillItemId) + skills.getBonusSkillOf(skillItemId);
-        if (extra < 0 && extra < -getSkillRankOf(skillItemId)) {
-            return -getSkillRankOf(skillItemId);
+    public int getExtraSkillForVisualOf(SkillItem skillItem) {
+        final int extra = inventory.getSumOfSkill(skillItem.getId()) + skillItem.bonus;
+        if (extra < 0 && extra < -skillItem.rank) {
+            return -skillItem.rank;
         }
         return extra;
-    }
-
-    public int getExtraCalcForVisualOf(CalcAttributeId calcAttributeId) {
-        return 0;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     int getCalculatedTotalStatOf(StatItemId statItemId) {
-        int totalStat = getRealTotalStatOf(statItemId);
+        final StatItem statItem = stats.getById(statItemId);
+        final int totalStat = getRealTotalStatOf(statItem);
         if (totalStat <= 0) {
             return 1;
         }
         return totalStat;
     }
 
-    int getCalculatedTotalSkillOf(SkillItemId skillItemId) {
-        if (getSkillRankOf(skillItemId) <= 0) {
+    public int getCalculatedTotalSkillOf(SkillItemId skillItemId) {
+        final SkillItem skillItem = skills.getById(skillItemId);
+        if (skillItem.rank <= 0) {
             return 0;
         }
-        int totalSkill = getRealTotalSkillOf(skillItemId);
+        final int totalSkill = getRealTotalSkillOf(skillItem);
         if (totalSkill <= 0) {
             return 0;
         }
         return totalSkill;
     }
 
-    private int getRealTotalStatOf(StatItemId statItemId) {
-        return getStatRankOf(statItemId) + inventory.getSumOfStat(statItemId) + stats.getBonusStatOf(statItemId);
+    private int getRealTotalStatOf(StatItem statItem) {
+        return statItem.rank + inventory.getSumOfStat(statItem.getId()) + statItem.bonus;
     }
 
-    private int getRealTotalSkillOf(SkillItemId skillItemId) {
-        return getSkillRankOf(skillItemId) + inventory.getSumOfSkill(skillItemId) + skills.getBonusSkillOf(skillItemId);
+    private int getRealTotalSkillOf(SkillItem skillItem) {
+        return skillItem.rank + inventory.getSumOfSkill(skillItem.getId()) + skillItem.bonus;
     }
 
     public int getTotalCalcOf(CalcAttributeId calcAttributeId) {

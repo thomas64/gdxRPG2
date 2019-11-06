@@ -53,7 +53,7 @@ dragon_flames
   orig: 48, 48
   offset: 0, 0
   index: -1
-endurance
+endurance_plus
   rotate: false
   xy: 240, 0
   size: 48, 48
@@ -102,7 +102,7 @@ stellar_gravity
   orig: 48, 48
   offset: 0, 0
   index: -1
-strength
+strength_plus
   rotate: false
   xy: 0, 96
   size: 48, 48

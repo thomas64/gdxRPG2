@@ -17,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 class InventoryTest extends GameTest {
 
+    private static final String GOLD = "gold";
     private static final String BASIC_MACE = "basic_mace";
     private static final String BASIC_LIGHT_CHEST = "basic_light_chest";
 
@@ -32,8 +33,7 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenResourceItemIsCreated_ShouldHaveVariables() {
-        final String itemId = "gold";
-        final InventoryItem gold = InventoryDatabase.getInstance().getInventoryItem(itemId);
+        final InventoryItem gold = InventoryDatabase.getInstance().getInventoryItem(GOLD);
         assertThat(gold.name).isEqualTo("Gold");
         assertThat(gold.getGroup()).isEqualTo(InventoryGroup.RESOURCE);
         assertThat(gold.getDescription()).isEqualTo("Gold can be used to pay for goods or services.");
@@ -47,10 +47,10 @@ class InventoryTest extends GameTest {
         assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(1);
         assertThat(inventory.getItemAt(0)).get().hasFieldOrPropertyWithValue("id", BASIC_MACE);
 
-        assertThat(inventory.contains("gold")).isTrue();
+        assertThat(inventory.contains(GOLD)).isTrue();
         assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex())).isEqualTo(1);
         assertThat(inventory.getItemAt(inventory.getLastIndex()))
-                .get().hasFieldOrPropertyWithValue("id", "gold");
+                .get().hasFieldOrPropertyWithValue("id", GOLD);
     }
 
     @Test
@@ -68,13 +68,12 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenEquipmentItemIsAdded_ShouldBeAddedToStartOfInventory() {
-        String itemId = BASIC_LIGHT_CHEST;
-        InventoryItem chest = InventoryDatabase.getInstance().getInventoryItem(itemId);
-        assertThat(inventory.contains(itemId)).isFalse();
+        InventoryItem chest = InventoryDatabase.getInstance().getInventoryItem(BASIC_LIGHT_CHEST);
+        assertThat(inventory.contains(BASIC_LIGHT_CHEST)).isFalse();
         inventory.autoSetItem(chest);
-        assertThat(inventory.contains(itemId)).isTrue();
+        assertThat(inventory.contains(BASIC_LIGHT_CHEST)).isTrue();
         assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(1);
-        assertThat(inventory.getItemAt(1)).get().hasFieldOrPropertyWithValue("id", itemId);
+        assertThat(inventory.getItemAt(1)).get().hasFieldOrPropertyWithValue("id", BASIC_LIGHT_CHEST);
     }
 
     @Test
@@ -91,7 +90,7 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenSameResourceItemIsAdded_ShouldIncreaseAmount() {
-        InventoryItem gold = InventoryDatabase.getInstance().getInventoryItem("gold");
+        InventoryItem gold = InventoryDatabase.getInstance().getInventoryItem(GOLD);
         assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex())).isEqualTo(1);
         inventory.autoSetItem(gold);
         assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex())).isEqualTo(2);
@@ -109,9 +108,9 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenSameResourceItemOfMultipleIsAdded_ShouldIncreaseTheFirstAmount() {
-        InventoryItem gold1 = InventoryDatabase.getInstance().getInventoryItem("gold");
-        InventoryItem gold2 = InventoryDatabase.getInstance().getInventoryItem("gold");
-        InventoryItem gold3 = InventoryDatabase.getInstance().getInventoryItem("gold");
+        InventoryItem gold1 = InventoryDatabase.getInstance().getInventoryItem(GOLD);
+        InventoryItem gold2 = InventoryDatabase.getInstance().getInventoryItem(GOLD);
+        InventoryItem gold3 = InventoryDatabase.getInstance().getInventoryItem(GOLD);
         inventory.forceSetItemAt(0, gold1);
         inventory.forceSetItemAt(1, gold2);
         inventory.forceSetItemAt(2, gold3);
@@ -119,7 +118,7 @@ class InventoryTest extends GameTest {
         assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(1);
         assertThat(inventory.getAmountOfItemAt(2)).isEqualTo(1);
 
-        InventoryItem moreGold = InventoryDatabase.getInstance().getInventoryItem("gold");
+        InventoryItem moreGold = InventoryDatabase.getInstance().getInventoryItem(GOLD);
         inventory.autoSetItem(moreGold);
         assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(2);
         assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(1);
@@ -128,7 +127,7 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenInventoryIsFull_ShouldNotThrowError() {
-        InventoryItem gold = InventoryDatabase.getInstance().getInventoryItem("gold");
+        InventoryItem gold = InventoryDatabase.getInstance().getInventoryItem(GOLD);
         InventoryItem herbs = InventoryDatabase.getInstance().getInventoryItem("herbs");
         IntStream.range(0, inventory.getSize())
                  .forEach(i -> inventory.forceSetItemAt(i, gold));
@@ -140,6 +139,8 @@ class InventoryTest extends GameTest {
     void whenInventoryItemWeapon_ShouldCreateDescription() {
         InventoryItem weapon = InventoryDatabase.getInstance().getInventoryItem(BASIC_MACE);
         HeroItem heroMock = Mockito.mock(HeroItem.class);
+        Mockito.when(heroMock.getSkillById(SkillItemId.HAFTED)).thenReturn(new Hafted(1));
+        Mockito.when(heroMock.getStatById(StatItemId.STRENGTH)).thenReturn(new Strength(1));
         List<InventoryDescription> description = new DescriptionCreator(weapon).createItemDescriptionComparingToHero(heroMock);
         assertThat(description.get(0).key).isEqualTo(InventoryGroup.WEAPON);
         assertThat(description.get(0).value).isEqualTo("Basic Mace");
@@ -159,6 +160,8 @@ class InventoryTest extends GameTest {
     void whenInventoryItemShield_ShouldCreateDescription() {
         InventoryItem weapon = InventoryDatabase.getInstance().getInventoryItem("basic_light_shield");
         HeroItem heroMock = Mockito.mock(HeroItem.class);
+        Mockito.when(heroMock.getSkillById(SkillItemId.SHIELD)).thenReturn(new Shield(1));
+        Mockito.when(heroMock.getStatById(StatItemId.STRENGTH)).thenReturn(new Strength(1));
         List<InventoryDescription> description = new DescriptionCreator(weapon).createItemDescriptionComparingToHero(heroMock);
         assertThat(description.get(0).key).isEqualTo(InventoryGroup.SHIELD);
         assertThat(description.get(0).value).isEqualTo("Basic Light Shield");
@@ -198,8 +201,8 @@ class InventoryTest extends GameTest {
     void whenItemIsComparedToHero_ShouldReturnSpecificThreeStates() {
         InventoryItem weapon = InventoryDatabase.getInstance().getInventoryItem(BASIC_MACE);
         HeroItem heroMock = Mockito.mock(HeroItem.class);
-        Mockito.when(heroMock.getSkillRankOf(SkillItemId.HAFTED)).thenReturn(1);
-        Mockito.when(heroMock.getStatRankOf(StatItemId.STRENGTH)).thenReturn(10);
+        Mockito.when(heroMock.getSkillById(SkillItemId.HAFTED)).thenReturn(new Hafted(1));
+        Mockito.when(heroMock.getStatById(StatItemId.STRENGTH)).thenReturn(new Strength(10));
         List<InventoryDescription> description = new DescriptionCreator(weapon).createItemDescriptionComparingToHero(heroMock);
         assertThat(description.get(1).key).isEqualTo(InventoryMinimal.SKILL);
         assertThat(description.get(1).compare).isEqualTo(ThreeState.SAME);

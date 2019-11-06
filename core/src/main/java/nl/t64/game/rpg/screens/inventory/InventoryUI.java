@@ -49,14 +49,14 @@ class InventoryUI {
     private final HeroesTable heroesTable;
 
     private final InventorySlotTooltip inventorySlotTooltip;
-    private final StatTooltip statTooltip;
+    private final StatTooltip personalityTooltip;
 
     InventoryUI() {
         final var dragAndDrop = new DragAndDrop();
         this.inventorySlotTooltip = new InventorySlotTooltip();
-        this.statTooltip = new StatTooltip();
+        this.personalityTooltip = new StatTooltip();
 
-        this.spellsTable = new SpellsTable();
+        this.spellsTable = new SpellsTable(this.personalityTooltip);
         this.spellsWindow = createWindow(TITLE_SPELLS, this.spellsTable.container);
 
         this.inventorySlotsTable = new InventorySlotsTable(dragAndDrop, this.inventorySlotTooltip);
@@ -69,10 +69,10 @@ class InventoryUI {
         this.equipWindow = createWindow(TITLE_PERSONAL,
                                         this.equipSlotsTables.get(InventoryUtils.getSelectedHeroId()).equipSlots);
 
-        this.skillsTable = new SkillsTable(this.statTooltip);
+        this.skillsTable = new SkillsTable(this.personalityTooltip);
         this.skillsWindow = createWindow(TITLE_SKILLS, this.skillsTable.container);
 
-        this.statsTable = new StatsTable(this.statTooltip);
+        this.statsTable = new StatsTable(this.personalityTooltip);
         this.statsWindow = createWindow(TITLE_STATS, this.statsTable.table);
 
         this.calcsTable = new CalcsTable();
@@ -99,7 +99,7 @@ class InventoryUI {
         stage.addActor(calcsWindow);
         stage.addActor(heroesWindow);
         inventorySlotTooltip.addToStage(stage);
-        statTooltip.addToStage(stage);
+        personalityTooltip.addToStage(stage);
     }
 
     void applyListeners(Stage stage) {

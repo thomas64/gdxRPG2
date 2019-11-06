@@ -4,22 +4,22 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import nl.t64.game.rpg.components.party.SuperEnum;
+import nl.t64.game.rpg.components.party.PersonalityItem;
 
 
-public class StatTooltipListener extends ClickListener {
+public class PersonalityTooltipListener extends ClickListener {
 
     private static final float OFFSET_X = 20f;
     private static final float OFFSET_Y = 10f;
 
     private final StatTooltip toolTip;
-    private final SuperEnum superEnum;
+    private final PersonalityItem personalityItem;
     private final Vector2 currentCoords;
     private final Vector2 offset;
 
-    StatTooltipListener(StatTooltip toolTip, SuperEnum superEnum) {
+    PersonalityTooltipListener(StatTooltip toolTip, PersonalityItem personalityItem) {
         this.toolTip = toolTip;
-        this.superEnum = superEnum;
+        this.personalityItem = personalityItem;
         this.currentCoords = new Vector2(0, 0);
         this.offset = new Vector2(OFFSET_X, OFFSET_Y);
     }
@@ -34,7 +34,7 @@ public class StatTooltipListener extends ClickListener {
 
     @Override
     public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-        toolTip.updateDescription(superEnum);
+        toolTip.updateDescription(personalityItem);
         toolTip.toFront();
         toolTip.setVisible(true);
     }

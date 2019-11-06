@@ -1,9 +1,10 @@
 package nl.t64.game.rpg.screens.inventory;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import nl.t64.game.rpg.components.party.HeroItem;
-import nl.t64.game.rpg.components.party.SpellType;
+import nl.t64.game.rpg.components.party.SpellItem;
 
 
 class SpellsTable extends BaseTable {
@@ -19,9 +20,12 @@ class SpellsTable extends BaseTable {
     final Table container;
     final ScrollPane scrollPane;
 
+    private final StatTooltip tooltip;
+
     private HeroItem selectedHero;
 
-    SpellsTable() {
+    SpellsTable(StatTooltip tooltip) {
+        this.tooltip = tooltip;
         this.table.columnDefaults(0).width(FIRST_COLUMN_WIDTH);
         this.table.columnDefaults(1).width(SECOND_COLUMN_WIDTH);
         this.table.columnDefaults(2).width(THIRD_COLUMN_WIDTH);
@@ -52,15 +56,17 @@ class SpellsTable extends BaseTable {
     }
 
     private void fillSpellRows() {
-        for (SpellType spellType : selectedHero.getAllSpells()) {
-            fillSpellRow(spellType);
+        for (SpellItem spellItem : selectedHero.getAllSpells()) {
+            fillSpellRow(spellItem);
         }
     }
 
-    private void fillSpellRow(SpellType spellType) {
-        table.add(createImageOf(spellType.name()));
-        table.add(spellType.getTitle()).padLeft(SECOND_COLUMN_PAD_LEFT);
-        table.add(String.valueOf(selectedHero.getSpellRankOf(spellType)));
+    private void fillSpellRow(SpellItem spellItem) {
+        table.add(createImageOf(spellItem.getId()));
+        final var spellName = new Label(spellItem.getName(), table.getSkin());
+        spellName.addListener(new PersonalityTooltipListener(tooltip, spellItem));
+        table.add(spellName).padLeft(SECOND_COLUMN_PAD_LEFT);
+        table.add(String.valueOf(spellItem.getRank()));
         table.add("").row();
     }
 

@@ -2,7 +2,8 @@ package nl.t64.game.rpg.screens.inventory;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import nl.t64.game.rpg.components.party.SuperEnum;
+import nl.t64.game.rpg.components.party.PersonalityItem;
+import nl.t64.game.rpg.components.party.SkillItemId;
 
 
 class StatTooltip extends BaseToolTip {
@@ -11,12 +12,13 @@ class StatTooltip extends BaseToolTip {
         window.setVisible(visible);
     }
 
-    void updateDescription(SuperEnum superEnum) {
+    void updateDescription(PersonalityItem personalityItem) {
         window.clear();
 
-        String description = superEnum.getDescription(InventoryUtils.selectedHero);
-        var labelStyle = new Label.LabelStyle(font, Color.WHITE);
-        var label = new Label(description, labelStyle);
+        final int totalLoremaster = InventoryUtils.selectedHero.getCalculatedTotalSkillOf(SkillItemId.LOREMASTER);
+        final String description = personalityItem.getDescription(totalLoremaster);
+        final var labelStyle = new Label.LabelStyle(font, Color.WHITE);
+        final var label = new Label(description, labelStyle);
         window.add(label);
 
         window.pack();

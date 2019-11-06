@@ -2,7 +2,7 @@ package nl.t64.game.rpg.screens.inventory;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import nl.t64.game.rpg.components.party.HeroItem;
-import nl.t64.game.rpg.components.party.StatItemId;
+import nl.t64.game.rpg.components.party.StatItem;
 
 
 class StatsTable extends BaseTable {
@@ -14,8 +14,6 @@ class StatsTable extends BaseTable {
     private final StatTooltip tooltip;
 
     private HeroItem selectedHero;
-    private int statRank;
-    private int totalExtra;
 
     StatsTable(StatTooltip tooltip) {
         this.tooltip = tooltip;
@@ -25,6 +23,7 @@ class StatsTable extends BaseTable {
         setTopBorder(this.table);
     }
 
+    @Override
     void update() {
         selectedHero = InventoryUtils.selectedHero;
         table.clear();
@@ -37,10 +36,8 @@ class StatsTable extends BaseTable {
     }
 
     private void fillStats() {
-        for (StatItemId statItemId : StatItemId.values()) {
-            statRank = selectedHero.getStatRankOf(statItemId);
-            totalExtra = selectedHero.getExtraStatForVisualOf(statItemId);
-            fillRow(statItemId);
+        for (StatItem statItem : selectedHero.getAllStats()) {
+            fillRow(statItem);
         }
     }
 
@@ -51,11 +48,12 @@ class StatsTable extends BaseTable {
         fillRow("Next Level", selectedHero.getXpNeededForNextLevel()); // todo, is dit de juiste van de 2 methodes?
     }
 
-    private void fillRow(StatItemId statItemId) {
-        var statTitle = new Label(statItemId.getTitle(), table.getSkin());
-        statTitle.addListener(new StatTooltipListener(tooltip, statItemId));
+    private void fillRow(StatItem statItem) {
+        var statTitle = new Label(statItem.getName(), table.getSkin());
+        statTitle.addListener(new PersonalityTooltipListener(tooltip, statItem));
         table.add(statTitle);
-        table.add(String.valueOf(statRank));
+        table.add(String.valueOf(statItem.getRank()));
+        final int totalExtra = selectedHero.getExtraStatForVisualOf(statItem);
         addToTable(totalExtra);
     }
 

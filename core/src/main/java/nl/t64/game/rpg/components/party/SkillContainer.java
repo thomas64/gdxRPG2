@@ -49,35 +49,19 @@ class SkillContainer {
         this.skills.put(SkillItemId.THROWN.name(), new Thrown(thr));
     }
 
-    List<SkillItemId> getAllAboveZero() {
+    SkillItem getById(SkillItemId skillItemId) {
+        return skills.get(skillItemId.name());
+    }
+
+    List<SkillItem> getAllAboveZero() {
         return Arrays.stream(SkillItemId.values())
+                     .map(skillItemId -> skills.get(skillItemId.name()))
                      .filter(this::hasPositiveQuantity)
                      .collect(Collectors.toList());
     }
 
-    int getRankOf(SkillItemId skillItemId) {
-        return skills.get(skillItemId.name()).rank;
-    }
-
-    int getBonusSkillOf(SkillItemId skillItemId) {
-        return skills.get(skillItemId.name()).bonus;
-    }
-
-    int getCalculatedTotalSkillOf(SkillItemId skillItemId) {
-        return skills.get(skillItemId.name()).getCalculatedTotal();
-    }
-
-    int getXpCostForNextLevelOf(SkillItemId skillItemId) {
-        final int totalLoremaster = getCalculatedTotalSkillOf(SkillItemId.LOREMASTER);
-        return skills.get(skillItemId.name()).getXpCostForNextLevel(totalLoremaster);
-    }
-
-    int getGoldCostForNextLevelOf(SkillItemId skillItemId) {
-        return skills.get(skillItemId.name()).getGoldCostForNextLevel();
-    }
-
-    private boolean hasPositiveQuantity(SkillItemId skillItemId) {
-        return getRankOf(skillItemId) > 0;
+    private boolean hasPositiveQuantity(SkillItem skillItem) {
+        return skillItem.rank > 0;
     }
 
 }

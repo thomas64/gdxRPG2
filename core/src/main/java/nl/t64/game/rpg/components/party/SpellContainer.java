@@ -3,7 +3,7 @@ package nl.t64.game.rpg.components.party;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.lang.reflect.Constructor;
-import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,26 +30,33 @@ class SpellContainer {
         }
     }
 
+    private static Class getClassOf(String spellName) throws ClassNotFoundException {
+        return SpellItem.getSpellClass(getCamelCaseOf(spellName));
+    }
+
+    private static String getCamelCaseOf(String spellName) {
+        spellName = Character.toUpperCase(spellName.charAt(0)) + spellName.substring(1);
+        while (spellName.contains("_")) {
+            spellName = spellName.replaceFirst(
+                    "_[a-z]",
+                    String.valueOf(Character.toUpperCase(spellName.charAt(spellName.indexOf('_') + 1)))
+            );
+        }
+        return spellName;
+    }
+
     private void putInContainer(Map.Entry<String, Integer> spellSet) throws ReflectiveOperationException {
-        SpellType spellType = SpellType.valueOf(spellSet.getKey().toUpperCase());
-        Constructor<?>[] constructors = spellType.spellClass.getDeclaredConstructors();
-        SpellItem spellItem = (SpellItem) constructors[0].newInstance(spellSet.getValue());
-        spells.put(spellType.name(), spellItem);
+        final Constructor<?>[] constructors = getClassOf(spellSet.getKey()).getDeclaredConstructors();
+        final SpellItem spellItem = (SpellItem) constructors[0].newInstance(spellSet.getValue());
+        spellItem.setId(spellSet.getKey());
+        spells.put(spellItem.id, spellItem);
     }
 
-    int getRankOf(SpellType spellType) {
-        return spells.get(spellType.name()).rank;
-    }
-
-    List<SpellType> getAll() {
-        return Arrays.stream(SpellType.values())
-                     .filter(this::contains)
+    List<SpellItem> getAll() {
+        return spells.values()
+                     .stream()
+                     .sorted(Comparator.comparing(SpellItem::getSort))
                      .collect(Collectors.toList());
     }
-
-    private boolean contains(SpellType spellType) {
-        return spells.containsKey(spellType.name());
-    }
-
 
 }

@@ -4,15 +4,12 @@ import lombok.AllArgsConstructor;
 
 
 @AllArgsConstructor
-public enum CalcAttributeId implements SuperEnum {
+public enum ResourceType implements SuperEnum {
 
-    WEIGHT("Weight"),
-
-    BASE_HIT("Base Hit"),
-    DAMAGE("Damage"),
-
-    PROTECTION("Protection"),
-    DEFENSE("Defense");
+    GOLD("Gold"),
+    HERBS("Herbs"),
+    SPICES("Spices"),
+    GEMSTONES("Gemstones");
 
     final String title;
 

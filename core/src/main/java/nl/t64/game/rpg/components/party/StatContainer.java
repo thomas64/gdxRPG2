@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Setter;
 
 import java.beans.ConstructorProperties;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Setter
@@ -80,17 +83,14 @@ class StatContainer {
                 + stats.get(StatItemId.ENDURANCE.name()).bonus;
     }
 
-    int getRankOf(StatItemId statItemId) {
-        return stats.get(statItemId.name()).rank;
+    StatItem getById(StatItemId statItemId) {
+        return stats.get(statItemId.name());
     }
 
-    int getBonusStatOf(StatItemId statItemId) {
-        // todo, wat te doen voor stamina? heeft wel negatieve bonus wanneer gebruikt door spells of tegenaanvallen?
-        return stats.get(statItemId.name()).bonus;
-    }
-
-    int getXpCostForNextLevelOf(StatItemId statItemId) {
-        return stats.get(statItemId.name()).getXpCostForNextLevel();
+    List<StatItem> getAll() {
+        return Arrays.stream(StatItemId.values())
+                     .map(statItemId -> stats.get(statItemId.name()))
+                     .collect(Collectors.toList());
     }
 
 }

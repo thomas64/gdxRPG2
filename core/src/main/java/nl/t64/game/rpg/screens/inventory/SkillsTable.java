@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import nl.t64.game.rpg.components.party.HeroItem;
-import nl.t64.game.rpg.components.party.SkillItemId;
+import nl.t64.game.rpg.components.party.SkillItem;
 
 
 class SkillsTable extends BaseTable {
@@ -23,8 +23,6 @@ class SkillsTable extends BaseTable {
     private final StatTooltip tooltip;
 
     private HeroItem selectedHero;
-    private int skillRank;
-    private int totalExtra;
 
     SkillsTable(StatTooltip tooltip) {
         this.tooltip = tooltip;
@@ -41,6 +39,7 @@ class SkillsTable extends BaseTable {
         setTopBorder(this.container);
     }
 
+    @Override
     void update() {
         selectedHero = InventoryUtils.selectedHero;
         table.clear();
@@ -48,19 +47,18 @@ class SkillsTable extends BaseTable {
     }
 
     private void fillRows() {
-        for (SkillItemId skillItemId : selectedHero.getAllSkillsAboveZero()) {
-            skillRank = selectedHero.getSkillRankOf(skillItemId);
-            totalExtra = selectedHero.getExtraSkillForVisualOf(skillItemId);
-            fillRow(skillItemId);
+        for (SkillItem skillItem : selectedHero.getAllSkillsAboveZero()) {
+            fillRow(skillItem);
         }
     }
 
-    private void fillRow(SkillItemId skillItemId) {
-        table.add(createImageOf(skillItemId.name()));
-        var skillTitle = new Label(skillItemId.getTitle(), table.getSkin());
-        skillTitle.addListener(new StatTooltipListener(tooltip, skillItemId));
-        table.add(skillTitle).padLeft(SECOND_COLUMN_PAD_LEFT);
-        table.add(String.valueOf(skillRank));
+    private void fillRow(SkillItem skillItem) {
+        table.add(createImageOf(skillItem.getId().name()));
+        final var skillName = new Label(skillItem.getName(), table.getSkin());
+        skillName.addListener(new PersonalityTooltipListener(tooltip, skillItem));
+        table.add(skillName).padLeft(SECOND_COLUMN_PAD_LEFT);
+        table.add(String.valueOf(skillItem.getRank()));
+        final int totalExtra = selectedHero.getExtraSkillForVisualOf(skillItem);
         addToTable(totalExtra);
     }
 
