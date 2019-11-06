@@ -20,11 +20,11 @@ class SpellsTable extends BaseTable {
     final Table container;
     final ScrollPane scrollPane;
 
-    private final StatTooltip tooltip;
+    private final PersonalityTooltip tooltip;
 
     private HeroItem selectedHero;
 
-    SpellsTable(StatTooltip tooltip) {
+    SpellsTable(PersonalityTooltip tooltip) {
         this.tooltip = tooltip;
         this.table.columnDefaults(0).width(FIRST_COLUMN_WIDTH);
         this.table.columnDefaults(1).width(SECOND_COLUMN_WIDTH);

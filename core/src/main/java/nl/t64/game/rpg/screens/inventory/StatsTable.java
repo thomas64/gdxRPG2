@@ -11,11 +11,11 @@ class StatsTable extends BaseTable {
     private static final float SECOND_COLUMN_WIDTH = 40f;
     private static final float THIRD_COLUMN_WIDTH = 35f;
 
-    private final StatTooltip tooltip;
+    private final PersonalityTooltip tooltip;
 
     private HeroItem selectedHero;
 
-    StatsTable(StatTooltip tooltip) {
+    StatsTable(PersonalityTooltip tooltip) {
         this.tooltip = tooltip;
         this.table.columnDefaults(0).width(FIRST_COLUMN_WIDTH);
         this.table.columnDefaults(1).width(SECOND_COLUMN_WIDTH);

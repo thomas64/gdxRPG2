@@ -12,12 +12,12 @@ public class PersonalityTooltipListener extends ClickListener {
     private static final float OFFSET_X = 20f;
     private static final float OFFSET_Y = 10f;
 
-    private final StatTooltip toolTip;
+    private final PersonalityTooltip toolTip;
     private final PersonalityItem personalityItem;
     private final Vector2 currentCoords;
     private final Vector2 offset;
 
-    PersonalityTooltipListener(StatTooltip toolTip, PersonalityItem personalityItem) {
+    PersonalityTooltipListener(PersonalityTooltip toolTip, PersonalityItem personalityItem) {
         this.toolTip = toolTip;
         this.personalityItem = personalityItem;
         this.currentCoords = new Vector2(0, 0);

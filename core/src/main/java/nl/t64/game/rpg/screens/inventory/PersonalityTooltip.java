@@ -6,7 +6,7 @@ import nl.t64.game.rpg.components.party.PersonalityItem;
 import nl.t64.game.rpg.components.party.SkillItemId;
 
 
-class StatTooltip extends BaseToolTip {
+class PersonalityTooltip extends BaseToolTip {
 
     void setVisible(boolean visible) {
         window.setVisible(visible);

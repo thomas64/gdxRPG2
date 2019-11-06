@@ -49,12 +49,12 @@ class InventoryUI {
     private final HeroesTable heroesTable;
 
     private final InventorySlotTooltip inventorySlotTooltip;
-    private final StatTooltip personalityTooltip;
+    private final PersonalityTooltip personalityTooltip;
 
     InventoryUI() {
         final var dragAndDrop = new DragAndDrop();
         this.inventorySlotTooltip = new InventorySlotTooltip();
-        this.personalityTooltip = new StatTooltip();
+        this.personalityTooltip = new PersonalityTooltip();
 
         this.spellsTable = new SpellsTable(this.personalityTooltip);
         this.spellsWindow = createWindow(TITLE_SPELLS, this.spellsTable.container);
