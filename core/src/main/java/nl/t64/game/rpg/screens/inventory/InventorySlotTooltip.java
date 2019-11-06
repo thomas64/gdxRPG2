@@ -141,9 +141,9 @@ class InventorySlotTooltip extends BaseToolTip {
     }
 
     private String getValue(InventoryDescription attribute) {
-        if (attribute.getValue() instanceof SkillType) {
-            return ((SkillType) attribute.getValue()).getTitle();
-        } else if (attribute.getKey().equals(CalcType.BASE_HIT)) {
+        if (attribute.getValue() instanceof SkillItemId) {
+            return ((SkillItemId) attribute.getValue()).getTitle();
+        } else if (attribute.getKey().equals(CalcAttributeId.BASE_HIT)) {
             return String.format("%s%%", attribute.getValue());
         } else {
             return String.valueOf(attribute.getValue());

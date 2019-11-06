@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 
 
 @AllArgsConstructor
-public enum StatType implements SuperEnum {
+public enum StatItemId implements SuperEnum {
 
     INTELLIGENCE("Intelligence") {
         @Override
@@ -56,8 +56,8 @@ public enum StatType implements SuperEnum {
         return title;
     }
 
-    String getNeededXpForNextLevel(StatType statType, HeroItem hero) {
-        String xpNeeded = String.valueOf(hero.getXpCostForNextLevelOf(statType));
+    String getNeededXpForNextLevel(StatItemId statItemId, HeroItem hero) {
+        String xpNeeded = String.valueOf(hero.getXpCostForNextLevelOf(statItemId));
         if (xpNeeded.equals("0")) {
             xpNeeded = "Max";
         }

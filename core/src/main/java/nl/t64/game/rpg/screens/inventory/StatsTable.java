@@ -2,7 +2,7 @@ package nl.t64.game.rpg.screens.inventory;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import nl.t64.game.rpg.components.party.HeroItem;
-import nl.t64.game.rpg.components.party.StatType;
+import nl.t64.game.rpg.components.party.StatItemId;
 
 
 class StatsTable extends BaseTable {
@@ -37,10 +37,10 @@ class StatsTable extends BaseTable {
     }
 
     private void fillStats() {
-        for (StatType statType : StatType.values()) {
-            statRank = selectedHero.getStatRankOf(statType);
-            totalExtra = selectedHero.getExtraStatForVisualOf(statType);
-            fillRow(statType);
+        for (StatItemId statItemId : StatItemId.values()) {
+            statRank = selectedHero.getStatRankOf(statItemId);
+            totalExtra = selectedHero.getExtraStatForVisualOf(statItemId);
+            fillRow(statItemId);
         }
     }
 
@@ -51,9 +51,9 @@ class StatsTable extends BaseTable {
         fillRow("Next Level", selectedHero.getXpNeededForNextLevel()); // todo, is dit de juiste van de 2 methodes?
     }
 
-    private void fillRow(StatType statType) {
-        var statTitle = new Label(statType.getTitle(), table.getSkin());
-        statTitle.addListener(new StatTooltipListener(tooltip, statType));
+    private void fillRow(StatItemId statItemId) {
+        var statTitle = new Label(statItemId.getTitle(), table.getSkin());
+        statTitle.addListener(new StatTooltipListener(tooltip, statItemId));
         table.add(statTitle);
         table.add(String.valueOf(statRank));
         addToTable(totalExtra);

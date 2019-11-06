@@ -20,7 +20,7 @@ public class InventoryItem {
     int amount;
     @Getter
     InventoryGroup group;
-    SkillType skill;
+    SkillItemId skill;
     int weight;
     @JsonProperty("min_intelligence")
     int minIntelligence;
@@ -65,8 +65,8 @@ public class InventoryItem {
         }
     }
 
-    int getAttributeOfStatType(StatType statType) {
-        switch (statType) {
+    int getAttributeOfStatItemId(StatItemId statItemId) {
+        switch (statItemId) {
             case DEXTERITY:
                 return dexterity;
             default:
@@ -74,8 +74,8 @@ public class InventoryItem {
         }
     }
 
-    int getAttributeOfSkillType(SkillType skillType) {
-        switch (skillType) {
+    int getAttributeOfSkillItemId(SkillItemId skillItemId) {
+        switch (skillItemId) {
             case STEALTH:
                 return stealth;
             default:
@@ -83,8 +83,8 @@ public class InventoryItem {
         }
     }
 
-    int getAttributeOfCalcType(CalcType calcType) {
-        switch (calcType) {
+    int getAttributeOfCalcAttributeId(CalcAttributeId calcAttributeId) {
+        switch (calcAttributeId) {
             case WEIGHT:
                 return weight;
             case BASE_HIT:
@@ -96,7 +96,7 @@ public class InventoryItem {
             case DEFENSE:
                 return defense;
             default:
-                throw new IllegalArgumentException(String.format("CalcType '%s' not usable.", calcType));
+                throw new IllegalArgumentException(String.format("CalcAttributeId '%s' not usable.", calcAttributeId));
         }
     }
 

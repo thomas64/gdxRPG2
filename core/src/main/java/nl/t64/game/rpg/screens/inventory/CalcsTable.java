@@ -1,6 +1,6 @@
 package nl.t64.game.rpg.screens.inventory;
 
-import nl.t64.game.rpg.components.party.CalcType;
+import nl.t64.game.rpg.components.party.CalcAttributeId;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.InventoryGroup;
 
@@ -30,24 +30,24 @@ class CalcsTable extends BaseTable {
         table.add("?");
         table.add("").row();
 
-        table.add(CalcType.BASE_HIT.getTitle());
-        table.add(String.format("%s%%", selectedHero.getCalcValueOf(InventoryGroup.WEAPON, CalcType.BASE_HIT)));
+        table.add(CalcAttributeId.BASE_HIT.getTitle());
+        table.add(String.format("%s%%", selectedHero.getCalcValueOf(InventoryGroup.WEAPON, CalcAttributeId.BASE_HIT)));
         table.add("").row();
 
-        table.add(CalcType.DAMAGE.getTitle());
-        table.add(String.valueOf(selectedHero.getCalcValueOf(InventoryGroup.WEAPON, CalcType.DAMAGE)));
+        table.add(CalcAttributeId.DAMAGE.getTitle());
+        table.add(String.valueOf(selectedHero.getCalcValueOf(InventoryGroup.WEAPON, CalcAttributeId.DAMAGE)));
         table.add("").row();
 
-        table.add(String.format("Total %s", CalcType.PROTECTION.getTitle()));
-        table.add(String.valueOf(selectedHero.getTotalCalcOf(CalcType.PROTECTION)));
+        table.add(String.format("Total %s", CalcAttributeId.PROTECTION.getTitle()));
+        table.add(String.valueOf(selectedHero.getTotalCalcOf(CalcAttributeId.PROTECTION)));
         table.add("").row();
 
-        table.add(String.format("Shield %s", CalcType.PROTECTION.getTitle()));
-        table.add(String.valueOf(selectedHero.getCalcValueOf(InventoryGroup.SHIELD, CalcType.PROTECTION)));
+        table.add(String.format("Shield %s", CalcAttributeId.PROTECTION.getTitle()));
+        table.add(String.valueOf(selectedHero.getCalcValueOf(InventoryGroup.SHIELD, CalcAttributeId.PROTECTION)));
         table.add("").row();
 
-        table.add(CalcType.DEFENSE.getTitle());
-        table.add(String.valueOf(selectedHero.getCalcValueOf(InventoryGroup.SHIELD, CalcType.DEFENSE)));
+        table.add(CalcAttributeId.DEFENSE.getTitle());
+        table.add(String.valueOf(selectedHero.getCalcValueOf(InventoryGroup.SHIELD, CalcAttributeId.DEFENSE)));
         table.add("").row();
 
         table.add("Spell Battery");

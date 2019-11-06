@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import nl.t64.game.rpg.components.party.HeroItem;
-import nl.t64.game.rpg.components.party.SkillType;
+import nl.t64.game.rpg.components.party.SkillItemId;
 
 
 class SkillsTable extends BaseTable {
@@ -48,17 +48,17 @@ class SkillsTable extends BaseTable {
     }
 
     private void fillRows() {
-        for (SkillType skillType : selectedHero.getAllSkillsAboveZero()) {
-            skillRank = selectedHero.getSkillRankOf(skillType);
-            totalExtra = selectedHero.getExtraSkillForVisualOf(skillType);
-            fillRow(skillType);
+        for (SkillItemId skillItemId : selectedHero.getAllSkillsAboveZero()) {
+            skillRank = selectedHero.getSkillRankOf(skillItemId);
+            totalExtra = selectedHero.getExtraSkillForVisualOf(skillItemId);
+            fillRow(skillItemId);
         }
     }
 
-    private void fillRow(SkillType skillType) {
-        table.add(createImageOf(skillType.name()));
-        var skillTitle = new Label(skillType.getTitle(), table.getSkin());
-        skillTitle.addListener(new StatTooltipListener(tooltip, skillType));
+    private void fillRow(SkillItemId skillItemId) {
+        table.add(createImageOf(skillItemId.name()));
+        var skillTitle = new Label(skillItemId.getTitle(), table.getSkin());
+        skillTitle.addListener(new StatTooltipListener(tooltip, skillItemId));
         table.add(skillTitle).padLeft(SECOND_COLUMN_PAD_LEFT);
         table.add(String.valueOf(skillRank));
         addToTable(totalExtra);

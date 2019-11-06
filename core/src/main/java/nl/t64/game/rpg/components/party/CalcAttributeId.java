@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 
 
 @AllArgsConstructor
-public enum CalcType implements SuperEnum {
+public enum CalcAttributeId implements SuperEnum {
 
     WEIGHT("Weight"),
 

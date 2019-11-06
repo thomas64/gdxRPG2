@@ -30,14 +30,14 @@ public class DescriptionCreator {
         for (InventoryMinimal minimal : InventoryMinimal.values()) {
             attributes.add(functionToExecute.apply(minimal, inventoryItem.getAttributeOfMinimal(minimal)));
         }
-        for (CalcType calcType : CalcType.values()) {
-            attributes.add(functionToExecute.apply(calcType, inventoryItem.getAttributeOfCalcType(calcType)));
+        for (CalcAttributeId calcAttributeId : CalcAttributeId.values()) {
+            attributes.add(functionToExecute.apply(calcAttributeId, inventoryItem.getAttributeOfCalcAttributeId(calcAttributeId)));
         }
-        for (StatType statType : StatType.values()) {
-            attributes.add(functionToExecute.apply(statType, inventoryItem.getAttributeOfStatType(statType)));
+        for (StatItemId statItemId : StatItemId.values()) {
+            attributes.add(functionToExecute.apply(statItemId, inventoryItem.getAttributeOfStatItemId(statItemId)));
         }
-        for (SkillType skillType : SkillType.values()) {
-            attributes.add(functionToExecute.apply(skillType, inventoryItem.getAttributeOfSkillType(skillType)));
+        for (SkillItemId skillItemId : SkillItemId.values()) {
+            attributes.add(functionToExecute.apply(skillItemId, inventoryItem.getAttributeOfSkillItemId(skillItemId)));
         }
         return createFilter(attributes);
     }
@@ -49,25 +49,25 @@ public class DescriptionCreator {
                 filtered.add(attribute);
                 return;
             }
-            if (attribute.value instanceof SkillType) {
+            if (attribute.value instanceof SkillItemId) {
                 filtered.add(attribute);
                 return;
             }
-            if (attribute.key.equals(StatType.DEXTERITY) && inventoryItem.group.equals(InventoryGroup.SHIELD)) {
+            if (attribute.key.equals(StatItemId.DEXTERITY) && inventoryItem.group.equals(InventoryGroup.SHIELD)) {
                 filtered.add(attribute);
                 return;
             }
-            if (attribute.key.equals(SkillType.STEALTH) && inventoryItem.group.equals(InventoryGroup.CHEST)) {
+            if (attribute.key.equals(SkillItemId.STEALTH) && inventoryItem.group.equals(InventoryGroup.CHEST)) {
                 filtered.add(attribute);
                 return;
             }
-            if (attribute.key.equals(CalcType.WEIGHT)
+            if (attribute.key.equals(CalcAttributeId.WEIGHT)
                     && (inventoryItem.group.equals(InventoryGroup.SHIELD)
                     || inventoryItem.group.equals(InventoryGroup.WEAPON)
                     || inventoryItem.group.equals(InventoryGroup.RESOURCE))) {
                 return;
             }
-            if (attribute.key.equals(CalcType.WEIGHT)) {
+            if (attribute.key.equals(CalcAttributeId.WEIGHT)) {
                 filtered.add(attribute);
                 return;
             }

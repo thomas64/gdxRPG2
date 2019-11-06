@@ -25,10 +25,10 @@ public enum InventoryMinimal implements SuperEnum {
     MIN_INTELLIGENCE("Min. Intelligence") {
         @Override
         Optional<String> createMessageIfHeroHasNotEnoughFor(InventoryItem item, HeroItem hero) {
-            if (hero.getStatRankOf(StatType.INTELLIGENCE) < item.minIntelligence) {
+            if (hero.getStatRankOf(StatItemId.INTELLIGENCE) < item.minIntelligence) {
                 return Optional.of(
                         String.format("%s needs %s %s%nto equip that %s.",
-                                      hero.name, item.minIntelligence, StatType.INTELLIGENCE.title, item.name));
+                                      hero.name, item.minIntelligence, StatItemId.INTELLIGENCE.title, item.name));
             }
             return Optional.empty();
         }
@@ -37,9 +37,9 @@ public enum InventoryMinimal implements SuperEnum {
     MIN_STRENGTH("Min. Strength") {
         @Override
         Optional<String> createMessageIfHeroHasNotEnoughFor(InventoryItem item, HeroItem hero) {
-            if (hero.getStatRankOf(StatType.STRENGTH) < item.minStrength) {
+            if (hero.getStatRankOf(StatItemId.STRENGTH) < item.minStrength) {
                 return Optional.of(String.format("%s needs %s %s%nto equip that %s.",
-                                                 hero.name, item.minStrength, StatType.STRENGTH.title, item.name));
+                                                 hero.name, item.minStrength, StatItemId.STRENGTH.title, item.name));
             }
             return Optional.empty();
         }

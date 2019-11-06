@@ -27,13 +27,13 @@ class StatContainer {
     private StatContainer(int lvl, int inl, int wil, int dex, int agi, int edu, int str, int sta) {
         this();
         this.level = new Level(lvl);
-        this.stats.put(StatType.INTELLIGENCE.name(), new Intelligence(inl));
-        this.stats.put(StatType.WILLPOWER.name(), new Willpower(wil));
-        this.stats.put(StatType.DEXTERITY.name(), new Dexterity(dex));
-        this.stats.put(StatType.AGILITY.name(), new Agility(agi));
-        this.stats.put(StatType.ENDURANCE.name(), new Endurance(edu));
-        this.stats.put(StatType.STRENGTH.name(), new Strength(str));
-        this.stats.put(StatType.STAMINA.name(), new Stamina(sta));
+        this.stats.put(StatItemId.INTELLIGENCE.name(), new Intelligence(inl));
+        this.stats.put(StatItemId.WILLPOWER.name(), new Willpower(wil));
+        this.stats.put(StatItemId.DEXTERITY.name(), new Dexterity(dex));
+        this.stats.put(StatItemId.AGILITY.name(), new Agility(agi));
+        this.stats.put(StatItemId.ENDURANCE.name(), new Endurance(edu));
+        this.stats.put(StatItemId.STRENGTH.name(), new Strength(str));
+        this.stats.put(StatItemId.STAMINA.name(), new Stamina(sta));
     }
 
     int getXpNeededForNextLevel() {
@@ -59,38 +59,38 @@ class StatContainer {
     Map<String, Integer> getAllHpStats() {
         return Map.of("lvlRank", level.rank,
                       "lvlVari", level.variable,
-                      "staRank", stats.get(StatType.STAMINA.name()).rank,
-                      "staVari", stats.get(StatType.STAMINA.name()).variable,
-                      "eduRank", stats.get(StatType.ENDURANCE.name()).rank,
-                      "eduVari", stats.get(StatType.ENDURANCE.name()).variable,
-                      "eduBon", stats.get(StatType.ENDURANCE.name()).bonus);
+                      "staRank", stats.get(StatItemId.STAMINA.name()).rank,
+                      "staVari", stats.get(StatItemId.STAMINA.name()).variable,
+                      "eduRank", stats.get(StatItemId.ENDURANCE.name()).rank,
+                      "eduVari", stats.get(StatItemId.ENDURANCE.name()).variable,
+                      "eduBon", stats.get(StatItemId.ENDURANCE.name()).bonus);
     }
 
     int getMaximumHp() {
         return level.rank
-                + stats.get(StatType.STAMINA.name()).rank
-                + stats.get(StatType.ENDURANCE.name()).rank
-                + stats.get(StatType.ENDURANCE.name()).bonus;
+                + stats.get(StatItemId.STAMINA.name()).rank
+                + stats.get(StatItemId.ENDURANCE.name()).rank
+                + stats.get(StatItemId.ENDURANCE.name()).bonus;
     }
 
     int getCurrentHp() {
         return level.variable
-                + stats.get(StatType.STAMINA.name()).variable
-                + stats.get(StatType.ENDURANCE.name()).variable
-                + stats.get(StatType.ENDURANCE.name()).bonus;
+                + stats.get(StatItemId.STAMINA.name()).variable
+                + stats.get(StatItemId.ENDURANCE.name()).variable
+                + stats.get(StatItemId.ENDURANCE.name()).bonus;
     }
 
-    int getRankOf(StatType statType) {
-        return stats.get(statType.name()).rank;
+    int getRankOf(StatItemId statItemId) {
+        return stats.get(statItemId.name()).rank;
     }
 
-    int getBonusStatOf(StatType statType) {
+    int getBonusStatOf(StatItemId statItemId) {
         // todo, wat te doen voor stamina? heeft wel negatieve bonus wanneer gebruikt door spells of tegenaanvallen?
-        return stats.get(statType.name()).bonus;
+        return stats.get(statItemId.name()).bonus;
     }
 
-    int getXpCostForNextLevelOf(StatType statType) {
-        return stats.get(statType.name()).getXpCostForNextLevel();
+    int getXpCostForNextLevelOf(StatItemId statItemId) {
+        return stats.get(statItemId.name()).getXpCostForNextLevel();
     }
 
 }

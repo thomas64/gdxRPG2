@@ -54,42 +54,42 @@ class EquipContainer {
         equipment.replace(inventoryGroup.name(), inventoryItem);
     }
 
-    int getStatValueOf(InventoryGroup inventoryGroup, StatType statType) {
-        return getInventoryItem(inventoryGroup).map(inventoryItem -> inventoryItem.getAttributeOfStatType(statType))
+    int getStatValueOf(InventoryGroup inventoryGroup, StatItemId statItemId) {
+        return getInventoryItem(inventoryGroup).map(inventoryItem -> inventoryItem.getAttributeOfStatItemId(statItemId))
                                                .orElse(0);
     }
 
-    int getSkillValueOf(InventoryGroup inventoryGroup, SkillType skillType) {
-        return getInventoryItem(inventoryGroup).map(inventoryItem -> inventoryItem.getAttributeOfSkillType(skillType))
+    int getSkillValueOf(InventoryGroup inventoryGroup, SkillItemId skillItemId) {
+        return getInventoryItem(inventoryGroup).map(inventoryItem -> inventoryItem.getAttributeOfSkillItemId(skillItemId))
                                                .orElse(0);
     }
 
-    int getCalcValueOf(InventoryGroup inventoryGroup, CalcType calcType) {
-        return getInventoryItem(inventoryGroup).map(inventoryItem -> inventoryItem.getAttributeOfCalcType(calcType))
+    int getCalcValueOf(InventoryGroup inventoryGroup, CalcAttributeId calcAttributeId) {
+        return getInventoryItem(inventoryGroup).map(inventoryItem -> inventoryItem.getAttributeOfCalcAttributeId(calcAttributeId))
                                                .orElse(0);
     }
 
-    int getSumOfStat(StatType statType) {
+    int getSumOfStat(StatItemId statItemId) {
         return equipment.values()
                         .stream()
                         .filter(Objects::nonNull)
-                        .mapToInt(inventoryItem -> inventoryItem.getAttributeOfStatType(statType))
+                        .mapToInt(inventoryItem -> inventoryItem.getAttributeOfStatItemId(statItemId))
                         .sum();
     }
 
-    int getSumOfSkill(SkillType skillType) {
+    int getSumOfSkill(SkillItemId skillItemId) {
         return equipment.values()
                         .stream()
                         .filter(Objects::nonNull)
-                        .mapToInt(inventoryItem -> inventoryItem.getAttributeOfSkillType(skillType))
+                        .mapToInt(inventoryItem -> inventoryItem.getAttributeOfSkillItemId(skillItemId))
                         .sum();
     }
 
-    int getSumOfCalc(CalcType calcType) {
+    int getSumOfCalc(CalcAttributeId calcAttributeId) {
         return equipment.values()
                         .stream()
                         .filter(Objects::nonNull)
-                        .mapToInt(inventoryItem -> inventoryItem.getAttributeOfCalcType(calcType))
+                        .mapToInt(inventoryItem -> inventoryItem.getAttributeOfCalcAttributeId(calcAttributeId))
                         .sum();
     }
 

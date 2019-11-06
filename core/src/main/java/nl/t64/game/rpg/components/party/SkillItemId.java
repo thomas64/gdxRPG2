@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 
 
 @AllArgsConstructor
-public enum SkillType implements SuperEnum {
+public enum SkillItemId implements SuperEnum {
 
     ALCHEMIST("Alchemist") {
         @Override
@@ -159,16 +159,16 @@ public enum SkillType implements SuperEnum {
         return title;
     }
 
-    String getNeededXpForNextLevel(SkillType skillType, HeroItem hero) {
-        String xpNeeded = String.valueOf(hero.getXpCostForNextLevelOf(skillType));
+    String getNeededXpForNextLevel(SkillItemId skillItemId, HeroItem hero) {
+        String xpNeeded = String.valueOf(hero.getXpCostForNextLevelOf(skillItemId));
         if (xpNeeded.equals("0")) {
             xpNeeded = "Max";
         }
         return "\n\nXP needed for next level: " + xpNeeded;
     }
 
-    String getNeededGoldForNextLevel(SkillType skillType, HeroItem hero) {
-        String goldNeeded = String.valueOf(hero.getGoldCostForNextLevelOf(skillType));
+    String getNeededGoldForNextLevel(SkillItemId skillItemId, HeroItem hero) {
+        String goldNeeded = String.valueOf(hero.getGoldCostForNextLevelOf(skillItemId));
         if (goldNeeded.equals("0")) {
             goldNeeded = "Max";
         }
