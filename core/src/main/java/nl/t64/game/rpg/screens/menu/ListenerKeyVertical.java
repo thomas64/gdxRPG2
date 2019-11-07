@@ -32,14 +32,8 @@ class ListenerKeyVertical extends InputListener {
             return false;
         }
         switch (keycode) {
-            case Input.Keys.UP:
-                inputUp();
-                break;
-            case Input.Keys.DOWN:
-                inputDown();
-                break;
-            default:
-                break;
+            case Input.Keys.UP -> inputUp();
+            case Input.Keys.DOWN -> inputDown();
         }
         return true;
     }

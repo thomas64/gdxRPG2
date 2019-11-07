@@ -53,51 +53,35 @@ public class InventoryItem {
     }
 
     Object getAttributeOfMinimal(InventoryMinimal minimal) {
-        switch (minimal) {
-            case SKILL:
-                return Objects.requireNonNullElse(skill, 0);
-            case MIN_INTELLIGENCE:
-                return minIntelligence;
-            case MIN_STRENGTH:
-                return minStrength;
-            default:
-                throw new IllegalArgumentException(String.format("InventoryMinimal '%s' not usable.", minimal));
-        }
+        return switch (minimal) {
+            case SKILL -> Objects.requireNonNullElse(skill, 0);
+            case MIN_INTELLIGENCE -> minIntelligence;
+            case MIN_STRENGTH -> minStrength;
+        };
     }
 
     int getAttributeOfStatItemId(StatItemId statItemId) {
-        switch (statItemId) {
-            case DEXTERITY:
-                return dexterity;
-            default:
-                return 0;
-        }
+        return switch (statItemId) {
+            case DEXTERITY -> dexterity;
+            default -> 0;
+        };
     }
 
     int getAttributeOfSkillItemId(SkillItemId skillItemId) {
-        switch (skillItemId) {
-            case STEALTH:
-                return stealth;
-            default:
-                return 0;
-        }
+        return switch (skillItemId) {
+            case STEALTH -> stealth;
+            default -> 0;
+        };
     }
 
     int getAttributeOfCalcAttributeId(CalcAttributeId calcAttributeId) {
-        switch (calcAttributeId) {
-            case WEIGHT:
-                return weight;
-            case BASE_HIT:
-                return baseHit;
-            case DAMAGE:
-                return damage;
-            case PROTECTION:
-                return protection;
-            case DEFENSE:
-                return defense;
-            default:
-                throw new IllegalArgumentException(String.format("CalcAttributeId '%s' not usable.", calcAttributeId));
-        }
+        return switch (calcAttributeId) {
+            case WEIGHT -> weight;
+            case BASE_HIT -> baseHit;
+            case DAMAGE -> damage;
+            case PROTECTION -> protection;
+            case DEFENSE -> defense;
+        };
     }
 
     public boolean hasSameIdAs(String candidateId) {

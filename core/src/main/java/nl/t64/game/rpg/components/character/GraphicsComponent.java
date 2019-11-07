@@ -62,22 +62,13 @@ abstract class GraphicsComponent implements Component {
     }
 
     private void setCurrentFrame(float frameTime) {
-        switch (direction) {
-            case NORTH:
-                currentFrame = walkNorthAnimation.getKeyFrame(frameTime);
-                break;
-            case SOUTH:
-                currentFrame = walkSouthAnimation.getKeyFrame(frameTime);
-                break;
-            case WEST:
-                currentFrame = walkWestAnimation.getKeyFrame(frameTime);
-                break;
-            case EAST:
-                currentFrame = walkEastAnimation.getKeyFrame(frameTime);
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Direction '%s' not usable.", direction));
-        }
+        currentFrame = switch (direction) {
+            case NORTH -> walkNorthAnimation.getKeyFrame(frameTime);
+            case SOUTH -> walkSouthAnimation.getKeyFrame(frameTime);
+            case WEST -> walkWestAnimation.getKeyFrame(frameTime);
+            case EAST -> walkEastAnimation.getKeyFrame(frameTime);
+            default -> throw new IllegalArgumentException(String.format("Direction '%s' not usable.", direction));
+        };
     }
 
     void loadWalkingAnimation(SpriteConfig spriteConfig) {

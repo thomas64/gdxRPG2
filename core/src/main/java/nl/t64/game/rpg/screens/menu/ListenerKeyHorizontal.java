@@ -26,14 +26,8 @@ class ListenerKeyHorizontal extends InputListener {
     @Override
     public boolean keyDown(InputEvent event, int keycode) {
         switch (keycode) {
-            case Input.Keys.LEFT:
-                inputLeft();
-                break;
-            case Input.Keys.RIGHT:
-                inputRight();
-                break;
-            default:
-                break;
+            case Input.Keys.LEFT -> inputLeft();
+            case Input.Keys.RIGHT -> inputRight();
         }
         return true;
     }

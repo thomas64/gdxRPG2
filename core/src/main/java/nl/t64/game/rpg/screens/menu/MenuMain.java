@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.ScreenType;
+import nl.t64.game.rpg.screens.ScreenManager;
 
 
 public class MenuMain extends MenuScreen {
@@ -69,25 +70,32 @@ public class MenuMain extends MenuScreen {
     private void selectMenuItem() {
         var screenManager = Utils.getScreenManager();
         switch (selectedIndex) {
-            case 0:
-                screenManager.setScreen(ScreenType.MENU_NEW);
-                break;
-            case 1:
-                var menuLoad = screenManager.getMenuScreen(ScreenType.MENU_LOAD);
-                menuLoad.setFromScreen(ScreenType.MENU_MAIN);
-                screenManager.setScreen(ScreenType.MENU_LOAD);
-                break;
-            case 2:
-                var menuSettings = screenManager.getMenuScreen(ScreenType.MENU_SETTINGS);
-                menuSettings.setFromScreen(ScreenType.MENU_MAIN);
-                screenManager.setScreen(ScreenType.MENU_SETTINGS);
-                break;
-            case 3:
-                Gdx.app.exit();
-                break;
-            default:
-                throw new IllegalArgumentException("SelectedIndex not found.");
+            case 0 -> processNewGameButton(screenManager);
+            case 1 -> processLoadGameButton(screenManager);
+            case 2 -> processSettingsButton(screenManager);
+            case 3 -> processExitButton();
+            default -> throw new IllegalArgumentException("SelectedIndex not found.");
         }
+    }
+
+    private void processNewGameButton(ScreenManager screenManager) {
+        screenManager.setScreen(ScreenType.MENU_NEW);
+    }
+
+    private void processLoadGameButton(ScreenManager screenManager) {
+        var menuLoad = screenManager.getMenuScreen(ScreenType.MENU_LOAD);
+        menuLoad.setFromScreen(ScreenType.MENU_MAIN);
+        screenManager.setScreen(ScreenType.MENU_LOAD);
+    }
+
+    private void processSettingsButton(ScreenManager screenManager) {
+        var menuSettings = screenManager.getMenuScreen(ScreenType.MENU_SETTINGS);
+        menuSettings.setFromScreen(ScreenType.MENU_MAIN);
+        screenManager.setScreen(ScreenType.MENU_SETTINGS);
+    }
+
+    private void processExitButton() {
+        Gdx.app.exit();
     }
 
     private void setAllTextButtonsToWhite() {

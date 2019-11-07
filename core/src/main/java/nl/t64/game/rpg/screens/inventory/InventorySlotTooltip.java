@@ -112,28 +112,18 @@ class InventorySlotTooltip extends BaseToolTip {
     }
 
     private Label.LabelStyle createLabelStyle(InventoryDescription attribute) {
-        switch (attribute.getCompare()) {
-            case SAME:
-            case MORE:
-                return new Label.LabelStyle(font, Color.WHITE);
-            case LESS:
-                return new Label.LabelStyle(font, Color.RED);
-            default:
-                throw new IllegalArgumentException(String.format("Attribute '%s' not usable.", attribute));
-        }
+        return switch (attribute.getCompare()) {
+            case SAME, MORE -> new Label.LabelStyle(font, Color.WHITE);
+            case LESS -> new Label.LabelStyle(font, Color.RED);
+        };
     }
 
     private Label.LabelStyle createDualLabelStyle(InventoryDescription attribute) {
-        switch (attribute.getCompare()) {
-            case SAME:
-                return new Label.LabelStyle(font, Color.WHITE);
-            case LESS:
-                return new Label.LabelStyle(font, ORANGE);
-            case MORE:
-                return new Label.LabelStyle(font, Color.LIME);
-            default:
-                throw new IllegalArgumentException(String.format("Attribute '%s' not usable.", attribute));
-        }
+        return switch (attribute.getCompare()) {
+            case SAME -> new Label.LabelStyle(font, Color.WHITE);
+            case LESS -> new Label.LabelStyle(font, ORANGE);
+            case MORE -> new Label.LabelStyle(font, Color.LIME);
+        };
     }
 
     private String getKey(InventoryDescription attribute) {

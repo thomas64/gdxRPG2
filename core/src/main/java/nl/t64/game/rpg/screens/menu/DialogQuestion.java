@@ -70,16 +70,19 @@ class DialogQuestion {
 
     private void selectMenuItem() {
         switch (selectedIndex) {
-            case 0:
-                dialog.hide();
-                yesFunction.run();
-                break;
-            case 1:
-                dialog.hide();
-                break;
-            default:
-                throw new IllegalArgumentException("SelectedIndex not found.");
+            case 0 -> processYesButton();
+            case 1 -> processNoButton();
+            default -> throw new IllegalArgumentException("SelectedIndex not found.");
         }
+    }
+
+    private void processYesButton() {
+        dialog.hide();
+        yesFunction.run();
+    }
+
+    private void processNoButton() {
+        dialog.hide();
     }
 
     private void setAllTextButtonsToBlack() {

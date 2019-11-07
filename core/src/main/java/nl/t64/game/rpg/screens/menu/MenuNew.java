@@ -96,14 +96,9 @@ public class MenuNew extends MenuScreen {
 
     private void selectMenuItem() {
         switch (selectedIndex) {
-            case 0:
-                processStartButton();
-                break;
-            case 1:
-                Utils.getScreenManager().setScreen(ScreenType.MENU_MAIN);
-                break;
-            default:
-                throw new IllegalArgumentException("SelectedIndex not found.");
+            case 0 -> processStartButton();
+            case 1 -> processBackButton();
+            default -> throw new IllegalArgumentException("SelectedIndex not found.");
         }
     }
 
@@ -115,6 +110,10 @@ public class MenuNew extends MenuScreen {
         } else {
             createNewGame();
         }
+    }
+
+    private void processBackButton() {
+        Utils.getScreenManager().setScreen(ScreenType.MENU_MAIN);
     }
 
     private void createNewGame() {

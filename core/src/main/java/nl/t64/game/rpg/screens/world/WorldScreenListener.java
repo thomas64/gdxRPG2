@@ -21,17 +21,9 @@ class WorldScreenListener implements InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         switch (keycode) {
-            case Input.Keys.ESCAPE:
-                openMenuFunction.run();
-                break;
-            case Input.Keys.I:
-                openInventoryFunction.run();
-                break;
-            case Input.Keys.P:
-                showHidePartyWindowFunction.run();
-                break;
-            default:
-                break;
+            case Input.Keys.ESCAPE -> openMenuFunction.run();
+            case Input.Keys.I -> openInventoryFunction.run();
+            case Input.Keys.P -> showHidePartyWindowFunction.run();
         }
         return false;
     }

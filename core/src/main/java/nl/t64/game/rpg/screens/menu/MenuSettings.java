@@ -67,14 +67,9 @@ public class MenuSettings extends MenuScreen {
 
     private void selectMenuItem() {
         switch (selectedIndex) {
-            case 0:
-                processFullscreenButton();
-                break;
-            case 1:
-                processBackButton();
-                break;
-            default:
-                throw new IllegalArgumentException("SelectedIndex not found.");
+            case 0 -> processFullscreenButton();
+            case 1 -> processBackButton();
+            default -> throw new IllegalArgumentException("SelectedIndex not found.");
         }
     }
 

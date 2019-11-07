@@ -44,40 +44,22 @@ abstract class PhysicsComponent implements Component {
         oldPosition.y = Math.round(currentPosition.cpy().y);
 
         switch (direction) {
-            case NORTH:
-                currentPosition.y += velocity * dt;
-                break;
-            case SOUTH:
-                currentPosition.y -= velocity * dt;
-                break;
-            case WEST:
-                currentPosition.x -= velocity * dt;
-                break;
-            case EAST:
-                currentPosition.x += velocity * dt;
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Direction '%s' not usable.", direction));
+            case NORTH -> currentPosition.y += velocity * dt;
+            case SOUTH -> currentPosition.y -= velocity * dt;
+            case WEST -> currentPosition.x -= velocity * dt;
+            case EAST -> currentPosition.x += velocity * dt;
+            default -> throw new IllegalArgumentException(String.format("Direction '%s' not usable.", direction));
         }
         setRoundPosition();
     }
 
     void moveBack() {
         switch (direction) {
-            case NORTH:
-                currentPosition.y -= 1;
-                break;
-            case SOUTH:
-                currentPosition.y += 1;
-                break;
-            case WEST:
-                currentPosition.x += 1;
-                break;
-            case EAST:
-                currentPosition.x -= 1;
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Direction '%s' not usable.", direction));
+            case NORTH -> currentPosition.y -= 1;
+            case SOUTH -> currentPosition.y += 1;
+            case WEST -> currentPosition.x += 1;
+            case EAST -> currentPosition.x -= 1;
+            default -> throw new IllegalArgumentException(String.format("Direction '%s' not usable.", direction));
         }
         setRoundPosition();
     }

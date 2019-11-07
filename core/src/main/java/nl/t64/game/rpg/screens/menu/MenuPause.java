@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.ScreenType;
+import nl.t64.game.rpg.screens.ScreenManager;
 
 
 public class MenuPause extends MenuScreen {
@@ -70,27 +71,34 @@ public class MenuPause extends MenuScreen {
     private void selectMenuItem() {
         var screenManager = Utils.getScreenManager();
         switch (selectedIndex) {
-            case 0:
-                Utils.getScreenManager().setScreen(ScreenType.WORLD);
-                break;
-            case 1:
-                var menuLoad = screenManager.getMenuScreen(ScreenType.MENU_LOAD);
-                menuLoad.setFromScreen(ScreenType.MENU_PAUSE);
-                menuLoad.setBackground(screenshot);
-                screenManager.setScreen(ScreenType.MENU_LOAD);
-                break;
-            case 2:
-                var menuSettings = screenManager.getMenuScreen(ScreenType.MENU_SETTINGS);
-                menuSettings.setFromScreen(ScreenType.MENU_PAUSE);
-                menuSettings.setBackground(screenshot);
-                screenManager.setScreen(ScreenType.MENU_SETTINGS);
-                break;
-            case 3:
-                progressLostDialog.show(stage);
-                break;
-            default:
-                throw new IllegalArgumentException("SelectedIndex not found.");
+            case 0 -> processContinueButton(screenManager);
+            case 1 -> processLoadGameButton(screenManager);
+            case 2 -> processSettingsButton(screenManager);
+            case 3 -> processMainMenuButton();
+            default -> throw new IllegalArgumentException("SelectedIndex not found.");
         }
+    }
+
+    private void processContinueButton(ScreenManager screenManager) {
+        screenManager.setScreen(ScreenType.WORLD);
+    }
+
+    private void processLoadGameButton(ScreenManager screenManager) {
+        var menuLoad = screenManager.getMenuScreen(ScreenType.MENU_LOAD);
+        menuLoad.setFromScreen(ScreenType.MENU_PAUSE);
+        menuLoad.setBackground(screenshot);
+        screenManager.setScreen(ScreenType.MENU_LOAD);
+    }
+
+    private void processSettingsButton(ScreenManager screenManager) {
+        var menuSettings = screenManager.getMenuScreen(ScreenType.MENU_SETTINGS);
+        menuSettings.setFromScreen(ScreenType.MENU_PAUSE);
+        menuSettings.setBackground(screenshot);
+        screenManager.setScreen(ScreenType.MENU_SETTINGS);
+    }
+
+    private void processMainMenuButton() {
+        progressLostDialog.show(stage);
     }
 
     private void openMenuMain() {

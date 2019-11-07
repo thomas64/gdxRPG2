@@ -124,17 +124,10 @@ public class MenuLoad extends MenuScreen {
 
     private void selectMenuItem() {
         switch (selectedMenuIndex) {
-            case 0:
-                processLoadButton();
-                break;
-            case 1:
-                processDeleteButton();
-                break;
-            case 2:
-                processBackButton();
-                break;
-            default:
-                throw new IllegalArgumentException("SelectedIndex not found.");
+            case 0 -> processLoadButton();
+            case 1 -> processDeleteButton();
+            case 2 -> processBackButton();
+            default -> throw new IllegalArgumentException("SelectedIndex not found.");
         }
     }
 

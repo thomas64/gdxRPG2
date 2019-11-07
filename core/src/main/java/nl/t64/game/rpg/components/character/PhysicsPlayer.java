@@ -274,31 +274,38 @@ public class PhysicsPlayer extends PhysicsComponent {
     private Rectangle getCheckRect() {
         Rectangle checkRect = new Rectangle(boundingBox);
         switch (direction) {
-            case NORTH:
-                checkRect.setWidth(boundingBox.width / 4);
-                checkRect.setHeight(boundingBox.height * 2);
-                checkRect.setX(boundingBox.x + (boundingBox.width / 2) - (boundingBox.width / 8));
-                checkRect.setY(boundingBox.y + (Constant.TILE_SIZE / 2f));
-                break;
-            case SOUTH:
-                checkRect.setWidth(boundingBox.width / 4);
-                checkRect.setX(boundingBox.x + (boundingBox.width / 2) - (boundingBox.width / 8));
-                checkRect.setY(boundingBox.y - (Constant.TILE_SIZE / 2f));
-                break;
-            case WEST:
-                checkRect.setHeight(boundingBox.height / 4);
-                checkRect.setY(boundingBox.y + (boundingBox.height / 2) - (boundingBox.height / 8));
-                checkRect.setX(boundingBox.x - (Constant.TILE_SIZE / 2f));
-                break;
-            case EAST:
-                checkRect.setHeight(boundingBox.height / 4);
-                checkRect.setY(boundingBox.y + (boundingBox.height / 2) - (boundingBox.height / 8));
-                checkRect.setX(boundingBox.x + (Constant.TILE_SIZE / 2f));
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Direction '%s' not usable.", direction));
+            case NORTH -> setNorth(checkRect);
+            case SOUTH -> setSouth(checkRect);
+            case WEST -> setWest(checkRect);
+            case EAST -> setEast(checkRect);
+            default -> throw new IllegalArgumentException(String.format("Direction '%s' not usable.", direction));
         }
         return checkRect;
+    }
+
+    private void setNorth(Rectangle checkRect) {
+        checkRect.setWidth(boundingBox.width / 4);
+        checkRect.setHeight(boundingBox.height * 2);
+        checkRect.setX(boundingBox.x + (boundingBox.width / 2) - (boundingBox.width / 8));
+        checkRect.setY(boundingBox.y + (Constant.TILE_SIZE / 2f));
+    }
+
+    private void setSouth(Rectangle checkRect) {
+        checkRect.setWidth(boundingBox.width / 4);
+        checkRect.setX(boundingBox.x + (boundingBox.width / 2) - (boundingBox.width / 8));
+        checkRect.setY(boundingBox.y - (Constant.TILE_SIZE / 2f));
+    }
+
+    private void setWest(Rectangle checkRect) {
+        checkRect.setHeight(boundingBox.height / 4);
+        checkRect.setY(boundingBox.y + (boundingBox.height / 2) - (boundingBox.height / 8));
+        checkRect.setX(boundingBox.x - (Constant.TILE_SIZE / 2f));
+    }
+
+    private void setEast(Rectangle checkRect) {
+        checkRect.setHeight(boundingBox.height / 4);
+        checkRect.setY(boundingBox.y + (boundingBox.height / 2) - (boundingBox.height / 8));
+        checkRect.setX(boundingBox.x + (Constant.TILE_SIZE / 2f));
     }
 
     @Override

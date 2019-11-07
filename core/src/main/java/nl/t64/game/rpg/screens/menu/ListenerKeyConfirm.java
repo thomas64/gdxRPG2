@@ -22,14 +22,8 @@ class ListenerKeyConfirm extends InputListener {
     @Override
     public boolean keyDown(InputEvent event, int keycode) {
         switch (keycode) {
-            case Input.Keys.ENTER:
-                inputEnter();
-                break;
-            case Input.Keys.ESCAPE:
-                inputEscape();
-                break;
-            default:
-                break;
+            case Input.Keys.ENTER -> inputEnter();
+            case Input.Keys.ESCAPE -> inputEscape();
         }
         return true;
     }
