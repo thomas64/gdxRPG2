@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 
 class ListenerKeyInputField extends InputListener {
 
-    private static final String VALID_CHARACTERS = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String VALID_CHARACTERS = "^[0-9a-zA-Z]*$";
 
     private final Consumer<StringBuilder> updateInputFunction;
     private final int maxSizeOfInput;
@@ -27,22 +27,19 @@ class ListenerKeyInputField extends InputListener {
 
     @Override
     public boolean keyTyped(InputEvent event, char character) {
-        for (char c : VALID_CHARACTERS.toCharArray()) {
-            if (character == c) {
-                if (inputField.length() < maxSizeOfInput) {
-                    inputField.insert(inputField.length() - 1, Character.toLowerCase(character));
-                    updateInputFunction.accept(inputField);
-                }
-                break;
-            }
+        final String inputCharacter = String.valueOf(character);
+        if (inputCharacter.matches(VALID_CHARACTERS)
+                && inputField.length() < maxSizeOfInput) {
+            inputField.insert(inputField.length() - 1, inputCharacter.toLowerCase());
+            updateInputFunction.accept(inputField);
         }
         return true;
     }
 
     @Override
     public boolean keyDown(InputEvent event, int keycode) {
-        if (keycode == Input.Keys.BACKSPACE &&
-                inputField.length() - 1 > 0) {
+        if (keycode == Input.Keys.BACKSPACE
+                && inputField.length() - 1 > 0) {
             inputField.deleteCharAt(inputField.length() - 2);
             updateInputFunction.accept(inputField);
         }
