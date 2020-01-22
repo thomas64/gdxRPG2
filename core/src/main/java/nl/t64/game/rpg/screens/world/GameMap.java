@@ -6,7 +6,6 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.Utils;
@@ -31,9 +30,11 @@ class GameMap {
     private static final String PORTAL_LAYER = "portal_layer";
     private static final String WARP_LAYER = "warp_layer";
 
+    private static final String WIDTH_PROPERTY = "width";
+    private static final String HEIGHT_PROPERTY = "height";
+
     final String mapTitle;
     final TiledMap tiledMap;
-    private final TiledMapTileLayer bottomLayer;
 
     Vector2 playerSpawnLocation;
     Direction playerSpawnDirection;
@@ -50,8 +51,7 @@ class GameMap {
     GameMap(String mapTitle) {
         this.mapTitle = mapTitle;
         this.tiledMap = Utils.getResourceManager().getMapAsset(MAP_PATH + mapTitle + MAPFILE_SUFFIX);
-        this.bottomLayer = (TiledMapTileLayer) this.tiledMap.getLayers().get(0);
-        this.playerSpawnLocation = new Vector2(0, 0);
+        this.playerSpawnLocation = new Vector2(0f, 0f);
 
         loadNpcs();
         loadHeroes();
@@ -72,6 +72,12 @@ class GameMap {
 
     boolean areBlockersCurrentlyBlocking(Rectangle characterRect) {
         return blockers.stream().anyMatch(characterRect::overlaps);
+    }
+
+    boolean areBlockersCurrentlyBlocking(Vector2 point) {
+        return blockers.stream()
+                       .anyMatch(blocker -> blocker.contains(point.x * (Constant.TILE_SIZE / 2f) + 1f,
+                                                             point.y * (Constant.TILE_SIZE / 2f) + 1f));
     }
 
     boolean areSavePointsBeingCheckedBy(Rectangle checkRect) {
@@ -115,12 +121,25 @@ class GameMap {
         }
     }
 
+    boolean isOutsideMap(Vector2 point) {
+        return point.x < 0 || point.x >= getWidth()
+                || point.y < 0 || point.y >= getHeight();
+    }
+
     float getPixelWidth() {
-        return bottomLayer.getWidth() * Constant.TILE_SIZE / 2f;
+        return getWidth() * (Constant.TILE_SIZE / 2f);
     }
 
     float getPixelHeight() {
-        return bottomLayer.getHeight() * Constant.TILE_SIZE / 2f;
+        return getHeight() * (Constant.TILE_SIZE / 2f);
+    }
+
+    int getWidth() {
+        return (int) tiledMap.getProperties().get(WIDTH_PROPERTY);
+    }
+
+    int getHeight() {
+        return (int) tiledMap.getProperties().get(HEIGHT_PROPERTY);
     }
 
     private void loadNpcs() {

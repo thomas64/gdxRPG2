@@ -30,6 +30,9 @@ import java.util.List;
 
 public class WorldScreen implements Screen, MapObserver {
 
+    private static final int[] UNDER_LAYERS = new int[]{0, 1, 2, 3, 4, 5};
+    private static final int[] OVER_LAYERS = new int[]{6, 7, 8};
+
     private static boolean showGrid = false;
     private static boolean showObjects = false;
     private static boolean showDebug = false;
@@ -118,11 +121,9 @@ public class WorldScreen implements Screen, MapObserver {
     }
 
     private void renderMapLayers() {
-        int[] underLayers = {0, 1, 2, 3, 4, 5};
-        mapRenderer.render(underLayers);
+        mapRenderer.render(UNDER_LAYERS);
         renderCharacters();
-        int[] overLayers = {6, 7, 8};
-        mapRenderer.render(overLayers);
+        mapRenderer.render(OVER_LAYERS);
     }
 
     private void renderCharacters() {

@@ -278,7 +278,7 @@ public class PhysicsPlayer extends PhysicsComponent {
             case SOUTH -> setSouth(checkRect);
             case WEST -> setWest(checkRect);
             case EAST -> setEast(checkRect);
-            default -> throw new IllegalArgumentException(String.format("Direction '%s' not usable.", direction));
+            case NONE -> throw new IllegalArgumentException("Direction 'NONE' is not usable.");
         }
         return checkRect;
     }

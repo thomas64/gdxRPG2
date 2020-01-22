@@ -36,7 +36,7 @@ public class PartyContainer {
     }
 
     public void removeHero(String heroId) {
-        if (heroId.equals(Constant.PLAYER_ID)) {
+        if (isPlayer(heroId)) {
             throw new IllegalArgumentException("Cannot remove player from party.");
         }
         party.remove(heroId);
@@ -71,6 +71,10 @@ public class PartyContainer {
 
     private int getLastIndex() {
         return getSize() - 1;
+    }
+
+    private boolean isPlayer(String heroId) {
+        return heroId.equals(Constant.PLAYER_ID);
     }
 
 }

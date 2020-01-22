@@ -49,10 +49,6 @@ public class MenuNew extends MenuScreen {
     private StringBuilder profileName;
     private int selectedIndex;
 
-    public MenuNew() {
-        super();
-    }
-
     @Override
     void setupScreen() {
         Utils.getProfileManager().loadAllProfiles();

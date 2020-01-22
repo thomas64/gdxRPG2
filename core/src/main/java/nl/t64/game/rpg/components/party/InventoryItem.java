@@ -63,14 +63,16 @@ public class InventoryItem {
     int getAttributeOfStatItemId(StatItemId statItemId) {
         return switch (statItemId) {
             case DEXTERITY -> dexterity;
-            default -> 0;
+            case INTELLIGENCE, WILLPOWER, AGILITY, ENDURANCE, STRENGTH, STAMINA -> 0;
         };
     }
 
     int getAttributeOfSkillItemId(SkillItemId skillItemId) {
         return switch (skillItemId) {
             case STEALTH -> stealth;
-            default -> 0;
+            case ALCHEMIST, DIPLOMAT, HEALER, LOREMASTER, MECHANIC, MERCHANT, RANGER,
+                    THIEF, TROUBADOUR, WARRIOR, WIZARD,
+                    HAFTED, MISSILE, POLE, SHIELD, SWORD, THROWN -> 0;
         };
     }
 

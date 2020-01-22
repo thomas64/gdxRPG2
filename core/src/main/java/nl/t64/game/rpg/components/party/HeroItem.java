@@ -2,6 +2,7 @@ package nl.t64.game.rpg.components.party;
 
 import lombok.Getter;
 import lombok.Setter;
+import nl.t64.game.rpg.constants.Constant;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,10 @@ public class HeroItem {
     private SkillContainer skills;
     private SpellContainer spells;
     private EquipContainer inventory;
+
+    public boolean isPlayer() {
+        return id.equals(Constant.PLAYER_ID);
+    }
 
     public boolean equalsHero(HeroItem otherHero) {
         return id.equals(otherHero.id);

@@ -38,7 +38,6 @@ public class MenuPause extends MenuScreen {
     private int selectedIndex;
 
     public MenuPause() {
-        super();
         this.selectedIndex = 0;
     }
 

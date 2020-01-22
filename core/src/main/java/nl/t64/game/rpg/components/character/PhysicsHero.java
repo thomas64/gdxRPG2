@@ -14,7 +14,6 @@ public class PhysicsHero extends PhysicsNpc {
     private boolean isSelected;
 
     public PhysicsHero(String heroId) {
-        super();
         this.heroId = heroId;
         this.isSelected = false;
     }

@@ -31,7 +31,7 @@ class Camera extends OrthographicCamera {
     }
 
     private void focusCameraOn(Vector2 playerPosition) {
-        position.set(playerPosition, 0);
+        position.set(playerPosition, 0f);
     }
 
     private void setCameraOnMapEdge() {
@@ -42,17 +42,17 @@ class Camera extends OrthographicCamera {
     }
 
     private float getHorizontalSpaceBetweenCameraAndMapEdge() {
-        float hSpace = 0;
+        float hSpace = 0f;
         if (mapWidth < getZoomedCameraWidth()) {
-            hSpace = (getZoomedCameraWidth() - mapWidth) / 2;
+            hSpace = (getZoomedCameraWidth() - mapWidth) / 2f;
         }
         return hSpace;
     }
 
     private float getVerticalSpaceBetweenCameraAndMapEdge() {
-        float vSpace = 0;
+        float vSpace = 0f;
         if (mapHeight < getZoomedCameraHeight()) {
-            vSpace = (getZoomedCameraHeight() - mapHeight) / 2;
+            vSpace = (getZoomedCameraHeight() - mapHeight) / 2f;
         }
         return vSpace;
     }

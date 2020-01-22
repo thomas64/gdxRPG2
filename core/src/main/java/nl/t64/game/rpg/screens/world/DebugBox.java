@@ -96,9 +96,9 @@ class DebugBox {
         table.row();
         table.add("").row();
 
-//        table.add("direction:");
-//        table.add(player.getPhysicsComponent().getDirection());
-//        table.row();
+        table.add("direction:");
+        table.add(String.valueOf(player.getDirection()));
+        table.row();
         table.add("state:");
         table.add(String.valueOf(player.getState()));
         table.row();

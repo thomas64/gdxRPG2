@@ -48,7 +48,7 @@ abstract class PhysicsComponent implements Component {
             case SOUTH -> currentPosition.y -= velocity * dt;
             case WEST -> currentPosition.x -= velocity * dt;
             case EAST -> currentPosition.x += velocity * dt;
-            default -> throw new IllegalArgumentException(String.format("Direction '%s' not usable.", direction));
+            case NONE -> throw new IllegalArgumentException("Direction 'NONE' is not usable.");
         }
         setRoundPosition();
     }
@@ -59,7 +59,7 @@ abstract class PhysicsComponent implements Component {
             case SOUTH -> currentPosition.y += 1;
             case WEST -> currentPosition.x += 1;
             case EAST -> currentPosition.x -= 1;
-            default -> throw new IllegalArgumentException(String.format("Direction '%s' not usable.", direction));
+            case NONE -> throw new IllegalArgumentException("Direction 'NONE' is not usable.");
         }
         setRoundPosition();
     }

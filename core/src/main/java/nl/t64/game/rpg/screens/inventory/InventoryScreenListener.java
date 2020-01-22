@@ -16,16 +16,10 @@ class InventoryScreenListener extends InputListener {
     @Override
     public boolean keyDown(InputEvent event, int keycode) {
         switch (keycode) {
-            case Input.Keys.I:
-            case Input.Keys.ESCAPE:
-                closeScreenFunction.run();
-                break;
-            case Input.Keys.SHIFT_LEFT:
-            case Input.Keys.SHIFT_RIGHT:
-                InventoryUtils.setShiftPressed(true);
-                break;
-            default:
-                break;
+            case Input.Keys.I,
+                    Input.Keys.ESCAPE -> closeScreenFunction.run();
+            case Input.Keys.SHIFT_LEFT,
+                    Input.Keys.SHIFT_RIGHT -> InventoryUtils.setShiftPressed(true);
         }
         return true;
     }

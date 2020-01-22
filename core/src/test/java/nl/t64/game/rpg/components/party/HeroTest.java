@@ -1166,6 +1166,7 @@ class HeroTest extends GameTest {
         assertThat(mozes.getName()).isEqualTo("Mozes");
         assertThat(mozes.getSchool()).isEqualTo(SchoolType.UNKNOWN);
         assertThat(mozes.equalsHero(mozes)).isTrue();
+        assertThat(mozes.isPlayer()).isTrue();
         assertThat(mozes.getXpDeltaBetweenLevels()).isEqualTo(20);
         assertThat(mozes.getXpToInvest()).isEqualTo(0);
         assertThat(mozes.getStatById(StatItemId.INTELLIGENCE).getXpCostForNextLevel()).isEqualTo(43);

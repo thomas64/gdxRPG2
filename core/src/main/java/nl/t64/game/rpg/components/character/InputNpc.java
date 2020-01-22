@@ -54,18 +54,13 @@ public class InputNpc extends InputComponent {
         stateTime = MathUtils.random(1.0f, 2.0f);
 
         switch (state) {
-            case WALKING:
-                state = CharacterState.IDLE;
-                break;
-            case IDLE:
+            case WALKING -> state = CharacterState.IDLE;
+            case IDLE -> {
                 state = CharacterState.WALKING;
                 direction = Direction.getRandom();
-                break;
-            case IMMOBILE:
-                direction = originalDirection;
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("CharacterState '%s' not usable.", state));
+            }
+            case IMMOBILE -> direction = originalDirection;
+            case ALIGNING -> throw new IllegalArgumentException("CharacterState 'ALIGNING' is not usable.");
         }
     }
 

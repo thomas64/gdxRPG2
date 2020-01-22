@@ -32,7 +32,6 @@ public class MenuSettings extends MenuScreen {
     private int selectedIndex;
 
     public MenuSettings() {
-        super();
         this.selectedIndex = 1;
     }
 

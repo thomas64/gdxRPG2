@@ -67,7 +67,7 @@ abstract class GraphicsComponent implements Component {
             case SOUTH -> walkSouthAnimation.getKeyFrame(frameTime);
             case WEST -> walkWestAnimation.getKeyFrame(frameTime);
             case EAST -> walkEastAnimation.getKeyFrame(frameTime);
-            default -> throw new IllegalArgumentException(String.format("Direction '%s' not usable.", direction));
+            case NONE -> throw new IllegalArgumentException("Direction 'NONE' is not usable.");
         };
     }
 

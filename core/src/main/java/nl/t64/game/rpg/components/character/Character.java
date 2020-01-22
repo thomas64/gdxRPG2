@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.constants.CharacterState;
+import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.events.Event;
 
 import java.util.List;
@@ -58,8 +60,17 @@ public class Character {
         return physicsComponent.boundingBox;
     }
 
+    public Vector2 getPositionInGrid() {
+        return new Vector2((getPosition().x + (Constant.TILE_SIZE / 2f)) / (Constant.TILE_SIZE / 2f),
+                           (getPosition().y + (Constant.TILE_SIZE / 4f)) / (Constant.TILE_SIZE / 2f));
+    }
+
     public Vector2 getPosition() {
         return physicsComponent.currentPosition;
+    }
+
+    public Direction getDirection() {
+        return physicsComponent.direction;
     }
 
     public CharacterState getState() {

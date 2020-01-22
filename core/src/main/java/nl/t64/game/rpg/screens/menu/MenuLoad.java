@@ -38,7 +38,7 @@ public class MenuLoad extends MenuScreen {
     private Array<String> profiles;
 
     private Table topTable;
-    private List listItems;
+    private List<String> listItems;
     private ScrollPane scrollPane;
     private Table bottomTable;
     private TextButton loadButton;
@@ -54,10 +54,6 @@ public class MenuLoad extends MenuScreen {
     private int selectedMenuIndex;
 
     private boolean isMouseScrolled = false;
-
-    public MenuLoad() {
-        super();
-    }
 
     @Override
     void setFromScreen(ScreenType screenType) {
@@ -208,7 +204,7 @@ public class MenuLoad extends MenuScreen {
         deleteButton = new TextButton(MENU_ITEM_DELETE, new TextButton.TextButtonStyle(buttonStyle));
         backButton = new TextButton(MENU_ITEM_BACK, new TextButton.TextButtonStyle(buttonStyle));
 
-        listItems = new List(listStyle);
+        listItems = new List<>(listStyle);
         listItems.setItems(profiles);
         scrollPane = new ScrollPane(listItems);
         scrollPane.setOverscroll(false, false);

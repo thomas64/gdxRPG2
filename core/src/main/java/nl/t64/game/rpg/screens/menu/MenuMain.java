@@ -39,7 +39,6 @@ public class MenuMain extends MenuScreen {
     private int selectedIndex;
 
     public MenuMain() {
-        super();
         this.selectedIndex = 0;
     }
 

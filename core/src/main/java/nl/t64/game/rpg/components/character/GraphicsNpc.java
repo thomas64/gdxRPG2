@@ -49,7 +49,6 @@ public class GraphicsNpc extends GraphicsComponent {
         if (event instanceof DeselectEvent) {
             isSelected = false;
         }
-
     }
 
     @Override
