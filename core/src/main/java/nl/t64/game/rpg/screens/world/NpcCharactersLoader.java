@@ -3,11 +3,10 @@ package nl.t64.game.rpg.screens.world;
 import nl.t64.game.rpg.components.character.Character;
 import nl.t64.game.rpg.components.character.*;
 import nl.t64.game.rpg.constants.CharacterState;
-import nl.t64.game.rpg.events.character.StartDirectionEvent;
-import nl.t64.game.rpg.events.character.StartPositionEvent;
-import nl.t64.game.rpg.events.character.StartStateEvent;
+import nl.t64.game.rpg.events.character.LoadNpcEvent;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -24,7 +23,7 @@ class NpcCharactersLoader {
     List<Character> createNpcs() {
         loadNpcs();
         loadHeroes();
-        return npcCharacters;
+        return Collections.unmodifiableList(npcCharacters);
     }
 
     private void loadNpcs() {
@@ -45,9 +44,9 @@ class NpcCharactersLoader {
 
     private void loadNpcCharacter(GameMapNpc gameMapNpc, Character npcCharacter) {
         npcCharacters.add(npcCharacter);
-        npcCharacter.send(new StartStateEvent(gameMapNpc.state));
-        npcCharacter.send(new StartDirectionEvent(gameMapNpc.direction));
-        npcCharacter.send(new StartPositionEvent(gameMapNpc.getPosition()));
+        npcCharacter.send(new LoadNpcEvent(gameMapNpc.state,
+                                           gameMapNpc.direction,
+                                           gameMapNpc.getPosition()));
         if (gameMapNpc.state.equals(CharacterState.IMMOBILE)) {
             currentMap.addToBlockers(npcCharacter.getBoundingBox());
         }

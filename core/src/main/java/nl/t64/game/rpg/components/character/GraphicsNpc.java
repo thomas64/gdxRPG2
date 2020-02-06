@@ -28,14 +28,13 @@ public class GraphicsNpc extends GraphicsComponent {
 
     @Override
     public void receive(Event event) {
-        if (event instanceof StartStateEvent) {
-            state = ((StartStateEvent) event).state;
+        if (event instanceof LoadNpcEvent) {
+            LoadNpcEvent loadEvent = (LoadNpcEvent) event;
+            state = loadEvent.state;
+            direction = loadEvent.direction;
         }
         if (event instanceof StateEvent) {
             state = ((StateEvent) event).state;
-        }
-        if (event instanceof StartDirectionEvent) {
-            direction = ((StartDirectionEvent) event).direction;
         }
         if (event instanceof DirectionEvent) {
             direction = ((DirectionEvent) event).direction;

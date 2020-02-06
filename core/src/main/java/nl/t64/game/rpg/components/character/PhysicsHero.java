@@ -44,11 +44,10 @@ public class PhysicsHero extends PhysicsNpc {
             // Visual warning message.
             super.update(heroCharacter, dt);
         } else {
+            isSelected = false;
             heroes.removeHero(heroId);
             party.addHero(hero);
-            isSelected = false;
-            Utils.getScreenManager().getWorldScreen().removeNpcCharacter(heroCharacter);
-            Utils.getMapManager().removeFromBlockers(heroCharacter.getBoundingBox());
+            Utils.getScreenManager().getWorldScreen().updateAfterPartySwap(heroCharacter);
         }
     }
 

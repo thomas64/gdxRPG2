@@ -71,6 +71,22 @@ abstract class GraphicsComponent implements Component {
         };
     }
 
+    void setFrameDuration(float moveSpeed) {
+        if (moveSpeed == Constant.MOVE_SPEED_1) {
+            frameDuration = Constant.SLOW_FRAMES;
+        } else if (moveSpeed == Constant.MOVE_SPEED_2) {
+            frameDuration = Constant.NORMAL_FRAMES;
+        } else if (moveSpeed == Constant.MOVE_SPEED_3) {
+            frameDuration = Constant.FAST_FRAMES;
+        } else if (moveSpeed == Constant.MOVE_SPEED_4) {
+            frameDuration = Constant.NO_FRAMES;
+        }
+        walkNorthAnimation.setFrameDuration(frameDuration);
+        walkSouthAnimation.setFrameDuration(frameDuration);
+        walkWestAnimation.setFrameDuration(frameDuration);
+        walkEastAnimation.setFrameDuration(frameDuration);
+    }
+
     void loadWalkingAnimation(SpriteConfig spriteConfig) {
         String path = spriteConfig.getCharPath();
         int row = spriteConfig.getRow() - 1;

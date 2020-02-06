@@ -32,8 +32,6 @@ public class InputPlayer extends InputComponent implements InputProcessor {
     private boolean pressShift;
     private boolean pressAction;
 
-    private Direction direction;
-
     public InputPlayer(InputMultiplexer multiplexer) {
         this.reset();
         multiplexer.addProcessor(this);
@@ -41,8 +39,8 @@ public class InputPlayer extends InputComponent implements InputProcessor {
 
     @Override
     public void receive(Event event) {
-        if (event instanceof StartDirectionEvent) {
-            direction = ((StartDirectionEvent) event).direction;
+        if (event instanceof LoadPlayerEvent) {
+            direction = ((LoadPlayerEvent) event).direction;
         }
     }
 

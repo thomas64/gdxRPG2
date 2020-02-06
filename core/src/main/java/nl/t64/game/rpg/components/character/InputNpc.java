@@ -15,16 +15,14 @@ public class InputNpc extends InputComponent {
     private float stateTime = 0f;
 
     private CharacterState state;
-    private Direction direction;
     private Direction originalDirection;
 
     @Override
     public void receive(Event event) {
-        if (event instanceof StartStateEvent) {
-            state = ((StartStateEvent) event).state;
-        }
-        if (event instanceof StartDirectionEvent) {
-            direction = ((StartDirectionEvent) event).direction;
+        if (event instanceof LoadNpcEvent) {
+            LoadNpcEvent loadEvent = (LoadNpcEvent) event;
+            state = loadEvent.state;
+            direction = loadEvent.direction;
             originalDirection = direction;
         }
         if (event instanceof CollisionEvent) {

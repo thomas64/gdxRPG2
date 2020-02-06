@@ -6,26 +6,26 @@ import nl.t64.game.rpg.SpriteConfig;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.events.Event;
-import nl.t64.game.rpg.events.character.*;
+import nl.t64.game.rpg.events.character.LoadPartyMemberEvent;
+import nl.t64.game.rpg.events.character.PositionEvent;
+import nl.t64.game.rpg.events.character.SpeedEvent;
+import nl.t64.game.rpg.events.character.StateEvent;
 
 
-public class GraphicsPlayer extends GraphicsComponent {
+public class GraphicsPartyMember extends GraphicsComponent {
 
-    public GraphicsPlayer() {
-        SpriteConfig spriteConfig = Utils.getResourceManager().getSpriteConfig(Constant.PLAYER_ID);
+    public GraphicsPartyMember(String spriteId) {
+        SpriteConfig spriteConfig = Utils.getResourceManager().getSpriteConfig(spriteId);
         loadWalkingAnimation(spriteConfig);
     }
 
     @Override
     public void receive(Event event) {
-        if (event instanceof LoadPlayerEvent) {
-            direction = ((LoadPlayerEvent) event).direction;
+        if (event instanceof LoadPartyMemberEvent) {
+            direction = ((LoadPartyMemberEvent) event).direction;
         }
         if (event instanceof StateEvent) {
             state = ((StateEvent) event).state;
-        }
-        if (event instanceof DirectionEvent) {
-            direction = ((DirectionEvent) event).direction;
         }
         if (event instanceof PositionEvent) {
             position = ((PositionEvent) event).position;
@@ -42,7 +42,7 @@ public class GraphicsPlayer extends GraphicsComponent {
     }
 
     @Override
-    public void render(Character player, Batch batch, ShapeRenderer shapeRenderer) {
+    public void render(Character partyMember, Batch batch, ShapeRenderer shapeRenderer) {
         batch.draw(currentFrame, position.x, position.y, Constant.TILE_SIZE, Constant.TILE_SIZE);
     }
 

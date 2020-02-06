@@ -26,21 +26,11 @@ public class PhysicsNpc extends PhysicsComponent {
 
     @Override
     public void receive(Event event) {
-        if (event instanceof StartStateEvent) {
-            state = ((StartStateEvent) event).state;
+        if (event instanceof LoadNpcEvent) {
+            initNpc((LoadNpcEvent) event);
         }
         if (event instanceof StateEvent) {
             state = ((StateEvent) event).state;
-        }
-        if (event instanceof StartPositionEvent) {
-            currentPosition = ((StartPositionEvent) event).position;
-            wanderBox = new Rectangle(currentPosition.x + WANDER_BOX_POSITION,
-                                      currentPosition.y + WANDER_BOX_POSITION,
-                                      WANDER_BOX_SIZE, WANDER_BOX_SIZE);
-            setBoundingBox();
-        }
-        if (event instanceof StartDirectionEvent) {
-            direction = ((StartDirectionEvent) event).direction;
         }
         if (event instanceof DirectionEvent) {
             direction = ((DirectionEvent) event).direction;
@@ -57,6 +47,17 @@ public class PhysicsNpc extends PhysicsComponent {
         relocate(dt);
         checkObstacles(thisNpcCharacter);
         thisNpcCharacter.send(new PositionEvent(currentPosition));
+    }
+
+    private void initNpc(LoadNpcEvent loadEvent) {
+        state = loadEvent.state;
+        currentPosition = loadEvent.position;
+        direction = loadEvent.direction;
+
+        wanderBox = new Rectangle(currentPosition.x + WANDER_BOX_POSITION,
+                                  currentPosition.y + WANDER_BOX_POSITION,
+                                  WANDER_BOX_SIZE, WANDER_BOX_SIZE);
+        setBoundingBox();
     }
 
     private void relocate(float dt) {

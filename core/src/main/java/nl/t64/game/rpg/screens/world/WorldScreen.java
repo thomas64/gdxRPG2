@@ -18,14 +18,14 @@ import nl.t64.game.rpg.components.character.PhysicsPlayer;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.GameState;
 import nl.t64.game.rpg.constants.ScreenType;
-import nl.t64.game.rpg.events.character.StartDirectionEvent;
-import nl.t64.game.rpg.events.character.StartPositionEvent;
+import nl.t64.game.rpg.events.character.LoadPlayerEvent;
 import nl.t64.game.rpg.screens.inventory.InventoryLoadScreen;
 import nl.t64.game.rpg.screens.menu.MenuPause;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class WorldScreen implements Screen, MapObserver {
@@ -43,6 +43,7 @@ public class WorldScreen implements Screen, MapObserver {
     private OrthogonalTiledMapRenderer mapRenderer;
     private InputMultiplexer multiplexer;
     private Character player;
+    private List<Character> partyMembers;
     @Getter
     private List<Character> npcCharacters;
     private ShapeRenderer shapeRenderer;
@@ -70,9 +71,10 @@ public class WorldScreen implements Screen, MapObserver {
     public void onMapChanged(GameMap currentMap) {
         mapRenderer.setMap(currentMap.tiledMap);
         camera.setNewMapSize(currentMap.getPixelWidth(), currentMap.getPixelHeight());
-        player.send(new StartPositionEvent(currentMap.playerSpawnLocation));
-        player.send(new StartDirectionEvent(currentMap.playerSpawnDirection));
+        player.send(new LoadPlayerEvent(currentMap.playerSpawnDirection,
+                                        currentMap.playerSpawnLocation));
         npcCharacters = new NpcCharactersLoader(currentMap).createNpcs();
+        partyMembers = new PartyMembersLoader(player).loadPartyMembers();
     }
 
     @Override
@@ -99,10 +101,6 @@ public class WorldScreen implements Screen, MapObserver {
         partyWindow.update(dt);
     }
 
-    public void removeNpcCharacter(Character npcCharacter) {
-        npcCharacters.remove(npcCharacter);
-    }
-
     public List<Character> createCopyOfCharactersWithPlayerButWithoutThisNpc(Character thisNpcCharacter) {
         var theOtherCharacters = new ArrayList<>(npcCharacters);
         theOtherCharacters.add(player);
@@ -110,9 +108,18 @@ public class WorldScreen implements Screen, MapObserver {
         return Collections.unmodifiableList(theOtherCharacters);
     }
 
+    public void updateAfterPartySwap(Character heroCharacter) {
+        Utils.getMapManager().removeFromBlockers(heroCharacter.getBoundingBox());
+        npcCharacters = npcCharacters.stream()
+                                     .filter(npcCharacter -> !npcCharacter.equals(heroCharacter))
+                                     .collect(Collectors.toUnmodifiableList());
+        partyMembers = new PartyMembersLoader(player).loadPartyMembers();
+    }
+
     private void updateCharacters(float dt) {
         player.update(dt);
-        List.copyOf(npcCharacters).forEach(npcCharacter -> npcCharacter.update(dt));
+        npcCharacters.forEach(npcCharacter -> npcCharacter.update(dt));
+        partyMembers.forEach(partyMember -> partyMember.update(dt));
     }
 
     private void updateCameraPosition() {
@@ -130,6 +137,7 @@ public class WorldScreen implements Screen, MapObserver {
         shapeRenderer.setProjectionMatrix(camera.combined);
         mapRenderer.getBatch().begin();
         npcCharacters.forEach(npcCharacter -> npcCharacter.render(mapRenderer.getBatch(), shapeRenderer));
+        partyMembers.forEach(partyMember -> partyMember.render(mapRenderer.getBatch(), shapeRenderer));
         player.render(mapRenderer.getBatch(), shapeRenderer);
         mapRenderer.getBatch().end();
     }
@@ -225,6 +233,7 @@ public class WorldScreen implements Screen, MapObserver {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             player.debug(shapeRenderer);
             npcCharacters.forEach(npcCharacter -> npcCharacter.debug(shapeRenderer));
+            partyMembers.forEach(partyMember -> partyMember.debug(shapeRenderer));
             Utils.getMapManager().currentMap.debug(shapeRenderer);
             shapeRenderer.end();
         }
