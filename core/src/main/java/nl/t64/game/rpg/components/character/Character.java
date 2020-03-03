@@ -61,8 +61,8 @@ public class Character {
     }
 
     public Vector2 getPositionInGrid() {
-        return new Vector2((getPosition().x + (Constant.TILE_SIZE / 2f)) / (Constant.TILE_SIZE / 2f),
-                           (getPosition().y + (Constant.TILE_SIZE / 4f)) / (Constant.TILE_SIZE / 2f));
+        return new Vector2((int) ((getPosition().x + (Constant.TILE_SIZE / 2f)) / (Constant.TILE_SIZE / 2f)),
+                           (int) ((getPosition().y + (Constant.TILE_SIZE / 8f)) / (Constant.TILE_SIZE / 2f)));
     }
 
     public Vector2 getPosition() {

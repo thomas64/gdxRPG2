@@ -19,8 +19,8 @@ public class InputNpc extends InputComponent {
 
     @Override
     public void receive(Event event) {
-        if (event instanceof LoadNpcEvent) {
-            LoadNpcEvent loadEvent = (LoadNpcEvent) event;
+        if (event instanceof LoadCharacterEvent) {
+            LoadCharacterEvent loadEvent = (LoadCharacterEvent) event;
             state = loadEvent.state;
             direction = loadEvent.direction;
             originalDirection = direction;

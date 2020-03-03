@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
@@ -14,6 +15,8 @@ import nl.t64.game.rpg.events.character.*;
 public class InputPlayer extends InputComponent implements InputProcessor {
 
     private static final float TURN_DELAY_TIME = 8f / 60f; // of a second
+
+    private Character player;
 
     private boolean pressUp;
     private boolean pressDown;
@@ -39,8 +42,8 @@ public class InputPlayer extends InputComponent implements InputProcessor {
 
     @Override
     public void receive(Event event) {
-        if (event instanceof LoadPlayerEvent) {
-            direction = ((LoadPlayerEvent) event).direction;
+        if (event instanceof LoadCharacterEvent) {
+            direction = ((LoadCharacterEvent) event).direction;
         }
     }
 
@@ -145,16 +148,9 @@ public class InputPlayer extends InputComponent implements InputProcessor {
 
     @Override
     public void update(Character player, float dt) {
-        processPlayerMoveInput(player, dt);
-
-        if (pressAlign) {
-            player.send(new StateEvent(CharacterState.ALIGNING));
-        }
-        if (pressAction) {
-            player.send(new ActionEvent());
-            pressAction = false;
-        }
-
+        this.player = player;
+        processMoveInput(dt);
+        processOtherInput();
     }
 
     @Override
@@ -177,16 +173,26 @@ public class InputPlayer extends InputComponent implements InputProcessor {
         pressAction = false;
     }
 
-    private void processPlayerMoveInput(Character player, float dt) {
-        processPlayerSpeedInput(player);
+    private void processMoveInput(float dt) {
+        processPlayerSpeedInput();
         countKeyDownTime();
-        ifNoMoveKeys_SetPlayerIdle(player);
+        ifNoMoveKeys_SetPlayerIdle();
         setPossibleTurnDelay();
         setPlayerDirection();
-        ifMoveKeys_SetPlayerWalking(player, dt);
+        ifMoveKeys_SetPlayerWalking(dt);
     }
 
-    private void processPlayerSpeedInput(Character player) {
+    private void processOtherInput() {
+        if (pressAlign) {
+            player.send(new StateEvent(CharacterState.ALIGNING));
+        }
+        if (pressAction) {
+            player.send(new ActionEvent());
+            pressAction = false;
+        }
+    }
+
+    private void processPlayerSpeedInput() {
         float moveSpeed = Constant.MOVE_SPEED_2;
         if (pressCtrl && pressShift) {
             moveSpeed = Constant.MOVE_SPEED_4;
@@ -196,6 +202,9 @@ public class InputPlayer extends InputComponent implements InputProcessor {
             moveSpeed = Constant.MOVE_SPEED_1;
         }
         player.send(new SpeedEvent(moveSpeed));
+        for (Character partyMember : Utils.getScreenManager().getWorldScreen().getPartyMembers()) {
+            partyMember.send(new SpeedEvent(moveSpeed));
+        }
     }
 
     private void countKeyDownTime() {
@@ -221,7 +230,7 @@ public class InputPlayer extends InputComponent implements InputProcessor {
         }
     }
 
-    private void ifNoMoveKeys_SetPlayerIdle(Character player) {
+    private void ifNoMoveKeys_SetPlayerIdle() {
         if (!areMoveKeysPressed()) {
             turnDelay = 0f;
             player.send(new StateEvent(CharacterState.IDLE));
@@ -260,7 +269,7 @@ public class InputPlayer extends InputComponent implements InputProcessor {
         }
     }
 
-    private void ifMoveKeys_SetPlayerWalking(Character player, float dt) {
+    private void ifMoveKeys_SetPlayerWalking(float dt) {
         if (areMoveKeysPressed()) {
             player.send(new DirectionEvent(direction));
 

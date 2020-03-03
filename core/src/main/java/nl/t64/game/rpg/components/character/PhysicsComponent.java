@@ -40,8 +40,7 @@ abstract class PhysicsComponent implements Component {
     }
 
     void move(float dt) {
-        oldPosition.x = Math.round(currentPosition.cpy().x);
-        oldPosition.y = Math.round(currentPosition.cpy().y);
+        oldPosition.set(Math.round(currentPosition.x), Math.round(currentPosition.y));
 
         switch (direction) {
             case NORTH -> currentPosition.y += velocity * dt;

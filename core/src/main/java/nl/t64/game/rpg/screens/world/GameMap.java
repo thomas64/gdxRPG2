@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
+import nl.t64.game.rpg.screens.world.pathfinding.TiledGraph;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,19 +48,22 @@ class GameMap {
     private final List<GameMapPortal> portals = new ArrayList<>();
     private final List<GameMapWarpPoint> warpPoints = new ArrayList<>();
 
+    final TiledGraph tiledGraph;
 
     GameMap(String mapTitle) {
         this.mapTitle = mapTitle;
         this.tiledMap = Utils.getResourceManager().getMapAsset(MAP_PATH + mapTitle + MAPFILE_SUFFIX);
-        this.playerSpawnLocation = new Vector2(0f, 0f);
+        this.playerSpawnLocation = new Vector2();
 
-        loadNpcs();
-        loadHeroes();
-        loadBlockers();
-        loadSavePoints();
-        loadSpawnPoints();
-        loadPortals();
-        loadWarpPoints();
+        this.loadNpcs();
+        this.loadHeroes();
+        this.loadBlockers();
+        this.loadSavePoints();
+        this.loadSpawnPoints();
+        this.loadPortals();
+        this.loadWarpPoints();
+
+        this.tiledGraph = new TiledGraph(this.getWidth(), this.getHeight(), this::areBlockersCurrentlyBlocking);
     }
 
     void addToBlockers(Rectangle immobileNpc) {
@@ -134,11 +138,11 @@ class GameMap {
         return getHeight() * (Constant.TILE_SIZE / 2f);
     }
 
-    int getWidth() {
+    private int getWidth() {
         return (int) tiledMap.getProperties().get(WIDTH_PROPERTY);
     }
 
-    int getHeight() {
+    private int getHeight() {
         return (int) tiledMap.getProperties().get(HEIGHT_PROPERTY);
     }
 

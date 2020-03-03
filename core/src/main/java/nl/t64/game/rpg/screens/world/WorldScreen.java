@@ -3,10 +3,12 @@ package nl.t64.game.rpg.screens.world;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.ScreenUtils;
 import lombok.Getter;
@@ -15,15 +17,19 @@ import nl.t64.game.rpg.components.character.Character;
 import nl.t64.game.rpg.components.character.GraphicsPlayer;
 import nl.t64.game.rpg.components.character.InputPlayer;
 import nl.t64.game.rpg.components.character.PhysicsPlayer;
+import nl.t64.game.rpg.components.party.PartyContainer;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.GameState;
 import nl.t64.game.rpg.constants.ScreenType;
-import nl.t64.game.rpg.events.character.LoadPlayerEvent;
+import nl.t64.game.rpg.events.character.LoadCharacterEvent;
 import nl.t64.game.rpg.screens.inventory.InventoryLoadScreen;
 import nl.t64.game.rpg.screens.menu.MenuPause;
+import nl.t64.game.rpg.screens.world.pathfinding.TiledGraph;
+import nl.t64.game.rpg.screens.world.pathfinding.TiledNode;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,11 +49,14 @@ public class WorldScreen implements Screen, MapObserver {
     private OrthogonalTiledMapRenderer mapRenderer;
     private InputMultiplexer multiplexer;
     private Character player;
+    @Getter
     private List<Character> partyMembers;
     @Getter
     private List<Character> npcCharacters;
     private ShapeRenderer shapeRenderer;
     private PartyWindow partyWindow;
+
+    private List<DefaultGraphPath<TiledNode>> partyMemberPaths;
 
     private DebugBox debugBox;
 
@@ -71,10 +80,12 @@ public class WorldScreen implements Screen, MapObserver {
     public void onMapChanged(GameMap currentMap) {
         mapRenderer.setMap(currentMap.tiledMap);
         camera.setNewMapSize(currentMap.getPixelWidth(), currentMap.getPixelHeight());
-        player.send(new LoadPlayerEvent(currentMap.playerSpawnDirection,
-                                        currentMap.playerSpawnLocation));
+        player.send(new LoadCharacterEvent(currentMap.playerSpawnDirection,
+                                           currentMap.playerSpawnLocation));
         npcCharacters = new NpcCharactersLoader(currentMap).createNpcs();
         partyMembers = new PartyMembersLoader(player).loadPartyMembers();
+
+        partyMemberPaths = new ArrayList<>(PartyContainer.MAXIMUM - 1);
     }
 
     @Override
@@ -99,6 +110,25 @@ public class WorldScreen implements Screen, MapObserver {
         renderObjects();
         updateDebugBox(dt);
         partyWindow.update(dt);
+    }
+
+    public DefaultGraphPath<TiledNode> getPathOf(Character partyMember) {
+        final int index = partyMembers.indexOf(partyMember);
+        final Vector2 startPoint = partyMembers.get(index).getPositionInGrid();
+        final Vector2 endPoint;
+        if (index == 0) {
+            endPoint = player.getPositionInGrid();
+        } else {
+            endPoint = partyMembers.get(index - 1).getPositionInGrid();
+        }
+        final TiledGraph tiledGraph = Utils.getMapManager().currentMap.tiledGraph;
+        final DefaultGraphPath<TiledNode> path = tiledGraph.findPath(startPoint, endPoint);
+        try {
+            partyMemberPaths.set(index, path);
+        } catch (IndexOutOfBoundsException e) {
+            partyMemberPaths.add(path);
+        }
+        return path;
     }
 
     public List<Character> createCopyOfCharactersWithPlayerButWithoutThisNpc(Character thisNpcCharacter) {
@@ -136,9 +166,15 @@ public class WorldScreen implements Screen, MapObserver {
     private void renderCharacters() {
         shapeRenderer.setProjectionMatrix(camera.combined);
         mapRenderer.getBatch().begin();
-        npcCharacters.forEach(npcCharacter -> npcCharacter.render(mapRenderer.getBatch(), shapeRenderer));
-        partyMembers.forEach(partyMember -> partyMember.render(mapRenderer.getBatch(), shapeRenderer));
-        player.render(mapRenderer.getBatch(), shapeRenderer);
+
+        List<Character> allCharacters = new ArrayList<>();
+        allCharacters.addAll(Utils.reverseList(partyMembers));
+        allCharacters.addAll(npcCharacters);
+        allCharacters.add(player);
+        allCharacters.sort(Comparator.comparingDouble((Character c) -> c.getPosition().y)
+                                     .reversed());
+        allCharacters.forEach(character -> character.render(mapRenderer.getBatch(), shapeRenderer));
+
         mapRenderer.getBatch().end();
     }
 
@@ -235,7 +271,21 @@ public class WorldScreen implements Screen, MapObserver {
             npcCharacters.forEach(npcCharacter -> npcCharacter.debug(shapeRenderer));
             partyMembers.forEach(partyMember -> partyMember.debug(shapeRenderer));
             Utils.getMapManager().currentMap.debug(shapeRenderer);
+            renderPaths();
             shapeRenderer.end();
+        }
+    }
+
+    private void renderPaths() {
+        if (!partyMembers.isEmpty()) {
+            shapeRenderer.setColor(Color.MAGENTA);
+            for (DefaultGraphPath<TiledNode> path : partyMemberPaths) {
+                for (TiledNode tiledNode : path) {
+                    final int x = (int) (tiledNode.x * (Constant.TILE_SIZE / 2f));
+                    final int y = (int) (tiledNode.y * (Constant.TILE_SIZE / 2f));
+                    shapeRenderer.rect(x, y, Constant.TILE_SIZE / 2f, Constant.TILE_SIZE / 2f);
+                }
+            }
         }
     }
 

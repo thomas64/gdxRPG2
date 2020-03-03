@@ -6,10 +6,7 @@ import nl.t64.game.rpg.SpriteConfig;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.events.Event;
-import nl.t64.game.rpg.events.character.LoadPartyMemberEvent;
-import nl.t64.game.rpg.events.character.PositionEvent;
-import nl.t64.game.rpg.events.character.SpeedEvent;
-import nl.t64.game.rpg.events.character.StateEvent;
+import nl.t64.game.rpg.events.character.*;
 
 
 public class GraphicsPartyMember extends GraphicsComponent {
@@ -21,11 +18,16 @@ public class GraphicsPartyMember extends GraphicsComponent {
 
     @Override
     public void receive(Event event) {
-        if (event instanceof LoadPartyMemberEvent) {
-            direction = ((LoadPartyMemberEvent) event).direction;
+        if (event instanceof LoadCharacterEvent) {
+            LoadCharacterEvent loadEvent = (LoadCharacterEvent) event;
+            state = loadEvent.state;
+            direction = loadEvent.direction;
         }
         if (event instanceof StateEvent) {
             state = ((StateEvent) event).state;
+        }
+        if (event instanceof DirectionEvent) {
+            direction = ((DirectionEvent) event).direction;
         }
         if (event instanceof PositionEvent) {
             position = ((PositionEvent) event).position;

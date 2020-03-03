@@ -53,6 +53,7 @@ project(":core") {
 
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         implementation "com.fasterxml.jackson.core:jackson-databind:2.9.8"
 
         testImplementation "com.badlogicgames.gdx:gdx:$gdxVersion"

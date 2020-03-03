@@ -3,7 +3,7 @@ package nl.t64.game.rpg.screens.world;
 import nl.t64.game.rpg.components.character.Character;
 import nl.t64.game.rpg.components.character.*;
 import nl.t64.game.rpg.constants.CharacterState;
-import nl.t64.game.rpg.events.character.LoadNpcEvent;
+import nl.t64.game.rpg.events.character.LoadCharacterEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,9 +44,9 @@ class NpcCharactersLoader {
 
     private void loadNpcCharacter(GameMapNpc gameMapNpc, Character npcCharacter) {
         npcCharacters.add(npcCharacter);
-        npcCharacter.send(new LoadNpcEvent(gameMapNpc.state,
-                                           gameMapNpc.direction,
-                                           gameMapNpc.getPosition()));
+        npcCharacter.send(new LoadCharacterEvent(gameMapNpc.state,
+                                                 gameMapNpc.direction,
+                                                 gameMapNpc.getPosition()));
         if (gameMapNpc.state.equals(CharacterState.IMMOBILE)) {
             currentMap.addToBlockers(npcCharacter.getBoundingBox());
         }

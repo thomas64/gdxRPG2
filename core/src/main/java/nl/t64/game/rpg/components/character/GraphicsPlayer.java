@@ -18,8 +18,8 @@ public class GraphicsPlayer extends GraphicsComponent {
 
     @Override
     public void receive(Event event) {
-        if (event instanceof LoadPlayerEvent) {
-            direction = ((LoadPlayerEvent) event).direction;
+        if (event instanceof LoadCharacterEvent) {
+            direction = ((LoadCharacterEvent) event).direction;
         }
         if (event instanceof StateEvent) {
             state = ((StateEvent) event).state;

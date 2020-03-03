@@ -20,7 +20,7 @@ public class PersonalityTooltipListener extends ClickListener {
     PersonalityTooltipListener(PersonalityTooltip toolTip, PersonalityItem personalityItem) {
         this.toolTip = toolTip;
         this.personalityItem = personalityItem;
-        this.currentCoords = new Vector2(0f, 0f);
+        this.currentCoords = new Vector2();
         this.offset = new Vector2(OFFSET_X, OFFSET_Y);
     }
 

@@ -9,6 +9,9 @@ import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.screens.ScreenManager;
 import nl.t64.game.rpg.screens.world.MapManager;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 
@@ -74,6 +77,12 @@ public final class Utils {
             }
         }
         return color;
+    }
+
+    public static <T> List<T> reverseList(List<T> list) {
+        List<T> reverse = new ArrayList<>(list);
+        Collections.reverse(reverse);
+        return reverse;
     }
 
 }

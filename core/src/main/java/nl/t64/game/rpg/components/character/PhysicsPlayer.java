@@ -27,13 +27,13 @@ public class PhysicsPlayer extends PhysicsComponent {
     public PhysicsPlayer() {
         this.isActionPressed = false;
         this.boundingBoxWidthPercentage = 0.80f;
-        this.boundingBoxHeightPercentage = 0.40f;
+        this.boundingBoxHeightPercentage = 0.30f;
     }
 
     @Override
     public void receive(Event event) {
-        if (event instanceof LoadPlayerEvent) {
-            LoadPlayerEvent loadEvent = (LoadPlayerEvent) event;
+        if (event instanceof LoadCharacterEvent) {
+            LoadCharacterEvent loadEvent = (LoadCharacterEvent) event;
             direction = loadEvent.direction;
             currentPosition = loadEvent.position;
             setBoundingBox();
@@ -189,7 +189,7 @@ public class PhysicsPlayer extends PhysicsComponent {
 
     private boolean setPossibleOldPosition(List<Rectangle> copyBlockers, List<Rectangle> copyWalkingBlockers) {
         if (doesPlayerOverlap(copyBlockers) || doesPlayerOverlap(copyWalkingBlockers)) {
-            currentPosition.set(oldPosition.x, oldPosition.y);
+            currentPosition.set(oldPosition);
             setBoundingBox();
             return true;
         }
@@ -264,10 +264,10 @@ public class PhysicsPlayer extends PhysicsComponent {
 
     private Rectangle getALittleBitBiggerBoundingBox() {
         Rectangle aLittleBitBiggerBox = new Rectangle(boundingBox);
-        aLittleBitBiggerBox.setWidth(boundingBox.width + 4);
-        aLittleBitBiggerBox.setHeight(boundingBox.height + 4);
-        aLittleBitBiggerBox.setX(boundingBox.x - 2);
-        aLittleBitBiggerBox.setY(boundingBox.y - 2);
+        aLittleBitBiggerBox.setWidth(boundingBox.width + 24f);
+        aLittleBitBiggerBox.setHeight(boundingBox.height + 24f);
+        aLittleBitBiggerBox.setX(boundingBox.x - 12f);
+        aLittleBitBiggerBox.setY(boundingBox.y - 12f);
         return aLittleBitBiggerBox;
     }
 
@@ -284,27 +284,26 @@ public class PhysicsPlayer extends PhysicsComponent {
     }
 
     private void setNorth(Rectangle checkRect) {
-        checkRect.setWidth(boundingBox.width / 4);
-        checkRect.setHeight(boundingBox.height * 2);
-        checkRect.setX(boundingBox.x + (boundingBox.width / 2) - (boundingBox.width / 8));
-        checkRect.setY(boundingBox.y + (Constant.TILE_SIZE / 2f));
+        checkRect.setWidth(boundingBox.width / 4f);
+        checkRect.setHeight(Constant.TILE_SIZE / 2f);
+        checkRect.setX(boundingBox.x + (boundingBox.width / 2f) - (boundingBox.width / 8f));
+        checkRect.setY(boundingBox.y + boundingBox.height);
     }
 
     private void setSouth(Rectangle checkRect) {
-        checkRect.setWidth(boundingBox.width / 4);
-        checkRect.setX(boundingBox.x + (boundingBox.width / 2) - (boundingBox.width / 8));
+        checkRect.setWidth(boundingBox.width / 4f);
+        checkRect.setHeight(Constant.TILE_SIZE / 2f);
+        checkRect.setX(boundingBox.x + (boundingBox.width / 2f) - (boundingBox.width / 8f));
         checkRect.setY(boundingBox.y - (Constant.TILE_SIZE / 2f));
     }
 
     private void setWest(Rectangle checkRect) {
-        checkRect.setHeight(boundingBox.height / 4);
-        checkRect.setY(boundingBox.y + (boundingBox.height / 2) - (boundingBox.height / 8));
+        checkRect.setY(boundingBox.y + (Constant.TILE_SIZE / 16f));
         checkRect.setX(boundingBox.x - (Constant.TILE_SIZE / 2f));
     }
 
     private void setEast(Rectangle checkRect) {
-        checkRect.setHeight(boundingBox.height / 4);
-        checkRect.setY(boundingBox.y + (boundingBox.height / 2) - (boundingBox.height / 8));
+        checkRect.setY(boundingBox.y + (Constant.TILE_SIZE / 16f));
         checkRect.setX(boundingBox.x + (Constant.TILE_SIZE / 2f));
     }
 

@@ -1,6 +1,7 @@
 package nl.t64.game.rpg.screens.world;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
@@ -74,6 +75,10 @@ public class MapManager implements ProfileObserver {
 
     public boolean areBlockersCurrentlyBlocking(Rectangle characterRect) {
         return currentMap.areBlockersCurrentlyBlocking(characterRect);
+    }
+
+    public boolean areBlockersCurrentlyBlocking(Vector2 point) {
+        return currentMap.areBlockersCurrentlyBlocking(point);
     }
 
     public void addObserver(MapObserver observer) {

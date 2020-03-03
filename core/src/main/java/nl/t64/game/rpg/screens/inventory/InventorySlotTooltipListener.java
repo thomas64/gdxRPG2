@@ -21,7 +21,7 @@ class InventorySlotTooltipListener extends ClickListener {
         this.toolTip = toolTip;
         this.isInside = false;
         this.touchDown = false;
-        this.currentCoords = new Vector2(0f, 0f);
+        this.currentCoords = new Vector2();
         this.offset = new Vector2(OFFSET_X, OFFSET_Y);
     }
 

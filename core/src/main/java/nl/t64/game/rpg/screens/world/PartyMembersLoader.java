@@ -7,7 +7,8 @@ import nl.t64.game.rpg.components.character.InputPartyMember;
 import nl.t64.game.rpg.components.character.PhysicsPartyMember;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.PartyContainer;
-import nl.t64.game.rpg.events.character.LoadPartyMemberEvent;
+import nl.t64.game.rpg.constants.CharacterState;
+import nl.t64.game.rpg.events.character.LoadCharacterEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,8 +47,9 @@ class PartyMembersLoader {
 
     private void addToPartyMembers(Character partyMember) {
         partyMembers.add(partyMember);
-        partyMember.send(new LoadPartyMemberEvent(player.getDirection(),
-                                                  player.getPosition().cpy()));
+        partyMember.send(new LoadCharacterEvent(CharacterState.IDLE,
+                                                player.getDirection(),
+                                                player.getPosition().cpy()));
     }
 
 }

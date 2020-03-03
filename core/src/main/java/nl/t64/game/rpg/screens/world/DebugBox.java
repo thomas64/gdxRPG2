@@ -88,6 +88,14 @@ class DebugBox {
         table.row();
         table.add("").row();
 
+        table.add("currentPositionGridX:");
+        table.add(String.valueOf(player.getPositionInGrid().x));
+        table.row();
+        table.add("currentPositionGridY:");
+        table.add(String.valueOf(player.getPositionInGrid().y));
+        table.row();
+        table.add("").row();
+
         table.add("currentPositionTiledX:");
         table.add(String.valueOf((int) (player.getPosition().x / Constant.TILE_SIZE)));
         table.row();

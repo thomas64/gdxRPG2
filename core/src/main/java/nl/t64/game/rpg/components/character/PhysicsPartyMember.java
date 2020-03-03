@@ -2,23 +2,39 @@ package nl.t64.game.rpg.components.character;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
+import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.constants.CharacterState;
+import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.events.Event;
-import nl.t64.game.rpg.events.character.LoadPartyMemberEvent;
-import nl.t64.game.rpg.events.character.PositionEvent;
+import nl.t64.game.rpg.events.character.*;
 
 
 public class PhysicsPartyMember extends PhysicsComponent {
 
+    private Character partyMember;
+
     public PhysicsPartyMember() {
-        this.boundingBoxWidthPercentage = 0.80f;
-        this.boundingBoxHeightPercentage = 0.40f;
+        this.boundingBoxWidthPercentage = 0.70f;
+        this.boundingBoxHeightPercentage = 0.20f;
     }
 
     @Override
     public void receive(Event event) {
-        if (event instanceof LoadPartyMemberEvent) {
-            currentPosition = ((LoadPartyMemberEvent) event).position;
+        if (event instanceof LoadCharacterEvent) {
+            LoadCharacterEvent loadEvent = (LoadCharacterEvent) event;
+            state = loadEvent.state;
+            currentPosition = loadEvent.position;
             setBoundingBox();
+        }
+        if (event instanceof StateEvent) {
+            state = ((StateEvent) event).state;
+        }
+        if (event instanceof DirectionEvent) {
+            direction = ((DirectionEvent) event).direction;
+        }
+        if (event instanceof SpeedEvent) {
+            velocity = ((SpeedEvent) event).moveSpeed;
         }
     }
 
@@ -29,7 +45,82 @@ public class PhysicsPartyMember extends PhysicsComponent {
 
     @Override
     public void update(Character partyMember, float dt) {
+        this.partyMember = partyMember;
+        relocate(dt);
+        checkObstacles(dt);
         partyMember.send(new PositionEvent(currentPosition));
+    }
+
+    private void relocate(float dt) {
+        if (state.equals(CharacterState.WALKING)) {
+            move(dt);
+        }
+    }
+
+    private void checkObstacles(float dt) {
+        if (Utils.getMapManager().areBlockersCurrentlyBlocking(boundingBox)) {
+            switch (direction) {
+                case SOUTH -> setDirectionWhenBlockersAreSouth();
+                case NORTH -> setDirectionWhenBlockersAreNorth();
+                case WEST -> setDirectionWhenBlockersAreWest();
+                case EAST -> setDirectionWhenBlockersAreEast();
+                case NONE -> throw new IllegalArgumentException("Direction 'NONE' is not usable.");
+            }
+            currentPosition.set(oldPosition);
+            move(dt);
+        }
+    }
+
+    private void setDirectionWhenBlockersAreSouth() {
+        final var mapManager = Utils.getMapManager();
+        final Vector2 positionInGrid = partyMember.getPositionInGrid();
+        final float x = positionInGrid.x;
+        final float y = positionInGrid.y;
+
+        if (mapManager.areBlockersCurrentlyBlocking(new Vector2(x + 1, y - 1))) {
+            direction = Direction.WEST;
+        } else if (mapManager.areBlockersCurrentlyBlocking(new Vector2(x - 1, y - 1))) {
+            direction = Direction.EAST;
+        }
+    }
+
+    private void setDirectionWhenBlockersAreNorth() {
+        final var mapManager = Utils.getMapManager();
+        final Vector2 positionInGrid = partyMember.getPositionInGrid();
+        final float x = positionInGrid.x;
+        final float y = positionInGrid.y;
+
+        if (mapManager.areBlockersCurrentlyBlocking(new Vector2(x + 1, y + 1))) {
+            direction = Direction.WEST;
+        } else if (mapManager.areBlockersCurrentlyBlocking(new Vector2(x - 1, y + 1))) {
+            direction = Direction.EAST;
+        }
+    }
+
+    private void setDirectionWhenBlockersAreWest() {
+        final var mapManager = Utils.getMapManager();
+        final Vector2 positionInGrid = partyMember.getPositionInGrid();
+        final float x = positionInGrid.x;
+        final float y = positionInGrid.y;
+
+        if (mapManager.areBlockersCurrentlyBlocking(new Vector2(x - 1, y + 1))) {
+            direction = Direction.SOUTH;
+        } else if (mapManager.areBlockersCurrentlyBlocking(new Vector2(x - 1, y - 1))) {
+            direction = Direction.NORTH;
+        }
+    }
+
+    private void setDirectionWhenBlockersAreEast() {
+        final var mapManager = Utils.getMapManager();
+        final Vector2 positionInGrid = partyMember.getPositionInGrid();
+        final float x = positionInGrid.x;
+        final float y = positionInGrid.y;
+
+        if (mapManager.areBlockersCurrentlyBlocking(new Vector2(x + 1, y + 1))) {
+            direction = Direction.SOUTH;
+        } else if (mapManager.areBlockersCurrentlyBlocking(new Vector2(x + 1, y - 1))) {
+            direction = Direction.NORTH;
+        }
     }
 
     @Override

@@ -13,6 +13,8 @@ public class PhysicsHero extends PhysicsNpc {
     private final String heroId;
     private boolean isSelected;
 
+    private Character heroCharacter;
+
     public PhysicsHero(String heroId) {
         this.heroId = heroId;
         this.isSelected = false;
@@ -28,14 +30,15 @@ public class PhysicsHero extends PhysicsNpc {
 
     @Override
     public void update(Character heroCharacter, float dt) {
+        this.heroCharacter = heroCharacter;
         if (isSelected) {
-            tryToAddHeroToParty(heroCharacter, dt);
+            tryToAddHeroToParty(dt);
         } else {
             super.update(heroCharacter, dt);
         }
     }
 
-    private void tryToAddHeroToParty(Character heroCharacter, float dt) {
+    private void tryToAddHeroToParty(float dt) {
         HeroContainer heroes = Utils.getGameData().getHeroes();
         PartyContainer party = Utils.getGameData().getParty();
         HeroItem hero = heroes.getHero(heroId);

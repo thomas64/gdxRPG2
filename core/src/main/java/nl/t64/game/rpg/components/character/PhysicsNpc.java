@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.CharacterState;
+import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.*;
 
@@ -16,18 +17,20 @@ public class PhysicsNpc extends PhysicsComponent {
     private static final float WANDER_BOX_SIZE = 240f;
     private static final float WANDER_BOX_POSITION = -96f;
 
+    private Character npcCharacter;
+
     private Rectangle wanderBox;
 
     public PhysicsNpc() {
-        this.velocity = 48f;
-        this.boundingBoxWidthPercentage = 0.80f;
-        this.boundingBoxHeightPercentage = 1.00f;
+        this.velocity = Constant.MOVE_SPEED_1;
+        this.boundingBoxWidthPercentage = 0.60f;
+        this.boundingBoxHeightPercentage = 0.30f;
     }
 
     @Override
     public void receive(Event event) {
-        if (event instanceof LoadNpcEvent) {
-            initNpc((LoadNpcEvent) event);
+        if (event instanceof LoadCharacterEvent) {
+            initNpc((LoadCharacterEvent) event);
         }
         if (event instanceof StateEvent) {
             state = ((StateEvent) event).state;
@@ -44,12 +47,13 @@ public class PhysicsNpc extends PhysicsComponent {
 
     @Override
     public void update(Character thisNpcCharacter, float dt) {
+        this.npcCharacter = thisNpcCharacter;
         relocate(dt);
-        checkObstacles(thisNpcCharacter);
-        thisNpcCharacter.send(new PositionEvent(currentPosition));
+        checkObstacles();
+        npcCharacter.send(new PositionEvent(currentPosition));
     }
 
-    private void initNpc(LoadNpcEvent loadEvent) {
+    private void initNpc(LoadCharacterEvent loadEvent) {
         state = loadEvent.state;
         currentPosition = loadEvent.position;
         direction = loadEvent.direction;
@@ -66,13 +70,13 @@ public class PhysicsNpc extends PhysicsComponent {
         }
     }
 
-    private void checkObstacles(Character thisNpcCharacter) {
+    private void checkObstacles() {
         if (state.equals(CharacterState.WALKING)) {
             boolean moveBack1 = checkWanderBox();
             boolean moveBack2 = checkBlocker();
-            boolean moveBack3 = checkOtherCharacters(thisNpcCharacter);
+            boolean moveBack3 = checkOtherCharacters();
             if (moveBack1 || moveBack2 || moveBack3) {
-                thisNpcCharacter.send(new CollisionEvent());
+                npcCharacter.send(new CollisionEvent());
             }
         }
     }
@@ -95,10 +99,10 @@ public class PhysicsNpc extends PhysicsComponent {
         return moveBack;
     }
 
-    private boolean checkOtherCharacters(Character thisNpcCharacter) {
+    private boolean checkOtherCharacters() {
         boolean moveBack = false;
         List<Character> theOtherCharacters = Utils.getScreenManager().getWorldScreen()
-                                                  .createCopyOfCharactersWithPlayerButWithoutThisNpc(thisNpcCharacter);
+                                                  .createCopyOfCharactersWithPlayerButWithoutThisNpc(npcCharacter);
         for (Character otherCharacter : theOtherCharacters) {
             while (boundingBox.overlaps(otherCharacter.getBoundingBox())) {
                 moveBack();
