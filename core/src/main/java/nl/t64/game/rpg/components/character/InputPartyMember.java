@@ -13,7 +13,7 @@ import nl.t64.game.rpg.screens.world.pathfinding.TiledNode;
 
 public class InputPartyMember extends InputComponent {
 
-    private static final int THREE_NODES = 3;
+    private static final int TWO_NODES = 2;
     private static final int SECOND_NODE = 1;
 
     private Character partyMember;
@@ -36,7 +36,7 @@ public class InputPartyMember extends InputComponent {
 
     private void setStateAndDirection() {
         final DefaultGraphPath<TiledNode> path = Utils.getScreenManager().getWorldScreen().getPathOf(partyMember);
-        if (path.getCount() > THREE_NODES) {
+        if (path.getCount() > TWO_NODES) {
             setWalking(path);
         } else {
             setIdle();

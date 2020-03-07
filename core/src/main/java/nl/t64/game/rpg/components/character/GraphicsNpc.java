@@ -70,10 +70,10 @@ public class GraphicsNpc extends GraphicsComponent {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(SELECTION);
-        float width = boundingBox.getWidth();
-        float height = boundingBox.getHeight() / 3f;
-        float x = boundingBox.x;
-        float y = boundingBox.y - height / 2f;
+        float width = Constant.TILE_SIZE;
+        float height = boundingBox.getHeight();
+        float x = boundingBox.x + (boundingBox.width / 2f) - (width / 2f);
+        float y = boundingBox.y - (height / 2f);
         shapeRenderer.ellipse(x, y, width, height);
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);

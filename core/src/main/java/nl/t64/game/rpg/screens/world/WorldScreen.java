@@ -24,7 +24,6 @@ import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.events.character.LoadCharacterEvent;
 import nl.t64.game.rpg.screens.inventory.InventoryLoadScreen;
 import nl.t64.game.rpg.screens.menu.MenuPause;
-import nl.t64.game.rpg.screens.world.pathfinding.TiledGraph;
 import nl.t64.game.rpg.screens.world.pathfinding.TiledNode;
 
 import java.util.ArrayList;
@@ -121,14 +120,18 @@ public class WorldScreen implements Screen, MapObserver {
         } else {
             endPoint = partyMembers.get(index - 1).getPositionInGrid();
         }
-        final TiledGraph tiledGraph = Utils.getMapManager().currentMap.tiledGraph;
-        final DefaultGraphPath<TiledNode> path = tiledGraph.findPath(startPoint, endPoint);
-        try {
-            partyMemberPaths.set(index, path);
-        } catch (IndexOutOfBoundsException e) {
-            partyMemberPaths.add(path);
+        final GameMap currentMap = Utils.getMapManager().currentMap;
+        if (!currentMap.isOutsideMap(endPoint)) {
+            final DefaultGraphPath<TiledNode> path = currentMap.tiledGraph.findPath(startPoint, endPoint);
+            try {
+                partyMemberPaths.set(index, path);
+            } catch (IndexOutOfBoundsException e) {
+                partyMemberPaths.add(path);
+            }
+            return path;
+        } else {
+            return new DefaultGraphPath<>(0);
         }
-        return path;
     }
 
     public List<Character> createCopyOfCharactersWithPlayerButWithoutThisNpc(Character thisNpcCharacter) {
@@ -277,14 +280,12 @@ public class WorldScreen implements Screen, MapObserver {
     }
 
     private void renderPaths() {
-        if (!partyMembers.isEmpty()) {
-            shapeRenderer.setColor(Color.MAGENTA);
-            for (DefaultGraphPath<TiledNode> path : partyMemberPaths) {
-                for (TiledNode tiledNode : path) {
-                    final int x = (int) (tiledNode.x * (Constant.TILE_SIZE / 2f));
-                    final int y = (int) (tiledNode.y * (Constant.TILE_SIZE / 2f));
-                    shapeRenderer.rect(x, y, Constant.TILE_SIZE / 2f, Constant.TILE_SIZE / 2f);
-                }
+        shapeRenderer.setColor(Color.MAGENTA);
+        for (DefaultGraphPath<TiledNode> path : partyMemberPaths) {
+            for (TiledNode tiledNode : path) {
+                final int x = (int) (tiledNode.x * (Constant.TILE_SIZE / 2f));
+                final int y = (int) (tiledNode.y * (Constant.TILE_SIZE / 2f));
+                shapeRenderer.rect(x, y, Constant.TILE_SIZE / 2f, Constant.TILE_SIZE / 2f);
             }
         }
     }
