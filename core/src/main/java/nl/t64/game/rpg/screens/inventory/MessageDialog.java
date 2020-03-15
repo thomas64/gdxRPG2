@@ -14,8 +14,8 @@ import nl.t64.game.rpg.Utils;
 class MessageDialog {
 
     private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
-    private static final String MENU_FONT = "fonts/fff_tusj.ttf";
-    private static final int MENU_SIZE = 30;
+    private static final String DIALOG_FONT = "fonts/fff_tusj.ttf";
+    private static final int FONT_SIZE = 30;
 
     private static final long DIALOG_INIT_HEIGHT = 100L;
     private static final float DIALOG_PAD = 60f;
@@ -23,13 +23,13 @@ class MessageDialog {
     private final String message;
     private final long dialogHeight;
 
-    private final BitmapFont menuFont;
+    private final BitmapFont dialogFont;
     private final Dialog dialog;
 
     MessageDialog(String message) {
         this.message = message;
-        this.dialogHeight = ((message.lines().count()) * MENU_SIZE) + DIALOG_INIT_HEIGHT;
-        this.menuFont = Utils.getResourceManager().getTrueTypeAsset(MENU_FONT, MENU_SIZE);
+        this.dialogHeight = ((message.lines().count()) * FONT_SIZE) + DIALOG_INIT_HEIGHT;
+        this.dialogFont = Utils.getResourceManager().getTrueTypeAsset(DIALOG_FONT, FONT_SIZE);
         this.dialog = createDialog();
         applyListeners();
     }
@@ -40,9 +40,9 @@ class MessageDialog {
 
     private Dialog createDialog() {
         // styles
-        var labelStyle = new Label.LabelStyle(menuFont, Color.BLACK);
+        var labelStyle = new Label.LabelStyle(dialogFont, Color.BLACK);
         var windowStyle = new Dialog.WindowStyle();
-        windowStyle.titleFont = menuFont;
+        windowStyle.titleFont = dialogFont;
         windowStyle.titleFontColor = Color.BLACK;
 
         // actors

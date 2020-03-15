@@ -51,15 +51,15 @@ public final class Utils {
         return (Engine) Gdx.app.getApplicationListener();
     }
 
-    public static Image getFaceImage(String heroId) {
-        SpriteConfig faceConfig = getResourceManager().getSpriteConfig(heroId);
+    public static Image getFaceImage(String spriteId) {
+        SpriteConfig faceConfig = getResourceManager().getSpriteConfig(spriteId);
         String path = faceConfig.getFacePath();
         int row = faceConfig.getRow() - 1;
         int col = faceConfig.getCol() - 1;
         Texture texture = getResourceManager().getTextureAsset(path);
         TextureRegion[][] splitOfEight = TextureRegion.split(texture, (int) FACE_SIZE, (int) FACE_SIZE);
-        TextureRegion heroFace = splitOfEight[row][col];
-        return new Image(heroFace);
+        TextureRegion characterFace = splitOfEight[row][col];
+        return new Image(characterFace);
     }
 
     public static Color getHpColor(Map<String, Integer> hpStats) {

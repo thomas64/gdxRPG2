@@ -34,6 +34,18 @@ public class Character {
         components.forEach(component -> component.receive(event));
     }
 
+    public void registerObserver(ComponentObserver observer) {
+        inputComponent.addObserver(observer);
+        physicsComponent.addObserver(observer);
+        graphicsComponent.addObserver(observer);
+    }
+
+    public void unregisterObserver() {
+        inputComponent.removeAllObservers();
+        physicsComponent.removeAllObservers();
+        graphicsComponent.removeAllObservers();
+    }
+
     public void update(float dt) {
         inputComponent.update(this, dt);
         physicsComponent.update(this, dt);

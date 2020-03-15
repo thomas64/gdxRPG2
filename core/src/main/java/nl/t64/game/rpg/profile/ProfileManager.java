@@ -8,16 +8,16 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ObjectMap;
 import nl.t64.game.rpg.constants.Constant;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 
-public class ProfileManager {
+public class ProfileManager extends ProfileSubject {
 
     private static final String SAVE_PATH = "savegame/";
     private static final String DEFAULT_PROFILE = Constant.PLAYER_ID;
     private static final String SAVEGAME_SUFFIX = ".dat";
-
-    private final List<ProfileObserver> observers = new ArrayList<>();
 
     private final Json json = new Json();
     private final Map<String, FileHandle> profiles = new HashMap<>();
@@ -42,7 +42,7 @@ public class ProfileManager {
             newProfileName = DEFAULT_PROFILE;
         }
         profileName = newProfileName;
-        observers.forEach(observer -> observer.onNotifyCreate(this));
+        super.notifyCreateProfile(this);
         writeProfileToDisk();
     }
 
@@ -61,7 +61,7 @@ public class ProfileManager {
     }
 
     public void saveProfile() {
-        observers.forEach(observer -> observer.onNotifySave(this));
+        super.notifySaveProfile(this);
         writeProfileToDisk();
     }
 
@@ -74,7 +74,7 @@ public class ProfileManager {
         }
         profileName = selectedProfileName;
         profileProperties = json.fromJson(ObjectMap.class, profiles.get(profileName));
-        observers.forEach(observer -> observer.onNotifyLoad(this));
+        super.notifyLoadProfile(this);
     }
 
     public Array<String> removeProfile(String selectedProfileName) {
@@ -85,14 +85,6 @@ public class ProfileManager {
             loadAllProfiles();
         }
         return getProfileList();
-    }
-
-    public void addObserver(ProfileObserver observer) {
-        observers.add(observer);
-    }
-
-    public void removeObserver(ProfileObserver observer) {
-        observers.remove(observer);
     }
 
     private void writeProfileToDisk() {

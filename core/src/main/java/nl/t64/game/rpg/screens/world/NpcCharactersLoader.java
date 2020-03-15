@@ -29,7 +29,7 @@ class NpcCharactersLoader {
     private void loadNpcs() {
         for (GameMapNpc gameMapNpc : currentMap.npcs) {
             String spriteId = gameMapNpc.name;
-            var npcCharacter = new Character(new InputNpc(), new PhysicsNpc(), new GraphicsNpc(spriteId));
+            var npcCharacter = new Character(new InputNpc(), new PhysicsNpc(spriteId), new GraphicsNpc(spriteId));
             loadNpcCharacter(gameMapNpc, npcCharacter);
         }
     }
@@ -46,7 +46,8 @@ class NpcCharactersLoader {
         npcCharacters.add(npcCharacter);
         npcCharacter.send(new LoadCharacterEvent(gameMapNpc.state,
                                                  gameMapNpc.direction,
-                                                 gameMapNpc.getPosition()));
+                                                 gameMapNpc.getPosition(),
+                                                 gameMapNpc.conversation));
         if (gameMapNpc.state.equals(CharacterState.IMMOBILE)) {
             currentMap.addToBlockers(npcCharacter.getBoundingBox());
         }

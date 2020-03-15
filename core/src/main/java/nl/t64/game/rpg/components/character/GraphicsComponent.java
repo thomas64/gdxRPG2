@@ -14,7 +14,7 @@ import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
 
 
-abstract class GraphicsComponent implements Component {
+abstract class GraphicsComponent extends ComponentSubject implements Component {
 
     private static final int SPRITE_GROUP_WIDTH = 144;
     private static final int SPRITE_GROUP_HEIGHT = 192;
@@ -62,6 +62,9 @@ abstract class GraphicsComponent implements Component {
     }
 
     private void setCurrentFrame(float frameTime) {
+        if (frameTime < 0) {
+            frameTime = Constant.NO_FRAMES;
+        }
         currentFrame = switch (direction) {
             case NORTH -> walkNorthAnimation.getKeyFrame(frameTime);
             case SOUTH -> walkSouthAnimation.getKeyFrame(frameTime);

@@ -3,10 +3,10 @@ package nl.t64.game.rpg.profile;
 
 public interface ProfileObserver {
 
-    void onNotifyCreate(ProfileManager profileManager);
+    void onNotifyCreateProfile(ProfileManager profileManager);
 
-    void onNotifySave(ProfileManager profileManager);
+    void onNotifySaveProfile(ProfileManager profileManager);
 
-    void onNotifyLoad(ProfileManager profileManager);
+    void onNotifyLoadProfile(ProfileManager profileManager);
 
 }

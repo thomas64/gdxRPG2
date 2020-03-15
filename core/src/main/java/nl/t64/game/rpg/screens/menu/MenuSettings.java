@@ -97,7 +97,7 @@ public class MenuSettings extends MenuScreen {
 
     private Table createTable() {
         // styles
-        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
+        var buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = menuFont;
         buttonStyle.fontColor = Color.WHITE;
 
@@ -106,7 +106,7 @@ public class MenuSettings extends MenuScreen {
         backButton = new TextButton(MENU_ITEM_BACK, new TextButton.TextButtonStyle(buttonStyle));
 
         // table
-        Table newTable = new Table();
+        var newTable = new Table();
         newTable.setFillParent(true);
         newTable.add(fullscreenButton).spaceBottom(MENU_SPACE_BOTTOM).row();
         newTable.add(backButton).spaceBottom(MENU_SPACE_BOTTOM).row();

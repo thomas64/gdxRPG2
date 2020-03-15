@@ -16,6 +16,7 @@ class GameMapNpc {
     final String name;
     final CharacterState state;
     final Direction direction;
+    final String conversation;
 
     GameMapNpc(MapObject mapObject) {
         RectangleMapObject rectObject = (RectangleMapObject) mapObject;
@@ -24,6 +25,7 @@ class GameMapNpc {
         this.name = rectObject.getName();
         this.state = createState(rectObject);
         this.direction = createDirection(rectObject);
+        this.conversation = createConversation(rectObject);
     }
 
     Vector2 getPosition() {
@@ -46,6 +48,12 @@ class GameMapNpc {
                 rectObject.getProperties().get("direction", String.class));
         return newDirection.map(string -> Direction.valueOf(string.toUpperCase()))
                            .orElseGet(Direction::getRandom);
+    }
+
+    private String createConversation(RectangleMapObject rectObject) {
+        Optional<String> newConversation = Optional.ofNullable(
+                rectObject.getProperties().get("conversation", String.class));
+        return newConversation.orElse("default");
     }
 
 }

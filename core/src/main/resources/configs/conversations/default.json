@@ -1,0 +1,19 @@
+{
+  currentConversationId: 1
+  conversations: {
+    1: {
+      id: 1
+      text: [Hello.]
+    }
+  }
+  associatedChoices: {
+    1: [
+      {
+        class: nl.t64.game.rpg.conversation.ConversationChoice
+        sourceId: 1
+        destinationId: 999
+        text: ->
+      }
+    ]
+  }
+}

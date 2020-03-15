@@ -15,24 +15,24 @@ public class GameData implements ProfileObserver {
     private InventoryContainer inventory;
 
     @Override
-    public void onNotifyCreate(ProfileManager profileManager) {
+    public void onNotifyCreateProfile(ProfileManager profileManager) {
         heroes = new HeroContainer();
         party = new PartyContainer();
         inventory = new InventoryContainer();
         addFirstHeroToParty();
         addFirstItemsToInventory();
-        onNotifySave(profileManager);
+        onNotifySaveProfile(profileManager);
     }
 
     @Override
-    public void onNotifySave(ProfileManager profileManager) {
+    public void onNotifySaveProfile(ProfileManager profileManager) {
         profileManager.setProperty("heroes", heroes);
         profileManager.setProperty("party", party);
         profileManager.setProperty("inventory", inventory);
     }
 
     @Override
-    public void onNotifyLoad(ProfileManager profileManager) {
+    public void onNotifyLoadProfile(ProfileManager profileManager) {
         heroes = profileManager.getProperty("heroes", HeroContainer.class);
         party = profileManager.getProperty("party", PartyContainer.class);
         inventory = profileManager.getProperty("inventory", InventoryContainer.class);

@@ -4,28 +4,14 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroContainer;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.PartyContainer;
-import nl.t64.game.rpg.events.Event;
-import nl.t64.game.rpg.events.character.SelectEvent;
 
 
 public class PhysicsHero extends PhysicsNpc {
 
-    private final String heroId;
-    private boolean isSelected;
-
     private Character heroCharacter;
 
     public PhysicsHero(String heroId) {
-        this.heroId = heroId;
-        this.isSelected = false;
-    }
-
-    @Override
-    public void receive(Event event) {
-        super.receive(event);
-        if (event instanceof SelectEvent) {
-            isSelected = true;
-        }
+        super(heroId);
     }
 
     @Override
@@ -41,14 +27,14 @@ public class PhysicsHero extends PhysicsNpc {
     private void tryToAddHeroToParty(float dt) {
         HeroContainer heroes = Utils.getGameData().getHeroes();
         PartyContainer party = Utils.getGameData().getParty();
-        HeroItem hero = heroes.getHero(heroId);
+        HeroItem hero = heroes.getHero(npcId);
 
         if (party.isFull()) {
             // Visual warning message.
             super.update(heroCharacter, dt);
         } else {
             isSelected = false;
-            heroes.removeHero(heroId);
+            heroes.removeHero(npcId);
             party.addHero(hero);
             Utils.getScreenManager().getWorldScreen().updateAfterPartySwap(heroCharacter);
         }

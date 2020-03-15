@@ -19,20 +19,20 @@ public class MapManager implements ProfileObserver {
 
 
     @Override
-    public void onNotifyCreate(ProfileManager profileManager) {
+    public void onNotifyCreateProfile(ProfileManager profileManager) {
         loadMap(Constant.STARTING_MAP);
         currentMap.setPlayerSpawnLocationForNewLoad(Constant.STARTING_MAP);
-        onNotifySave(profileManager);
+        onNotifySaveProfile(profileManager);
         observers.forEach(observer -> observer.onMapChanged(currentMap));
     }
 
     @Override
-    public void onNotifySave(ProfileManager profileManager) {
+    public void onNotifySaveProfile(ProfileManager profileManager) {
         profileManager.setProperty("mapTitle", currentMap.mapTitle);
     }
 
     @Override
-    public void onNotifyLoad(ProfileManager profileManager) {
+    public void onNotifyLoadProfile(ProfileManager profileManager) {
         String mapTitle = profileManager.getProperty("mapTitle", String.class);
         loadMap(mapTitle);
         currentMap.setPlayerSpawnLocationForNewLoad(mapTitle);

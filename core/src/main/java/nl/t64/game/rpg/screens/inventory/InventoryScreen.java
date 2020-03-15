@@ -61,7 +61,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
     }
 
     @Override
-    public void onNotifyCreate(ProfileManager profileManager) {
+    public void onNotifyCreateProfile(ProfileManager profileManager) {
         spellsWindowPosition = new Vector2(SPELLS_WINDOW_POSITION_X, SPELLS_WINDOW_POSITION_Y);
         inventoryWindowPosition = new Vector2(INVENTORY_WINDOW_POSITION_X, INVENTORY_WINDOW_POSITION_Y);
         equipWindowPosition = new Vector2(EQUIP_WINDOW_POSITION_X, EQUIP_WINDOW_POSITION_Y);
@@ -69,11 +69,11 @@ public class InventoryScreen implements Screen, ProfileObserver {
         statsWindowPosition = new Vector2(STATS_WINDOW_POSITION_X, STATS_WINDOW_POSITION_Y);
         calcsWindowPosition = new Vector2(CALCS_WINDOW_POSITION_X, CALCS_WINDOW_POSITION_Y);
         heroesWindowPosition = new Vector2(HEROES_WINDOW_POSITION_X, HEROES_WINDOW_POSITION_Y);
-        onNotifySave(profileManager);
+        onNotifySaveProfile(profileManager);
     }
 
     @Override
-    public void onNotifySave(ProfileManager profileManager) {
+    public void onNotifySaveProfile(ProfileManager profileManager) {
         profileManager.setProperty("spellsWindowPosition", spellsWindowPosition);
         profileManager.setProperty("inventoryWindowPosition", inventoryWindowPosition);
         profileManager.setProperty("equipWindowPosition", equipWindowPosition);
@@ -84,7 +84,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
     }
 
     @Override
-    public void onNotifyLoad(ProfileManager profileManager) {
+    public void onNotifyLoadProfile(ProfileManager profileManager) {
         spellsWindowPosition = profileManager.getProperty("spellsWindowPosition", Vector2.class);
         inventoryWindowPosition = profileManager.getProperty("inventoryWindowPosition", Vector2.class);
         equipWindowPosition = profileManager.getProperty("equipWindowPosition", Vector2.class);

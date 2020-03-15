@@ -18,10 +18,15 @@ public class PhysicsNpc extends PhysicsComponent {
     private static final float WANDER_BOX_POSITION = -96f;
 
     private Character npcCharacter;
-
     private Rectangle wanderBox;
 
-    public PhysicsNpc() {
+    final String npcId;
+    String conversationId;
+    boolean isSelected;
+
+    public PhysicsNpc(String npcId) {
+        this.npcId = npcId;
+        this.isSelected = false;
         this.velocity = Constant.MOVE_SPEED_1;
         this.boundingBoxWidthPercentage = 0.60f;
         this.boundingBoxHeightPercentage = 0.30f;
@@ -38,6 +43,9 @@ public class PhysicsNpc extends PhysicsComponent {
         if (event instanceof DirectionEvent) {
             direction = ((DirectionEvent) event).direction;
         }
+        if (event instanceof SelectEvent) {
+            isSelected = true;
+        }
     }
 
     @Override
@@ -51,12 +59,17 @@ public class PhysicsNpc extends PhysicsComponent {
         relocate(dt);
         checkObstacles();
         npcCharacter.send(new PositionEvent(currentPosition));
+        if (isSelected) {
+            isSelected = false;
+            notifyShowConversationDialog(conversationId, npcId);
+        }
     }
 
     private void initNpc(LoadCharacterEvent loadEvent) {
         state = loadEvent.state;
         currentPosition = loadEvent.position;
         direction = loadEvent.direction;
+        conversationId = loadEvent.conversationId;
 
         wanderBox = new Rectangle(currentPosition.x + WANDER_BOX_POSITION,
                                   currentPosition.y + WANDER_BOX_POSITION,

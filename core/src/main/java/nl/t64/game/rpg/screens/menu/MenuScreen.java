@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.ScreenType;
 
@@ -15,7 +16,7 @@ public abstract class MenuScreen implements Screen {
     private static final int TITLE_SIZE = 200;
     private static final String MENU_FONT = "fonts/fff_tusj.ttf";
     private static final int MENU_SIZE = 30;
-    private static boolean disposedOnce = false;
+
     final BitmapFont titleFont;
     final BitmapFont menuFont;
     final Stage stage;
@@ -53,11 +54,12 @@ public abstract class MenuScreen implements Screen {
     }
 
     @Override
-    public synchronized void dispose() {
-        if (!disposedOnce) {
+    public void dispose() {
+        try {
             titleFont.dispose();
             menuFont.dispose();
-            disposedOnce = true;
+        } catch (GdxRuntimeException e) {
+            // font is already exposed.
         }
         stage.clear();
         stage.dispose();

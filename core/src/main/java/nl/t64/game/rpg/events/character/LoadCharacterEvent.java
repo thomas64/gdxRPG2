@@ -11,17 +11,21 @@ public class LoadCharacterEvent implements Event {
     public final CharacterState state;
     public final Direction direction;
     public final Vector2 position;
+    public final String conversationId;
 
     public LoadCharacterEvent(Direction direction, Vector2 position) {
-        this.state = null;      // atm, player doesn't need a state at the start.
-        this.direction = direction;
-        this.position = position;
+        this(null, direction, position, null);
     }
 
     public LoadCharacterEvent(CharacterState state, Direction direction, Vector2 position) {
+        this(state, direction, position, null);
+    }
+
+    public LoadCharacterEvent(CharacterState state, Direction direction, Vector2 position, String conversationId) {
         this.state = state;
         this.direction = direction;
         this.position = position;
+        this.conversationId = conversationId;
     }
 
 }

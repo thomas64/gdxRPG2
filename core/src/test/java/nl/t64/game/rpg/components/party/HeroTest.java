@@ -23,7 +23,7 @@ class HeroTest extends GameTest {
     private void setup() {
         final var profileManager = new ProfileManager();
         final var gameData = new GameData();
-        gameData.onNotifyCreate(profileManager);
+        gameData.onNotifyCreateProfile(profileManager);
         heroes = gameData.getHeroes();
         party = gameData.getParty();
     }

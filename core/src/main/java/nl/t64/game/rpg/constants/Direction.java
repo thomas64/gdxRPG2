@@ -12,7 +12,12 @@ public enum Direction {
     NONE;
 
     public static Direction getRandom() {
-        int randomNumber = MathUtils.random(Direction.values().length - 2); // - 2: without NONE
+        int randomNumber = MathUtils.random(getAllDirectionsWithoutNONE());
         return Direction.values()[randomNumber];
     }
+
+    private static int getAllDirectionsWithoutNONE() {
+        return Direction.values().length - 2;
+    }
+
 }

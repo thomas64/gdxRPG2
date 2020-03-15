@@ -8,7 +8,7 @@ import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
 
 
-abstract class PhysicsComponent implements Component {
+abstract class PhysicsComponent extends ComponentSubject implements Component {
 
     CharacterState state;
     Direction direction;

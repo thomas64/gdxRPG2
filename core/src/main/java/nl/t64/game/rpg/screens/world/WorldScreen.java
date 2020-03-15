@@ -14,9 +14,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import lombok.Getter;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.character.Character;
-import nl.t64.game.rpg.components.character.GraphicsPlayer;
-import nl.t64.game.rpg.components.character.InputPlayer;
-import nl.t64.game.rpg.components.character.PhysicsPlayer;
+import nl.t64.game.rpg.components.character.*;
 import nl.t64.game.rpg.components.party.PartyContainer;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.GameState;
@@ -24,6 +22,7 @@ import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.events.character.LoadCharacterEvent;
 import nl.t64.game.rpg.screens.inventory.InventoryLoadScreen;
 import nl.t64.game.rpg.screens.menu.MenuPause;
+import nl.t64.game.rpg.screens.world.conversation.ConversationDialog;
 import nl.t64.game.rpg.screens.world.pathfinding.TiledNode;
 
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class WorldScreen implements Screen, MapObserver {
+public class WorldScreen implements Screen, MapObserver, ComponentObserver {
 
     private static final int[] UNDER_LAYERS = new int[]{0, 1, 2, 3, 4, 5};
     private static final int[] OVER_LAYERS = new int[]{6, 7, 8};
@@ -54,6 +53,7 @@ public class WorldScreen implements Screen, MapObserver {
     private List<Character> npcCharacters;
     private ShapeRenderer shapeRenderer;
     private PartyWindow partyWindow;
+    private ConversationDialog conversationDialog;
 
     private List<DefaultGraphPath<TiledNode>> partyMemberPaths;
 
@@ -67,8 +67,10 @@ public class WorldScreen implements Screen, MapObserver {
                                                               this::openInventoryScreen,
                                                               this::showHidePartyWindow));
         this.player = new Character(new InputPlayer(this.multiplexer), new PhysicsPlayer(), new GraphicsPlayer());
+        this.npcCharacters = new ArrayList<>(0);
         this.shapeRenderer = new ShapeRenderer();
         this.partyWindow = new PartyWindow();
+        this.conversationDialog = new ConversationDialog(this::show);
 
         this.debugBox = new DebugBox(this.player);
 
@@ -81,10 +83,18 @@ public class WorldScreen implements Screen, MapObserver {
         camera.setNewMapSize(currentMap.getPixelWidth(), currentMap.getPixelHeight());
         player.send(new LoadCharacterEvent(currentMap.playerSpawnDirection,
                                            currentMap.playerSpawnLocation));
+        npcCharacters.forEach(Character::unregisterObserver);
         npcCharacters = new NpcCharactersLoader(currentMap).createNpcs();
+        npcCharacters.forEach(npcCharacter -> npcCharacter.registerObserver(this));
         partyMembers = new PartyMembersLoader(player).loadPartyMembers();
-
         partyMemberPaths = new ArrayList<>(PartyContainer.MAXIMUM - 1);
+    }
+
+    @Override
+    public void onNotifyShowConversationDialog(String conversationId, String characterId) {
+        player.resetInput();
+        conversationDialog.loadConversation(conversationId, characterId);
+        conversationDialog.show();
     }
 
     @Override
@@ -109,6 +119,7 @@ public class WorldScreen implements Screen, MapObserver {
         renderObjects();
         updateDebugBox(dt);
         partyWindow.update(dt);
+        conversationDialog.update(dt);
     }
 
     public DefaultGraphPath<TiledNode> getPathOf(Character partyMember) {
@@ -235,6 +246,7 @@ public class WorldScreen implements Screen, MapObserver {
         mapRenderer.dispose();
         shapeRenderer.dispose();
         partyWindow.dispose();
+        conversationDialog.dispose();
         debugBox.dispose();
     }
 

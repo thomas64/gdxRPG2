@@ -752,67 +752,67 @@
 </data>
  </layer>
  <objectgroup color="#aa55ff" id="13" name="hero_layer">
-  <object id="118" name="luana" x="984" y="1104" width="48" height="48">
+  <object id="118" name="luana" x="984" y="1128" width="48" height="24">
    <properties>
     <property name="direction" value="south"/>
    </properties>
   </object>
-  <object id="119" name="reignald" x="1056" y="1104" width="48" height="48">
+  <object id="119" name="reignald" x="1056" y="1128" width="48" height="24">
    <properties>
     <property name="direction" value="south"/>
    </properties>
   </object>
-  <object id="120" name="ryiah" x="1128" y="1104" width="48" height="48">
+  <object id="120" name="ryiah" x="1128" y="1128" width="48" height="24">
    <properties>
     <property name="direction" value="south"/>
    </properties>
   </object>
-  <object id="121" name="valter" x="1152" y="1176" width="48" height="48">
+  <object id="121" name="valter" x="1152" y="1200" width="48" height="24">
    <properties>
     <property name="direction" value="south"/>
    </properties>
   </object>
-  <object id="122" name="galen" x="1152" y="1248" width="48" height="48">
+  <object id="122" name="galen" x="1152" y="1272" width="48" height="24">
    <properties>
     <property name="direction" value="south"/>
    </properties>
   </object>
-  <object id="123" name="jaspar" x="1128" y="1320" width="48" height="48">
+  <object id="123" name="jaspar" x="1128" y="1344" width="48" height="24">
    <properties>
     <property name="direction" value="south"/>
    </properties>
   </object>
-  <object id="124" name="kiara" x="1056" y="1320" width="48" height="48">
+  <object id="124" name="kiara" x="1056" y="1344" width="48" height="24">
    <properties>
     <property name="direction" value="south"/>
    </properties>
   </object>
-  <object id="125" name="luthais" x="984" y="1320" width="48" height="48">
+  <object id="125" name="luthais" x="984" y="1344" width="48" height="24">
    <properties>
     <property name="direction" value="south"/>
    </properties>
   </object>
-  <object id="126" name="elias" x="960" y="1248" width="48" height="48">
+  <object id="126" name="elias" x="960" y="1272" width="48" height="24">
    <properties>
     <property name="direction" value="south"/>
    </properties>
   </object>
-  <object id="127" name="onarr" x="960" y="1176" width="48" height="48">
+  <object id="127" name="onarr" x="960" y="1200" width="48" height="24">
    <properties>
     <property name="direction" value="south"/>
    </properties>
   </object>
-  <object id="128" name="duilio" x="1248" y="1200" width="48" height="48">
+  <object id="128" name="duilio" x="1248" y="1224" width="48" height="24">
    <properties>
     <property name="direction" value="south"/>
    </properties>
   </object>
-  <object id="129" name="iellwen" x="864" y="1200" width="48" height="48">
+  <object id="129" name="iellwen" x="864" y="1224" width="48" height="24">
    <properties>
     <property name="direction" value="south"/>
    </properties>
   </object>
-  <object id="130" name="faeron" type="w" x="1056" y="1488" width="48" height="48">
+  <object id="130" name="faeron" type="w" x="1056" y="1512" width="48" height="24">
    <properties>
     <property name="direction" value="south"/>
    </properties>
