@@ -51,7 +51,6 @@ public class MenuLoad extends MenuScreen {
     private ListenerKeyHorizontal listenerKeyHorizontal;
 
     private int selectedListIndex;
-    private int selectedMenuIndex;
 
     private boolean isMouseScrolled = false;
 
@@ -112,12 +111,6 @@ public class MenuLoad extends MenuScreen {
         listItems.setSelectedIndex(newIndex);
     }
 
-    private void updateMenuIndex(Integer newIndex) {
-        selectedMenuIndex = newIndex;
-        setAllTextButtonsToWhite();
-        setCurrentTextButtonToRed();
-    }
-
     private void selectMenuItem() {
         switch (selectedMenuIndex) {
             case 0 -> processLoadButton();
@@ -174,13 +167,15 @@ public class MenuLoad extends MenuScreen {
         listenerKeyVertical.updateNumberOfItems(listItems.getItems().size);
     }
 
-    private void setAllTextButtonsToWhite() {
+    @Override
+    void setAllTextButtonsToWhite() {
         for (Actor actor : bottomTable.getChildren()) {
             ((TextButton) actor).getStyle().fontColor = Color.WHITE;
         }
     }
 
-    private void setCurrentTextButtonToRed() {
+    @Override
+    void setCurrentTextButtonToRed() {
         ((TextButton) bottomTable.getChildren().get(selectedMenuIndex)).getStyle().fontColor = Constant.DARK_RED;
     }
 

@@ -36,10 +36,8 @@ public class MenuMain extends MenuScreen {
 
     private ListenerKeyVertical listenerKeyVertical;
 
-    private int selectedIndex;
-
     public MenuMain() {
-        this.selectedIndex = 0;
+        super.selectedMenuIndex = 0;
     }
 
     @Override
@@ -56,19 +54,13 @@ public class MenuMain extends MenuScreen {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(dt);
-        listenerKeyVertical.updateSelectedIndex(selectedIndex);
+        listenerKeyVertical.updateSelectedIndex(selectedMenuIndex);
         stage.draw();
-    }
-
-    private void updateIndex(Integer newIndex) {
-        selectedIndex = newIndex;
-        setAllTextButtonsToWhite();
-        setCurrentTextButtonToRed();
     }
 
     private void selectMenuItem() {
         var screenManager = Utils.getScreenManager();
-        switch (selectedIndex) {
+        switch (selectedMenuIndex) {
             case 0 -> processNewGameButton(screenManager);
             case 1 -> processLoadGameButton(screenManager);
             case 2 -> processSettingsButton(screenManager);
@@ -97,7 +89,8 @@ public class MenuMain extends MenuScreen {
         Gdx.app.exit();
     }
 
-    private void setAllTextButtonsToWhite() {
+    @Override
+    void setAllTextButtonsToWhite() {
         for (Actor actor : table.getChildren()) {
             if (actor instanceof TextButton) {
                 ((TextButton) actor).getStyle().fontColor = Color.WHITE;
@@ -105,10 +98,11 @@ public class MenuMain extends MenuScreen {
         }
     }
 
-    private void setCurrentTextButtonToRed() {
-        selectedIndex += 1; // because the title is also in the table.
-        ((TextButton) table.getChildren().get(selectedIndex)).getStyle().fontColor = Constant.DARK_RED;
-        selectedIndex -= 1;
+    @Override
+    void setCurrentTextButtonToRed() {
+        selectedMenuIndex += 1; // because the title is also in the table.
+        ((TextButton) table.getChildren().get(selectedMenuIndex)).getStyle().fontColor = Constant.DARK_RED;
+        selectedMenuIndex -= 1;
     }
 
     private Table createTable() {
@@ -137,13 +131,13 @@ public class MenuMain extends MenuScreen {
     }
 
     private void applyListeners() {
-        listenerKeyVertical = new ListenerKeyVertical(this::updateIndex, NUMBER_OF_ITEMS);
+        listenerKeyVertical = new ListenerKeyVertical(this::updateMenuIndex, NUMBER_OF_ITEMS);
         table.addListener(listenerKeyVertical);
-        table.addListener(new ListenerKeyConfirm(this::updateIndex, this::selectMenuItem, EXIT_INDEX));
-        newGameButton.addListener(new ListenerMouseTextButton(this::updateIndex, this::selectMenuItem, 0));
-        loadGameButton.addListener(new ListenerMouseTextButton(this::updateIndex, this::selectMenuItem, 1));
-        settingsButton.addListener(new ListenerMouseTextButton(this::updateIndex, this::selectMenuItem, 2));
-        exitButton.addListener(new ListenerMouseTextButton(this::updateIndex, this::selectMenuItem, 3));
+        table.addListener(new ListenerKeyConfirm(this::updateMenuIndex, this::selectMenuItem, EXIT_INDEX));
+        newGameButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 0));
+        loadGameButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 1));
+        settingsButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 2));
+        exitButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 3));
     }
 
 }

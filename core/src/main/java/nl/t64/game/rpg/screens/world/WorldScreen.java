@@ -21,7 +21,6 @@ import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.events.character.LoadCharacterEvent;
 import nl.t64.game.rpg.events.character.PathUpdateEvent;
 import nl.t64.game.rpg.screens.inventory.InventoryLoadScreen;
-import nl.t64.game.rpg.screens.menu.MenuPause;
 import nl.t64.game.rpg.screens.world.conversation.ConversationDialog;
 import nl.t64.game.rpg.screens.world.pathfinding.TiledNode;
 
@@ -182,10 +181,10 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
 
     private void openMenuPause() {
         player.resetInput();
-        var menuPause = (MenuPause) Utils.getScreenManager().getScreen(ScreenType.MENU_PAUSE);
+        var menuPause = Utils.getScreenManager().getMenuScreen(ScreenType.MENU_PAUSE);
         menuPause.setBackground(createScreenshot(true));
         Utils.getScreenManager().setScreen(ScreenType.MENU_PAUSE);
-        menuPause.updateIndex(0);
+        menuPause.updateMenuIndex(0);
     }
 
     private void openInventoryScreen() {

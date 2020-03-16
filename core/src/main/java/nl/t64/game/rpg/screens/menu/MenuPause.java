@@ -35,10 +35,8 @@ public class MenuPause extends MenuScreen {
 
     private ListenerKeyVertical listenerKeyVertical;
 
-    private int selectedIndex;
-
     public MenuPause() {
-        this.selectedIndex = 0;
+        super.selectedMenuIndex = 0;
     }
 
     @Override
@@ -56,20 +54,14 @@ public class MenuPause extends MenuScreen {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(dt);
-        listenerKeyVertical.updateSelectedIndex(selectedIndex);
+        listenerKeyVertical.updateSelectedIndex(selectedMenuIndex);
         progressLostDialog.update(); // for updating the index in de listener.
         stage.draw();
     }
 
-    public void updateIndex(Integer newIndex) {
-        selectedIndex = newIndex;
-        setAllTextButtonsToWhite();
-        setCurrentTextButtonToRed();
-    }
-
     private void selectMenuItem() {
         var screenManager = Utils.getScreenManager();
-        switch (selectedIndex) {
+        switch (selectedMenuIndex) {
             case 0 -> processContinueButton(screenManager);
             case 1 -> processLoadGameButton(screenManager);
             case 2 -> processSettingsButton(screenManager);
@@ -104,14 +96,16 @@ public class MenuPause extends MenuScreen {
         Utils.getScreenManager().setScreen(ScreenType.MENU_MAIN);
     }
 
-    private void setAllTextButtonsToWhite() {
+    @Override
+    void setAllTextButtonsToWhite() {
         for (Actor actor : table.getChildren()) {
             ((TextButton) actor).getStyle().fontColor = Color.WHITE;
         }
     }
 
-    private void setCurrentTextButtonToRed() {
-        ((TextButton) table.getChildren().get(selectedIndex)).getStyle().fontColor = Constant.DARK_RED;
+    @Override
+    void setCurrentTextButtonToRed() {
+        ((TextButton) table.getChildren().get(selectedMenuIndex)).getStyle().fontColor = Constant.DARK_RED;
     }
 
     private Table createTable() {
@@ -137,13 +131,13 @@ public class MenuPause extends MenuScreen {
     }
 
     private void applyListeners() {
-        listenerKeyVertical = new ListenerKeyVertical(this::updateIndex, NUMBER_OF_ITEMS);
+        listenerKeyVertical = new ListenerKeyVertical(this::updateMenuIndex, NUMBER_OF_ITEMS);
         table.addListener(listenerKeyVertical);
-        table.addListener(new ListenerKeyConfirm(this::updateIndex, this::selectMenuItem, EXIT_INDEX));
-        continueButton.addListener(new ListenerMouseTextButton(this::updateIndex, this::selectMenuItem, 0));
-        loadGameButton.addListener(new ListenerMouseTextButton(this::updateIndex, this::selectMenuItem, 1));
-        settingsButton.addListener(new ListenerMouseTextButton(this::updateIndex, this::selectMenuItem, 2));
-        mainMenuButton.addListener(new ListenerMouseTextButton(this::updateIndex, this::selectMenuItem, 3));
+        table.addListener(new ListenerKeyConfirm(this::updateMenuIndex, this::selectMenuItem, EXIT_INDEX));
+        continueButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 0));
+        loadGameButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 1));
+        settingsButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 2));
+        mainMenuButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 3));
     }
 
 }

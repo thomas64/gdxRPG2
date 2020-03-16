@@ -29,10 +29,8 @@ public class MenuSettings extends MenuScreen {
 
     private ListenerKeyVertical listenerKeyVertical;
 
-    private int selectedIndex;
-
     public MenuSettings() {
-        this.selectedIndex = 1;
+        super.selectedMenuIndex = 1;
     }
 
     @Override
@@ -54,18 +52,12 @@ public class MenuSettings extends MenuScreen {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(dt);
-        listenerKeyVertical.updateSelectedIndex(selectedIndex);
+        listenerKeyVertical.updateSelectedIndex(selectedMenuIndex);
         stage.draw();
     }
 
-    private void updateIndex(Integer newIndex) {
-        selectedIndex = newIndex;
-        setAllTextButtonsToWhite();
-        setCurrentTextButtonToRed();
-    }
-
     private void selectMenuItem() {
-        switch (selectedIndex) {
+        switch (selectedMenuIndex) {
             case 0 -> processFullscreenButton();
             case 1 -> processBackButton();
             default -> throw new IllegalArgumentException("SelectedIndex not found.");
@@ -85,14 +77,16 @@ public class MenuSettings extends MenuScreen {
         fromScreen = null;
     }
 
-    private void setAllTextButtonsToWhite() {
+    @Override
+    void setAllTextButtonsToWhite() {
         for (Actor actor : table.getChildren()) {
             ((TextButton) actor).getStyle().fontColor = Color.WHITE;
         }
     }
 
-    private void setCurrentTextButtonToRed() {
-        ((TextButton) table.getChildren().get(selectedIndex)).getStyle().fontColor = Constant.DARK_RED;
+    @Override
+    void setCurrentTextButtonToRed() {
+        ((TextButton) table.getChildren().get(selectedMenuIndex)).getStyle().fontColor = Constant.DARK_RED;
     }
 
     private Table createTable() {
@@ -114,11 +108,11 @@ public class MenuSettings extends MenuScreen {
     }
 
     private void applyListeners() {
-        listenerKeyVertical = new ListenerKeyVertical(this::updateIndex, NUMBER_OF_ITEMS);
+        listenerKeyVertical = new ListenerKeyVertical(this::updateMenuIndex, NUMBER_OF_ITEMS);
         table.addListener(listenerKeyVertical);
-        table.addListener(new ListenerKeyConfirm(this::updateIndex, this::selectMenuItem, EXIT_INDEX));
-        fullscreenButton.addListener(new ListenerMouseTextButton(this::updateIndex, this::selectMenuItem, 0));
-        backButton.addListener(new ListenerMouseTextButton(this::updateIndex, this::selectMenuItem, 1));
+        table.addListener(new ListenerKeyConfirm(this::updateMenuIndex, this::selectMenuItem, EXIT_INDEX));
+        fullscreenButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 0));
+        backButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 1));
     }
 
 }

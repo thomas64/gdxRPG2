@@ -47,7 +47,6 @@ public class MenuNew extends MenuScreen {
 
     private String finalProfileName;
     private StringBuilder profileName;
-    private int selectedIndex;
 
     @Override
     void setupScreen() {
@@ -64,7 +63,7 @@ public class MenuNew extends MenuScreen {
         profileName = new StringBuilder("_");
         updateInput(profileName);
 
-        selectedIndex = 0;
+        super.selectedMenuIndex = 0;
         setCurrentTextButtonToRed();
     }
 
@@ -74,7 +73,7 @@ public class MenuNew extends MenuScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(dt);
         listenerKeyInputField.updateInputField(profileName);
-        listenerKeyHorizontal.updateSelectedIndex(selectedIndex);
+        listenerKeyHorizontal.updateSelectedIndex(selectedMenuIndex);
         overwriteDialog.update(); // for updating the index in de listener.
         stage.draw();
     }
@@ -84,14 +83,8 @@ public class MenuNew extends MenuScreen {
         profileText.setText(profileName.toString());
     }
 
-    private void updateIndex(Integer newIndex) {
-        selectedIndex = newIndex;
-        setAllTextButtonsToWhite();
-        setCurrentTextButtonToRed();
-    }
-
     private void selectMenuItem() {
-        switch (selectedIndex) {
+        switch (selectedMenuIndex) {
             case 0 -> processStartButton();
             case 1 -> processBackButton();
             default -> throw new IllegalArgumentException("SelectedIndex not found.");
@@ -117,16 +110,18 @@ public class MenuNew extends MenuScreen {
         Utils.getProfileManager().createNewProfile(finalProfileName);
     }
 
-    private void setAllTextButtonsToWhite() {
+    @Override
+    void setAllTextButtonsToWhite() {
         Table lowerTable = (Table) table.getChildren().get(1); // two tables inside the table, get the second.
         for (Actor actor : lowerTable.getChildren()) {
             ((TextButton) actor).getStyle().fontColor = Color.WHITE;
         }
     }
 
-    private void setCurrentTextButtonToRed() {
+    @Override
+    void setCurrentTextButtonToRed() {
         Table lowerTable = (Table) table.getChildren().get(1); // two tables inside the table, get the second.
-        ((TextButton) lowerTable.getChildren().get(selectedIndex)).getStyle().fontColor = Constant.DARK_RED;
+        ((TextButton) lowerTable.getChildren().get(selectedMenuIndex)).getStyle().fontColor = Constant.DARK_RED;
     }
 
     private Table createTable() {
@@ -183,12 +178,12 @@ public class MenuNew extends MenuScreen {
 
     private void applyListeners() {
         listenerKeyInputField = new ListenerKeyInputField(this::updateInput, PROFILE_INPUT_LENGTH);
-        listenerKeyHorizontal = new ListenerKeyHorizontal(this::updateIndex, NUMBER_OF_ITEMS);
+        listenerKeyHorizontal = new ListenerKeyHorizontal(this::updateMenuIndex, NUMBER_OF_ITEMS);
         table.addListener(listenerKeyInputField);
         table.addListener(listenerKeyHorizontal);
-        table.addListener(new ListenerKeyConfirm(this::updateIndex, this::selectMenuItem, EXIT_INDEX));
-        startButton.addListener(new ListenerMouseTextButton(this::updateIndex, this::selectMenuItem, 0));
-        backButton.addListener(new ListenerMouseTextButton(this::updateIndex, this::selectMenuItem, 1));
+        table.addListener(new ListenerKeyConfirm(this::updateMenuIndex, this::selectMenuItem, EXIT_INDEX));
+        startButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 0));
+        backButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 1));
     }
 
 }

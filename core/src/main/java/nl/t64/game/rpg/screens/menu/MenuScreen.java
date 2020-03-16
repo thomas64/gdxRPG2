@@ -21,6 +21,7 @@ public abstract class MenuScreen implements Screen {
     final BitmapFont menuFont;
     final Stage stage;
     Image screenshot;
+    int selectedMenuIndex;
 
     MenuScreen() {
         this.stage = new Stage();
@@ -37,15 +38,23 @@ public abstract class MenuScreen implements Screen {
         stage.addActor(screenshot);
     }
 
+    public void updateMenuIndex(Integer newIndex) {
+        selectedMenuIndex = newIndex;
+        setAllTextButtonsToWhite();
+        setCurrentTextButtonToRed();
+    }
+
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
         setupScreen();
     }
 
-    void setupScreen() {
-        // empty
-    }
+    abstract void setupScreen();
+
+    abstract void setAllTextButtonsToWhite();
+
+    abstract void setCurrentTextButtonToRed();
 
     @Override
     public void hide() {
