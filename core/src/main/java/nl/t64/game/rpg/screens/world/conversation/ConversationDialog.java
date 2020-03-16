@@ -27,10 +27,11 @@ public class ConversationDialog {
     private static final String SPRITE_TRANSPARENT = "sprites/transparent.png";
     private static final String CONVERSATION_FONT = "fonts/fff_tusj.ttf";
     private static final int FONT_SIZE = 30;
-    private static final float PAD = 50f;
+    private static final float DIALOG_WIDTH = 1000f;
+    private static final float DIALOG_HEIGHT = 300f;
+    private static final float PAD = 25f;
     private static final float FACE_SIZE = 144f;
-    private static final float CHOICE_SPACE = 20f;
-    private static final float ALL_PADS = 100f + 144f + 50f + 100f;
+    private static final float ALL_PADS = 50f + 144f + 25f + 25f;
     private static final String CLOSE_DIALOG = "999";
 
     private final Stage stage;
@@ -66,7 +67,6 @@ public class ConversationDialog {
     public void show() {
         Gdx.input.setInputProcessor(stage);
         dialog.show(stage, Actions.sequence(Actions.alpha(0), Actions.fadeIn(0.4f, Interpolation.fade)));
-        dialog.setPosition(0f, 0f);
     }
 
     public void update(float dt) {
@@ -113,20 +113,14 @@ public class ConversationDialog {
         scrollPane.setScrollBarPositions(false, true);
 
         // table
-        final float dialogWidth = Gdx.graphics.getWidth();
-        final float dialogHeight = Gdx.graphics.getHeight() / 4f;
-
         var mainTable = new Table();
-        var sprite = new Sprite(Utils.getResourceManager().getTextureAsset(SPRITE_PARCHMENT));
-        sprite.setSize(dialogWidth, dialogHeight);
-        mainTable.setBackground(new SpriteDrawable(sprite));
         mainTable.left();
         mainTable.add(characterFace).width(FACE_SIZE).padLeft(PAD * 2f);
 
         var textTable = new Table();
-        textTable.pad(PAD / 2f, PAD, PAD / 2f, PAD * 2f);
-        textTable.add(label).width(dialogWidth - ALL_PADS).row();
-        textTable.add().height(CHOICE_SPACE).row();
+        textTable.pad(PAD);
+        textTable.add(label).width(DIALOG_WIDTH - ALL_PADS).row();
+        textTable.add().height(PAD).row();
         textTable.add(scrollPane).left().padLeft(PAD);
         mainTable.add(textTable);
 
@@ -137,7 +131,11 @@ public class ConversationDialog {
         newDialog.setModal(true);
         newDialog.setMovable(false);
         newDialog.setResizable(false);
-        newDialog.add(mainTable);
+        var sprite = new Sprite(Utils.getResourceManager().getTextureAsset(SPRITE_PARCHMENT));
+        sprite.setSize(DIALOG_WIDTH, DIALOG_HEIGHT);
+        newDialog.setBackground(new SpriteDrawable(sprite));
+        newDialog.getContentTable().add(mainTable);
+        newDialog.setPosition((Gdx.graphics.getWidth() / 2f) - (DIALOG_WIDTH / 2f), 0f);
         return newDialog;
     }
 
