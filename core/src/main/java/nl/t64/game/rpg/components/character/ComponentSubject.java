@@ -24,4 +24,7 @@ class ComponentSubject {
         observers.forEach(observer -> observer.onNotifyShowConversationDialog(conversationId, characterId));
     }
 
+    void notifyPartySwap(Character heroCharacter) {
+        observers.forEach(observer -> observer.onNotifyPartySwap(heroCharacter));
+    }
 }

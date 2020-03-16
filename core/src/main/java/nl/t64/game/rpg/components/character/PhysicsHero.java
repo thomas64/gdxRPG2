@@ -36,7 +36,7 @@ public class PhysicsHero extends PhysicsNpc {
             isSelected = false;
             heroes.removeHero(npcId);
             party.addHero(hero);
-            Utils.getScreenManager().getWorldScreen().updateAfterPartySwap(heroCharacter);
+            notifyPartySwap(heroCharacter);
         }
     }
 

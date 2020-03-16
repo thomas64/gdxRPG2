@@ -95,6 +95,15 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
     }
 
     @Override
+    public void onNotifyPartySwap(Character heroCharacter) {
+        Utils.getMapManager().removeFromBlockers(heroCharacter.getBoundingBox());
+        npcCharacters = npcCharacters.stream()
+                                     .filter(npcCharacter -> !npcCharacter.equals(heroCharacter))
+                                     .collect(Collectors.toUnmodifiableList());
+        partyMembers = new PartyMembersLoader(player).loadPartyMembers();
+    }
+
+    @Override
     public void show() {
         gameState = GameState.RUNNING;
         Gdx.input.setInputProcessor(multiplexer);
@@ -124,14 +133,6 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
         theOtherCharacters.add(player);
         theOtherCharacters.remove(thisNpcCharacter);
         return Collections.unmodifiableList(theOtherCharacters);
-    }
-
-    public void updateAfterPartySwap(Character heroCharacter) {
-        Utils.getMapManager().removeFromBlockers(heroCharacter.getBoundingBox());
-        npcCharacters = npcCharacters.stream()
-                                     .filter(npcCharacter -> !npcCharacter.equals(heroCharacter))
-                                     .collect(Collectors.toUnmodifiableList());
-        partyMembers = new PartyMembersLoader(player).loadPartyMembers();
     }
 
     private void updateCharacters(float dt) {

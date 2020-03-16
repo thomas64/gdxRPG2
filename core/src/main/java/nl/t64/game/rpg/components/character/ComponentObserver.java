@@ -5,4 +5,6 @@ public interface ComponentObserver {
 
     void onNotifyShowConversationDialog(String conversationId, String characterId);
 
+    void onNotifyPartySwap(Character heroCharacter);
+
 }
