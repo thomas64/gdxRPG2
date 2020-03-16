@@ -1,18 +1,22 @@
 package nl.t64.game.rpg.components.character;
 
+import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.CharacterState;
+import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.*;
+import nl.t64.game.rpg.screens.world.pathfinding.TiledNode;
 
 
 public class PhysicsPartyMember extends PhysicsComponent {
 
     private Character partyMember;
+    private DefaultGraphPath<TiledNode> path;
 
     public PhysicsPartyMember() {
         this.boundingBoxWidthPercentage = 0.70f;
@@ -35,6 +39,9 @@ public class PhysicsPartyMember extends PhysicsComponent {
         }
         if (event instanceof SpeedEvent) {
             velocity = ((SpeedEvent) event).moveSpeed;
+        }
+        if (event instanceof PathUpdateEvent) {
+            path = ((PathUpdateEvent) event).path;
         }
     }
 
@@ -127,6 +134,12 @@ public class PhysicsPartyMember extends PhysicsComponent {
     public void debug(ShapeRenderer shapeRenderer) {
         shapeRenderer.setColor(Color.YELLOW);
         shapeRenderer.rect(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
+        shapeRenderer.setColor(Color.MAGENTA);
+        for (TiledNode tiledNode : path) {
+            final int x = (int) (tiledNode.x * (Constant.TILE_SIZE / 2f));
+            final int y = (int) (tiledNode.y * (Constant.TILE_SIZE / 2f));
+            shapeRenderer.rect(x, y, Constant.TILE_SIZE / 2f, Constant.TILE_SIZE / 2f);
+        }
     }
 
 }

@@ -2,11 +2,11 @@ package nl.t64.game.rpg.components.character;
 
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.math.Vector2;
-import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.DirectionEvent;
+import nl.t64.game.rpg.events.character.PathUpdateEvent;
 import nl.t64.game.rpg.events.character.StateEvent;
 import nl.t64.game.rpg.screens.world.pathfinding.TiledNode;
 
@@ -17,10 +17,13 @@ public class InputPartyMember extends InputComponent {
     private static final int SECOND_NODE = 1;
 
     private Character partyMember;
+    private DefaultGraphPath<TiledNode> path;
 
     @Override
     public void receive(Event event) {
-        // empty
+        if (event instanceof PathUpdateEvent) {
+            path = ((PathUpdateEvent) event).path;
+        }
     }
 
     @Override
@@ -35,15 +38,14 @@ public class InputPartyMember extends InputComponent {
     }
 
     private void setStateAndDirection() {
-        final DefaultGraphPath<TiledNode> path = Utils.getScreenManager().getWorldScreen().getPathOf(partyMember);
         if (path.getCount() > TWO_NODES) {
-            setWalking(path);
+            setWalking();
         } else {
             setIdle();
         }
     }
 
-    private void setWalking(DefaultGraphPath<TiledNode> path) {
+    private void setWalking() {
         final TiledNode tiledNode = path.get(SECOND_NODE);
         final Vector2 nodePosition = new Vector2(tiledNode.x, tiledNode.y);
         final Vector2 currentGridPosition = new Vector2(partyMember.getPositionInGrid());

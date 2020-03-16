@@ -15,11 +15,11 @@ import lombok.Getter;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.character.Character;
 import nl.t64.game.rpg.components.character.*;
-import nl.t64.game.rpg.components.party.PartyContainer;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.GameState;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.events.character.LoadCharacterEvent;
+import nl.t64.game.rpg.events.character.PathUpdateEvent;
 import nl.t64.game.rpg.screens.inventory.InventoryLoadScreen;
 import nl.t64.game.rpg.screens.menu.MenuPause;
 import nl.t64.game.rpg.screens.world.conversation.ConversationDialog;
@@ -55,8 +55,6 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
     private PartyWindow partyWindow;
     private ConversationDialog conversationDialog;
 
-    private List<DefaultGraphPath<TiledNode>> partyMemberPaths;
-
     private DebugBox debugBox;
 
     public WorldScreen() {
@@ -87,7 +85,6 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
         npcCharacters = new NpcCharactersLoader(currentMap).createNpcs();
         npcCharacters.forEach(npcCharacter -> npcCharacter.registerObserver(this));
         partyMembers = new PartyMembersLoader(player).loadPartyMembers();
-        partyMemberPaths = new ArrayList<>(PartyContainer.MAXIMUM - 1);
     }
 
     @Override
@@ -122,29 +119,6 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
         conversationDialog.update(dt);
     }
 
-    public DefaultGraphPath<TiledNode> getPathOf(Character partyMember) {
-        final int index = partyMembers.indexOf(partyMember);
-        final Vector2 startPoint = partyMembers.get(index).getPositionInGrid();
-        final Vector2 endPoint;
-        if (index == 0) {
-            endPoint = player.getPositionInGrid();
-        } else {
-            endPoint = partyMembers.get(index - 1).getPositionInGrid();
-        }
-        final GameMap currentMap = Utils.getMapManager().currentMap;
-        if (!currentMap.isOutsideMap(endPoint)) {
-            final DefaultGraphPath<TiledNode> path = currentMap.tiledGraph.findPath(startPoint, endPoint);
-            try {
-                partyMemberPaths.set(index, path);
-            } catch (IndexOutOfBoundsException e) {
-                partyMemberPaths.add(path);
-            }
-            return path;
-        } else {
-            return new DefaultGraphPath<>(0);
-        }
-    }
-
     public List<Character> createCopyOfCharactersWithPlayerButWithoutThisNpc(Character thisNpcCharacter) {
         var theOtherCharacters = new ArrayList<>(npcCharacters);
         theOtherCharacters.add(player);
@@ -163,7 +137,20 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
     private void updateCharacters(float dt) {
         player.update(dt);
         npcCharacters.forEach(npcCharacter -> npcCharacter.update(dt));
+        partyMembers.forEach(partyMember -> partyMember.send(new PathUpdateEvent(getPathOf(partyMember))));
         partyMembers.forEach(partyMember -> partyMember.update(dt));
+    }
+
+    private DefaultGraphPath<TiledNode> getPathOf(Character partyMember) {
+        final Vector2 startPoint = partyMember.getPositionInGrid();
+        final Vector2 endPoint;
+        final int index = partyMembers.indexOf(partyMember);
+        if (index == 0) {
+            endPoint = player.getPositionInGrid();
+        } else {
+            endPoint = partyMembers.get(index - 1).getPositionInGrid();
+        }
+        return Utils.getMapManager().currentMap.tiledGraph.findPath(startPoint, endPoint);
     }
 
     private void updateCameraPosition() {
@@ -286,19 +273,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
             npcCharacters.forEach(npcCharacter -> npcCharacter.debug(shapeRenderer));
             partyMembers.forEach(partyMember -> partyMember.debug(shapeRenderer));
             Utils.getMapManager().currentMap.debug(shapeRenderer);
-            renderPaths();
             shapeRenderer.end();
-        }
-    }
-
-    private void renderPaths() {
-        shapeRenderer.setColor(Color.MAGENTA);
-        for (DefaultGraphPath<TiledNode> path : partyMemberPaths) {
-            for (TiledNode tiledNode : path) {
-                final int x = (int) (tiledNode.x * (Constant.TILE_SIZE / 2f));
-                final int y = (int) (tiledNode.y * (Constant.TILE_SIZE / 2f));
-                shapeRenderer.rect(x, y, Constant.TILE_SIZE / 2f, Constant.TILE_SIZE / 2f);
-            }
         }
     }
 
