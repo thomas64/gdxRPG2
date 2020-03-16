@@ -128,7 +128,8 @@ public class PhysicsNpc extends PhysicsComponent {
     @Override
     public void debug(ShapeRenderer shapeRenderer) {
         shapeRenderer.setColor(Color.PURPLE);
-        if (!state.equals(CharacterState.IMMOBILE)) {
+        if (!state.equals(CharacterState.IMMOBILE)
+                && !state.equals(CharacterState.FLOATING)) {
             shapeRenderer.rect(wanderBox.x, wanderBox.y, wanderBox.width, wanderBox.height);
         }
         shapeRenderer.setColor(Color.YELLOW);

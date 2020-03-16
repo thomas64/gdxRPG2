@@ -137,7 +137,7 @@ public class PhysicsPlayer extends PhysicsComponent {
     private void checkBlocker(float dt) {
         List<Rectangle> blockers = Utils.getMapManager().getBlockers();
         List<Rectangle> walkingBlockers = npcCharacters.stream()
-                                                       .filter(stateIsNotImmobile())
+                                                       .filter(stateIsNotImmobileAndFloating())
                                                        .map(Character::getBoundingBox)
                                                        .collect(Collectors.toList());
 
@@ -152,8 +152,9 @@ public class PhysicsPlayer extends PhysicsComponent {
         possibleMoveBack(blockers, walkingBlockers);
     }
 
-    private Predicate<Character> stateIsNotImmobile() {
-        return npcCharacter -> !npcCharacter.getState().equals(CharacterState.IMMOBILE);
+    private Predicate<Character> stateIsNotImmobileAndFloating() {
+        return npcCharacter -> !npcCharacter.getState().equals(CharacterState.IMMOBILE)
+                && !npcCharacter.getState().equals(CharacterState.FLOATING);
     }
 
     private void possibleMoveSide(List<Rectangle> copyBlockers, List<Rectangle> copyWalkingBlockers, float dt) {

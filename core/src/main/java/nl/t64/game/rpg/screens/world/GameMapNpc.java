@@ -38,6 +38,8 @@ class GameMapNpc {
             return CharacterState.IMMOBILE;
         } else if (characterState.equalsIgnoreCase("w")) {
             return CharacterState.getRandom();
+        } else if (characterState.equalsIgnoreCase("f")) {
+            return CharacterState.FLOATING;
         } else {
             throw new IllegalArgumentException(String.format("CharacterState '%s' unknown.", characterState));
         }

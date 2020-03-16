@@ -57,7 +57,7 @@ public class InputNpc extends InputComponent {
                 state = CharacterState.WALKING;
                 direction = Direction.getRandom();
             }
-            case IMMOBILE -> direction = originalDirection;
+            case IMMOBILE, FLOATING -> direction = originalDirection;
             case ALIGNING -> throw new IllegalArgumentException("CharacterState 'ALIGNING' is not usable.");
         }
     }

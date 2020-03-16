@@ -8,11 +8,16 @@ public enum CharacterState {
     WALKING,
 
     IMMOBILE,
+    FLOATING,
     ALIGNING;
 
     public static CharacterState getRandom() {
-        int randomNumber = MathUtils.random(CharacterState.values().length - 3); // - 3: only IDLE and WALKING
+        int randomNumber = MathUtils.random(getOnlyIDLEandWALKING());
         return CharacterState.values()[randomNumber];
+    }
+
+    private static int getOnlyIDLEandWALKING() {
+        return CharacterState.values().length - 4;
     }
 
 }

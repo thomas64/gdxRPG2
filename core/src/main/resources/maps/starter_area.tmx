@@ -277,7 +277,7 @@
 </data>
  </layer>
  <objectgroup color="#55ff7f" id="15" name="npc_layer">
-  <object id="36" name="fairy01" x="384" y="240" width="48" height="24">
+  <object id="36" name="fairy01" type="f" x="384" y="240" width="48" height="24">
    <properties>
     <property name="conversation" value="introduction01"/>
     <property name="direction" value="south"/>
