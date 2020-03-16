@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.InventoryItem;
-import nl.t64.game.rpg.constants.ScreenType;
 
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
@@ -19,7 +18,7 @@ final class InventoryWriter {
     }
 
     static void storeToGameData() {
-        InventoryScreen inventoryScreen = ((InventoryScreen) Utils.getScreenManager().getScreen(ScreenType.INVENTORY));
+        var inventoryScreen = Utils.getScreenManager().getInventoryScreen();
         Table inventorySlotsTable = inventoryScreen.inventoryUI.inventorySlotsTable.inventorySlots;
         Table equipSlotsTable =
                 inventoryScreen.inventoryUI.equipSlotsTables.get(InventoryUtils.selectedHero.getId()).equipSlots;

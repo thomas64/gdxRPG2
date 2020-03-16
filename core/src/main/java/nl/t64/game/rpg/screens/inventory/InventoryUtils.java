@@ -3,7 +3,6 @@ package nl.t64.game.rpg.screens.inventory;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.PartyContainer;
-import nl.t64.game.rpg.constants.ScreenType;
 
 
 final class InventoryUtils {
@@ -24,7 +23,7 @@ final class InventoryUtils {
     }
 
     static void updateSelectedHero(HeroItem newSelectedHero) {
-        var inventoryScreen = ((InventoryScreen) Utils.getScreenManager().getScreen(ScreenType.INVENTORY));
+        var inventoryScreen = Utils.getScreenManager().getInventoryScreen();
         var equipWindow = inventoryScreen.inventoryUI.equipWindow;
         var equipSlotsTables = inventoryScreen.inventoryUI.equipSlotsTables;
 
@@ -35,7 +34,7 @@ final class InventoryUtils {
 
     static void handleDoubleClickInventory(InventorySlot clickedSlot) {
         clickedSlot.getPossibleInventoryImage().ifPresent(inventoryImage -> {
-            var inventoryScreen = ((InventoryScreen) Utils.getScreenManager().getScreen(ScreenType.INVENTORY));
+            var inventoryScreen = Utils.getScreenManager().getInventoryScreen();
             var equipSlotsTable = inventoryScreen.inventoryUI.equipSlotsTables.get(selectedHero.getId());
             equipSlotsTable.getPossibleSlotOfGroup(inventoryImage.inventoryGroup).ifPresent(targetSlot -> {
                 clickedSlot.decrementAmount();
@@ -46,7 +45,7 @@ final class InventoryUtils {
 
     static void handleDoubleClickEquip(InventorySlot clickedSlot) {
         clickedSlot.getPossibleInventoryImage().ifPresent(inventoryImage -> {
-            var inventoryScreen = ((InventoryScreen) Utils.getScreenManager().getScreen(ScreenType.INVENTORY));
+            var inventoryScreen = Utils.getScreenManager().getInventoryScreen();
             var inventorySlotsTable = inventoryScreen.inventoryUI.inventorySlotsTable;
             inventorySlotsTable.getPossibleEmptySlot().ifPresent(targetSlot -> {
                 clickedSlot.decrementAmount();

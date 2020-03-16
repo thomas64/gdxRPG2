@@ -39,7 +39,7 @@ public class InventoryLoadScreen implements Screen {
     private void loadInventoryScreen() {
         timer++;
         if (timer > 1) {
-            var inventoryScreen = (InventoryScreen) Utils.getScreenManager().getScreen(ScreenType.INVENTORY);
+            var inventoryScreen = Utils.getScreenManager().getInventoryScreen();
             inventoryScreen.setBackground((Image) stage.getActors().get(0));
             Utils.getScreenManager().setScreen(ScreenType.INVENTORY);
         }
