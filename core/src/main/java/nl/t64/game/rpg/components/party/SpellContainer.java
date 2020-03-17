@@ -30,7 +30,7 @@ class SpellContainer {
         }
     }
 
-    private static Class getClassOf(String spellName) throws ClassNotFoundException {
+    private static Class<?> getClassOf(String spellName) throws ClassNotFoundException {
         return SpellItem.getSpellClass(getCamelCaseOf(spellName));
     }
 

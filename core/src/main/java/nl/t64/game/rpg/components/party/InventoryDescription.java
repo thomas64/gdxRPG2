@@ -36,36 +36,51 @@ public class InventoryDescription {
 
     private ThreeState compare(InventoryItem item1, InventoryItem item2) {
         if (value instanceof Integer) {
-
             if (key instanceof StatItemId) {
-                StatItemId statItemId = (StatItemId) key;
-                if (item1.getAttributeOfStatItemId(statItemId) < item2.getAttributeOfStatItemId(statItemId)) {
-                    return ThreeState.LESS;
-                } else if (item1.getAttributeOfStatItemId(statItemId) > item2.getAttributeOfStatItemId(statItemId)) {
-                    return ThreeState.MORE;
-                }
-
+                return compareStats(item1, item2);
             } else if (key instanceof SkillItemId) {
-                SkillItemId skillItemId = (SkillItemId) key;
-                if (item1.getAttributeOfSkillItemId(skillItemId) < item2.getAttributeOfSkillItemId(skillItemId)) {
-                    return ThreeState.LESS;
-                } else if (item1.getAttributeOfSkillItemId(skillItemId) > item2.getAttributeOfSkillItemId(skillItemId)) {
-                    return ThreeState.MORE;
-                }
-
+                return compareSkills(item1, item2);
             } else if (key instanceof CalcAttributeId) {
-                CalcAttributeId calcAttributeId = (CalcAttributeId) key;
-                if (calcAttributeId.equals(CalcAttributeId.WEIGHT)) {
-                    return ThreeState.SAME;
-                }
-                if (item1.getAttributeOfCalcAttributeId(calcAttributeId) < item2.getAttributeOfCalcAttributeId(calcAttributeId)) {
-                    return ThreeState.LESS;
-                } else if (item1.getAttributeOfCalcAttributeId(calcAttributeId) > item2.getAttributeOfCalcAttributeId(calcAttributeId)) {
-                    return ThreeState.MORE;
-                }
+                return compareCalcs(item1, item2);
             }
         }
         return ThreeState.SAME;
+    }
+
+    private ThreeState compareStats(InventoryItem item1, InventoryItem item2) {
+        StatItemId statItemId = (StatItemId) key;
+        if (item1.getAttributeOfStatItemId(statItemId) < item2.getAttributeOfStatItemId(statItemId)) {
+            return ThreeState.LESS;
+        } else if (item1.getAttributeOfStatItemId(statItemId) > item2.getAttributeOfStatItemId(statItemId)) {
+            return ThreeState.MORE;
+        } else {
+            return ThreeState.SAME;
+        }
+    }
+
+    private ThreeState compareSkills(InventoryItem item1, InventoryItem item2) {
+        SkillItemId skillItemId = (SkillItemId) key;
+        if (item1.getAttributeOfSkillItemId(skillItemId) < item2.getAttributeOfSkillItemId(skillItemId)) {
+            return ThreeState.LESS;
+        } else if (item1.getAttributeOfSkillItemId(skillItemId) > item2.getAttributeOfSkillItemId(skillItemId)) {
+            return ThreeState.MORE;
+        } else {
+            return ThreeState.SAME;
+        }
+    }
+
+    private ThreeState compareCalcs(InventoryItem item1, InventoryItem item2) {
+        CalcAttributeId calcAttributeId = (CalcAttributeId) key;
+        if (calcAttributeId.equals(CalcAttributeId.WEIGHT)) {
+            return ThreeState.SAME;
+        }
+        if (item1.getAttributeOfCalcAttributeId(calcAttributeId) < item2.getAttributeOfCalcAttributeId(calcAttributeId)) {
+            return ThreeState.LESS;
+        } else if (item1.getAttributeOfCalcAttributeId(calcAttributeId) > item2.getAttributeOfCalcAttributeId(calcAttributeId)) {
+            return ThreeState.MORE;
+        } else {
+            return ThreeState.SAME;
+        }
     }
 
 }

@@ -34,7 +34,7 @@ public abstract class SpellItem implements PersonalityItem {
         this.bonus = 0;
     }
 
-    static Class getSpellClass(String spellClassName) throws ClassNotFoundException {
+    static Class<?> getSpellClass(String spellClassName) throws ClassNotFoundException {
         final String fullPath = SpellItem.class.getPackage().getName() + "." + spellClassName;
         return Class.forName(fullPath);
     }

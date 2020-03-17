@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 
 @AllArgsConstructor
@@ -43,41 +44,37 @@ public class DescriptionCreator {
     }
 
     private List<InventoryDescription> createFilter(List<InventoryDescription> attributes) {
-        final List<InventoryDescription> filtered = new ArrayList<>();
-        attributes.forEach(attribute -> {
-            if (attribute.key instanceof InventoryGroup) {
-                filtered.add(attribute);
-                return;
-            }
-            if (attribute.value instanceof SkillItemId) {
-                filtered.add(attribute);
-                return;
-            }
-            if (attribute.key.equals(StatItemId.DEXTERITY) && inventoryItem.group.equals(InventoryGroup.SHIELD)) {
-                filtered.add(attribute);
-                return;
-            }
-            if (attribute.key.equals(SkillItemId.STEALTH) && inventoryItem.group.equals(InventoryGroup.CHEST)) {
-                filtered.add(attribute);
-                return;
-            }
-            if (attribute.key.equals(CalcAttributeId.WEIGHT)
-                    && (inventoryItem.group.equals(InventoryGroup.SHIELD)
-                    || inventoryItem.group.equals(InventoryGroup.WEAPON)
-                    || inventoryItem.group.equals(InventoryGroup.RESOURCE))) {
-                return;
-            }
-            if (attribute.key.equals(CalcAttributeId.WEIGHT)) {
-                filtered.add(attribute);
-                return;
-            }
-            if (attribute.value.equals(0)) {
-                return;
-            }
-            filtered.add(attribute);
-        });
-        return filtered;
+        return attributes.stream()
+                         .filter(this::mustBeAdded)
+                         .collect(Collectors.toList());
     }
 
+    private boolean mustBeAdded(InventoryDescription attribute) {
+        if (attribute.key instanceof InventoryGroup) {
+            return true;
+        }
+        if (attribute.value instanceof SkillItemId) {
+            return true;
+        }
+        if (attribute.key.equals(StatItemId.DEXTERITY) && inventoryItem.group.equals(InventoryGroup.SHIELD)) {
+            return true;
+        }
+        if (attribute.key.equals(SkillItemId.STEALTH) && inventoryItem.group.equals(InventoryGroup.CHEST)) {
+            return true;
+        }
+        if (attribute.key.equals(CalcAttributeId.WEIGHT)
+                && (inventoryItem.group.equals(InventoryGroup.SHIELD)
+                || inventoryItem.group.equals(InventoryGroup.WEAPON)
+                || inventoryItem.group.equals(InventoryGroup.RESOURCE))) {
+            return false;
+        }
+        if (attribute.key.equals(CalcAttributeId.WEIGHT)) {
+            return true;
+        }
+        if (attribute.value.equals(0)) {
+            return false;
+        }
+        return true;
+    }
 
 }

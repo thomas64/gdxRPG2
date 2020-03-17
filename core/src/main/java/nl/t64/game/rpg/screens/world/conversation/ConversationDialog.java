@@ -140,10 +140,10 @@ public class ConversationDialog {
     }
 
     private void applyListeners() {
-        scrollPane.addListener(new ConversationDialogListener(answers, this::selectAnser));
+        scrollPane.addListener(new ConversationDialogListener(answers, this::selectAnswer));
     }
 
-    private void selectAnser() {
+    private void selectAnswer() {
         ConversationChoice choice = answers.getSelected();
         if (choice.getDestinationId().equals(CLOSE_DIALOG)) {
             closeDialog();

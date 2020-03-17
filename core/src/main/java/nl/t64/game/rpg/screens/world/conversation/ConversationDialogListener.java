@@ -10,11 +10,11 @@ import nl.t64.game.rpg.conversation.ConversationChoice;
 class ConversationDialogListener extends InputListener {
 
     private final List<ConversationChoice> answers;
-    private final Runnable selectAnswers;
+    private final Runnable selectAnswer;
 
-    ConversationDialogListener(List<ConversationChoice> answers, Runnable selectAnser) {
+    ConversationDialogListener(List<ConversationChoice> answers, Runnable selectAnswer) {
         this.answers = answers;
-        this.selectAnswers = selectAnser;
+        this.selectAnswer = selectAnswer;
     }
 
     @Override
@@ -39,7 +39,7 @@ class ConversationDialogListener extends InputListener {
     }
 
     private void inputEnter() {
-        selectAnswers.run();
+        selectAnswer.run();
     }
 
 }
