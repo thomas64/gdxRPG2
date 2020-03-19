@@ -23,6 +23,18 @@
     "col": 4,
     "row": 1
   },
+  "man01": {
+    "charPath": "sprites/characters/people1.png",
+    "facePath": "sprites/faces/people1.png",
+    "col": 1,
+    "row": 2
+  },
+  "woman01": {
+    "charPath": "sprites/characters/people1.png",
+    "facePath": "sprites/faces/people1.png",
+    "col": 2,
+    "row": 2
+  },
   "fairy01": {
     "charPath": "sprites/characters/nature1.png",
     "facePath": "sprites/faces/nature1.png",

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ScreenUtils;
 import lombok.Getter;
 import nl.t64.game.rpg.Utils;
@@ -132,6 +133,13 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
         theOtherCharacters.add(player);
         theOtherCharacters.remove(thisNpcCharacter);
         return Collections.unmodifiableList(theOtherCharacters);
+    }
+
+    public Character getVisibleNpcOfInvisibleNpcBy(String conversationId) {
+        return npcCharacters.stream()
+                            .filter(npc -> npc.getConversationId().equals(conversationId))
+                            .findFirst()
+                            .orElseThrow(() -> new GdxRuntimeException("No same conversation found for invisible npc."));
     }
 
     private void updateCharacters(float dt) {

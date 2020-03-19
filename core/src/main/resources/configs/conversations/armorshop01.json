@@ -2,14 +2,19 @@
   currentConversationId: 1
   conversations: {
     1: {
-      text: [Hello.]
+      text: [Hello Traveler. Would you like to see my wares?]
     }
   }
   associatedChoices: {
     1: [
       {
         class: nl.t64.game.rpg.conversation.ConversationChoice
-        text: ->
+        text: Yes
+        destinationId: LOAD_STORE_INVENTORY
+      }
+      {
+        class: nl.t64.game.rpg.conversation.ConversationChoice
+        text: No
         destinationId: EXIT_CONVERSATION
       }
     ]

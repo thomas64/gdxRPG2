@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Json;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.constants.ConversationCommand;
 import nl.t64.game.rpg.conversation.Conversation;
 import nl.t64.game.rpg.conversation.ConversationChoice;
 import nl.t64.game.rpg.conversation.ConversationGraph;
@@ -32,7 +33,6 @@ public class ConversationDialog {
     private static final float PAD = 25f;
     private static final float FACE_SIZE = 144f;
     private static final float ALL_PADS = 50f + 144f + 25f + 25f;
-    private static final String CLOSE_DIALOG = "999";
 
     private final Stage stage;
     private final BitmapFont font;
@@ -145,7 +145,7 @@ public class ConversationDialog {
 
     private void selectAnswer() {
         ConversationChoice choice = answers.getSelected();
-        if (choice.getDestinationId().equals(CLOSE_DIALOG)) {
+        if (choice.getDestinationId().equals(ConversationCommand.EXIT_CONVERSATION.name())) {
             closeDialog();
         } else {
             populateConversationDialog(choice.getDestinationId());
@@ -158,8 +158,8 @@ public class ConversationDialog {
     }
 
     private void populateConversationDialog(String conversationId) {
-        Conversation conversation = graph.getConversationByID(conversationId);
-        graph.setCurrentConversation(conversationId);
+        Conversation conversation = graph.getConversationById(conversationId);
+        graph.setCurrentConversationId(conversationId);
         String text = String.join(" ", conversation.getText());
         label.setText(text);
         answers.setItems(graph.getCurrentChoices().toArray(new ConversationChoice[0]));

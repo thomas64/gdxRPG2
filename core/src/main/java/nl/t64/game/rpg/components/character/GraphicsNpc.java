@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import nl.t64.game.rpg.SpriteConfig;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.*;
@@ -43,7 +44,9 @@ public class GraphicsNpc extends GraphicsComponent {
             position = ((PositionEvent) event).position;
         }
         if (event instanceof SelectEvent) {
-            isSelected = true;
+            if (!state.equals(CharacterState.INVISIBLE)) {
+                isSelected = true;
+            }
         }
         if (event instanceof DeselectEvent) {
             isSelected = false;
@@ -57,12 +60,14 @@ public class GraphicsNpc extends GraphicsComponent {
 
     @Override
     public void render(Character npcCharacter, Batch batch, ShapeRenderer shapeRenderer) {
-        batch.end();
-        if (isSelected) {
-            drawSelected(npcCharacter.getBoundingBox(), shapeRenderer);
+        if (!state.equals(CharacterState.INVISIBLE)) {
+            batch.end();
+            if (isSelected) {
+                drawSelected(npcCharacter.getBoundingBox(), shapeRenderer);
+            }
+            batch.begin();
+            batch.draw(currentFrame, position.x, position.y, Constant.TILE_SIZE, Constant.TILE_SIZE);
         }
-        batch.begin();
-        batch.draw(currentFrame, position.x, position.y, Constant.TILE_SIZE, Constant.TILE_SIZE);
     }
 
     private void drawSelected(Rectangle boundingBox, ShapeRenderer shapeRenderer) {

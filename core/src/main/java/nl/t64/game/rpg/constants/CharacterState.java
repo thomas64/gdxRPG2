@@ -9,7 +9,8 @@ public enum CharacterState {
 
     IMMOBILE,
     FLOATING,
-    ALIGNING;
+    ALIGNING,
+    INVISIBLE;
 
     public static CharacterState getRandom() {
         int randomNumber = MathUtils.random(getOnlyIDLEandWALKING());
@@ -17,7 +18,7 @@ public enum CharacterState {
     }
 
     private static int getOnlyIDLEandWALKING() {
-        return CharacterState.values().length - 4;
+        return CharacterState.values().length - 5;
     }
 
 }

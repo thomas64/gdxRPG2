@@ -41,6 +41,8 @@ abstract class GraphicsComponent extends ComponentSubject implements Component {
 
     void setFrame(float dt) {
         switch (state) {
+            case INVISIBLE:
+                return;
             case IDLE:
             case ALIGNING:
             case IMMOBILE:

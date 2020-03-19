@@ -44,7 +44,13 @@ public class PhysicsNpc extends PhysicsComponent {
             direction = ((DirectionEvent) event).direction;
         }
         if (event instanceof SelectEvent) {
-            isSelected = true;
+            if (state.equals(CharacterState.INVISIBLE)) {
+                Utils.getScreenManager().getWorldScreen()
+                     .getVisibleNpcOfInvisibleNpcBy(conversationId)
+                     .send(new SelectEvent());
+            } else {
+                isSelected = true;
+            }
         }
     }
 

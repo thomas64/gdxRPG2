@@ -1,33 +1,28 @@
 package nl.t64.game.rpg.conversation;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.List;
 
 
-@SuppressWarnings({"unused", "MismatchedQueryAndUpdateOfCollection"})
 @NoArgsConstructor
 public class ConversationGraph {
 
+    @Getter
+    @Setter
     private String currentConversationId;
     private HashMap<String, Conversation> conversations;
     private HashMap<String, List<ConversationChoice>> associatedChoices;
 
+    public Conversation getConversationById(String id) {
+        return conversations.get(id);
+    }
+
     public List<ConversationChoice> getCurrentChoices() {
         return associatedChoices.get(currentConversationId);
-    }
-
-    public String getCurrentConversationId() {
-        return currentConversationId;
-    }
-
-    public void setCurrentConversation(String id) {
-        currentConversationId = id;
-    }
-
-    public Conversation getConversationByID(String id) {
-        return conversations.get(id);
     }
 
 }

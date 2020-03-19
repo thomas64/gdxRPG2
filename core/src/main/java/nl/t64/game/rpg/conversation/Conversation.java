@@ -5,11 +5,7 @@ import lombok.Getter;
 import java.util.List;
 
 
-@SuppressWarnings("unused")
-@Getter
 public class Conversation {
-
-    private String id;
+    @Getter
     private List<String> text;
-
 }

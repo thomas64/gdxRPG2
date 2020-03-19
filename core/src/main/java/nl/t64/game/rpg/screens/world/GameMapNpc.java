@@ -36,6 +36,8 @@ class GameMapNpc {
         String characterState = rectObject.getProperties().get("type", String.class);
         if (characterState == null) {
             return CharacterState.IMMOBILE;
+        } else if (characterState.equalsIgnoreCase("inv")) {
+            return CharacterState.INVISIBLE;
         } else if (characterState.equalsIgnoreCase("w")) {
             return CharacterState.getRandom();
         } else if (characterState.equalsIgnoreCase("f")) {

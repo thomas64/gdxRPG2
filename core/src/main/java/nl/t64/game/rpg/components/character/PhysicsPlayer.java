@@ -286,7 +286,7 @@ public class PhysicsPlayer extends PhysicsComponent {
 
     private void setNorth(Rectangle checkRect) {
         checkRect.setWidth(boundingBox.width / 4f);
-        checkRect.setHeight(Constant.TILE_SIZE / 2f);
+        checkRect.setHeight((Constant.TILE_SIZE / 2f) + 1);
         checkRect.setX(boundingBox.x + (boundingBox.width / 2f) - (boundingBox.width / 8f));
         checkRect.setY(boundingBox.y + boundingBox.height);
     }
@@ -299,12 +299,10 @@ public class PhysicsPlayer extends PhysicsComponent {
     }
 
     private void setWest(Rectangle checkRect) {
-        checkRect.setY(boundingBox.y + (Constant.TILE_SIZE / 16f));
         checkRect.setX(boundingBox.x - (Constant.TILE_SIZE / 2f));
     }
 
     private void setEast(Rectangle checkRect) {
-        checkRect.setY(boundingBox.y + (Constant.TILE_SIZE / 16f));
         checkRect.setX(boundingBox.x + (Constant.TILE_SIZE / 2f));
     }
 
