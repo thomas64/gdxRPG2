@@ -20,11 +20,9 @@ class ComponentSubject {
         observers.clear();
     }
 
-    void notifyShowConversationDialog(String conversationId, String characterId) {
-        observers.forEach(observer -> observer.onNotifyShowConversationDialog(conversationId, characterId));
+    void notifyShowConversationDialog(String conversationId, String characterId, Character npcCharacter) {
+        observers.forEach(
+                observer -> observer.onNotifyShowConversationDialog(conversationId, characterId, npcCharacter));
     }
 
-    void notifyPartySwap(Character heroCharacter) {
-        observers.forEach(observer -> observer.onNotifyPartySwap(heroCharacter));
-    }
 }

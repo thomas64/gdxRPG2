@@ -89,6 +89,10 @@ public class Character {
         return physicsComponent.state;
     }
 
+    public String getCharacterId() {
+        return ((PhysicsNpc) physicsComponent).npcId;
+    }
+
     public String getConversationId() {
         return ((PhysicsNpc) physicsComponent).conversationId;
     }

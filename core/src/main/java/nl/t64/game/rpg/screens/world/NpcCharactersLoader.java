@@ -1,7 +1,9 @@
 package nl.t64.game.rpg.screens.world;
 
 import nl.t64.game.rpg.components.character.Character;
-import nl.t64.game.rpg.components.character.*;
+import nl.t64.game.rpg.components.character.GraphicsNpc;
+import nl.t64.game.rpg.components.character.InputNpc;
+import nl.t64.game.rpg.components.character.PhysicsNpc;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.events.character.LoadCharacterEvent;
 
@@ -28,21 +30,19 @@ class NpcCharactersLoader {
 
     private void loadNpcs() {
         for (GameMapNpc gameMapNpc : currentMap.npcs) {
-            String spriteId = gameMapNpc.name;
-            var npcCharacter = new Character(new InputNpc(), new PhysicsNpc(spriteId), new GraphicsNpc(spriteId));
-            loadNpcCharacter(gameMapNpc, npcCharacter);
+            loadNpcCharacter(gameMapNpc);
         }
     }
 
     private void loadHeroes() {
         for (GameMapHero gameMapHero : currentMap.heroes) {
-            String spriteId = gameMapHero.name;
-            var heroCharacter = new Character(new InputNpc(), new PhysicsHero(spriteId), new GraphicsNpc(spriteId));
-            loadNpcCharacter(gameMapHero, heroCharacter);
+            loadNpcCharacter(gameMapHero);
         }
     }
 
-    private void loadNpcCharacter(GameMapNpc gameMapNpc, Character npcCharacter) {
+    private void loadNpcCharacter(GameMapNpc gameMapNpc) {
+        String spriteId = gameMapNpc.name;
+        var npcCharacter = new Character(new InputNpc(), new PhysicsNpc(spriteId), new GraphicsNpc(spriteId));
         npcCharacters.add(npcCharacter);
         npcCharacter.send(new LoadCharacterEvent(gameMapNpc.state,
                                                  gameMapNpc.direction,

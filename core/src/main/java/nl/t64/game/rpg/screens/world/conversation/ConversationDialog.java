@@ -19,6 +19,8 @@ import nl.t64.game.rpg.conversation.Conversation;
 import nl.t64.game.rpg.conversation.ConversationChoice;
 import nl.t64.game.rpg.conversation.ConversationGraph;
 
+import java.util.function.Consumer;
+
 
 public class ConversationDialog {
 
@@ -37,7 +39,7 @@ public class ConversationDialog {
     private final Stage stage;
     private final BitmapFont font;
     private final Dialog dialog;
-    private final Runnable closeConversationFunction;
+    private final Consumer<ConversationCommand> handleConversationCommand;
 
     private Label label;
     private List<ConversationChoice> answers;
@@ -46,8 +48,8 @@ public class ConversationDialog {
     private Image characterFace;
     private ConversationGraph graph;
 
-    public ConversationDialog(Runnable closeConversationFunction) {
-        this.closeConversationFunction = closeConversationFunction;
+    public ConversationDialog(Consumer<ConversationCommand> handleConversationCommand) {
+        this.handleConversationCommand = handleConversationCommand;
         this.stage = new Stage();
         this.font = Utils.getResourceManager().getTrueTypeAsset(CONVERSATION_FONT, FONT_SIZE);
         this.dialog = this.createDialog();
@@ -67,6 +69,10 @@ public class ConversationDialog {
     public void show() {
         Gdx.input.setInputProcessor(stage);
         dialog.show(stage, Actions.sequence(Actions.alpha(0), Actions.fadeIn(0.4f, Interpolation.fade)));
+    }
+
+    public void hide() {
+        dialog.hide();
     }
 
     public void update(float dt) {
@@ -144,17 +150,14 @@ public class ConversationDialog {
     }
 
     private void selectAnswer() {
-        ConversationChoice choice = answers.getSelected();
-        if (choice.getDestinationId().equals(ConversationCommand.EXIT_CONVERSATION.name())) {
-            closeDialog();
-        } else {
-            populateConversationDialog(choice.getDestinationId());
+        final String destinationId = answers.getSelected().getDestinationId();
+        for (ConversationCommand command : ConversationCommand.values()) {
+            if (command.name().equals(destinationId)) {
+                handleConversationCommand.accept(ConversationCommand.valueOf(destinationId));
+                return;
+            }
         }
-    }
-
-    private void closeDialog() {
-        closeConversationFunction.run();
-        dialog.hide();
+        populateConversationDialog(destinationId);
     }
 
     private void populateConversationDialog(String conversationId) {

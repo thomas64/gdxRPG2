@@ -60,14 +60,16 @@ public class GraphicsNpc extends GraphicsComponent {
 
     @Override
     public void render(Character npcCharacter, Batch batch, ShapeRenderer shapeRenderer) {
-        if (!state.equals(CharacterState.INVISIBLE)) {
-            batch.end();
-            if (isSelected) {
-                drawSelected(npcCharacter.getBoundingBox(), shapeRenderer);
-            }
-            batch.begin();
-            batch.draw(currentFrame, position.x, position.y, Constant.TILE_SIZE, Constant.TILE_SIZE);
+        if (state.equals(CharacterState.INVISIBLE)) {
+            return;
         }
+        batch.end();
+        if (isSelected) {
+            drawSelected(npcCharacter.getBoundingBox(), shapeRenderer);
+        }
+        batch.begin();
+        batch.draw(currentFrame, position.x, position.y, Constant.TILE_SIZE, Constant.TILE_SIZE);
+
     }
 
     private void drawSelected(Rectangle boundingBox, ShapeRenderer shapeRenderer) {

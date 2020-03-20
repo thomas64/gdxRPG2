@@ -16,7 +16,11 @@ import lombok.Getter;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.character.Character;
 import nl.t64.game.rpg.components.character.*;
+import nl.t64.game.rpg.components.party.HeroContainer;
+import nl.t64.game.rpg.components.party.HeroItem;
+import nl.t64.game.rpg.components.party.PartyContainer;
 import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.constants.ConversationCommand;
 import nl.t64.game.rpg.constants.GameState;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.events.character.LoadCharacterEvent;
@@ -36,6 +40,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
 
     private static final int[] UNDER_LAYERS = new int[]{0, 1, 2, 3, 4, 5};
     private static final int[] OVER_LAYERS = new int[]{6, 7, 8};
+    private static final String PARTY_FULL_CONVERSATION = "partyfull";
 
     private static boolean showGrid = false;
     private static boolean showObjects = false;
@@ -51,6 +56,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
     private List<Character> partyMembers;
     @Getter
     private List<Character> npcCharacters;
+    private Character currentNpcCharacter;
     private ShapeRenderer shapeRenderer;
     private PartyWindow partyWindow;
     private ConversationDialog conversationDialog;
@@ -68,7 +74,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
         this.npcCharacters = new ArrayList<>(0);
         this.shapeRenderer = new ShapeRenderer();
         this.partyWindow = new PartyWindow();
-        this.conversationDialog = new ConversationDialog(this::show);
+        this.conversationDialog = new ConversationDialog(this::handleConversationCommand);
 
         this.debugBox = new DebugBox(this.player);
 
@@ -88,19 +94,11 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
     }
 
     @Override
-    public void onNotifyShowConversationDialog(String conversationId, String characterId) {
+    public void onNotifyShowConversationDialog(String conversationId, String characterId, Character npcCharacter) {
+        this.currentNpcCharacter = npcCharacter;
         player.resetInput();
         conversationDialog.loadConversation(conversationId, characterId);
         conversationDialog.show();
-    }
-
-    @Override
-    public void onNotifyPartySwap(Character heroCharacter) {
-        Utils.getMapManager().removeFromBlockers(heroCharacter.getBoundingBox());
-        npcCharacters = npcCharacters.stream()
-                                     .filter(npcCharacter -> !npcCharacter.equals(heroCharacter))
-                                     .collect(Collectors.toUnmodifiableList());
-        partyMembers = new PartyMembersLoader(player).loadPartyMembers();
     }
 
     @Override
@@ -149,18 +147,6 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
         partyMembers.forEach(partyMember -> partyMember.update(dt));
     }
 
-    private DefaultGraphPath<TiledNode> getPathOf(Character partyMember) {
-        final Vector2 startPoint = partyMember.getPositionInGrid();
-        final Vector2 endPoint;
-        final int index = partyMembers.indexOf(partyMember);
-        if (index == 0) {
-            endPoint = player.getPositionInGrid();
-        } else {
-            endPoint = partyMembers.get(index - 1).getPositionInGrid();
-        }
-        return Utils.getMapManager().currentMap.tiledGraph.findPath(startPoint, endPoint);
-    }
-
     private void updateCameraPosition() {
         camera.setPosition(player.getPosition());
         mapRenderer.setView(camera);
@@ -185,6 +171,54 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
         allCharacters.forEach(character -> character.render(mapRenderer.getBatch(), shapeRenderer));
 
         mapRenderer.getBatch().end();
+    }
+
+    private DefaultGraphPath<TiledNode> getPathOf(Character partyMember) {
+        final Vector2 startPoint = partyMember.getPositionInGrid();
+        final Vector2 endPoint;
+        final int index = partyMembers.indexOf(partyMember);
+        if (index == 0) {
+            endPoint = player.getPositionInGrid();
+        } else {
+            endPoint = partyMembers.get(index - 1).getPositionInGrid();
+        }
+        return Utils.getMapManager().currentMap.tiledGraph.findPath(startPoint, endPoint);
+    }
+
+    private void handleConversationCommand(ConversationCommand command) {
+        switch (command) {
+            case EXIT_CONVERSATION -> {
+                conversationDialog.hide();
+                show();
+            }
+            case JOIN_PARTY -> tryToAddHeroToParty();
+            case LOAD_STORE -> {
+            }
+        }
+    }
+
+    private void tryToAddHeroToParty() {
+        HeroContainer heroes = Utils.getGameData().getHeroes();
+        PartyContainer party = Utils.getGameData().getParty();
+        String heroId = currentNpcCharacter.getCharacterId();
+        HeroItem hero = heroes.getHero(heroId);
+
+        if (party.isFull()) {
+            conversationDialog.loadConversation(PARTY_FULL_CONVERSATION, heroId);
+        } else {
+            heroes.removeHero(heroId);
+            party.addHero(hero);
+            refreshNpcCharacters();
+            handleConversationCommand(ConversationCommand.EXIT_CONVERSATION);
+        }
+    }
+
+    private void refreshNpcCharacters() {
+        Utils.getMapManager().removeFromBlockers(currentNpcCharacter.getBoundingBox());
+        npcCharacters = npcCharacters.stream()
+                                     .filter(npcCharacter -> !npcCharacter.equals(currentNpcCharacter))
+                                     .collect(Collectors.toUnmodifiableList());
+        partyMembers = new PartyMembersLoader(player).loadPartyMembers();
     }
 
     private void openMenuPause() {

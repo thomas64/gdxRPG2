@@ -1,0 +1,17 @@
+{
+  currentConversationId: 1
+  conversations: {
+    1: {
+      text: [It seems your party is already full. Another time perhaps.]
+    }
+  }
+  associatedChoices: {
+    1: [
+      {
+        class: nl.t64.game.rpg.conversation.ConversationChoice
+        text: ->
+        destinationId: EXIT_CONVERSATION
+      }
+    ]
+  }
+}
