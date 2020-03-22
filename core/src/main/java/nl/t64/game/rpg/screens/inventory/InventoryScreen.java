@@ -165,8 +165,8 @@ public class InventoryScreen implements Screen, ProfileObserver {
         resetButton.addListener(new ListenerMouseImageButton(this::resetWindowsPositions));
 
         var buttonTable = new Table();
-        buttonTable.add(closeButton).width(BUTTON_SIZE).height(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
-        buttonTable.add(resetButton).width(BUTTON_SIZE).height(BUTTON_SIZE);
+        buttonTable.add(closeButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
+        buttonTable.add(resetButton).size(BUTTON_SIZE);
         buttonTable.pack();
         buttonTable.setPosition(Gdx.graphics.getWidth() - buttonTable.getWidth() - RIGHT_SPACE,
                                 Gdx.graphics.getHeight() - buttonTable.getHeight() - TOP_SPACE);

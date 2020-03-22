@@ -149,7 +149,7 @@ public class MenuNew extends MenuScreen {
 
         var upperTable = new Table();
         upperTable.add(profileLabel).spaceRight(PROFILE_LABEL_SPACE_RIGHT);
-        upperTable.add(profileText).width(PROFILE_INPUT_WIDTH).height(PROFILE_INPUT_HEIGHT);
+        upperTable.add(profileText).size(PROFILE_INPUT_WIDTH, PROFILE_INPUT_HEIGHT);
 
         var lowerTable = new Table();
         lowerTable.add(startButton).spaceRight(START_BUTTON_SPACE_RIGHT);
