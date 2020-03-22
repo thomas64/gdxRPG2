@@ -142,13 +142,13 @@ class HeroTest extends GameTest {
         final InventoryItem chest = InventoryDatabase.getInstance().getInventoryItem("basic_light_chest");
 
         final Optional<String> message1 = mozes.isAbleToEquip(legendaryStaff);
-        assertThat(message1.get()).isEqualToIgnoringNewLines("Mozes needs the Pole skill\nto equip that Legendary Staff.");
+        assertThat(message1.get()).isEqualToIgnoringNewLines("Mozes needs the Pole skill" + System.lineSeparator() + "to equip that Legendary Staff.");
 
         final Optional<String> message2 = ryiah.isAbleToEquip(legendaryStaff);
-        assertThat(message2.get()).isEqualToIgnoringNewLines("Ryiah needs 30 Intelligence\nto equip that Legendary Staff.");
+        assertThat(message2.get()).isEqualToIgnoringNewLines("Ryiah needs 30 Intelligence" + System.lineSeparator() + "to equip that Legendary Staff.");
 
         final Optional<String> message3 = ryiah.isAbleToEquip(masterworkLance);
-        assertThat(message3.get()).isEqualToIgnoringNewLines("Ryiah needs 20 Strength\nto equip that Masterwork Lance.");
+        assertThat(message3.get()).isEqualToIgnoringNewLines("Ryiah needs 20 Strength" + System.lineSeparator() + "to equip that Masterwork Lance.");
 
         final Optional<String> message4 = mozes.isAbleToEquip(basicDagger);
         assertThat(message4).isEmpty();

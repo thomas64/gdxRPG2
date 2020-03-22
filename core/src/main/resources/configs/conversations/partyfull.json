@@ -2,7 +2,10 @@
   currentConversationId: 1
   conversations: {
     1: {
-      text: [It seems your party is already full. Another time perhaps.]
+      text: [
+        It seems your party is already full.
+        Another time perhaps.
+      ]
     }
   }
   associatedChoices: {

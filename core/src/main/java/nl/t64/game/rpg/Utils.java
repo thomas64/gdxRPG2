@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.screens.ScreenManager;
 import nl.t64.game.rpg.screens.world.MapManager;
@@ -16,8 +17,6 @@ import java.util.Map;
 
 
 public final class Utils {
-
-    private static final float FACE_SIZE = 144f;
 
     private Utils() {
         throw new IllegalStateException("Utils class");
@@ -57,7 +56,7 @@ public final class Utils {
         int row = faceConfig.getRow() - 1;
         int col = faceConfig.getCol() - 1;
         Texture texture = getResourceManager().getTextureAsset(path);
-        TextureRegion[][] splitOfEight = TextureRegion.split(texture, (int) FACE_SIZE, (int) FACE_SIZE);
+        TextureRegion[][] splitOfEight = TextureRegion.split(texture, (int) Constant.FACE_SIZE, (int) Constant.FACE_SIZE);
         TextureRegion characterFace = splitOfEight[row][col];
         return new Image(characterFace);
     }

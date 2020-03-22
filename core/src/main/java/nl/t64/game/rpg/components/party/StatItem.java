@@ -59,8 +59,8 @@ public abstract class StatItem implements PersonalityItem {
 
     @Override
     public String getDescription(int totalLoremaster) {
-        return getDescription() + "\n\n"
-                + getNeededXpForNextLevel();
+        return getDescription() + System.lineSeparator() + System.lineSeparator()
+               + getNeededXpForNextLevel();
     }
 
     abstract String getDescription();

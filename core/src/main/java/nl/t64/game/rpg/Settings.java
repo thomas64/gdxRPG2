@@ -38,7 +38,7 @@ public class Settings {
             Files.writeString(path, "{}");
         } catch (FileAlreadyExistsException e) {
             Stream<String> lines = Files.lines(path);
-            String settingsFile = lines.collect(Collectors.joining("\n"));
+            String settingsFile = lines.collect(Collectors.joining(System.lineSeparator()));
             lines.close();
             Json json = new Json();
             return json.fromJson(Settings.class, settingsFile);

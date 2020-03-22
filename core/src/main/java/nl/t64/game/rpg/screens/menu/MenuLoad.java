@@ -21,8 +21,8 @@ public class MenuLoad extends MenuScreen {
     private static final String MENU_ITEM_LOAD = "Load";
     private static final String MENU_ITEM_DELETE = "Delete";
     private static final String MENU_ITEM_BACK = "Back";
-    private static final String LOAD_MESSAGE = "Any unsaved progress will be lost.\nAre you sure?";
-    private static final String DELETE_MESSAGE = "This save file will be removed.\nAre you sure?";
+    private static final String LOAD_MESSAGE = "Any unsaved progress will be lost." + System.lineSeparator() + "Are you sure?";
+    private static final String DELETE_MESSAGE = "This save file will be removed." + System.lineSeparator() + "Are you sure?";
 
     private static final float TITLE_SPACE_BOTTOM = 30f;
     private static final float TOP_TABLE_Y = 50f;

@@ -41,12 +41,12 @@ public abstract class SpellItem implements PersonalityItem {
 
     @Override
     public String getDescription(int totalLoremaster) {
-        return getDescription() + "\n\n"
-                + "School: " + school.title + "\n"
-                + "Requires: " + requiredResource.title + "\n"
-                + "Stamina cost: " + staminaCosts + "\n\n"
-                + getNeededXpForNextLevel(totalLoremaster) + "\n"
-                + getNeededGoldForNextLevel();
+        return getDescription() + System.lineSeparator() + System.lineSeparator()
+               + "School: " + school.title + System.lineSeparator()
+               + "Requires: " + requiredResource.title + System.lineSeparator()
+               + "Stamina cost: " + staminaCosts + System.lineSeparator() + System.lineSeparator()
+               + getNeededXpForNextLevel(totalLoremaster) + System.lineSeparator()
+               + getNeededGoldForNextLevel();
     }
 
     abstract String getDescription();

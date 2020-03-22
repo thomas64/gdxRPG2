@@ -5,7 +5,10 @@
       text: [Welcome to this game.]
     }
     2: {
-      text: [I am the Fairy of Introduction. Do you want me to repeat what I just said?]
+      text: [
+        I am the Fairy of Introduction.
+        Do you want me to repeat what I just said?
+      ]
     }
     3: {
       text: [I am happy to repeat myself as much as you need me to. Here I go:]

@@ -25,9 +25,9 @@ public abstract class SkillItem implements PersonalityItem {
 
     @Override
     public String getDescription(int totalLoremaster) {
-        return getDescription() + "\n\n"
-                + getNeededXpForNextLevel(totalLoremaster) + "\n"
-                + getNeededGoldForNextLevel();
+        return getDescription() + System.lineSeparator() + System.lineSeparator()
+               + getNeededXpForNextLevel(totalLoremaster) + System.lineSeparator()
+               + getNeededGoldForNextLevel();
     }
 
     abstract String getDescription();

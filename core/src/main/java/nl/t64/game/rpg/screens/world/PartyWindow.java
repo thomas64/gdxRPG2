@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.PartyContainer;
+import nl.t64.game.rpg.constants.Constant;
 
 import java.util.Map;
 import java.util.stream.IntStream;
@@ -29,7 +30,6 @@ class PartyWindow {
     private static final int FONT_SIZE = 20;
 
     private static final float LINE_HEIGHT = 22f;
-    private static final float FACE_SIZE = 144f;
     private static final float PADDING = 10f;
     private static final float PADDING_SMALL = 5f;
     private static final float PADDING_NAME = 7f;
@@ -37,8 +37,8 @@ class PartyWindow {
     private static final float PADDING_LINE = PADDING + PADDING_SMALL;
     private static final float FACE_Y = 90f;
     private static final float TABLE_WIDTH =
-            (FACE_SIZE * PartyContainer.MAXIMUM) + (PADDING * (PartyContainer.MAXIMUM - 1f));
-    private static final float TABLE_HEIGHT = FACE_Y + FACE_SIZE;
+            (Constant.FACE_SIZE * PartyContainer.MAXIMUM) + (PADDING * (PartyContainer.MAXIMUM - 1f));
+    private static final float TABLE_HEIGHT = FACE_Y + Constant.FACE_SIZE;
     private static final float HIGH_Y = 0f;
     private static final float LOW_Y = -TABLE_HEIGHT;
 
@@ -157,9 +157,9 @@ class PartyWindow {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(TRANSPARENT_WHITE);
         IntStream.range(0, party.getSize())
-                 .forEach(i -> shapeRenderer.rect(table.getX() + (i * FACE_SIZE) + (i * PADDING),
+                 .forEach(i -> shapeRenderer.rect(table.getX() + (i * Constant.FACE_SIZE) + (i * PADDING),
                                                   yPos + PADDING,
-                                                  FACE_SIZE,
+                                                  Constant.FACE_SIZE,
                                                   FACE_Y - PADDING));
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
@@ -169,9 +169,9 @@ class PartyWindow {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(TRANSPARENT_BLACK);
         IntStream.range(0, PartyContainer.MAXIMUM)
-                 .forEach(i -> shapeRenderer.rect(table.getX() + (i * FACE_SIZE) + (i * PADDING),
+                 .forEach(i -> shapeRenderer.rect(table.getX() + (i * Constant.FACE_SIZE) + (i * PADDING),
                                                   yPos + PADDING,
-                                                  FACE_SIZE,
+                                                  Constant.FACE_SIZE,
                                                   TABLE_HEIGHT - PADDING));
         shapeRenderer.end();
     }
@@ -179,9 +179,9 @@ class PartyWindow {
     private void renderHorizontalLine(int i) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(TRANSPARENT_BLACK);
-        shapeRenderer.line(table.getX() + (i * FACE_SIZE) + (i * PADDING),
+        shapeRenderer.line(table.getX() + (i * Constant.FACE_SIZE) + (i * PADDING),
                            yPos + FACE_Y,
-                           table.getX() + (i * FACE_SIZE) + (i * PADDING) + FACE_SIZE,
+                           table.getX() + (i * Constant.FACE_SIZE) + (i * PADDING) + Constant.FACE_SIZE,
                            yPos + FACE_Y);
         shapeRenderer.end();
     }
@@ -190,7 +190,7 @@ class PartyWindow {
         String heroId = party.getHero(i).getId();
         Image image = Utils.getFaceImage(heroId);
         image.setColor(TRANSPARENT_FACES);
-        image.setPosition((i * FACE_SIZE) + (i * PADDING), yPos + FACE_Y);
+        image.setPosition((i * Constant.FACE_SIZE) + (i * PADDING), yPos + FACE_Y);
         table.addActor(image);
     }
 
@@ -198,7 +198,7 @@ class PartyWindow {
         var labelStyle = new Label.LabelStyle(fontBig, TRANSPARENT_BLACK);
         String heroName = party.getHero(i).getName();
         var heroLabel = new Label(heroName, labelStyle);
-        heroLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
+        heroLabel.setPosition(i * Constant.FACE_SIZE + (i * PADDING) + PADDING_SMALL,
                               yPos + FACE_Y - PADDING_NAME);
         table.addActor(heroLabel);
     }
@@ -207,7 +207,7 @@ class PartyWindow {
         var labelStyle = new Label.LabelStyle(font, TRANSPARENT_BLACK);
         int heroLevel = party.getHero(i).getLevel();
         var levelLabel = new Label("Level: " + heroLevel, labelStyle);
-        levelLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
+        levelLabel.setPosition(i * Constant.FACE_SIZE + (i * PADDING) + PADDING_SMALL,
                                yPos + FACE_Y - (1f * LINE_HEIGHT) - PADDING_LEVEL);
         table.addActor(levelLabel);
     }
@@ -215,7 +215,7 @@ class PartyWindow {
     private void renderHpLabel(int i) {
         var labelStyle = new Label.LabelStyle(font, TRANSPARENT_BLACK);
         var hpLabel = new Label("HP: ", labelStyle);
-        hpLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
+        hpLabel.setPosition(i * Constant.FACE_SIZE + (i * PADDING) + PADDING_SMALL,
                             yPos + FACE_Y - (2f * LINE_HEIGHT) - PADDING_LINE);
         table.addActor(hpLabel);
     }
@@ -236,7 +236,7 @@ class PartyWindow {
     private void renderXpLabel(int i) {
         var labelStyle = new Label.LabelStyle(font, TRANSPARENT_BLACK);
         var xpLabel = new Label("XP: ", labelStyle);
-        xpLabel.setPosition(i * FACE_SIZE + (i * PADDING) + PADDING_SMALL,
+        xpLabel.setPosition(i * Constant.FACE_SIZE + (i * PADDING) + PADDING_SMALL,
                             yPos + FACE_Y - (3f * LINE_HEIGHT) - PADDING_LINE);
         table.addActor(xpLabel);
     }
@@ -265,7 +265,7 @@ class PartyWindow {
     }
 
     private void renderBar(int partyNumber, float linePosition, float barWidth) {
-        shapeRenderer.rect(table.getX() + (partyNumber * FACE_SIZE) + (partyNumber * PADDING) + BAR_X,
+        shapeRenderer.rect(table.getX() + (partyNumber * Constant.FACE_SIZE) + (partyNumber * PADDING) + BAR_X,
                            yPos + FACE_Y - (linePosition * LINE_HEIGHT) + BAR_Y,
                            barWidth,
                            BAR_HEIGHT);

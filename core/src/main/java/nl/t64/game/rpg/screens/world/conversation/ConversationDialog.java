@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.Json;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.ConversationCommand;
@@ -24,8 +23,6 @@ import java.util.function.Consumer;
 
 public class ConversationDialog {
 
-    private static final String CONVERSATION_CONFIGS = "configs/conversations/";
-    private static final String SUFFIX = ".json";
     private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
     private static final String SPRITE_TRANSPARENT = "sprites/transparent.png";
     private static final String CONVERSATION_FONT = "fonts/fff_tusj.ttf";
@@ -33,8 +30,7 @@ public class ConversationDialog {
     private static final float DIALOG_WIDTH = 1000f;
     private static final float DIALOG_HEIGHT = 300f;
     private static final float PAD = 25f;
-    private static final float FACE_SIZE = 144f;
-    private static final float ALL_PADS = 50f + 144f + 25f + 25f;
+    private static final float ALL_PADS = (PAD * 2f) + Constant.FACE_SIZE + PAD + PAD;
 
     private final Stage stage;
     private final BitmapFont font;
@@ -68,11 +64,15 @@ public class ConversationDialog {
 
     public void show() {
         Gdx.input.setInputProcessor(stage);
-        dialog.show(stage, Actions.sequence(Actions.alpha(0), Actions.fadeIn(0.4f, Interpolation.fade)));
+        dialog.show(stage, Actions.sequence(Actions.alpha(0f), Actions.fadeIn(0.4f, Interpolation.fade)));
+    }
+
+    public void hideWithFade() {
+        dialog.hide();
     }
 
     public void hide() {
-        dialog.hide();
+        dialog.hide(null);
     }
 
     public void update(float dt) {
@@ -84,9 +84,8 @@ public class ConversationDialog {
     }
 
     public void loadConversation(String conversationJsonFile, String characterId) {
-        String fullFilenamePath = CONVERSATION_CONFIGS + conversationJsonFile + SUFFIX;
         characterFace.setDrawable(Utils.getFaceImage(characterId).getDrawable());
-        graph = new Json().fromJson(ConversationGraph.class, Gdx.files.local(fullFilenamePath));
+        graph = Utils.getResourceManager().getConversation(conversationJsonFile);
         String conversationId = graph.getCurrentConversationId();
         populateConversationDialog(conversationId);
     }
@@ -121,7 +120,7 @@ public class ConversationDialog {
         // table
         var mainTable = new Table();
         mainTable.left();
-        mainTable.add(characterFace).width(FACE_SIZE).padLeft(PAD * 2f);
+        mainTable.add(characterFace).width(Constant.FACE_SIZE).padLeft(PAD * 2f);
 
         var textTable = new Table();
         textTable.pad(PAD);
@@ -163,7 +162,7 @@ public class ConversationDialog {
     private void populateConversationDialog(String conversationId) {
         Conversation conversation = graph.getConversationById(conversationId);
         graph.setCurrentConversationId(conversationId);
-        String text = String.join(" ", conversation.getText());
+        String text = String.join(System.lineSeparator(), conversation.getText());
         label.setText(text);
         answers.setItems(graph.getCurrentChoices().toArray(new ConversationChoice[0]));
         answers.setSelectedIndex(0);
