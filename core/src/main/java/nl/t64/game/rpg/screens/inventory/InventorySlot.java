@@ -8,35 +8,31 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.utils.Align;
+import lombok.Setter;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.InventoryGroup;
 
 import java.util.Optional;
 
 
-class InventorySlot extends Stack {
+public class InventorySlot extends Stack {
 
     private static final String SPRITE_BACKGROUND = "sprites/inventoryslot.png";
     private static final int STANDARD_STACK_SIZE = 2;
     private static final Color TRANSPARENT = new Color(1f, 1f, 1f, 0.3f);
 
-    final Label amountLabel;
+    public final Label amountLabel;
     final InventoryGroup filterGroup;
     private final Stack imagesBackground;
+    @Setter
     int amount = 0;
 
-    InventorySlot(InventoryGroup filterGroup) {
+    public InventorySlot(InventoryGroup filterGroup) {
         this.filterGroup = filterGroup;
         this.imagesBackground = createImageBackground();
-        this.imagesBackground.add(createShadowImage(this.filterGroup));
-        addToStack(this.imagesBackground);
-        this.amountLabel = createNumberOfItemsLabel();
-        addToStack(this.amountLabel);
-    }
-
-    InventorySlot() {
-        this.filterGroup = InventoryGroup.EVERYTHING;
-        this.imagesBackground = createImageBackground();
+        if (this.isOnHero()) {
+            this.imagesBackground.add(createShadowImage(this.filterGroup));
+        }
         addToStack(this.imagesBackground);
         this.amountLabel = createNumberOfItemsLabel();
         addToStack(this.amountLabel);
@@ -66,11 +62,11 @@ class InventorySlot extends Stack {
         return label;
     }
 
-    boolean hasItem() {
+    public boolean hasItem() {
         return super.getChildren().size > STANDARD_STACK_SIZE;
     }
 
-    void addToStack(Actor actor) {
+    public void addToStack(Actor actor) {
         if (isActorAnInventoryItem(actor)) {
             super.addActorBefore(super.getChildren().peek(), actor);
             refreshSlot();
@@ -94,16 +90,21 @@ class InventorySlot extends Stack {
         return Optional.empty();
     }
 
-    InventoryImage getCertainInventoryImage() {
+    public InventoryImage getCertainInventoryImage() {
         return (InventoryImage) super.getChildren().items[super.getChildren().size - 2];
     }
 
-    boolean isOnHero() {
-        return !filterGroup.equals(InventoryGroup.EVERYTHING);
+    public boolean isOnHero() {
+        return !filterGroup.equals(InventoryGroup.EVERYTHING)
+               && !filterGroup.equals(InventoryGroup.SHOP_EQUIP_ITEM);
     }
 
     boolean doesAcceptItem(InventoryImage draggedItem) {
-        if (filterGroup.equals(InventoryGroup.EVERYTHING)) {
+        if (filterGroup.equals(InventoryGroup.SHOP_EQUIP_ITEM)
+            && draggedItem.inventoryGroup.equals(InventoryGroup.RESOURCE)) {
+            return false;
+        }
+        if (!isOnHero()) {
             return true;
         }
         if (filterGroup.equals(draggedItem.inventoryGroup)) {
@@ -113,7 +114,7 @@ class InventorySlot extends Stack {
     }
 
     private boolean doesHeroAcceptItem(InventoryImage draggedItem) {
-        Optional<String> message = InventoryUtils.selectedHero.isAbleToEquip(draggedItem.inventoryItem);
+        Optional<String> message = InventoryUtils.getSelectedHero().isAbleToEquip(draggedItem.inventoryItem);
         if (message.isPresent()) {
             new MessageDialog(message.get()).show(getStage());
             return false;

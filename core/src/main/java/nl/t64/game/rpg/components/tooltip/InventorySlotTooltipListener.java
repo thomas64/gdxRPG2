@@ -1,12 +1,13 @@
-package nl.t64.game.rpg.screens.inventory;
+package nl.t64.game.rpg.components.tooltip;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import nl.t64.game.rpg.screens.inventory.InventorySlot;
 
 
-class InventorySlotTooltipListener extends ClickListener {
+public class InventorySlotTooltipListener extends ClickListener {
 
     private static final float OFFSET_X = 20f;
     private static final float OFFSET_Y = 10f;
@@ -17,7 +18,7 @@ class InventorySlotTooltipListener extends ClickListener {
     private boolean isInside;
     private boolean touchDown;
 
-    InventorySlotTooltipListener(InventorySlotTooltip toolTip) {
+    public InventorySlotTooltipListener(InventorySlotTooltip toolTip) {
         this.toolTip = toolTip;
         this.isInside = false;
         this.touchDown = false;

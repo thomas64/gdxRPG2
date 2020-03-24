@@ -1,6 +1,7 @@
 package nl.t64.game.rpg.components.party;
 
 import lombok.AllArgsConstructor;
+import nl.t64.game.rpg.constants.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +23,13 @@ public class DescriptionCreator {
     }
 
     private List<InventoryDescription> createDescriptionList(
-            BiFunction<SuperEnum, Object, InventoryDescription> functionToExecute) {
+            BiFunction<Object, Object, InventoryDescription> functionToExecute) {
 
         final List<InventoryDescription> attributes = new ArrayList<>();
 
         attributes.add(functionToExecute.apply(inventoryItem.group, inventoryItem.name));
+        attributes.add(functionToExecute.apply(Constant.DESCRIPTION_KEY_BUY, inventoryItem.price));
+        attributes.add(functionToExecute.apply(Constant.DESCRIPTION_KEY_SELL, inventoryItem.getSellValue()));
 
         for (InventoryMinimal minimal : InventoryMinimal.values()) {
             attributes.add(functionToExecute.apply(minimal, inventoryItem.getAttributeOfMinimal(minimal)));
@@ -50,6 +53,10 @@ public class DescriptionCreator {
     }
 
     private boolean mustBeAdded(InventoryDescription attribute) {
+        if (attribute.key.equals(Constant.DESCRIPTION_KEY_BUY)
+            || attribute.key.equals(Constant.DESCRIPTION_KEY_SELL)) {
+            return true;
+        }
         if (attribute.key instanceof InventoryGroup) {
             return true;
         }
@@ -63,7 +70,7 @@ public class DescriptionCreator {
             return true;
         }
         if (attribute.key.equals(CalcAttributeId.WEIGHT)
-                && (inventoryItem.group.equals(InventoryGroup.SHIELD)
+            && (inventoryItem.group.equals(InventoryGroup.SHIELD)
                 || inventoryItem.group.equals(InventoryGroup.WEAPON)
                 || inventoryItem.group.equals(InventoryGroup.RESOURCE))) {
             return false;

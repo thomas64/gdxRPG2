@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Scaling;
 import nl.t64.game.rpg.Utils;
 
 
-abstract class BaseTable {
+public abstract class BaseTable {
 
     private static final String SPRITE_TOP_BORDER = "sprites/top_border.png";
     private static final String TEXT_FONT = "fonts/spectral.ttf";
@@ -21,17 +21,17 @@ abstract class BaseTable {
     private static final float PADDING = 20f;
     private static final float PADDING_RIGHT = 10f;
 
-    final Table table;
+    public final Table table;
     private final BitmapFont font;
 
-    BaseTable() {
+    protected BaseTable() {
         this.font = Utils.getResourceManager().getTrueTypeAsset(TEXT_FONT, TEXT_SIZE);
         this.table = new Table(createSkin());
         this.table.defaults().height(LINE_HEIGHT);
         this.table.pad(PADDING).padRight(PADDING_RIGHT);
     }
 
-    abstract void update();
+    protected abstract void update();
 
     void addToTable(int totalExtra) {
         if (totalExtra > 0) {
@@ -45,7 +45,7 @@ abstract class BaseTable {
         }
     }
 
-    void setTopBorder(Table table) {
+    protected void setTopBorder(Table table) {
         var texture = Utils.getResourceManager().getTextureAsset(SPRITE_TOP_BORDER);
         var ninepatch = new NinePatch(texture, 0, 0, 1, 0);
         var drawable = new NinePatchDrawable(ninepatch);

@@ -10,7 +10,7 @@
       {
         class: nl.t64.game.rpg.conversation.ConversationChoice
         text: Yes
-        destinationId: LOAD_STORE_INVENTORY
+        destinationId: LOAD_SHOP
       }
       {
         class: nl.t64.game.rpg.conversation.ConversationChoice

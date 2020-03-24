@@ -7,7 +7,6 @@ import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.constants.ScreenType;
-import nl.t64.game.rpg.screens.inventory.InventoryScreen;
 import nl.t64.game.rpg.screens.menu.MenuScreen;
 import nl.t64.game.rpg.screens.world.WorldScreen;
 
@@ -30,13 +29,13 @@ public class ScreenManager {
         return (WorldScreen) getScreen(ScreenType.WORLD);
     }
 
-    public InventoryScreen getInventoryScreen() {
-        return (InventoryScreen) getScreen(ScreenType.INVENTORY);
-    }
-
     public Screen getScreen(ScreenType screenType) {
         ifNotInScreenCacheAdd(screenType);
         return screenCache.get(screenType);
+    }
+
+    public Screen getCurrentScreen() {
+        return ((Engine) Gdx.app.getApplicationListener()).getScreen();
     }
 
     public void setScreen(ScreenType screenType) {

@@ -6,6 +6,8 @@ import lombok.Getter;
 import nl.t64.game.rpg.screens.inventory.InventoryLoadScreen;
 import nl.t64.game.rpg.screens.inventory.InventoryScreen;
 import nl.t64.game.rpg.screens.menu.*;
+import nl.t64.game.rpg.screens.shop.ShopLoadScreen;
+import nl.t64.game.rpg.screens.shop.ShopScreen;
 import nl.t64.game.rpg.screens.world.WorldScreen;
 
 
@@ -19,7 +21,9 @@ public enum ScreenType {
     MENU_PAUSE(MenuPause.class),
     WORLD(WorldScreen.class),
     INVENTORY(InventoryScreen.class),
-    INVENTORY_LOAD(InventoryLoadScreen.class);
+    INVENTORY_LOAD(InventoryLoadScreen.class),
+    SHOP(ShopScreen.class),
+    SHOP_LOAD(ShopLoadScreen.class);
 
     @Getter
     private final Class<? extends Screen> screenClass;

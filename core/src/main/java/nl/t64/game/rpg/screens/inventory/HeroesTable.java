@@ -18,7 +18,7 @@ import nl.t64.game.rpg.components.party.PartyContainer;
 import java.util.Map;
 
 
-class HeroesTable {
+public class HeroesTable {
 
     private static final String SPRITE_BORDER = "sprites/border.png";
     private static final String SPRITE_TOP_BORDER = "sprites/top_border.png";
@@ -34,12 +34,12 @@ class HeroesTable {
     private static final float BAR_HEIGHT = 18f;
     private static final float BAR_PAD_TOP = 7f;
 
-    final Table heroes;
+    public final Table heroes;
     private final Label.LabelStyle nameStyle;
     private final Label.LabelStyle levelStyle;
     private final PartyContainer party;
 
-    HeroesTable() {
+    public HeroesTable() {
         this.party = Utils.getGameData().getParty();
         BitmapFont font = Utils.getResourceManager().getTrueTypeAsset(FONT_PATH, FONT_SIZE);
         BitmapFont fontBig = Utils.getResourceManager().getTrueTypeAsset(FONT_BIG_PATH, FONT_BIG_SIZE);
@@ -49,7 +49,7 @@ class HeroesTable {
         setTopBorder();
     }
 
-    void update() {
+    public void update() {
         heroes.clear();
         for (HeroItem hero : party.getAllHeroes()) {
             createFace(hero);
@@ -98,7 +98,7 @@ class HeroesTable {
     }
 
     private void addPossibleGreyBackgroundTo(Stack stack, HeroItem hero) {
-        if (hero.equalsHero(InventoryUtils.selectedHero)) {
+        if (hero.equalsHero(InventoryUtils.getSelectedHero())) {
             Texture textureGrey = Utils.getResourceManager().getTextureAsset(SPRITE_GREY);
             Image imageGrey = new Image(textureGrey);
             stack.add(imageGrey);

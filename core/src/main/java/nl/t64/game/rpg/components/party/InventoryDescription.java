@@ -7,17 +7,17 @@ import nl.t64.game.rpg.constants.ThreeState;
 @Getter
 public class InventoryDescription {
 
-    final SuperEnum key;
+    final Object key;       // Object can be SuperEnum or String.
     final Object value;     // Object can be Integer or String.
     final ThreeState compare;
 
-    InventoryDescription(SuperEnum key, Object value, InventoryItem item, HeroItem hero) {
+    InventoryDescription(Object key, Object value, InventoryItem item, HeroItem hero) {
         this.key = key;
         this.value = value;
         this.compare = isEnough(item, hero);
     }
 
-    InventoryDescription(SuperEnum key, Object value, InventoryItem item1, InventoryItem item2) {
+    InventoryDescription(Object key, Object value, InventoryItem item1, InventoryItem item2) {
         this.key = key;
         this.value = value;
         this.compare = compare(item1, item2);

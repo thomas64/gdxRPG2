@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.inventory;
+package nl.t64.game.rpg.components.tooltip;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -17,7 +17,7 @@ public class PersonalityTooltipListener extends ClickListener {
     private final Vector2 currentCoords;
     private final Vector2 offset;
 
-    PersonalityTooltipListener(PersonalityTooltip toolTip, PersonalityItem personalityItem) {
+    public PersonalityTooltipListener(PersonalityTooltip toolTip, PersonalityItem personalityItem) {
         this.toolTip = toolTip;
         this.personalityItem = personalityItem;
         this.currentCoords = new Vector2();

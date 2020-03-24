@@ -1,6 +1,5 @@
 package nl.t64.game.rpg.screens.inventory;
 
-
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import nl.t64.game.rpg.Utils;
@@ -18,10 +17,9 @@ final class InventoryWriter {
     }
 
     static void storeToGameData() {
-        var inventoryScreen = Utils.getScreenManager().getInventoryScreen();
-        Table inventorySlotsTable = inventoryScreen.inventoryUI.inventorySlotsTable.inventorySlots;
-        Table equipSlotsTable =
-                inventoryScreen.inventoryUI.equipSlotsTables.get(InventoryUtils.selectedHero.getId()).equipSlots;
+        ScreenUI screenUI = InventoryUtils.getScreenUI();
+        Table inventorySlotsTable = screenUI.getInventorySlotsTable().inventorySlots;
+        Table equipSlotsTable = screenUI.getEquipSlotsTables().get(InventoryUtils.getSelectedHero().getId()).equipSlots;
 
         setInventoryContainer(inventorySlotsTable);
         setEquipContainer(equipSlotsTable);
@@ -52,10 +50,10 @@ final class InventoryWriter {
         for (Actor actor : equipSlotsTable.getChildren()) {
             if (actor instanceof Table) {
                 for (Actor deepActor : ((Table) actor).getChildren()) {
-                    addToEquipContainer(InventoryUtils.selectedHero, (InventorySlot) deepActor);
+                    addToEquipContainer(InventoryUtils.getSelectedHero(), (InventorySlot) deepActor);
                 }
             } else {
-                addToEquipContainer(InventoryUtils.selectedHero, (InventorySlot) actor);
+                addToEquipContainer(InventoryUtils.getSelectedHero(), (InventorySlot) actor);
             }
         }
     }

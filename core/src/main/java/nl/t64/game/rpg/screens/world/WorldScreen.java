@@ -25,7 +25,8 @@ import nl.t64.game.rpg.constants.GameState;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.events.character.LoadCharacterEvent;
 import nl.t64.game.rpg.events.character.PathUpdateEvent;
-import nl.t64.game.rpg.screens.inventory.InventoryLoadScreen;
+import nl.t64.game.rpg.screens.LoadScreen;
+import nl.t64.game.rpg.screens.shop.ShopScreen;
 import nl.t64.game.rpg.screens.world.conversation.ConversationDialog;
 import nl.t64.game.rpg.screens.world.pathfinding.TiledNode;
 
@@ -188,11 +189,15 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
     private void handleConversationCommand(ConversationCommand command) {
         switch (command) {
             case EXIT_CONVERSATION -> {
-                conversationDialog.hide();
+                conversationDialog.hideWithFade();
                 show();
             }
             case JOIN_PARTY -> tryToAddHeroToParty();
-            case LOAD_STORE -> {
+            case LOAD_SHOP -> {
+                conversationDialog.hide();
+                show();
+                render(0f);
+                openShopScreen();
             }
         }
     }
@@ -231,9 +236,21 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
 
     private void openInventoryScreen() {
         player.resetInput();
-        var inventoryLoadScreen = (InventoryLoadScreen) Utils.getScreenManager().getScreen(ScreenType.INVENTORY_LOAD);
+        var inventoryLoadScreen = (LoadScreen) Utils.getScreenManager().getScreen(ScreenType.INVENTORY_LOAD);
         inventoryLoadScreen.setBackground(createScreenshot(false));
         Utils.getScreenManager().setScreen(ScreenType.INVENTORY_LOAD);
+    }
+
+    private void openShopScreen() {
+        player.resetInput();
+
+        var shopScreen = (ShopScreen) Utils.getScreenManager().getScreen(ScreenType.SHOP);
+        shopScreen.setNpcId(currentNpcCharacter.getCharacterId());
+        shopScreen.setShopId(currentNpcCharacter.getConversationId());
+
+        var shopLoadScreen = (LoadScreen) Utils.getScreenManager().getScreen(ScreenType.SHOP_LOAD);
+        shopLoadScreen.setBackground(createScreenshot(false));
+        Utils.getScreenManager().setScreen(ScreenType.SHOP_LOAD);
     }
 
     private Image createScreenshot(boolean withBlur) {

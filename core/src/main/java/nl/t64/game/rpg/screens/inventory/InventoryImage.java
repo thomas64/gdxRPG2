@@ -13,12 +13,12 @@ import nl.t64.game.rpg.components.party.InventoryItem;
 import java.util.List;
 
 
-class InventoryImage extends Image {
+public class InventoryImage extends Image {
 
     final InventoryGroup inventoryGroup;
-    final InventoryItem inventoryItem;
+    public final InventoryItem inventoryItem;
 
-    InventoryImage(InventoryItem inventoryItem) {
+    public InventoryImage(InventoryItem inventoryItem) {
         this.inventoryItem = inventoryItem;
         this.inventoryGroup = inventoryItem.getGroup();
         TextureRegion textureRegion = Utils.getResourceManager().getAtlasTexture(inventoryItem.getId());
@@ -34,12 +34,12 @@ class InventoryImage extends Image {
         return inventoryItem.isStackable();
     }
 
-    List<InventoryDescription> getDescription() {
+    public List<InventoryDescription> getSingleDescription() {
         final var descriptionCreator = new DescriptionCreator(inventoryItem);
-        return descriptionCreator.createItemDescriptionComparingToHero(InventoryUtils.selectedHero);
+        return descriptionCreator.createItemDescriptionComparingToHero(InventoryUtils.getSelectedHero());
     }
 
-    List<InventoryDescription> getDualDescription(InventoryImage otherItem) {
+    public List<InventoryDescription> getLeftDescription(InventoryImage otherItem) {
         final var descriptionCreator = new DescriptionCreator(inventoryItem);
         return descriptionCreator.createItemDescriptionComparingToItem(otherItem.inventoryItem);
     }

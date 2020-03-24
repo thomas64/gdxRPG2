@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.inventory;
+package nl.t64.game.rpg.components.tooltip;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
@@ -8,11 +8,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.*;
+import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.screens.inventory.InventoryImage;
+import nl.t64.game.rpg.screens.inventory.InventorySlot;
+import nl.t64.game.rpg.screens.inventory.InventoryUtils;
 
+import java.util.List;
 import java.util.Optional;
 
 
-class InventorySlotTooltip extends BaseToolTip {
+public class InventorySlotTooltip extends BaseToolTip {
 
     private static final String RIGHT_BORDER = "sprites/tooltip_right.png";
     private static final float COLUMN_SPACING = 20f;
@@ -35,7 +40,7 @@ class InventorySlotTooltip extends BaseToolTip {
             final InventoryImage hoveredImage = inventorySlot.getCertainInventoryImage();
             final InventoryItem hoveredItem = hoveredImage.inventoryItem;
             final InventoryGroup inventoryGroup = hoveredItem.getGroup();
-            final HeroItem selectedHero = InventoryUtils.selectedHero;
+            final HeroItem selectedHero = InventoryUtils.getSelectedHero();
             final Optional<String> isAbleToEquip = selectedHero.isAbleToEquip(hoveredItem);
             final Optional<InventoryItem> equippedItem = selectedHero.getInventoryItem(inventoryGroup);
 
@@ -65,7 +70,10 @@ class InventorySlotTooltip extends BaseToolTip {
     private void createSingleTooltip(InventoryImage inventoryImage) {
         final var hoveredTable = new Table();
         hoveredTable.defaults().align(Align.left);
-        addAttributesForDescription(inventoryImage, hoveredTable);
+
+        List<InventoryDescription> descriptionList = inventoryImage.getSingleDescription();
+        descriptionList = removeLeftUnnecessaryAttributes(descriptionList);
+        addAttributesForSingleDescription(descriptionList, hoveredTable);
         window.add(hoveredTable);
     }
 
@@ -83,7 +91,10 @@ class InventorySlotTooltip extends BaseToolTip {
         hoveredTable.padRight(HALF_SPACING);
         hoveredTable.defaults().align(Align.left);
         hoveredTable.add(new Label(LEFT_TITLE, new Label.LabelStyle(font, Color.WHITE))).row();
-        addAttributesForDualDescription(hoveredImage, equippedImage, hoveredTable);
+
+        List<InventoryDescription> descriptionList = hoveredImage.getLeftDescription(equippedImage);
+        descriptionList = removeLeftUnnecessaryAttributes(descriptionList);
+        addAttributesForLeftDescription(descriptionList, hoveredTable);
         return hoveredTable;
     }
 
@@ -91,27 +102,54 @@ class InventorySlotTooltip extends BaseToolTip {
         final var equippedTable = new Table();
         equippedTable.defaults().align(Align.left);
         equippedTable.add(new Label(RIGHT_TITLE, new Label.LabelStyle(font, Color.LIGHT_GRAY))).row();
-        addAttributesForDescription(equippedImage, equippedTable);
+
+        List<InventoryDescription> descriptionList = equippedImage.getSingleDescription();
+        descriptionList = removeRightUnnecessaryAttributes(descriptionList);
+        addAttributesForSingleDescription(descriptionList, equippedTable);
         return equippedTable;
     }
 
-    private void addAttributesForDescription(InventoryImage inventoryImage, Table hoveredTable) {
-        for (InventoryDescription attribute : inventoryImage.getDescription()) {
+    private void addAttributesForSingleDescription(List<InventoryDescription> descriptionList, Table hoveredTable) {
+        descriptionList.forEach(attribute -> {
             final var labelStyle = createLabelStyle(attribute);
             hoveredTable.add(new Label(getKey(attribute), labelStyle)).spaceRight(COLUMN_SPACING);
             hoveredTable.add(new Label(getValue(attribute), labelStyle)).row();
-        }
+        });
     }
 
-    private void addAttributesForDualDescription(InventoryImage item1, InventoryImage item2, Table hoveredTable) {
-        for (InventoryDescription attribute : item1.getDualDescription(item2)) {
+    private void addAttributesForLeftDescription(List<InventoryDescription> descriptionList, Table hoveredTable) {
+        descriptionList.forEach(attribute -> {
             final var labelStyle = createDualLabelStyle(attribute);
             hoveredTable.add(new Label(getKey(attribute), labelStyle)).spaceRight(COLUMN_SPACING);
             hoveredTable.add(new Label(getValue(attribute), labelStyle)).row();
-        }
+        });
+    }
+
+    List<InventoryDescription> removeLeftUnnecessaryAttributes(List<InventoryDescription> descriptionList) {
+        descriptionList = removeBuy(descriptionList);
+        descriptionList = removeSell(descriptionList);
+        return descriptionList;
+    }
+
+    List<InventoryDescription> removeRightUnnecessaryAttributes(List<InventoryDescription> descriptionList) {
+        return removeLeftUnnecessaryAttributes(descriptionList);
+    }
+
+    List<InventoryDescription> removeBuy(List<InventoryDescription> descriptionList) {
+        descriptionList.removeIf(attribute -> attribute.getKey().equals(Constant.DESCRIPTION_KEY_BUY));
+        return descriptionList;
+    }
+
+    List<InventoryDescription> removeSell(List<InventoryDescription> descriptionList) {
+        descriptionList.removeIf(attribute -> attribute.getKey().equals(Constant.DESCRIPTION_KEY_SELL));
+        return descriptionList;
     }
 
     private Label.LabelStyle createLabelStyle(InventoryDescription attribute) {
+        if (attribute.getKey().equals(Constant.DESCRIPTION_KEY_BUY)
+            || attribute.getKey().equals(Constant.DESCRIPTION_KEY_SELL)) {
+            return new Label.LabelStyle(font, Color.GOLD);
+        }
         return switch (attribute.getCompare()) {
             case SAME, MORE -> new Label.LabelStyle(font, Color.WHITE);
             case LESS -> new Label.LabelStyle(font, Color.RED);
@@ -119,6 +157,10 @@ class InventorySlotTooltip extends BaseToolTip {
     }
 
     private Label.LabelStyle createDualLabelStyle(InventoryDescription attribute) {
+        if (attribute.getKey().equals(Constant.DESCRIPTION_KEY_BUY)
+            || attribute.getKey().equals(Constant.DESCRIPTION_KEY_SELL)) {
+            return new Label.LabelStyle(font, Color.GOLD);
+        }
         return switch (attribute.getCompare()) {
             case SAME -> new Label.LabelStyle(font, Color.WHITE);
             case LESS -> new Label.LabelStyle(font, ORANGE);
@@ -127,7 +169,11 @@ class InventorySlotTooltip extends BaseToolTip {
     }
 
     private String getKey(InventoryDescription attribute) {
-        return attribute.getKey().getTitle();
+        if (attribute.getKey() instanceof SuperEnum) {
+            return ((SuperEnum) attribute.getKey()).getTitle();
+        } else {
+            return String.valueOf(attribute.getKey());
+        }
     }
 
     private String getValue(InventoryDescription attribute) {

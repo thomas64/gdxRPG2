@@ -12,12 +12,14 @@ import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.PartyContainer;
+import nl.t64.game.rpg.components.tooltip.InventorySlotTooltip;
+import nl.t64.game.rpg.components.tooltip.PersonalityTooltip;
 
 import java.util.HashMap;
 import java.util.Map;
 
 
-class InventoryUI {
+class InventoryUI implements ScreenUI {
 
     private static final String TITLE_FONT = "fonts/fff_tusj.ttf";
     private static final int TITLE_SIZE = 30;
@@ -41,8 +43,8 @@ class InventoryUI {
     final Window heroesWindow;
 
     private final SpellsTable spellsTable;
-    final InventorySlotsTable inventorySlotsTable;
-    final Map<String, EquipSlotsTable> equipSlotsTables;
+    private final InventorySlotsTable inventorySlotsTable;
+    private final Map<String, EquipSlotsTable> equipSlotsTables;
     private final SkillsTable skillsTable;
     private final StatsTable statsTable;
     private final CalcsTable calcsTable;
@@ -80,6 +82,21 @@ class InventoryUI {
 
         this.heroesTable = new HeroesTable();
         this.heroesWindow = createWindow(TITLE_HEROES, this.heroesTable.heroes);
+    }
+
+    @Override
+    public Window getEquipWindow() {
+        return equipWindow;
+    }
+
+    @Override
+    public Map<String, EquipSlotsTable> getEquipSlotsTables() {
+        return equipSlotsTables;
+    }
+
+    @Override
+    public InventorySlotsTable getInventorySlotsTable() {
+        return inventorySlotsTable;
     }
 
     private static Window.WindowStyle createWindowStyle() {

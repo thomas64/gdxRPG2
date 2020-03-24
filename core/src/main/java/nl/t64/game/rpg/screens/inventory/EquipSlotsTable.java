@@ -9,18 +9,20 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.InventoryGroup;
 import nl.t64.game.rpg.components.party.InventoryItem;
+import nl.t64.game.rpg.components.tooltip.InventorySlotTooltip;
+import nl.t64.game.rpg.components.tooltip.InventorySlotTooltipListener;
 
 import java.util.Optional;
 import java.util.function.Consumer;
 
 
-class EquipSlotsTable {
+public class EquipSlotsTable {
 
     private static final String SPRITE_SILHOUETTE = "sprites/silhouette.png";
     private static final float SLOT_SIZE = 64f;
     private static final float EQUIP_SPACING = 10f;
 
-    final Table equipSlots;
+    public final Table equipSlots;
     private final HeroItem heroItem;
     private final DragAndDrop dragAndDrop;
     private final InventorySlotTooltip tooltip;
@@ -40,7 +42,7 @@ class EquipSlotsTable {
     private final InventorySlot pantsSlot;
     private final InventorySlot bootsSlot;
 
-    EquipSlotsTable(HeroItem heroItem, DragAndDrop dragAndDrop, InventorySlotTooltip tooltip) {
+    public EquipSlotsTable(HeroItem heroItem, DragAndDrop dragAndDrop, InventorySlotTooltip tooltip) {
         this.heroItem = heroItem;
         this.dragAndDrop = dragAndDrop;
         this.tooltip = tooltip;
@@ -119,20 +121,20 @@ class EquipSlotsTable {
         pantsSlot.addListener(new InventorySlotTooltipListener(tooltip));
         bootsSlot.addListener(new InventorySlotTooltipListener(tooltip));
 
-        helmetSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
-        necklaceSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
-        shouldersSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
-        chestSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
-        cloakSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
-        bracersSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
-        glovesSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
-        weaponSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
-        accessorySlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
-        ringSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
-        shieldSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
-        beltSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
-        pantsSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
-        bootsSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquip));
+        helmetSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
+        necklaceSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
+        shouldersSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
+        chestSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
+        cloakSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
+        bracersSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
+        glovesSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
+        weaponSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
+        accessorySlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
+        ringSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
+        shieldSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
+        beltSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
+        pantsSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
+        bootsSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
     }
 
     private void addTargets() {

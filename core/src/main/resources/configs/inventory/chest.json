@@ -2,6 +2,7 @@
   "basic_light_chest": {
     "name": "Basic Light Chest",
     "group": "CHEST",
+    "price": 1,
     "weight": 1,
     "protection": 1,
     "stealth": 0
@@ -9,6 +10,7 @@
   "ordinary_light_chest": {
     "name": "Ordinary Light Chest",
     "group": "CHEST",
+    "price": 2,
     "weight": 1,
     "protection": 2,
     "stealth": 0
@@ -16,6 +18,7 @@
   "specialist_light_chest": {
     "name": "Specialist Light Chest",
     "group": "CHEST",
+    "price": 3,
     "weight": 1,
     "protection": 3,
     "stealth": 0
@@ -23,6 +26,7 @@
   "masterwork_light_chest": {
     "name": "Masterwork Light Chest",
     "group": "CHEST",
+    "price": 4,
     "weight": 1,
     "protection": 4,
     "stealth": 0
@@ -30,6 +34,7 @@
   "basic_medium_chest": {
     "name": "Basic Medium Chest",
     "group": "CHEST",
+    "price": 4,
     "weight": 2,
     "protection": 5,
     "stealth": -1
@@ -37,6 +42,7 @@
   "ordinary_medium_chest": {
     "name": "Ordinary Medium Chest",
     "group": "CHEST",
+    "price": 5,
     "weight": 2,
     "protection": 6,
     "stealth": -1
@@ -44,6 +50,7 @@
   "specialist_medium_chest": {
     "name": "Specialist Medium Chest",
     "group": "CHEST",
+    "price": 6,
     "weight": 2,
     "protection": 7,
     "stealth": -1
@@ -51,6 +58,7 @@
   "masterwork_medium_chest": {
     "name": "Masterwork Medium Chest",
     "group": "CHEST",
+    "price": 7,
     "weight": 2,
     "protection": 8,
     "stealth": -1
@@ -58,6 +66,7 @@
   "basic_heavy_chest": {
     "name": "Basic Heavy Chest",
     "group": "CHEST",
+    "price": 7,
     "weight": 3,
     "protection": 9,
     "stealth": -2
@@ -65,6 +74,7 @@
   "ordinary_heavy_chest": {
     "name": "Ordinary Heavy Chest",
     "group": "CHEST",
+    "price": 8,
     "weight": 3,
     "protection": 10,
     "stealth": -2
@@ -72,6 +82,7 @@
   "specialist_heavy_chest": {
     "name": "Specialist Heavy Chest",
     "group": "CHEST",
+    "price": 9,
     "weight": 3,
     "protection": 11,
     "stealth": -2
@@ -79,6 +90,7 @@
   "masterwork_heavy_chest": {
     "name": "Masterwork Heavy Chest",
     "group": "CHEST",
+    "price": 10,
     "weight": 3,
     "protection": 12,
     "stealth": -2

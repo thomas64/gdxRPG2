@@ -6,11 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import java.util.function.Consumer;
 
 
-class InventorySlotClickListener extends ActorGestureListener {
+public class InventorySlotClickListener extends ActorGestureListener {
 
     private final Consumer<InventorySlot> handleDoubleClickFunction;
 
-    InventorySlotClickListener(Consumer<InventorySlot> handleDoubleClickFunction) {
+    public InventorySlotClickListener(Consumer<InventorySlot> handleDoubleClickFunction) {
         this.handleDoubleClickFunction = handleDoubleClickFunction;
     }
 

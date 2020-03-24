@@ -3,6 +3,7 @@
     "name": "Basic Mace",
     "group": "WEAPON",
     "skill": "HAFTED",
+    "price": 1,
     "min_strength": 15,
     "base_hit": 30,
     "damage": 18
@@ -11,6 +12,7 @@
     "name": "Ordinary Mace",
     "group": "WEAPON",
     "skill": "HAFTED",
+    "price": 3,
     "min_strength": 16,
     "base_hit": 40,
     "damage": 20
@@ -19,6 +21,7 @@
     "name": "Specialist Mace",
     "group": "WEAPON",
     "skill": "HAFTED",
+    "price": 5,
     "min_strength": 17,
     "base_hit": 50,
     "damage": 22
@@ -27,6 +30,7 @@
     "name": "Masterwork Mace",
     "group": "WEAPON",
     "skill": "HAFTED",
+    "price": 7,
     "min_strength": 18,
     "base_hit": 60,
     "damage": 24
@@ -35,6 +39,7 @@
     "name": "Epic Mace",
     "group": "WEAPON",
     "skill": "HAFTED",
+    "price": 9,
     "min_strength": 15,
     "base_hit": 60,
     "damage": 24
@@ -43,6 +48,7 @@
     "name": "Basic Axe",
     "group": "WEAPON",
     "skill": "HAFTED",
+    "price": 2,
     "min_strength": 19,
     "base_hit": 30,
     "damage": 20
@@ -51,6 +57,7 @@
     "name": "Ordinary Axe",
     "group": "WEAPON",
     "skill": "HAFTED",
+    "price": 4,
     "min_strength": 20,
     "base_hit": 40,
     "damage": 22
@@ -59,6 +66,7 @@
     "name": "Specialist Axe",
     "group": "WEAPON",
     "skill": "HAFTED",
+    "price": 6,
     "min_strength": 21,
     "base_hit": 50,
     "damage": 24
@@ -67,6 +75,7 @@
     "name": "Masterwork Axe",
     "group": "WEAPON",
     "skill": "HAFTED",
+    "price": 8,
     "min_strength": 22,
     "base_hit": 60,
     "damage": 26
@@ -75,6 +84,7 @@
     "name": "Epic Axe",
     "group": "WEAPON",
     "skill": "HAFTED",
+    "price": 10,
     "min_strength": 19,
     "base_hit": 60,
     "damage": 26
@@ -83,6 +93,7 @@
     "name": "Basic Morningstar",
     "group": "WEAPON",
     "skill": "HAFTED",
+    "price": 3,
     "min_strength": 23,
     "base_hit": 30,
     "damage": 22
@@ -91,6 +102,7 @@
     "name": "Ordinary Morningstar",
     "group": "WEAPON",
     "skill": "HAFTED",
+    "price": 5,
     "min_strength": 24,
     "base_hit": 40,
     "damage": 24
@@ -99,6 +111,7 @@
     "name": "Specialist Morningstar",
     "group": "WEAPON",
     "skill": "HAFTED",
+    "price": 7,
     "min_strength": 25,
     "base_hit": 50,
     "damage": 26
@@ -107,6 +120,7 @@
     "name": "Masterwork Morningstar",
     "group": "WEAPON",
     "skill": "HAFTED",
+    "price": 9,
     "min_strength": 26,
     "base_hit": 60,
     "damage": 28
@@ -115,6 +129,7 @@
     "name": "Basic Maul",
     "group": "WEAPON",
     "skill": "HAFTED",
+    "price": 4,
     "min_strength": 27,
     "base_hit": 30,
     "damage": 24
@@ -123,6 +138,7 @@
     "name": "Ordinary Maul",
     "group": "WEAPON",
     "skill": "HAFTED",
+    "price": 6,
     "min_strength": 28,
     "base_hit": 40,
     "damage": 26
@@ -131,6 +147,7 @@
     "name": "Specialist Maul",
     "group": "WEAPON",
     "skill": "HAFTED",
+    "price": 8,
     "min_strength": 29,
     "base_hit": 50,
     "damage": 28
@@ -139,6 +156,7 @@
     "name": "Masterwork Maul",
     "group": "WEAPON",
     "skill": "HAFTED",
+    "price": 10,
     "min_strength": 30,
     "base_hit": 60,
     "damage": 30

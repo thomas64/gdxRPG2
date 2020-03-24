@@ -1,20 +1,26 @@
 package nl.t64.game.rpg.screens.inventory;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.GdxRuntimeException;
+import lombok.Getter;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.PartyContainer;
+import nl.t64.game.rpg.screens.shop.ShopScreen;
 
 
-final class InventoryUtils {
+public final class InventoryUtils {
 
-    static HeroItem selectedHero = null;
-    static boolean shiftPressed = false;
+    @Getter
+    private static HeroItem selectedHero = null;
+    @Getter
+    private static boolean shiftPressed = false;
 
     private InventoryUtils() {
         throw new IllegalStateException("InventoryUtils class");
     }
 
-    static String getSelectedHeroId() {
+    public static String getSelectedHeroId() {
         PartyContainer party = Utils.getGameData().getParty();
         if (!party.contains(selectedHero)) {
             selectedHero = party.getHero(0);
@@ -23,39 +29,50 @@ final class InventoryUtils {
     }
 
     static void updateSelectedHero(HeroItem newSelectedHero) {
-        var inventoryScreen = Utils.getScreenManager().getInventoryScreen();
-        var equipWindow = inventoryScreen.inventoryUI.equipWindow;
-        var equipSlotsTables = inventoryScreen.inventoryUI.equipSlotsTables;
-
-        equipWindow.removeActor(equipSlotsTables.get(selectedHero.getId()).equipSlots);
+        final var screenUI = getScreenUI();
+        final Table oldEquipSlots = screenUI.getEquipSlotsTables().get(selectedHero.getId()).equipSlots;
+        screenUI.getEquipWindow().removeActor(oldEquipSlots);
         selectedHero = newSelectedHero;
-        equipWindow.add(equipSlotsTables.get(selectedHero.getId()).equipSlots);
+        final Table newEquipSlots = screenUI.getEquipSlotsTables().get(selectedHero.getId()).equipSlots;
+        screenUI.getEquipWindow().add(newEquipSlots);
     }
 
-    static void handleDoubleClickInventory(InventorySlot clickedSlot) {
-        clickedSlot.getPossibleInventoryImage().ifPresent(inventoryImage -> {
-            var inventoryScreen = Utils.getScreenManager().getInventoryScreen();
-            var equipSlotsTable = inventoryScreen.inventoryUI.equipSlotsTables.get(selectedHero.getId());
-            equipSlotsTable.getPossibleSlotOfGroup(inventoryImage.inventoryGroup).ifPresent(targetSlot -> {
-                clickedSlot.decrementAmount();
-                new InventorySlotsExchanger(inventoryImage, clickedSlot, targetSlot).exchange();
-            });
-        });
+    public static void handleDoubleClickInventory(InventorySlot clickedSlot) {
+        clickedSlot.getPossibleInventoryImage()
+                   .ifPresent(inventoryImage -> {
+                       getScreenUI().getEquipSlotsTables().get(selectedHero.getId())
+                                    .getPossibleSlotOfGroup(inventoryImage.inventoryGroup)
+                                    .ifPresent(targetSlot -> {
+                                        clickedSlot.decrementAmount();
+                                        new InventorySlotsExchanger(inventoryImage, clickedSlot, targetSlot).exchange();
+                                    });
+                   });
     }
 
-    static void handleDoubleClickEquip(InventorySlot clickedSlot) {
-        clickedSlot.getPossibleInventoryImage().ifPresent(inventoryImage -> {
-            var inventoryScreen = Utils.getScreenManager().getInventoryScreen();
-            var inventorySlotsTable = inventoryScreen.inventoryUI.inventorySlotsTable;
-            inventorySlotsTable.getPossibleEmptySlot().ifPresent(targetSlot -> {
-                clickedSlot.decrementAmount();
-                new InventorySlotsExchanger(inventoryImage, clickedSlot, targetSlot).exchange();
-            });
-        });
+    public static void handleDoubleClickEquipOrShop(InventorySlot clickedSlot) {
+        clickedSlot.getPossibleInventoryImage()
+                   .ifPresent(inventoryImage -> {
+                       getScreenUI().getInventorySlotsTable()
+                                    .getPossibleEmptySlot()
+                                    .ifPresent(targetSlot -> {
+                                        clickedSlot.decrementAmount();
+                                        new InventorySlotsExchanger(inventoryImage, clickedSlot, targetSlot).exchange();
+                                    });
+                   });
     }
 
     static void setShiftPressed(boolean isPressed) {
         shiftPressed = isPressed;
+    }
+
+    static ScreenUI getScreenUI() {
+        var currentScreen = Utils.getScreenManager().getCurrentScreen();
+        if (currentScreen instanceof InventoryScreen) {
+            return ((InventoryScreen) currentScreen).inventoryUI;
+        } else if (currentScreen instanceof ShopScreen) {
+            return ((ShopScreen) currentScreen).getShopUI();
+        }
+        throw new GdxRuntimeException("currentScreen is instanceof: " + currentScreen);
     }
 
 }

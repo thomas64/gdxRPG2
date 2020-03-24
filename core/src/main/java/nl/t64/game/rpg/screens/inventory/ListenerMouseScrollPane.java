@@ -7,12 +7,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 
-class ListenerMouseScrollPane extends ClickListener {
+public class ListenerMouseScrollPane extends ClickListener {
 
     private final Stage stage;
     private final ScrollPane scrollPane;
 
-    ListenerMouseScrollPane(Stage stage, ScrollPane scrollPane) {
+    public ListenerMouseScrollPane(Stage stage, ScrollPane scrollPane) {
         this.stage = stage;
         this.scrollPane = scrollPane;
     }

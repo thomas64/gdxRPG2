@@ -1,5 +1,6 @@
 package nl.t64.game.rpg.components.party;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,7 @@ public class InventoryItem {
     @Getter
     InventoryGroup group;
     SkillItemId skill;
+    int price;
     int weight;
     @JsonProperty("min_intelligence")
     int minIntelligence;
@@ -41,6 +43,7 @@ public class InventoryItem {
         this.amount = 1;
         this.group = item.group;
         this.skill = item.skill;
+        this.price = item.price;
         this.weight = item.weight;
         this.minIntelligence = item.minIntelligence;
         this.minStrength = item.minStrength;
@@ -92,6 +95,10 @@ public class InventoryItem {
 
     public boolean isStackable() {
         return group.equals(InventoryGroup.RESOURCE);
+    }
+
+    int getSellValue() {
+        return MathUtils.floor(price / 3f);
     }
 
     void increaseAmountWith(InventoryItem sourceItem) {

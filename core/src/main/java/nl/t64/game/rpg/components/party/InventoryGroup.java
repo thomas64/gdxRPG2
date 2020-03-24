@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 public enum InventoryGroup implements SuperEnum {
 
     EVERYTHING(""),
+    SHOP_EQUIP_ITEM(""),
 
     WEAPON("Weapon"),
     SHIELD("Shield"),               // 12 prt / 30 def

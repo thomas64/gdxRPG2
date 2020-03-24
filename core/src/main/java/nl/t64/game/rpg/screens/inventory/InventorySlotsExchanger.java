@@ -1,9 +1,9 @@
 package nl.t64.game.rpg.screens.inventory;
 
 import lombok.AllArgsConstructor;
+import nl.t64.game.rpg.components.party.InventoryGroup;
 
 import java.util.Optional;
-import java.util.function.Consumer;
 
 
 @AllArgsConstructor
@@ -24,23 +24,21 @@ class InventorySlotsExchanger {
 
     private void checkTargetItem() {
         Optional<InventoryImage> possibleItemAtTarget = targetSlot.getPossibleInventoryImage();
-        possibleItemAtTarget.ifPresentOrElse(checkForSameItemAndStackable(),
+        possibleItemAtTarget.ifPresentOrElse(this::checkForSameItemAndStackable,
                                              this::putItemInEmptySlot);
     }
 
-    private Consumer<InventoryImage> checkForSameItemAndStackable() {
-        return itemAtTarget -> {
-            if (InventoryUtils.shiftPressed
-                    && draggedItem.isSameItemAs(itemAtTarget)
-                    && draggedItem.isStackable()) {
-                dragAllItemsToFilledSlot();
-            } else if (draggedItem.isSameItemAs(itemAtTarget)
-                    && draggedItem.isStackable()) {
-                targetSlot.incrementAmount();
-            } else {
-                swapStacks();
-            }
-        };
+    private void checkForSameItemAndStackable(InventoryImage itemAtTarget) {
+        if (InventoryUtils.isShiftPressed()
+            && draggedItem.isSameItemAs(itemAtTarget)
+            && draggedItem.isStackable()) {
+            dragAllItemsToFilledSlot();
+        } else if (draggedItem.isSameItemAs(itemAtTarget)
+                   && draggedItem.isStackable()) {
+            targetSlot.incrementAmount();
+        } else {
+            swapStacks();
+        }
     }
 
     private void swapStacks() {
@@ -63,9 +61,9 @@ class InventorySlotsExchanger {
     }
 
     private void putItemInEmptySlot() {
-        if (InventoryUtils.shiftPressed
-                && draggedItem.isStackable()
-                && sourceSlot.amount >= 1) {
+        if (InventoryUtils.isShiftPressed()
+            && draggedItem.isStackable()
+            && sourceSlot.amount >= 1) {
             dragAllItemsToEmptySlot();
         } else {
             targetSlot.putItemInEmptySlot(draggedItem);
@@ -85,8 +83,10 @@ class InventorySlotsExchanger {
     }
 
     private boolean doTargetAndSourceAcceptEachOther() {
-        return targetSlot.doesAcceptItem(draggedItem) &&
-                sourceSlot.doesAcceptItem(targetSlot.getCertainInventoryImage());
+        return !(sourceSlot.filterGroup.equals(InventoryGroup.SHOP_EQUIP_ITEM)
+                 || targetSlot.filterGroup.equals(InventoryGroup.SHOP_EQUIP_ITEM))
+               && targetSlot.doesAcceptItem(draggedItem)
+               && sourceSlot.doesAcceptItem(targetSlot.getCertainInventoryImage());
     }
 
 }

@@ -5,12 +5,12 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 
-class ListenerMouseImageButton extends ClickListener {
+public class ListenerMouseImageButton extends ClickListener {
 
     private final Runnable functionToExecute;
     private boolean hasFocus;
 
-    ListenerMouseImageButton(Runnable functionToExecute) {
+    public ListenerMouseImageButton(Runnable functionToExecute) {
         this.functionToExecute = functionToExecute;
         this.hasFocus = false;
     }

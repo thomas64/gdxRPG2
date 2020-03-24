@@ -3,6 +3,7 @@
     "name": "Basic Dagger",
     "group": "WEAPON",
     "skill": "SWORD",
+    "price": 1,
     "min_strength": 7,
     "base_hit": 40,
     "damage": 11
@@ -11,6 +12,7 @@
     "name": "Ordinary Dagger",
     "group": "WEAPON",
     "skill": "SWORD",
+    "price": 3,
     "min_strength": 8,
     "base_hit": 50,
     "damage": 13
@@ -19,6 +21,7 @@
     "name": "Specialist Dagger",
     "group": "WEAPON",
     "skill": "SWORD",
+    "price": 5,
     "min_strength": 9,
     "base_hit": 60,
     "damage": 15
@@ -27,6 +30,7 @@
     "name": "Masterwork Dagger",
     "group": "WEAPON",
     "skill": "SWORD",
+    "price": 7,
     "min_strength": 10,
     "base_hit": 70,
     "damage": 17
@@ -35,6 +39,7 @@
     "name": "Basic Shortsword",
     "group": "WEAPON",
     "skill": "SWORD",
+    "price": 2,
     "min_strength": 12,
     "base_hit": 40,
     "damage": 13
@@ -43,6 +48,7 @@
     "name": "Ordinary Shortsword",
     "group": "WEAPON",
     "skill": "SWORD",
+    "price": 4,
     "min_strength": 13,
     "base_hit": 50,
     "damage": 15
@@ -51,6 +57,7 @@
     "name": "Specialist Shortsword",
     "group": "WEAPON",
     "skill": "SWORD",
+    "price": 6,
     "min_strength": 14,
     "base_hit": 60,
     "damage": 17
@@ -59,6 +66,7 @@
     "name": "Masterwork Shortsword",
     "group": "WEAPON",
     "skill": "SWORD",
+    "price": 8,
     "min_strength": 15,
     "base_hit": 70,
     "damage": 19
@@ -67,6 +75,7 @@
     "name": "Basic Longsword",
     "group": "WEAPON",
     "skill": "SWORD",
+    "price": 3,
     "min_strength": 17,
     "base_hit": 40,
     "damage": 15
@@ -75,6 +84,7 @@
     "name": "Ordinary Longsword",
     "group": "WEAPON",
     "skill": "SWORD",
+    "price": 5,
     "min_strength": 18,
     "base_hit": 50,
     "damage": 17
@@ -83,6 +93,7 @@
     "name": "Specialist Longsword",
     "group": "WEAPON",
     "skill": "SWORD",
+    "price": 7,
     "min_strength": 19,
     "base_hit": 60,
     "damage": 19
@@ -91,6 +102,7 @@
     "name": "Masterwork Longsword",
     "group": "WEAPON",
     "skill": "SWORD",
+    "price": 9,
     "min_strength": 20,
     "base_hit": 70,
     "damage": 21
@@ -99,6 +111,7 @@
     "name": "Basic Greatsword",
     "group": "WEAPON",
     "skill": "SWORD",
+    "price": 4,
     "min_strength": 22,
     "base_hit": 40,
     "damage": 17
@@ -107,6 +120,7 @@
     "name": "Ordinary Greatsword",
     "group": "WEAPON",
     "skill": "SWORD",
+    "price": 6,
     "min_strength": 23,
     "base_hit": 50,
     "damage": 19
@@ -115,6 +129,7 @@
     "name": "Specialist Greatsword",
     "group": "WEAPON",
     "skill": "SWORD",
+    "price": 8,
     "min_strength": 24,
     "base_hit": 60,
     "damage": 21
@@ -123,6 +138,7 @@
     "name": "Masterwork Greatsword",
     "group": "WEAPON",
     "skill": "SWORD",
+    "price": 10,
     "min_strength": 25,
     "base_hit": 70,
     "damage": 23

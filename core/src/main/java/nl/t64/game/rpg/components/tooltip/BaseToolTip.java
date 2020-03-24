@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.inventory;
+package nl.t64.game.rpg.components.tooltip;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -34,7 +34,7 @@ abstract class BaseToolTip {
         return new Window.WindowStyle(font, Color.GREEN, drawable);
     }
 
-    void addToStage(Stage stage) {
+    public void addToStage(Stage stage) {
         stage.addActor(window);
     }
 

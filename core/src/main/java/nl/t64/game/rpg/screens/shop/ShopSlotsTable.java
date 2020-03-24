@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.inventory;
+package nl.t64.game.rpg.screens.shop;
 
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -7,30 +7,32 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.InventoryContainer;
+import nl.t64.game.rpg.components.party.InventoryDatabase;
 import nl.t64.game.rpg.components.party.InventoryGroup;
 import nl.t64.game.rpg.components.tooltip.InventorySlotTooltip;
 import nl.t64.game.rpg.components.tooltip.InventorySlotTooltipListener;
+import nl.t64.game.rpg.screens.inventory.*;
 
-import java.util.Optional;
 import java.util.stream.IntStream;
 
 
-public class InventorySlotsTable {
+class ShopSlotsTable {
 
     private static final String SPRITE_TOP_BORDER = "sprites/top_border.png";
     private static final float SLOT_SIZE = 64f;
     private static final int SLOTS_IN_ROW = 6;
     private static final float CONTAINER_HEIGHT = 704f;
 
-    public final Table container;
-    final Table inventorySlots;
-    public final ScrollPane scrollPane;
+    final Table container;
+    final ScrollPane scrollPane;
+    private final Table inventorySlots;
     private final DragAndDrop dragAndDrop;
     private final InventorySlotTooltip tooltip;
     private final InventoryContainer inventory;
 
-    public InventorySlotsTable(DragAndDrop dragAndDrop, InventorySlotTooltip tooltip) {
-        this.inventory = Utils.getGameData().getInventory();
+    ShopSlotsTable(String shopId, DragAndDrop dragAndDrop, InventorySlotTooltip tooltip) {
+        this.inventory = new InventoryContainer();
+        this.fillShopContainer(shopId);
         this.dragAndDrop = dragAndDrop;
         this.tooltip = tooltip;
         this.inventorySlots = new Table();
@@ -42,9 +44,11 @@ public class InventorySlotsTable {
         setTopBorder();
     }
 
-    Optional<InventorySlot> getPossibleEmptySlot() {
-        return inventory.findFirstEmptySlot()
-                        .map(i -> (InventorySlot) inventorySlots.getChildren().get(i));
+    private void fillShopContainer(String shopId) {
+        Utils.getResourceManager().getShopInventory(shopId)
+             .stream()
+             .map(itemId -> InventoryDatabase.getInstance().getInventoryItem(itemId))
+             .forEach(inventory::autoSetItem);
     }
 
     private void fillInventorySlots() {
@@ -60,13 +64,14 @@ public class InventorySlotsTable {
     }
 
     private void createInventorySlot(int index) {
-        var inventorySlot = new InventorySlot(InventoryGroup.EVERYTHING);
+        var inventorySlot = new InventorySlot(InventoryGroup.SHOP_EQUIP_ITEM);
         inventorySlot.addListener(new InventorySlotTooltipListener(tooltip));
-        inventorySlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickInventory));
+        inventorySlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
         dragAndDrop.addTarget(new InventorySlotTarget(inventorySlot));
         dragAndDrop.addSource(new InventorySlotSource(inventorySlot.amountLabel, dragAndDrop));
         inventory.getItemAt(index).ifPresent(inventoryItem -> {
-            inventorySlot.amount = inventory.getAmountOfItemAt(index);
+            int newAmount = inventory.getAmountOfItemAt(index);
+            inventorySlot.setAmount(newAmount);
             inventorySlot.addToStack(new InventoryImage(inventoryItem));
             dragAndDrop.addSource(new InventorySlotSource(inventorySlot.getCertainInventoryImage(), dragAndDrop));
         });

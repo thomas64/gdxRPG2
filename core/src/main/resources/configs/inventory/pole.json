@@ -3,6 +3,7 @@
     "name": "Basic Staff",
     "group": "WEAPON",
     "skill": "POLE",
+    "price": 1,
     "min_strength": 8,
     "base_hit": 50,
     "damage": 4
@@ -11,6 +12,7 @@
     "name": "Ordinary Staff",
     "group": "WEAPON",
     "skill": "POLE",
+    "price": 3,
     "min_strength": 9,
     "base_hit": 60,
     "damage": 6
@@ -19,6 +21,7 @@
     "name": "Specialist Staff",
     "group": "WEAPON",
     "skill": "POLE",
+    "price": 5,
     "min_strength": 10,
     "base_hit": 70,
     "damage": 8
@@ -27,6 +30,7 @@
     "name": "Masterwork Staff",
     "group": "WEAPON",
     "skill": "POLE",
+    "price": 7,
     "min_strength": 11,
     "base_hit": 80,
     "damage": 10
@@ -36,6 +40,7 @@
     "group": "WEAPON",
     "skill": "POLE",
     "min_intelligence": 26,
+    "price": 9,
     "min_strength": 8,
     "base_hit": 80,
     "damage": 10
@@ -45,6 +50,7 @@
     "group": "WEAPON",
     "skill": "POLE",
     "min_intelligence": 30,
+    "price": 11,
     "min_strength": 12,
     "base_hit": 90,
     "damage": 12
@@ -53,6 +59,7 @@
     "name": "Basic Spear",
     "group": "WEAPON",
     "skill": "POLE",
+    "price": 2,
     "min_strength": 11,
     "base_hit": 50,
     "damage": 6
@@ -61,6 +68,7 @@
     "name": "Ordinary Spear",
     "group": "WEAPON",
     "skill": "POLE",
+    "price": 4,
     "min_strength": 12,
     "base_hit": 60,
     "damage": 8
@@ -69,6 +77,7 @@
     "name": "Specialist Spear",
     "group": "WEAPON",
     "skill": "POLE",
+    "price": 6,
     "min_strength": 13,
     "base_hit": 70,
     "damage": 10
@@ -77,6 +86,7 @@
     "name": "Masterwork Spear",
     "group": "WEAPON",
     "skill": "POLE",
+    "price": 8,
     "min_strength": 14,
     "base_hit": 80,
     "damage": 12
@@ -85,6 +95,7 @@
     "name": "Basic Pike",
     "group": "WEAPON",
     "skill": "POLE",
+    "price": 3,
     "min_strength": 14,
     "base_hit": 50,
     "damage": 8
@@ -93,6 +104,7 @@
     "name": "Ordinary Pike",
     "group": "WEAPON",
     "skill": "POLE",
+    "price": 5,
     "min_strength": 15,
     "base_hit": 60,
     "damage": 10
@@ -101,6 +113,7 @@
     "name": "Specialist Pike",
     "group": "WEAPON",
     "skill": "POLE",
+    "price": 7,
     "min_strength": 16,
     "base_hit": 70,
     "damage": 12
@@ -109,6 +122,7 @@
     "name": "Masterwork Pike",
     "group": "WEAPON",
     "skill": "POLE",
+    "price": 9,
     "min_strength": 17,
     "base_hit": 80,
     "damage": 14
@@ -117,6 +131,7 @@
     "name": "Basic Lance",
     "group": "WEAPON",
     "skill": "POLE",
+    "price": 4,
     "min_strength": 17,
     "base_hit": 50,
     "damage": 10
@@ -125,6 +140,7 @@
     "name": "Ordinary Lance",
     "group": "WEAPON",
     "skill": "POLE",
+    "price": 6,
     "min_strength": 18,
     "base_hit": 60,
     "damage": 12
@@ -133,6 +149,7 @@
     "name": "Specialist Lance",
     "group": "WEAPON",
     "skill": "POLE",
+    "price": 8,
     "min_strength": 19,
     "base_hit": 70,
     "damage": 14
@@ -141,6 +158,7 @@
     "name": "Masterwork Lance",
     "group": "WEAPON",
     "skill": "POLE",
+    "price": 10,
     "min_strength": 20,
     "base_hit": 80,
     "damage": 16

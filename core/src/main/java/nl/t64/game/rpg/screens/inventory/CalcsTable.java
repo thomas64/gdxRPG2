@@ -18,8 +18,9 @@ class CalcsTable extends BaseTable {
         setTopBorder(this.table);
     }
 
-    void update() {
-        HeroItem selectedHero = InventoryUtils.selectedHero;
+    @Override
+    protected void update() {
+        HeroItem selectedHero = InventoryUtils.getSelectedHero();
         table.clear();
 
         table.add("Weight");

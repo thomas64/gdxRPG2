@@ -3,6 +3,8 @@ package nl.t64.game.rpg.screens.inventory;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.StatItem;
+import nl.t64.game.rpg.components.tooltip.PersonalityTooltip;
+import nl.t64.game.rpg.components.tooltip.PersonalityTooltipListener;
 
 
 class StatsTable extends BaseTable {
@@ -24,8 +26,8 @@ class StatsTable extends BaseTable {
     }
 
     @Override
-    void update() {
-        selectedHero = InventoryUtils.selectedHero;
+    protected void update() {
+        selectedHero = InventoryUtils.getSelectedHero();
         table.clear();
         fillRows();
     }
