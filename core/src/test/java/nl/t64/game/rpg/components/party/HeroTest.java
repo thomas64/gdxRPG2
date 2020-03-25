@@ -3,7 +3,9 @@ package nl.t64.game.rpg.components.party;
 import nl.t64.game.rpg.constants.Constant;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
+import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,6 +20,7 @@ class HeroTest extends DataProvider {
         assertThat(heroes.getSize()).isEqualTo(13);
         assertThat(party.contains(Constant.PLAYER_ID)).isTrue();
         assertThat(party.getSize()).isEqualTo(1);
+        assertThat(party.contains((HeroItem) null)).isFalse();
     }
 
     @Test
@@ -135,6 +138,7 @@ class HeroTest extends DataProvider {
         final HeroItem luana = heroes.getHero("luana");
         final HeroItem valter = heroes.getHero("valter");
         final HeroItem luthais = heroes.getHero("luthais");
+        final HeroItem iellwen = heroes.getHero("iellwen");
 
         assertThat(party.getHero(0)).isEqualTo(mozes);
 
@@ -147,9 +151,20 @@ class HeroTest extends DataProvider {
         assertThat(mozes.isPlayer()).isTrue();
         assertThat(mozes.getXpDeltaBetweenLevels()).isEqualTo(20);
         assertThat(mozes.getXpToInvest()).isEqualTo(0);
+        assertThat(mozes.getAllStats()).extracting("id")
+                                       .containsExactly(StatItemId.INTELLIGENCE,
+                                                        StatItemId.WILLPOWER,
+                                                        StatItemId.DEXTERITY,
+                                                        StatItemId.AGILITY,
+                                                        StatItemId.ENDURANCE,
+                                                        StatItemId.STRENGTH,
+                                                        StatItemId.STAMINA);
         assertThat(mozes.getStatById(StatItemId.INTELLIGENCE).getXpCostForNextLevel()).isEqualTo(43);
         assertThat(mozes.getSkillById(SkillItemId.STEALTH).getXpCostForNextLevel(0)).isEqualTo(16);
         assertThat(mozes.getSkillById(SkillItemId.STEALTH).getGoldCostForNextLevel()).isEqualTo(8);
+
+        assertThat(mozes.getExtraStatForVisualOf(mozes.getStatById(StatItemId.DEXTERITY))).isEqualTo(-2);
+        assertThat(iellwen.getExtraSkillForVisualOf(iellwen.getSkillById(SkillItemId.STEALTH))).isEqualTo(-1);
 
         assertThat(mozes.getInventoryItem(InventoryGroup.WEAPON)).get().hasFieldOrPropertyWithValue("id", "basic_shortsword");
         assertThat(mozes.getInventoryItem(InventoryGroup.SHIELD)).get().hasFieldOrPropertyWithValue("id", "basic_light_shield");
@@ -183,6 +198,42 @@ class HeroTest extends DataProvider {
         assertThat(ResourceType.GOLD.getTitle()).isEqualTo("Gold");
         assertThat(InventoryGroup.WEAPON.getTitle()).isEqualTo("Weapon");
         assertThat(InventoryMinimal.SKILL.getTitle()).isEqualTo("Skill");
+    }
+
+    @Test
+    void whenHeroIsCreated_ShouldHaveRightHpStats() {
+        final HeroItem mozes = party.getHero("mozes");
+        final var actual = mozes.getAllHpStats();
+        final var expected = Map.of("lvlRank", 1,
+                                    "lvlVari", 1,
+                                    "staRank", 30,
+                                    "staVari", 30,
+                                    "eduRank", 15,
+                                    "eduVari", 15,
+                                    "eduBon", 0);
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void whenItemMakesStatLowerThanZero_ShouldReturnOne() {
+        final HeroItem jaspar = heroes.getHero("jaspar");
+        final InventoryItem itemMock = Mockito.mock(InventoryItem.class);
+        Mockito.when(itemMock.getAttributeOfStatItemId(StatItemId.DEXTERITY)).thenReturn(-200);
+        jaspar.forceSetInventoryItem(InventoryGroup.SHIELD, itemMock);
+
+        assertThat(jaspar.getCalculatedTotalStatOf(StatItemId.DEXTERITY)).isEqualTo(1);
+        assertThat(jaspar.getExtraStatForVisualOf(jaspar.getStatById(StatItemId.DEXTERITY))).isEqualTo(-14);
+    }
+
+    @Test
+    void whenItemMakesSkillLowerThanZero_ShouldReturnZero() {
+        final HeroItem faeron = heroes.getHero("faeron");
+        final InventoryItem itemMock = Mockito.mock(InventoryItem.class);
+        Mockito.when(itemMock.getAttributeOfSkillItemId(SkillItemId.STEALTH)).thenReturn(-200);
+        faeron.forceSetInventoryItem(InventoryGroup.SHIELD, itemMock);
+
+        assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.STEALTH)).isEqualTo(0);
+        assertThat(faeron.getExtraSkillForVisualOf(faeron.getSkillById(SkillItemId.STEALTH))).isEqualTo(-10);
     }
 
 }
