@@ -30,14 +30,10 @@ class WorldScreenListener implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
-        if (keycode == Input.Keys.F10) {
-            WorldScreen.setShowGrid();
-        }
-        if (keycode == Input.Keys.F11) {
-            WorldScreen.setShowObjects();
-        }
-        if (keycode == Input.Keys.F12) {
-            WorldScreen.setShowDebug();
+        switch (keycode) {
+            case Input.Keys.F10 -> WorldScreen.setShowGrid();
+            case Input.Keys.F11 -> WorldScreen.setShowObjects();
+            case Input.Keys.F12 -> WorldScreen.setShowDebug();
         }
         return false;
     }

@@ -126,7 +126,7 @@ public class MenuMain extends MenuScreen {
         newTable.add(newGameButton).spaceBottom(MENU_SPACE_BOTTOM).row();
         newTable.add(loadGameButton).spaceBottom(MENU_SPACE_BOTTOM).row();
         newTable.add(settingsButton).spaceBottom(MENU_SPACE_BOTTOM).row();
-        newTable.add(exitButton).spaceBottom(MENU_SPACE_BOTTOM).row();
+        newTable.add(exitButton);
         return newTable;
     }
 

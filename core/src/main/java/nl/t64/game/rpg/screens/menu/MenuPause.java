@@ -36,7 +36,7 @@ public class MenuPause extends MenuScreen {
     private ListenerKeyVertical listenerKeyVertical;
 
     public MenuPause() {
-        super.selectedMenuIndex = 0;
+        super.selectedMenuIndex = EXIT_INDEX;
     }
 
     @Override
@@ -126,7 +126,7 @@ public class MenuPause extends MenuScreen {
         newTable.add(continueButton).spaceBottom(MENU_SPACE_BOTTOM).row();
         newTable.add(loadGameButton).spaceBottom(MENU_SPACE_BOTTOM).row();
         newTable.add(settingsButton).spaceBottom(MENU_SPACE_BOTTOM).row();
-        newTable.add(mainMenuButton).spaceBottom(MENU_SPACE_BOTTOM).row();
+        newTable.add(mainMenuButton);
         return newTable;
     }
 
