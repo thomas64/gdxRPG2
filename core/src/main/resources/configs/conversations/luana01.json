@@ -1,42 +1,62 @@
 {
-  currentConversationId: 1
-  conversations: {
-    1: {
-      text: [May I join your party?]
+  "luana01": {
+    "phrases": {
+      "1": {
+        "text": ["Hi Mozes!"]
+      },
+      "2": {
+        "text": ["What have I been hearing?"]
+      },
+      "3": {
+        "text": [
+          "You are going on this *huge* adventure with big stuff and whatnot, slaying monsters and taking loot, and and and..."
+        ]
+      },
+      "4": {
+        "text": ["And you aren't taking me with you?"]
+      },
+      "5": {
+        "text": ["What's wrong with you!?"]
+      },
+      "6": {
+        "text": [
+          "We've been friends since childhood, we always went on adventures together, and now you leave me hanging?"
+        ]
+      },
+      "7": {
+        "text": ["Who will be there to protect you? You need protection... From me! You do know that right?"]
+      },
+      "8": {
+        "text": ["Okay, here's the deal. You are taking me with you and *maybe* I'll forgive you."]
+      },
+      "9": {
+        "text": ["Alright! Now were talking!", "You are so not gonna regret this."]
+      },
+      "10": {
+        "text": ["Ugh! This is so unfair!"]
+      }
+    },
+    "choices": {
+      "8": [
+        {
+          "text": "Okay Luana, I will endure your presence.",
+          "destinationId": "9"
+        },
+        {
+          "text": "No, I don't *want* your protection.",
+          "destinationId": "10"
+        }
+      ],
+      "9": [
+        {
+          "destinationId": "JOIN_PARTY"
+        }
+      ],
+      "10": [
+        {
+          "destinationId": "EXIT_CONVERSATION"
+        }
+      ]
     }
-    2: {
-      text: ["Okay, perhaps another time then."]
-    }
-    3: {
-      text: ["Alright, thanks!"]
-    }
-  }
-  associatedChoices: {
-    1: [
-      {
-        class: nl.t64.game.rpg.conversation.ConversationChoice
-        text: Yes
-        destinationId: 3
-      }
-      {
-        class: nl.t64.game.rpg.conversation.ConversationChoice
-        text: No
-        destinationId: 2
-      }
-    ]
-    2: [
-      {
-        class: nl.t64.game.rpg.conversation.ConversationChoice
-        text: ->
-        destinationId: EXIT_CONVERSATION
-      }
-    ]
-    3: [
-      {
-        class: nl.t64.game.rpg.conversation.ConversationChoice
-        text: ->
-        destinationId: JOIN_PARTY
-      }
-    ]
   }
 }

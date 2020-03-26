@@ -15,7 +15,6 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ObjectMap;
-import nl.t64.game.rpg.conversation.ConversationGraph;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +24,6 @@ import java.util.List;
 public class ResourceManager {
 
     private static final String SPRITE_CONFIGS = "configs/sprites";
-    private static final String CONVERSATION_CONFIGS = "configs/conversations/";
     private static final String SHOP_CONFIGS = "configs/shops/";
     private static final String CONFIG_SUFFIX = ".json";
     private static final String ATLAS_FILES = "sprites";
@@ -129,11 +127,6 @@ public class ResourceManager {
         Arrays.stream(atlasFiles)
               .map(TextureAtlas::new)
               .forEach(atlasList::add);
-    }
-
-    public ConversationGraph getConversation(String conversationId) {
-        String fullFilenamePath = CONVERSATION_CONFIGS + conversationId + CONFIG_SUFFIX;
-        return json.fromJson(ConversationGraph.class, Gdx.files.local(fullFilenamePath));
     }
 
     @SuppressWarnings("unchecked")

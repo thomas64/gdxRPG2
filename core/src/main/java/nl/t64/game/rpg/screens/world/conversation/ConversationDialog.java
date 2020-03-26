@@ -14,9 +14,9 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.ConversationCommand;
-import nl.t64.game.rpg.conversation.Conversation;
 import nl.t64.game.rpg.conversation.ConversationChoice;
 import nl.t64.game.rpg.conversation.ConversationGraph;
+import nl.t64.game.rpg.conversation.ConversationPhrase;
 
 import java.util.function.Consumer;
 
@@ -83,11 +83,10 @@ public class ConversationDialog {
         }
     }
 
-    public void loadConversation(String conversationJsonFile, String characterId) {
+    public void loadConversation(String conversationId, String characterId) {
         characterFace.setDrawable(Utils.getFaceImage(characterId).getDrawable());
-        graph = Utils.getResourceManager().getConversation(conversationJsonFile);
-        String conversationId = graph.getCurrentConversationId();
-        populateConversationDialog(conversationId);
+        graph = Utils.getGameData().getConversations().getConversationById(conversationId);
+        populateConversationDialog(graph.getCurrentPhraseId());
     }
 
     private Dialog createDialog() {
@@ -159,12 +158,13 @@ public class ConversationDialog {
         populateConversationDialog(destinationId);
     }
 
-    private void populateConversationDialog(String conversationId) {
-        Conversation conversation = graph.getConversationById(conversationId);
-        graph.setCurrentConversationId(conversationId);
-        String text = String.join(System.lineSeparator(), conversation.getText());
+    private void populateConversationDialog(String phraseId) {
+        ConversationPhrase phrase = graph.getPhraseById(phraseId);
+        graph.setCurrentPhraseId(phraseId);
+        String text = String.join(System.lineSeparator(), phrase.getText());
         label.setText(text);
-        answers.setItems(graph.getCurrentChoices().toArray(new ConversationChoice[0]));
+        ConversationChoice[] choices = graph.getAssociatedChoices().toArray(new ConversationChoice[0]);
+        answers.setItems(choices);
         answers.setSelectedIndex(0);
     }
 

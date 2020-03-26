@@ -1,17 +1,17 @@
 {
-  currentConversationId: 1
-  conversations: {
-    1: {
-      text: [Hello.]
-    }
-  }
-  associatedChoices: {
-    1: [
-      {
-        class: nl.t64.game.rpg.conversation.ConversationChoice
-        text: ->
-        destinationId: EXIT_CONVERSATION
+  "default": {
+    "phrases": {
+      "1": {
+        "text": ["Hello."]
       }
-    ]
+    },
+    "choices": {
+      "1": [
+        {
+          "text": "->",
+          "destinationId": "EXIT_CONVERSATION"
+        }
+      ]
+    }
   }
 }

@@ -1,22 +1,21 @@
 {
-  currentConversationId: 1
-  conversations: {
-    1: {
-      text: [Hello Traveler. Would you like to see my wares?]
+  "weaponshop01": {
+    "phrases": {
+      "1": {
+        "text": ["Hello Traveler. Would you like to see my wares?"]
+      }
+    },
+    "choices": {
+      "1": [
+        {
+          "text": "Yes",
+          "destinationId": "LOAD_SHOP"
+        },
+        {
+          "text": "No",
+          "destinationId": "EXIT_CONVERSATION"
+        }
+      ]
     }
-  }
-  associatedChoices: {
-    1: [
-      {
-        class: nl.t64.game.rpg.conversation.ConversationChoice
-        text: Yes
-        destinationId: LOAD_SHOP
-      }
-      {
-        class: nl.t64.game.rpg.conversation.ConversationChoice
-        text: No
-        destinationId: EXIT_CONVERSATION
-      }
-    ]
   }
 }

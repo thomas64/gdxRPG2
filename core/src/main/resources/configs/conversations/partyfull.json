@@ -1,20 +1,20 @@
 {
-  currentConversationId: 1
-  conversations: {
-    1: {
-      text: [
-        It seems your party is already full.
-        Another time perhaps.
+  "partyfull": {
+    "phrases": {
+      "1": {
+        "text": [
+          "It seems your party is already full.",
+          "Another time perhaps."
+        ]
+      }
+    },
+    "choices": {
+      "1": [
+        {
+          "text": "->",
+          "destinationId": "EXIT_CONVERSATION"
+        }
       ]
     }
-  }
-  associatedChoices: {
-    1: [
-      {
-        class: nl.t64.game.rpg.conversation.ConversationChoice
-        text: ->
-        destinationId: EXIT_CONVERSATION
-      }
-    ]
   }
 }

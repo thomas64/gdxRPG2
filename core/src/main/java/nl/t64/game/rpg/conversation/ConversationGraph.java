@@ -1,28 +1,38 @@
 package nl.t64.game.rpg.conversation;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 
-@NoArgsConstructor
+@Getter
 public class ConversationGraph {
 
-    @Getter
-    @Setter
-    private String currentConversationId;
-    private HashMap<String, Conversation> conversations;
-    private HashMap<String, List<ConversationChoice>> associatedChoices;
+    static final String DEFAULT_STARTING_PHRASE_ID = "1";
 
-    public Conversation getConversationById(String id) {
-        return conversations.get(id);
+    @Setter
+    private String currentPhraseId;
+    private Map<String, ConversationPhrase> phrases;
+    private Map<String, List<ConversationChoice>> choices;
+
+    public ConversationGraph() {
+        this.currentPhraseId = DEFAULT_STARTING_PHRASE_ID;
     }
 
-    public List<ConversationChoice> getCurrentChoices() {
-        return associatedChoices.get(currentConversationId);
+    public ConversationPhrase getPhraseById(String id) {
+        return phrases.get(id);
+    }
+
+    public List<ConversationChoice> getAssociatedChoices() {
+        if (!choices.containsKey(currentPhraseId)) {
+            String nextPhraseId = String.valueOf(Integer.parseInt(currentPhraseId) + 1);
+            return Collections.singletonList(new ConversationChoice(nextPhraseId));
+        } else {
+            return choices.get(currentPhraseId);
+        }
     }
 
 }

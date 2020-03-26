@@ -5,7 +5,9 @@ import lombok.Getter;
 import java.util.List;
 
 
-public class Conversation {
-    @Getter
+@Getter
+public class ConversationPhrase {
+
     private List<String> text;
+
 }

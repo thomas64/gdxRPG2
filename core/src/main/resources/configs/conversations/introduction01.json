@@ -1,55 +1,45 @@
 {
-  currentConversationId: 1
-  conversations: {
-    1: {
-      text: [Welcome to this game.]
-    }
-    2: {
-      text: [
-        I am the Fairy of Introduction.
-        Do you want me to repeat what I just said?
+  "introduction01": {
+    "phrases": {
+      "1": {
+        "text": ["Welcome to this game."]
+      },
+      "2": {
+        "text": [
+          "I am the Fairy of Introduction.",
+          "Do you want me to repeat what I just said?"
+        ]
+      },
+      "3": {
+        "text": ["I am happy to repeat myself as much as you need me to. Here I go:"]
+      },
+      "4": {
+        "text": ["Oh... Okay."]
+      }
+    },
+    "choices": {
+      "2": [
+        {
+          "text": "Yes, I would.",
+          "destinationId": "3"
+        },
+        {
+          "text": "Please stop talking to me.",
+          "destinationId": "4"
+        }
+      ],
+      "3": [
+        {
+          "text": "->",
+          "destinationId": "1"
+        }
+      ],
+      "4": [
+        {
+          "text": "->",
+          "destinationId": "EXIT_CONVERSATION"
+        }
       ]
     }
-    3: {
-      text: [I am happy to repeat myself as much as you need me to. Here I go:]
-    }
-    4: {
-      text: [Oh... Okay.]
-    }
-  }
-  associatedChoices: {
-    1: [
-      {
-        class: nl.t64.game.rpg.conversation.ConversationChoice
-        text: ->
-        destinationId: 2
-      }
-    ]
-    2: [
-      {
-        class: nl.t64.game.rpg.conversation.ConversationChoice
-        text: "Yes, I would."
-        destinationId: 3
-      }
-      {
-        class: nl.t64.game.rpg.conversation.ConversationChoice
-        text: Please stop talking to me.
-        destinationId: 4
-      }
-    ]
-    3: [
-      {
-        class: nl.t64.game.rpg.conversation.ConversationChoice
-        text: ->
-        destinationId: 1
-      }
-    ]
-    4: [
-      {
-        class: nl.t64.game.rpg.conversation.ConversationChoice
-        text: ->
-        destinationId: EXIT_CONVERSATION
-      }
-    ]
   }
 }

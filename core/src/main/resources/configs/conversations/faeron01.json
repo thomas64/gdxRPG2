@@ -1,42 +1,39 @@
 {
-  currentConversationId: 1
-  conversations: {
-    1: {
-      text: [May I join your party?]
+  "faeron01": {
+    "phrases": {
+      "1": {
+        "text": ["May I join your party?"]
+      },
+      "2": {
+        "text": ["Okay, perhaps another time then."]
+      },
+      "3": {
+        "text": ["Alright, thanks!"]
+      }
+    },
+    "choices": {
+      "1": [
+        {
+          "text": "Yes",
+          "destinationId": "3"
+        },
+        {
+          "text": "No",
+          "destinationId": "2"
+        }
+      ],
+      "2": [
+        {
+          "text": "->",
+          "destinationId": "EXIT_CONVERSATION"
+        }
+      ],
+      "3": [
+        {
+          "text": "->",
+          "destinationId": "JOIN_PARTY"
+        }
+      ]
     }
-    2: {
-      text: ["Okay, perhaps another time then."]
-    }
-    3: {
-      text: ["Alright, thanks!"]
-    }
-  }
-  associatedChoices: {
-    1: [
-      {
-        class: nl.t64.game.rpg.conversation.ConversationChoice
-        text: Yes
-        destinationId: 3
-      }
-      {
-        class: nl.t64.game.rpg.conversation.ConversationChoice
-        text: No
-        destinationId: 2
-      }
-    ]
-    2: [
-      {
-        class: nl.t64.game.rpg.conversation.ConversationChoice
-        text: ->
-        destinationId: EXIT_CONVERSATION
-      }
-    ]
-    3: [
-      {
-        class: nl.t64.game.rpg.conversation.ConversationChoice
-        text: ->
-        destinationId: JOIN_PARTY
-      }
-    ]
   }
 }
