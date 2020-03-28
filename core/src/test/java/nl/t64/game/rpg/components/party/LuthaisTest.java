@@ -10,7 +10,7 @@ public class LuthaisTest extends DataProvider {
     @Test
     void whenHeroesAreCreated_LuthaisShouldHaveRightStats() {
         final HeroItem luthais = heroes.getHero("luthais");
-        assertThat(party.contains(luthais)).isFalse();
+        assertThat(party.containsExactlyEqualTo(luthais)).isFalse();
 
         assertThat(luthais.school).isEqualTo(SchoolType.ELEMENTAL);
         assertThat(luthais.getLevel()).isEqualTo(20);

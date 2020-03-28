@@ -20,7 +20,7 @@ class HeroTest extends DataProvider {
         assertThat(heroes.getSize()).isEqualTo(13);
         assertThat(party.contains(Constant.PLAYER_ID)).isTrue();
         assertThat(party.getSize()).isEqualTo(1);
-        assertThat(party.contains((HeroItem) null)).isFalse();
+        assertThat(party.containsExactlyEqualTo(null)).isFalse();
     }
 
     @Test

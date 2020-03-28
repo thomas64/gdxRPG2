@@ -10,7 +10,7 @@ public class KiaraTest extends DataProvider {
     @Test
     void whenHeroesAreCreated_KiaraShouldHaveRightStats() {
         final HeroItem kiara = heroes.getHero("kiara");
-        assertThat(party.contains(kiara)).isFalse();
+        assertThat(party.containsExactlyEqualTo(kiara)).isFalse();
 
         assertThat(kiara.school).isEqualTo(SchoolType.ELEMENTAL);
         assertThat(kiara.getLevel()).isEqualTo(12);

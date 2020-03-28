@@ -10,7 +10,7 @@ public class DuilioTest extends DataProvider {
     @Test
     void whenHeroesAreCreated_DuilioShouldHaveRightStats() {
         final HeroItem duilio = heroes.getHero("duilio");
-        assertThat(party.contains(duilio)).isFalse();
+        assertThat(party.containsExactlyEqualTo(duilio)).isFalse();
 
         assertThat(duilio.school).isEqualTo(SchoolType.ELEMENTAL);
         assertThat(duilio.getLevel()).isEqualTo(22);

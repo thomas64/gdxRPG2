@@ -10,7 +10,7 @@ public class JasparTest extends DataProvider {
     @Test
     void whenHeroesAreCreated_JasparShouldHaveRightStats() {
         final HeroItem jaspar = heroes.getHero("jaspar");
-        assertThat(party.contains(jaspar)).isFalse();
+        assertThat(party.containsExactlyEqualTo(jaspar)).isFalse();
 
         assertThat(jaspar.school).isEqualTo(SchoolType.NONE);
         assertThat(jaspar.getLevel()).isEqualTo(12);

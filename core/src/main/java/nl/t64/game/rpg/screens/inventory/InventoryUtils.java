@@ -22,7 +22,7 @@ public final class InventoryUtils {
 
     public static String getSelectedHeroId() {
         PartyContainer party = Utils.getGameData().getParty();
-        if (!party.contains(selectedHero)) {
+        if (!party.containsExactlyEqualTo(selectedHero)) {
             selectedHero = party.getHero(0);
         }
         return selectedHero.getId();

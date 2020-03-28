@@ -10,7 +10,7 @@ public class ValterTest extends DataProvider {
     @Test
     void whenHeroesAreCreated_ValterShouldHaveRightStats() {
         final HeroItem valter = heroes.getHero("valter");
-        assertThat(party.contains(valter)).isFalse();
+        assertThat(party.containsExactlyEqualTo(valter)).isFalse();
 
         assertThat(valter.school).isEqualTo(SchoolType.ELEMENTAL);
         assertThat(valter.getLevel()).isEqualTo(2);

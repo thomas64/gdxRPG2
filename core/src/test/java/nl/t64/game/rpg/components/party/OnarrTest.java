@@ -10,7 +10,7 @@ public class OnarrTest extends DataProvider {
     @Test
     void whenHeroesAreCreated_OnarrShouldHaveRightStats() {
         final HeroItem onarr = heroes.getHero("onarr");
-        assertThat(party.contains(onarr)).isFalse();
+        assertThat(party.containsExactlyEqualTo(onarr)).isFalse();
 
         assertThat(onarr.school).isEqualTo(SchoolType.NONE);
         assertThat(onarr.getLevel()).isEqualTo(18);

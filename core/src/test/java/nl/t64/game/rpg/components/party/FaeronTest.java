@@ -10,7 +10,7 @@ public class FaeronTest extends DataProvider {
     @Test
     void whenHeroesAreCreated_FaeronShouldHaveRightStats() {
         final HeroItem faeron = heroes.getHero("faeron");
-        assertThat(party.contains(faeron)).isFalse();
+        assertThat(party.containsExactlyEqualTo(faeron)).isFalse();
 
         assertThat(faeron.school).isEqualTo(SchoolType.NAMING);
         assertThat(faeron.getLevel()).isEqualTo(25);

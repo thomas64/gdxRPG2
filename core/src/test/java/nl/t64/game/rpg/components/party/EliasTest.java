@@ -10,7 +10,7 @@ public class EliasTest extends DataProvider {
     @Test
     void whenHeroesAreCreated_EliasShouldHaveRightStats() {
         final HeroItem elias = heroes.getHero("elias");
-        assertThat(party.contains(elias)).isFalse();
+        assertThat(party.containsExactlyEqualTo(elias)).isFalse();
 
         assertThat(elias.school).isEqualTo(SchoolType.NAMING);
         assertThat(elias.getLevel()).isEqualTo(18);

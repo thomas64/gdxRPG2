@@ -10,7 +10,7 @@ public class LuanaTest extends DataProvider {
     @Test
     void whenHeroesAreCreated_LuanaShouldHaveRightStats() {
         final HeroItem luana = heroes.getHero("luana");
-        assertThat(party.contains(luana)).isFalse();
+        assertThat(party.containsExactlyEqualTo(luana)).isFalse();
 
         assertThat(luana.school).isEqualTo(SchoolType.ELEMENTAL);
         assertThat(luana.getLevel()).isEqualTo(1);

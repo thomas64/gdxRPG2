@@ -10,7 +10,7 @@ public class GalenTest extends DataProvider {
     @Test
     void whenHeroesAreCreated_GalenShouldHaveRightStats() {
         final HeroItem galen = heroes.getHero("galen");
-        assertThat(party.contains(galen)).isFalse();
+        assertThat(party.containsExactlyEqualTo(galen)).isFalse();
 
         assertThat(galen.school).isEqualTo(SchoolType.NONE);
         assertThat(galen.getLevel()).isEqualTo(4);

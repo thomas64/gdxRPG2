@@ -10,7 +10,7 @@ public class ReignaldTest extends DataProvider {
     @Test
     void whenHeroesAreCreated_ReignaldShouldHaveRightStats() {
         final HeroItem reignald = heroes.getHero("reignald");
-        assertThat(party.contains(reignald)).isFalse();
+        assertThat(party.containsExactlyEqualTo(reignald)).isFalse();
 
         assertThat(reignald.school).isEqualTo(SchoolType.NONE);
         assertThat(reignald.getLevel()).isEqualTo(8);

@@ -10,7 +10,7 @@ public class IellwenTest extends DataProvider {
     @Test
     void whenHeroesAreCreated_IellwenShouldHaveRightStats() {
         final HeroItem iellwen = heroes.getHero("iellwen");
-        assertThat(party.contains(iellwen)).isFalse();
+        assertThat(party.containsExactlyEqualTo(iellwen)).isFalse();
 
         assertThat(iellwen.school).isEqualTo(SchoolType.STAR);
         assertThat(iellwen.getLevel()).isEqualTo(20);

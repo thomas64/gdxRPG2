@@ -10,7 +10,7 @@ public class MozesTest extends DataProvider {
     @Test
     void whenHeroesAreCreated_MozesShouldHaveRightStats() {
         final HeroItem mozes = party.getHero("mozes");
-        assertThat(party.contains(mozes)).isTrue();
+        assertThat(party.containsExactlyEqualTo(mozes)).isTrue();
 
         assertThat(mozes.school).isEqualTo(SchoolType.UNKNOWN);
         assertThat(mozes.getLevel()).isEqualTo(1);

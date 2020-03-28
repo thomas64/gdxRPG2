@@ -10,7 +10,7 @@ public class RyiahTest extends DataProvider {
     @Test
     void whenHeroesAreCreated_RyiahShouldHaveRightStats() {
         final HeroItem ryiah = heroes.getHero("ryiah");
-        assertThat(party.contains(ryiah)).isFalse();
+        assertThat(party.containsExactlyEqualTo(ryiah)).isFalse();
 
         assertThat(ryiah.school).isEqualTo(SchoolType.NAMING);
         assertThat(ryiah.getLevel()).isEqualTo(3);

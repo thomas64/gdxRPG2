@@ -46,11 +46,12 @@ public class PartyContainer {
         return getSize() >= MAXIMUM;
     }
 
-    public boolean contains(HeroItem hero) {
-        if (hero == null) {
+    public boolean containsExactlyEqualTo(HeroItem heroObjectToCheck) {
+        if (heroObjectToCheck == null) {
             return false;
         }
-        return contains(hero.id);
+        final HeroItem possibleFoundHero = getHero(heroObjectToCheck.id);
+        return possibleFoundHero != null && possibleFoundHero.equals(heroObjectToCheck);
     }
 
     public boolean isHeroLast(HeroItem hero) {
