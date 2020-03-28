@@ -101,7 +101,8 @@ public class InventorySlot extends Stack {
 
     boolean doesAcceptItem(InventoryImage draggedItem) {
         if (filterGroup.equals(InventoryGroup.SHOP_EQUIP_ITEM)
-            && draggedItem.inventoryGroup.equals(InventoryGroup.RESOURCE)) {
+            && (draggedItem.inventoryGroup.equals(InventoryGroup.RESOURCE)
+                || draggedItem.inventoryGroup.equals(InventoryGroup.POTION))) {
             return false;
         }
         if (!isOnHero()) {

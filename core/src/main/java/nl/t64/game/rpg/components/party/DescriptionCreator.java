@@ -72,7 +72,8 @@ public class DescriptionCreator {
         if (attribute.key.equals(CalcAttributeId.WEIGHT)
             && (inventoryItem.group.equals(InventoryGroup.SHIELD)
                 || inventoryItem.group.equals(InventoryGroup.WEAPON)
-                || inventoryItem.group.equals(InventoryGroup.RESOURCE))) {
+                || inventoryItem.group.equals(InventoryGroup.RESOURCE)
+                || inventoryItem.group.equals(InventoryGroup.POTION))) {
             return false;
         }
         if (attribute.key.equals(CalcAttributeId.WEIGHT)) {

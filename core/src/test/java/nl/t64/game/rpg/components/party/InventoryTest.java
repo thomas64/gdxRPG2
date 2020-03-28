@@ -36,7 +36,19 @@ class InventoryTest extends GameTest {
         final InventoryItem gold = InventoryDatabase.getInstance().getInventoryItem(GOLD);
         assertThat(gold.name).isEqualTo("Gold");
         assertThat(gold.getGroup()).isEqualTo(InventoryGroup.RESOURCE);
-        assertThat(gold.getDescription()).isEqualTo("Gold can be used to pay for goods or services.");
+        assertThat(gold.getDescription()).isEqualTo(
+                List.of("Gold can be used to pay for goods or services."));
+    }
+
+    @Test
+    void whenPotionItemIsCreated_ShouldHaveVariables() {
+        final InventoryItem potion = InventoryDatabase.getInstance().getInventoryItem("healing_potion");
+        assertThat(potion.name).isEqualTo("Healing Potion");
+        assertThat(potion.getGroup()).isEqualTo(InventoryGroup.POTION);
+        assertThat(potion.getDescription()).isEqualTo(
+                List.of("Restores a fifth of the drinker's lost Endurance and Stamina.",
+                        "Creating a Healing Potion requires 3 Herbs",
+                        "and an Alchemist rank of at least 1."));
     }
 
     @Test

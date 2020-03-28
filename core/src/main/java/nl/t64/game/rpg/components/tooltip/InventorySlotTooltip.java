@@ -46,7 +46,8 @@ public class InventorySlotTooltip extends BaseToolTip {
 
             if (inventorySlot.isOnHero()) {
                 createSingleTooltip(hoveredImage);
-            } else if (inventoryGroup.equals(InventoryGroup.RESOURCE)) {
+            } else if (inventoryGroup.equals(InventoryGroup.RESOURCE)
+                       || inventoryGroup.equals(InventoryGroup.POTION)) {
                 createResourceTooltip(hoveredImage);
             } else if (isAbleToEquip.isEmpty() && equippedItem.isPresent()) {
                 createDualTooltip(hoveredImage, new InventoryImage(equippedItem.get()));
@@ -61,7 +62,7 @@ public class InventorySlotTooltip extends BaseToolTip {
         createSingleTooltip(inventoryImage);
         window.add().row();
         window.add(new Label(EMPTY_ROW, new Label.LabelStyle(font, Color.WHITE))).row();
-        final String description = inventoryImage.inventoryItem.getDescription();
+        final String description = String.join(System.lineSeparator(), inventoryImage.inventoryItem.getDescription());
         final var labelStyle = new Label.LabelStyle(font, Color.WHITE);
         final var label = new Label(description, labelStyle);
         window.add(label);

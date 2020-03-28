@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Objects;
 
 
@@ -17,7 +18,7 @@ public class InventoryItem {
     String id;
     String name;
     @Getter
-    String description;
+    List<String> description;
     int amount;
     @Getter
     InventoryGroup group;
@@ -94,7 +95,8 @@ public class InventoryItem {
     }
 
     public boolean isStackable() {
-        return group.equals(InventoryGroup.RESOURCE);
+        return group.equals(InventoryGroup.RESOURCE)
+               || group.equals(InventoryGroup.POTION);
     }
 
     int getSellValue() {

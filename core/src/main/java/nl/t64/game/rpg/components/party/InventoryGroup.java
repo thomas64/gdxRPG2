@@ -25,7 +25,8 @@ public enum InventoryGroup implements SuperEnum {
     PANTS("Pants"),                 // 12 prt   sum of totaal: prt / 3 ?
     BOOTS("Boots"),                 // 12 prt   bij complete set agi omhoog.
 
-    RESOURCE("Resource");
+    RESOURCE("Resource"),
+    POTION("Potion");
 
     private final String title;
 
