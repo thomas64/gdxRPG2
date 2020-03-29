@@ -98,7 +98,7 @@ public class HeroesTable {
     }
 
     private void addPossibleGreyBackgroundTo(Stack stack, HeroItem hero) {
-        if (hero.equalsHero(InventoryUtils.getSelectedHero())) {
+        if (hero.hasSameIdAs(InventoryUtils.getSelectedHero())) {
             Texture textureGrey = Utils.getResourceManager().getTextureAsset(SPRITE_GREY);
             Image imageGrey = new Image(textureGrey);
             stack.add(imageGrey);

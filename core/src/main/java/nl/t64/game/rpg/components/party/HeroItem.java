@@ -27,8 +27,8 @@ public class HeroItem {
         return id.equals(Constant.PLAYER_ID);
     }
 
-    public boolean equalsHero(HeroItem otherHero) {
-        return id.equals(otherHero.id);
+    public boolean hasSameIdAs(HeroItem candidateHero) {
+        return id.equals(candidateHero.id);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

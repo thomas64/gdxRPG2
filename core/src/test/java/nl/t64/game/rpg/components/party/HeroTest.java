@@ -147,7 +147,7 @@ class HeroTest extends DataProvider {
         assertThat(mozes.getId()).isEqualTo("mozes");
         assertThat(mozes.getName()).isEqualTo("Mozes");
         assertThat(mozes.getSchool()).isEqualTo(SchoolType.UNKNOWN);
-        assertThat(mozes.equalsHero(mozes)).isTrue();
+        assertThat(mozes.hasSameIdAs(mozes)).isTrue();
         assertThat(mozes.isPlayer()).isTrue();
         assertThat(mozes.getXpDeltaBetweenLevels()).isEqualTo(20);
         assertThat(mozes.getXpToInvest()).isEqualTo(0);
@@ -234,6 +234,21 @@ class HeroTest extends DataProvider {
 
         assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.STEALTH)).isEqualTo(0);
         assertThat(faeron.getExtraSkillForVisualOf(faeron.getSkillById(SkillItemId.STEALTH))).isEqualTo(-10);
+    }
+
+    @Test
+    void whenGetPreviousOrNextHeroFromParty_ShouldReturnThePreviousOrNextHero() {
+        addHeroToParty("luana");
+        addHeroToParty("reignald");
+        addHeroToParty("ryiah");
+        addHeroToParty("valter");
+        addHeroToParty("galen");
+        assertThat(party.getPreviousHero(party.getHero("mozes"))).isEqualTo(party.getHero("galen"));
+        assertThat(party.getNextHero(party.getHero("mozes"))).isEqualTo(party.getHero("luana"));
+        assertThat(party.getPreviousHero(party.getHero("ryiah"))).isEqualTo(party.getHero("reignald"));
+        assertThat(party.getNextHero(party.getHero("ryiah"))).isEqualTo(party.getHero("valter"));
+        assertThat(party.getPreviousHero(party.getHero("galen"))).isEqualTo(party.getHero("valter"));
+        assertThat(party.getNextHero(party.getHero("galen"))).isEqualTo(party.getHero("mozes"));
     }
 
 }

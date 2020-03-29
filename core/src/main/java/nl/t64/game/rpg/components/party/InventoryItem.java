@@ -17,6 +17,7 @@ public class InventoryItem {
     @Getter
     String id;
     String name;
+    int sort;
     @Getter
     List<String> description;
     int amount;
@@ -40,6 +41,7 @@ public class InventoryItem {
     public InventoryItem(InventoryItem item) {
         this.id = item.id;
         this.name = item.name;
+        this.sort = item.sort;
         this.description = item.description;
         this.amount = 1;
         this.group = item.group;
@@ -90,7 +92,11 @@ public class InventoryItem {
         };
     }
 
-    public boolean hasSameIdAs(String candidateId) {
+    public boolean hasSameIdAs(InventoryItem candidateItem) {
+        return hasSameIdAs(candidateItem.id);
+    }
+
+    boolean hasSameIdAs(String candidateId) {
         return id.equalsIgnoreCase(candidateId);
     }
 

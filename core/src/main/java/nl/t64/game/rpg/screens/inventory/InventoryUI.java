@@ -50,24 +50,24 @@ class InventoryUI implements ScreenUI {
     private final CalcsTable calcsTable;
     private final HeroesTable heroesTable;
 
+    private final DragAndDrop dragAndDrop;
+
     private final InventorySlotTooltip inventorySlotTooltip;
     private final PersonalityTooltip personalityTooltip;
 
     InventoryUI() {
-        final var dragAndDrop = new DragAndDrop();
+        this.dragAndDrop = new DragAndDrop();
         this.inventorySlotTooltip = new InventorySlotTooltip();
         this.personalityTooltip = new PersonalityTooltip();
 
         this.spellsTable = new SpellsTable(this.personalityTooltip);
         this.spellsWindow = createWindow(TITLE_SPELLS, this.spellsTable.container);
 
-        this.inventorySlotsTable = new InventorySlotsTable(dragAndDrop, this.inventorySlotTooltip);
+        this.inventorySlotsTable = new InventorySlotsTable(this.dragAndDrop, this.inventorySlotTooltip);
         this.inventoryWindow = createWindow(TITLE_GLOBAL, this.inventorySlotsTable.container);
 
         this.equipSlotsTables = new HashMap<>(PartyContainer.MAXIMUM);
-        for (HeroItem hero : Utils.getGameData().getParty().getAllHeroes()) {
-            this.equipSlotsTables.put(hero.getId(), new EquipSlotsTable(hero, dragAndDrop, this.inventorySlotTooltip));
-        }
+        this.fillEquipSlotsTables();
         this.equipWindow = createWindow(TITLE_PERSONAL,
                                         this.equipSlotsTables.get(InventoryUtils.getSelectedHeroId()).equipSlots);
 
@@ -105,6 +105,22 @@ class InventoryUI implements ScreenUI {
         var drawable = new NinePatchDrawable(ninepatch);
         BitmapFont font = Utils.getResourceManager().getTrueTypeAsset(TITLE_FONT, TITLE_SIZE);
         return new Window.WindowStyle(font, Color.BLACK, drawable);
+    }
+
+    void sortInventory() {
+        Utils.getGameData().getInventory().sort();
+        dragAndDrop.clear();
+        inventorySlotsTable.clearAndFill();
+        equipSlotsTables.clear();
+        fillEquipSlotsTables();
+        equipWindow.getChildren().get(1).remove();
+        equipWindow.add(equipSlotsTables.get(InventoryUtils.getSelectedHeroId()).equipSlots);
+    }
+
+    private void fillEquipSlotsTables() {
+        for (HeroItem hero : Utils.getGameData().getParty().getAllHeroes()) {
+            this.equipSlotsTables.put(hero.getId(), new EquipSlotsTable(hero, this.dragAndDrop, this.inventorySlotTooltip));
+        }
     }
 
     void addToStage(Stage stage) {

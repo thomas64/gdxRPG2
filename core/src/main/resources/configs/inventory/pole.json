@@ -2,6 +2,7 @@
   "basic_staff": {
     "name": "Basic Staff",
     "group": "WEAPON",
+    "sort": 1200,
     "skill": "POLE",
     "price": 1,
     "min_strength": 8,
@@ -11,6 +12,7 @@
   "ordinary_staff": {
     "name": "Ordinary Staff",
     "group": "WEAPON",
+    "sort": 2200,
     "skill": "POLE",
     "price": 3,
     "min_strength": 9,
@@ -20,6 +22,7 @@
   "specialist_staff": {
     "name": "Specialist Staff",
     "group": "WEAPON",
+    "sort": 3200,
     "skill": "POLE",
     "price": 5,
     "min_strength": 10,
@@ -29,6 +32,7 @@
   "masterwork_staff": {
     "name": "Masterwork Staff",
     "group": "WEAPON",
+    "sort": 4200,
     "skill": "POLE",
     "price": 7,
     "min_strength": 11,
@@ -38,6 +42,7 @@
   "epic_staff": {
     "name": "Epic Staff",
     "group": "WEAPON",
+    "sort": 5200,
     "skill": "POLE",
     "min_intelligence": 26,
     "price": 9,
@@ -48,6 +53,7 @@
   "legendary_staff": {
     "name": "Legendary Staff",
     "group": "WEAPON",
+    "sort": 6200,
     "skill": "POLE",
     "min_intelligence": 30,
     "price": 11,
@@ -58,6 +64,7 @@
   "basic_spear": {
     "name": "Basic Spear",
     "group": "WEAPON",
+    "sort": 1220,
     "skill": "POLE",
     "price": 2,
     "min_strength": 11,
@@ -67,6 +74,7 @@
   "ordinary_spear": {
     "name": "Ordinary Spear",
     "group": "WEAPON",
+    "sort": 2220,
     "skill": "POLE",
     "price": 4,
     "min_strength": 12,
@@ -76,6 +84,7 @@
   "specialist_spear": {
     "name": "Specialist Spear",
     "group": "WEAPON",
+    "sort": 3220,
     "skill": "POLE",
     "price": 6,
     "min_strength": 13,
@@ -85,6 +94,7 @@
   "masterwork_spear": {
     "name": "Masterwork Spear",
     "group": "WEAPON",
+    "sort": 4220,
     "skill": "POLE",
     "price": 8,
     "min_strength": 14,
@@ -94,6 +104,7 @@
   "basic_pike": {
     "name": "Basic Pike",
     "group": "WEAPON",
+    "sort": 1240,
     "skill": "POLE",
     "price": 3,
     "min_strength": 14,
@@ -103,6 +114,7 @@
   "ordinary_pike": {
     "name": "Ordinary Pike",
     "group": "WEAPON",
+    "sort": 2240,
     "skill": "POLE",
     "price": 5,
     "min_strength": 15,
@@ -112,6 +124,7 @@
   "specialist_pike": {
     "name": "Specialist Pike",
     "group": "WEAPON",
+    "sort": 3240,
     "skill": "POLE",
     "price": 7,
     "min_strength": 16,
@@ -121,6 +134,7 @@
   "masterwork_pike": {
     "name": "Masterwork Pike",
     "group": "WEAPON",
+    "sort": 4240,
     "skill": "POLE",
     "price": 9,
     "min_strength": 17,
@@ -130,6 +144,7 @@
   "basic_lance": {
     "name": "Basic Lance",
     "group": "WEAPON",
+    "sort": 1260,
     "skill": "POLE",
     "price": 4,
     "min_strength": 17,
@@ -139,6 +154,7 @@
   "ordinary_lance": {
     "name": "Ordinary Lance",
     "group": "WEAPON",
+    "sort": 2260,
     "skill": "POLE",
     "price": 6,
     "min_strength": 18,
@@ -148,6 +164,7 @@
   "specialist_lance": {
     "name": "Specialist Lance",
     "group": "WEAPON",
+    "sort": 3260,
     "skill": "POLE",
     "price": 8,
     "min_strength": 19,
@@ -157,6 +174,7 @@
   "masterwork_lance": {
     "name": "Masterwork Lance",
     "group": "WEAPON",
+    "sort": 4260,
     "skill": "POLE",
     "price": 10,
     "min_strength": 20,

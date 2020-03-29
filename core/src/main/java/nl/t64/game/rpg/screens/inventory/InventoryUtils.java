@@ -28,6 +28,16 @@ public final class InventoryUtils {
         return selectedHero.getId();
     }
 
+    static void selectPreviousHero() {
+        final HeroItem newSelectedHero = Utils.getGameData().getParty().getPreviousHero(selectedHero);
+        updateSelectedHero(newSelectedHero);
+    }
+
+    static void selectNextHero() {
+        final HeroItem newSelectedHero = Utils.getGameData().getParty().getNextHero(selectedHero);
+        updateSelectedHero(newSelectedHero);
+    }
+
     static void updateSelectedHero(HeroItem newSelectedHero) {
         final var screenUI = getScreenUI();
         final Table oldEquipSlots = screenUI.getEquipSlotsTables().get(selectedHero.getId()).equipSlots;

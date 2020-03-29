@@ -28,6 +28,22 @@ public class PartyContainer {
         return List.copyOf(party.values());
     }
 
+    public HeroItem getPreviousHero(HeroItem hero) {
+        if (isHeroFirst(hero)) {
+            return getLastHero();
+        } else {
+            return getHero(getIndex(hero) - 1);
+        }
+    }
+
+    public HeroItem getNextHero(HeroItem hero) {
+        if (isHeroLast(hero)) {
+            return getFirstHero();
+        } else {
+            return getHero(getIndex(hero) + 1);
+        }
+    }
+
     public void addHero(HeroItem hero) {
         if (isFull()) {
             throw new IllegalStateException("Party is full.");
@@ -46,16 +62,20 @@ public class PartyContainer {
         return getSize() >= MAXIMUM;
     }
 
-    public boolean containsExactlyEqualTo(HeroItem heroObjectToCheck) {
-        if (heroObjectToCheck == null) {
+    public boolean containsExactlyEqualTo(HeroItem candidateHeroObject) {
+        if (candidateHeroObject == null) {
             return false;
         }
-        final HeroItem possibleFoundHero = getHero(heroObjectToCheck.id);
-        return possibleFoundHero != null && possibleFoundHero.equals(heroObjectToCheck);
+        final HeroItem possibleFoundHero = getHero(candidateHeroObject.id);
+        return possibleFoundHero != null && possibleFoundHero.equals(candidateHeroObject);
     }
 
     public boolean isHeroLast(HeroItem hero) {
         return getIndex(hero) == getLastIndex();
+    }
+
+    private boolean isHeroFirst(HeroItem hero) {
+        return getIndex(hero) == 0;
     }
 
     public int getSize() {
@@ -68,6 +88,14 @@ public class PartyContainer {
 
     boolean contains(String heroId) {
         return party.containsKey(heroId);
+    }
+
+    private HeroItem getFirstHero() {
+        return getHero(0);
+    }
+
+    private HeroItem getLastHero() {
+        return getHero(getLastIndex());
     }
 
     private int getLastIndex() {

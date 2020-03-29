@@ -2,6 +2,7 @@
   "basic_dagger": {
     "name": "Basic Dagger",
     "group": "WEAPON",
+    "sort": 1000,
     "skill": "SWORD",
     "price": 1,
     "min_strength": 7,
@@ -11,6 +12,7 @@
   "ordinary_dagger": {
     "name": "Ordinary Dagger",
     "group": "WEAPON",
+    "sort": 2000,
     "skill": "SWORD",
     "price": 3,
     "min_strength": 8,
@@ -20,6 +22,7 @@
   "specialist_dagger": {
     "name": "Specialist Dagger",
     "group": "WEAPON",
+    "sort": 3000,
     "skill": "SWORD",
     "price": 5,
     "min_strength": 9,
@@ -29,6 +32,7 @@
   "masterwork_dagger": {
     "name": "Masterwork Dagger",
     "group": "WEAPON",
+    "sort": 4000,
     "skill": "SWORD",
     "price": 7,
     "min_strength": 10,
@@ -38,6 +42,7 @@
   "basic_shortsword": {
     "name": "Basic Shortsword",
     "group": "WEAPON",
+    "sort": 1020,
     "skill": "SWORD",
     "price": 2,
     "min_strength": 12,
@@ -47,6 +52,7 @@
   "ordinary_shortsword": {
     "name": "Ordinary Shortsword",
     "group": "WEAPON",
+    "sort": 2020,
     "skill": "SWORD",
     "price": 4,
     "min_strength": 13,
@@ -56,6 +62,7 @@
   "specialist_shortsword": {
     "name": "Specialist Shortsword",
     "group": "WEAPON",
+    "sort": 3020,
     "skill": "SWORD",
     "price": 6,
     "min_strength": 14,
@@ -65,6 +72,7 @@
   "masterwork_shortsword": {
     "name": "Masterwork Shortsword",
     "group": "WEAPON",
+    "sort": 4020,
     "skill": "SWORD",
     "price": 8,
     "min_strength": 15,
@@ -74,6 +82,7 @@
   "basic_longsword": {
     "name": "Basic Longsword",
     "group": "WEAPON",
+    "sort": 1040,
     "skill": "SWORD",
     "price": 3,
     "min_strength": 17,
@@ -83,6 +92,7 @@
   "ordinary_longsword": {
     "name": "Ordinary Longsword",
     "group": "WEAPON",
+    "sort": 2040,
     "skill": "SWORD",
     "price": 5,
     "min_strength": 18,
@@ -92,6 +102,7 @@
   "specialist_longsword": {
     "name": "Specialist Longsword",
     "group": "WEAPON",
+    "sort": 3040,
     "skill": "SWORD",
     "price": 7,
     "min_strength": 19,
@@ -101,6 +112,7 @@
   "masterwork_longsword": {
     "name": "Masterwork Longsword",
     "group": "WEAPON",
+    "sort": 4040,
     "skill": "SWORD",
     "price": 9,
     "min_strength": 20,
@@ -110,6 +122,7 @@
   "basic_greatsword": {
     "name": "Basic Greatsword",
     "group": "WEAPON",
+    "sort": 1060,
     "skill": "SWORD",
     "price": 4,
     "min_strength": 22,
@@ -119,6 +132,7 @@
   "ordinary_greatsword": {
     "name": "Ordinary Greatsword",
     "group": "WEAPON",
+    "sort": 2060,
     "skill": "SWORD",
     "price": 6,
     "min_strength": 23,
@@ -128,6 +142,7 @@
   "specialist_greatsword": {
     "name": "Specialist Greatsword",
     "group": "WEAPON",
+    "sort": 3060,
     "skill": "SWORD",
     "price": 8,
     "min_strength": 24,
@@ -137,6 +152,7 @@
   "masterwork_greatsword": {
     "name": "Masterwork Greatsword",
     "group": "WEAPON",
+    "sort": 4060,
     "skill": "SWORD",
     "price": 10,
     "min_strength": 25,

@@ -5,7 +5,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -25,6 +27,18 @@ public class InventoryScreen implements Screen, ProfileObserver {
     private static final String BUTTON_RESET_UP = "reset_up";
     private static final String BUTTON_RESET_OVER = "reset_over";
     private static final String BUTTON_RESET_DOWN = "reset_down";
+    private static final String BUTTON_PREVIOUS_UP = "previous_up";
+    private static final String BUTTON_PREVIOUS_OVER = "previous_over";
+    private static final String BUTTON_PREVIOUS_DOWN = "previous_down";
+    private static final String BUTTON_NEXT_UP = "next_up";
+    private static final String BUTTON_NEXT_OVER = "next_over";
+    private static final String BUTTON_NEXT_DOWN = "next_down";
+    private static final String BUTTON_SORT_UP = "sort_up";
+    private static final String BUTTON_SORT_OVER = "sort_over";
+    private static final String BUTTON_SORT_DOWN = "sort_down";
+    private static final String BUTTON_HELP_UP = "help_up";
+    private static final String BUTTON_HELP_OVER = "help_over";
+    private static final String BUTTON_HELP_DOWN = "help_down";
 
     private static final float SPELLS_WINDOW_POSITION_X = 1483f;
     private static final float SPELLS_WINDOW_POSITION_Y = 50f;
@@ -98,7 +112,12 @@ public class InventoryScreen implements Screen, ProfileObserver {
     public void show() {
         Gdx.input.setCursorCatched(false);
         Gdx.input.setInputProcessor(stage);
-        stage.addListener(new InventoryScreenListener(this::closeScreen));
+        stage.addListener(new InventoryScreenListener(this::closeScreen,
+                                                      this::resetWindowsPositions,
+                                                      InventoryUtils::selectPreviousHero,
+                                                      InventoryUtils::selectNextHero,
+                                                      this::sortInventory,
+                                                      this::showHelpMessage));
         createButtonTable();
 
         inventoryUI = new InventoryUI();
@@ -161,12 +180,24 @@ public class InventoryScreen implements Screen, ProfileObserver {
     private void createButtonTable() {
         var closeButton = createImageButton(BUTTON_CLOSE_UP, BUTTON_CLOSE_OVER, BUTTON_CLOSE_DOWN);
         var resetButton = createImageButton(BUTTON_RESET_UP, BUTTON_RESET_OVER, BUTTON_RESET_DOWN);
+        var previousButton = createImageButton(BUTTON_PREVIOUS_UP, BUTTON_PREVIOUS_OVER, BUTTON_PREVIOUS_DOWN);
+        var nextButton = createImageButton(BUTTON_NEXT_UP, BUTTON_NEXT_OVER, BUTTON_NEXT_DOWN);
+        var sortButton = createImageButton(BUTTON_SORT_UP, BUTTON_SORT_OVER, BUTTON_SORT_DOWN);
+        var helpButton = createImageButton(BUTTON_HELP_UP, BUTTON_HELP_OVER, BUTTON_HELP_DOWN);
         closeButton.addListener(new ListenerMouseImageButton(this::closeScreen));
         resetButton.addListener(new ListenerMouseImageButton(this::resetWindowsPositions));
+        previousButton.addListener(new ListenerMouseImageButton(InventoryUtils::selectPreviousHero));
+        nextButton.addListener(new ListenerMouseImageButton(InventoryUtils::selectNextHero));
+        sortButton.addListener(new ListenerMouseImageButton(this::sortInventory));
+        helpButton.addListener(new ListenerMouseImageButton(this::showHelpMessage));
 
         var buttonTable = new Table();
         buttonTable.add(closeButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
-        buttonTable.add(resetButton).size(BUTTON_SIZE);
+        buttonTable.add(resetButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
+        buttonTable.add(previousButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
+        buttonTable.add(nextButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
+        buttonTable.add(sortButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
+        buttonTable.add(helpButton).size(BUTTON_SIZE);
         buttonTable.pack();
         buttonTable.setPosition(Gdx.graphics.getWidth() - buttonTable.getWidth() - RIGHT_SPACE,
                                 Gdx.graphics.getHeight() - buttonTable.getHeight() - TOP_SPACE);
@@ -177,6 +208,29 @@ public class InventoryScreen implements Screen, ProfileObserver {
         storeWindowPositions();
         Utils.getScreenManager().setScreen(ScreenType.WORLD);
         Gdx.input.setCursorCatched(true);
+    }
+
+    private void sortInventory() {
+        inventoryUI.sortInventory();
+    }
+
+    private void showHelpMessage() {
+        final Actor actor = stage.getActors().get(stage.getActors().size - 1);
+        if (actor instanceof Dialog) {
+            ((Dialog) actor).hide();
+            return;
+        }
+        final String message = "Esc = Close screen" + System.lineSeparator() +
+                               "I = Close screen" + System.lineSeparator() +
+                               "R = Reset windows" + System.lineSeparator() +
+                               "Q = Previous hero" + System.lineSeparator() +
+                               "W = Next hero" + System.lineSeparator() +
+                               "S = Sort Inventory" + System.lineSeparator() +
+                               "Shift = Drag stacks" + System.lineSeparator() +
+                               "H = This dialog";
+        final MessageDialog messageDialog = new MessageDialog(message);
+        messageDialog.setLeftAlignment();
+        messageDialog.show(stage);
     }
 
     private void storeWindowPositions() {

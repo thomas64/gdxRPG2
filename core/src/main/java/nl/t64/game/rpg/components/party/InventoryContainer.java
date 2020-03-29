@@ -5,7 +5,7 @@ import java.util.*;
 
 public class InventoryContainer {
 
-    private static final int NUMBER_OF_SLOTS = 77;
+    private static final int NUMBER_OF_SLOTS = 66;
 
     private final List<InventoryItem> inventory;
 
@@ -36,6 +36,13 @@ public class InventoryContainer {
 
     public int getSize() {
         return inventory.size();
+    }
+
+    public void sort() {
+        new InventoryStacksMerger(this).searchAll();
+        Comparator<InventoryItem> comparing = Comparator.comparing(this::getInventoryGroup)
+                                                        .thenComparing(this::getSort);
+        inventory.sort(comparing);
     }
 
     int getLastIndex() {
@@ -105,6 +112,20 @@ public class InventoryContainer {
 
     private boolean isSlotEmpty(int index) {
         return inventory.get(index) == null;
+    }
+
+    private InventoryGroup getInventoryGroup(InventoryItem inventoryItem) {
+        if (inventoryItem == null) {
+            return InventoryGroup.EMPTY;
+        }
+        return inventoryItem.group;
+    }
+
+    private int getSort(InventoryItem inventoryItem) {
+        if (inventoryItem == null) {
+            return 0;
+        }
+        return inventoryItem.sort;
     }
 
 }

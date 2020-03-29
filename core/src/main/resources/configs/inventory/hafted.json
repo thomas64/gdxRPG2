@@ -2,6 +2,7 @@
   "basic_mace": {
     "name": "Basic Mace",
     "group": "WEAPON",
+    "sort": 1100,
     "skill": "HAFTED",
     "price": 1,
     "min_strength": 15,
@@ -11,6 +12,7 @@
   "ordinary_mace": {
     "name": "Ordinary Mace",
     "group": "WEAPON",
+    "sort": 2100,
     "skill": "HAFTED",
     "price": 3,
     "min_strength": 16,
@@ -20,6 +22,7 @@
   "specialist_mace": {
     "name": "Specialist Mace",
     "group": "WEAPON",
+    "sort": 3100,
     "skill": "HAFTED",
     "price": 5,
     "min_strength": 17,
@@ -29,6 +32,7 @@
   "masterwork_mace": {
     "name": "Masterwork Mace",
     "group": "WEAPON",
+    "sort": 4100,
     "skill": "HAFTED",
     "price": 7,
     "min_strength": 18,
@@ -38,6 +42,7 @@
   "epic_mace": {
     "name": "Epic Mace",
     "group": "WEAPON",
+    "sort": 5100,
     "skill": "HAFTED",
     "price": 9,
     "min_strength": 15,
@@ -47,6 +52,7 @@
   "basic_axe": {
     "name": "Basic Axe",
     "group": "WEAPON",
+    "sort": 1120,
     "skill": "HAFTED",
     "price": 2,
     "min_strength": 19,
@@ -56,6 +62,7 @@
   "ordinary_axe": {
     "name": "Ordinary Axe",
     "group": "WEAPON",
+    "sort": 2120,
     "skill": "HAFTED",
     "price": 4,
     "min_strength": 20,
@@ -65,6 +72,7 @@
   "specialist_axe": {
     "name": "Specialist Axe",
     "group": "WEAPON",
+    "sort": 3120,
     "skill": "HAFTED",
     "price": 6,
     "min_strength": 21,
@@ -74,6 +82,7 @@
   "masterwork_axe": {
     "name": "Masterwork Axe",
     "group": "WEAPON",
+    "sort": 4120,
     "skill": "HAFTED",
     "price": 8,
     "min_strength": 22,
@@ -83,6 +92,7 @@
   "epic_axe": {
     "name": "Epic Axe",
     "group": "WEAPON",
+    "sort": 5120,
     "skill": "HAFTED",
     "price": 10,
     "min_strength": 19,
@@ -92,6 +102,7 @@
   "basic_morningstar": {
     "name": "Basic Morningstar",
     "group": "WEAPON",
+    "sort": 1140,
     "skill": "HAFTED",
     "price": 3,
     "min_strength": 23,
@@ -101,6 +112,7 @@
   "ordinary_morningstar": {
     "name": "Ordinary Morningstar",
     "group": "WEAPON",
+    "sort": 2140,
     "skill": "HAFTED",
     "price": 5,
     "min_strength": 24,
@@ -110,6 +122,7 @@
   "specialist_morningstar": {
     "name": "Specialist Morningstar",
     "group": "WEAPON",
+    "sort": 3140,
     "skill": "HAFTED",
     "price": 7,
     "min_strength": 25,
@@ -119,6 +132,7 @@
   "masterwork_morningstar": {
     "name": "Masterwork Morningstar",
     "group": "WEAPON",
+    "sort": 4140,
     "skill": "HAFTED",
     "price": 9,
     "min_strength": 26,
@@ -128,6 +142,7 @@
   "basic_maul": {
     "name": "Basic Maul",
     "group": "WEAPON",
+    "sort": 1160,
     "skill": "HAFTED",
     "price": 4,
     "min_strength": 27,
@@ -137,6 +152,7 @@
   "ordinary_maul": {
     "name": "Ordinary Maul",
     "group": "WEAPON",
+    "sort": 2160,
     "skill": "HAFTED",
     "price": 6,
     "min_strength": 28,
@@ -146,6 +162,7 @@
   "specialist_maul": {
     "name": "Specialist Maul",
     "group": "WEAPON",
+    "sort": 3160,
     "skill": "HAFTED",
     "price": 8,
     "min_strength": 29,
@@ -155,6 +172,7 @@
   "masterwork_maul": {
     "name": "Masterwork Maul",
     "group": "WEAPON",
+    "sort": 4160,
     "skill": "HAFTED",
     "price": 10,
     "min_strength": 30,

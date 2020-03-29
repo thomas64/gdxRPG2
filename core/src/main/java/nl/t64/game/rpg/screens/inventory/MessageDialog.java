@@ -38,6 +38,10 @@ class MessageDialog {
         dialog.show(stage);
     }
 
+    void setLeftAlignment() {
+        ((Label) dialog.getContentTable().getChildren().get(0)).setAlignment(Align.left);
+    }
+
     private Dialog createDialog() {
         // styles
         var labelStyle = new Label.LabelStyle(dialogFont, Color.BLACK);

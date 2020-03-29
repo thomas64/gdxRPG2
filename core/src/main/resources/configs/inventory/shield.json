@@ -2,6 +2,7 @@
   "basic_light_shield": {
     "name": "Basic Light Shield",
     "group": "SHIELD",
+    "sort": 100,
     "skill": "SHIELD",
     "price": 1,
     "min_strength": 14,
@@ -13,6 +14,7 @@
   "ordinary_light_shield": {
     "name": "Ordinary Light Shield",
     "group": "SHIELD",
+    "sort": 200,
     "skill": "SHIELD",
     "price": 3,
     "min_strength": 16,
@@ -24,6 +26,7 @@
   "specialist_light_shield": {
     "name": "Specialist Light Shield",
     "group": "SHIELD",
+    "sort": 300,
     "skill": "SHIELD",
     "price": 5,
     "min_strength": 18,
@@ -35,6 +38,7 @@
   "masterwork_light_shield": {
     "name": "Masterwork Light Shield",
     "group": "SHIELD",
+    "sort": 400,
     "skill": "SHIELD",
     "price": 7,
     "min_strength": 20,
@@ -46,6 +50,7 @@
   "basic_medium_shield": {
     "name": "Basic Medium Shield",
     "group": "SHIELD",
+    "sort": 120,
     "skill": "SHIELD",
     "price": 4,
     "min_strength": 19,
@@ -57,6 +62,7 @@
   "ordinary_medium_shield": {
     "name": "Ordinary Medium Shield",
     "group": "SHIELD",
+    "sort": 220,
     "skill": "SHIELD",
     "price": 6,
     "min_strength": 21,
@@ -68,6 +74,7 @@
   "specialist_medium_shield": {
     "name": "Specialist Medium Shield",
     "group": "SHIELD",
+    "sort": 320,
     "skill": "SHIELD",
     "price": 8,
     "min_strength": 23,
@@ -79,6 +86,7 @@
   "masterwork_medium_shield": {
     "name": "Masterwork Medium Shield",
     "group": "SHIELD",
+    "sort": 420,
     "skill": "SHIELD",
     "price": 10,
     "min_strength": 25,
@@ -90,6 +98,7 @@
   "basic_heavy_shield": {
     "name": "Basic Heavy Shield",
     "group": "SHIELD",
+    "sort": 140,
     "skill": "SHIELD",
     "price": 7,
     "min_strength": 24,
@@ -101,6 +110,7 @@
   "ordinary_heavy_shield": {
     "name": "Ordinary Heavy Shield",
     "group": "SHIELD",
+    "sort": 240,
     "skill": "SHIELD",
     "price": 9,
     "min_strength": 26,
@@ -112,6 +122,7 @@
   "specialist_heavy_shield": {
     "name": "Specialist Heavy Shield",
     "group": "SHIELD",
+    "sort": 340,
     "skill": "SHIELD",
     "price": 11,
     "min_strength": 28,
@@ -123,6 +134,7 @@
   "masterwork_heavy_shield": {
     "name": "Masterwork Heavy Shield",
     "group": "SHIELD",
+    "sort": 440,
     "skill": "SHIELD",
     "price": 13,
     "min_strength": 30,

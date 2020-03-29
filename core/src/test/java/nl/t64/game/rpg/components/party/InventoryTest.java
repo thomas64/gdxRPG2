@@ -18,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 class InventoryTest extends GameTest {
 
     private static final String GOLD = "gold";
+    private static final String HERBS = "herbs";
     private static final String BASIC_MACE = "basic_mace";
     private static final String BASIC_LIGHT_CHEST = "basic_light_chest";
 
@@ -35,6 +36,7 @@ class InventoryTest extends GameTest {
     void whenResourceItemIsCreated_ShouldHaveVariables() {
         final InventoryItem gold = InventoryDatabase.getInstance().getInventoryItem(GOLD);
         assertThat(gold.name).isEqualTo("Gold");
+        assertThat(gold.sort).isEqualTo(5);
         assertThat(gold.getGroup()).isEqualTo(InventoryGroup.RESOURCE);
         assertThat(gold.getDescription()).isEqualTo(
                 List.of("Gold can be used to pay for goods or services."));
@@ -44,6 +46,7 @@ class InventoryTest extends GameTest {
     void whenPotionItemIsCreated_ShouldHaveVariables() {
         final InventoryItem potion = InventoryDatabase.getInstance().getInventoryItem("healing_potion");
         assertThat(potion.name).isEqualTo("Healing Potion");
+        assertThat(potion.sort).isEqualTo(5);
         assertThat(potion.getGroup()).isEqualTo(InventoryGroup.POTION);
         assertThat(potion.getDescription()).isEqualTo(
                 List.of("Restores a fifth of the drinker's lost Endurance and Stamina.",
@@ -83,15 +86,14 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenResourceItemIsAdded_ShouldBeAddedToEndOfInventory() {
-        String itemId = "herbs";
-        InventoryItem herbs = InventoryDatabase.getInstance().getInventoryItem(itemId);
-        assertThat(inventory.contains(itemId)).isFalse();
+        InventoryItem herbs = InventoryDatabase.getInstance().getInventoryItem(HERBS);
+        assertThat(inventory.contains(HERBS)).isFalse();
         assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex() - 1)).isEqualTo(0);
         inventory.autoSetItem(herbs);
-        assertThat(inventory.contains(itemId)).isTrue();
+        assertThat(inventory.contains(HERBS)).isTrue();
         assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex() - 1)).isEqualTo(1);
         assertThat(inventory.getItemAt(inventory.getLastIndex() - 1))
-                .get().hasFieldOrPropertyWithValue("id", itemId);
+                .get().hasFieldOrPropertyWithValue("id", HERBS);
     }
 
     @Test
@@ -154,9 +156,41 @@ class InventoryTest extends GameTest {
     }
 
     @Test
+    void whenInventoryIsSorted_ShouldBeSortedAndMerged() {
+        InventoryItem gold1 = InventoryDatabase.getInstance().getInventoryItem(GOLD);
+        InventoryItem gold2 = InventoryDatabase.getInstance().getInventoryItem(GOLD);
+        InventoryItem gold3 = InventoryDatabase.getInstance().getInventoryItem(GOLD);
+        InventoryItem herbs1 = InventoryDatabase.getInstance().getInventoryItem(HERBS);
+        InventoryItem herbs2 = InventoryDatabase.getInstance().getInventoryItem(HERBS);
+        InventoryItem herbs3 = InventoryDatabase.getInstance().getInventoryItem(HERBS);
+        herbs1.setAmount(80);
+        herbs2.setAmount(80);
+        InventoryItem chest = InventoryDatabase.getInstance().getInventoryItem(BASIC_LIGHT_CHEST);
+
+        inventory.forceSetItemAt(0, gold1);
+        inventory.forceSetItemAt(20, gold2);
+        inventory.forceSetItemAt(65, gold3);
+        inventory.forceSetItemAt(10, herbs1);
+        inventory.forceSetItemAt(40, herbs2);
+        inventory.forceSetItemAt(50, herbs3);
+        inventory.forceSetItemAt(36, chest);
+
+        inventory.sort();
+
+        assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(1);
+        assertThat(inventory.getItemAt(0)).get().hasFieldOrPropertyWithValue("id", BASIC_LIGHT_CHEST);
+        assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex())).isEqualTo(161);
+        assertThat(inventory.getItemAt(inventory.getLastIndex()))
+                .get().hasFieldOrPropertyWithValue("id", HERBS);
+        assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex() - 1)).isEqualTo(3);
+        assertThat(inventory.getItemAt(inventory.getLastIndex() - 1))
+                .get().hasFieldOrPropertyWithValue("id", GOLD);
+    }
+
+    @Test
     void whenInventoryIsFull_ShouldNotThrowError() {
         InventoryItem gold = InventoryDatabase.getInstance().getInventoryItem(GOLD);
-        InventoryItem herbs = InventoryDatabase.getInstance().getInventoryItem("herbs");
+        InventoryItem herbs = InventoryDatabase.getInstance().getInventoryItem(HERBS);
         IntStream.range(0, inventory.getSize())
                  .forEach(i -> inventory.forceSetItemAt(i, gold));
         inventory.autoSetItem(herbs);

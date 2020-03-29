@@ -2,6 +2,7 @@
   "healing_potion": {
     "name": "Healing Potion",
     "group": "POTION",
+    "sort": 5,
     "description": [
       "Restores a fifth of the drinker's lost Endurance and Stamina.",
       "Creating a Healing Potion requires 3 Herbs",
@@ -11,6 +12,7 @@
   "curing_potion": {
     "name": "Curing Potion",
     "group": "POTION",
+    "sort": 10,
     "description": [
       "A more powerful version of the Healing Potion,",
       "restores a third of the drinker's lost Endurance and Stamina.",
@@ -21,6 +23,7 @@
   "stamina_potion": {
     "name": "Stamina Potion",
     "group": "POTION",
+    "sort": 15,
     "description": [
       "Restores all Stamina to the drinker.",
       "Creating a Stamina Potion requires 4 Herbs, 2 Spices",
@@ -30,6 +33,7 @@
   "restore_potion": {
     "name": "Restore Potion",
     "group": "POTION",
+    "sort": 20,
     "description": [
       "Restores full health to the drinker.",
       "Creating a Restore Potion requires 5 Herbs, 3 Spices",
@@ -39,6 +43,7 @@
   "fire_flask": {
     "name": "Fire Flask",
     "group": "POTION",
+    "sort": 25,
     "description": [
       "A sticky, incendiary liquid that bursts into flame on contact with air.",
       "Creating a Fire Flask requires 1 Spice, 2 Gemstones",
@@ -48,6 +53,7 @@
   "inferno_flask": {
     "name": "Inferno Flask",
     "group": "POTION",
+    "sort": 30,
     "description": [
       "A more powerful version of the Fire Flask.",
       "A sticky, incendiary liquid that bursts into flame on contact with air.",
@@ -58,6 +64,7 @@
   "acid_flask": {
     "name": "Acid Flask",
     "group": "POTION",
+    "sort": 35,
     "description": [
       "This vicious fluid eats into the flesh of any creature it touches, doing continuous damage.",
       "Creating an Acid Flask requires 2 Spices, 3 Gemstones",
@@ -67,6 +74,7 @@
   "sleep_flask": {
     "name": "Sleep Gas Flask",
     "group": "POTION",
+    "sort": 40,
     "description": [
       "A liquid that vaporizes when exposed to air,",
       "forming a gas that drains the mobility of those who breathe it.",
@@ -77,6 +85,7 @@
   "antidote_potion": {
     "name": "Antidote Potion",
     "group": "POTION",
+    "sort": 45,
     "description": [
       "Halts the effects of poison, but does not restore damage already inflicted by poison.",
       "Creating an Antidote Potion requires 1 Herb, 2 Spices",
@@ -86,6 +95,7 @@
   "protection_potion": {
     "name": "Protection Potion",
     "group": "POTION",
+    "sort": 50,
     "description": [
       "Temporarily increases the Protection of the drinker by 5 points during 1 battle.",
       "Creating a Protection Potion requires 2 Herbs, 3 Spices, 1 Gemstone",
@@ -95,6 +105,7 @@
   "intelligence_potion": {
     "name": "Intelligence Potion",
     "group": "POTION",
+    "sort": 55,
     "description": [
       "Temporarily increases the Intelligence of the drinker by 5 points during 1 battle.",
       "Creating a Intelligence Potion requires 2 Herbs, 1 Spice, 3 Gemstones",
@@ -104,6 +115,7 @@
   "willpower_potion": {
     "name": "Willpower Potion",
     "group": "POTION",
+    "sort": 60,
     "description": [
       "Temporarily increases the Willpower of the drinker by 5 points during 1 battle.",
       "Creating a Willpower Potion requires 3 Herbs, 2 Spices, 1 Gemstone",
@@ -113,6 +125,7 @@
   "dexterity_potion": {
     "name": "Dexterity Potion",
     "group": "POTION",
+    "sort": 65,
     "description": [
       "Temporarily increases the Dexterity of the drinker by 5 points during 1 battle.",
       "Creating a Dexterity Potion requires 1 Herb, 3 Spices, 2 Gemstones",
@@ -122,6 +135,7 @@
   "agility_potion": {
     "name": "Agility Potion",
     "group": "POTION",
+    "sort": 70,
     "description": [
       "Temporarily increases the Agility of the drinker by 5 points during 1 battle.",
       "Creating a Agility Potion requires 3 Herbs, 1 Spice, 2 Gemstones",
@@ -131,6 +145,7 @@
   "strength_potion": {
     "name": "Strength Potion",
     "group": "POTION",
+    "sort": 75,
     "description": [
       "Temporarily increases the Strength of the drinker by 5 points during 1 battle.",
       "Creating a Strength Potion requires 1 Herb, 2 Spices, 3 Gemstones",
@@ -140,6 +155,7 @@
   "stealth_potion": {
     "name": "Stealth Potion",
     "group": "POTION",
+    "sort": 80,
     "description": [
       "Temporarily increases the Stealth rank of the drinker by 3 points during 1 battle.",
       "Creating a Stealth Potion requires 2 Herbs, 2 Spices, 2 Gemstones",

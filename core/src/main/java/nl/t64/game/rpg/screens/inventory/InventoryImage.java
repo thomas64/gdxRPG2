@@ -27,7 +27,7 @@ public class InventoryImage extends Image {
     }
 
     boolean isSameItemAs(InventoryImage candidateImage) {
-        return inventoryItem.hasSameIdAs(candidateImage.inventoryItem.getId());
+        return inventoryItem.hasSameIdAs(candidateImage.inventoryItem);
     }
 
     boolean isStackable() {

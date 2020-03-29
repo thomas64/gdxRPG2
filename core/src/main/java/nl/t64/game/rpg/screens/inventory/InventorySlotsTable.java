@@ -42,6 +42,11 @@ public class InventorySlotsTable {
         setTopBorder();
     }
 
+    void clearAndFill() {
+        inventorySlots.clear();
+        fillInventorySlots();
+    }
+
     Optional<InventorySlot> getPossibleEmptySlot() {
         return inventory.findFirstEmptySlot()
                         .map(i -> (InventorySlot) inventorySlots.getChildren().get(i));
