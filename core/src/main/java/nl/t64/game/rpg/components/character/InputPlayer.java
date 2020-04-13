@@ -42,8 +42,8 @@ public class InputPlayer extends InputComponent implements InputProcessor {
 
     @Override
     public void receive(Event event) {
-        if (event instanceof LoadCharacterEvent) {
-            direction = ((LoadCharacterEvent) event).direction;
+        if (event instanceof LoadCharacterEvent loadEvent) {
+            direction = loadEvent.direction;
         }
     }
 

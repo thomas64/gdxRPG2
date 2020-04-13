@@ -21,8 +21,8 @@ public class InputPartyMember extends InputComponent {
 
     @Override
     public void receive(Event event) {
-        if (event instanceof PathUpdateEvent) {
-            path = ((PathUpdateEvent) event).path;
+        if (event instanceof PathUpdateEvent pathUpdateEvent) {
+            path = pathUpdateEvent.path;
         }
     }
 

@@ -77,10 +77,10 @@ public final class InventoryUtils {
 
     static ScreenUI getScreenUI() {
         var currentScreen = Utils.getScreenManager().getCurrentScreen();
-        if (currentScreen instanceof InventoryScreen) {
-            return ((InventoryScreen) currentScreen).inventoryUI;
-        } else if (currentScreen instanceof ShopScreen) {
-            return ((ShopScreen) currentScreen).getShopUI();
+        if (currentScreen instanceof InventoryScreen inventoryScreen) {
+            return inventoryScreen.inventoryUI;
+        } else if (currentScreen instanceof ShopScreen shopScreen) {
+            return shopScreen.getShopUI();
         }
         throw new GdxRuntimeException("currentScreen is instanceof: " + currentScreen);
     }

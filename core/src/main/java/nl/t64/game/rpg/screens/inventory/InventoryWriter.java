@@ -48,8 +48,8 @@ final class InventoryWriter {
 
     private static void setEquipContainer(Table equipSlotsTable) {
         for (Actor actor : equipSlotsTable.getChildren()) {
-            if (actor instanceof Table) {
-                for (Actor deepActor : ((Table) actor).getChildren()) {
+            if (actor instanceof Table table) {
+                for (Actor deepActor : table.getChildren()) {
                     addToEquipContainer(InventoryUtils.getSelectedHero(), (InventorySlot) deepActor);
                 }
             } else {

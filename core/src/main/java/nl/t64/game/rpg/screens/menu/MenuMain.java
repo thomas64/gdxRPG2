@@ -92,8 +92,8 @@ public class MenuMain extends MenuScreen {
     @Override
     void setAllTextButtonsToWhite() {
         for (Actor actor : table.getChildren()) {
-            if (actor instanceof TextButton) {
-                ((TextButton) actor).getStyle().fontColor = Color.WHITE;
+            if (actor instanceof TextButton textButton) {
+                textButton.getStyle().fontColor = Color.WHITE;
             }
         }
     }

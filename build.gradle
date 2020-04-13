@@ -15,14 +15,14 @@ allprojects {
     apply plugin: "java"
     apply plugin: "idea"
 
-    sourceCompatibility = 1.13
+    sourceCompatibility = 14
 
     version = '1.0'
     ext {
         appName = "gdx-rpg2"
         gdxVersion = '1.9.8'
         roboVMVersion = '2.3.5'
-        box2DLightsVersion = '1.4'
+        box2DLightsVersion = '1.5'
         ashleyVersion = '1.7.3'
         aiVersion = '1.8.2'
     }

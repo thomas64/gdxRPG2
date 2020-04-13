@@ -216,8 +216,8 @@ public class InventoryScreen implements Screen, ProfileObserver {
 
     private void showHelpMessage() {
         final Actor actor = stage.getActors().get(stage.getActors().size - 1);
-        if (actor instanceof Dialog) {
-            ((Dialog) actor).hide();
+        if (actor instanceof Dialog dialog) {
+            dialog.hide();
             return;
         }
         final String message = "Esc = Close screen" + System.lineSeparator() +

@@ -72,8 +72,8 @@ public class EquipSlotsTable {
 
     Optional<InventorySlot> getPossibleSlotOfGroup(InventoryGroup inventoryGroup) {
         for (Actor actor : equipSlots.getChildren()) {
-            if (actor instanceof Table) {
-                for (Actor deepActor : ((Table) actor).getChildren()) {
+            if (actor instanceof Table table) {
+                for (Actor deepActor : table.getChildren()) {
                     InventorySlot slot = (InventorySlot) deepActor;
                     if (slot.filterGroup.equals(inventoryGroup)) {
                         return Optional.of(slot);

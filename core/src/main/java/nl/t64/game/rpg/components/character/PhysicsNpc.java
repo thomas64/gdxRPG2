@@ -34,14 +34,14 @@ public class PhysicsNpc extends PhysicsComponent {
 
     @Override
     public void receive(Event event) {
-        if (event instanceof LoadCharacterEvent) {
-            initNpc((LoadCharacterEvent) event);
+        if (event instanceof LoadCharacterEvent loadEvent) {
+            initNpc(loadEvent);
         }
-        if (event instanceof StateEvent) {
-            state = ((StateEvent) event).state;
+        if (event instanceof StateEvent stateEvent) {
+            state = stateEvent.state;
         }
-        if (event instanceof DirectionEvent) {
-            direction = ((DirectionEvent) event).direction;
+        if (event instanceof DirectionEvent directionEvent) {
+            direction = directionEvent.direction;
         }
         if (event instanceof SelectEvent) {
             if (state.equals(CharacterState.INVISIBLE)) {

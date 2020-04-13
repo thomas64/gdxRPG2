@@ -19,8 +19,7 @@ public class InputNpc extends InputComponent {
 
     @Override
     public void receive(Event event) {
-        if (event instanceof LoadCharacterEvent) {
-            LoadCharacterEvent loadEvent = (LoadCharacterEvent) event;
+        if (event instanceof LoadCharacterEvent loadEvent) {
             state = loadEvent.state;
             direction = loadEvent.direction;
             originalDirection = direction;
@@ -28,8 +27,8 @@ public class InputNpc extends InputComponent {
         if (event instanceof CollisionEvent) {
             stateTime = 0f;
         }
-        if (event instanceof WaitEvent) {
-            handleEvent((WaitEvent) event);
+        if (event instanceof WaitEvent waitEvent) {
+            handleEvent(waitEvent);
         }
     }
 

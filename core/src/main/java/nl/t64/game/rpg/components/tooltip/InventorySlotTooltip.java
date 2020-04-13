@@ -170,16 +170,16 @@ public class InventorySlotTooltip extends BaseToolTip {
     }
 
     private String getKey(InventoryDescription attribute) {
-        if (attribute.getKey() instanceof SuperEnum) {
-            return ((SuperEnum) attribute.getKey()).getTitle();
+        if (attribute.getKey() instanceof SuperEnum attributeKey) {
+            return attributeKey.getTitle();
         } else {
             return String.valueOf(attribute.getKey());
         }
     }
 
     private String getValue(InventoryDescription attribute) {
-        if (attribute.getValue() instanceof SkillItemId) {
-            return ((SkillItemId) attribute.getValue()).getTitle();
+        if (attribute.getValue() instanceof SkillItemId attributeValue) {
+            return attributeValue.getTitle();
         } else if (attribute.getKey().equals(CalcAttributeId.BASE_HIT)) {
             return String.format("%s%%", attribute.getValue());
         } else {

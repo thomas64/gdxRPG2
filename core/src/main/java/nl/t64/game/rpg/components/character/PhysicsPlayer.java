@@ -32,21 +32,20 @@ public class PhysicsPlayer extends PhysicsComponent {
 
     @Override
     public void receive(Event event) {
-        if (event instanceof LoadCharacterEvent) {
-            LoadCharacterEvent loadEvent = (LoadCharacterEvent) event;
+        if (event instanceof LoadCharacterEvent loadEvent) {
             direction = loadEvent.direction;
             currentPosition = loadEvent.position;
             setBoundingBox();
         }
 
-        if (event instanceof StateEvent) {
-            state = ((StateEvent) event).state;
+        if (event instanceof StateEvent stateEvent) {
+            state = stateEvent.state;
         }
-        if (event instanceof DirectionEvent) {
-            direction = ((DirectionEvent) event).direction;
+        if (event instanceof DirectionEvent directionEvent) {
+            direction = directionEvent.direction;
         }
-        if (event instanceof SpeedEvent) {
-            velocity = ((SpeedEvent) event).moveSpeed;
+        if (event instanceof SpeedEvent speedEvent) {
+            velocity = speedEvent.moveSpeed;
         }
         if (event instanceof ActionEvent) {
             isActionPressed = true;

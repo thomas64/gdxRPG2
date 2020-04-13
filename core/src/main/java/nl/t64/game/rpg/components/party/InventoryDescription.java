@@ -27,9 +27,9 @@ public class InventoryDescription {
         if (value.equals(0)) {
             return ThreeState.SAME;
         }
-        if (key instanceof InventoryMinimal) {
-            return ((InventoryMinimal) key).createMessageIfHeroHasNotEnoughFor(item, hero)
-                                           .isEmpty() ? ThreeState.SAME : ThreeState.LESS;
+        if (key instanceof InventoryMinimal inventoryMinimalKey) {
+            return inventoryMinimalKey.createMessageIfHeroHasNotEnoughFor(item, hero)
+                                      .isEmpty() ? ThreeState.SAME : ThreeState.LESS;
         }
         return ThreeState.SAME;
     }
