@@ -30,11 +30,12 @@ class InventorySlotsExchanger {
 
     private void checkForSameItemAndStackable(InventoryImage itemAtTarget) {
         if (InventoryUtils.isShiftPressed()
-            && draggedItem.isSameItemAs(itemAtTarget)
-            && draggedItem.isStackable()) {
+                && draggedItem.isSameItemAs(itemAtTarget)
+                && draggedItem.isStackable()
+                && !targetSlot.equals(sourceSlot)) {
             dragAllItemsToFilledSlot();
         } else if (draggedItem.isSameItemAs(itemAtTarget)
-                   && draggedItem.isStackable()) {
+                && draggedItem.isStackable()) {
             targetSlot.incrementAmount();
         } else {
             swapStacks();
