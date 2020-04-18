@@ -15,6 +15,8 @@ public final class InventoryUtils {
     private static HeroItem selectedHero = null;
     @Getter
     private static boolean shiftPressed = false;
+    @Getter
+    private static boolean ctrlPressed = false;
 
     private InventoryUtils() {
         throw new IllegalStateException("InventoryUtils class");
@@ -73,6 +75,10 @@ public final class InventoryUtils {
 
     static void setShiftPressed(boolean isPressed) {
         shiftPressed = isPressed;
+    }
+
+    static void setCtrlPressed(boolean isPressed) {
+        ctrlPressed = isPressed;
     }
 
     static ScreenUI getScreenUI() {

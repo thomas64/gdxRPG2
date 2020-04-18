@@ -24,21 +24,28 @@ class InventorySlotsExchanger {
 
     private void checkTargetItem() {
         Optional<InventoryImage> possibleItemAtTarget = targetSlot.getPossibleInventoryImage();
-        possibleItemAtTarget.ifPresentOrElse(this::checkForSameItemAndStackable,
+        possibleItemAtTarget.ifPresentOrElse(this::putItemInFilledSlot,
                                              this::putItemInEmptySlot);
     }
 
-    private void checkForSameItemAndStackable(InventoryImage itemAtTarget) {
-        if (InventoryUtils.isShiftPressed()
-                && draggedItem.isSameItemAs(itemAtTarget)
-                && draggedItem.isStackable()
-                && !targetSlot.equals(sourceSlot)) {
-            dragAllItemsToFilledSlot();
+    private void putItemInFilledSlot(InventoryImage itemAtTarget) {
+        if (targetSlot.equals(sourceSlot)) {
+            targetSlot.incrementAmount();
         } else if (draggedItem.isSameItemAs(itemAtTarget)
                 && draggedItem.isStackable()) {
-            targetSlot.incrementAmount();
+            drag_PartOf_StackToFilledSlot();
         } else {
             swapStacks();
+        }
+    }
+
+    private void drag_PartOf_StackToFilledSlot() {
+        if (InventoryUtils.isShiftPressed()) {
+            dragAllItemsToFilledSlot();
+        } else if (InventoryUtils.isCtrlPressed()) {
+            dragHalfOfAmountToFilledSlot();
+        } else {
+            targetSlot.incrementAmount();
         }
     }
 
@@ -62,10 +69,19 @@ class InventorySlotsExchanger {
     }
 
     private void putItemInEmptySlot() {
-        if (InventoryUtils.isShiftPressed()
-            && draggedItem.isStackable()
-            && sourceSlot.amount >= 1) {
+        if (draggedItem.isStackable()
+                && sourceSlot.amount >= 1) {
+            drag_PartOf_StackToEmptySlot();
+        } else {
+            targetSlot.putItemInEmptySlot(draggedItem);
+        }
+    }
+
+    private void drag_PartOf_StackToEmptySlot() {
+        if (InventoryUtils.isShiftPressed()) {
             dragAllItemsToEmptySlot();
+        } else if (InventoryUtils.isCtrlPressed()) {
+            dragHalfOfAmountToEmptySlot();
         } else {
             targetSlot.putItemInEmptySlot(draggedItem);
         }
@@ -77,17 +93,32 @@ class InventorySlotsExchanger {
         sourceSlot.clearStack();
     }
 
+    private void dragHalfOfAmountToEmptySlot() {
+        final int half = (int) Math.floor((sourceSlot.amount) / 2f);
+        targetSlot.amount = half;
+        targetSlot.addToStack(draggedItem);
+        targetSlot.incrementAmount();
+        sourceSlot.decrementAmountBy(half);
+    }
+
     private void dragAllItemsToFilledSlot() {
         targetSlot.amount = targetSlot.amount + sourceSlot.amount;
         targetSlot.incrementAmount();
         sourceSlot.clearStack();
     }
 
+    private void dragHalfOfAmountToFilledSlot() {
+        final int half = (int) Math.floor((sourceSlot.amount) / 2f);
+        targetSlot.amount += half;
+        targetSlot.incrementAmount();
+        sourceSlot.decrementAmountBy(half);
+    }
+
     private boolean doTargetAndSourceAcceptEachOther() {
         return !(sourceSlot.filterGroup.equals(InventoryGroup.SHOP_EQUIP_ITEM)
-                 || targetSlot.filterGroup.equals(InventoryGroup.SHOP_EQUIP_ITEM))
-               && targetSlot.doesAcceptItem(draggedItem)
-               && sourceSlot.doesAcceptItem(targetSlot.getCertainInventoryImage());
+                || targetSlot.filterGroup.equals(InventoryGroup.SHOP_EQUIP_ITEM))
+                && targetSlot.doesAcceptItem(draggedItem)
+                && sourceSlot.doesAcceptItem(targetSlot.getCertainInventoryImage());
     }
 
 }

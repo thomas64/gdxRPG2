@@ -221,13 +221,14 @@ public class InventoryScreen implements Screen, ProfileObserver {
             return;
         }
         final String message = "Esc = Close screen" + System.lineSeparator() +
-                               "I = Close screen" + System.lineSeparator() +
-                               "R = Reset windows" + System.lineSeparator() +
-                               "Q = Previous hero" + System.lineSeparator() +
-                               "W = Next hero" + System.lineSeparator() +
-                               "S = Sort Inventory" + System.lineSeparator() +
-                               "Shift = Drag stacks" + System.lineSeparator() +
-                               "H = This dialog";
+                "I = Close screen" + System.lineSeparator() +
+                "R = Reset windows" + System.lineSeparator() +
+                "Q = Previous hero" + System.lineSeparator() +
+                "W = Next hero" + System.lineSeparator() +
+                "S = Sort Inventory" + System.lineSeparator() +
+                "Shift = Drag full stack" + System.lineSeparator() +
+                "Ctrl = Drag half stack" + System.lineSeparator() +
+                "H = This dialog";
         final MessageDialog messageDialog = new MessageDialog(message);
         messageDialog.setLeftAlignment();
         messageDialog.show(stage);

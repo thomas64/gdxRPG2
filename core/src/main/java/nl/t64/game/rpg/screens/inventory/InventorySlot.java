@@ -138,7 +138,11 @@ public class InventorySlot extends Stack {
     }
 
     void decrementAmount() {
-        amount--;
+        decrementAmountBy(1);
+    }
+
+    void decrementAmountBy(int number) {
+        amount -= number;
         refreshSlot();
     }
 
