@@ -9,9 +9,10 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.InventoryGroup;
 import nl.t64.game.rpg.components.party.InventoryItem;
-import nl.t64.game.rpg.components.tooltip.InventorySlotTooltip;
-import nl.t64.game.rpg.components.tooltip.InventorySlotTooltipListener;
+import nl.t64.game.rpg.components.tooltip.ItemSlotTooltip;
+import nl.t64.game.rpg.components.tooltip.ItemSlotTooltipListener;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -22,67 +23,76 @@ public class EquipSlotsTable {
     private static final float SLOT_SIZE = 64f;
     private static final float EQUIP_SPACING = 10f;
 
-    public final Table equipSlots;
+    public final Table equipSlotTable;
     private final HeroItem heroItem;
     private final DragAndDrop dragAndDrop;
-    private final InventorySlotTooltip tooltip;
+    private final ItemSlotTooltip tooltip;
 
-    private final InventorySlot helmetSlot;
-    private final InventorySlot necklaceSlot;
-    private final InventorySlot shouldersSlot;
-    private final InventorySlot chestSlot;
-    private final InventorySlot cloakSlot;
-    private final InventorySlot bracersSlot;
-    private final InventorySlot glovesSlot;
-    private final InventorySlot weaponSlot;
-    private final InventorySlot accessorySlot;
-    private final InventorySlot ringSlot;
-    private final InventorySlot shieldSlot;
-    private final InventorySlot beltSlot;
-    private final InventorySlot pantsSlot;
-    private final InventorySlot bootsSlot;
+    private final ItemSlot helmetSlot;
+    private final ItemSlot necklaceSlot;
+    private final ItemSlot shouldersSlot;
+    private final ItemSlot chestSlot;
+    private final ItemSlot cloakSlot;
+    private final ItemSlot bracersSlot;
+    private final ItemSlot glovesSlot;
+    private final ItemSlot weaponSlot;
+    private final ItemSlot accessorySlot;
+    private final ItemSlot ringSlot;
+    private final ItemSlot shieldSlot;
+    private final ItemSlot beltSlot;
+    private final ItemSlot pantsSlot;
+    private final ItemSlot bootsSlot;
+    private final List<ItemSlot> equipSlotList;
 
-    public EquipSlotsTable(HeroItem heroItem, DragAndDrop dragAndDrop, InventorySlotTooltip tooltip) {
+    public EquipSlotsTable(HeroItem heroItem, DragAndDrop dragAndDrop, ItemSlotTooltip tooltip) {
         this.heroItem = heroItem;
         this.dragAndDrop = dragAndDrop;
         this.tooltip = tooltip;
-        this.equipSlots = new Table();
+        this.equipSlotTable = new Table();
 
-        this.helmetSlot = new InventorySlot(InventoryGroup.HELMET);
-        this.necklaceSlot = new InventorySlot(InventoryGroup.NECKLACE);
-        this.shouldersSlot = new InventorySlot(InventoryGroup.SHOULDERS);
+        this.helmetSlot = createEquipSlot(InventoryGroup.HELMET);
+        this.necklaceSlot = createEquipSlot(InventoryGroup.NECKLACE);
+        this.shouldersSlot = createEquipSlot(InventoryGroup.SHOULDERS);
 
-        this.chestSlot = new InventorySlot(InventoryGroup.CHEST);
-        this.cloakSlot = new InventorySlot(InventoryGroup.CLOAK);
+        this.chestSlot = createEquipSlot(InventoryGroup.CHEST);
+        this.cloakSlot = createEquipSlot(InventoryGroup.CLOAK);
 
-        this.bracersSlot = new InventorySlot(InventoryGroup.BRACERS);
-        this.glovesSlot = new InventorySlot(InventoryGroup.GLOVES);
-        this.weaponSlot = new InventorySlot(InventoryGroup.WEAPON);
+        this.bracersSlot = createEquipSlot(InventoryGroup.BRACERS);
+        this.glovesSlot = createEquipSlot(InventoryGroup.GLOVES);
+        this.weaponSlot = createEquipSlot(InventoryGroup.WEAPON);
 
-        this.accessorySlot = new InventorySlot(InventoryGroup.ACCESSORY);
-        this.ringSlot = new InventorySlot(InventoryGroup.RING);
-        this.shieldSlot = new InventorySlot(InventoryGroup.SHIELD);
+        this.accessorySlot = createEquipSlot(InventoryGroup.ACCESSORY);
+        this.ringSlot = createEquipSlot(InventoryGroup.RING);
+        this.shieldSlot = createEquipSlot(InventoryGroup.SHIELD);
 
-        this.beltSlot = new InventorySlot(InventoryGroup.BELT);
-        this.pantsSlot = new InventorySlot(InventoryGroup.PANTS);
-        this.bootsSlot = new InventorySlot(InventoryGroup.BOOTS);
+        this.beltSlot = createEquipSlot(InventoryGroup.BELT);
+        this.pantsSlot = createEquipSlot(InventoryGroup.PANTS);
+        this.bootsSlot = createEquipSlot(InventoryGroup.BOOTS);
+
+        this.equipSlotList = List.of(helmetSlot, necklaceSlot, shouldersSlot, chestSlot, cloakSlot,
+                                     bracersSlot, glovesSlot, weaponSlot, accessorySlot, ringSlot,
+                                     shieldSlot, beltSlot, pantsSlot, bootsSlot);
 
         this.createTable();
     }
 
-    Optional<InventorySlot> getPossibleSlotOfGroup(InventoryGroup inventoryGroup) {
-        for (Actor actor : equipSlots.getChildren()) {
+    private EquipSlot createEquipSlot(InventoryGroup inventoryGroup) {
+        return new EquipSlot(inventoryGroup, heroItem);
+    }
+
+    Optional<ItemSlot> getPossibleSlotOfGroup(InventoryGroup inventoryGroup) {
+        for (Actor actor : equipSlotTable.getChildren()) {
             if (actor instanceof Table table) {
                 for (Actor deepActor : table.getChildren()) {
-                    InventorySlot slot = (InventorySlot) deepActor;
-                    if (slot.filterGroup.equals(inventoryGroup)) {
-                        return Optional.of(slot);
+                    ItemSlot equipSlot = (ItemSlot) deepActor;
+                    if (equipSlot.filterGroup.equals(inventoryGroup)) {
+                        return Optional.of(equipSlot);
                     }
                 }
             } else {
-                InventorySlot slot = (InventorySlot) actor;
-                if (slot.filterGroup.equals(inventoryGroup)) {
-                    return Optional.of(slot);
+                ItemSlot equipSlot = (ItemSlot) actor;
+                if (equipSlot.filterGroup.equals(inventoryGroup)) {
+                    return Optional.of(equipSlot);
                 }
             }
         }
@@ -90,137 +100,75 @@ public class EquipSlotsTable {
     }
 
     private void createTable() {
+        equipSlotList.forEach(equipSlot -> {
+            equipSlot.addListener(new ItemSlotTooltipListener(tooltip));
+            equipSlot.addListener(new ItemSlotClickListener(DoubleClickHandler::handleEquip));
+            dragAndDrop.addTarget(new ItemSlotTarget(equipSlot));
+            heroItem.getInventoryItem(equipSlot.filterGroup).ifPresent(addToSlot(equipSlot));
+        });
         setDefaults();
-        addListeners();
-        addTargets();
-        addToSlots();
         fillTable();
     }
 
     private void setDefaults() {
-        equipSlots.defaults().space(EQUIP_SPACING).size(SLOT_SIZE, SLOT_SIZE);
+        equipSlotTable.defaults().space(EQUIP_SPACING).size(SLOT_SIZE, SLOT_SIZE);
         var texture = Utils.getResourceManager().getTextureAsset(SPRITE_SILHOUETTE);
         var sprite = new Sprite(texture);
         var silhouette = new SpriteDrawable(sprite);
-        equipSlots.setBackground(silhouette);
-    }
-
-    private void addListeners() {
-        helmetSlot.addListener(new InventorySlotTooltipListener(tooltip));
-        necklaceSlot.addListener(new InventorySlotTooltipListener(tooltip));
-        shouldersSlot.addListener(new InventorySlotTooltipListener(tooltip));
-        chestSlot.addListener(new InventorySlotTooltipListener(tooltip));
-        cloakSlot.addListener(new InventorySlotTooltipListener(tooltip));
-        bracersSlot.addListener(new InventorySlotTooltipListener(tooltip));
-        glovesSlot.addListener(new InventorySlotTooltipListener(tooltip));
-        weaponSlot.addListener(new InventorySlotTooltipListener(tooltip));
-        accessorySlot.addListener(new InventorySlotTooltipListener(tooltip));
-        ringSlot.addListener(new InventorySlotTooltipListener(tooltip));
-        shieldSlot.addListener(new InventorySlotTooltipListener(tooltip));
-        beltSlot.addListener(new InventorySlotTooltipListener(tooltip));
-        pantsSlot.addListener(new InventorySlotTooltipListener(tooltip));
-        bootsSlot.addListener(new InventorySlotTooltipListener(tooltip));
-
-        helmetSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
-        necklaceSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
-        shouldersSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
-        chestSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
-        cloakSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
-        bracersSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
-        glovesSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
-        weaponSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
-        accessorySlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
-        ringSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
-        shieldSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
-        beltSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
-        pantsSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
-        bootsSlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
-    }
-
-    private void addTargets() {
-        dragAndDrop.addTarget(new InventorySlotTarget(helmetSlot));
-        dragAndDrop.addTarget(new InventorySlotTarget(necklaceSlot));
-        dragAndDrop.addTarget(new InventorySlotTarget(shouldersSlot));
-        dragAndDrop.addTarget(new InventorySlotTarget(chestSlot));
-        dragAndDrop.addTarget(new InventorySlotTarget(cloakSlot));
-        dragAndDrop.addTarget(new InventorySlotTarget(bracersSlot));
-        dragAndDrop.addTarget(new InventorySlotTarget(glovesSlot));
-        dragAndDrop.addTarget(new InventorySlotTarget(weaponSlot));
-        dragAndDrop.addTarget(new InventorySlotTarget(accessorySlot));
-        dragAndDrop.addTarget(new InventorySlotTarget(ringSlot));
-        dragAndDrop.addTarget(new InventorySlotTarget(shieldSlot));
-        dragAndDrop.addTarget(new InventorySlotTarget(beltSlot));
-        dragAndDrop.addTarget(new InventorySlotTarget(pantsSlot));
-        dragAndDrop.addTarget(new InventorySlotTarget(bootsSlot));
-    }
-
-    private void addToSlots() {
-        heroItem.getInventoryItem(InventoryGroup.HELMET).ifPresent(addToSlot(helmetSlot));
-        heroItem.getInventoryItem(InventoryGroup.NECKLACE).ifPresent(addToSlot(necklaceSlot));
-        heroItem.getInventoryItem(InventoryGroup.SHOULDERS).ifPresent(addToSlot(shouldersSlot));
-        heroItem.getInventoryItem(InventoryGroup.CHEST).ifPresent(addToSlot(chestSlot));
-        heroItem.getInventoryItem(InventoryGroup.CLOAK).ifPresent(addToSlot(cloakSlot));
-        heroItem.getInventoryItem(InventoryGroup.BRACERS).ifPresent(addToSlot(bracersSlot));
-        heroItem.getInventoryItem(InventoryGroup.GLOVES).ifPresent(addToSlot(glovesSlot));
-        heroItem.getInventoryItem(InventoryGroup.WEAPON).ifPresent(addToSlot(weaponSlot));
-        heroItem.getInventoryItem(InventoryGroup.ACCESSORY).ifPresent(addToSlot(accessorySlot));
-        heroItem.getInventoryItem(InventoryGroup.RING).ifPresent(addToSlot(ringSlot));
-        heroItem.getInventoryItem(InventoryGroup.SHIELD).ifPresent(addToSlot(shieldSlot));
-        heroItem.getInventoryItem(InventoryGroup.BELT).ifPresent(addToSlot(beltSlot));
-        heroItem.getInventoryItem(InventoryGroup.PANTS).ifPresent(addToSlot(pantsSlot));
-        heroItem.getInventoryItem(InventoryGroup.BOOTS).ifPresent(addToSlot(bootsSlot));
+        equipSlotTable.setBackground(silhouette);
     }
 
     private void fillTable() {
-        equipSlots.add(helmetSlot).colspan(3);
+        equipSlotTable.add(helmetSlot).colspan(3);
 
-        equipSlots.row();
+        equipSlotTable.row();
 
-        equipSlots.add();
-        equipSlots.add(necklaceSlot);
-        equipSlots.add(shouldersSlot).left();
+        equipSlotTable.add();
+        equipSlotTable.add(necklaceSlot);
+        equipSlotTable.add(shouldersSlot).left();
 
-        equipSlots.row();
+        equipSlotTable.row();
 
         Table bodySlots = new Table();
         bodySlots.defaults().space(EQUIP_SPACING).size(SLOT_SIZE, SLOT_SIZE);
         bodySlots.add(chestSlot);
         bodySlots.add(cloakSlot);
-        equipSlots.add(bodySlots).colspan(3);
+        equipSlotTable.add(bodySlots).colspan(3);
 
-        equipSlots.row();
+        equipSlotTable.row();
 
-        equipSlots.add(bracersSlot).expandX().left().padLeft(EQUIP_SPACING);
-        equipSlots.add();
-        equipSlots.add(accessorySlot).expandX().right().padRight(EQUIP_SPACING);
+        equipSlotTable.add(bracersSlot).expandX().left().padLeft(EQUIP_SPACING);
+        equipSlotTable.add();
+        equipSlotTable.add(accessorySlot).expandX().right().padRight(EQUIP_SPACING);
 
-        equipSlots.row();
+        equipSlotTable.row();
 
-        equipSlots.add(glovesSlot).expandX().left().padLeft(EQUIP_SPACING);
-        equipSlots.add(beltSlot);
-        equipSlots.add(ringSlot).expandX().right().padRight(EQUIP_SPACING);
+        equipSlotTable.add(glovesSlot).expandX().left().padLeft(EQUIP_SPACING);
+        equipSlotTable.add(beltSlot);
+        equipSlotTable.add(ringSlot).expandX().right().padRight(EQUIP_SPACING);
 
-        equipSlots.row();
+        equipSlotTable.row();
 
-        equipSlots.add(weaponSlot).expandX().left().padLeft(EQUIP_SPACING);
-        equipSlots.add(pantsSlot);
-        equipSlots.add(shieldSlot).expandX().right().padRight(EQUIP_SPACING);
+        equipSlotTable.add(weaponSlot).expandX().left().padLeft(EQUIP_SPACING);
+        equipSlotTable.add(pantsSlot);
+        equipSlotTable.add(shieldSlot).expandX().right().padRight(EQUIP_SPACING);
 
-        equipSlots.row();
+        equipSlotTable.row();
 
-        equipSlots.add().colspan(3);
-        equipSlots.row();
-        equipSlots.add().colspan(3);
-        equipSlots.row();
+        equipSlotTable.add().colspan(3);
+        equipSlotTable.row();
+        equipSlotTable.add().colspan(3);
+        equipSlotTable.row();
 
-        equipSlots.add(bootsSlot).colspan(3);
+        equipSlotTable.add(bootsSlot).colspan(3);
     }
 
-    private Consumer<InventoryItem> addToSlot(InventorySlot inventorySlot) {
+    private Consumer<InventoryItem> addToSlot(ItemSlot equipSlot) {
         return inventoryItem -> {
-            inventorySlot.amount = 1;
-            inventorySlot.addToStack(new InventoryImage(inventoryItem));
-            dragAndDrop.addSource(new InventorySlotSource(inventorySlot.getCertainInventoryImage(), dragAndDrop));
+            var inventoryImage = new InventoryImage(inventoryItem);
+            equipSlot.addToStack(inventoryImage);
+            var itemSlotSource = new ItemSlotSource(inventoryImage, dragAndDrop);
+            dragAndDrop.addSource(itemSlotSource);
         };
     }
 

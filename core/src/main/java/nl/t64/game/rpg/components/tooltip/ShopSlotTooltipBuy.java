@@ -5,7 +5,7 @@ import nl.t64.game.rpg.components.party.InventoryDescription;
 import java.util.List;
 
 
-public class ShopSlotTooltipBuy extends InventorySlotTooltip {
+public class ShopSlotTooltipBuy extends ItemSlotTooltip {
 
     @Override
     List<InventoryDescription> removeLeftUnnecessaryAttributes(List<InventoryDescription> descriptionList) {

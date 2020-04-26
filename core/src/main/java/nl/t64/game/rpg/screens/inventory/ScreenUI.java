@@ -13,5 +13,4 @@ public interface ScreenUI {
 
     InventorySlotsTable getInventorySlotsTable();
 
-
 }

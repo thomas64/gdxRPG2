@@ -2,187 +2,114 @@ package nl.t64.game.rpg.screens.inventory;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.utils.Align;
-import lombok.Setter;
-import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.components.party.InventoryContainer;
 import nl.t64.game.rpg.components.party.InventoryGroup;
 
-import java.util.Optional;
 
-
-public class InventorySlot extends Stack {
-
-    private static final String SPRITE_BACKGROUND = "sprites/inventoryslot.png";
-    private static final int STANDARD_STACK_SIZE = 2;
-    private static final Color TRANSPARENT = new Color(1f, 1f, 1f, 0.3f);
+public class InventorySlot extends ItemSlot {
 
     public final Label amountLabel;
-    final InventoryGroup filterGroup;
-    private final Stack imagesBackground;
-    @Setter
-    int amount = 0;
+    private final int index;
+    private final InventoryContainer inventory;
 
-    public InventorySlot(InventoryGroup filterGroup) {
-        this.filterGroup = filterGroup;
-        this.imagesBackground = createImageBackground();
-        if (this.isOnHero()) {
-            this.imagesBackground.add(createShadowImage(this.filterGroup));
-        }
-        addToStack(this.imagesBackground);
-        this.amountLabel = createNumberOfItemsLabel();
+    public InventorySlot(int index, InventoryGroup filterGroup, InventoryContainer inventory) {
+        super(filterGroup);
+        this.index = index;
+        this.inventory = inventory;
+        this.amountLabel = createAmountLabel();
         addToStack(this.amountLabel);
     }
 
-    private static Image createShadowImage(InventoryGroup inventoryGroup) {
-        String groupId = inventoryGroup.name().toLowerCase();
-        TextureRegion textureRegion = Utils.getResourceManager().getAtlasTexture(groupId);
-        Image image = new Image(textureRegion);
-        image.setColor(TRANSPARENT);
-        return image;
-    }
-
-    private Stack createImageBackground() {
-        var stack = new Stack();
-        var texture = Utils.getResourceManager().getTextureAsset(SPRITE_BACKGROUND);
-        var background = new Image(texture);
-        stack.add(background);
-        return stack;
-    }
-
-    private Label createNumberOfItemsLabel() {
+    private Label createAmountLabel() {
         var labelStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
-        var label = new Label(String.valueOf(amount), labelStyle);
+        var label = new Label(String.valueOf(getAmount()), labelStyle);
         label.setAlignment(Align.bottomRight);
         label.setVisible(false);
         return label;
     }
 
-    public boolean hasItem() {
-        return super.getChildren().size > STANDARD_STACK_SIZE;
+    @Override
+    public InventoryImage getCertainInventoryImage() {
+        return (InventoryImage) super.getChildren().items[super.getChildren().size - 2];
     }
 
+    @Override
     public void addToStack(Actor actor) {
-        if (isActorAnInventoryItem(actor)) {
+        if (actor instanceof InventoryImage inventoryImage) {
             super.addActorBefore(super.getChildren().peek(), actor);
+            inventory.forceSetItemAt(index, inventoryImage.inventoryItem);
             refreshSlot();
         } else {
             super.add(actor);
         }
     }
 
-    void clearStack() {
-        if (hasItem()) {
-            super.getChildren().removeIndex(1);
-        }
-        amount = 0;
-        refreshSlot();
+    @Override
+    public boolean hasItem() {
+        return inventory.getItemAt(index).isPresent();
     }
 
-    Optional<InventoryImage> getPossibleInventoryImage() {
-        if (hasItem()) {
-            return Optional.of(getCertainInventoryImage());
-        }
-        return Optional.empty();
-    }
-
-    public InventoryImage getCertainInventoryImage() {
-        return (InventoryImage) super.getChildren().items[super.getChildren().size - 2];
-    }
-
+    @Override
     public boolean isOnHero() {
-        return !filterGroup.equals(InventoryGroup.EVERYTHING)
-               && !filterGroup.equals(InventoryGroup.SHOP_EQUIP_ITEM);
-    }
-
-    boolean doesAcceptItem(InventoryImage draggedItem) {
-        if (filterGroup.equals(InventoryGroup.SHOP_EQUIP_ITEM)
-            && (draggedItem.inventoryGroup.equals(InventoryGroup.RESOURCE)
-                || draggedItem.inventoryGroup.equals(InventoryGroup.POTION))) {
-            return false;
-        }
-        if (!isOnHero()) {
-            return true;
-        }
-        if (filterGroup.equals(draggedItem.inventoryGroup)) {
-            return doesHeroAcceptItem(draggedItem);
-        }
         return false;
     }
 
-    private boolean doesHeroAcceptItem(InventoryImage draggedItem) {
-        Optional<String> message = InventoryUtils.getSelectedHero().isAbleToEquip(draggedItem.inventoryItem);
-        if (message.isPresent()) {
-            new MessageDialog(message.get()).show(getStage());
-            return false;
-        } else {
-            return true;
+    @Override
+    public boolean doesAcceptItem(InventoryImage draggedItem) {
+        return true;
+    }
+
+    @Override
+    void clearStack() {
+        if (hasItem()) {
+            super.getChildren().removeIndex(1);
+            inventory.clearItemAt(index);
+            refreshSlot();
         }
     }
 
-    void putItemInEmptySlot(Actor actor) {
-        putInSlot(actor);
-    }
-
-    void putItemBack(Actor actor) {
-        putInSlot(actor);
-    }
-
-    void incrementAmount() {
-        amount++;
-        refreshSlot();
-    }
-
-    void decrementAmount() {
-        decrementAmountBy(1);
-    }
-
-    void decrementAmountBy(int number) {
-        amount -= number;
-        refreshSlot();
-    }
-
-    private void putInSlot(Actor actor) {
-        amount++;
-        if (amount > 1) {
-            refreshSlot();
+    @Override
+    void putInSlot(Actor actor) {
+        if (hasItem()) {
+            incrementAmountBy(1);
         } else {
             addToStack(actor);
         }
     }
 
-    private void refreshSlot() {
-        amountLabel.setText(String.valueOf(amount));
-        setVisibilityOfAmountLabel();
-        setVisibilityOfShadow();
+    @Override
+    int getAmount() {
+        return inventory.getAmountOfItemAt(index);
     }
 
-    private void setVisibilityOfAmountLabel() {
-        final boolean shouldAmountLabelBeVisible = amount >= STANDARD_STACK_SIZE;
-        amountLabel.setVisible(shouldAmountLabelBeVisible);
+    @Override
+    void incrementAmountBy(int amount) {
+        inventory.incrementAmountAt(index, amount);
+        refreshSlot();
     }
 
-    private void setVisibilityOfShadow() {
-        if (hasShadow()) {
-            final boolean shouldShadowBeVisible = amount < 1;
-            setShadowVisible(shouldShadowBeVisible);
+    @Override
+    void decrementAmountBy(int amount) {
+        if (getAmount() > 1) {
+            inventory.decrementAmountAt(index, amount);
+        } else {
+            inventory.clearItemAt(index);
         }
+        refreshSlot();
     }
 
-    private void setShadowVisible(boolean visible) {
-        imagesBackground.getChildren().get(1).setVisible(visible);
+    private void refreshSlot() {
+        final int amount = getAmount();
+        amountLabel.setText(String.valueOf(amount));
+        setVisibilityOfAmountLabel(amount);
     }
 
-    private boolean hasShadow() {
-        return imagesBackground.getChildren().size > 1;
-    }
-
-    private boolean isActorAnInventoryItem(Actor actor) {
-        return !actor.equals(imagesBackground) && !actor.equals(amountLabel);
+    private void setVisibilityOfAmountLabel(int amount) {
+        final boolean shouldAmountLabelBeVisible = amount >= 2;
+        amountLabel.setVisible(shouldAmountLabelBeVisible);
     }
 
 }

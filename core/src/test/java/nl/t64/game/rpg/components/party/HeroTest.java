@@ -102,11 +102,12 @@ class HeroTest extends DataProvider {
         assertThat(mozes.getInventoryItem(InventoryGroup.WEAPON)).get().hasFieldOrPropertyWithValue("id", "basic_shortsword");
 
         final InventoryItem newWeapon = InventoryDatabase.getInstance().getInventoryItem("masterwork_lance");
-        mozes.forceSetInventoryItem(InventoryGroup.WEAPON, newWeapon);
-        assertThat(mozes.getInventoryItem(InventoryGroup.WEAPON)).get().hasFieldOrPropertyWithValue("id", "masterwork_lance");
+        mozes.forceSetInventoryItemFor(InventoryGroup.WEAPON, newWeapon);
+        assertThat(mozes.getInventoryItem(InventoryGroup.WEAPON)).containsSame(newWeapon);
+        mozes.clearInventoryItemFor(InventoryGroup.WEAPON);
+        assertThat(mozes.getInventoryItem(InventoryGroup.WEAPON)).isEmpty();
     }
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
     @Test
     void whenImpossibleItemIsChecked_ShouldGetMessage() {
         final HeroItem mozes = party.getHero("mozes");
@@ -117,13 +118,13 @@ class HeroTest extends DataProvider {
         final InventoryItem chest = InventoryDatabase.getInstance().getInventoryItem("basic_light_chest");
 
         final Optional<String> message1 = mozes.isAbleToEquip(legendaryStaff);
-        assertThat(message1.get()).isEqualToIgnoringNewLines("Mozes needs the Pole skill" + System.lineSeparator() + "to equip that Legendary Staff.");
+        assertThat(message1).contains("Mozes needs the Pole skill" + System.lineSeparator() + "to equip that Legendary Staff.");
 
         final Optional<String> message2 = ryiah.isAbleToEquip(legendaryStaff);
-        assertThat(message2.get()).isEqualToIgnoringNewLines("Ryiah needs 30 Intelligence" + System.lineSeparator() + "to equip that Legendary Staff.");
+        assertThat(message2).contains("Ryiah needs 30 Intelligence" + System.lineSeparator() + "to equip that Legendary Staff.");
 
         final Optional<String> message3 = ryiah.isAbleToEquip(masterworkLance);
-        assertThat(message3.get()).isEqualToIgnoringNewLines("Ryiah needs 20 Strength" + System.lineSeparator() + "to equip that Masterwork Lance.");
+        assertThat(message3).contains("Ryiah needs 20 Strength" + System.lineSeparator() + "to equip that Masterwork Lance.");
 
         final Optional<String> message4 = mozes.isAbleToEquip(basicDagger);
         assertThat(message4).isEmpty();
@@ -219,7 +220,7 @@ class HeroTest extends DataProvider {
         final HeroItem jaspar = heroes.getHero("jaspar");
         final InventoryItem itemMock = Mockito.mock(InventoryItem.class);
         Mockito.when(itemMock.getAttributeOfStatItemId(StatItemId.DEXTERITY)).thenReturn(-200);
-        jaspar.forceSetInventoryItem(InventoryGroup.SHIELD, itemMock);
+        jaspar.forceSetInventoryItemFor(InventoryGroup.SHIELD, itemMock);
 
         assertThat(jaspar.getCalculatedTotalStatOf(StatItemId.DEXTERITY)).isEqualTo(1);
         assertThat(jaspar.getExtraStatForVisualOf(jaspar.getStatById(StatItemId.DEXTERITY))).isEqualTo(-14);
@@ -230,7 +231,7 @@ class HeroTest extends DataProvider {
         final HeroItem faeron = heroes.getHero("faeron");
         final InventoryItem itemMock = Mockito.mock(InventoryItem.class);
         Mockito.when(itemMock.getAttributeOfSkillItemId(SkillItemId.STEALTH)).thenReturn(-200);
-        faeron.forceSetInventoryItem(InventoryGroup.SHIELD, itemMock);
+        faeron.forceSetInventoryItemFor(InventoryGroup.SHIELD, itemMock);
 
         assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.STEALTH)).isEqualTo(0);
         assertThat(faeron.getExtraSkillForVisualOf(faeron.getSkillById(SkillItemId.STEALTH))).isEqualTo(-10);

@@ -28,7 +28,7 @@ public class DescriptionCreator {
         final List<InventoryDescription> attributes = new ArrayList<>();
 
         attributes.add(functionToExecute.apply(inventoryItem.group, inventoryItem.name));
-        attributes.add(functionToExecute.apply(Constant.DESCRIPTION_KEY_BUY, inventoryItem.price));
+        attributes.add(functionToExecute.apply(Constant.DESCRIPTION_KEY_BUY, inventoryItem.getBuyPrice()));
         attributes.add(functionToExecute.apply(Constant.DESCRIPTION_KEY_SELL, inventoryItem.getSellValue()));
 
         for (InventoryMinimal minimal : InventoryMinimal.values()) {

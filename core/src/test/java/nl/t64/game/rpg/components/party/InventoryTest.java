@@ -57,17 +57,23 @@ class InventoryTest extends GameTest {
     @Test
     void whenInventoryItemIsCreated_ShouldHaveTradeValue() {
         InventoryItem basicMace = InventoryDatabase.getInstance().getInventoryItem(BASIC_MACE);
-        assertThat(basicMace.price).isEqualTo(1);
-        assertThat(basicMace.getSellValue()).isEqualTo(0);
+        assertThat(basicMace.getBuyPrice()).isEqualTo(15);
+        assertThat(basicMace.getSellValue()).isEqualTo(5);
         InventoryItem ordinaryMace = InventoryDatabase.getInstance().getInventoryItem("ordinary_mace");
-        assertThat(ordinaryMace.price).isEqualTo(3);
-        assertThat(ordinaryMace.getSellValue()).isEqualTo(1);
+        assertThat(ordinaryMace.getBuyPrice()).isEqualTo(45);
+        assertThat(ordinaryMace.getSellValue()).isEqualTo(15);
         InventoryItem specialistMace = InventoryDatabase.getInstance().getInventoryItem("specialist_mace");
-        assertThat(specialistMace.price).isEqualTo(5);
-        assertThat(specialistMace.getSellValue()).isEqualTo(1);
+        assertThat(specialistMace.getBuyPrice()).isEqualTo(75);
+        assertThat(specialistMace.getSellValue()).isEqualTo(25);
         InventoryItem masterworkMace = InventoryDatabase.getInstance().getInventoryItem("masterwork_mace");
-        assertThat(masterworkMace.price).isEqualTo(7);
-        assertThat(masterworkMace.getSellValue()).isEqualTo(2);
+        assertThat(masterworkMace.getBuyPrice()).isEqualTo(105);
+        assertThat(masterworkMace.getSellValue()).isEqualTo(35);
+        InventoryItem potion = InventoryDatabase.getInstance().getInventoryItem("healing_potion");
+        assertThat(potion.getBuyPrice()).isEqualTo(4);
+        assertThat(potion.getSellValue()).isEqualTo(1);
+        potion.setAmount(20);
+        assertThat(potion.getBuyPrice()).isEqualTo(80);
+        assertThat(potion.getSellValue()).isEqualTo(20);
     }
 
     @Test
@@ -80,8 +86,7 @@ class InventoryTest extends GameTest {
 
         assertThat(inventory.contains(GOLD)).isTrue();
         assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex())).isEqualTo(1);
-        assertThat(inventory.getItemAt(inventory.getLastIndex()))
-                .get().hasFieldOrPropertyWithValue("id", GOLD);
+        assertThat(inventory.getItemAt(inventory.getLastIndex())).get().hasFieldOrPropertyWithValue("id", GOLD);
     }
 
     @Test
@@ -92,8 +97,7 @@ class InventoryTest extends GameTest {
         inventory.autoSetItem(herbs);
         assertThat(inventory.contains(HERBS)).isTrue();
         assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex() - 1)).isEqualTo(1);
-        assertThat(inventory.getItemAt(inventory.getLastIndex() - 1))
-                .get().hasFieldOrPropertyWithValue("id", HERBS);
+        assertThat(inventory.getItemAt(inventory.getLastIndex() - 1)).containsSame(herbs);
     }
 
     @Test
@@ -103,7 +107,7 @@ class InventoryTest extends GameTest {
         inventory.autoSetItem(chest);
         assertThat(inventory.contains(BASIC_LIGHT_CHEST)).isTrue();
         assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(1);
-        assertThat(inventory.getItemAt(1)).get().hasFieldOrPropertyWithValue("id", BASIC_LIGHT_CHEST);
+        assertThat(inventory.getItemAt(1)).containsSame(chest);
     }
 
     @Test
@@ -156,6 +160,29 @@ class InventoryTest extends GameTest {
     }
 
     @Test
+    void whenInventoryIsIncreasedAndDecreased_ShouldIncreaseAndDecreaseAsSuch() {
+        assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex())).isEqualTo(1);
+        inventory.incrementAmountAt(inventory.getLastIndex(), 5);
+        assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex())).isEqualTo(6);
+        inventory.decrementAmountAt(inventory.getLastIndex(), 3);
+        assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex())).isEqualTo(3);
+        assertThatExceptionOfType(IllegalStateException.class).isThrownBy(
+                () -> inventory.decrementAmountAt(inventory.getLastIndex(), 3));
+    }
+
+    @Test
+    void whenSearchingForSlotWithItem_ShouldReturnIndexOrNot() {
+        assertThat(inventory.findFirstSlotWithItem(GOLD)).contains(65);
+        assertThat(inventory.findFirstSlotWithItem(HERBS)).isEmpty();
+    }
+
+    @Test
+    void whenCheckingForAmountOfResourceIsEnough_ShouldTrueOrFalse() {
+        assertThat(inventory.hasEnoughOfResource(GOLD, 2)).isFalse();
+        assertThat(inventory.hasEnoughOfResource(GOLD, 1)).isTrue();
+    }
+
+    @Test
     void whenInventoryIsSorted_ShouldBeSortedAndMerged() {
         InventoryItem gold1 = InventoryDatabase.getInstance().getInventoryItem(GOLD);
         InventoryItem gold2 = InventoryDatabase.getInstance().getInventoryItem(GOLD);
@@ -178,22 +205,22 @@ class InventoryTest extends GameTest {
         inventory.sort();
 
         assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(1);
-        assertThat(inventory.getItemAt(0)).get().hasFieldOrPropertyWithValue("id", BASIC_LIGHT_CHEST);
+        assertThat(inventory.getItemAt(0)).containsSame(chest);
         assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex())).isEqualTo(161);
-        assertThat(inventory.getItemAt(inventory.getLastIndex()))
-                .get().hasFieldOrPropertyWithValue("id", HERBS);
+        assertThat(inventory.getItemAt(inventory.getLastIndex())).containsSame(herbs1);
         assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex() - 1)).isEqualTo(3);
-        assertThat(inventory.getItemAt(inventory.getLastIndex() - 1))
-                .get().hasFieldOrPropertyWithValue("id", GOLD);
+        assertThat(inventory.getItemAt(inventory.getLastIndex() - 1)).containsSame(gold1);
     }
 
     @Test
     void whenInventoryIsFull_ShouldNotThrowError() {
         InventoryItem gold = InventoryDatabase.getInstance().getInventoryItem(GOLD);
         InventoryItem herbs = InventoryDatabase.getInstance().getInventoryItem(HERBS);
+        InventoryItem mace = InventoryDatabase.getInstance().getInventoryItem(BASIC_MACE);
         IntStream.range(0, inventory.getSize())
                  .forEach(i -> inventory.forceSetItemAt(i, gold));
         inventory.autoSetItem(herbs);
+        inventory.autoSetItem(mace);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -207,9 +234,9 @@ class InventoryTest extends GameTest {
         assertThat(description.get(0).key).isEqualTo(InventoryGroup.WEAPON);
         assertThat(description.get(0).value).isEqualTo("Basic Mace");
         assertThat(description.get(1).key).isEqualTo("Price");
-        assertThat(description.get(1).value).isEqualTo(1);
+        assertThat(description.get(1).value).isEqualTo(15);
         assertThat(description.get(2).key).isEqualTo("Value");
-        assertThat(description.get(2).value).isEqualTo(0);
+        assertThat(description.get(2).value).isEqualTo(5);
         assertThat(description.get(3).key).isEqualTo(InventoryMinimal.SKILL);
         assertThat(description.get(3).value).isEqualTo(SkillItemId.HAFTED);
         assertThat(description.get(4).key).isEqualTo(InventoryMinimal.MIN_STRENGTH);
@@ -232,9 +259,9 @@ class InventoryTest extends GameTest {
         assertThat(description.get(0).key).isEqualTo(InventoryGroup.SHIELD);
         assertThat(description.get(0).value).isEqualTo("Basic Light Shield");
         assertThat(description.get(1).key).isEqualTo("Price");
-        assertThat(description.get(1).value).isEqualTo(1);
+        assertThat(description.get(1).value).isEqualTo(8);
         assertThat(description.get(2).key).isEqualTo("Value");
-        assertThat(description.get(2).value).isEqualTo(0);
+        assertThat(description.get(2).value).isEqualTo(2);
         assertThat(description.get(3).key).isEqualTo(InventoryMinimal.SKILL);
         assertThat(description.get(3).value).isEqualTo(SkillItemId.SHIELD);
         assertThat(description.get(4).key).isEqualTo(InventoryMinimal.MIN_STRENGTH);
@@ -259,9 +286,9 @@ class InventoryTest extends GameTest {
         assertThat(description.get(0).key).isEqualTo(InventoryGroup.CHEST);
         assertThat(description.get(0).value).isEqualTo("Basic Light Chest");
         assertThat(description.get(1).key).isEqualTo("Price");
-        assertThat(description.get(1).value).isEqualTo(1);
+        assertThat(description.get(1).value).isEqualTo(10);
         assertThat(description.get(2).key).isEqualTo("Value");
-        assertThat(description.get(2).value).isEqualTo(0);
+        assertThat(description.get(2).value).isEqualTo(3);
         assertThat(description.get(3).key).isEqualTo(CalcAttributeId.WEIGHT);
         assertThat(description.get(3).value).isEqualTo(1);
         assertThat(description.get(4).key).isEqualTo(CalcAttributeId.PROTECTION);

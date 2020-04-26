@@ -4,7 +4,7 @@
     "group": "WEAPON",
     "sort": 1000,
     "skill": "SWORD",
-    "price": 1,
+    "price": 10,
     "min_strength": 7,
     "base_hit": 40,
     "damage": 11
@@ -14,7 +14,7 @@
     "group": "WEAPON",
     "sort": 2000,
     "skill": "SWORD",
-    "price": 3,
+    "price": 30,
     "min_strength": 8,
     "base_hit": 50,
     "damage": 13
@@ -24,7 +24,7 @@
     "group": "WEAPON",
     "sort": 3000,
     "skill": "SWORD",
-    "price": 5,
+    "price": 50,
     "min_strength": 9,
     "base_hit": 60,
     "damage": 15
@@ -34,7 +34,7 @@
     "group": "WEAPON",
     "sort": 4000,
     "skill": "SWORD",
-    "price": 7,
+    "price": 70,
     "min_strength": 10,
     "base_hit": 70,
     "damage": 17
@@ -44,7 +44,7 @@
     "group": "WEAPON",
     "sort": 1020,
     "skill": "SWORD",
-    "price": 2,
+    "price": 20,
     "min_strength": 12,
     "base_hit": 40,
     "damage": 13
@@ -54,7 +54,7 @@
     "group": "WEAPON",
     "sort": 2020,
     "skill": "SWORD",
-    "price": 4,
+    "price": 40,
     "min_strength": 13,
     "base_hit": 50,
     "damage": 15
@@ -64,7 +64,7 @@
     "group": "WEAPON",
     "sort": 3020,
     "skill": "SWORD",
-    "price": 6,
+    "price": 60,
     "min_strength": 14,
     "base_hit": 60,
     "damage": 17
@@ -74,7 +74,7 @@
     "group": "WEAPON",
     "sort": 4020,
     "skill": "SWORD",
-    "price": 8,
+    "price": 80,
     "min_strength": 15,
     "base_hit": 70,
     "damage": 19
@@ -84,7 +84,7 @@
     "group": "WEAPON",
     "sort": 1040,
     "skill": "SWORD",
-    "price": 3,
+    "price": 30,
     "min_strength": 17,
     "base_hit": 40,
     "damage": 15
@@ -94,7 +94,7 @@
     "group": "WEAPON",
     "sort": 2040,
     "skill": "SWORD",
-    "price": 5,
+    "price": 50,
     "min_strength": 18,
     "base_hit": 50,
     "damage": 17
@@ -104,7 +104,7 @@
     "group": "WEAPON",
     "sort": 3040,
     "skill": "SWORD",
-    "price": 7,
+    "price": 70,
     "min_strength": 19,
     "base_hit": 60,
     "damage": 19
@@ -114,7 +114,7 @@
     "group": "WEAPON",
     "sort": 4040,
     "skill": "SWORD",
-    "price": 9,
+    "price": 90,
     "min_strength": 20,
     "base_hit": 70,
     "damage": 21
@@ -124,7 +124,7 @@
     "group": "WEAPON",
     "sort": 1060,
     "skill": "SWORD",
-    "price": 4,
+    "price": 40,
     "min_strength": 22,
     "base_hit": 40,
     "damage": 17
@@ -134,7 +134,7 @@
     "group": "WEAPON",
     "sort": 2060,
     "skill": "SWORD",
-    "price": 6,
+    "price": 60,
     "min_strength": 23,
     "base_hit": 50,
     "damage": 19
@@ -144,7 +144,7 @@
     "group": "WEAPON",
     "sort": 3060,
     "skill": "SWORD",
-    "price": 8,
+    "price": 80,
     "min_strength": 24,
     "base_hit": 60,
     "damage": 21
@@ -154,7 +154,7 @@
     "group": "WEAPON",
     "sort": 4060,
     "skill": "SWORD",
-    "price": 10,
+    "price": 100,
     "min_strength": 25,
     "base_hit": 70,
     "damage": 23

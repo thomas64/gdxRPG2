@@ -3,7 +3,7 @@
     "name": "Basic Light Chest",
     "group": "CHEST",
     "sort": 100,
-    "price": 1,
+    "price": 10,
     "weight": 1,
     "protection": 1,
     "stealth": 0
@@ -12,7 +12,7 @@
     "name": "Ordinary Light Chest",
     "group": "CHEST",
     "sort": 200,
-    "price": 2,
+    "price": 20,
     "weight": 1,
     "protection": 2,
     "stealth": 0
@@ -21,7 +21,7 @@
     "name": "Specialist Light Chest",
     "group": "CHEST",
     "sort": 300,
-    "price": 3,
+    "price": 30,
     "weight": 1,
     "protection": 3,
     "stealth": 0
@@ -30,7 +30,7 @@
     "name": "Masterwork Light Chest",
     "group": "CHEST",
     "sort": 400,
-    "price": 4,
+    "price": 40,
     "weight": 1,
     "protection": 4,
     "stealth": 0
@@ -39,7 +39,7 @@
     "name": "Basic Medium Chest",
     "group": "CHEST",
     "sort": 120,
-    "price": 4,
+    "price": 40,
     "weight": 2,
     "protection": 5,
     "stealth": -1
@@ -48,7 +48,7 @@
     "name": "Ordinary Medium Chest",
     "group": "CHEST",
     "sort": 220,
-    "price": 5,
+    "price": 50,
     "weight": 2,
     "protection": 6,
     "stealth": -1
@@ -57,7 +57,7 @@
     "name": "Specialist Medium Chest",
     "group": "CHEST",
     "sort": 320,
-    "price": 6,
+    "price": 60,
     "weight": 2,
     "protection": 7,
     "stealth": -1
@@ -66,7 +66,7 @@
     "name": "Masterwork Medium Chest",
     "group": "CHEST",
     "sort": 420,
-    "price": 7,
+    "price": 70,
     "weight": 2,
     "protection": 8,
     "stealth": -1
@@ -75,7 +75,7 @@
     "name": "Basic Heavy Chest",
     "group": "CHEST",
     "sort": 140,
-    "price": 7,
+    "price": 70,
     "weight": 3,
     "protection": 9,
     "stealth": -2
@@ -84,7 +84,7 @@
     "name": "Ordinary Heavy Chest",
     "group": "CHEST",
     "sort": 240,
-    "price": 8,
+    "price": 80,
     "weight": 3,
     "protection": 10,
     "stealth": -2
@@ -93,7 +93,7 @@
     "name": "Specialist Heavy Chest",
     "group": "CHEST",
     "sort": 340,
-    "price": 9,
+    "price": 90,
     "weight": 3,
     "protection": 11,
     "stealth": -2
@@ -102,7 +102,7 @@
     "name": "Masterwork Heavy Chest",
     "group": "CHEST",
     "sort": 440,
-    "price": 10,
+    "price": 100,
     "weight": 3,
     "protection": 12,
     "stealth": -2

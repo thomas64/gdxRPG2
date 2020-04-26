@@ -7,16 +7,15 @@ import java.util.Optional;
 
 
 @AllArgsConstructor
-class InventorySlotsExchanger {
+class ItemSlotsExchanger {
 
     private final InventoryImage draggedItem;
-    private final InventorySlot sourceSlot;
-    private final InventorySlot targetSlot;
+    private final ItemSlot sourceSlot;
+    private final ItemSlot targetSlot;
 
     void exchange() {
         if (targetSlot.doesAcceptItem(draggedItem)) {
             checkTargetItem();
-            InventoryWriter.storeToGameData();
         } else {
             sourceSlot.putItemBack(draggedItem);
         }
@@ -52,17 +51,17 @@ class InventorySlotsExchanger {
     private void swapStacks() {
         if (doTargetAndSourceAcceptEachOther()) {
             InventoryImage sourceImage = sourceSlot.getPossibleInventoryImage().orElse(draggedItem);
-            int sourceAmount = sourceSlot.amount + 1;
             InventoryImage targetImage = targetSlot.getCertainInventoryImage();
-            int targetAmount = targetSlot.amount;
 
+            final boolean thereWasMoreThanOneItemAtSource = sourceSlot.getAmount() > 0;
             sourceSlot.clearStack();
             targetSlot.clearStack();
 
-            sourceSlot.amount = targetAmount;
             sourceSlot.addToStack(targetImage);
-            targetSlot.amount = sourceAmount;
             targetSlot.addToStack(sourceImage);
+            if (thereWasMoreThanOneItemAtSource) {
+                targetSlot.incrementAmount();
+            }
         } else {
             sourceSlot.putItemBack(draggedItem);
         }
@@ -70,10 +69,10 @@ class InventorySlotsExchanger {
 
     private void putItemInEmptySlot() {
         if (draggedItem.isStackable()
-                && sourceSlot.amount >= 1) {
+                && sourceSlot.getAmount() >= 1) {
             drag_PartOf_StackToEmptySlot();
         } else {
-            targetSlot.putItemInEmptySlot(draggedItem);
+            targetSlot.putSingleItemInEmptySlot(draggedItem);
         }
     }
 
@@ -83,34 +82,31 @@ class InventorySlotsExchanger {
         } else if (InventoryUtils.isCtrlPressed()) {
             dragHalfOfAmountToEmptySlot();
         } else {
-            targetSlot.putItemInEmptySlot(draggedItem);
+            targetSlot.putSingleItemInEmptySlot(draggedItem);
         }
     }
 
     private void dragAllItemsToEmptySlot() {
-        targetSlot.amount = sourceSlot.amount + 1;
         targetSlot.addToStack(draggedItem);
+        targetSlot.incrementAmountBy(sourceSlot.getAmount());
         sourceSlot.clearStack();
     }
 
     private void dragHalfOfAmountToEmptySlot() {
-        final int half = (int) Math.floor((sourceSlot.amount) / 2f);
-        targetSlot.amount = half;
+        final int half = (int) Math.floor((sourceSlot.getAmount()) / 2f);
         targetSlot.addToStack(draggedItem);
-        targetSlot.incrementAmount();
+        targetSlot.incrementAmountBy(half);
         sourceSlot.decrementAmountBy(half);
     }
 
     private void dragAllItemsToFilledSlot() {
-        targetSlot.amount = targetSlot.amount + sourceSlot.amount;
-        targetSlot.incrementAmount();
+        targetSlot.incrementAmountBy(sourceSlot.getAmount() + 1);
         sourceSlot.clearStack();
     }
 
     private void dragHalfOfAmountToFilledSlot() {
-        final int half = (int) Math.floor((sourceSlot.amount) / 2f);
-        targetSlot.amount += half;
-        targetSlot.incrementAmount();
+        final int half = (int) Math.floor((sourceSlot.getAmount()) / 2f);
+        targetSlot.incrementAmountBy(half + 1);
         sourceSlot.decrementAmountBy(half);
     }
 

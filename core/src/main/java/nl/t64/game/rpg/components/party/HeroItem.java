@@ -107,7 +107,11 @@ public class HeroItem {
         return inventory.getInventoryItem(inventoryGroup);
     }
 
-    public void forceSetInventoryItem(InventoryGroup inventoryGroup, InventoryItem inventoryItem) {
+    public void clearInventoryItemFor(InventoryGroup inventoryGroup) {
+        forceSetInventoryItemFor(inventoryGroup, null);
+    }
+
+    public void forceSetInventoryItemFor(InventoryGroup inventoryGroup, InventoryItem inventoryItem) {
         inventory.forceSetInventoryItem(inventoryGroup, inventoryItem);
     }
 

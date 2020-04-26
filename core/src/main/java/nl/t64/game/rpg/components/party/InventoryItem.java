@@ -105,12 +105,27 @@ public class InventoryItem {
                || group.equals(InventoryGroup.POTION);
     }
 
+    int getBuyPrice() {
+        return price * amount;
+    }
+
     int getSellValue() {
-        return MathUtils.floor(price / 3f);
+        return MathUtils.floor(price / 3f) * amount;
     }
 
     void increaseAmountWith(InventoryItem sourceItem) {
-        amount += sourceItem.amount;
+        increaseAmountWith(sourceItem.amount);
+    }
+
+    void increaseAmountWith(int amount) {
+        this.amount += amount;
+    }
+
+    void decreaseAmountWith(int amount) {
+        this.amount -= amount;
+        if (this.amount < 1) {
+            throw new IllegalStateException("Amount cannot be below 1.");
+        }
     }
 
 }

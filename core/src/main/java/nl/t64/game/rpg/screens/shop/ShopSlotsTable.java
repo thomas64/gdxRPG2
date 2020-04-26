@@ -9,10 +9,12 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.InventoryContainer;
 import nl.t64.game.rpg.components.party.InventoryDatabase;
 import nl.t64.game.rpg.components.party.InventoryGroup;
-import nl.t64.game.rpg.components.tooltip.InventorySlotTooltip;
-import nl.t64.game.rpg.components.tooltip.InventorySlotTooltipListener;
+import nl.t64.game.rpg.components.party.InventoryItem;
+import nl.t64.game.rpg.components.tooltip.ItemSlotTooltip;
+import nl.t64.game.rpg.components.tooltip.ItemSlotTooltipListener;
 import nl.t64.game.rpg.screens.inventory.*;
 
+import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 
@@ -25,20 +27,20 @@ class ShopSlotsTable {
 
     final Table container;
     final ScrollPane scrollPane;
-    private final Table inventorySlots;
+    private final Table shopSlotTable;
     private final DragAndDrop dragAndDrop;
-    private final InventorySlotTooltip tooltip;
+    private final ItemSlotTooltip tooltip;
     private final InventoryContainer inventory;
 
-    ShopSlotsTable(String shopId, DragAndDrop dragAndDrop, InventorySlotTooltip tooltip) {
+    ShopSlotsTable(String shopId, DragAndDrop dragAndDrop, ItemSlotTooltip tooltip) {
         this.inventory = new InventoryContainer();
         this.fillShopContainer(shopId);
         this.dragAndDrop = dragAndDrop;
         this.tooltip = tooltip;
-        this.inventorySlots = new Table();
-        fillInventorySlots();
+        this.shopSlotTable = new Table();
+        fillShopSlots();
 
-        this.scrollPane = new ScrollPane(this.inventorySlots);
+        this.scrollPane = new ScrollPane(this.shopSlotTable);
         this.container = new Table();
         this.container.add(this.scrollPane).height(CONTAINER_HEIGHT);
         setTopBorder();
@@ -51,9 +53,9 @@ class ShopSlotsTable {
              .forEach(inventory::autoSetItem);
     }
 
-    private void fillInventorySlots() {
+    private void fillShopSlots() {
         IntStream.range(0, inventory.getSize())
-                 .forEach(this::createInventorySlot);
+                 .forEach(this::createShopSlot);
     }
 
     private void setTopBorder() {
@@ -63,22 +65,25 @@ class ShopSlotsTable {
         container.setBackground(drawable);
     }
 
-    private void createInventorySlot(int index) {
-        var inventorySlot = new InventorySlot(InventoryGroup.SHOP_EQUIP_ITEM);
-        inventorySlot.addListener(new InventorySlotTooltipListener(tooltip));
-        inventorySlot.addListener(new InventorySlotClickListener(InventoryUtils::handleDoubleClickEquipOrShop));
-        dragAndDrop.addTarget(new InventorySlotTarget(inventorySlot));
-        dragAndDrop.addSource(new InventorySlotSource(inventorySlot.amountLabel, dragAndDrop));
-        inventory.getItemAt(index).ifPresent(inventoryItem -> {
-            int newAmount = inventory.getAmountOfItemAt(index);
-            inventorySlot.setAmount(newAmount);
-            inventorySlot.addToStack(new InventoryImage(inventoryItem));
-            dragAndDrop.addSource(new InventorySlotSource(inventorySlot.getCertainInventoryImage(), dragAndDrop));
-        });
-        inventorySlots.add(inventorySlot).size(SLOT_SIZE, SLOT_SIZE);
+    private void createShopSlot(int index) {
+        InventorySlot shopSlot = new InventorySlot(index, InventoryGroup.SHOP_EQUIP_ITEM, inventory);
+        shopSlot.addListener(new ItemSlotTooltipListener(tooltip));
+        shopSlot.addListener(new ItemSlotClickListener(DoubleClickHandler::handleShop, dragAndDrop));
+        dragAndDrop.addTarget(new ItemSlotTarget(shopSlot));
+        dragAndDrop.addSource(new ItemSlotSource(shopSlot.amountLabel, dragAndDrop));
+        inventory.getItemAt(index).ifPresent(addToSlot(shopSlot));
+        shopSlotTable.add(shopSlot).size(SLOT_SIZE, SLOT_SIZE);
         if ((index + 1) % SLOTS_IN_ROW == 0) {
-            inventorySlots.row();
+            shopSlotTable.row();
         }
     }
 
+    private Consumer<InventoryItem> addToSlot(InventorySlot shopslot) {
+        return inventoryItem -> {
+            var inventoryImage = new InventoryImage(inventoryItem);
+            shopslot.addToStack(inventoryImage);
+            var itemSlotSource = new ItemSlotSource(inventoryImage, dragAndDrop);
+            dragAndDrop.addSource(itemSlotSource);
+        };
+    }
 }

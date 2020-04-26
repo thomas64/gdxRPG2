@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.PartyContainer;
-import nl.t64.game.rpg.components.tooltip.InventorySlotTooltip;
+import nl.t64.game.rpg.components.tooltip.ItemSlotTooltip;
 import nl.t64.game.rpg.components.tooltip.ShopSlotTooltipBuy;
 import nl.t64.game.rpg.components.tooltip.ShopSlotTooltipSell;
 import nl.t64.game.rpg.screens.inventory.*;
@@ -46,8 +46,8 @@ class ShopUI implements ScreenUI {
     private final ShopOwnerTable ownerTable;
     private final HeroesTable heroesTable;
 
-    private final InventorySlotTooltip shopSlotTooltipSell;
-    private final InventorySlotTooltip shopSlotTooltipBuy;
+    private final ItemSlotTooltip shopSlotTooltipSell;
+    private final ItemSlotTooltip shopSlotTooltipBuy;
 
     ShopUI(String npcId, String shopId) {
         final var dragAndDrop = new DragAndDrop();
@@ -59,7 +59,7 @@ class ShopUI implements ScreenUI {
             this.equipSlotsTables.put(hero.getId(), new EquipSlotsTable(hero, dragAndDrop, this.shopSlotTooltipSell));
         }
         this.equipWindow = createWindow(TITLE_PERSONAL,
-                                        this.equipSlotsTables.get(InventoryUtils.getSelectedHeroId()).equipSlots);
+                                        this.equipSlotsTables.get(InventoryUtils.getSelectedHeroId()).equipSlotTable);
 
         this.inventorySlotsTable = new InventorySlotsTable(dragAndDrop, this.shopSlotTooltipSell);
         this.inventoryWindow = createWindow(TITLE_GLOBAL, this.inventorySlotsTable.container);

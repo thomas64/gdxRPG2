@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.PartyContainer;
-import nl.t64.game.rpg.components.tooltip.InventorySlotTooltip;
+import nl.t64.game.rpg.components.tooltip.ItemSlotTooltip;
 import nl.t64.game.rpg.components.tooltip.PersonalityTooltip;
 
 import java.util.HashMap;
@@ -52,24 +52,24 @@ class InventoryUI implements ScreenUI {
 
     private final DragAndDrop dragAndDrop;
 
-    private final InventorySlotTooltip inventorySlotTooltip;
+    private final ItemSlotTooltip itemSlotTooltip;
     private final PersonalityTooltip personalityTooltip;
 
     InventoryUI() {
         this.dragAndDrop = new DragAndDrop();
-        this.inventorySlotTooltip = new InventorySlotTooltip();
+        this.itemSlotTooltip = new ItemSlotTooltip();
         this.personalityTooltip = new PersonalityTooltip();
 
         this.spellsTable = new SpellsTable(this.personalityTooltip);
         this.spellsWindow = createWindow(TITLE_SPELLS, this.spellsTable.container);
 
-        this.inventorySlotsTable = new InventorySlotsTable(this.dragAndDrop, this.inventorySlotTooltip);
+        this.inventorySlotsTable = new InventorySlotsTable(this.dragAndDrop, this.itemSlotTooltip);
         this.inventoryWindow = createWindow(TITLE_GLOBAL, this.inventorySlotsTable.container);
 
         this.equipSlotsTables = new HashMap<>(PartyContainer.MAXIMUM);
         this.fillEquipSlotsTables();
         this.equipWindow = createWindow(TITLE_PERSONAL,
-                                        this.equipSlotsTables.get(InventoryUtils.getSelectedHeroId()).equipSlots);
+                                        this.equipSlotsTables.get(InventoryUtils.getSelectedHeroId()).equipSlotTable);
 
         this.skillsTable = new SkillsTable(this.personalityTooltip);
         this.skillsWindow = createWindow(TITLE_SKILLS, this.skillsTable.container);
@@ -114,12 +114,12 @@ class InventoryUI implements ScreenUI {
         equipSlotsTables.clear();
         fillEquipSlotsTables();
         equipWindow.getChildren().get(1).remove();
-        equipWindow.add(equipSlotsTables.get(InventoryUtils.getSelectedHeroId()).equipSlots);
+        equipWindow.add(equipSlotsTables.get(InventoryUtils.getSelectedHeroId()).equipSlotTable);
     }
 
     private void fillEquipSlotsTables() {
         for (HeroItem hero : Utils.getGameData().getParty().getAllHeroes()) {
-            this.equipSlotsTables.put(hero.getId(), new EquipSlotsTable(hero, this.dragAndDrop, this.inventorySlotTooltip));
+            this.equipSlotsTables.put(hero.getId(), new EquipSlotsTable(hero, this.dragAndDrop, this.itemSlotTooltip));
         }
     }
 
@@ -131,7 +131,7 @@ class InventoryUI implements ScreenUI {
         stage.addActor(statsWindow);
         stage.addActor(calcsWindow);
         stage.addActor(heroesWindow);
-        inventorySlotTooltip.addToStage(stage);
+        itemSlotTooltip.addToStage(stage);
         personalityTooltip.addToStage(stage);
     }
 

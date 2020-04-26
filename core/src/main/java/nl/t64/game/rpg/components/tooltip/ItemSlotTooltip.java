@@ -10,14 +10,14 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.*;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.screens.inventory.InventoryImage;
-import nl.t64.game.rpg.screens.inventory.InventorySlot;
 import nl.t64.game.rpg.screens.inventory.InventoryUtils;
+import nl.t64.game.rpg.screens.inventory.ItemSlot;
 
 import java.util.List;
 import java.util.Optional;
 
 
-public class InventorySlotTooltip extends BaseToolTip {
+public class ItemSlotTooltip extends BaseToolTip {
 
     private static final String RIGHT_BORDER = "sprites/tooltip_right.png";
     private static final float COLUMN_SPACING = 20f;
@@ -27,27 +27,27 @@ public class InventorySlotTooltip extends BaseToolTip {
     private static final String RIGHT_TITLE = "Currently Equipped";
     private static final Color ORANGE = new Color(0xFF9000FF);
 
-    void setVisible(InventorySlot inventorySlot, boolean visible) {
+    void setVisible(ItemSlot itemSlot, boolean visible) {
         window.setVisible(visible);
-        if (!inventorySlot.hasItem()) {
+        if (!itemSlot.hasItem()) {
             window.setVisible(false);
         }
     }
 
-    void updateDescription(InventorySlot inventorySlot) {
+    void updateDescription(ItemSlot itemSlot) {
         window.clear();
-        if (inventorySlot.hasItem()) {
-            final InventoryImage hoveredImage = inventorySlot.getCertainInventoryImage();
+        if (itemSlot.hasItem()) {
+            final InventoryImage hoveredImage = itemSlot.getCertainInventoryImage();
             final InventoryItem hoveredItem = hoveredImage.inventoryItem;
             final InventoryGroup inventoryGroup = hoveredItem.getGroup();
             final HeroItem selectedHero = InventoryUtils.getSelectedHero();
             final Optional<String> isAbleToEquip = selectedHero.isAbleToEquip(hoveredItem);
             final Optional<InventoryItem> equippedItem = selectedHero.getInventoryItem(inventoryGroup);
 
-            if (inventorySlot.isOnHero()) {
+            if (itemSlot.isOnHero()) {
                 createSingleTooltip(hoveredImage);
             } else if (inventoryGroup.equals(InventoryGroup.RESOURCE)
-                       || inventoryGroup.equals(InventoryGroup.POTION)) {
+                    || inventoryGroup.equals(InventoryGroup.POTION)) {
                 createResourceTooltip(hoveredImage);
             } else if (isAbleToEquip.isEmpty() && equippedItem.isPresent()) {
                 createDualTooltip(hoveredImage, new InventoryImage(equippedItem.get()));

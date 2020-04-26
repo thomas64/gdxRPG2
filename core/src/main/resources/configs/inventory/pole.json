@@ -4,7 +4,7 @@
     "group": "WEAPON",
     "sort": 1200,
     "skill": "POLE",
-    "price": 1,
+    "price": 5,
     "min_strength": 8,
     "base_hit": 50,
     "damage": 4
@@ -14,7 +14,7 @@
     "group": "WEAPON",
     "sort": 2200,
     "skill": "POLE",
-    "price": 3,
+    "price": 15,
     "min_strength": 9,
     "base_hit": 60,
     "damage": 6
@@ -24,7 +24,7 @@
     "group": "WEAPON",
     "sort": 3200,
     "skill": "POLE",
-    "price": 5,
+    "price": 25,
     "min_strength": 10,
     "base_hit": 70,
     "damage": 8
@@ -34,7 +34,7 @@
     "group": "WEAPON",
     "sort": 4200,
     "skill": "POLE",
-    "price": 7,
+    "price": 35,
     "min_strength": 11,
     "base_hit": 80,
     "damage": 10
@@ -45,7 +45,7 @@
     "sort": 5200,
     "skill": "POLE",
     "min_intelligence": 26,
-    "price": 9,
+    "price": 45,
     "min_strength": 8,
     "base_hit": 80,
     "damage": 10
@@ -56,7 +56,7 @@
     "sort": 6200,
     "skill": "POLE",
     "min_intelligence": 30,
-    "price": 11,
+    "price": 55,
     "min_strength": 12,
     "base_hit": 90,
     "damage": 12
@@ -66,7 +66,7 @@
     "group": "WEAPON",
     "sort": 1220,
     "skill": "POLE",
-    "price": 2,
+    "price": 10,
     "min_strength": 11,
     "base_hit": 50,
     "damage": 6
@@ -76,7 +76,7 @@
     "group": "WEAPON",
     "sort": 2220,
     "skill": "POLE",
-    "price": 4,
+    "price": 20,
     "min_strength": 12,
     "base_hit": 60,
     "damage": 8
@@ -86,7 +86,7 @@
     "group": "WEAPON",
     "sort": 3220,
     "skill": "POLE",
-    "price": 6,
+    "price": 30,
     "min_strength": 13,
     "base_hit": 70,
     "damage": 10
@@ -96,7 +96,7 @@
     "group": "WEAPON",
     "sort": 4220,
     "skill": "POLE",
-    "price": 8,
+    "price": 40,
     "min_strength": 14,
     "base_hit": 80,
     "damage": 12
@@ -106,7 +106,7 @@
     "group": "WEAPON",
     "sort": 1240,
     "skill": "POLE",
-    "price": 3,
+    "price": 15,
     "min_strength": 14,
     "base_hit": 50,
     "damage": 8
@@ -116,7 +116,7 @@
     "group": "WEAPON",
     "sort": 2240,
     "skill": "POLE",
-    "price": 5,
+    "price": 25,
     "min_strength": 15,
     "base_hit": 60,
     "damage": 10
@@ -126,7 +126,7 @@
     "group": "WEAPON",
     "sort": 3240,
     "skill": "POLE",
-    "price": 7,
+    "price": 35,
     "min_strength": 16,
     "base_hit": 70,
     "damage": 12
@@ -136,7 +136,7 @@
     "group": "WEAPON",
     "sort": 4240,
     "skill": "POLE",
-    "price": 9,
+    "price": 45,
     "min_strength": 17,
     "base_hit": 80,
     "damage": 14
@@ -146,7 +146,7 @@
     "group": "WEAPON",
     "sort": 1260,
     "skill": "POLE",
-    "price": 4,
+    "price": 20,
     "min_strength": 17,
     "base_hit": 50,
     "damage": 10
@@ -156,7 +156,7 @@
     "group": "WEAPON",
     "sort": 2260,
     "skill": "POLE",
-    "price": 6,
+    "price": 30,
     "min_strength": 18,
     "base_hit": 60,
     "damage": 12
@@ -166,7 +166,7 @@
     "group": "WEAPON",
     "sort": 3260,
     "skill": "POLE",
-    "price": 8,
+    "price": 40,
     "min_strength": 19,
     "base_hit": 70,
     "damage": 14
@@ -176,7 +176,7 @@
     "group": "WEAPON",
     "sort": 4260,
     "skill": "POLE",
-    "price": 10,
+    "price": 50,
     "min_strength": 20,
     "base_hit": 80,
     "damage": 16

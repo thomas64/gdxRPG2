@@ -11,6 +11,7 @@
     "name": "Herbs",
     "group": "RESOURCE",
     "sort": 10,
+    "price": 1,
     "description": [
       "Herbs are used in magical spells (Wizard Skill)",
       "and in creating potions (Alchemist Skill).",
@@ -21,6 +22,7 @@
     "name": "Spices",
     "group": "RESOURCE",
     "sort": 15,
+    "price": 1,
     "description": [
       "Spices are used in magical spells (Wizard Skill)",
       "and in creating potions (Alchemist Skill)."
@@ -30,6 +32,7 @@
     "name": "Gemstones",
     "group": "RESOURCE",
     "sort": 20,
+    "price": 1,
     "description": [
       "Gemstones are used in magical spells (Wizard Skill)",
       "and in creating potions (Alchemist Skill)."

@@ -55,7 +55,7 @@ public class InventoryStacksMerger {
 
     private void stackTwoItems(int index2) {
         inventoryItem1.increaseAmountWith(inventoryItem2);
-        container.forceSetItemAt(index2, null);
+        container.clearItemAt(index2);
     }
 
 }

@@ -42,42 +42,18 @@ public final class InventoryUtils {
 
     static void updateSelectedHero(HeroItem newSelectedHero) {
         final var screenUI = getScreenUI();
-        final Table oldEquipSlots = screenUI.getEquipSlotsTables().get(selectedHero.getId()).equipSlots;
+        final Table oldEquipSlots = screenUI.getEquipSlotsTables().get(selectedHero.getId()).equipSlotTable;
         screenUI.getEquipWindow().removeActor(oldEquipSlots);
         selectedHero = newSelectedHero;
-        final Table newEquipSlots = screenUI.getEquipSlotsTables().get(selectedHero.getId()).equipSlots;
+        final Table newEquipSlots = screenUI.getEquipSlotsTables().get(selectedHero.getId()).equipSlotTable;
         screenUI.getEquipWindow().add(newEquipSlots);
     }
 
-    public static void handleDoubleClickInventory(InventorySlot clickedSlot) {
-        clickedSlot.getPossibleInventoryImage()
-                   .ifPresent(inventoryImage -> {
-                       getScreenUI().getEquipSlotsTables().get(selectedHero.getId())
-                                    .getPossibleSlotOfGroup(inventoryImage.inventoryGroup)
-                                    .ifPresent(targetSlot -> {
-                                        clickedSlot.decrementAmount();
-                                        new InventorySlotsExchanger(inventoryImage, clickedSlot, targetSlot).exchange();
-                                    });
-                   });
-    }
-
-    public static void handleDoubleClickEquipOrShop(InventorySlot clickedSlot) {
-        clickedSlot.getPossibleInventoryImage()
-                   .ifPresent(inventoryImage -> {
-                       getScreenUI().getInventorySlotsTable()
-                                    .getPossibleEmptySlot()
-                                    .ifPresent(targetSlot -> {
-                                        clickedSlot.decrementAmount();
-                                        new InventorySlotsExchanger(inventoryImage, clickedSlot, targetSlot).exchange();
-                                    });
-                   });
-    }
-
-    static void setShiftPressed(boolean isPressed) {
+    public static void setShiftPressed(boolean isPressed) {
         shiftPressed = isPressed;
     }
 
-    static void setCtrlPressed(boolean isPressed) {
+    public static void setCtrlPressed(boolean isPressed) {
         ctrlPressed = isPressed;
     }
 

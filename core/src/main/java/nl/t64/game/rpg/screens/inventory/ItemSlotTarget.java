@@ -5,11 +5,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
 
 
-public class InventorySlotTarget extends Target {
+public class ItemSlotTarget extends Target {
 
-    private final InventorySlot targetSlot;
+    private final ItemSlot targetSlot;
 
-    public InventorySlotTarget(InventorySlot targetSlot) {
+    public ItemSlotTarget(ItemSlot targetSlot) {
         super(targetSlot);
         this.targetSlot = targetSlot;
     }
@@ -22,8 +22,8 @@ public class InventorySlotTarget extends Target {
     @Override
     public void drop(Source source, Payload payload, float x, float y, int pointer) {
         InventoryImage draggedItem = (InventoryImage) payload.getDragActor();
-        InventorySlot sourceSlot = ((InventorySlotSource) source).sourceSlot;
-        new InventorySlotsExchanger(draggedItem, sourceSlot, targetSlot).exchange();
+        ItemSlot sourceSlot = ((ItemSlotSource) source).sourceSlot;
+        new ItemSlotsExchanger(draggedItem, sourceSlot, targetSlot).exchange();
     }
 
 }

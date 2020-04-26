@@ -1,6 +1,7 @@
 package nl.t64.game.rpg.components.party;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 
 public class InventoryContainer {
@@ -18,6 +19,16 @@ public class InventoryContainer {
                                .orElse(0);
     }
 
+    public void incrementAmountAt(int index, int amount) {
+        getItemAt(index).ifPresentOrElse(inventoryItem -> inventoryItem.increaseAmountWith(amount),
+                                         throwException("There is no item to increment amount."));
+    }
+
+    public void decrementAmountAt(int index, int amount) {
+        getItemAt(index).ifPresentOrElse(inventoryItem -> inventoryItem.decreaseAmountWith(amount),
+                                         throwException("There is no item to increment amount."));
+    }
+
     public Optional<InventoryItem> getItemAt(int index) {
         return Optional.ofNullable(inventory.get(index));
     }
@@ -28,6 +39,10 @@ public class InventoryContainer {
         } else {
             addEquipmentAtEmptySlot(newItem);
         }
+    }
+
+    public void clearItemAt(int index) {
+        forceSetItemAt(index, null);
     }
 
     public void forceSetItemAt(int index, InventoryItem newItem) {
@@ -67,18 +82,26 @@ public class InventoryContainer {
         );
     }
 
+    public boolean hasEnoughOfResource(String itemId, int amount) {
+        return getTotalOfResource(itemId) >= amount;
+    }
+
+    private int getTotalOfResource(String itemId) {
+        return inventory.stream()
+                        .filter(Objects::nonNull)
+                        .filter(item -> item.hasSameIdAs(itemId))
+                        .mapToInt(item -> item.amount)
+                        .sum();
+    }
+
     private Runnable addResourceAtEmptySlot(InventoryItem newItem) {
         return () -> findLastEmptySlot().ifPresentOrElse(index -> slotIsEmptySoSetItemAt(index, newItem),
-                                                         () -> {
-                                                             throw new IllegalStateException("Inventory is full.");
-                                                         });
+                                                         throwException("Inventory is full."));
     }
 
     private void addEquipmentAtEmptySlot(InventoryItem newItem) {
         findFirstEmptySlot().ifPresentOrElse(index -> slotIsEmptySoSetItemAt(index, newItem),
-                                             () -> {
-                                                 throw new IllegalStateException("Inventory is full.");
-                                             });
+                                             throwException("Inventory is full."));
     }
 
     private void slotIsEmptySoSetItemAt(int index, InventoryItem newItem) {
@@ -90,6 +113,27 @@ public class InventoryContainer {
                         .filter(Objects::nonNull)
                         .filter(item -> item.hasSameIdAs(itemId))
                         .findFirst();
+    }
+
+    public Map<Integer, Integer> findAllSlotsWithAmountOfResource(String itemId) {
+        Map<Integer, Integer> resourceMap = new HashMap<>();
+        IntStream.range(0, getSize())
+                 .forEach(i -> {
+                     InventoryItem item = inventory.get(i);
+                     if (item != null && item.id.equals(itemId)) {
+                         resourceMap.put(i, item.amount);
+                     }
+                 });
+        return resourceMap;
+    }
+
+    public Optional<Integer> findFirstSlotWithItem(String itemId) {
+        for (int i = 0; i < getSize(); i++) {
+            if (containsItemAt(i, itemId)) {
+                return Optional.of(i);
+            }
+        }
+        return Optional.empty();
     }
 
     public Optional<Integer> findFirstEmptySlot() {
@@ -114,6 +158,11 @@ public class InventoryContainer {
         return inventory.get(index) == null;
     }
 
+    private boolean containsItemAt(int index, String itemId) {
+        return getItemAt(index).map(inventoryItem -> inventoryItem.hasSameIdAs(itemId))
+                               .orElse(false);
+    }
+
     private InventoryGroup getInventoryGroup(InventoryItem inventoryItem) {
         if (inventoryItem == null) {
             return InventoryGroup.EMPTY;
@@ -126,6 +175,12 @@ public class InventoryContainer {
             return 0;
         }
         return inventoryItem.sort;
+    }
+
+    private Runnable throwException(String exceptionMessage) {
+        return () -> {
+            throw new IllegalStateException(exceptionMessage);
+        };
     }
 
 }
