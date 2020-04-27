@@ -31,7 +31,7 @@ class ItemSlotsExchanger {
         if (targetSlot.equals(sourceSlot)) {
             targetSlot.incrementAmount();
         } else if (draggedItem.isSameItemAs(itemAtTarget)
-                && draggedItem.isStackable()) {
+                   && draggedItem.isStackable()) {
             drag_PartOf_StackToFilledSlot();
         } else {
             swapStacks();
@@ -69,7 +69,7 @@ class ItemSlotsExchanger {
 
     private void putItemInEmptySlot() {
         if (draggedItem.isStackable()
-                && sourceSlot.getAmount() >= 1) {
+            && sourceSlot.getAmount() >= 1) {
             drag_PartOf_StackToEmptySlot();
         } else {
             targetSlot.putSingleItemInEmptySlot(draggedItem);
@@ -93,7 +93,7 @@ class ItemSlotsExchanger {
     }
 
     private void dragHalfOfAmountToEmptySlot() {
-        final int half = (int) Math.floor((sourceSlot.getAmount()) / 2f);
+        final int half = getHalfOfSource();
         targetSlot.addToStack(draggedItem);
         targetSlot.incrementAmountBy(half);
         sourceSlot.decrementAmountBy(half);
@@ -105,16 +105,20 @@ class ItemSlotsExchanger {
     }
 
     private void dragHalfOfAmountToFilledSlot() {
-        final int half = (int) Math.floor((sourceSlot.getAmount()) / 2f);
+        final int half = getHalfOfSource();
         targetSlot.incrementAmountBy(half + 1);
         sourceSlot.decrementAmountBy(half);
     }
 
+    private int getHalfOfSource() {
+        return (int) Math.floor((sourceSlot.getAmount()) / 2f);
+    }
+
     private boolean doTargetAndSourceAcceptEachOther() {
         return !(sourceSlot.filterGroup.equals(InventoryGroup.SHOP_EQUIP_ITEM)
-                || targetSlot.filterGroup.equals(InventoryGroup.SHOP_EQUIP_ITEM))
-                && targetSlot.doesAcceptItem(draggedItem)
-                && sourceSlot.doesAcceptItem(targetSlot.getCertainInventoryImage());
+                 || targetSlot.filterGroup.equals(InventoryGroup.SHOP_EQUIP_ITEM))
+               && targetSlot.doesAcceptItem(draggedItem)
+               && sourceSlot.doesAcceptItem(targetSlot.getCertainInventoryImage());
     }
 
 }

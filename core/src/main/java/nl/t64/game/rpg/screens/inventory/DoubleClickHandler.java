@@ -106,6 +106,7 @@ public final class DoubleClickHandler {
         clickedSlot.decrementAmount();
         int newAmount = clickedSlot.getAmount();
         clickedItem.inventoryItem.setAmount(1);
+        clickedSlot.clearStack();
         if (newAmount > 0) {
             duplicateInSource(clickedItem, clickedSlot, newAmount, dragAndDrop);
         }
