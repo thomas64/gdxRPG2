@@ -15,11 +15,9 @@ abstract class BaseToolTip {
     private static final String SPRITE_SLOT = "sprites/tooltip.png";
     private static final float PADDING = 10f;
 
-    final BitmapFont font;
     final Window window;
 
     BaseToolTip() {
-        this.font = new BitmapFont();
         this.window = new Window("", createWindowStyle());
         this.window.defaults().align(Align.left);
         this.window.pad(PADDING);
@@ -27,11 +25,11 @@ abstract class BaseToolTip {
         this.window.setVisible(false);
     }
 
-    private Window.WindowStyle createWindowStyle() {
+    private static Window.WindowStyle createWindowStyle() {
         var texture = Utils.getResourceManager().getTextureAsset(SPRITE_SLOT);
         var ninepatch = new NinePatch(texture, 1, 1, 1, 1);
         var drawable = new NinePatchDrawable(ninepatch);
-        return new Window.WindowStyle(font, Color.GREEN, drawable);
+        return new Window.WindowStyle(new BitmapFont(), Color.GREEN, drawable);
     }
 
     public void addToStage(Stage stage) {

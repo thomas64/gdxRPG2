@@ -1,6 +1,7 @@
 package nl.t64.game.rpg.components.tooltip;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import nl.t64.game.rpg.components.party.PersonalityItem;
 import nl.t64.game.rpg.components.party.SkillItemId;
@@ -18,7 +19,7 @@ public class PersonalityTooltip extends BaseToolTip {
 
         final int totalLoremaster = InventoryUtils.getSelectedHero().getCalculatedTotalSkillOf(SkillItemId.LOREMASTER);
         final String description = personalityItem.getDescription(totalLoremaster);
-        final var labelStyle = new Label.LabelStyle(font, Color.WHITE);
+        final var labelStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
         final var label = new Label(description, labelStyle);
         window.add(label);
 

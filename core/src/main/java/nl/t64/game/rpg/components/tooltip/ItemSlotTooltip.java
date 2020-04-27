@@ -1,6 +1,7 @@
 package nl.t64.game.rpg.components.tooltip;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -47,7 +48,7 @@ public class ItemSlotTooltip extends BaseToolTip {
             if (itemSlot.isOnHero()) {
                 createSingleTooltip(hoveredImage);
             } else if (inventoryGroup.equals(InventoryGroup.RESOURCE)
-                    || inventoryGroup.equals(InventoryGroup.POTION)) {
+                       || inventoryGroup.equals(InventoryGroup.POTION)) {
                 createResourceTooltip(hoveredImage);
             } else if (isAbleToEquip.isEmpty() && equippedItem.isPresent()) {
                 createDualTooltip(hoveredImage, new InventoryImage(equippedItem.get()));
@@ -61,11 +62,9 @@ public class ItemSlotTooltip extends BaseToolTip {
     private void createResourceTooltip(InventoryImage inventoryImage) {
         createSingleTooltip(inventoryImage);
         window.add().row();
-        window.add(new Label(EMPTY_ROW, new Label.LabelStyle(font, Color.WHITE))).row();
+        window.add(createLabel(EMPTY_ROW, Color.WHITE)).row();
         final String description = String.join(System.lineSeparator(), inventoryImage.inventoryItem.getDescription());
-        final var labelStyle = new Label.LabelStyle(font, Color.WHITE);
-        final var label = new Label(description, labelStyle);
-        window.add(label);
+        window.add(createLabel(description, Color.WHITE));
     }
 
     private void createSingleTooltip(InventoryImage inventoryImage) {
@@ -91,7 +90,7 @@ public class ItemSlotTooltip extends BaseToolTip {
         setRightBorder(hoveredTable);
         hoveredTable.padRight(HALF_SPACING);
         hoveredTable.defaults().align(Align.left);
-        hoveredTable.add(new Label(LEFT_TITLE, new Label.LabelStyle(font, Color.WHITE))).row();
+        hoveredTable.add(createLabel(LEFT_TITLE, Color.WHITE)).row();
 
         List<InventoryDescription> descriptionList = hoveredImage.getLeftDescription(equippedImage);
         descriptionList = removeLeftUnnecessaryAttributes(descriptionList);
@@ -102,7 +101,7 @@ public class ItemSlotTooltip extends BaseToolTip {
     private Table createRightTooltip(InventoryImage equippedImage) {
         final var equippedTable = new Table();
         equippedTable.defaults().align(Align.left);
-        equippedTable.add(new Label(RIGHT_TITLE, new Label.LabelStyle(font, Color.LIGHT_GRAY))).row();
+        equippedTable.add(createLabel(RIGHT_TITLE, Color.LIGHT_GRAY)).row();
 
         List<InventoryDescription> descriptionList = equippedImage.getSingleDescription();
         descriptionList = removeRightUnnecessaryAttributes(descriptionList);
@@ -149,23 +148,23 @@ public class ItemSlotTooltip extends BaseToolTip {
     private Label.LabelStyle createLabelStyle(InventoryDescription attribute) {
         if (attribute.getKey().equals(Constant.DESCRIPTION_KEY_BUY)
             || attribute.getKey().equals(Constant.DESCRIPTION_KEY_SELL)) {
-            return new Label.LabelStyle(font, Color.GOLD);
+            return createLabelStyle(Color.GOLD);
         }
         return switch (attribute.getCompare()) {
-            case SAME, MORE -> new Label.LabelStyle(font, Color.WHITE);
-            case LESS -> new Label.LabelStyle(font, Color.RED);
+            case SAME, MORE -> createLabelStyle(Color.WHITE);
+            case LESS -> createLabelStyle(Color.RED);
         };
     }
 
     private Label.LabelStyle createDualLabelStyle(InventoryDescription attribute) {
         if (attribute.getKey().equals(Constant.DESCRIPTION_KEY_BUY)
             || attribute.getKey().equals(Constant.DESCRIPTION_KEY_SELL)) {
-            return new Label.LabelStyle(font, Color.GOLD);
+            return createLabelStyle(Color.GOLD);
         }
         return switch (attribute.getCompare()) {
-            case SAME -> new Label.LabelStyle(font, Color.WHITE);
-            case LESS -> new Label.LabelStyle(font, ORANGE);
-            case MORE -> new Label.LabelStyle(font, Color.LIME);
+            case SAME -> createLabelStyle(Color.WHITE);
+            case LESS -> createLabelStyle(ORANGE);
+            case MORE -> createLabelStyle(Color.LIME);
         };
     }
 
@@ -192,6 +191,14 @@ public class ItemSlotTooltip extends BaseToolTip {
         final var ninepatch = new NinePatch(texture, 0, 1, 0, 0);
         final var drawable = new NinePatchDrawable(ninepatch);
         table.setBackground(drawable);
+    }
+
+    private Label createLabel(String text, Color color) {
+        return new Label(text, createLabelStyle(color));
+    }
+
+    private Label.LabelStyle createLabelStyle(Color color) {
+        return new Label.LabelStyle(new BitmapFont(), color);
     }
 
 }
