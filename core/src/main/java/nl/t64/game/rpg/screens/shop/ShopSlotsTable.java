@@ -10,9 +10,9 @@ import nl.t64.game.rpg.components.party.InventoryContainer;
 import nl.t64.game.rpg.components.party.InventoryDatabase;
 import nl.t64.game.rpg.components.party.InventoryGroup;
 import nl.t64.game.rpg.components.party.InventoryItem;
-import nl.t64.game.rpg.components.tooltip.ItemSlotTooltip;
-import nl.t64.game.rpg.components.tooltip.ItemSlotTooltipListener;
 import nl.t64.game.rpg.screens.inventory.*;
+import nl.t64.game.rpg.screens.inventory.tooltip.ItemSlotTooltip;
+import nl.t64.game.rpg.screens.inventory.tooltip.ItemSlotTooltipListener;
 
 import java.util.function.Consumer;
 import java.util.stream.IntStream;

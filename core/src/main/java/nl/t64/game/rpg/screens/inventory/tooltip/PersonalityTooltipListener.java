@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.components.tooltip;
+package nl.t64.game.rpg.screens.inventory.tooltip;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
