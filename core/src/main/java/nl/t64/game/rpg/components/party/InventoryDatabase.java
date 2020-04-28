@@ -15,6 +15,8 @@ public final class InventoryDatabase {
 
     private static final String INVENTORY_CONFIGS = "configs/inventory";
     private static final String SUFFIX = ".json";
+    private static final int DEFAULT_SHOP_RESOURCE_AMOUNT = 100;
+    private static final int DEFAULT_SHOP_POTION_AMOUNT = 20;
 
     private static InventoryDatabase instance;
 
@@ -29,6 +31,16 @@ public final class InventoryDatabase {
             instance = new InventoryDatabase();
         }
         return instance;
+    }
+
+    public InventoryItem getInventoryItemForShop(String itemId) {
+        final InventoryItem inventoryItem = getInventoryItem(itemId);
+        if (inventoryItem.group.equals(InventoryGroup.RESOURCE)) {
+            inventoryItem.setAmount(DEFAULT_SHOP_RESOURCE_AMOUNT);
+        } else if (inventoryItem.group.equals(InventoryGroup.POTION)) {
+            inventoryItem.setAmount(DEFAULT_SHOP_POTION_AMOUNT);
+        }
+        return inventoryItem;
     }
 
     public InventoryItem getInventoryItem(String itemId) {

@@ -29,8 +29,8 @@ public class ShopScreen implements Screen {
     private static final float INVENTORY_WINDOW_POSITION_Y = 50f;
     private static final float SHOP_WINDOW_POSITION_X = 724f;
     private static final float SHOP_WINDOW_POSITION_Y = 50f;
-    private static final float OWNER_WINDOW_POSITION_X = 63f;
-    private static final float OWNER_WINDOW_POSITION_Y = 50f;
+    private static final float MERCHANT_WINDOW_POSITION_X = 63f;
+    private static final float MERCHANT_WINDOW_POSITION_Y = 50f;
     private static final float HEROES_WINDOW_POSITION_X = 63f;
     private static final float HEROES_WINDOW_POSITION_Y = 834f;
     private static final float BUTTON_SIZE = 32f;
@@ -61,7 +61,7 @@ public class ShopScreen implements Screen {
         shopUI.equipWindow.setPosition(EQUIP_WINDOW_POSITION_X, EQUIP_WINDOW_POSITION_Y);
         shopUI.inventoryWindow.setPosition(INVENTORY_WINDOW_POSITION_X, INVENTORY_WINDOW_POSITION_Y);
         shopUI.shopWindow.setPosition(SHOP_WINDOW_POSITION_X, SHOP_WINDOW_POSITION_Y);
-        shopUI.ownerWindow.setPosition(OWNER_WINDOW_POSITION_X, OWNER_WINDOW_POSITION_Y);
+        shopUI.merchantWindow.setPosition(MERCHANT_WINDOW_POSITION_X, MERCHANT_WINDOW_POSITION_Y);
         shopUI.heroesWindow.setPosition(HEROES_WINDOW_POSITION_X, HEROES_WINDOW_POSITION_Y);
         shopUI.addToStage(stage);
         shopUI.applyListeners(stage);

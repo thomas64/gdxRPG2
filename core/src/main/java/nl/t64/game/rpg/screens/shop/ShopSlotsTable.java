@@ -49,7 +49,7 @@ class ShopSlotsTable {
     private void fillShopContainer(String shopId) {
         Utils.getResourceManager().getShopInventory(shopId)
              .stream()
-             .map(itemId -> InventoryDatabase.getInstance().getInventoryItem(itemId))
+             .map(itemId -> InventoryDatabase.getInstance().getInventoryItemForShop(itemId))
              .forEach(inventory::autoSetItem);
     }
 

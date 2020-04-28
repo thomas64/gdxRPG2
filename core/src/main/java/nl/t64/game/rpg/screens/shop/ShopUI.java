@@ -30,20 +30,20 @@ class ShopUI implements ScreenUI {
     private static final String TITLE_PERSONAL = "   Equipment";
     private static final String TITLE_GLOBAL = "   Inventory";
     private static final String TITLE_SHOP = "   Shop";
-    private static final String TITLE_OWNER = "   Shopowner";
+    private static final String TITLE_MERCHANT = "   Merchant";
     private static final String TITLE_HEROES = "   Heroes";
     private static final float TITLE_PADDING = 50f;
 
     final Window equipWindow;
     final Window inventoryWindow;
     final Window shopWindow;
-    final Window ownerWindow;
+    final Window merchantWindow;
     final Window heroesWindow;
 
     private final Map<String, EquipSlotsTable> equipSlotsTables;
     private final InventorySlotsTable inventorySlotsTable;
     private final ShopSlotsTable shopSlotsTable;
-    private final ShopOwnerTable ownerTable;
+    private final MarchantTable merchantTable;
     private final HeroesTable heroesTable;
 
     private final ItemSlotTooltip shopSlotTooltipSell;
@@ -67,8 +67,8 @@ class ShopUI implements ScreenUI {
         this.shopSlotsTable = new ShopSlotsTable(shopId, dragAndDrop, this.shopSlotTooltipBuy);
         this.shopWindow = createWindow(TITLE_SHOP, this.shopSlotsTable.container);
 
-        this.ownerTable = new ShopOwnerTable(npcId);
-        this.ownerWindow = createWindow(TITLE_OWNER, this.ownerTable.table);
+        this.merchantTable = new MarchantTable(npcId);
+        this.merchantWindow = createWindow(TITLE_MERCHANT, this.merchantTable.table);
 
         this.heroesTable = new HeroesTable();
         this.heroesWindow = createWindow(TITLE_HEROES, this.heroesTable.heroes);
@@ -101,7 +101,7 @@ class ShopUI implements ScreenUI {
         stage.addActor(equipWindow);
         stage.addActor(inventoryWindow);
         stage.addActor(shopWindow);
-        stage.addActor(ownerWindow);
+        stage.addActor(merchantWindow);
         stage.addActor(heroesWindow);
         shopSlotTooltipSell.addToStage(stage);
         shopSlotTooltipBuy.addToStage(stage);
@@ -113,10 +113,10 @@ class ShopUI implements ScreenUI {
     }
 
     void update() {
-        ownerTable.update();
+        merchantTable.update();
         heroesTable.update();
 
-        ownerWindow.pack();
+        merchantWindow.pack();
         heroesWindow.pack();
     }
 
