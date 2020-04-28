@@ -101,15 +101,14 @@ public class InventoryItem {
     }
 
     public boolean isStackable() {
-        return group.equals(InventoryGroup.RESOURCE)
-               || group.equals(InventoryGroup.POTION);
+        return group.isStackable();
     }
 
-    int getBuyPrice() {
+    public int getBuyPrice() {
         return price * amount;
     }
 
-    int getSellValue() {
+    public int getSellValue() {
         return MathUtils.floor(price / 3f) * amount;
     }
 

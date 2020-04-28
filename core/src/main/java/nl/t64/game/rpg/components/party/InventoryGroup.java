@@ -37,4 +37,11 @@ public enum InventoryGroup implements SuperEnum {
         return title;
     }
 
+    boolean isStackable() {
+        return switch (this) {
+            case POTION, RESOURCE -> true;
+            default -> false;
+        };
+    }
+
 }

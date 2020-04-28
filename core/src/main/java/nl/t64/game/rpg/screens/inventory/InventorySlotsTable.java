@@ -44,6 +44,16 @@ public class InventorySlotsTable {
         setTopBorder();
     }
 
+    void addResource(InventoryItem inventoryItem) {
+        inventory.autoSetItem(inventoryItem);
+        clearAndFill();
+    }
+
+    void removeResource(String itemId, int amount) {
+        inventory.autoRemoveResource(itemId, amount);
+        clearAndFill();
+    }
+
     void clearAndFill() {
         inventorySlotTable.clear();
         fillInventorySlots();

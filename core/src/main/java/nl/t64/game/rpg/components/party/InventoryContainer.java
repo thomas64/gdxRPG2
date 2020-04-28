@@ -34,10 +34,28 @@ public class InventoryContainer {
     }
 
     public void autoSetItem(InventoryItem newItem) {
+        if (newItem.amount == 0) {
+            return;
+        }
         if (newItem.isStackable()) {
             addResource(newItem);
         } else {
             addEquipmentAtEmptySlot(newItem);
+        }
+    }
+
+    public void autoRemoveResource(String itemId, int amount) {
+        if (!hasEnoughOfResource(itemId, amount)) {
+            throw new IllegalStateException("Can't remove this resource from Inventory.");
+        }
+        for (Map.Entry<Integer, Integer> set : findAllSlotsWithAmountOfResource(itemId).entrySet()) {
+            if (amount >= set.getValue()) {
+                amount -= set.getValue();
+                clearItemAt(set.getKey());
+            } else {
+                decrementAmountAt(set.getKey(), amount);
+                return;
+            }
         }
     }
 
@@ -60,6 +78,15 @@ public class InventoryContainer {
         inventory.sort(comparing);
     }
 
+    public boolean hasEnoughOfResource(String itemId, int amount) {
+        return getTotalOfResource(itemId) >= amount;
+    }
+
+    public boolean hasRoomForResource(String itemId) {
+        return findFirstSlotWithItem(itemId).isPresent()
+               || findFirstEmptySlot().isPresent();
+    }
+
     int getLastIndex() {
         return getSize() - 1;
     }
@@ -77,13 +104,9 @@ public class InventoryContainer {
     }
 
     private void addResource(InventoryItem newItem) {
-        getItem(newItem.id).ifPresentOrElse(inventoryItem -> inventoryItem.increaseAmountWith(newItem), // todo, aanpassen, mag niet oneindig ophogen
+        getItem(newItem.id).ifPresentOrElse(inventoryItem -> inventoryItem.increaseAmountWith(newItem),
                                             addResourceAtEmptySlot(newItem)
         );
-    }
-
-    public boolean hasEnoughOfResource(String itemId, int amount) {
-        return getTotalOfResource(itemId) >= amount;
     }
 
     private int getTotalOfResource(String itemId) {
@@ -115,7 +138,7 @@ public class InventoryContainer {
                         .findFirst();
     }
 
-    public Map<Integer, Integer> findAllSlotsWithAmountOfResource(String itemId) {
+    private Map<Integer, Integer> findAllSlotsWithAmountOfResource(String itemId) {
         Map<Integer, Integer> resourceMap = new HashMap<>();
         IntStream.range(0, getSize())
                  .forEach(i -> {

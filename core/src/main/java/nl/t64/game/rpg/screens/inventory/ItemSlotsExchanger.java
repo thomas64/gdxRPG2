@@ -1,27 +1,73 @@
 package nl.t64.game.rpg.screens.inventory;
 
-import lombok.AllArgsConstructor;
+import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.components.party.InventoryDatabase;
 import nl.t64.game.rpg.components.party.InventoryGroup;
+import nl.t64.game.rpg.components.party.InventoryItem;
 
 import java.util.Optional;
 
 
-@AllArgsConstructor
 class ItemSlotsExchanger {
 
     private final InventoryImage draggedItem;
     private final ItemSlot sourceSlot;
     private final ItemSlot targetSlot;
+    private boolean isSuccessfullyExchanged;
+
+    ItemSlotsExchanger(InventoryImage draggedItem, ItemSlot sourceSlot, ItemSlot targetSlot) {
+        this.draggedItem = draggedItem;
+        this.sourceSlot = sourceSlot;
+        this.targetSlot = targetSlot;
+        this.isSuccessfullyExchanged = true;
+    }
 
     void exchange() {
         if (targetSlot.doesAcceptItem(draggedItem)) {
-            checkTargetItem();
+            handleExchange();
         } else {
             sourceSlot.putItemBack(draggedItem);
         }
     }
 
-    private void checkTargetItem() {
+    private void handleExchange() {
+        if (isShopPurchase()) {
+            handlePurchase();
+        } else if (isShopBarter()) {
+            handleBarter();
+        } else {
+            handlePossibleExchange();
+        }
+    }
+
+    private void handlePurchase() {
+        final int totalPrice = draggedItem.inventoryItem.getBuyPrice() * getAmountOfDraggedItems();
+        if (Utils.getGameData().getInventory().hasEnoughOfResource("gold", totalPrice)) {
+            handlePossibleExchange();
+            if (isSuccessfullyExchanged) {
+                InventoryUtils.getScreenUI().getInventorySlotsTable().removeResource("gold", totalPrice);
+            }
+        } else {
+            new MessageDialog("I'm sorry, but you don't seem to have enough gold.").show(sourceSlot.getStage());
+            sourceSlot.putItemBack(draggedItem);
+        }
+    }
+
+    private void handleBarter() {
+        final int totalValue = draggedItem.inventoryItem.getSellValue() * getAmountOfDraggedItems();
+        if (Utils.getGameData().getInventory().hasRoomForResource("gold")) {
+            handlePossibleExchange();
+            if (isSuccessfullyExchanged) {
+                InventoryItem gold = InventoryDatabase.getInstance().getInventoryItem("gold", totalValue);
+                InventoryUtils.getScreenUI().getInventorySlotsTable().addResource(gold);
+            }
+        } else {
+            new MessageDialog("I'm sorry, but you don't seem to have room for gold.").show(sourceSlot.getStage());
+            sourceSlot.putItemBack(draggedItem);
+        }
+    }
+
+    private void handlePossibleExchange() {
         Optional<InventoryImage> possibleItemAtTarget = targetSlot.getPossibleInventoryImage();
         possibleItemAtTarget.ifPresentOrElse(this::putItemInFilledSlot,
                                              this::putItemInEmptySlot);
@@ -64,6 +110,7 @@ class ItemSlotsExchanger {
             }
         } else {
             sourceSlot.putItemBack(draggedItem);
+            isSuccessfullyExchanged = false;
         }
     }
 
@@ -108,6 +155,26 @@ class ItemSlotsExchanger {
         final int half = getHalfOfSource();
         targetSlot.incrementAmountBy(half + 1);
         sourceSlot.decrementAmountBy(half);
+    }
+
+    private int getAmountOfDraggedItems() {
+        if (InventoryUtils.isShiftPressed()) {
+            return sourceSlot.getAmount() + 1;
+        } else if (InventoryUtils.isCtrlPressed()) {
+            return getHalfOfSource() + 1;
+        } else {
+            return 1;
+        }
+    }
+
+    private boolean isShopPurchase() {
+        return sourceSlot.filterGroup.equals(InventoryGroup.SHOP_EQUIP_ITEM)
+               && targetSlot.filterGroup.equals(InventoryGroup.EVERYTHING);
+    }
+
+    private boolean isShopBarter() {
+        return sourceSlot.filterGroup.equals(InventoryGroup.EVERYTHING)
+               && targetSlot.filterGroup.equals(InventoryGroup.SHOP_EQUIP_ITEM);
     }
 
     private int getHalfOfSource() {

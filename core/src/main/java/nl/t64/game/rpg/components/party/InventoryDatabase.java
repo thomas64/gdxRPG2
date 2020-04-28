@@ -43,6 +43,12 @@ public final class InventoryDatabase {
         return inventoryItem;
     }
 
+    public InventoryItem getInventoryItem(String itemId, int amount) {
+        final InventoryItem inventoryItem = getInventoryItem(itemId);
+        inventoryItem.setAmount(amount);
+        return inventoryItem;
+    }
+
     public InventoryItem getInventoryItem(String itemId) {
         if (inventoryItems.isEmpty()) {
             try {
