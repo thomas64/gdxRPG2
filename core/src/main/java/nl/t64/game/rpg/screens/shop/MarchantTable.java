@@ -13,14 +13,23 @@ class MarchantTable extends BaseTable {
     private static final float TABLE_HEIGHT = 501f;
     private static final float PADDING = 20f;
     private static final String TEXT =
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin fringilla sem id lacus pharetra, " +
-            "et pretium lectus pretium. Vivamus iaculis lorem nisi, in suscipit orci varius sed. In gravida " +
-            "est non lectus iaculis rhoncus. Cras placerat leo libero. Suspendisse rutrum nulla vel ultrices " +
-            "dictum. Nullam ac eleifend augue, luctus gravida enim. Sed efficitur dolor ac sem scelerisque, " +
-            "sed euismod velit imperdiet. Nunc et venenatis quam. Mauris posuere nibh ipsum, semper dapibus " +
-            "magna luctus eleifend. Sed at congue sapien. Cras varius auctor dictum. Etiam posuere quam eu " +
-            "leo aliquet venenatis. Proin rutrum orci dictum, faucibus sem vel, consequat nunc. Maecenas " +
-            "scelerisque fringilla metus. Integer eleifend commodo lacinia.";
+            "Good day sir, and welcome to my shop. " +
+            "On the left you will find my wares, and on the right is your own current inventory." +
+            System.lineSeparator() + System.lineSeparator() +
+            "To buy something, simply drag an item from the left box to the right box. " +
+            "Payment will happen immediately." +
+            System.lineSeparator() +
+            "Press Shift while dragging, and you will purchase the whole stack. " +
+            "Press Ctrl while dragging, and you will purchase only half of the stack. " +
+            "When you press nothing, you will purchase only 1 item from the stack." +
+            System.lineSeparator() +
+            "You can also double-click on an item in the left box. That way you'll also purchase 1 item. " +
+            "Combine a double-click with Shift or Ctrl, and the same will happen as with dragging." +
+            System.lineSeparator() + System.lineSeparator() +
+            "But perhaps you are here to sell some of your items. That is also possible at my shop. " +
+            "You'll just have to drag from the right box to the left box. " +
+            "Of course Shift and Ctrl also work for selling. " +
+            "Remember, payment will happen immediately.";
 
     MarchantTable(String npcId) {
         this.table.defaults().reset();

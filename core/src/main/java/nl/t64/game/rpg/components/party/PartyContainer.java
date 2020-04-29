@@ -90,6 +90,12 @@ public class PartyContainer {
         return party.containsKey(heroId);
     }
 
+    int getSumOfSkill(SkillItemId skillItemId) {
+        return getAllHeroes().stream()
+                             .mapToInt(heroItem -> heroItem.getCalculatedTotalSkillOf(skillItemId))
+                             .sum();
+    }
+
     private HeroItem getFirstHero() {
         return getHero(0);
     }

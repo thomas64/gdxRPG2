@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import nl.t64.game.rpg.Utils;
 
 import java.util.List;
 import java.util.Objects;
@@ -105,11 +106,19 @@ public class InventoryItem {
     }
 
     public int getBuyPrice() {
-        return price * amount;
+        int totalMerchant = Utils.getGameData().getParty().getSumOfSkill(SkillItemId.MERCHANT);
+        int salePrice = MathUtils.round(price - ((price / 100f) * totalMerchant));
+        if (salePrice == 0) {
+            salePrice = 1;
+        }
+        return salePrice * amount;
     }
 
     public int getSellValue() {
-        return MathUtils.floor(price / 3f) * amount;
+        int totalMerchant = Utils.getGameData().getParty().getSumOfSkill(SkillItemId.MERCHANT);
+        int value = MathUtils.floor(price / 3f);
+        int saleValue = MathUtils.round(value + ((value / 300f) * totalMerchant));
+        return saleValue * amount;
     }
 
     void increaseAmountWith(InventoryItem sourceItem) {
