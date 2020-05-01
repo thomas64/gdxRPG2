@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -27,9 +28,16 @@ public class ConversationContainer {
         }
     }
 
-    public ConversationGraph getConversationById(String conversationId) {
-        final ConversationGraph graph = conversations.get(conversationId);
-        // remove this single line below, and conversations will remember where they stopped the last time.
+    public ConversationGraph getConversationById(List<String> conversationIds) {
+        ConversationGraph graph = null;
+        for (String conversationId : conversationIds) {
+            graph = conversations.get(conversationId);
+            if (graph.getCurrentPhraseId().equals(ConversationGraph.DEFAULT_STARTING_PHRASE_ID)) {
+                return graph;
+            }
+        }
+        // remove the two lines below, and conversations will start where they stopped the last time.
+        assert graph != null;
         graph.setCurrentPhraseId(ConversationGraph.DEFAULT_STARTING_PHRASE_ID);
         return graph;
     }

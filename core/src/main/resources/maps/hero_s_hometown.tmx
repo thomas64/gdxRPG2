@@ -754,13 +754,13 @@
  <objectgroup color="#aa55ff" id="13" name="hero_layer">
   <object id="118" name="luana" x="984" y="1128" width="48" height="24">
    <properties>
-    <property name="conversation" value="luana01"/>
+    <property name="conversations" value="luana01,luana02"/>
     <property name="direction" value="south"/>
    </properties>
   </object>
   <object id="119" name="reignald" x="1056" y="1128" width="48" height="24">
    <properties>
-    <property name="conversation" value="reignald01"/>
+    <property name="conversations" value="reignald01,reignald02"/>
     <property name="direction" value="south"/>
    </properties>
   </object>

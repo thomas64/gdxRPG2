@@ -4,14 +4,13 @@
       "1": {
         "text": [
           "It seems your party is already full.",
-          "Another time perhaps."
+          "I cannot join you if there's no room."
         ]
       }
     },
     "choices": {
       "1": [
         {
-          "text": "->",
           "destinationId": "EXIT_CONVERSATION"
         }
       ]

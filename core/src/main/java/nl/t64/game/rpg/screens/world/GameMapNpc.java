@@ -7,7 +7,10 @@ import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Direction;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 class GameMapNpc {
@@ -16,7 +19,7 @@ class GameMapNpc {
     final String name;
     final CharacterState state;
     final Direction direction;
-    final String conversation;
+    final List<String> conversations;
 
     GameMapNpc(MapObject mapObject) {
         RectangleMapObject rectObject = (RectangleMapObject) mapObject;
@@ -25,7 +28,7 @@ class GameMapNpc {
         this.name = rectObject.getName();
         this.state = createState(rectObject);
         this.direction = createDirection(rectObject);
-        this.conversation = createConversation(rectObject);
+        this.conversations = createConversations(rectObject);
     }
 
     Vector2 getPosition() {
@@ -54,10 +57,15 @@ class GameMapNpc {
                            .orElseGet(Direction::getRandom);
     }
 
-    private String createConversation(RectangleMapObject rectObject) {
-        Optional<String> newConversation = Optional.ofNullable(
-                rectObject.getProperties().get("conversation", String.class));
-        return newConversation.orElse("default");
+    private List<String> createConversations(RectangleMapObject rectObject) {
+        Optional<String> newConversations = Optional.ofNullable(
+                rectObject.getProperties().get("conversations", String.class));
+
+        return newConversations.map(convs -> Arrays.stream(convs.split(","))
+                                                   .map(String::trim)
+                                                   .collect(Collectors.toList()))
+                               .orElseGet(() -> List.of("default"));
+
     }
 
 }

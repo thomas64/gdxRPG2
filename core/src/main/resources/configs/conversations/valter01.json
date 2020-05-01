@@ -24,13 +24,11 @@
       ],
       "2": [
         {
-          "text": "->",
           "destinationId": "EXIT_CONVERSATION"
         }
       ],
       "3": [
         {
-          "text": "->",
           "destinationId": "JOIN_PARTY"
         }
       ]

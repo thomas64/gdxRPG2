@@ -3,7 +3,6 @@ package nl.t64.game.rpg.conversation;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +28,7 @@ public class ConversationGraph {
     public List<ConversationChoice> getAssociatedChoices() {
         if (!choices.containsKey(currentPhraseId)) {
             String nextPhraseId = String.valueOf(Integer.parseInt(currentPhraseId) + 1);
-            return Collections.singletonList(new ConversationChoice(nextPhraseId));
+            return List.of(new ConversationChoice(nextPhraseId));
         } else {
             return choices.get(currentPhraseId);
         }

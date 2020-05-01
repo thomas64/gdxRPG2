@@ -47,7 +47,7 @@ class NpcCharactersLoader {
         npcCharacter.send(new LoadCharacterEvent(gameMapNpc.state,
                                                  gameMapNpc.direction,
                                                  gameMapNpc.getPosition(),
-                                                 gameMapNpc.conversation));
+                                                 gameMapNpc.conversations));
         if (gameMapNpc.state.equals(CharacterState.IMMOBILE)
                 || gameMapNpc.state.equals(CharacterState.FLOATING)) {
             currentMap.addToBlockers(npcCharacter.getBoundingBox());

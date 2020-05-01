@@ -30,13 +30,11 @@
       ],
       "3": [
         {
-          "text": "->",
           "destinationId": "1"
         }
       ],
       "4": [
         {
-          "text": "->",
           "destinationId": "EXIT_CONVERSATION"
         }
       ]

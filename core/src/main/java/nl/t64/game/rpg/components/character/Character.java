@@ -93,8 +93,8 @@ public class Character {
         return ((PhysicsNpc) physicsComponent).npcId;
     }
 
-    public String getConversationId() {
-        return ((PhysicsNpc) physicsComponent).conversationId;
+    public List<String> getConversationIds() {
+        return ((PhysicsNpc) physicsComponent).conversationIds;
     }
 
 }

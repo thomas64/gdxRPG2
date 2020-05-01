@@ -1,0 +1,40 @@
+{
+  "luana02": {
+    "phrases": {
+      "1": {
+        "text": ["Have you changed your mind?", "Perhaps I don't wanna join you anymore."]
+      },
+      "2": {
+        "text": ["But maybe if you beg me, I will consider it."]
+      },
+      "3": {
+        "text": ["Alright! Now were talking!", "You are so not gonna regret this."]
+      },
+      "4": {
+        "text": ["Ugh! Suit yourself!"]
+      }
+    },
+    "choices": {
+      "2": [
+        {
+          "text": "Oh mighty Luana! I beg of you, please join me.",
+          "destinationId": "3"
+        },
+        {
+          "text": "Psh, in your dreams.",
+          "destinationId": "4"
+        }
+      ],
+      "3": [
+        {
+          "destinationId": "JOIN_PARTY"
+        }
+      ],
+      "4": [
+        {
+          "destinationId": "EXIT_CONVERSATION"
+        }
+      ]
+    }
+  }
+}

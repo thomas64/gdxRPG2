@@ -2,36 +2,48 @@
   "reignald01": {
     "phrases": {
       "1": {
-        "text": ["May I join your party?"]
+        "text": ["Squire!"]
       },
       "2": {
-        "text": ["Okay, perhaps another time then."]
+        "text": ["Look at me when I'm yelling at you!"]
       },
       "3": {
-        "text": ["Alright, thanks!"]
+        "text": ["Squire!"]
+      },
+      "4": {
+        "text": [
+          "If it wasn't for me you wouldn't be standing here before me now! You cannot let yourself get killed again!"
+        ]
+      },
+      "5": {
+        "text": ["If you go along without me, you'll probably end up dead! So I will join you now!"]
+      },
+      "6": {
+        "text": ["Excellent!"]
+      },
+      "7": {
+        "text": ["Squire! Come back here!"]
       }
     },
     "choices": {
-      "1": [
+      "5": [
         {
-          "text": "Yes",
-          "destinationId": "3"
+          "text": "Sir! Yes sir!",
+          "destinationId": "6"
         },
         {
-          "text": "No",
-          "destinationId": "2"
+          "text": "Uhh, look at the time. I need to go. Bye!",
+          "destinationId": "7"
         }
       ],
-      "2": [
+      "6": [
         {
-          "text": "->",
-          "destinationId": "EXIT_CONVERSATION"
-        }
-      ],
-      "3": [
-        {
-          "text": "->",
           "destinationId": "JOIN_PARTY"
+        }
+      ],
+      "7": [
+        {
+          "destinationId": "EXIT_CONVERSATION"
         }
       ]
     }

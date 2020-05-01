@@ -41,7 +41,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
 
     private static final int[] UNDER_LAYERS = new int[]{0, 1, 2, 3, 4, 5};
     private static final int[] OVER_LAYERS = new int[]{6, 7, 8};
-    private static final String PARTY_FULL_CONVERSATION = "partyfull";
+    private static final List<String> PARTY_FULL_CONVERSATION = List.of("partyfull");
 
     private static boolean showGrid = false;
     private static boolean showObjects = false;
@@ -95,10 +95,12 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
     }
 
     @Override
-    public void onNotifyShowConversationDialog(String conversationId, String characterId, Character npcCharacter) {
+    public void onNotifyShowConversationDialog(List<String> conversationIds,
+                                               String characterId,
+                                               Character npcCharacter) {
         this.currentNpcCharacter = npcCharacter;
         player.resetInput();
-        conversationDialog.loadConversation(conversationId, characterId);
+        conversationDialog.loadConversation(conversationIds, characterId);
         conversationDialog.show();
     }
 
@@ -134,9 +136,9 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
         return Collections.unmodifiableList(theOtherCharacters);
     }
 
-    public Character getVisibleNpcOfInvisibleNpcBy(String conversationId) {
+    public Character getVisibleNpcOfInvisibleNpcBy(List<String> conversationIds) {
         return npcCharacters.stream()
-                            .filter(npc -> npc.getConversationId().equals(conversationId))
+                            .filter(npc -> npc.getConversationIds().equals(conversationIds))
                             .findFirst()
                             .orElseThrow(() -> new GdxRuntimeException("No same conversation found for invisible npc."));
     }
@@ -246,7 +248,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
 
         var shopScreen = (ShopScreen) Utils.getScreenManager().getScreen(ScreenType.SHOP);
         shopScreen.setNpcId(currentNpcCharacter.getCharacterId());
-        shopScreen.setShopId(currentNpcCharacter.getConversationId());
+        shopScreen.setShopId(currentNpcCharacter.getConversationIds().get(0));
 
         var shopLoadScreen = (LoadScreen) Utils.getScreenManager().getScreen(ScreenType.SHOP_LOAD);
         shopLoadScreen.setBackground(createScreenshot(false));

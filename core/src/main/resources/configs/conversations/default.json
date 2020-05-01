@@ -8,7 +8,6 @@
     "choices": {
       "1": [
         {
-          "text": "->",
           "destinationId": "EXIT_CONVERSATION"
         }
       ]

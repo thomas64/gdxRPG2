@@ -30,7 +30,7 @@ public class ConversationDialog {
     private static final float DIALOG_WIDTH = 1000f;
     private static final float DIALOG_HEIGHT = 300f;
     private static final float PAD = 25f;
-    private static final float ALL_PADS = (PAD * 2f) + Constant.FACE_SIZE + PAD + PAD;
+    private static final float ALL_PADS = (PAD * 2f) + Constant.FACE_SIZE + PAD + (PAD * 2f);
 
     private final Stage stage;
     private final BitmapFont font;
@@ -83,9 +83,9 @@ public class ConversationDialog {
         }
     }
 
-    public void loadConversation(String conversationId, String characterId) {
+    public void loadConversation(java.util.List<String> conversationIds, String characterId) {
         characterFace.setDrawable(Utils.getFaceImage(characterId).getDrawable());
-        graph = Utils.getGameData().getConversations().getConversationById(conversationId);
+        graph = Utils.getGameData().getConversations().getConversationById(conversationIds);
         populateConversationDialog(graph.getCurrentPhraseId());
     }
 
@@ -122,7 +122,7 @@ public class ConversationDialog {
         mainTable.add(characterFace).width(Constant.FACE_SIZE).padLeft(PAD * 2f);
 
         var textTable = new Table();
-        textTable.pad(PAD);
+        textTable.pad(PAD, PAD, PAD, PAD * 2f);
         textTable.add(label).width(DIALOG_WIDTH - ALL_PADS).row();
         textTable.add().height(PAD).row();
         textTable.add(scrollPane).left().padLeft(PAD);
