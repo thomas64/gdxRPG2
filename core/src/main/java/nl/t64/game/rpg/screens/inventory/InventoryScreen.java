@@ -211,7 +211,8 @@ public class InventoryScreen implements Screen, ProfileObserver {
     }
 
     private void sortInventory() {
-        inventoryUI.sortInventory();
+        Utils.getGameData().getInventory().sort();
+        inventoryUI.reloadInventory();
     }
 
     private void showHelpMessage() {

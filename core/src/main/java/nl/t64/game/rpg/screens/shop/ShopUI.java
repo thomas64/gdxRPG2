@@ -46,25 +46,25 @@ class ShopUI implements ScreenUI {
     private final MarchantTable merchantTable;
     private final HeroesTable heroesTable;
 
+    private final DragAndDrop dragAndDrop;
+
     private final ItemSlotTooltip shopSlotTooltipSell;
     private final ItemSlotTooltip shopSlotTooltipBuy;
 
     ShopUI(String npcId, String shopId) {
-        final var dragAndDrop = new DragAndDrop();
+        this.dragAndDrop = new DragAndDrop();
         this.shopSlotTooltipSell = new ShopSlotTooltipSell();
         this.shopSlotTooltipBuy = new ShopSlotTooltipBuy();
 
         this.equipSlotsTables = new HashMap<>(PartyContainer.MAXIMUM);
-        for (HeroItem hero : Utils.getGameData().getParty().getAllHeroes()) {
-            this.equipSlotsTables.put(hero.getId(), new EquipSlotsTable(hero, dragAndDrop, this.shopSlotTooltipSell));
-        }
+        fillEquipSlotsTables();
         this.equipWindow = createWindow(TITLE_PERSONAL,
                                         this.equipSlotsTables.get(InventoryUtils.getSelectedHeroId()).equipSlotTable);
 
-        this.inventorySlotsTable = new InventorySlotsTable(dragAndDrop, this.shopSlotTooltipSell);
+        this.inventorySlotsTable = new InventorySlotsTable(this.dragAndDrop, this.shopSlotTooltipSell);
         this.inventoryWindow = createWindow(TITLE_GLOBAL, this.inventorySlotsTable.container);
 
-        this.shopSlotsTable = new ShopSlotsTable(shopId, dragAndDrop, this.shopSlotTooltipBuy);
+        this.shopSlotsTable = new ShopSlotsTable(shopId, this.dragAndDrop, this.shopSlotTooltipBuy);
         this.shopWindow = createWindow(TITLE_SHOP, this.shopSlotsTable.container);
 
         this.merchantTable = new MarchantTable(npcId);
@@ -72,14 +72,6 @@ class ShopUI implements ScreenUI {
 
         this.heroesTable = new HeroesTable();
         this.heroesWindow = createWindow(TITLE_HEROES, this.heroesTable.heroes);
-    }
-
-    private static Window.WindowStyle createWindowStyle() {
-        var texture = Utils.getResourceManager().getTextureAsset(SPRITE_BORDER);
-        var ninepatch = new NinePatch(texture, 1, 1, 1, 1);
-        var drawable = new NinePatchDrawable(ninepatch);
-        BitmapFont font = Utils.getResourceManager().getTrueTypeAsset(TITLE_FONT, TITLE_SIZE);
-        return new Window.WindowStyle(font, Color.BLACK, drawable);
     }
 
     @Override
@@ -95,6 +87,14 @@ class ShopUI implements ScreenUI {
     @Override
     public InventorySlotsTable getInventorySlotsTable() {
         return inventorySlotsTable;
+    }
+
+    private static Window.WindowStyle createWindowStyle() {
+        var texture = Utils.getResourceManager().getTextureAsset(SPRITE_BORDER);
+        var ninepatch = new NinePatch(texture, 1, 1, 1, 1);
+        var drawable = new NinePatchDrawable(ninepatch);
+        BitmapFont font = Utils.getResourceManager().getTrueTypeAsset(TITLE_FONT, TITLE_SIZE);
+        return new Window.WindowStyle(font, Color.BLACK, drawable);
     }
 
     void addToStage(Stage stage) {
@@ -127,6 +127,12 @@ class ShopUI implements ScreenUI {
         window.getTitleLabel().setAlignment(Align.left);
         window.pack();
         return window;
+    }
+
+    private void fillEquipSlotsTables() {
+        for (HeroItem hero : Utils.getGameData().getParty().getAllHeroes()) {
+            equipSlotsTables.put(hero.getId(), new EquipSlotsTable(hero, dragAndDrop, shopSlotTooltipSell));
+        }
     }
 
 }

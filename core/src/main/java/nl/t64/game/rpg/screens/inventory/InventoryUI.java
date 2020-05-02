@@ -107,20 +107,13 @@ class InventoryUI implements ScreenUI {
         return new Window.WindowStyle(font, Color.BLACK, drawable);
     }
 
-    void sortInventory() {
-        Utils.getGameData().getInventory().sort();
+    void reloadInventory() {
         dragAndDrop.clear();
         inventorySlotsTable.clearAndFill();
         equipSlotsTables.clear();
         fillEquipSlotsTables();
         equipWindow.getChildren().get(1).remove();
         equipWindow.add(equipSlotsTables.get(InventoryUtils.getSelectedHeroId()).equipSlotTable);
-    }
-
-    private void fillEquipSlotsTables() {
-        for (HeroItem hero : Utils.getGameData().getParty().getAllHeroes()) {
-            this.equipSlotsTables.put(hero.getId(), new EquipSlotsTable(hero, this.dragAndDrop, this.itemSlotTooltip));
-        }
     }
 
     void addToStage(Stage stage) {
@@ -162,6 +155,12 @@ class InventoryUI implements ScreenUI {
         window.getTitleLabel().setAlignment(Align.left);
         window.pack();
         return window;
+    }
+
+    private void fillEquipSlotsTables() {
+        for (HeroItem hero : Utils.getGameData().getParty().getAllHeroes()) {
+            equipSlotsTables.put(hero.getId(), new EquipSlotsTable(hero, dragAndDrop, itemSlotTooltip));
+        }
     }
 
 }
