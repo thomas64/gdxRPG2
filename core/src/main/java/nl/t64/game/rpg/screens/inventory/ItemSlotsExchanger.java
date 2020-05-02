@@ -174,13 +174,13 @@ class ItemSlotsExchanger {
     }
 
     private boolean isShopPurchase() {
-        return sourceSlot.filterGroup.equals(InventoryGroup.SHOP_EQUIP_ITEM)
-               && targetSlot.filterGroup.equals(InventoryGroup.EVERYTHING);
+        return sourceSlot.filterGroup.equals(InventoryGroup.SHOP_ITEM)
+               && !targetSlot.filterGroup.equals(InventoryGroup.SHOP_ITEM);
     }
 
     private boolean isShopBarter() {
-        return sourceSlot.filterGroup.equals(InventoryGroup.EVERYTHING)
-               && targetSlot.filterGroup.equals(InventoryGroup.SHOP_EQUIP_ITEM);
+        return !sourceSlot.filterGroup.equals(InventoryGroup.SHOP_ITEM)
+               && targetSlot.filterGroup.equals(InventoryGroup.SHOP_ITEM);
     }
 
     private int getHalfOfSource() {
@@ -188,8 +188,8 @@ class ItemSlotsExchanger {
     }
 
     private boolean doTargetAndSourceAcceptEachOther() {
-        return !(sourceSlot.filterGroup.equals(InventoryGroup.SHOP_EQUIP_ITEM)
-                 || targetSlot.filterGroup.equals(InventoryGroup.SHOP_EQUIP_ITEM))
+        return !(sourceSlot.filterGroup.equals(InventoryGroup.SHOP_ITEM)
+                 || targetSlot.filterGroup.equals(InventoryGroup.SHOP_ITEM))
                && targetSlot.doesAcceptItem(draggedItem)
                && sourceSlot.doesAcceptItem(targetSlot.getCertainInventoryImage());
     }

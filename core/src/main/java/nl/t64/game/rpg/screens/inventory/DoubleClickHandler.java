@@ -68,23 +68,13 @@ public final class DoubleClickHandler {
         InventoryUtils.getScreenUI()
                       .getInventorySlotsTable()
                       .getPossibleSameStackableItemSlotWith(clickedItem.inventoryItem)
-                      .ifPresentOrElse(targetSlot -> exchangeWithSameStackableItemInventorySlot(clickedItem,
-                                                                                                clickedSlot,
-                                                                                                targetSlot),
+                      .ifPresentOrElse(targetSlot -> exchangeWithInventorySlot(clickedItem,
+                                                                               clickedSlot,
+                                                                               targetSlot,
+                                                                               dragAndDrop),
                                        () -> exchangeWithPossibleEmptyInventorySlot(clickedItem,
                                                                                     clickedSlot,
                                                                                     dragAndDrop));
-    }
-
-    private static void exchangeWithSameStackableItemInventorySlot(InventoryImage clickedItem,
-                                                                   ItemSlot clickedSlot,
-                                                                   ItemSlot targetSlot) {
-        if (clickedSlot.getAmount() == 1) {
-            clickedSlot.clearStack();
-        } else {
-            clickedSlot.decrementAmount();
-        }
-        new ItemSlotsExchanger(clickedItem, clickedSlot, targetSlot).exchange();
     }
 
     private static void exchangeWithPossibleEmptyInventorySlot(InventoryImage clickedItem,
@@ -93,22 +83,23 @@ public final class DoubleClickHandler {
         InventoryUtils.getScreenUI()
                       .getInventorySlotsTable()
                       .getPossibleEmptySlot()
-                      .ifPresent(targetSlot -> exchangeWithEmptyInventorySlot(clickedItem,
-                                                                              clickedSlot,
-                                                                              targetSlot,
-                                                                              dragAndDrop));
+                      .ifPresent(targetSlot -> exchangeWithInventorySlot(clickedItem,
+                                                                         clickedSlot,
+                                                                         targetSlot,
+                                                                         dragAndDrop));
     }
 
-    private static void exchangeWithEmptyInventorySlot(InventoryImage clickedItem,
-                                                       ItemSlot clickedSlot,
-                                                       ItemSlot targetSlot,
-                                                       DragAndDrop dragAndDrop) {
-        clickedSlot.decrementAmount();
-        int newAmount = clickedSlot.getAmount();
-        clickedItem.inventoryItem.setAmount(1);
+    private static void exchangeWithInventorySlot(InventoryImage clickedItem,
+                                                  ItemSlot clickedSlot,
+                                                  ItemSlot targetSlot,
+                                                  DragAndDrop dragAndDrop) {
+        int newAmount = clickedSlot.getAmount() - 1;
         clickedSlot.clearStack();
         if (newAmount > 0) {
+            clickedItem.inventoryItem.setAmount(1);
             duplicateInSource(clickedItem, clickedSlot, newAmount, dragAndDrop);
+        } else {
+            clickedItem = createDuplicate(clickedItem, dragAndDrop);
         }
         new ItemSlotsExchanger(clickedItem, clickedSlot, targetSlot).exchange();
     }
@@ -123,6 +114,14 @@ public final class DoubleClickHandler {
         clickedSlot.addToStack(inventoryImage);
         var itemSlotSource = new ItemSlotSource(inventoryImage, dragAndDrop);
         dragAndDrop.addSource(itemSlotSource);
+    }
+
+    private static InventoryImage createDuplicate(InventoryImage clickedItem, DragAndDrop dragAndDrop) {
+        var inventoryItem = new InventoryItem(clickedItem.inventoryItem);
+        var inventoryImage = new InventoryImage(inventoryItem);
+        var itemSlotSource = new ItemSlotSource(inventoryImage, dragAndDrop);
+        dragAndDrop.addSource(itemSlotSource);
+        return inventoryImage;
     }
 
 }

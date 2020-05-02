@@ -66,7 +66,7 @@ class ShopSlotsTable {
     }
 
     private void createShopSlot(int index) {
-        InventorySlot shopSlot = new InventorySlot(index, InventoryGroup.SHOP_EQUIP_ITEM, inventory);
+        InventorySlot shopSlot = new InventorySlot(index, InventoryGroup.SHOP_ITEM, inventory);
         shopSlot.addListener(new ItemSlotTooltipListener(tooltip));
         shopSlot.addListener(new ItemSlotClickListener(DoubleClickHandler::handleShop, dragAndDrop));
         dragAndDrop.addTarget(new ItemSlotTarget(shopSlot));
