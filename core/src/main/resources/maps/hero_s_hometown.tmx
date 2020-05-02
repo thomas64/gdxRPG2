@@ -766,67 +766,67 @@
   </object>
   <object id="120" name="ryiah" x="1128" y="1128" width="48" height="24">
    <properties>
-    <property name="conversation" value="ryiah01"/>
+    <property name="conversations" value="ryiah01"/>
     <property name="direction" value="south"/>
    </properties>
   </object>
   <object id="121" name="valter" x="1152" y="1200" width="48" height="24">
    <properties>
-    <property name="conversation" value="valter01"/>
+    <property name="conversations" value="valter01"/>
     <property name="direction" value="south"/>
    </properties>
   </object>
   <object id="122" name="galen" x="1152" y="1272" width="48" height="24">
    <properties>
-    <property name="conversation" value="galen01"/>
+    <property name="conversations" value="galen01"/>
     <property name="direction" value="south"/>
    </properties>
   </object>
   <object id="123" name="jaspar" x="1128" y="1344" width="48" height="24">
    <properties>
-    <property name="conversation" value="jaspar01"/>
+    <property name="conversations" value="jaspar01"/>
     <property name="direction" value="south"/>
    </properties>
   </object>
   <object id="124" name="kiara" x="1056" y="1344" width="48" height="24">
    <properties>
-    <property name="conversation" value="kiara01"/>
+    <property name="conversations" value="kiara01"/>
     <property name="direction" value="south"/>
    </properties>
   </object>
   <object id="125" name="luthais" x="984" y="1344" width="48" height="24">
    <properties>
-    <property name="conversation" value="luthais01"/>
+    <property name="conversations" value="luthais01"/>
     <property name="direction" value="south"/>
    </properties>
   </object>
   <object id="126" name="elias" x="960" y="1272" width="48" height="24">
    <properties>
-    <property name="conversation" value="elias01"/>
+    <property name="conversations" value="elias01"/>
     <property name="direction" value="south"/>
    </properties>
   </object>
   <object id="127" name="onarr" x="960" y="1200" width="48" height="24">
    <properties>
-    <property name="conversation" value="onarr01"/>
+    <property name="conversations" value="onarr01"/>
     <property name="direction" value="south"/>
    </properties>
   </object>
   <object id="128" name="duilio" x="1248" y="1224" width="48" height="24">
    <properties>
-    <property name="conversation" value="duilio01"/>
+    <property name="conversations" value="duilio01"/>
     <property name="direction" value="south"/>
    </properties>
   </object>
   <object id="129" name="iellwen" x="864" y="1224" width="48" height="24">
    <properties>
-    <property name="conversation" value="iellwen01"/>
+    <property name="conversations" value="iellwen01"/>
     <property name="direction" value="south"/>
    </properties>
   </object>
   <object id="130" name="faeron" type="w" x="1056" y="1512" width="48" height="24">
    <properties>
-    <property name="conversation" value="faeron01"/>
+    <property name="conversations" value="faeron01"/>
     <property name="direction" value="south"/>
    </properties>
   </object>
@@ -834,24 +834,24 @@
  <objectgroup color="#55ff7f" id="42" name="npc_layer">
   <object id="158" name="woman01" x="1488" y="1176" width="48" height="24">
    <properties>
-    <property name="conversation" value="resourceshop01"/>
+    <property name="conversations" value="resourceshop01"/>
     <property name="direction" value="south"/>
    </properties>
   </object>
   <object id="161" name="woman01" type="inv" x="1488" y="1224" width="48" height="12">
    <properties>
-    <property name="conversation" value="resourceshop01"/>
+    <property name="conversations" value="resourceshop01"/>
    </properties>
   </object>
   <object id="159" name="man01" x="1632" y="1176" width="48" height="24">
    <properties>
-    <property name="conversation" value="equipshop01"/>
+    <property name="conversations" value="equipshop01"/>
     <property name="direction" value="south"/>
    </properties>
   </object>
   <object id="160" name="man01" type="inv" x="1632" y="1224" width="48" height="12">
    <properties>
-    <property name="conversation" value="equipshop01"/>
+    <property name="conversations" value="equipshop01"/>
    </properties>
   </object>
  </objectgroup>

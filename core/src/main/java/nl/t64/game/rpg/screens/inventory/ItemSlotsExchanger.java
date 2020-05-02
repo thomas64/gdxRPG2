@@ -48,13 +48,19 @@ class ItemSlotsExchanger {
                 InventoryUtils.getScreenUI().getInventorySlotsTable().removeResource("gold", totalPrice);
             }
         } else {
-            new MessageDialog("I'm sorry, but you don't seem to have enough gold.").show(sourceSlot.getStage());
+            new MessageDialog("I'm sorry. You don't seem to have enough gold.").show(sourceSlot.getStage());
             sourceSlot.putItemBack(draggedItem);
         }
     }
 
     private void handleBarter() {
         final int totalValue = draggedItem.inventoryItem.getSellValue() * getAmountOfDraggedItems();
+        if (totalValue == 0) {
+            new MessageDialog("I'm sorry. I can't accept that.").show(sourceSlot.getStage());
+            sourceSlot.putItemBack(draggedItem);
+            return;
+        }
+
         if (Utils.getGameData().getInventory().hasRoomForResource("gold")) {
             handlePossibleExchange();
             if (isSuccessfullyExchanged) {
@@ -62,7 +68,7 @@ class ItemSlotsExchanger {
                 InventoryUtils.getScreenUI().getInventorySlotsTable().addResource(gold);
             }
         } else {
-            new MessageDialog("I'm sorry, but you don't seem to have room for gold.").show(sourceSlot.getStage());
+            new MessageDialog("I'm sorry. You don't seem to have room for gold.").show(sourceSlot.getStage());
             sourceSlot.putItemBack(draggedItem);
         }
     }
