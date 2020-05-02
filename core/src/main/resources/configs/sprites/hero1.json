@@ -1,85 +1,71 @@
 {
   "mozes": {
-    "charPath": "sprites/characters/hero1.png",
-    "facePath": "sprites/faces/hero1.png",
+    "source": "hero1",
     "col": 1,
     "row": 1
   },
   "luana": {
-    "charPath": "sprites/characters/hero1.png",
-    "facePath": "sprites/faces/hero1.png",
+    "source": "hero1",
     "col": 2,
     "row": 2
   },
   "reignald": {
-    "charPath": "sprites/characters/hero1.png",
-    "facePath": "sprites/faces/hero1.png",
+    "source": "hero1",
     "col": 3,
     "row": 2
   },
   "ryiah": {
-    "charPath": "sprites/characters/hero3.png",
-    "facePath": "sprites/faces/hero3.png",
+    "source": "hero3",
     "col": 4,
     "row": 2
   },
   "valter": {
-    "charPath": "sprites/characters/hero2.png",
-    "facePath": "sprites/faces/hero2.png",
+    "source": "hero2",
     "col": 3,
     "row": 2
   },
   "galen": {
-    "charPath": "sprites/characters/hero3.png",
-    "facePath": "sprites/faces/hero3.png",
+    "source": "hero3",
     "col": 3,
     "row": 1
   },
   "jaspar": {
-    "charPath": "sprites/characters/hero2.png",
-    "facePath": "sprites/faces/hero2.png",
+    "source": "hero2",
     "col": 1,
     "row": 1
   },
   "kiara": {
-    "charPath": "sprites/characters/hero2.png",
-    "facePath": "sprites/faces/hero2.png",
+    "source": "hero2",
     "col": 4,
     "row": 2
   },
   "luthais": {
-    "charPath": "sprites/characters/hero3.png",
-    "facePath": "sprites/faces/hero3.png",
+    "source": "hero3",
     "col": 3,
     "row": 2
   },
   "elias": {
-    "charPath": "sprites/characters/hero3.png",
-    "facePath": "sprites/faces/hero3.png",
+    "source": "hero3",
     "col": 1,
     "row": 2
   },
   "onarr": {
-    "charPath": "sprites/characters/people2.png",
-    "facePath": "sprites/faces/people2.png",
+    "source": "people2",
     "col": 4,
     "row": 1
   },
   "duilio": {
-    "charPath": "sprites/characters/hero1.png",
-    "facePath": "sprites/faces/hero1.png",
+    "source": "hero1",
     "col": 3,
     "row": 1
   },
   "iellwen": {
-    "charPath": "sprites/characters/hero3.png",
-    "facePath": "sprites/faces/hero3.png",
+    "source": "hero3",
     "col": 4,
     "row": 1
   },
   "faeron": {
-    "charPath": "sprites/characters/hero2.png",
-    "facePath": "sprites/faces/hero2.png",
+    "source": "hero2",
     "col": 1,
     "row": 2
   }

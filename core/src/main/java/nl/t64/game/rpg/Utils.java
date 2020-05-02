@@ -18,6 +18,9 @@ import java.util.Map;
 
 public final class Utils {
 
+    private static final String CHAR_PATH = "sprites/characters/%s.png";
+    private static final String FACE_PATH = "sprites/faces/%s.png";
+
     private Utils() {
         throw new IllegalStateException("Utils class");
     }
@@ -50,13 +53,28 @@ public final class Utils {
         return (Engine) Gdx.app.getApplicationListener();
     }
 
+    public static TextureRegion[][] getCharImage(String spriteId) {
+        SpriteConfig charConfig = getResourceManager().getSpriteConfig(spriteId);
+        String path = String.format(CHAR_PATH, charConfig.getSource());
+        int row = charConfig.getRow() - 1;
+        int col = charConfig.getCol() - 1;
+        Texture texture = Utils.getResourceManager().getTextureAsset(path);
+        TextureRegion[][] splitOfEight = TextureRegion.split(texture,
+                                                             Constant.SPRITE_GROUP_WIDTH,
+                                                             Constant.SPRITE_GROUP_HEIGHT);
+        TextureRegion personSprite = splitOfEight[row][col];
+        return personSprite.split((int) Constant.TILE_SIZE, (int) Constant.TILE_SIZE);
+    }
+
     public static Image getFaceImage(String spriteId) {
         SpriteConfig faceConfig = getResourceManager().getSpriteConfig(spriteId);
-        String path = faceConfig.getFacePath();
+        String path = String.format(FACE_PATH, faceConfig.getSource());
         int row = faceConfig.getRow() - 1;
         int col = faceConfig.getCol() - 1;
         Texture texture = getResourceManager().getTextureAsset(path);
-        TextureRegion[][] splitOfEight = TextureRegion.split(texture, (int) Constant.FACE_SIZE, (int) Constant.FACE_SIZE);
+        TextureRegion[][] splitOfEight = TextureRegion.split(texture,
+                                                             (int) Constant.FACE_SIZE,
+                                                             (int) Constant.FACE_SIZE);
         TextureRegion characterFace = splitOfEight[row][col];
         return new Image(characterFace);
     }

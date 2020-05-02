@@ -5,8 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class SpriteConfig {
-    private String charPath;
-    private String facePath;
+    private String source;
     private int col;
     private int row;
 }

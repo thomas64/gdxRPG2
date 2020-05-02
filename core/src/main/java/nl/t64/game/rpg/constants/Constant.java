@@ -13,6 +13,8 @@ public final class Constant {
 
     public static final float TILE_SIZE = 48f;
     public static final float FACE_SIZE = 144f;
+    public static final int SPRITE_GROUP_WIDTH = 144;
+    public static final int SPRITE_GROUP_HEIGHT = 192;
 
     public static final float MOVE_SPEED_1 = 48f;  // = pixels/second
     public static final float MOVE_SPEED_2 = 144f; // 48 * 3

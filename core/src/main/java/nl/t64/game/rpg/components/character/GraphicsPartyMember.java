@@ -2,8 +2,6 @@ package nl.t64.game.rpg.components.character;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import nl.t64.game.rpg.SpriteConfig;
-import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.*;
@@ -12,8 +10,7 @@ import nl.t64.game.rpg.events.character.*;
 public class GraphicsPartyMember extends GraphicsComponent {
 
     public GraphicsPartyMember(String spriteId) {
-        SpriteConfig spriteConfig = Utils.getResourceManager().getSpriteConfig(spriteId);
-        loadWalkingAnimation(spriteConfig);
+        loadWalkingAnimation(spriteId);
     }
 
     @Override

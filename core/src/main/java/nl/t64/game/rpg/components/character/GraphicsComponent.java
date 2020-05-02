@@ -1,13 +1,11 @@
 package nl.t64.game.rpg.components.character;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import nl.t64.game.rpg.SpriteConfig;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
@@ -15,9 +13,6 @@ import nl.t64.game.rpg.constants.Direction;
 
 
 abstract class GraphicsComponent extends ComponentSubject implements Component {
-
-    private static final int SPRITE_GROUP_WIDTH = 144;
-    private static final int SPRITE_GROUP_HEIGHT = 192;
 
     private float frameTime = 0f;
     float frameDuration;
@@ -93,15 +88,8 @@ abstract class GraphicsComponent extends ComponentSubject implements Component {
         walkEastAnimation.setFrameDuration(frameDuration);
     }
 
-    void loadWalkingAnimation(SpriteConfig spriteConfig) {
-        String path = spriteConfig.getCharPath();
-        int row = spriteConfig.getRow() - 1;
-        int col = spriteConfig.getCol() - 1;
-
-        Texture texture = Utils.getResourceManager().getTextureAsset(path);
-        TextureRegion[][] splitOfEight = TextureRegion.split(texture, SPRITE_GROUP_WIDTH, SPRITE_GROUP_HEIGHT);
-        TextureRegion personSprite = splitOfEight[row][col];
-        TextureRegion[][] textureFrames = personSprite.split((int) Constant.TILE_SIZE, (int) Constant.TILE_SIZE);
+    void loadWalkingAnimation(String spriteId) {
+        TextureRegion[][] textureFrames = Utils.getCharImage(spriteId);
 
         Array<TextureRegion> walkNorthFrames = new Array<>(4);
         Array<TextureRegion> walkSouthFrames = new Array<>(4);

@@ -6,8 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import nl.t64.game.rpg.SpriteConfig;
-import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.events.Event;
@@ -23,8 +21,7 @@ public class GraphicsNpc extends GraphicsComponent {
     public GraphicsNpc(String spriteId) {
         this.isSelected = false;
         this.frameDuration = Constant.NORMAL_FRAMES;
-        SpriteConfig spriteConfig = Utils.getResourceManager().getSpriteConfig(spriteId);
-        loadWalkingAnimation(spriteConfig);
+        loadWalkingAnimation(spriteId);
     }
 
     @Override

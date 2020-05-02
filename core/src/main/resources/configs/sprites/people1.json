@@ -1,43 +1,36 @@
 {
   "boy01": {
-    "charPath": "sprites/characters/people1.png",
-    "facePath": "sprites/faces/people1.png",
+    "source": "people1",
     "col": 1,
     "row": 1
   },
   "girl01": {
-    "charPath": "sprites/characters/people1.png",
-    "facePath": "sprites/faces/people1.png",
+    "source": "people1",
     "col": 2,
     "row": 1
   },
   "youngman01": {
-    "charPath": "sprites/characters/people1.png",
-    "facePath": "sprites/faces/people1.png",
+    "source": "people1",
     "col": 3,
     "row": 1
   },
   "youngwoman01": {
-    "charPath": "sprites/characters/people1.png",
-    "facePath": "sprites/faces/people1.png",
+    "source": "people1",
     "col": 4,
     "row": 1
   },
   "man01": {
-    "charPath": "sprites/characters/people1.png",
-    "facePath": "sprites/faces/people1.png",
+    "source": "people1",
     "col": 1,
     "row": 2
   },
   "woman01": {
-    "charPath": "sprites/characters/people1.png",
-    "facePath": "sprites/faces/people1.png",
+    "source": "people1",
     "col": 2,
     "row": 2
   },
   "fairy01": {
-    "charPath": "sprites/characters/nature1.png",
-    "facePath": "sprites/faces/nature1.png",
+    "source": "nature1",
     "col": 1,
     "row": 2
   }
