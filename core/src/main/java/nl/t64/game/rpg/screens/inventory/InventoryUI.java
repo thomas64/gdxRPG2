@@ -148,6 +148,10 @@ class InventoryUI implements ScreenUI {
         heroesWindow.pack();
     }
 
+    void unloadAssets() {
+        heroesTable.disposePixmapTextures();
+    }
+
     private Window createWindow(String title, Table table) {
         var window = new Window(title, createWindowStyle());
         window.add(table);

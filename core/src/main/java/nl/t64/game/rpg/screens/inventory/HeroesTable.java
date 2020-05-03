@@ -15,6 +15,7 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.PartyContainer;
 
+import java.util.Arrays;
 import java.util.Map;
 
 
@@ -38,6 +39,7 @@ public class HeroesTable {
     private final Label.LabelStyle nameStyle;
     private final Label.LabelStyle levelStyle;
     private final PartyContainer party;
+    private final Texture[] colorsOfHpBars;
 
     public HeroesTable() {
         this.party = Utils.getGameData().getParty();
@@ -47,6 +49,7 @@ public class HeroesTable {
         this.levelStyle = new Label.LabelStyle(font, Color.BLACK);
         this.heroes = new Table();
         setTopBorder();
+        this.colorsOfHpBars = new Texture[PartyContainer.MAXIMUM];
     }
 
     public void update() {
@@ -163,12 +166,23 @@ public class HeroesTable {
     }
 
     private Image createFill(HeroItem hero) {
+        int index = party.getIndex(hero);
+        if (colorsOfHpBars[index] != null) {
+            colorsOfHpBars[index].dispose();
+        }
+
         var pixmap = new Pixmap(1, 1, Pixmap.Format.RGB888);
         Map<String, Integer> hpStats = hero.getAllHpStats();
         Color color = Utils.getHpColor(hpStats);
         pixmap.setColor(color);
         pixmap.fill();
-        return new Image(new Texture(pixmap));
+        colorsOfHpBars[index] = new Texture(pixmap);
+        pixmap.dispose();
+        return new Image(colorsOfHpBars[index]);
+    }
+
+    void disposePixmapTextures() {
+        Arrays.stream(colorsOfHpBars).forEach(Texture::dispose);
     }
 
 }
