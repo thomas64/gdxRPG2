@@ -1,7 +1,6 @@
 package nl.t64.game.rpg.screens.inventory;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
@@ -81,22 +80,9 @@ public class EquipSlotsTable {
     }
 
     Optional<ItemSlot> getPossibleSlotOfGroup(InventoryGroup inventoryGroup) {
-        for (Actor actor : equipSlotTable.getChildren()) {
-            if (actor instanceof Table table) {
-                for (Actor deepActor : table.getChildren()) {
-                    ItemSlot equipSlot = (ItemSlot) deepActor;
-                    if (equipSlot.filterGroup.equals(inventoryGroup)) {
-                        return Optional.of(equipSlot);
-                    }
-                }
-            } else {
-                ItemSlot equipSlot = (ItemSlot) actor;
-                if (equipSlot.filterGroup.equals(inventoryGroup)) {
-                    return Optional.of(equipSlot);
-                }
-            }
-        }
-        return Optional.empty();
+        return equipSlotList.stream()
+                            .filter(equipslot -> equipslot.filterGroup.equals(inventoryGroup))
+                            .findAny();
     }
 
     private void createTable() {

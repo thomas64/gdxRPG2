@@ -86,4 +86,5 @@ class ShopSlotsTable {
             dragAndDrop.addSource(itemSlotSource);
         };
     }
+
 }

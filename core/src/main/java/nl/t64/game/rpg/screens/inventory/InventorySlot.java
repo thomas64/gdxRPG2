@@ -33,7 +33,7 @@ public class InventorySlot extends ItemSlot {
 
     @Override
     public InventoryImage getCertainInventoryImage() {
-        return (InventoryImage) super.getChildren().items[super.getChildren().size - 2];
+        return (InventoryImage) super.getChildren().get(1);
     }
 
     @Override
@@ -109,6 +109,7 @@ public class InventorySlot extends ItemSlot {
         final int amount = getAmount();
         amountLabel.setText(String.valueOf(amount));
         setVisibilityOfAmountLabel(amount);
+        setItemColor();
     }
 
     private void setVisibilityOfAmountLabel(int amount) {

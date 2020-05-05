@@ -17,6 +17,7 @@ import nl.t64.game.rpg.components.party.PartyContainer;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 
 
 public class HeroesTable {
@@ -182,7 +183,7 @@ public class HeroesTable {
     }
 
     void disposePixmapTextures() {
-        Arrays.stream(colorsOfHpBars).forEach(Texture::dispose);
+        Arrays.stream(colorsOfHpBars).filter(Objects::nonNull).forEach(Texture::dispose);
     }
 
 }

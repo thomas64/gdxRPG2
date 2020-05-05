@@ -20,20 +20,22 @@ class EquipSlot extends ItemSlot {
     EquipSlot(InventoryGroup filterGroup, HeroItem heroItem) {
         super(filterGroup);
         this.heroItem = heroItem;
-        this.imagesBackground.add(createShadowImage(this.filterGroup));
+        this.imagesBackground.addActorBefore(this.imagesBackground.getChildren().peek(),
+                                             createShadowImage(this.filterGroup));
     }
 
     private static Image createShadowImage(InventoryGroup inventoryGroup) {
         String groupId = inventoryGroup.name().toLowerCase();
         TextureRegion textureRegion = Utils.getResourceManager().getAtlasTexture(groupId);
-        Image image = new Image(textureRegion);
-        image.setColor(TRANSPARENT);
-        return image;
+        Image shadow = new Image(textureRegion);
+        shadow.setColor(TRANSPARENT);
+        shadow.setName("shadow");
+        return shadow;
     }
 
     @Override
     public InventoryImage getCertainInventoryImage() {
-        return (InventoryImage) super.getChildren().items[super.getChildren().size - 1];
+        return (InventoryImage) super.getChildren().peek();
     }
 
     @Override
@@ -66,7 +68,7 @@ class EquipSlot extends ItemSlot {
     @Override
     void clearStack() {
         if (hasItem()) {
-            super.getChildren().removeIndex(1);
+            super.getChildren().pop();
             heroItem.clearInventoryItemFor(filterGroup);
             refreshSlot();
         }
@@ -105,6 +107,7 @@ class EquipSlot extends ItemSlot {
 
     private void refreshSlot() {
         setVisibilityOfShadow();
+        setItemColor();
     }
 
     private void setVisibilityOfShadow() {
@@ -113,7 +116,7 @@ class EquipSlot extends ItemSlot {
     }
 
     private void setShadowVisible(boolean visible) {
-        imagesBackground.getChildren().get(1).setVisible(visible);
+        imagesBackground.getChildren().get(1).setVisible(visible);  // 1 is index of actor named shadow
     }
 
 }
