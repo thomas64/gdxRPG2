@@ -34,13 +34,13 @@ public class InventoryImage extends Image {
         return inventoryItem.isStackable();
     }
 
-    public List<InventoryDescription> getSingleDescription() {
-        final var descriptionCreator = new DescriptionCreator(inventoryItem);
+    public List<InventoryDescription> getSingleDescription(int totalMerchant) {
+        final var descriptionCreator = new DescriptionCreator(inventoryItem, totalMerchant);
         return descriptionCreator.createItemDescriptionComparingToHero(InventoryUtils.getSelectedHero());
     }
 
-    public List<InventoryDescription> getLeftDescription(InventoryImage otherItem) {
-        final var descriptionCreator = new DescriptionCreator(inventoryItem);
+    public List<InventoryDescription> getLeftDescription(InventoryImage otherItem, int totalMerchant) {
+        final var descriptionCreator = new DescriptionCreator(inventoryItem, totalMerchant);
         return descriptionCreator.createItemDescriptionComparingToItem(otherItem.inventoryItem);
     }
 

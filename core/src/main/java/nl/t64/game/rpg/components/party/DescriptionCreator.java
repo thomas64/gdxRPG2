@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 public class DescriptionCreator {
 
     private final InventoryItem inventoryItem;
+    private final int partySumOfMerchantSkill;
 
     public List<InventoryDescription> createItemDescriptionComparingToHero(HeroItem hero) {
         return createDescriptionList((key, value) -> new InventoryDescription(key, value, inventoryItem, hero));
@@ -28,20 +29,26 @@ public class DescriptionCreator {
         final List<InventoryDescription> attributes = new ArrayList<>();
 
         attributes.add(functionToExecute.apply(inventoryItem.group, inventoryItem.name));
-        attributes.add(functionToExecute.apply(Constant.DESCRIPTION_KEY_BUY, inventoryItem.getBuyPrice()));
-        attributes.add(functionToExecute.apply(Constant.DESCRIPTION_KEY_SELL, inventoryItem.getSellValue()));
+        attributes.add(functionToExecute.apply(Constant.DESCRIPTION_KEY_BUY,
+                                               inventoryItem.getBuyPrice(partySumOfMerchantSkill)));
+        attributes.add(functionToExecute.apply(Constant.DESCRIPTION_KEY_SELL,
+                                               inventoryItem.getSellValue(partySumOfMerchantSkill)));
 
         for (InventoryMinimal minimal : InventoryMinimal.values()) {
-            attributes.add(functionToExecute.apply(minimal, inventoryItem.getAttributeOfMinimal(minimal)));
+            attributes.add(functionToExecute.apply(minimal,
+                                                   inventoryItem.getAttributeOfMinimal(minimal)));
         }
         for (CalcAttributeId calcAttributeId : CalcAttributeId.values()) {
-            attributes.add(functionToExecute.apply(calcAttributeId, inventoryItem.getAttributeOfCalcAttributeId(calcAttributeId)));
+            attributes.add(functionToExecute.apply(calcAttributeId,
+                                                   inventoryItem.getAttributeOfCalcAttributeId(calcAttributeId)));
         }
         for (StatItemId statItemId : StatItemId.values()) {
-            attributes.add(functionToExecute.apply(statItemId, inventoryItem.getAttributeOfStatItemId(statItemId)));
+            attributes.add(functionToExecute.apply(statItemId,
+                                                   inventoryItem.getAttributeOfStatItemId(statItemId)));
         }
         for (SkillItemId skillItemId : SkillItemId.values()) {
-            attributes.add(functionToExecute.apply(skillItemId, inventoryItem.getAttributeOfSkillItemId(skillItemId)));
+            attributes.add(functionToExecute.apply(skillItemId,
+                                                   inventoryItem.getAttributeOfSkillItemId(skillItemId)));
         }
         return createFilter(attributes);
     }

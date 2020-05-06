@@ -82,18 +82,18 @@ public class PartyContainer {
         return party.size();
     }
 
+    public int getSumOfSkill(SkillItemId skillItemId) {
+        return getAllHeroes().stream()
+                             .mapToInt(heroItem -> heroItem.getCalculatedTotalSkillOf(skillItemId))
+                             .sum();
+    }
+
     HeroItem getHero(String heroId) {
         return party.get(heroId);
     }
 
     boolean contains(String heroId) {
         return party.containsKey(heroId);
-    }
-
-    int getSumOfSkill(SkillItemId skillItemId) {
-        return getAllHeroes().stream()
-                             .mapToInt(heroItem -> heroItem.getCalculatedTotalSkillOf(skillItemId))
-                             .sum();
     }
 
     private HeroItem getFirstHero() {

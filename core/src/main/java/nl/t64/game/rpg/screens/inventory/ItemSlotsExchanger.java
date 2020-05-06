@@ -4,6 +4,7 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.InventoryDatabase;
 import nl.t64.game.rpg.components.party.InventoryGroup;
 import nl.t64.game.rpg.components.party.InventoryItem;
+import nl.t64.game.rpg.components.party.SkillItemId;
 
 import java.util.Optional;
 
@@ -41,7 +42,8 @@ class ItemSlotsExchanger {
     }
 
     private void handlePurchase() {
-        final int totalPrice = draggedItem.inventoryItem.getBuyPrice() * getAmountOfDraggedItems();
+        final int totalMerchant = Utils.getGameData().getParty().getSumOfSkill(SkillItemId.MERCHANT);
+        final int totalPrice = draggedItem.inventoryItem.getBuyPrice(totalMerchant) * getAmountOfDraggedItems();
         if (Utils.getGameData().getInventory().hasEnoughOfResource("gold", totalPrice)) {
             handlePossibleExchange();
             if (isSuccessfullyExchanged) {
@@ -54,7 +56,8 @@ class ItemSlotsExchanger {
     }
 
     private void handleBarter() {
-        final int totalValue = draggedItem.inventoryItem.getSellValue() * getAmountOfDraggedItems();
+        final int totalMerchant = Utils.getGameData().getParty().getSumOfSkill(SkillItemId.MERCHANT);
+        final int totalValue = draggedItem.inventoryItem.getSellValue(totalMerchant) * getAmountOfDraggedItems();
         if (totalValue == 0) {
             new MessageDialog("I'm sorry. I can't accept that.").show(sourceSlot.getStage());
             sourceSlot.putItemBack(draggedItem);

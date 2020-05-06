@@ -71,7 +71,8 @@ public class ItemSlotTooltip extends BaseToolTip {
         final var hoveredTable = new Table();
         hoveredTable.defaults().align(Align.left);
 
-        List<InventoryDescription> descriptionList = inventoryImage.getSingleDescription();
+        final int totalMerchant = Utils.getGameData().getParty().getSumOfSkill(SkillItemId.MERCHANT);
+        List<InventoryDescription> descriptionList = inventoryImage.getSingleDescription(totalMerchant);
         descriptionList = removeLeftUnnecessaryAttributes(descriptionList);
         addAttributesForSingleDescription(descriptionList, hoveredTable);
         window.add(hoveredTable);
@@ -92,7 +93,8 @@ public class ItemSlotTooltip extends BaseToolTip {
         hoveredTable.defaults().align(Align.left);
         hoveredTable.add(createLabel(LEFT_TITLE, Color.WHITE)).row();
 
-        List<InventoryDescription> descriptionList = hoveredImage.getLeftDescription(equippedImage);
+        final int totalMerchant = Utils.getGameData().getParty().getSumOfSkill(SkillItemId.MERCHANT);
+        List<InventoryDescription> descriptionList = hoveredImage.getLeftDescription(equippedImage, totalMerchant);
         descriptionList = removeLeftUnnecessaryAttributes(descriptionList);
         addAttributesForLeftDescription(descriptionList, hoveredTable);
         return hoveredTable;
@@ -103,7 +105,8 @@ public class ItemSlotTooltip extends BaseToolTip {
         equippedTable.defaults().align(Align.left);
         equippedTable.add(createLabel(RIGHT_TITLE, Color.LIGHT_GRAY)).row();
 
-        List<InventoryDescription> descriptionList = equippedImage.getSingleDescription();
+        final int totalMerchant = Utils.getGameData().getParty().getSumOfSkill(SkillItemId.MERCHANT);
+        List<InventoryDescription> descriptionList = equippedImage.getSingleDescription(totalMerchant);
         descriptionList = removeRightUnnecessaryAttributes(descriptionList);
         addAttributesForSingleDescription(descriptionList, equippedTable);
         return equippedTable;
