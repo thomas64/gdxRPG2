@@ -23,6 +23,15 @@
       },
       "7": {
         "text": ["Squire! Come back here!"]
+      },
+      "101": {
+        "text": ["Squire!"]
+      },
+      "102": {
+        "text": ["Don't you dare to run away from me again!", "I will join you now!"]
+      },
+      "103": {
+        "text": ["Squire! Come back here!"]
       }
     },
     "choices": {
@@ -38,12 +47,29 @@
       ],
       "6": [
         {
-          "destinationId": "JOIN_PARTY"
+          "conversationCommand": "JOIN_PARTY"
         }
       ],
       "7": [
         {
-          "destinationId": "EXIT_CONVERSATION"
+          "conversationCommand": "EXIT_CONVERSATION",
+          "destinationId": "101"
+        }
+      ],
+      "102": [
+        {
+          "text": "Sir! Yes sir!",
+          "destinationId": "6"
+        },
+        {
+          "text": "Well... Whoa! Look over there, what's that?!",
+          "destinationId": "103"
+        }
+      ],
+      "103": [
+        {
+          "conversationCommand": "EXIT_CONVERSATION",
+          "destinationId": "101"
         }
       ]
     }

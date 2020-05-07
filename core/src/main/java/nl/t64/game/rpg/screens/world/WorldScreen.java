@@ -41,7 +41,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
 
     private static final int[] UNDER_LAYERS = new int[]{0, 1, 2, 3, 4, 5};
     private static final int[] OVER_LAYERS = new int[]{6, 7, 8};
-    private static final List<String> PARTY_FULL_CONVERSATION = List.of("partyfull");
+    private static final String PARTY_FULL_CONVERSATION = "partyfull";
 
     private static boolean showGrid = false;
     private static boolean showObjects = false;
@@ -95,12 +95,10 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
     }
 
     @Override
-    public void onNotifyShowConversationDialog(List<String> conversationIds,
-                                               String characterId,
-                                               Character npcCharacter) {
+    public void onNotifyShowConversationDialog(String conversationId, String characterId, Character npcCharacter) {
         this.currentNpcCharacter = npcCharacter;
         player.resetInput();
-        conversationDialog.loadConversation(conversationIds, characterId);
+        conversationDialog.loadConversation(conversationId, characterId);
         conversationDialog.show();
     }
 
@@ -136,9 +134,9 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
         return Collections.unmodifiableList(theOtherCharacters);
     }
 
-    public Character getVisibleNpcOfInvisibleNpcBy(List<String> conversationIds) {
+    public Character getVisibleNpcOfInvisibleNpcBy(String conversationId) {
         return npcCharacters.stream()
-                            .filter(npc -> npc.getConversationIds().equals(conversationIds))
+                            .filter(npc -> npc.getConversationId().equals(conversationId))
                             .findFirst()
                             .orElseThrow(() -> new GdxRuntimeException("No same conversation found for invisible npc."));
     }
@@ -201,6 +199,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
                 render(0f);
                 openShopScreen();
             }
+            case NONE -> throw new IllegalAccessError("ConversationCommand NONE cannot be reached here.");
         }
     }
 
@@ -248,7 +247,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
 
         var shopScreen = (ShopScreen) Utils.getScreenManager().getScreen(ScreenType.SHOP);
         shopScreen.setNpcId(currentNpcCharacter.getCharacterId());
-        shopScreen.setShopId(currentNpcCharacter.getConversationIds().get(0));
+        shopScreen.setShopId(currentNpcCharacter.getConversationId());
 
         var shopLoadScreen = (LoadScreen) Utils.getScreenManager().getScreen(ScreenType.SHOP_LOAD);
         shopLoadScreen.setBackground(createScreenshot(false));

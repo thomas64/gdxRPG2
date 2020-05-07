@@ -9,11 +9,11 @@
       "1": [
         {
           "text": "Yes",
-          "destinationId": "LOAD_SHOP"
+          "conversationCommand": "LOAD_SHOP"
         },
         {
           "text": "No",
-          "destinationId": "EXIT_CONVERSATION"
+          "conversationCommand": "EXIT_CONVERSATION"
         }
       ]
     }

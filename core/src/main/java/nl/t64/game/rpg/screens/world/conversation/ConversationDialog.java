@@ -83,9 +83,9 @@ public class ConversationDialog {
         }
     }
 
-    public void loadConversation(java.util.List<String> conversationIds, String characterId) {
+    public void loadConversation(String conversationId, String characterId) {
         characterFace.setDrawable(Utils.getFaceImage(characterId).getDrawable());
-        graph = Utils.getGameData().getConversations().getConversationById(conversationIds);
+        graph = Utils.getGameData().getConversations().getConversationById(conversationId);
         populateConversationDialog(graph.getCurrentPhraseId());
     }
 
@@ -148,14 +148,15 @@ public class ConversationDialog {
     }
 
     private void selectAnswer() {
-        final String destinationId = answers.getSelected().getDestinationId();
-        for (ConversationCommand command : ConversationCommand.values()) {
-            if (command.name().equals(destinationId)) {
-                handleConversationCommand.accept(ConversationCommand.valueOf(destinationId));
-                return;
-            }
+        final ConversationChoice selectedAnswer = answers.getSelected();
+        final String destinationId = selectedAnswer.getDestinationId();
+        final ConversationCommand conversationCommand = selectedAnswer.getConversationCommand();
+        if (conversationCommand.equals(ConversationCommand.NONE)) {
+            populateConversationDialog(destinationId);
+        } else {
+            graph.setCurrentPhraseId(destinationId);
+            handleConversationCommand.accept(conversationCommand);
         }
-        populateConversationDialog(destinationId);
     }
 
     private void populateConversationDialog(String phraseId) {

@@ -30,31 +30,57 @@
         "text": ["Okay, here's the deal. You are taking me with you and *maybe* I'll forgive you."]
       },
       "9": {
-        "text": ["Alright! Now were talking!", "You are so not gonna regret this."]
-      },
-      "10": {
         "text": ["Ugh! This is so unfair!"]
+      },
+      "101": {
+        "text": ["Have you changed your mind?", "Perhaps I don't wanna join you anymore."]
+      },
+      "102": {
+        "text": ["But maybe if you beg me, I will consider it."]
+      },
+      "103": {
+        "text": ["Ugh! Suit yourself!"]
+      },
+      "200": {
+        "text": ["Alright! Now were talking!", "You are so not gonna regret this."]
       }
     },
     "choices": {
       "8": [
         {
           "text": "Alright Luana, I will endure your presence.",
-          "destinationId": "9"
+          "destinationId": "200"
         },
         {
           "text": "No, I don't *want* your protection.",
-          "destinationId": "10"
+          "destinationId": "9"
         }
       ],
       "9": [
         {
-          "destinationId": "JOIN_PARTY"
+          "conversationCommand": "EXIT_CONVERSATION",
+          "destinationId": "101"
         }
       ],
-      "10": [
+      "102": [
         {
-          "destinationId": "EXIT_CONVERSATION"
+          "text": "Oh mighty Luana! I beg of you, please join me.",
+          "destinationId": "200"
+        },
+        {
+          "text": "Psh, in your dreams.",
+          "destinationId": "103"
+        }
+      ],
+      "103": [
+        {
+          "conversationCommand": "EXIT_CONVERSATION",
+          "destinationId": "101"
+        }
+      ],
+      "200": [
+        {
+          "conversationCommand": "JOIN_PARTY"
         }
       ]
     }

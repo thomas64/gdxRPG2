@@ -11,7 +11,7 @@
     "choices": {
       "1": [
         {
-          "destinationId": "EXIT_CONVERSATION"
+          "conversationCommand": "EXIT_CONVERSATION"
         }
       ]
     }

@@ -21,7 +21,7 @@ public class PhysicsNpc extends PhysicsComponent {
     private Rectangle wanderBox;
 
     final String npcId;
-    List<String> conversationIds;
+    String conversationId;
     boolean isSelected;
 
     public PhysicsNpc(String npcId) {
@@ -46,7 +46,7 @@ public class PhysicsNpc extends PhysicsComponent {
         if (event instanceof SelectEvent) {
             if (state.equals(CharacterState.INVISIBLE)) {
                 Utils.getScreenManager().getWorldScreen()
-                     .getVisibleNpcOfInvisibleNpcBy(conversationIds)
+                     .getVisibleNpcOfInvisibleNpcBy(conversationId)
                      .send(new SelectEvent());
             } else {
                 isSelected = true;
@@ -67,7 +67,7 @@ public class PhysicsNpc extends PhysicsComponent {
         npcCharacter.send(new PositionEvent(currentPosition));
         if (isSelected) {
             isSelected = false;
-            notifyShowConversationDialog(conversationIds, npcId, npcCharacter);
+            notifyShowConversationDialog(conversationId, npcId, npcCharacter);
         }
     }
 
@@ -75,7 +75,7 @@ public class PhysicsNpc extends PhysicsComponent {
         state = loadEvent.state;
         currentPosition = loadEvent.position;
         direction = loadEvent.direction;
-        conversationIds = loadEvent.conversationIds;
+        conversationId = loadEvent.conversationId;
 
         wanderBox = new Rectangle(currentPosition.x + WANDER_BOX_POSITION,
                                   currentPosition.y + WANDER_BOX_POSITION,

@@ -10,7 +10,7 @@ import java.util.Map;
 @Getter
 public class ConversationGraph {
 
-    static final String DEFAULT_STARTING_PHRASE_ID = "1";
+    private static final String DEFAULT_STARTING_PHRASE_ID = "1";
 
     @Setter
     private String currentPhraseId;

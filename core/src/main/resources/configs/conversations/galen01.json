@@ -24,12 +24,12 @@
       ],
       "2": [
         {
-          "destinationId": "EXIT_CONVERSATION"
+          "conversationCommand": "EXIT_CONVERSATION"
         }
       ],
       "3": [
         {
-          "destinationId": "JOIN_PARTY"
+          "conversationCommand": "JOIN_PARTY"
         }
       ]
     }
