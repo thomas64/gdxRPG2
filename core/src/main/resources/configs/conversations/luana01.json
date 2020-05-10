@@ -9,7 +9,7 @@
       },
       "3": {
         "text": [
-          "You are going on this *huge* adventure with big stuff and whatnot, slaying monsters and taking loot, and and and..."
+          "You are going on this HUGE adventure with big stuff and whatnot, slaying monsters and taking loot, and and and..."
         ]
       },
       "4": {
@@ -27,7 +27,7 @@
         "text": ["Who will be there to protect you? You need protection... From me! You do know that right?"]
       },
       "8": {
-        "text": ["Okay, here's the deal. You are taking me with you and *maybe* I'll forgive you."]
+        "text": ["Okay, here's the deal. You are taking me with you and MAYBE I'll forgive you."]
       },
       "9": {
         "text": ["Ugh! This is so unfair!"]
@@ -52,7 +52,7 @@
           "destinationId": "200"
         },
         {
-          "text": "No, I don't *want* your protection.",
+          "text": "No, I don't WANT your protection.",
           "destinationId": "9"
         }
       ],

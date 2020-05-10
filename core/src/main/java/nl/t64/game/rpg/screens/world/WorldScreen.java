@@ -199,6 +199,11 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
                 render(0f);
                 openShopScreen();
             }
+            case SAVE_GAME -> {
+                Utils.getProfileManager().saveProfile();
+                conversationDialog.hideWithFade();
+                show();
+            }
             case NONE -> throw new IllegalAccessError("ConversationCommand NONE cannot be reached here.");
         }
     }

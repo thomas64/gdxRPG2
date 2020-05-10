@@ -4,5 +4,6 @@ public enum ConversationCommand {
     EXIT_CONVERSATION,
     JOIN_PARTY,
     LOAD_SHOP,
+    SAVE_GAME,
     NONE;
 }
