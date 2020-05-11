@@ -30,6 +30,7 @@ class GameMap {
     private static final String SPAWN_LAYER = "spawn_layer";
     private static final String PORTAL_LAYER = "portal_layer";
     private static final String WARP_LAYER = "warp_layer";
+    private static final String REST_LAYER = "rest_layer";
 
     private static final String WIDTH_PROPERTY = "width";
     private static final String HEIGHT_PROPERTY = "height";
@@ -47,6 +48,7 @@ class GameMap {
     private final List<GameMapSpawnPoint> spawnPoints = new ArrayList<>();
     private final List<GameMapPortal> portals = new ArrayList<>();
     private final List<GameMapWarpPoint> warpPoints = new ArrayList<>();
+    private final List<RectangleMapObject> notes = new ArrayList<>();
 
     final TiledGraph tiledGraph;
 
@@ -62,6 +64,7 @@ class GameMap {
         this.loadSpawnPoints();
         this.loadPortals();
         this.loadWarpPoints();
+        this.loadNotes();
 
         this.tiledGraph = new TiledGraph(this.getWidth(), this.getHeight(), this::areBlockersCurrentlyBlocking);
     }
@@ -100,6 +103,13 @@ class GameMap {
                          .findFirst();
     }
 
+    Optional<String> getNoteIdBeingCheckedBy(Rectangle checkRect) {
+        return notes.stream()
+                    .filter(note -> checkRect.overlaps(note.getRectangle()))
+                    .findFirst()
+                    .map(MapObject::getName);
+    }
+
     void setPlayerSpawnLocationForNewLoad(String mapTitle) {
         MapObject dummyObject = new RectangleMapObject();
         dummyObject.setName(mapTitle);
@@ -127,7 +137,7 @@ class GameMap {
 
     boolean isOutsideMap(Vector2 point) {
         return point.x < 0 || point.x >= getWidth()
-                || point.y < 0 || point.y >= getHeight();
+               || point.y < 0 || point.y >= getHeight();
     }
 
     float getPixelWidth() {
@@ -204,6 +214,17 @@ class GameMap {
         getMapLayer(WARP_LAYER).ifPresent(mapLayer -> {
             for (MapObject mapObject : mapLayer.getObjects()) {
                 warpPoints.add(new GameMapWarpPoint(mapObject, mapTitle));
+            }
+        });
+    }
+
+    private void loadNotes() {
+        getMapLayer(REST_LAYER).ifPresent(mapLayer -> {
+            for (MapObject mapObject : mapLayer.getObjects()) {
+                if (mapObject.getName().startsWith("note")) {
+                    RectangleMapObject rectObject = (RectangleMapObject) mapObject;
+                    notes.add(rectObject);
+                }
             }
         });
     }

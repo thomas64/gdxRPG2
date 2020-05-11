@@ -69,6 +69,7 @@ public class PhysicsPlayer extends PhysicsComponent {
     private void checkActionPressed() {
         if (isActionPressed) {
             selectNpcCharacterCandidate();
+            checkNotes();
             checkSavePoints();
             checkWarpPoints();
             isActionPressed = false;
@@ -84,6 +85,11 @@ public class PhysicsPlayer extends PhysicsComponent {
             npc.send(new SelectEvent());
             npc.send(new WaitEvent(npc.getPosition(), currentPosition));
         });
+    }
+
+    private void checkNotes() {
+        Utils.getMapManager().getNoteId(getCheckRect())
+             .ifPresent(this::notifyShowNoteDialog);
     }
 
     private void checkSavePoints() {
@@ -153,7 +159,7 @@ public class PhysicsPlayer extends PhysicsComponent {
 
     private Predicate<Character> stateIsNotImmobileAndFloating() {
         return npcCharacter -> !npcCharacter.getState().equals(CharacterState.IMMOBILE)
-                && !npcCharacter.getState().equals(CharacterState.FLOATING);
+                               && !npcCharacter.getState().equals(CharacterState.FLOATING);
     }
 
     private void possibleMoveSide(List<Rectangle> copyBlockers, List<Rectangle> copyWalkingBlockers, float dt) {

@@ -17,6 +17,7 @@ import nl.t64.game.rpg.constants.ConversationCommand;
 import nl.t64.game.rpg.conversation.ConversationChoice;
 import nl.t64.game.rpg.conversation.ConversationGraph;
 import nl.t64.game.rpg.conversation.ConversationPhrase;
+import nl.t64.game.rpg.conversation.NoteDatabase;
 
 import java.util.function.Consumer;
 
@@ -41,7 +42,6 @@ public class ConversationDialog {
     private List<ConversationChoice> answers;
     private ScrollPane scrollPane;
 
-    private Image characterFace;
     private ConversationGraph graph;
 
     public ConversationDialog(Consumer<ConversationCommand> handleConversationCommand) {
@@ -84,8 +84,14 @@ public class ConversationDialog {
     }
 
     public void loadConversation(String conversationId, String characterId) {
-        characterFace.setDrawable(Utils.getFaceImage(characterId).getDrawable());
         graph = Utils.getGameData().getConversations().getConversationById(conversationId);
+        fillDialogForConversation(characterId);
+        populateConversationDialog(graph.getCurrentPhraseId());
+    }
+
+    public void loadNote(String noteId) {
+        graph = NoteDatabase.getInstance().getNoteById(noteId);
+        fillDialogForNote();
         populateConversationDialog(graph.getCurrentPhraseId());
     }
 
@@ -105,7 +111,6 @@ public class ConversationDialog {
         listStyle.selection = new SpriteDrawable(spriteTransparent);
 
         // actors
-        characterFace = new Image();
         label = new Label("No Conversation", labelStyle);
         label.setWrap(true);
         answers = new List<>(listStyle);
@@ -115,18 +120,6 @@ public class ConversationDialog {
         scrollPane.setScrollingDisabled(true, false);
         scrollPane.setForceScroll(true, false);
         scrollPane.setScrollBarPositions(false, true);
-
-        // table
-        var mainTable = new Table();
-        mainTable.left();
-        mainTable.add(characterFace).width(Constant.FACE_SIZE).padLeft(PAD * 2f);
-
-        var textTable = new Table();
-        textTable.pad(PAD, PAD, PAD, PAD * 2f);
-        textTable.add(label).width(DIALOG_WIDTH - ALL_PADS).row();
-        textTable.add().height(PAD).row();
-        textTable.add(scrollPane).left().padLeft(PAD);
-        mainTable.add(textTable);
 
         // dialog
         var newDialog = new Dialog("", windowStyle);
@@ -138,9 +131,36 @@ public class ConversationDialog {
         var sprite = new Sprite(Utils.getResourceManager().getTextureAsset(SPRITE_PARCHMENT));
         sprite.setSize(DIALOG_WIDTH, DIALOG_HEIGHT);
         newDialog.setBackground(new SpriteDrawable(sprite));
-        newDialog.getContentTable().add(mainTable);
         newDialog.setPosition((Gdx.graphics.getWidth() / 2f) - (DIALOG_WIDTH / 2f), 0f);
         return newDialog;
+    }
+
+    private void fillDialogForConversation(String characterId) {
+        var mainTable = new Table();
+        mainTable.left();
+        Image faceImage = Utils.getFaceImage(characterId);
+        mainTable.add(faceImage).width(Constant.FACE_SIZE).padLeft(PAD * 2f);
+
+        var textTable = new Table();
+        textTable.pad(PAD, PAD, PAD, PAD * 2f);
+        textTable.add(label).width(DIALOG_WIDTH - ALL_PADS).row();
+        textTable.add().height(PAD).row();
+        textTable.add(scrollPane).left().padLeft(PAD);
+        mainTable.add(textTable);
+
+        dialog.getContentTable().clear();
+        dialog.getContentTable().add(mainTable);
+    }
+
+    private void fillDialogForNote() {
+        var textTable = new Table();
+        textTable.pad(PAD * 2f, PAD * 3f, PAD, PAD * 2f);
+        textTable.add(label).width(DIALOG_WIDTH - (PAD * 5f)).row();
+        textTable.add().height(PAD).row();
+        textTable.add(scrollPane).left().padLeft(PAD);
+
+        dialog.getContentTable().clear();
+        dialog.getContentTable().add(textTable);
     }
 
     private void applyListeners() {

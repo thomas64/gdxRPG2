@@ -25,4 +25,8 @@ class ComponentSubject {
                 observer -> observer.onNotifyShowConversationDialog(conversationId, characterId, npcCharacter));
     }
 
+    void notifyShowNoteDialog(String noteId) {
+        observers.forEach(observer -> observer.onNotifyShowNoteDialog(noteId));
+    }
+
 }

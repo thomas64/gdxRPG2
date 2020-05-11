@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="38" height="54" tilewidth="24" tileheight="24" infinite="0" nextlayerid="14" nextobjectid="23">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="38" height="54" tilewidth="24" tileheight="24" infinite="0" nextlayerid="16" nextobjectid="25">
  <tileset firstgid="1" name="hero_s_hometown_hero_s_chamber" tilewidth="24" tileheight="24" tilecount="950" columns="38">
   <image source="tilesets/hero_s_hometown_hero_s_chamber.png" width="912" height="600"/>
  </tileset>
@@ -532,6 +532,10 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup color="#5500ff" id="14" name="rest_layer">
+  <object id="23" name="note_statue_hero_s_hometown_hero_s_chamber" x="432" y="360" width="48" height="24"/>
+  <object id="24" name="note_plaque_hero_s_hometown_hero_s_chamber" x="408" y="168" width="96" height="24"/>
+ </objectgroup>
  <objectgroup color="#55ff7f" id="13" name="npc_layer">
   <object id="21" name="fairy01" type="f" x="432" y="216" width="48" height="24">
    <properties>

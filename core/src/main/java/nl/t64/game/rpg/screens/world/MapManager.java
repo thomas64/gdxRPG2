@@ -10,6 +10,7 @@ import nl.t64.game.rpg.profile.ProfileObserver;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 public class MapManager implements ProfileObserver {
@@ -41,6 +42,10 @@ public class MapManager implements ProfileObserver {
 
     public List<Rectangle> getBlockers() {
         return currentMap.blockers;
+    }
+
+    public Optional<String> getNoteId(Rectangle checkRect) {
+        return currentMap.getNoteIdBeingCheckedBy(checkRect);
     }
 
     public void checkSavePoints(Rectangle checkRect) {

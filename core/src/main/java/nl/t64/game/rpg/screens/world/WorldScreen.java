@@ -72,6 +72,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
                                                               this::openInventoryScreen,
                                                               this::showHidePartyWindow));
         this.player = new Character(new InputPlayer(this.multiplexer), new PhysicsPlayer(), new GraphicsPlayer());
+        this.player.registerObserver(this);
         this.npcCharacters = new ArrayList<>(0);
         this.shapeRenderer = new ShapeRenderer();
         this.partyWindow = new PartyWindow();
@@ -99,6 +100,13 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
         this.currentNpcCharacter = npcCharacter;
         player.resetInput();
         conversationDialog.loadConversation(conversationId, characterId);
+        conversationDialog.show();
+    }
+
+    @Override
+    public void onNotifyShowNoteDialog(String noteId) {
+        player.resetInput();
+        conversationDialog.loadNote(noteId);
         conversationDialog.show();
     }
 
