@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class OnarrTest extends DataProvider {
+class OnarrTest extends DataProvider {
 
     @Test
     void whenHeroesAreCreated_OnarrShouldHaveRightStats() {

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class FaeronTest extends DataProvider {
+class FaeronTest extends DataProvider {
 
     @Test
     void whenHeroesAreCreated_FaeronShouldHaveRightStats() {

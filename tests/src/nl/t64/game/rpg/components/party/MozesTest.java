@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class MozesTest extends DataProvider {
+class MozesTest extends DataProvider {
 
     @Test
     void whenHeroesAreCreated_MozesShouldHaveRightStats() {

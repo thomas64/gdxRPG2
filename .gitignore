@@ -48,8 +48,8 @@ gradle-app.setting
 /ios/build/
 /ios-moe/build/
 
-/core/assets/saves/
-/core/assets/settings/
+/saves/
+/settings/
 
 ## OS Specific
 .DS_Store

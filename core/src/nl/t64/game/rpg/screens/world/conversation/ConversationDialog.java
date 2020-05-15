@@ -12,12 +12,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.components.conversation.ConversationChoice;
+import nl.t64.game.rpg.components.conversation.ConversationGraph;
+import nl.t64.game.rpg.components.conversation.ConversationPhrase;
+import nl.t64.game.rpg.components.conversation.NoteDatabase;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.ConversationCommand;
-import nl.t64.game.rpg.conversation.ConversationChoice;
-import nl.t64.game.rpg.conversation.ConversationGraph;
-import nl.t64.game.rpg.conversation.ConversationPhrase;
-import nl.t64.game.rpg.conversation.NoteDatabase;
 
 import java.util.function.Consumer;
 

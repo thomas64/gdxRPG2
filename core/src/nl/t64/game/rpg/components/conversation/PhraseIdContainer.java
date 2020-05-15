@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.conversation;
+package nl.t64.game.rpg.components.conversation;
 
 import java.util.HashMap;
 import java.util.Map;

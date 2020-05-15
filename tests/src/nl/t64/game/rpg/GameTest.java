@@ -14,7 +14,6 @@ public class GameTest {
 
     private static Application application;
 
-
     @BeforeAll
     public static void init() {
         application = new HeadlessApplication(new ApplicationListener() {

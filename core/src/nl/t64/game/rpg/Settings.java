@@ -27,7 +27,7 @@ public class Settings {
     private boolean fullscreen;
 
     private Settings() {
-        this.fullscreen = false;
+        this.fullscreen = true;
     }
 
     public static Settings getSettingsFromFile() throws IOException {

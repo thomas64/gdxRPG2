@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.conversation;
+package nl.t64.game.rpg.components.conversation;
 
 import com.badlogic.gdx.Gdx;
 import com.fasterxml.jackson.core.type.TypeReference;

@@ -4,7 +4,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
-import nl.t64.game.rpg.conversation.ConversationChoice;
+import nl.t64.game.rpg.components.conversation.ConversationChoice;
 
 
 class ConversationDialogListener extends InputListener {

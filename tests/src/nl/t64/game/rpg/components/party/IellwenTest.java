@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class IellwenTest extends DataProvider {
+class IellwenTest extends DataProvider {
 
     @Test
     void whenHeroesAreCreated_IellwenShouldHaveRightStats() {

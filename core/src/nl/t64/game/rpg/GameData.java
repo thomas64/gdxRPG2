@@ -1,10 +1,10 @@
 package nl.t64.game.rpg;
 
 import lombok.Getter;
+import nl.t64.game.rpg.components.conversation.ConversationContainer;
+import nl.t64.game.rpg.components.conversation.PhraseIdContainer;
 import nl.t64.game.rpg.components.party.*;
 import nl.t64.game.rpg.constants.Constant;
-import nl.t64.game.rpg.conversation.ConversationContainer;
-import nl.t64.game.rpg.conversation.PhraseIdContainer;
 import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.profile.ProfileObserver;
 

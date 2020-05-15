@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="96" height="78" tilewidth="24" tileheight="24" infinite="0" nextlayerid="43" nextobjectid="162">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="96" height="78" tilewidth="24" tileheight="24" infinite="0" nextlayerid="43" nextobjectid="162">
  <tileset firstgid="1" name="hero_s_hometown" tilewidth="24" tileheight="24" tilecount="8294" columns="143">
   <image source="tilesets/hero_s_hometown.png" width="3432" height="1392"/>
  </tileset>
@@ -953,8 +953,7 @@
   <object id="103" x="192" y="1488" width="240" height="48"/>
   <object id="104" x="240" y="1440" width="96" height="48"/>
   <object id="105" x="768" y="1632" width="96" height="48"/>
-  <object id="106" x="768" y="1728" width="264" height="48"/>
-  <object id="107" x="1128" y="1728" width="216" height="48"/>
+  <object id="106" x="768" y="1728" width="576" height="48"/>
   <object id="108" x="960" y="1632" width="48" height="48"/>
   <object id="109" x="1152" y="1632" width="48" height="48"/>
   <object id="110" x="1248" y="1584" width="96" height="96"/>
