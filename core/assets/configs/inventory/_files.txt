@@ -1,0 +1,7 @@
+chest.json
+hafted.json
+pole.json
+potion.json
+resource.json
+shield.json
+sword.json

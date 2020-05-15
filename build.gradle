@@ -8,6 +8,7 @@ buildscript {
         google()
     }
     dependencies {
+        classpath group: 'org.mini2Dx', name: 'parcl', version: '1.6.1'
     }
 }
 
@@ -17,13 +18,20 @@ allprojects {
 
     sourceCompatibility = 14
 
+    tasks.withType(JavaCompile) {
+        options.compilerArgs += "--enable-preview"
+    }
+    tasks.withType(Test) {
+        jvmArgs += "--enable-preview"
+    }
+    tasks.withType(JavaExec) {
+        jvmArgs += "--enable-preview"
+    }
+
     version = '1.0'
     ext {
         appName = "gdx-rpg2"
         gdxVersion = '1.9.8'
-        roboVMVersion = '2.3.5'
-        box2DLightsVersion = '1.5'
-        ashleyVersion = '1.7.3'
         aiVersion = '1.8.2'
     }
 
@@ -55,14 +63,17 @@ project(":core") {
         implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         implementation "com.fasterxml.jackson.core:jackson-databind:2.11.0"
+    }
+}
 
+project(":tests") {
+    dependencies {
+        implementation project(":core")
         testImplementation "com.badlogicgames.gdx:gdx:$gdxVersion"
         testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
-        testImplementation "org.assertj:assertj-core:3.16.0"
+        testImplementation "org.assertj:assertj-core:3.16.1"
         testImplementation "org.mockito:mockito-core:3.3.3"
         testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.2"
-
-        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.6.2"
     }
 }

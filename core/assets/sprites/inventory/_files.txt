@@ -1,0 +1,8 @@
+armor.atlas
+group.atlas
+hafted.atlas
+pole.atlas
+potion.atlas
+resource.atlas
+shield.atlas
+sword.atlas
