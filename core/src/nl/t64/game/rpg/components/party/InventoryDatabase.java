@@ -32,8 +32,8 @@ public final class InventoryDatabase {
         return instance;
     }
 
-    public InventoryItem getInventoryItemForShop(String itemId) {
-        final InventoryItem inventoryItem = getInventoryItem(itemId);
+    public InventoryItem createInventoryItemForShop(String itemId) {
+        final InventoryItem inventoryItem = createInventoryItem(itemId);
         if (inventoryItem.group.equals(InventoryGroup.RESOURCE)) {
             inventoryItem.setAmount(DEFAULT_SHOP_RESOURCE_AMOUNT);
         } else if (inventoryItem.group.equals(InventoryGroup.POTION)) {
@@ -42,13 +42,13 @@ public final class InventoryDatabase {
         return inventoryItem;
     }
 
-    public InventoryItem getInventoryItem(String itemId, int amount) {
-        final InventoryItem inventoryItem = getInventoryItem(itemId);
+    public InventoryItem createInventoryItem(String itemId, int amount) {
+        final InventoryItem inventoryItem = createInventoryItem(itemId);
         inventoryItem.setAmount(amount);
         return inventoryItem;
     }
 
-    public InventoryItem getInventoryItem(String itemId) {
+    public InventoryItem createInventoryItem(String itemId) {
         if (inventoryItems.isEmpty()) {
             try {
                 loadInventoryItems();

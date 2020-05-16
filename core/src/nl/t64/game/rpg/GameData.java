@@ -53,8 +53,8 @@ public class GameData implements ProfileObserver {
     }
 
     private void addFirstItemsToInventory() {
-        InventoryItem gold = InventoryDatabase.getInstance().getInventoryItem("gold");
-        InventoryItem mace = InventoryDatabase.getInstance().getInventoryItem("basic_mace");
+        InventoryItem gold = InventoryDatabase.getInstance().createInventoryItem("gold");
+        InventoryItem mace = InventoryDatabase.getInstance().createInventoryItem("basic_mace");
         inventory.autoSetItem(gold);
         inventory.autoSetItem(mace);
     }

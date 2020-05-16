@@ -26,7 +26,7 @@ public class InventoryContainer {
 
     public void decrementAmountAt(int index, int amount) {
         getItemAt(index).ifPresentOrElse(inventoryItem -> inventoryItem.decreaseAmountWith(amount),
-                                         throwException("There is no item to increment amount."));
+                                         throwException("There is no item to decrement amount."));
     }
 
     public Optional<InventoryItem> getItemAt(int index) {
@@ -34,9 +34,6 @@ public class InventoryContainer {
     }
 
     public void autoSetItem(InventoryItem newItem) {
-        if (newItem.amount == 0) {
-            return;
-        }
         if (newItem.isStackable()) {
             addResource(newItem);
         } else {
@@ -46,15 +43,17 @@ public class InventoryContainer {
 
     public void autoRemoveResource(String itemId, int amount) {
         if (!hasEnoughOfResource(itemId, amount)) {
-            throw new IllegalStateException("Can't remove this resource from Inventory.");
+            throw new IllegalStateException("Cannot remove this resource from Inventory.");
         }
         for (Map.Entry<Integer, Integer> set : findAllSlotsWithAmountOfResource(itemId).entrySet()) {
-            if (amount >= set.getValue()) {
+            if (amount == 0) {
+                break;
+            } else if (amount >= set.getValue()) {
                 amount -= set.getValue();
                 clearItemAt(set.getKey());
             } else {
                 decrementAmountAt(set.getKey(), amount);
-                return;
+                amount = 0;
             }
         }
     }
@@ -97,6 +96,14 @@ public class InventoryContainer {
                         .anyMatch(item -> item.hasSameIdAs(itemId));
     }
 
+    int getTotalOfResource(String itemId) {
+        return inventory.stream()
+                        .filter(Objects::nonNull)
+                        .filter(item -> item.hasSameIdAs(itemId))
+                        .mapToInt(item -> item.amount)
+                        .sum();
+    }
+
     long getNumberOfFilledSlots() {
         return inventory.stream()
                         .filter(Objects::nonNull)
@@ -107,14 +114,6 @@ public class InventoryContainer {
         getItem(newItem.id).ifPresentOrElse(inventoryItem -> inventoryItem.increaseAmountWith(newItem),
                                             addResourceAtEmptySlot(newItem)
         );
-    }
-
-    private int getTotalOfResource(String itemId) {
-        return inventory.stream()
-                        .filter(Objects::nonNull)
-                        .filter(item -> item.hasSameIdAs(itemId))
-                        .mapToInt(item -> item.amount)
-                        .sum();
     }
 
     private Runnable addResourceAtEmptySlot(InventoryItem newItem) {

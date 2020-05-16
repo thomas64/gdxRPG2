@@ -39,11 +39,11 @@ class EquipContainer {
                            @JsonProperty("chest") String chestId) {
         this();
         var database = InventoryDatabase.getInstance();
-        this.equipment.put(InventoryGroup.WEAPON.name(), database.getInventoryItem(weaponId));
+        this.equipment.put(InventoryGroup.WEAPON.name(), database.createInventoryItem(weaponId));
         if (shieldId != null) {
-            this.equipment.put(InventoryGroup.SHIELD.name(), database.getInventoryItem(shieldId));
+            this.equipment.put(InventoryGroup.SHIELD.name(), database.createInventoryItem(shieldId));
         }
-        this.equipment.put(InventoryGroup.CHEST.name(), database.getInventoryItem(chestId));
+        this.equipment.put(InventoryGroup.CHEST.name(), database.createInventoryItem(chestId));
     }
 
     Optional<InventoryItem> getInventoryItem(InventoryGroup inventoryGroup) {

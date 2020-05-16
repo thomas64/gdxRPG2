@@ -67,7 +67,7 @@ class ItemSlotsExchanger {
         if (Utils.getGameData().getInventory().hasRoomForResource("gold")) {
             handlePossibleExchange();
             if (isSuccessfullyExchanged) {
-                InventoryItem gold = InventoryDatabase.getInstance().getInventoryItem("gold", totalValue);
+                InventoryItem gold = InventoryDatabase.getInstance().createInventoryItem("gold", totalValue);
                 InventoryUtils.getScreenUI().getInventorySlotsTable().addResource(gold);
             }
         } else {

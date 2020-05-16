@@ -1,6 +1,5 @@
 package nl.t64.game.rpg.components.party;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -105,7 +104,7 @@ public class InventoryItem {
     }
 
     public int getBuyPrice(int totalMerchant) {
-        int salePrice = MathUtils.round(price - ((price / 100f) * totalMerchant));
+        int salePrice = Math.round(price - ((price / 100f) * totalMerchant));
         if (salePrice == 0) {
             salePrice = 1;
         }
@@ -113,8 +112,8 @@ public class InventoryItem {
     }
 
     public int getSellValue(int totalMerchant) {
-        int value = MathUtils.floor(price / 3f);
-        int saleValue = MathUtils.round(value + ((value / 300f) * totalMerchant));
+        int value = (int) Math.floor(price / 3f);
+        int saleValue = Math.round(value + ((value / 300f) * totalMerchant));
         return saleValue * amount;
     }
 

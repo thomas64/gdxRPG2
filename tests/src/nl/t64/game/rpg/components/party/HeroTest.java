@@ -101,7 +101,7 @@ class HeroTest extends DataProvider {
         final HeroItem mozes = party.getHero("mozes");
         assertThat(mozes.getInventoryItem(InventoryGroup.WEAPON)).get().hasFieldOrPropertyWithValue("id", "basic_shortsword");
 
-        final InventoryItem newWeapon = InventoryDatabase.getInstance().getInventoryItem("masterwork_lance");
+        final InventoryItem newWeapon = InventoryDatabase.getInstance().createInventoryItem("masterwork_lance");
         mozes.forceSetInventoryItemFor(InventoryGroup.WEAPON, newWeapon);
         assertThat(mozes.getInventoryItem(InventoryGroup.WEAPON)).containsSame(newWeapon);
         mozes.clearInventoryItemFor(InventoryGroup.WEAPON);
@@ -112,10 +112,10 @@ class HeroTest extends DataProvider {
     void whenImpossibleItemIsChecked_ShouldGetMessage() {
         final HeroItem mozes = party.getHero("mozes");
         final HeroItem ryiah = heroes.getHero("ryiah");
-        final InventoryItem legendaryStaff = InventoryDatabase.getInstance().getInventoryItem("legendary_staff");
-        final InventoryItem masterworkLance = InventoryDatabase.getInstance().getInventoryItem("masterwork_lance");
-        final InventoryItem basicDagger = InventoryDatabase.getInstance().getInventoryItem("basic_dagger");
-        final InventoryItem chest = InventoryDatabase.getInstance().getInventoryItem("basic_light_chest");
+        final InventoryItem legendaryStaff = InventoryDatabase.getInstance().createInventoryItem("legendary_staff");
+        final InventoryItem masterworkLance = InventoryDatabase.getInstance().createInventoryItem("masterwork_lance");
+        final InventoryItem basicDagger = InventoryDatabase.getInstance().createInventoryItem("basic_dagger");
+        final InventoryItem chest = InventoryDatabase.getInstance().createInventoryItem("basic_light_chest");
 
         final Optional<String> message1 = mozes.isAbleToEquip(legendaryStaff);
         assertThat(message1).contains("Mozes needs the Pole skill" + System.lineSeparator() + "to equip that Legendary Staff.");
@@ -250,6 +250,15 @@ class HeroTest extends DataProvider {
         assertThat(party.getNextHero(party.getHero("ryiah"))).isEqualTo(party.getHero("valter"));
         assertThat(party.getPreviousHero(party.getHero("galen"))).isEqualTo(party.getHero("valter"));
         assertThat(party.getNextHero(party.getHero("galen"))).isEqualTo(party.getHero("mozes"));
+    }
+
+    @Test
+    void whenHeroesAreAdded_ShouldIncreaseTheSumOfSkill() {
+        assertThat(party.getSumOfSkill(SkillItemId.MERCHANT)).isEqualTo(0);
+        addHeroToParty("kiara");
+        assertThat(party.getSumOfSkill(SkillItemId.MERCHANT)).isEqualTo(4);
+        addHeroToParty("duilio");
+        assertThat(party.getSumOfSkill(SkillItemId.MERCHANT)).isEqualTo(9);
     }
 
 }
