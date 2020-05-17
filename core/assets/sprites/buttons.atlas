@@ -1,6 +1,6 @@
 
 buttons.png
-size: 192,384
+size: 384,256
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -27,19 +27,40 @@ close_up
   index: -1
 help_down
   rotate: false
-  xy: 0, 64
+  xy: 192, 0
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 help_over
   rotate: false
-  xy: 64, 64
+  xy: 256, 0
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 help_up
+  rotate: false
+  xy: 320, 0
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+dismiss_down
+  rotate: false
+  xy: 0, 64
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+dismiss_over
+  rotate: false
+  xy: 64, 64
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+dismiss_up
   rotate: false
   xy: 128, 64
   size: 64, 64
@@ -48,84 +69,84 @@ help_up
   index: -1
 next_down
   rotate: false
-  xy: 0, 128
+  xy: 192, 64
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 next_over
   rotate: false
-  xy: 64, 128
+  xy: 256, 64
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 next_up
   rotate: false
-  xy: 128, 128
+  xy: 320, 64
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 previous_down
   rotate: false
-  xy: 0, 192
+  xy: 0, 128
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 previous_over
   rotate: false
-  xy: 64, 192
+  xy: 64, 128
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 previous_up
   rotate: false
-  xy: 128, 192
+  xy: 128, 128
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 reset_down
   rotate: false
-  xy: 0, 256
+  xy: 192, 128
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 reset_over
   rotate: false
-  xy: 64, 256
+  xy: 256, 128
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 reset_up
   rotate: false
-  xy: 128, 256
+  xy: 320, 128
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 sort_down
   rotate: false
-  xy: 0, 320
+  xy: 0, 192
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 sort_over
   rotate: false
-  xy: 64, 320
+  xy: 64, 192
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 sort_up
   rotate: false
-  xy: 128, 320
+  xy: 128, 192
   size: 64, 64
   orig: 64, 64
   offset: 0, 0

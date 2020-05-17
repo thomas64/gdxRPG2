@@ -49,6 +49,7 @@ public class PartyContainer {
             throw new IllegalStateException("Party is full.");
         }
         party.put(hero.id, hero);
+        hero.hasBeenRecruited = true;
     }
 
     public void removeHero(String heroId) {
@@ -56,6 +57,10 @@ public class PartyContainer {
             throw new IllegalArgumentException("Cannot remove player from party.");
         }
         party.remove(heroId);
+    }
+
+    public boolean isPlayer(String heroId) {
+        return heroId.equals(Constant.PLAYER_ID);
     }
 
     public boolean isFull() {
@@ -106,10 +111,6 @@ public class PartyContainer {
 
     private int getLastIndex() {
         return getSize() - 1;
-    }
-
-    private boolean isPlayer(String heroId) {
-        return heroId.equals(Constant.PLAYER_ID);
     }
 
 }

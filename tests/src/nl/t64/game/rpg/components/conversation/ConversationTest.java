@@ -35,7 +35,7 @@ class ConversationTest extends GameTest {
         PhraseIdContainer phraseIdContainer = conversations.getCurrentPhraseIds();
         FileHandle[] configDirList = Gdx.files.local("configs/conversations/").list(".json");
         int containerSize = phraseIdContainer.getSize();
-        assertThat(configDirList).hasSize(containerSize);
+        assertThat(configDirList).hasSizeLessThan(containerSize);
     }
 
     @Test
@@ -89,7 +89,7 @@ class ConversationTest extends GameTest {
         assertThat(graph.getChoices().get("200")).hasSize(1);
         assertThat(graph.getAssociatedChoices().get(0).getText()).isEqualTo("->");
         assertThat(graph.getAssociatedChoices().get(0).getDestinationId()).isEqualTo("1");
-        assertThat(graph.getAssociatedChoices().get(0).getConversationCommand()).isEqualTo(ConversationCommand.JOIN_PARTY);
+        assertThat(graph.getAssociatedChoices().get(0).getConversationCommand()).isEqualTo(ConversationCommand.HERO_JOIN);
     }
 
 }

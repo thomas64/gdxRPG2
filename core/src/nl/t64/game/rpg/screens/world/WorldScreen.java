@@ -26,6 +26,8 @@ import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.events.character.LoadCharacterEvent;
 import nl.t64.game.rpg.events.character.PathUpdateEvent;
 import nl.t64.game.rpg.screens.LoadScreen;
+import nl.t64.game.rpg.screens.inventory.PartyObserver;
+import nl.t64.game.rpg.screens.inventory.PartySubject;
 import nl.t64.game.rpg.screens.shop.ShopScreen;
 import nl.t64.game.rpg.screens.world.conversation.ConversationDialog;
 import nl.t64.game.rpg.screens.world.pathfinding.TiledNode;
@@ -37,7 +39,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class WorldScreen implements Screen, MapObserver, ComponentObserver {
+public class WorldScreen implements Screen, MapObserver, ComponentObserver, PartyObserver {
 
     private static final int[] UNDER_LAYERS = new int[]{0, 1, 2, 3, 4, 5};
     private static final int[] OVER_LAYERS = new int[]{6, 7, 8};
@@ -81,6 +83,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
         this.debugBox = new DebugBox(this.player);
 
         Utils.getMapManager().addObserver(this);
+        ((PartySubject) Utils.getScreenManager().getScreen(ScreenType.INVENTORY)).addObserver(this);
     }
 
     @Override
@@ -108,6 +111,11 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
         player.resetInput();
         conversationDialog.loadNote(noteId);
         conversationDialog.show();
+    }
+
+    @Override
+    public void onNotifyHeroDismissed() {
+        partyMembers = new PartyMembersLoader(player).loadPartyMembers();
     }
 
     @Override
@@ -200,7 +208,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
                 conversationDialog.hideWithFade();
                 show();
             }
-            case JOIN_PARTY -> tryToAddHeroToParty();
+            case HERO_JOIN -> tryToAddHeroToParty();
             case LOAD_SHOP -> {
                 conversationDialog.hide();
                 show();
@@ -212,7 +220,8 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
                 conversationDialog.hideWithFade();
                 show();
             }
-            case NONE -> throw new IllegalAccessError("ConversationCommand NONE cannot be reached here.");
+            case HERO_DISMISS,
+                    NONE -> throw new IllegalAccessError("That ConversationCommand cannot be reached here.");
         }
     }
 

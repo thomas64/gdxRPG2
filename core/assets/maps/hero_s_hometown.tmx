@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="96" height="78" tilewidth="24" tileheight="24" infinite="0" nextlayerid="43" nextobjectid="162">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="96" height="78" tilewidth="24" tileheight="24" infinite="0" nextlayerid="43" nextobjectid="163">
  <tileset firstgid="1" name="hero_s_hometown" tilewidth="24" tileheight="24" tilecount="8294" columns="143">
   <image source="tilesets/hero_s_hometown.png" width="3432" height="1392"/>
  </tileset>
@@ -828,6 +828,12 @@
    <properties>
     <property name="conversation" value="faeron01"/>
     <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="162" name="luana" type="w" x="1968" y="1392" width="48" height="24">
+   <properties>
+    <property name="conversation" value="luana02"/>
+    <property name="hasBeenRecruited" type="bool" value="true"/>
    </properties>
   </object>
  </objectgroup>

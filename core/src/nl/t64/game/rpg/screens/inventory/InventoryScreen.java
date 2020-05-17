@@ -13,14 +13,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.InventoryContainer;
 import nl.t64.game.rpg.components.party.InventoryDatabase;
+import nl.t64.game.rpg.components.party.PartyContainer;
+import nl.t64.game.rpg.constants.ConversationCommand;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.profile.ProfileObserver;
+import nl.t64.game.rpg.screens.world.conversation.ConversationDialog;
 
 
-public class InventoryScreen implements Screen, ProfileObserver {
+public class InventoryScreen extends PartySubject implements Screen, ProfileObserver {
 
     private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
     private static final String BUTTON_CLOSE_UP = "close_up";
@@ -35,6 +39,9 @@ public class InventoryScreen implements Screen, ProfileObserver {
     private static final String BUTTON_NEXT_UP = "next_up";
     private static final String BUTTON_NEXT_OVER = "next_over";
     private static final String BUTTON_NEXT_DOWN = "next_down";
+    private static final String BUTTON_DISMISS_UP = "dismiss_up";
+    private static final String BUTTON_DISMISS_OVER = "dismiss_over";
+    private static final String BUTTON_DISMISS_DOWN = "dismiss_down";
     private static final String BUTTON_SORT_UP = "sort_up";
     private static final String BUTTON_SORT_OVER = "sort_over";
     private static final String BUTTON_SORT_DOWN = "sort_down";
@@ -62,6 +69,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
     private static final float TOP_SPACE = 50f;
 
     private final Stage stage;
+    private final ConversationDialog conversationDialog;
     InventoryUI inventoryUI;
 
     private Vector2 spellsWindowPosition;
@@ -74,6 +82,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
 
     public InventoryScreen() {
         this.stage = new Stage();
+        this.conversationDialog = new ConversationDialog(this::handleConversationCommand);
     }
 
     @Override
@@ -118,6 +127,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
                                                       this::resetWindowsPositions,
                                                       InventoryUtils::selectPreviousHero,
                                                       InventoryUtils::selectNextHero,
+                                                      this::tryToDismissHero,
                                                       this::sortInventory,
                                                       this::showHelpMessage,
                                                       this::cheatAddGold,
@@ -143,6 +153,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
         stage.act(dt);
         stage.draw();
         inventoryUI.update();
+        conversationDialog.update(dt);
     }
 
     @Override
@@ -172,6 +183,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
         // todo, de buttons bewaren hun mouse-over state op de een of andere vage manier.
         stage.clear();
         stage.dispose();
+        conversationDialog.dispose();
     }
 
     void setBackground(Image screenshot) {
@@ -187,12 +199,14 @@ public class InventoryScreen implements Screen, ProfileObserver {
         var resetButton = createImageButton(BUTTON_RESET_UP, BUTTON_RESET_OVER, BUTTON_RESET_DOWN);
         var previousButton = createImageButton(BUTTON_PREVIOUS_UP, BUTTON_PREVIOUS_OVER, BUTTON_PREVIOUS_DOWN);
         var nextButton = createImageButton(BUTTON_NEXT_UP, BUTTON_NEXT_OVER, BUTTON_NEXT_DOWN);
+        var dismissButton = createImageButton(BUTTON_DISMISS_UP, BUTTON_DISMISS_OVER, BUTTON_DISMISS_DOWN);
         var sortButton = createImageButton(BUTTON_SORT_UP, BUTTON_SORT_OVER, BUTTON_SORT_DOWN);
         var helpButton = createImageButton(BUTTON_HELP_UP, BUTTON_HELP_OVER, BUTTON_HELP_DOWN);
         closeButton.addListener(new ListenerMouseImageButton(this::closeScreen));
         resetButton.addListener(new ListenerMouseImageButton(this::resetWindowsPositions));
         previousButton.addListener(new ListenerMouseImageButton(InventoryUtils::selectPreviousHero));
         nextButton.addListener(new ListenerMouseImageButton(InventoryUtils::selectNextHero));
+        dismissButton.addListener(new ListenerMouseImageButton(this::tryToDismissHero));
         sortButton.addListener(new ListenerMouseImageButton(this::sortInventory));
         helpButton.addListener(new ListenerMouseImageButton(this::showHelpMessage));
 
@@ -201,6 +215,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
         buttonTable.add(resetButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
         buttonTable.add(previousButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
         buttonTable.add(nextButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
+        buttonTable.add(dismissButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
         buttonTable.add(sortButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
         buttonTable.add(helpButton).size(BUTTON_SIZE);
         buttonTable.pack();
@@ -213,6 +228,46 @@ public class InventoryScreen implements Screen, ProfileObserver {
         storeWindowPositions();
         Utils.getScreenManager().setScreen(ScreenType.WORLD);
         Gdx.input.setCursorCatched(true);
+    }
+
+    private void tryToDismissHero() {
+        if (isDialogVisibleThenClose()) {
+            return;
+        }
+        PartyContainer party = Utils.getGameData().getParty();
+        HeroItem currentHero = InventoryUtils.getSelectedHero();
+        String currentHeroId = currentHero.getId();
+        if (party.isPlayer(currentHeroId)) {
+            String message = "You cannot dismiss the party leader.";
+            MessageDialog messageDialog = new MessageDialog(message);
+            messageDialog.show(stage);
+        } else {
+            conversationDialog.loadConversation("dismiss_" + currentHeroId, currentHeroId);
+            conversationDialog.show();
+        }
+    }
+
+    private void handleConversationCommand(ConversationCommand command) {
+        switch (command) {
+            case EXIT_CONVERSATION -> hideConversationDialog();
+            case HERO_DISMISS -> dismissHero();
+            default -> throw new IllegalAccessError("That ConversationCommand cannot be reached here.");
+        }
+    }
+
+    private void dismissHero() {
+        HeroItem selectedHero = InventoryUtils.getSelectedHero();
+        Utils.getGameData().getHeroes().addHero(selectedHero);
+        String heroToDismiss = selectedHero.getId();
+        InventoryUtils.selectPreviousHero();
+        Utils.getGameData().getParty().removeHero(heroToDismiss);
+        hideConversationDialog();
+        notifyHeroDismissed();
+    }
+
+    private void hideConversationDialog() {
+        conversationDialog.hideWithFade();
+        Gdx.input.setInputProcessor(stage);
     }
 
     private void sortInventory() {
@@ -241,9 +296,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
     }
 
     private void showHelpMessage() {
-        final Actor actor = stage.getActors().get(stage.getActors().size - 1);
-        if (actor instanceof Dialog dialog) {
-            dialog.hide();
+        if (isDialogVisibleThenClose()) {
             return;
         }
         final String message = "Esc = Close screen" + System.lineSeparator() +
@@ -251,6 +304,7 @@ public class InventoryScreen implements Screen, ProfileObserver {
                                "R = Reset windows" + System.lineSeparator() +
                                "Q = Previous hero" + System.lineSeparator() +
                                "W = Next hero" + System.lineSeparator() +
+                               "D = Dismiss hero" + System.lineSeparator() +
                                "S = Sort Inventory" + System.lineSeparator() +
                                "Shift = Drag full stack" + System.lineSeparator() +
                                "Ctrl = Drag half stack" + System.lineSeparator() +
@@ -299,6 +353,15 @@ public class InventoryScreen implements Screen, ProfileObserver {
         var textureRegion = Utils.getResourceManager().getAtlasTexture(atlasId);
         var ninePatch = new NinePatch(textureRegion, 1, 1, 1, 1);
         return new NinePatchDrawable(ninePatch);
+    }
+
+    private boolean isDialogVisibleThenClose() {
+        Actor possibleOldDialog = stage.getActors().peek();
+        if (possibleOldDialog instanceof Dialog dialog) {
+            dialog.hide();
+            return true;
+        }
+        return false;
     }
 
 }

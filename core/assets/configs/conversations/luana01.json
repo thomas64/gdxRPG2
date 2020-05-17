@@ -80,7 +80,69 @@
       ],
       "200": [
         {
-          "conversationCommand": "JOIN_PARTY"
+          "conversationCommand": "HERO_JOIN"
+        }
+      ]
+    }
+  },
+  "luana02": {
+    "phrases": {
+      "1": {
+        "text": ["Are you back to beg me to join you?"]
+      },
+      "2": {
+        "text": ["Ha! I knew it! You can't do without me!"]
+      },
+      "3": {
+        "text": ["Fine! I don't even wanna join you anymore!"]
+      }
+    },
+    "choices": {
+      "1": [
+        {
+          "text": "Yes, I would like you to come back.",
+          "destinationId": "2"
+        },
+        {
+          "text": "No, I'm just here to gloat at you.",
+          "destinationId": "3"
+        }
+      ],
+      "2": [
+        {
+          "conversationCommand": "HERO_JOIN"
+        }
+      ],
+      "3": [
+        {
+          "conversationCommand": "EXIT_CONVERSATION"
+        }
+      ]
+    }
+  },
+  "dismiss_luana": {
+    "phrases": {
+      "1": {
+        "text": ["No Mozes, if I leave, who is gonna tell you when you're being stupid?"]
+      },
+      "2": {
+        "text": ["Ugh! This is so unfair!"]
+      }
+    },
+    "choices": {
+      "1": [
+        {
+          "text": "Luana, I think I can manage. You can go.",
+          "destinationId": "2"
+        },
+        {
+          "text": "You're right, I want you to stay.",
+          "conversationCommand": "EXIT_CONVERSATION"
+        }
+      ],
+      "2": [
+        {
+          "conversationCommand": "HERO_DISMISS"
         }
       ]
     }

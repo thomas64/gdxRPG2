@@ -18,6 +18,8 @@ public class HeroItem {
     String name;
     @Getter
     SchoolType school;
+    @Getter
+    boolean hasBeenRecruited = false;
     private StatContainer stats;
     private SkillContainer skills;
     private SpellContainer spells;

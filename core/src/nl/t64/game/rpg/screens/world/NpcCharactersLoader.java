@@ -1,9 +1,11 @@
 package nl.t64.game.rpg.screens.world;
 
+import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.character.Character;
 import nl.t64.game.rpg.components.character.GraphicsNpc;
 import nl.t64.game.rpg.components.character.InputNpc;
 import nl.t64.game.rpg.components.character.PhysicsNpc;
+import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.events.character.LoadCharacterEvent;
 
@@ -36,7 +38,10 @@ class NpcCharactersLoader {
 
     private void loadHeroes() {
         for (GameMapHero gameMapHero : currentMap.heroes) {
-            loadNpcCharacter(gameMapHero);
+            HeroItem hero = Utils.getGameData().getHeroes().getHero(gameMapHero.name);
+            if (gameMapHero.hasBeenRecruited == hero.isHasBeenRecruited()) {
+                loadNpcCharacter(gameMapHero);
+            }
         }
     }
 
@@ -49,7 +54,7 @@ class NpcCharactersLoader {
                                                  gameMapNpc.getPosition(),
                                                  gameMapNpc.conversation));
         if (gameMapNpc.state.equals(CharacterState.IMMOBILE)
-                || gameMapNpc.state.equals(CharacterState.FLOATING)) {
+            || gameMapNpc.state.equals(CharacterState.FLOATING)) {
             currentMap.addToBlockers(npcCharacter.getBoundingBox());
         }
     }

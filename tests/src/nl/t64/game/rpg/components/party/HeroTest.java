@@ -45,6 +45,16 @@ class HeroTest extends DataProvider {
     }
 
     @Test
+    void whenHeroIsAddedToParty_ShouldSetRecruitedTrue() {
+        final String luana = "luana";
+        assertThat(heroes.getHero(luana).isHasBeenRecruited()).isFalse();
+        addHeroToParty(luana);
+        assertThat(party.getHero(luana).isHasBeenRecruited()).isTrue();
+        removeHeroFromParty(luana);
+        assertThat(heroes.getHero(luana).isHasBeenRecruited()).isTrue();
+    }
+
+    @Test
     void whenHeroIsAddedToParty_ShouldBeRemovedFromHeroContainer() {
         final String luana = "luana";
 
