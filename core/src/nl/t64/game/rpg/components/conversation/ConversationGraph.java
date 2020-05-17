@@ -27,8 +27,8 @@ public class ConversationGraph {
 
     public List<ConversationChoice> getAssociatedChoices() {
         if (!choices.containsKey(currentPhraseId)) {
-            String nextPhraseId = String.valueOf(Integer.parseInt(currentPhraseId) + 1);
-            return List.of(new ConversationChoice(nextPhraseId));
+            String nextDestinationId = String.valueOf(Integer.parseInt(currentPhraseId) + 1);
+            return List.of(new ConversationChoice(nextDestinationId));
         } else {
             return choices.get(currentPhraseId);
         }

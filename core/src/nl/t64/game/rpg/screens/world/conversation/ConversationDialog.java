@@ -172,11 +172,19 @@ public class ConversationDialog {
         final String destinationId = selectedAnswer.getDestinationId();
         final ConversationCommand conversationCommand = selectedAnswer.getConversationCommand();
         if (conversationCommand.equals(ConversationCommand.NONE)) {
-            populateConversationDialog(destinationId);
+            continueConversation(destinationId);
         } else {
-            graph.setCurrentPhraseId(destinationId);
-            handleConversationCommand.accept(conversationCommand);
+            endConversation(destinationId, conversationCommand);
         }
+    }
+
+    private void continueConversation(String destinationId) {
+        populateConversationDialog(destinationId);
+    }
+
+    private void endConversation(String destinationId, ConversationCommand conversationCommand) {
+        graph.setCurrentPhraseId(destinationId);
+        handleConversationCommand.accept(conversationCommand);
     }
 
     private void populateConversationDialog(String phraseId) {

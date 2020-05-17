@@ -20,4 +20,8 @@ public class PhraseIdContainer {
         currentPhraseIds.put(conversationId, phraseId);
     }
 
+    int getSize() {
+        return currentPhraseIds.size();
+    }
+
 }
