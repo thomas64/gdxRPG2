@@ -194,7 +194,7 @@ public class InputPlayer extends InputComponent implements InputProcessor {
 
     private void processPlayerSpeedInput() {
         float moveSpeed = Constant.MOVE_SPEED_2;
-        if (pressCtrl && pressShift) {
+        if (pressCtrl && pressShift && Utils.getSettings().isInDebugMode()) {
             moveSpeed = Constant.MOVE_SPEED_4;
         } else if (pressShift) {
             moveSpeed = Constant.MOVE_SPEED_3;

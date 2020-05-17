@@ -311,15 +311,21 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver {
     }
 
     static void setShowGrid() {
-        showGrid = !showGrid;
+        if (Utils.getSettings().isInDebugMode()) {
+            showGrid = !showGrid;
+        }
     }
 
     static void setShowObjects() {
-        showObjects = !showObjects;
+        if (Utils.getSettings().isInDebugMode()) {
+            showObjects = !showObjects;
+        }
     }
 
     static void setShowDebug() {
-        showDebug = !showDebug;
+        if (Utils.getSettings().isInDebugMode()) {
+            showDebug = !showDebug;
+        }
     }
 
     private void renderGrid() {

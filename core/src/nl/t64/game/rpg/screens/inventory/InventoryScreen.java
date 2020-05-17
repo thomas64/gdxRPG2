@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.components.party.InventoryContainer;
+import nl.t64.game.rpg.components.party.InventoryDatabase;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.profile.ProfileObserver;
@@ -117,7 +119,9 @@ public class InventoryScreen implements Screen, ProfileObserver {
                                                       InventoryUtils::selectPreviousHero,
                                                       InventoryUtils::selectNextHero,
                                                       this::sortInventory,
-                                                      this::showHelpMessage));
+                                                      this::showHelpMessage,
+                                                      this::cheatAddGold,
+                                                      this::cheatRemoveGold));
         createButtonTable();
 
         inventoryUI = new InventoryUI();
@@ -216,6 +220,26 @@ public class InventoryScreen implements Screen, ProfileObserver {
         inventoryUI.reloadInventory();
     }
 
+    private void cheatAddGold() {
+        if (Utils.getSettings().isInDebugMode()) {
+            InventoryContainer inventory = Utils.getGameData().getInventory();
+            if (inventory.hasRoomForResource("gold")) {
+                inventory.autoSetItem(InventoryDatabase.getInstance().createInventoryItem("gold", 10));
+                inventoryUI.reloadInventory();
+            }
+        }
+    }
+
+    private void cheatRemoveGold() {
+        if (Utils.getSettings().isInDebugMode()) {
+            InventoryContainer inventory = Utils.getGameData().getInventory();
+            if (inventory.hasEnoughOfResource("gold", 1)) {
+                inventory.autoRemoveResource("gold", 1);
+                inventoryUI.reloadInventory();
+            }
+        }
+    }
+
     private void showHelpMessage() {
         final Actor actor = stage.getActors().get(stage.getActors().size - 1);
         if (actor instanceof Dialog dialog) {
@@ -223,14 +247,14 @@ public class InventoryScreen implements Screen, ProfileObserver {
             return;
         }
         final String message = "Esc = Close screen" + System.lineSeparator() +
-                "I = Close screen" + System.lineSeparator() +
-                "R = Reset windows" + System.lineSeparator() +
-                "Q = Previous hero" + System.lineSeparator() +
-                "W = Next hero" + System.lineSeparator() +
-                "S = Sort Inventory" + System.lineSeparator() +
-                "Shift = Drag full stack" + System.lineSeparator() +
-                "Ctrl = Drag half stack" + System.lineSeparator() +
-                "H = This dialog";
+                               "I = Close screen" + System.lineSeparator() +
+                               "R = Reset windows" + System.lineSeparator() +
+                               "Q = Previous hero" + System.lineSeparator() +
+                               "W = Next hero" + System.lineSeparator() +
+                               "S = Sort Inventory" + System.lineSeparator() +
+                               "Shift = Drag full stack" + System.lineSeparator() +
+                               "Ctrl = Drag half stack" + System.lineSeparator() +
+                               "H = This dialog";
         final MessageDialog messageDialog = new MessageDialog(message);
         messageDialog.setLeftAlignment();
         messageDialog.show(stage);

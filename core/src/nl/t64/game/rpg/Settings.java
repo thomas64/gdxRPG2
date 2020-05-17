@@ -19,15 +19,19 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
+@Getter
 public class Settings {
 
     private static final String SETTINGS_FILE = "settings/settings.dat";
+    private static final boolean FULLSCREEN_DEFAULT = true;
+    private static final boolean DEBUG_MODE_DEFAULT = false;
 
-    @Getter
-    private boolean fullscreen;
+    private boolean isFullscreen;
+    private boolean isInDebugMode;
 
     private Settings() {
-        this.fullscreen = true;
+        this.isFullscreen = FULLSCREEN_DEFAULT;
+        this.isInDebugMode = DEBUG_MODE_DEFAULT;
     }
 
     public static Settings getSettingsFromFile() throws IOException {
@@ -41,7 +45,9 @@ public class Settings {
             String settingsFile = lines.collect(Collectors.joining(System.lineSeparator()));
             lines.close();
             Json json = new Json();
-            return json.fromJson(Settings.class, settingsFile);
+            Settings settings = json.fromJson(Settings.class, settingsFile);
+            settings.isInDebugMode = DEBUG_MODE_DEFAULT;
+            return settings;
         }
         return new Settings();
     }
@@ -55,6 +61,10 @@ public class Settings {
         writeSettingsFile();
     }
 
+    public void toggleDebugMode() {
+        isInDebugMode ^= true;
+    }
+
     private void setWindowedMode() {
         Gdx.graphics.setWindowedMode(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGHT);
         Gdx.input.setCursorCatched(false);
@@ -63,7 +73,7 @@ public class Settings {
     private void setFullscreenMode() {
         Graphics.DisplayMode displayMode = Arrays.stream(Gdx.graphics.getDisplayModes())
                                                  .filter(mode -> mode.width == Constant.SCREEN_WIDTH
-                                                         && mode.height == Constant.SCREEN_HEIGHT)
+                                                                 && mode.height == Constant.SCREEN_HEIGHT)
                                                  .max(Comparator.comparing(mode -> mode.refreshRate))
                                                  .orElseThrow(NoSuchElementException::new);
         Gdx.graphics.setFullscreenMode(displayMode);
@@ -71,7 +81,7 @@ public class Settings {
     }
 
     private void writeSettingsFile() {
-        fullscreen = Gdx.graphics.isFullscreen();
+        isFullscreen = Gdx.graphics.isFullscreen();
         Json json = new Json();
         String fileData = json.prettyPrint(json.toJson(this));
         FileHandle file = Gdx.files.local(SETTINGS_FILE);

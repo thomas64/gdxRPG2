@@ -13,19 +13,25 @@ class InventoryScreenListener extends InputListener {
     private final Runnable nextHeroFunction;
     private final Runnable sortInventoryFunction;
     private final Runnable showHelpFunction;
+    private final Runnable cheatAddGoldFunction;
+    private final Runnable cheatRemoveGoldFunction;
 
     InventoryScreenListener(Runnable closeScreenFunction,
                             Runnable resetWindowsFunction,
                             Runnable previousHeroFunction,
                             Runnable nextHeroFunction,
                             Runnable sortInventoryFunction,
-                            Runnable showHelpFunction) {
+                            Runnable showHelpFunction,
+                            Runnable cheatAddGoldFunction,
+                            Runnable cheatRemoveGoldFunction) {
         this.closeScreenFunction = closeScreenFunction;
         this.resetWindowsFunction = resetWindowsFunction;
         this.previousHeroFunction = previousHeroFunction;
         this.nextHeroFunction = nextHeroFunction;
         this.sortInventoryFunction = sortInventoryFunction;
         this.showHelpFunction = showHelpFunction;
+        this.cheatAddGoldFunction = cheatAddGoldFunction;
+        this.cheatRemoveGoldFunction = cheatRemoveGoldFunction;
     }
 
     @Override
@@ -42,6 +48,8 @@ class InventoryScreenListener extends InputListener {
             case Input.Keys.CONTROL_LEFT,
                     Input.Keys.CONTROL_RIGHT -> InventoryUtils.setCtrlPressed(true);
             case Input.Keys.H -> showHelpFunction.run();
+            case Input.Keys.PLUS -> cheatAddGoldFunction.run();
+            case Input.Keys.MINUS -> cheatRemoveGoldFunction.run();
         }
         return true;
     }

@@ -16,17 +16,21 @@ public class MenuSettings extends MenuScreen {
 
     private static final int MENU_SPACE_BOTTOM = 10;
 
-    private static final String MENU_ITEM_FULL_SCREEN = "Toggle fullscreen";
+    private static final String MENU_ITEM_FULL_SCREEN_ON = "Fullscreen: On";
+    private static final String MENU_ITEM_FULL_SCREEN_OFF = "Fullscreen: Off";
+    private static final String MENU_ITEM_DEBUG_MODE_ON = "Debug mode: On";
+    private static final String MENU_ITEM_DEBUG_MODE_OFF = "Debug mode: Off";
     private static final String MENU_ITEM_CONTROLS = "View controls";
     private static final String MENU_ITEM_BACK = "Back";
 
-    private static final int NUMBER_OF_ITEMS = 3;
-    private static final int EXIT_INDEX = 2;
+    private static final int NUMBER_OF_ITEMS = 4;
+    private static final int EXIT_INDEX = 3;
 
     private ScreenType fromScreen;
 
     private Table table;
     private TextButton fullscreenButton;
+    private TextButton debugModeButton;
     private TextButton controlsButton;
     private TextButton backButton;
 
@@ -63,14 +67,21 @@ public class MenuSettings extends MenuScreen {
         var screenManager = Utils.getScreenManager();
         switch (selectedMenuIndex) {
             case 0 -> processFullscreenButton();
-            case 1 -> processControlsButton(screenManager);
-            case 2 -> processBackButton(screenManager);
+            case 1 -> processDebugModeButton();
+            case 2 -> processControlsButton(screenManager);
+            case 3 -> processBackButton(screenManager);
             default -> throw new IllegalArgumentException("SelectedIndex not found.");
         }
     }
 
     private void processFullscreenButton() {
         Utils.getSettings().toggleFullscreen();
+        reloadScreen();
+    }
+
+    private void processDebugModeButton() {
+        Utils.getSettings().toggleDebugMode();
+        reloadScreen();
     }
 
     private void processControlsButton(ScreenManager screenManager) {
@@ -89,6 +100,14 @@ public class MenuSettings extends MenuScreen {
         }
         screenManager.setScreen(fromScreen);
         fromScreen = null;
+    }
+
+    private void reloadScreen() {
+        stage.clear();
+        if (fromScreen.equals(ScreenType.MENU_PAUSE)) {
+            setBackground(screenshot);
+        }
+        setupScreen();
     }
 
     @Override
@@ -110,7 +129,8 @@ public class MenuSettings extends MenuScreen {
         buttonStyle.fontColor = Color.WHITE;
 
         // actors
-        fullscreenButton = new TextButton(MENU_ITEM_FULL_SCREEN, new TextButton.TextButtonStyle(buttonStyle));
+        fullscreenButton = new TextButton(getMenuItemFullScreen(), new TextButton.TextButtonStyle(buttonStyle));
+        debugModeButton = new TextButton(getMenuItemDebugMode(), new TextButton.TextButtonStyle(buttonStyle));
         controlsButton = new TextButton(MENU_ITEM_CONTROLS, new TextButton.TextButtonStyle(buttonStyle));
         backButton = new TextButton(MENU_ITEM_BACK, new TextButton.TextButtonStyle(buttonStyle));
 
@@ -118,9 +138,18 @@ public class MenuSettings extends MenuScreen {
         var newTable = new Table();
         newTable.setFillParent(true);
         newTable.add(fullscreenButton).spaceBottom(MENU_SPACE_BOTTOM).row();
+        newTable.add(debugModeButton).spaceBottom(MENU_SPACE_BOTTOM).row();
         newTable.add(controlsButton).spaceBottom(MENU_SPACE_BOTTOM).row();
         newTable.add(backButton);
         return newTable;
+    }
+
+    private String getMenuItemFullScreen() {
+        return Utils.getSettings().isFullscreen() ? MENU_ITEM_FULL_SCREEN_ON : MENU_ITEM_FULL_SCREEN_OFF;
+    }
+
+    private String getMenuItemDebugMode() {
+        return Utils.getSettings().isInDebugMode() ? MENU_ITEM_DEBUG_MODE_ON : MENU_ITEM_DEBUG_MODE_OFF;
     }
 
     private void applyListeners() {
@@ -128,8 +157,9 @@ public class MenuSettings extends MenuScreen {
         table.addListener(listenerKeyVertical);
         table.addListener(new ListenerKeyConfirm(this::updateMenuIndex, this::selectMenuItem, EXIT_INDEX));
         fullscreenButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 0));
-        controlsButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 1));
-        backButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 2));
+        debugModeButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 1));
+        controlsButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 2));
+        backButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 3));
     }
 
 }
