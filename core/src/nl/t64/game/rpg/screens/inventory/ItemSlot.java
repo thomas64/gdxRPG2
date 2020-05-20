@@ -59,7 +59,7 @@ public abstract class ItemSlot extends Stack {
 
     abstract void clearStack();
 
-    abstract void putInSlot(Actor actor);
+    abstract void putInSlot(InventoryImage draggedItem);
 
     abstract int getAmount();
 
@@ -67,20 +67,12 @@ public abstract class ItemSlot extends Stack {
 
     abstract void decrementAmountBy(int amount);
 
-    void putSingleItemInEmptySlot(Actor actor) {
-        putInSlot(actor);
+    void putItemBack(InventoryImage draggedItem) {
+        putInSlot(draggedItem);
     }
 
-    void putItemBack(Actor actor) {
-        putInSlot(actor);
-    }
-
-    void incrementAmount() {
-        incrementAmountBy(1);
-    }
-
-    void decrementAmount() {
-        decrementAmountBy(1);
+    int getHalfOfAmount() {
+        return (int) Math.floor(getAmount() / 2f);
     }
 
     void setItemColor() {

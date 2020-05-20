@@ -34,6 +34,14 @@ public class InventoryImage extends Image {
         return inventoryItem.isStackable();
     }
 
+    int getAmount() {
+        return inventoryItem.getAmount();
+    }
+
+    void setAmount(int amount) {
+        inventoryItem.setAmount(amount);
+    }
+
     public List<InventoryDescription> getSingleDescription(int totalMerchant) {
         final var descriptionCreator = new DescriptionCreator(inventoryItem, totalMerchant);
         return descriptionCreator.createItemDescriptionComparingToHero(InventoryUtils.getSelectedHero());

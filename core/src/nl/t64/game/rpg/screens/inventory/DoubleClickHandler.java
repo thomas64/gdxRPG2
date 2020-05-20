@@ -28,7 +28,7 @@ public final class DoubleClickHandler {
     private static void exchangeWithEquipSlotOfGroup(InventoryImage clickedItem,
                                                      ItemSlot clickedSlot,
                                                      ItemSlot targetSlot) {
-        clickedSlot.decrementAmount();
+        clickedSlot.clearStack();
         new ItemSlotsExchanger(clickedItem, clickedSlot, targetSlot).exchange();
     }
 
@@ -49,7 +49,7 @@ public final class DoubleClickHandler {
     private static void exchangeWithEmptyInventorySlot(InventoryImage clickedItem,
                                                        ItemSlot clickedSlot,
                                                        ItemSlot targetSlot) {
-        clickedSlot.decrementAmount();
+        clickedSlot.clearStack();
         new ItemSlotsExchanger(clickedItem, clickedSlot, targetSlot).exchange();
     }
 
@@ -89,35 +89,57 @@ public final class DoubleClickHandler {
                                                                          dragAndDrop));
     }
 
-    private static void exchangeWithInventorySlot(InventoryImage clickedItem,
-                                                  ItemSlot clickedSlot,
+    private static void exchangeWithInventorySlot(InventoryImage dragImage,
+                                                  ItemSlot sourceSlot,
                                                   ItemSlot targetSlot,
                                                   DragAndDrop dragAndDrop) {
-        int newAmount = clickedSlot.getAmount() - 1;
-        clickedSlot.clearStack();
-        if (newAmount > 0) {
-            clickedItem.inventoryItem.setAmount(1);
-            duplicateInSource(clickedItem, clickedSlot, newAmount, dragAndDrop);
+
+        int startAmount = sourceSlot.getAmount();
+        sourceSlot.clearStack();
+        if (isHandlingFullStack(startAmount)) {
+            dragImage = createDuplicate(dragImage, startAmount, dragAndDrop);
+        } else if (isHandlingPartOfStack(startAmount)) {
+            duplicateInSource(dragImage, sourceSlot, startAmount, dragAndDrop);
+            int dragAmount = getDragAmount(sourceSlot);
+            dragImage.setAmount(dragAmount);
+            sourceSlot.decrementAmountBy(dragAmount);
         } else {
-            clickedItem = createDuplicate(clickedItem, dragAndDrop);
+            throw new IllegalAccessError("Double click shop cannot reach this.");
         }
-        new ItemSlotsExchanger(clickedItem, clickedSlot, targetSlot).exchange();
+        new ItemSlotsExchanger(dragImage, sourceSlot, targetSlot).exchange();
     }
 
-    private static void duplicateInSource(InventoryImage clickedItem,
-                                          ItemSlot clickedSlot,
-                                          int newAmount,
+    private static boolean isHandlingFullStack(int startAmount) {
+        return startAmount == 1 || InventoryUtils.isShiftPressed();
+    }
+
+    private static boolean isHandlingPartOfStack(int startAmount) {
+        return startAmount > 1 && !InventoryUtils.isShiftPressed();
+    }
+
+    private static int getDragAmount(ItemSlot sourceSlot) {
+        if (InventoryUtils.isCtrlPressed()) {
+            return sourceSlot.getHalfOfAmount();
+        } else {
+            return 1;
+        }
+    }
+
+    private static void duplicateInSource(InventoryImage dragImage,
+                                          ItemSlot sourceSlot,
+                                          int startAmount,
                                           DragAndDrop dragAndDrop) {
-        var inventoryItem = new InventoryItem(clickedItem.inventoryItem);
-        inventoryItem.setAmount(newAmount);
+        var inventoryItem = new InventoryItem(dragImage.inventoryItem);
+        inventoryItem.setAmount(startAmount);
         var inventoryImage = new InventoryImage(inventoryItem);
-        clickedSlot.addToStack(inventoryImage);
+        sourceSlot.addToStack(inventoryImage);
         var itemSlotSource = new ItemSlotSource(inventoryImage, dragAndDrop);
         dragAndDrop.addSource(itemSlotSource);
     }
 
-    private static InventoryImage createDuplicate(InventoryImage clickedItem, DragAndDrop dragAndDrop) {
-        var inventoryItem = new InventoryItem(clickedItem.inventoryItem);
+    private static InventoryImage createDuplicate(InventoryImage dragImage, int dragAmount, DragAndDrop dragAndDrop) {
+        var inventoryItem = new InventoryItem(dragImage.inventoryItem);
+        inventoryItem.setAmount(dragAmount);
         var inventoryImage = new InventoryImage(inventoryItem);
         var itemSlotSource = new ItemSlotSource(inventoryImage, dragAndDrop);
         dragAndDrop.addSource(itemSlotSource);

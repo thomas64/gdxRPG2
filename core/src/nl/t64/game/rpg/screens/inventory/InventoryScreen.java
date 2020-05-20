@@ -251,7 +251,8 @@ public class InventoryScreen extends PartySubject implements Screen, ProfileObse
         switch (command) {
             case EXIT_CONVERSATION -> hideConversationDialog();
             case HERO_DISMISS -> dismissHero();
-            default -> throw new IllegalAccessError("That ConversationCommand cannot be reached here.");
+            default -> throw new IllegalAccessError(
+                    String.format("ConversationCommand '%s' cannot be reached here.", command));
         }
     }
 

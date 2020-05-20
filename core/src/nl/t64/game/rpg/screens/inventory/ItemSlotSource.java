@@ -29,31 +29,45 @@ public class ItemSlotSource extends Source {
     @Override
     public Payload dragStart(InputEvent event, float x, float y, int pointer) {
         sourceSlot = (ItemSlot) super.getActor().getParent();
-        sourceSlot.decrementAmount();
-        int newAmount = sourceSlot.getAmount();
-        var payload = new Payload();
         var dragImage = sourceSlot.getCertainInventoryImage();
-        dragImage.inventoryItem.setAmount(1);
+        int startAmount = sourceSlot.getAmount();
+        sourceSlot.clearStack();
+        if (startAmount > 1) {
+            handlePartOfStack(dragImage, startAmount);
+        }
+        var payload = new Payload();
         payload.setDragActor(dragImage);
         dragAndDrop.setDragActorPosition(payload.getDragActor().getWidth() / 2,
                                          -payload.getDragActor().getHeight() / 2);
-        if (newAmount > 0) {
-            duplicateInSource(dragImage, newAmount);
-        }
         return payload;
+    }
+
+    private void handlePartOfStack(InventoryImage dragImage, int startAmount) {
+        if (InventoryUtils.isShiftPressed() && InventoryUtils.isCtrlPressed()) {
+            // do nothing
+        } else if (InventoryUtils.isCtrlPressed()) {
+            duplicateInSource(dragImage, startAmount);
+            dragImage.setAmount(sourceSlot.getHalfOfAmount());
+            sourceSlot.decrementAmountBy(sourceSlot.getHalfOfAmount());
+        } else if (!InventoryUtils.isShiftPressed()) {
+            duplicateInSource(dragImage, startAmount);
+            dragImage.setAmount(1);
+            sourceSlot.decrementAmountBy(1);
+        }
     }
 
     @Override
     public void dragStop(InputEvent event, float x, float y, int pointer, Payload payload, Target target) {
         boolean targetExist = target != null;
         if (!targetExist) {
-            sourceSlot.putItemBack(payload.getDragActor());
+            var draggedItem = (InventoryImage) payload.getDragActor();
+            sourceSlot.putItemBack(draggedItem);
         }
     }
 
-    private void duplicateInSource(InventoryImage dragImage, int newAmount) {
+    private void duplicateInSource(InventoryImage dragImage, int startAmount) {
         var inventoryItem = new InventoryItem(dragImage.inventoryItem);
-        inventoryItem.setAmount(newAmount);
+        inventoryItem.setAmount(startAmount);
         var inventoryImage = new InventoryImage(inventoryItem);
         sourceSlot.addToStack(inventoryImage);
         var itemSlotSource = new ItemSlotSource(inventoryImage, dragAndDrop);

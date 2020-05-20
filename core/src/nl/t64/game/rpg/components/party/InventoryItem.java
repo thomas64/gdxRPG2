@@ -19,6 +19,7 @@ public class InventoryItem {
     int sort;
     @Getter
     List<String> description;
+    @Getter
     int amount;
     @Getter
     InventoryGroup group;

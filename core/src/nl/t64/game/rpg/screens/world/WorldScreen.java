@@ -221,7 +221,8 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
                 show();
             }
             case HERO_DISMISS,
-                    NONE -> throw new IllegalAccessError("That ConversationCommand cannot be reached here.");
+                    NONE -> throw new IllegalAccessError(
+                    String.format("ConversationCommand '%s' cannot be reached here.", command));
         }
     }
 

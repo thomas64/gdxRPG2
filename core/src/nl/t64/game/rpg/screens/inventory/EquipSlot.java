@@ -75,8 +75,8 @@ class EquipSlot extends ItemSlot {
     }
 
     @Override
-    void putInSlot(Actor actor) {
-        addToStack(actor);
+    void putInSlot(InventoryImage draggedItem) {
+        addToStack(draggedItem);
     }
 
     @Override

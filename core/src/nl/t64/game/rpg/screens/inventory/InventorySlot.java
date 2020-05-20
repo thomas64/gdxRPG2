@@ -72,11 +72,11 @@ public class InventorySlot extends ItemSlot {
     }
 
     @Override
-    void putInSlot(Actor actor) {
+    void putInSlot(InventoryImage draggedItem) {
         if (hasItem()) {
-            incrementAmountBy(1);
+            incrementAmountBy(draggedItem.getAmount());
         } else {
-            addToStack(actor);
+            addToStack(draggedItem);
         }
     }
 
