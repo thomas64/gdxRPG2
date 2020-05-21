@@ -1,7 +1,6 @@
 package nl.t64.game.rpg.components.conversation;
 
 import lombok.Getter;
-import nl.t64.game.rpg.constants.ConversationCommand;
 
 
 @Getter
@@ -15,13 +14,13 @@ public class ConversationChoice {
     private String destinationId;
     private ConversationCommand conversationCommand;
 
-    public ConversationChoice() {
+    private ConversationChoice() {
         this.text = DEFAULT_ANSWER_TEXT;
         this.destinationId = DEFAULT_DESTINATION_ID;
         this.conversationCommand = DEFAULT_CONVERSATION_COMMAND;
     }
 
-    public ConversationChoice(String destinationId) {
+    ConversationChoice(String destinationId) {
         this.text = DEFAULT_ANSWER_TEXT;
         this.destinationId = destinationId;
         this.conversationCommand = DEFAULT_CONVERSATION_COMMAND;

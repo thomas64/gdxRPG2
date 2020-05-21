@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.constants;
+package nl.t64.game.rpg.components.conversation;
 
 public enum ConversationCommand {
     EXIT_CONVERSATION,

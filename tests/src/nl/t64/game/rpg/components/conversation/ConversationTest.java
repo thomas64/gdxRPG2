@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import nl.t64.game.rpg.GameData;
 import nl.t64.game.rpg.GameTest;
-import nl.t64.game.rpg.constants.ConversationCommand;
 import nl.t64.game.rpg.profile.ProfileManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -17,7 +17,7 @@ public class ConversationGraph {
     private Map<String, ConversationPhrase> phrases;
     private Map<String, List<ConversationChoice>> choices;
 
-    public ConversationGraph() {
+    private ConversationGraph() {
         this.currentPhraseId = DEFAULT_STARTING_PHRASE_ID;
     }
 
