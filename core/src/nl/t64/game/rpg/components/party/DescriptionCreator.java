@@ -15,6 +15,10 @@ public class DescriptionCreator {
     private final InventoryItem inventoryItem;
     private final int partySumOfMerchantSkill;
 
+    public List<InventoryDescription> createItemDescription() {
+        return createDescriptionList(InventoryDescription::new);
+    }
+
     public List<InventoryDescription> createItemDescriptionComparingToHero(HeroItem hero) {
         return createDescriptionList((key, value) -> new InventoryDescription(key, value, inventoryItem, hero));
     }

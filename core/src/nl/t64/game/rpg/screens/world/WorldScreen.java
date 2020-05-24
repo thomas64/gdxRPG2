@@ -17,6 +17,7 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.character.Character;
 import nl.t64.game.rpg.components.character.*;
 import nl.t64.game.rpg.components.conversation.ConversationCommand;
+import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.components.party.HeroContainer;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.PartyContainer;
@@ -28,6 +29,9 @@ import nl.t64.game.rpg.events.character.PathUpdateEvent;
 import nl.t64.game.rpg.screens.LoadScreen;
 import nl.t64.game.rpg.screens.inventory.PartyObserver;
 import nl.t64.game.rpg.screens.inventory.PartySubject;
+import nl.t64.game.rpg.screens.loot.LootObserver;
+import nl.t64.game.rpg.screens.loot.LootScreen;
+import nl.t64.game.rpg.screens.loot.LootSubject;
 import nl.t64.game.rpg.screens.shop.ShopScreen;
 import nl.t64.game.rpg.screens.world.conversation.ConversationDialog;
 import nl.t64.game.rpg.screens.world.pathfinding.TiledNode;
@@ -39,7 +43,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class WorldScreen implements Screen, MapObserver, ComponentObserver, PartyObserver {
+public class WorldScreen implements Screen, MapObserver, ComponentObserver, PartyObserver, LootObserver {
 
     private static final int[] UNDER_LAYERS = new int[]{0, 1, 2, 3, 4, 5};
     private static final int[] OVER_LAYERS = new int[]{6, 7, 8};
@@ -60,6 +64,8 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
     @Getter
     private List<Character> npcCharacters;
     private Character currentNpcCharacter;
+    @Getter
+    private List<Character> sparkles;
     private ShapeRenderer shapeRenderer;
     private PartyWindow partyWindow;
     private ConversationDialog conversationDialog;
@@ -76,6 +82,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
         this.player = new Character(new InputPlayer(this.multiplexer), new PhysicsPlayer(), new GraphicsPlayer());
         this.player.registerObserver(this);
         this.npcCharacters = new ArrayList<>(0);
+        this.sparkles = new ArrayList<>(0);
         this.shapeRenderer = new ShapeRenderer();
         this.partyWindow = new PartyWindow();
         this.conversationDialog = new ConversationDialog(this::handleConversationCommand);
@@ -84,6 +91,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
 
         Utils.getMapManager().addObserver(this);
         ((PartySubject) Utils.getScreenManager().getScreen(ScreenType.INVENTORY)).addObserver(this);
+        ((LootSubject) Utils.getScreenManager().getScreen(ScreenType.LOOT)).addObserver(this);
     }
 
     @Override
@@ -93,8 +101,11 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
         player.send(new LoadCharacterEvent(currentMap.playerSpawnDirection,
                                            currentMap.playerSpawnLocation));
         npcCharacters.forEach(Character::unregisterObserver);
+        sparkles.forEach(Character::unregisterObserver);
         npcCharacters = new NpcCharactersLoader(currentMap).createNpcs();
+        sparkles = new SparklesLoader(currentMap).createSparkles();
         npcCharacters.forEach(npcCharacter -> npcCharacter.registerObserver(this));
+        sparkles.forEach(sparkle -> sparkle.registerObserver(this));
         partyMembers = new PartyMembersLoader(player).loadPartyMembers();
     }
 
@@ -114,8 +125,20 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
     }
 
     @Override
+    public void onNotifyShowSparkleDialog(Loot sparkle) {
+        openLootScreen(sparkle);
+    }
+
+    @Override
     public void onNotifyHeroDismissed() {
         partyMembers = new PartyMembersLoader(player).loadPartyMembers();
+    }
+
+    @Override
+    public void onNotifyLootTaken() {
+        sparkles.forEach(Character::unregisterObserver);
+        sparkles = new SparklesLoader(Utils.getMapManager().currentMap).createSparkles();
+        sparkles.forEach(sparkle -> sparkle.registerObserver(this));
     }
 
     @Override
@@ -159,6 +182,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
 
     private void updateCharacters(float dt) {
         player.update(dt);
+        sparkles.forEach(sparkle -> sparkle.update(dt));
         npcCharacters.forEach(npcCharacter -> npcCharacter.update(dt));
         partyMembers.forEach(partyMember -> partyMember.send(new PathUpdateEvent(getPathOf(partyMember))));
         partyMembers.forEach(partyMember -> partyMember.update(dt));
@@ -178,6 +202,8 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
     private void renderCharacters() {
         shapeRenderer.setProjectionMatrix(camera.combined);
         mapRenderer.getBatch().begin();
+
+        sparkles.forEach(sparkle -> sparkle.render(mapRenderer.getBatch(), shapeRenderer));
 
         List<Character> allCharacters = new ArrayList<>();
         allCharacters.addAll(Utils.reverseList(partyMembers));
@@ -212,7 +238,6 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
             case LOAD_SHOP -> {
                 conversationDialog.hide();
                 show();
-                render(0f);
                 openShopScreen();
             }
             case SAVE_GAME -> {
@@ -229,7 +254,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
     private void tryToAddHeroToParty() {
         HeroContainer heroes = Utils.getGameData().getHeroes();
         PartyContainer party = Utils.getGameData().getParty();
-        String heroId = currentNpcCharacter.getCharacterId();
+        String heroId = currentNpcCharacter.getNpcId();
         HeroItem hero = heroes.getHero(heroId);
 
         if (party.isFull()) {
@@ -244,6 +269,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
 
     private void refreshNpcCharacters() {
         Utils.getMapManager().removeFromBlockers(currentNpcCharacter.getBoundingBox());
+        currentNpcCharacter.unregisterObserver();
         npcCharacters = npcCharacters.stream()
                                      .filter(npcCharacter -> !npcCharacter.equals(currentNpcCharacter))
                                      .collect(Collectors.toUnmodifiableList());
@@ -259,22 +285,31 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
     }
 
     private void openInventoryScreen() {
-        player.resetInput();
-        var inventoryLoadScreen = (LoadScreen) Utils.getScreenManager().getScreen(ScreenType.INVENTORY_LOAD);
-        inventoryLoadScreen.setBackground(createScreenshot(false));
-        Utils.getScreenManager().setScreen(ScreenType.INVENTORY_LOAD);
+        openLoadScreen(ScreenType.INVENTORY_LOAD);
     }
 
     private void openShopScreen() {
-        player.resetInput();
-
         var shopScreen = (ShopScreen) Utils.getScreenManager().getScreen(ScreenType.SHOP);
-        shopScreen.setNpcId(currentNpcCharacter.getCharacterId());
+        shopScreen.setNpcId(currentNpcCharacter.getNpcId());
         shopScreen.setShopId(currentNpcCharacter.getConversationId());
 
-        var shopLoadScreen = (LoadScreen) Utils.getScreenManager().getScreen(ScreenType.SHOP_LOAD);
-        shopLoadScreen.setBackground(createScreenshot(false));
-        Utils.getScreenManager().setScreen(ScreenType.SHOP_LOAD);
+        openLoadScreen(ScreenType.SHOP_LOAD);
+    }
+
+    private void openLootScreen(Loot sparkle) {
+        var lootScreen = (LootScreen) Utils.getScreenManager().getScreen(ScreenType.LOOT);
+        lootScreen.setLoot(sparkle);
+        lootScreen.setLootTitle("   Found");
+
+        openLoadScreen(ScreenType.LOOT_LOAD);
+    }
+
+    private void openLoadScreen(ScreenType screenType) {
+        player.resetInput();
+        render(0f);
+        var loadScreen = (LoadScreen) Utils.getScreenManager().getScreen(screenType);
+        loadScreen.setBackground(createScreenshot(true));
+        Utils.getScreenManager().setScreen(screenType);
     }
 
     private Image createScreenshot(boolean withBlur) {
@@ -359,6 +394,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
         if (showObjects) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             player.debug(shapeRenderer);
+            sparkles.forEach(sparkle -> sparkle.debug(shapeRenderer));
             npcCharacters.forEach(npcCharacter -> npcCharacter.debug(shapeRenderer));
             partyMembers.forEach(partyMember -> partyMember.debug(shapeRenderer));
             Utils.getMapManager().currentMap.debug(shapeRenderer);

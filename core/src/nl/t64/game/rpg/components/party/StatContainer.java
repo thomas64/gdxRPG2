@@ -1,7 +1,6 @@
 package nl.t64.game.rpg.components.party;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import lombok.Setter;
 
 import java.beans.ConstructorProperties;
 import java.util.Arrays;
@@ -11,7 +10,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 
-@Setter
 class StatContainer {
 
     private static final int NUMBER_OF_STAT_SLOTS = 7;

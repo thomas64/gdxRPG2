@@ -11,7 +11,8 @@ public class ShopLoadScreen extends LoadScreen {
     @Override
     protected void setScreen() {
         var shopScreen = (ShopScreen) Utils.getScreenManager().getScreen(ScreenType.SHOP);
-        shopScreen.setBackground((Image) stage.getActors().get(0));
+        shopScreen.setBackground((Image) stage.getActors().get(0),
+                                 (Image) stage.getActors().get(1));
         Utils.getScreenManager().setScreen(ScreenType.SHOP);
     }
 

@@ -182,7 +182,7 @@ public class HeroesTable {
         return new Image(colorsOfHpBars[index]);
     }
 
-    void disposePixmapTextures() {
+    public void disposePixmapTextures() {
         Arrays.stream(colorsOfHpBars).filter(Objects::nonNull).forEach(Texture::dispose);
     }
 

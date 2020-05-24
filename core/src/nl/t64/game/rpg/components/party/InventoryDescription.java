@@ -11,6 +11,12 @@ public class InventoryDescription {
     final Object value;     // Object can be Integer or String.
     final ThreeState compare;
 
+    InventoryDescription(Object key, Object value) {
+        this.key = key;
+        this.value = value;
+        this.compare = ThreeState.SAME;
+    }
+
     InventoryDescription(Object key, Object value, InventoryItem item, HeroItem hero) {
         this.key = key;
         this.value = value;

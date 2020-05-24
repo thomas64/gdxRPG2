@@ -32,6 +32,10 @@ public class InventorySlotsTable {
     private final InventoryContainer inventory;
 
     public InventorySlotsTable(DragAndDrop dragAndDrop, ItemSlotTooltip tooltip) {
+        this(dragAndDrop, tooltip, CONTAINER_HEIGHT);
+    }
+
+    public InventorySlotsTable(DragAndDrop dragAndDrop, ItemSlotTooltip tooltip, float containerHeight) {
         this.inventory = Utils.getGameData().getInventory();
         this.dragAndDrop = dragAndDrop;
         this.tooltip = tooltip;
@@ -40,7 +44,7 @@ public class InventorySlotsTable {
 
         this.scrollPane = new ScrollPane(this.inventorySlotTable);
         this.container = new Table();
-        this.container.add(this.scrollPane).height(CONTAINER_HEIGHT);
+        this.container.add(this.scrollPane).height(containerHeight);
         setTopBorder();
     }
 

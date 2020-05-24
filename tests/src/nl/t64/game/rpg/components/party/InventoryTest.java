@@ -63,10 +63,10 @@ class InventoryTest extends GameTest {
         InventoryItem gold = inventoryDB.createInventoryItem(GOLD, 5);
         InventoryItem herbs = inventoryDB.createInventoryItemForShop(HERBS);
         InventoryItem potion = inventoryDB.createInventoryItemForShop(POTION);
-        assertThat(spices.amount).isEqualTo(1);
-        assertThat(gold.amount).isEqualTo(5);
-        assertThat(herbs.amount).isEqualTo(100);
-        assertThat(potion.amount).isEqualTo(20);
+        assertThat(spices.getAmount()).isEqualTo(1);
+        assertThat(gold.getAmount()).isEqualTo(5);
+        assertThat(herbs.getAmount()).isEqualTo(100);
+        assertThat(potion.getAmount()).isEqualTo(20);
     }
 
     @Test
@@ -244,6 +244,17 @@ class InventoryTest extends GameTest {
     }
 
     @Test
+    void whenCheckingSomeLeftoverMethodsInInventory_ShouldSucceed() {
+        assertThat(inventory.getAllFilledSlots()).hasSize(2);
+        assertThat(inventory.isEmpty()).isFalse();
+        inventory.clearItemAt(0);
+        inventory.clearItemAt(inventory.getLastIndex());
+        assertThat(inventory.isEmpty()).isTrue();
+        inventory.forceSetItemAt(8, new InventoryItem());
+        assertThat(inventory.findFirstFilledSlot()).hasValue(8);
+    }
+
+    @Test
     void whenInventoryIsSorted_ShouldBeSortedAndMerged() {
         InventoryItem gold1 = inventoryDB.createInventoryItem(GOLD);
         InventoryItem gold2 = inventoryDB.createInventoryItem(GOLD);
@@ -284,15 +295,11 @@ class InventoryTest extends GameTest {
         inventory.autoSetItem(mace);
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Test
     void whenInventoryItemWeapon_ShouldCreateDescription() {
         InventoryItem weapon = inventoryDB.createInventoryItem(BASIC_MACE);
-        HeroItem heroMock = Mockito.mock(HeroItem.class);
-        Mockito.when(heroMock.getSkillById(SkillItemId.HAFTED)).thenReturn(new Hafted(1));
-        Mockito.when(heroMock.getStatById(StatItemId.STRENGTH)).thenReturn(new Strength(1));
         List<InventoryDescription> description = new DescriptionCreator(weapon, 0)
-                .createItemDescriptionComparingToHero(heroMock);
+                .createItemDescription();
         assertThat(description.get(0).key).isEqualTo(InventoryGroup.WEAPON);
         assertThat(description.get(0).value).isEqualTo("Basic Mace");
         assertThat(description.get(1).key).isEqualTo("Price");
@@ -310,15 +317,11 @@ class InventoryTest extends GameTest {
         assertThatExceptionOfType(IndexOutOfBoundsException.class).isThrownBy(() -> description.get(7));
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Test
     void whenInventoryItemShield_ShouldCreateDescription() {
         InventoryItem weapon = inventoryDB.createInventoryItem("basic_light_shield");
-        HeroItem heroMock = Mockito.mock(HeroItem.class);
-        Mockito.when(heroMock.getSkillById(SkillItemId.SHIELD)).thenReturn(new Shield(1));
-        Mockito.when(heroMock.getStatById(StatItemId.STRENGTH)).thenReturn(new Strength(1));
         List<InventoryDescription> description = new DescriptionCreator(weapon, 0)
-                .createItemDescriptionComparingToHero(heroMock);
+                .createItemDescription();
         assertThat(description.get(0).key).isEqualTo(InventoryGroup.SHIELD);
         assertThat(description.get(0).value).isEqualTo("Basic Light Shield");
         assertThat(description.get(1).key).isEqualTo("Price");
@@ -340,13 +343,11 @@ class InventoryTest extends GameTest {
         assertThatExceptionOfType(IndexOutOfBoundsException.class).isThrownBy(() -> description.get(9));
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Test
     void whenInventoryItemChest_ShouldCreateDescription() {
         InventoryItem weapon = inventoryDB.createInventoryItem(BASIC_LIGHT_CHEST);
-        HeroItem heroMock = Mockito.mock(HeroItem.class);
         List<InventoryDescription> description = new DescriptionCreator(weapon, 0)
-                .createItemDescriptionComparingToHero(heroMock);
+                .createItemDescription();
         assertThat(description.get(0).key).isEqualTo(InventoryGroup.CHEST);
         assertThat(description.get(0).value).isEqualTo("Basic Light Chest");
         assertThat(description.get(1).key).isEqualTo("Price");

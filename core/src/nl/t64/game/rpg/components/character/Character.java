@@ -81,6 +81,11 @@ public class Character {
         return physicsComponent.currentPosition;
     }
 
+    public Rectangle getRectangle() {
+        Vector2 position = physicsComponent.currentPosition;
+        return new Rectangle(position.x, position.y, Constant.TILE_SIZE, Constant.TILE_SIZE);
+    }
+
     public Direction getDirection() {
         return physicsComponent.direction;
     }
@@ -89,7 +94,7 @@ public class Character {
         return physicsComponent.state;
     }
 
-    public String getCharacterId() {
+    public String getNpcId() {
         return ((PhysicsNpc) physicsComponent).npcId;
     }
 

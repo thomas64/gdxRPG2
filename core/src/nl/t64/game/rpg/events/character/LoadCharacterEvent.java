@@ -13,6 +13,10 @@ public class LoadCharacterEvent implements Event {
     public final Vector2 position;
     public final String conversationId;
 
+    public LoadCharacterEvent(Vector2 position) {
+        this(null, null, position, null);
+    }
+
     public LoadCharacterEvent(Direction direction, Vector2 position) {
         this(null, direction, position, null);
     }

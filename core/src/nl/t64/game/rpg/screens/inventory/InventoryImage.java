@@ -42,6 +42,11 @@ public class InventoryImage extends Image {
         inventoryItem.setAmount(amount);
     }
 
+    public List<InventoryDescription> getComparelessDescriptin(int totalMerchant) {
+        final var descriptionCreator = new DescriptionCreator(inventoryItem, totalMerchant);
+        return descriptionCreator.createItemDescription();
+    }
+
     public List<InventoryDescription> getSingleDescription(int totalMerchant) {
         final var descriptionCreator = new DescriptionCreator(inventoryItem, totalMerchant);
         return descriptionCreator.createItemDescriptionComparingToHero(InventoryUtils.getSelectedHero());

@@ -1,12 +1,4 @@
 {
-  "priest01": {
-    "source": "people2",
-    "col": 2,
-    "row": 1
-  },
-  "fairy01": {
-    "source": "nature1",
-    "col": 1,
-    "row": 2
-  }
+  "priest01": {"source": "people2", "col": 2, "row": 1},
+  "fairy01": {"source": "nature1", "col": 1, "row": 2}
 }

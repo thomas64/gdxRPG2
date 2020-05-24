@@ -1,6 +1,7 @@
 package nl.t64.game.rpg.components.party;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 
@@ -11,7 +12,17 @@ public class InventoryContainer {
     private final List<InventoryItem> inventory;
 
     public InventoryContainer() {
-        this.inventory = new ArrayList<>(Collections.nCopies(NUMBER_OF_SLOTS, null));
+        this(NUMBER_OF_SLOTS);
+    }
+
+    public InventoryContainer(int numberOfSlots) {
+        this.inventory = new ArrayList<>(Collections.nCopies(numberOfSlots, null));
+    }
+
+    public List<InventoryItem> getAllFilledSlots() {
+        return inventory.stream()
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList());
     }
 
     public int getAmountOfItemAt(int index) {
@@ -68,6 +79,10 @@ public class InventoryContainer {
 
     public int getSize() {
         return inventory.size();
+    }
+
+    public boolean isEmpty() {
+        return inventory.stream().noneMatch(Objects::nonNull);
     }
 
     public void sort() {
@@ -150,30 +165,28 @@ public class InventoryContainer {
     }
 
     public Optional<Integer> findFirstSlotWithItem(String itemId) {
-        for (int i = 0; i < getSize(); i++) {
-            if (containsItemAt(i, itemId)) {
-                return Optional.of(i);
-            }
-        }
-        return Optional.empty();
+        return IntStream.range(0, getSize()).boxed()
+                        .filter(index -> containsItemAt(index, itemId))
+                        .findFirst();
+    }
+
+    public OptionalInt findFirstFilledSlot() {
+        return IntStream.range(0, getSize())
+                        .filter(index -> getItemAt(index).isPresent())
+                        .findFirst();
     }
 
     public Optional<Integer> findFirstEmptySlot() {
-        for (int i = 0; i < getSize(); i++) {
-            if (isSlotEmpty(i)) {
-                return Optional.of(i);
-            }
-        }
-        return Optional.empty();
+        return IntStream.range(0, getSize()).boxed()
+                        .filter(this::isSlotEmpty)
+                        .findFirst();
     }
 
     private Optional<Integer> findLastEmptySlot() {
-        for (int i = getLastIndex(); i >= 0; i--) {
-            if (isSlotEmpty(i)) {
-                return Optional.of(i);
-            }
-        }
-        return Optional.empty();
+        return IntStream.range(0, getSize()).boxed()
+                        .sorted(Collections.reverseOrder())
+                        .filter(this::isSlotEmpty)
+                        .findFirst();
     }
 
     private boolean isSlotEmpty(int index) {

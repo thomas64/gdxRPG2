@@ -11,7 +11,8 @@ public class InventoryLoadScreen extends LoadScreen {
     @Override
     protected void setScreen() {
         var inventoryScreen = (InventoryScreen) Utils.getScreenManager().getScreen(ScreenType.INVENTORY);
-        inventoryScreen.setBackground((Image) stage.getActors().get(0));
+        inventoryScreen.setBackground((Image) stage.getActors().get(0),
+                                      (Image) stage.getActors().get(1));
         Utils.getScreenManager().setScreen(ScreenType.INVENTORY);
     }
 

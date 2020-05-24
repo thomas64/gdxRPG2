@@ -14,7 +14,7 @@ import nl.t64.game.rpg.constants.Direction;
 
 abstract class GraphicsComponent extends ComponentSubject implements Component {
 
-    private float frameTime = 0f;
+    float frameTime = 0f;
     float frameDuration;
     TextureRegion currentFrame = null;
     CharacterState state;

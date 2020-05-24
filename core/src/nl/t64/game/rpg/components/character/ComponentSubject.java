@@ -1,5 +1,7 @@
 package nl.t64.game.rpg.components.character;
 
+import nl.t64.game.rpg.components.loot.Loot;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,10 @@ class ComponentSubject {
 
     void notifyShowNoteDialog(String noteId) {
         observers.forEach(observer -> observer.onNotifyShowNoteDialog(noteId));
+    }
+
+    void notifyShowSparkleDialog(Loot sparkle) {
+        observers.forEach(observer -> observer.onNotifyShowSparkleDialog(sparkle));
     }
 
 }

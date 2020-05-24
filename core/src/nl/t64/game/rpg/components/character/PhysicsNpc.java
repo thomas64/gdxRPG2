@@ -22,7 +22,7 @@ public class PhysicsNpc extends PhysicsComponent {
 
     final String npcId;
     String conversationId;
-    boolean isSelected;
+    private boolean isSelected;
 
     public PhysicsNpc(String npcId) {
         this.npcId = npcId;
@@ -135,7 +135,7 @@ public class PhysicsNpc extends PhysicsComponent {
     public void debug(ShapeRenderer shapeRenderer) {
         shapeRenderer.setColor(Color.PURPLE);
         if (!state.equals(CharacterState.IMMOBILE)
-                && !state.equals(CharacterState.FLOATING)) {
+            && !state.equals(CharacterState.FLOATING)) {
             shapeRenderer.rect(wanderBox.x, wanderBox.y, wanderBox.width, wanderBox.height);
         }
         shapeRenderer.setColor(Color.YELLOW);

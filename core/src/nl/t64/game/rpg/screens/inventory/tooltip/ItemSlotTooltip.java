@@ -59,7 +59,7 @@ public class ItemSlotTooltip extends BaseToolTip {
         window.pack();
     }
 
-    private void createResourceTooltip(InventoryImage inventoryImage) {
+    void createResourceTooltip(InventoryImage inventoryImage) {
         createSingleTooltip(inventoryImage);
         window.add().row();
         window.add(createLabel(EMPTY_ROW, Color.WHITE)).row();
@@ -67,7 +67,7 @@ public class ItemSlotTooltip extends BaseToolTip {
         window.add(createLabel(description, Color.WHITE));
     }
 
-    private void createSingleTooltip(InventoryImage inventoryImage) {
+    void createSingleTooltip(InventoryImage inventoryImage) {
         final var hoveredTable = new Table();
         hoveredTable.defaults().align(Align.left);
 
@@ -112,7 +112,7 @@ public class ItemSlotTooltip extends BaseToolTip {
         return equippedTable;
     }
 
-    private void addAttributesForSingleDescription(List<InventoryDescription> descriptionList, Table hoveredTable) {
+    void addAttributesForSingleDescription(List<InventoryDescription> descriptionList, Table hoveredTable) {
         descriptionList.forEach(attribute -> {
             final var labelStyle = createLabelStyle(attribute);
             hoveredTable.add(new Label(getKey(attribute), labelStyle)).spaceRight(COLUMN_SPACING);

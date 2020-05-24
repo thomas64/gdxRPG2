@@ -23,7 +23,6 @@ public class PhysicsPlayer extends PhysicsComponent {
     private List<Character> npcCharacters;
     private boolean isActionPressed;
 
-
     public PhysicsPlayer() {
         this.isActionPressed = false;
         this.boundingBoxWidthPercentage = 0.80f;
@@ -37,7 +36,6 @@ public class PhysicsPlayer extends PhysicsComponent {
             currentPosition = loadEvent.position;
             setBoundingBox();
         }
-
         if (event instanceof StateEvent stateEvent) {
             state = stateEvent.state;
         }
@@ -69,6 +67,7 @@ public class PhysicsPlayer extends PhysicsComponent {
     private void checkActionPressed() {
         if (isActionPressed) {
             selectNpcCharacterCandidate();
+            checkSparkles();
             checkNotes();
             checkSavePoints();
             checkWarpPoints();
@@ -78,13 +77,21 @@ public class PhysicsPlayer extends PhysicsComponent {
 
     private void selectNpcCharacterCandidate() {
         npcCharacters.forEach(npc -> npc.send(new DeselectEvent()));
-        Optional<Character> npcCharacter = npcCharacters.stream()
-                                                        .filter(checkRectOverlapsNpc())
-                                                        .findFirst();
-        npcCharacter.ifPresent(npc -> {
-            npc.send(new SelectEvent());
-            npc.send(new WaitEvent(npc.getPosition(), currentPosition));
-        });
+        npcCharacters.stream()
+                     .filter(checkRectOverlapsNpc())
+                     .findFirst()
+                     .ifPresent(npc -> {
+                         npc.send(new SelectEvent());
+                         npc.send(new WaitEvent(npc.getPosition(), currentPosition));
+                     });
+    }
+
+    private void checkSparkles() {
+        Utils.getScreenManager().getWorldScreen().getSparkles()
+             .stream()
+             .filter(checkRectOverlapsSparkle())
+             .findFirst()
+             .ifPresent(sparkle -> sparkle.send(new SelectEvent()));
     }
 
     private void checkNotes() {
@@ -129,6 +136,10 @@ public class PhysicsPlayer extends PhysicsComponent {
 
     private Predicate<Character> checkRectOverlapsNpc() {
         return npcCharacter -> getCheckRect().overlaps(npcCharacter.getBoundingBox());
+    }
+
+    private Predicate<Character> checkRectOverlapsSparkle() {
+        return sparkle -> getCheckRect().overlaps(sparkle.getRectangle());
     }
 
     private Predicate<Character> littleBitBiggerBoxOverlapsNpc() {

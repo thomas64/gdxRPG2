@@ -26,7 +26,6 @@ import nl.t64.game.rpg.screens.world.conversation.ConversationDialog;
 
 public class InventoryScreen extends PartySubject implements Screen, ProfileObserver {
 
-    private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
     private static final String BUTTON_CLOSE_UP = "close_up";
     private static final String BUTTON_CLOSE_OVER = "close_over";
     private static final String BUTTON_CLOSE_DOWN = "close_down";
@@ -186,10 +185,7 @@ public class InventoryScreen extends PartySubject implements Screen, ProfileObse
         conversationDialog.dispose();
     }
 
-    void setBackground(Image screenshot) {
-        var texture = Utils.getResourceManager().getTextureAsset(SPRITE_PARCHMENT);
-        var parchment = new Image(texture);
-        parchment.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    void setBackground(Image screenshot, Image parchment) {
         stage.addActor(screenshot);
         stage.addActor(parchment);
     }

@@ -3,6 +3,7 @@ package nl.t64.game.rpg;
 import lombok.Getter;
 import nl.t64.game.rpg.components.conversation.ConversationContainer;
 import nl.t64.game.rpg.components.conversation.PhraseIdContainer;
+import nl.t64.game.rpg.components.loot.SparkleContainer;
 import nl.t64.game.rpg.components.party.*;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.profile.ProfileManager;
@@ -16,6 +17,7 @@ public class GameData implements ProfileObserver {
     private PartyContainer party;
     private InventoryContainer inventory;
     private ConversationContainer conversations;
+    private SparkleContainer sparkles;
 
     @Override
     public void onNotifyCreateProfile(ProfileManager profileManager) {
@@ -23,6 +25,7 @@ public class GameData implements ProfileObserver {
         party = new PartyContainer();
         inventory = new InventoryContainer();
         conversations = new ConversationContainer();
+        sparkles = new SparkleContainer();
         addFirstHeroToParty();
         addFirstItemsToInventory();
         onNotifySaveProfile(profileManager);
@@ -34,6 +37,7 @@ public class GameData implements ProfileObserver {
         profileManager.setProperty("party", party);
         profileManager.setProperty("inventory", inventory);
         profileManager.setProperty("conversations", conversations.getCurrentPhraseIds());
+        profileManager.setProperty("sparkles", sparkles);
     }
 
     @Override
@@ -44,6 +48,7 @@ public class GameData implements ProfileObserver {
         conversations = new ConversationContainer();
         var currentPhraseIds = profileManager.getProperty("conversations", PhraseIdContainer.class);
         conversations.setCurrentPhraseIds(currentPhraseIds);
+        sparkles = profileManager.getProperty("sparkles", SparkleContainer.class);
     }
 
     private void addFirstHeroToParty() {

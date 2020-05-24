@@ -59,7 +59,7 @@ public class InventorySlot extends ItemSlot {
 
     @Override
     public boolean doesAcceptItem(InventoryImage draggedItem) {
-        return true;
+        return !filterGroup.equals(InventoryGroup.LOOT_ITEM);
     }
 
     @Override

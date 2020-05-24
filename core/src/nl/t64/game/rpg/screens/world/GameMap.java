@@ -44,6 +44,7 @@ class GameMap {
     final List<GameMapNpc> npcs = new ArrayList<>();
     final List<GameMapHero> heroes = new ArrayList<>();
     final List<Rectangle> blockers = new ArrayList<>();
+    final List<RectangleMapObject> sparkles = new ArrayList<>();
     private final List<Rectangle> savePoints = new ArrayList<>();
     private final List<GameMapSpawnPoint> spawnPoints = new ArrayList<>();
     private final List<GameMapPortal> portals = new ArrayList<>();
@@ -60,6 +61,7 @@ class GameMap {
         this.loadNpcs();
         this.loadHeroes();
         this.loadBlockers();
+        this.loadSparkles();
         this.loadSavePoints();
         this.loadSpawnPoints();
         this.loadPortals();
@@ -185,6 +187,17 @@ class GameMap {
         });
     }
 
+    private void loadSparkles() {
+        getMapLayer(REST_LAYER).ifPresent(mapLayer -> {
+            for (MapObject mapObject : mapLayer.getObjects()) {
+                if (mapObject.getName().startsWith("sparkle")) {
+                    RectangleMapObject rectObject = (RectangleMapObject) mapObject;
+                    sparkles.add(rectObject);
+                }
+            }
+        });
+    }
+
     private void loadSavePoints() {
         getMapLayer(SAVE_LAYER).ifPresent(mapLayer -> {
             for (MapObject mapObject : mapLayer.getObjects()) {
@@ -260,6 +273,14 @@ class GameMap {
         }
         for (GameMapHero hero : heroes) {
             rect = hero.rectangle;
+            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+        }
+        for (RectangleMapObject note : notes) {
+            rect = note.getRectangle();
+            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+        }
+        for (RectangleMapObject sparkle : sparkles) {
+            rect = sparkle.getRectangle();
             shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
         }
     }

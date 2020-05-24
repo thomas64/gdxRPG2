@@ -51,13 +51,21 @@ public class InputNpc extends InputComponent {
         stateTime = MathUtils.random(1.0f, 2.0f);
 
         switch (state) {
-            case WALKING -> state = CharacterState.IDLE;
-            case IDLE -> {
+            case INVISIBLE:
+                break;
+            case WALKING:
+                state = CharacterState.IDLE;
+                break;
+            case IDLE:
                 state = CharacterState.WALKING;
                 direction = Direction.getRandom();
-            }
-            case IMMOBILE, FLOATING -> direction = originalDirection;
-            case ALIGNING -> throw new IllegalArgumentException("CharacterState 'ALIGNING' is not usable.");
+                break;
+            case IMMOBILE:
+            case FLOATING:
+                direction = originalDirection;
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("CharacterState '%s' not usable.", state));
         }
     }
 
@@ -72,17 +80,17 @@ public class InputNpc extends InputComponent {
     }
 
     private void turnToPlayer(Vector2 npcPosition, Vector2 playerPosition) {
-        if (npcPosition.x < playerPosition.x &&
-                Math.abs(npcPosition.y - playerPosition.y) < Math.abs(npcPosition.x - playerPosition.x)) {
+        if (npcPosition.x < playerPosition.x
+            && Math.abs(npcPosition.y - playerPosition.y) < Math.abs(npcPosition.x - playerPosition.x)) {
             direction = Direction.EAST;
-        } else if (npcPosition.x > playerPosition.x &&
-                Math.abs(npcPosition.y - playerPosition.y) < Math.abs(npcPosition.x - playerPosition.x)) {
+        } else if (npcPosition.x > playerPosition.x
+                   && Math.abs(npcPosition.y - playerPosition.y) < Math.abs(npcPosition.x - playerPosition.x)) {
             direction = Direction.WEST;
-        } else if (npcPosition.y < playerPosition.y &&
-                Math.abs(npcPosition.y - playerPosition.y) > Math.abs(npcPosition.x - playerPosition.x)) {
+        } else if (npcPosition.y < playerPosition.y
+                   && Math.abs(npcPosition.y - playerPosition.y) > Math.abs(npcPosition.x - playerPosition.x)) {
             direction = Direction.NORTH;
-        } else if (npcPosition.y > playerPosition.y &&
-                Math.abs(npcPosition.y - playerPosition.y) > Math.abs(npcPosition.x - playerPosition.x)) {
+        } else if (npcPosition.y > playerPosition.y
+                   && Math.abs(npcPosition.y - playerPosition.y) > Math.abs(npcPosition.x - playerPosition.x)) {
             direction = Direction.SOUTH;
         }
     }

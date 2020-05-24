@@ -3,6 +3,8 @@ package nl.t64.game.rpg.screens.inventory;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import nl.t64.game.rpg.components.party.InventoryItem;
 
+import java.util.Map;
+
 
 public final class DoubleClickHandler {
 
@@ -18,11 +20,14 @@ public final class DoubleClickHandler {
     }
 
     private static void exchangeWithPossibleEquipSlotOfGroup(InventoryImage clickedItem, ItemSlot clickedSlot) {
-        InventoryUtils.getScreenUI()
-                      .getEquipSlotsTables()
-                      .get(InventoryUtils.getSelectedHero().getId())
-                      .getPossibleSlotOfGroup(clickedItem.inventoryGroup)
-                      .ifPresent(targetSlot -> exchangeWithEquipSlotOfGroup(clickedItem, clickedSlot, targetSlot));
+        Map<String, EquipSlotsTable> equipSlotsTables = InventoryUtils.getScreenUI().getEquipSlotsTables();
+        if (!equipSlotsTables.isEmpty()) {
+            equipSlotsTables.get(InventoryUtils.getSelectedHero().getId())
+                            .getPossibleSlotOfGroup(clickedItem.inventoryGroup)
+                            .ifPresent(targetSlot -> exchangeWithEquipSlotOfGroup(clickedItem,
+                                                                                  clickedSlot,
+                                                                                  targetSlot));
+        }
     }
 
     private static void exchangeWithEquipSlotOfGroup(InventoryImage clickedItem,
