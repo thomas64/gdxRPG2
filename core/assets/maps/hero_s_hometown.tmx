@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="96" height="78" tilewidth="24" tileheight="24" infinite="0" nextlayerid="43" nextobjectid="163">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="96" height="78" tilewidth="24" tileheight="24" infinite="0" nextlayerid="44" nextobjectid="165">
  <tileset firstgid="1" name="hero_s_hometown" tilewidth="24" tileheight="24" tilecount="8294" columns="143">
   <image source="tilesets/hero_s_hometown.png" width="3432" height="1392"/>
  </tileset>
@@ -751,116 +751,6 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup color="#aa55ff" id="13" name="hero_layer">
-  <object id="118" name="luana" x="984" y="1128" width="48" height="24">
-   <properties>
-    <property name="conversation" value="luana01"/>
-    <property name="direction" value="south"/>
-   </properties>
-  </object>
-  <object id="119" name="reignald" x="1056" y="1128" width="48" height="24">
-   <properties>
-    <property name="conversation" value="reignald01"/>
-    <property name="direction" value="south"/>
-   </properties>
-  </object>
-  <object id="120" name="ryiah" x="1128" y="1128" width="48" height="24">
-   <properties>
-    <property name="conversation" value="ryiah01"/>
-    <property name="direction" value="south"/>
-   </properties>
-  </object>
-  <object id="121" name="valter" x="1152" y="1200" width="48" height="24">
-   <properties>
-    <property name="conversation" value="valter01"/>
-    <property name="direction" value="south"/>
-   </properties>
-  </object>
-  <object id="122" name="galen" x="1152" y="1272" width="48" height="24">
-   <properties>
-    <property name="conversation" value="galen01"/>
-    <property name="direction" value="south"/>
-   </properties>
-  </object>
-  <object id="123" name="jaspar" x="1128" y="1344" width="48" height="24">
-   <properties>
-    <property name="conversation" value="jaspar01"/>
-    <property name="direction" value="south"/>
-   </properties>
-  </object>
-  <object id="124" name="kiara" x="1056" y="1344" width="48" height="24">
-   <properties>
-    <property name="conversation" value="kiara01"/>
-    <property name="direction" value="south"/>
-   </properties>
-  </object>
-  <object id="125" name="luthais" x="984" y="1344" width="48" height="24">
-   <properties>
-    <property name="conversation" value="luthais01"/>
-    <property name="direction" value="south"/>
-   </properties>
-  </object>
-  <object id="126" name="elias" x="960" y="1272" width="48" height="24">
-   <properties>
-    <property name="conversation" value="elias01"/>
-    <property name="direction" value="south"/>
-   </properties>
-  </object>
-  <object id="127" name="onarr" x="960" y="1200" width="48" height="24">
-   <properties>
-    <property name="conversation" value="onarr01"/>
-    <property name="direction" value="south"/>
-   </properties>
-  </object>
-  <object id="128" name="duilio" x="1248" y="1224" width="48" height="24">
-   <properties>
-    <property name="conversation" value="duilio01"/>
-    <property name="direction" value="south"/>
-   </properties>
-  </object>
-  <object id="129" name="iellwen" x="864" y="1224" width="48" height="24">
-   <properties>
-    <property name="conversation" value="iellwen01"/>
-    <property name="direction" value="south"/>
-   </properties>
-  </object>
-  <object id="130" name="faeron" type="w" x="1056" y="1512" width="48" height="24">
-   <properties>
-    <property name="conversation" value="faeron01"/>
-    <property name="direction" value="south"/>
-   </properties>
-  </object>
-  <object id="162" name="luana" type="w" x="1968" y="1392" width="48" height="24">
-   <properties>
-    <property name="conversation" value="luana02"/>
-    <property name="hasBeenRecruited" type="bool" value="true"/>
-   </properties>
-  </object>
- </objectgroup>
- <objectgroup color="#55ff7f" id="42" name="npc_layer">
-  <object id="158" name="woman01" x="1488" y="1176" width="48" height="24">
-   <properties>
-    <property name="conversation" value="resourceshop01"/>
-    <property name="direction" value="south"/>
-   </properties>
-  </object>
-  <object id="161" name="woman01" type="inv" x="1488" y="1224" width="48" height="12">
-   <properties>
-    <property name="conversation" value="resourceshop01"/>
-   </properties>
-  </object>
-  <object id="159" name="man01" x="1632" y="1176" width="48" height="24">
-   <properties>
-    <property name="conversation" value="equipshop01"/>
-    <property name="direction" value="south"/>
-   </properties>
-  </object>
-  <object id="160" name="man01" type="inv" x="1632" y="1224" width="48" height="12">
-   <properties>
-    <property name="conversation" value="equipshop01"/>
-   </properties>
-  </object>
- </objectgroup>
  <objectgroup color="#aa0000" id="8" name="collision_layer">
   <object id="2" x="768" y="0" width="1152" height="240"/>
   <object id="3" x="0" y="0" width="768" height="144"/>
@@ -977,6 +867,120 @@
   <object id="151" x="528" y="840" width="48" height="24"/>
   <object id="154" x="672" y="1368" width="48" height="24"/>
   <object id="155" x="336" y="1368" width="288" height="24"/>
+ </objectgroup>
+ <objectgroup color="#5500ff" id="43" name="rest_layer">
+  <object id="164" name="note_well_hero_s_hometown" x="1848" y="1296" width="96" height="96"/>
+  <object id="163" name="note_stump_hero_s_hometown" x="1824" y="384" width="48" height="48"/>
+ </objectgroup>
+ <objectgroup color="#aa55ff" id="13" name="hero_layer">
+  <object id="118" name="luana" x="984" y="1128" width="48" height="24">
+   <properties>
+    <property name="conversation" value="luana01"/>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="119" name="reignald" x="1056" y="1128" width="48" height="24">
+   <properties>
+    <property name="conversation" value="reignald01"/>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="120" name="ryiah" x="1128" y="1128" width="48" height="24">
+   <properties>
+    <property name="conversation" value="ryiah01"/>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="121" name="valter" x="1152" y="1200" width="48" height="24">
+   <properties>
+    <property name="conversation" value="valter01"/>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="122" name="galen" x="1152" y="1272" width="48" height="24">
+   <properties>
+    <property name="conversation" value="galen01"/>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="123" name="jaspar" x="1128" y="1344" width="48" height="24">
+   <properties>
+    <property name="conversation" value="jaspar01"/>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="124" name="kiara" x="1056" y="1344" width="48" height="24">
+   <properties>
+    <property name="conversation" value="kiara01"/>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="125" name="luthais" x="984" y="1344" width="48" height="24">
+   <properties>
+    <property name="conversation" value="luthais01"/>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="126" name="elias" x="960" y="1272" width="48" height="24">
+   <properties>
+    <property name="conversation" value="elias01"/>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="127" name="onarr" x="960" y="1200" width="48" height="24">
+   <properties>
+    <property name="conversation" value="onarr01"/>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="128" name="duilio" x="1248" y="1224" width="48" height="24">
+   <properties>
+    <property name="conversation" value="duilio01"/>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="129" name="iellwen" x="864" y="1224" width="48" height="24">
+   <properties>
+    <property name="conversation" value="iellwen01"/>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="130" name="faeron" type="w" x="1056" y="1512" width="48" height="24">
+   <properties>
+    <property name="conversation" value="faeron01"/>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="162" name="luana" type="w" x="1968" y="1392" width="48" height="24">
+   <properties>
+    <property name="conversation" value="luana02"/>
+    <property name="hasBeenRecruited" type="bool" value="true"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup color="#55ff7f" id="42" name="npc_layer">
+  <object id="158" name="woman01" x="1488" y="1176" width="48" height="24">
+   <properties>
+    <property name="conversation" value="resourceshop01"/>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="161" name="woman01" type="inv" x="1488" y="1224" width="48" height="12">
+   <properties>
+    <property name="conversation" value="resourceshop01"/>
+   </properties>
+  </object>
+  <object id="159" name="man01" x="1632" y="1176" width="48" height="24">
+   <properties>
+    <property name="conversation" value="equipshop01"/>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="160" name="man01" type="inv" x="1632" y="1224" width="48" height="12">
+   <properties>
+    <property name="conversation" value="equipshop01"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup color="#55aaff" id="11" name="spawn_layer">
   <object id="113" name="starter_path" x="1920" y="24" width="48" height="24"/>

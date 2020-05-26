@@ -1,17 +1,18 @@
 {
-  "note_statue_hero_s_hometown_hero_s_chamber": {
+  "note_stump_hero_s_hometown": {
     "phrases": {
-      "1": {
-        "text": ["What a beautiful statue. Somehow it looks a little bit like you. That's strange..."]
-      }
+      "1": {"text": ["It's a stump."]},
+      "2": {"text": ["You're stumped."]}
     },
-    "choices": {
-      "1": [
-        {
-          "conversationCommand": "EXIT_CONVERSATION"
-        }
-      ]
-    }
+    "choices": {"2": [{"conversationCommand": "EXIT_CONVERSATION"}]}
+  },
+  "note_well_hero_s_hometown": {
+    "phrases": {"1": {"text": ["What a deep water well.", "Better not fall in and get wet."]}},
+    "choices": {"1": [{"conversationCommand": "EXIT_CONVERSATION"}]}
+  },
+  "note_statue_hero_s_hometown_hero_s_chamber": {
+    "phrases": {"1": {"text": ["What a beautiful statue. Somehow it looks a little bit like you. That's strange..."]}},
+    "choices": {"1": [{"conversationCommand": "EXIT_CONVERSATION"}]}
   },
   "note_plaque_hero_s_hometown_hero_s_chamber": {
     "phrases": {
@@ -21,12 +22,6 @@
         ]
       }
     },
-    "choices": {
-      "1": [
-        {
-          "conversationCommand": "EXIT_CONVERSATION"
-        }
-      ]
-    }
+    "choices": {"1": [{"conversationCommand": "EXIT_CONVERSATION"}]}
   }
 }
