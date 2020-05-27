@@ -4,22 +4,23 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import nl.t64.game.rpg.screens.inventory.ItemSlot;
 
 
-public class ItemSlotTooltipListener extends ClickListener {
+public class ButtonTooltipListener extends ClickListener {
 
-    private static final float OFFSET_X = 20f;
-    private static final float OFFSET_Y = 10f;
+    private static final float OFFSET_X = 0f;
+    private static final float OFFSET_Y = -100f;
 
-    private final ItemSlotTooltip toolTip;
+    private final ButtonToolTip toolTip;
+    private final String title;
     private final Vector2 currentCoords;
     private final Vector2 offset;
     private boolean isInside;
     private boolean touchDown;
 
-    public ItemSlotTooltipListener(ItemSlotTooltip toolTip) {
+    public ButtonTooltipListener(ButtonToolTip toolTip, String title) {
         this.toolTip = toolTip;
+        this.title = title;
         this.currentCoords = new Vector2();
         this.offset = new Vector2(OFFSET_X, OFFSET_Y);
         this.isInside = false;
@@ -28,56 +29,47 @@ public class ItemSlotTooltipListener extends ClickListener {
 
     @Override
     public boolean mouseMoved(InputEvent event, float x, float y) {
-        ItemSlot itemSlot = (ItemSlot) event.getListenerActor();
         if (isInside) {
-            currentCoords.set(x, y);
-            itemSlot.localToStageCoordinates(currentCoords);
-            toolTip.setPosition(currentCoords.x + offset.x, currentCoords.y + offset.y);
+            setTooltipPosition(event, x, y);
         }
         return false;
     }
 
     @Override
     public void touchDragged(InputEvent event, float x, float y, int pointer) {
-        ItemSlot itemSlot = (ItemSlot) event.getListenerActor();
-        toolTip.setVisible(itemSlot, false);
+        toolTip.setVisible(false);
         touchDown = false;
     }
 
     @Override
     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
         touchDown = true;
-        ItemSlot itemSlot = (ItemSlot) event.getListenerActor();
-        toolTip.setVisible(itemSlot, false);
+        toolTip.setVisible(false);
         return true;
     }
 
     @Override
     public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
         isInside = true;
-
         if (!touchDown) {
-            ItemSlot itemSlot = (ItemSlot) event.getListenerActor();
-
-            currentCoords.set(x, y);
-            itemSlot.localToStageCoordinates(currentCoords);
-
-            toolTip.updateDescription(itemSlot);
-            toolTip.setPosition(currentCoords.x + offset.x, currentCoords.y + offset.y);
+            setTooltipPosition(event, x, y);
+            toolTip.updateDescription(title);
             toolTip.toFront();
-            toolTip.setVisible(itemSlot, true);
+            toolTip.setVisible(true);
         }
     }
 
     @Override
     public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-        ItemSlot itemSlot = (ItemSlot) event.getListenerActor();
-        toolTip.setVisible(itemSlot, false);
+        toolTip.setVisible(false);
         isInside = false;
-
-        currentCoords.set(x, y);
-        itemSlot.localToStageCoordinates(currentCoords);
         touchDown = false;
+    }
+
+    private void setTooltipPosition(InputEvent event, float x, float y) {
+        currentCoords.set(x, y);
+        event.getListenerActor().localToStageCoordinates(currentCoords);
+        toolTip.setPosition(currentCoords.x + offset.x, currentCoords.y + offset.y);
     }
 
 }

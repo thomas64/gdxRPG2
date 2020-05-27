@@ -26,14 +26,13 @@ public class PersonalityTooltipListener extends ClickListener {
 
     @Override
     public boolean mouseMoved(InputEvent event, float x, float y) {
-        currentCoords.set(x, y);
-        event.getListenerActor().localToStageCoordinates(currentCoords);
-        toolTip.setPosition(currentCoords.x + offset.x, currentCoords.y + offset.y);
+        setTooltipPosition(event, x, y);
         return false;
     }
 
     @Override
     public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+        setTooltipPosition(event, x, y);
         toolTip.updateDescription(personalityItem);
         toolTip.toFront();
         toolTip.setVisible(true);
@@ -42,6 +41,12 @@ public class PersonalityTooltipListener extends ClickListener {
     @Override
     public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
         toolTip.setVisible(false);
+    }
+
+    private void setTooltipPosition(InputEvent event, float x, float y) {
+        currentCoords.set(x, y);
+        event.getListenerActor().localToStageCoordinates(currentCoords);
+        toolTip.setPosition(currentCoords.x + offset.x, currentCoords.y + offset.y);
     }
 
 }

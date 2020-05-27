@@ -21,6 +21,8 @@ import nl.t64.game.rpg.components.party.PartyContainer;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.profile.ProfileObserver;
+import nl.t64.game.rpg.screens.inventory.tooltip.ButtonToolTip;
+import nl.t64.game.rpg.screens.inventory.tooltip.ButtonTooltipListener;
 import nl.t64.game.rpg.screens.world.conversation.ConversationDialog;
 
 
@@ -69,6 +71,7 @@ public class InventoryScreen extends PartySubject implements Screen, ProfileObse
 
     private final Stage stage;
     private final ConversationDialog conversationDialog;
+    private final ButtonToolTip buttonToolTip;
     InventoryUI inventoryUI;
 
     private Vector2 spellsWindowPosition;
@@ -82,6 +85,7 @@ public class InventoryScreen extends PartySubject implements Screen, ProfileObse
     public InventoryScreen() {
         this.stage = new Stage();
         this.conversationDialog = new ConversationDialog(this::handleConversationCommand);
+        this.buttonToolTip = new ButtonToolTip();
     }
 
     @Override
@@ -143,6 +147,7 @@ public class InventoryScreen extends PartySubject implements Screen, ProfileObse
         inventoryUI.heroesWindow.setPosition(heroesWindowPosition.x, heroesWindowPosition.y);
         inventoryUI.addToStage(stage);
         inventoryUI.applyListeners(stage);
+        buttonToolTip.addToStage(stage);
     }
 
     @Override
@@ -199,12 +204,19 @@ public class InventoryScreen extends PartySubject implements Screen, ProfileObse
         var sortButton = createImageButton(BUTTON_SORT_UP, BUTTON_SORT_OVER, BUTTON_SORT_DOWN);
         var helpButton = createImageButton(BUTTON_HELP_UP, BUTTON_HELP_OVER, BUTTON_HELP_DOWN);
         closeButton.addListener(new ListenerMouseImageButton(this::closeScreen));
+        closeButton.addListener(new ButtonTooltipListener(buttonToolTip, "Close screen"));
         resetButton.addListener(new ListenerMouseImageButton(this::resetWindowsPositions));
+        resetButton.addListener(new ButtonTooltipListener(buttonToolTip, "Reset windows"));
         previousButton.addListener(new ListenerMouseImageButton(InventoryUtils::selectPreviousHero));
+        previousButton.addListener(new ButtonTooltipListener(buttonToolTip, "Previous hero"));
         nextButton.addListener(new ListenerMouseImageButton(InventoryUtils::selectNextHero));
+        nextButton.addListener(new ButtonTooltipListener(buttonToolTip, "Next hero"));
         dismissButton.addListener(new ListenerMouseImageButton(this::tryToDismissHero));
+        dismissButton.addListener(new ButtonTooltipListener(buttonToolTip, "Dismiss hero"));
         sortButton.addListener(new ListenerMouseImageButton(this::sortInventory));
+        sortButton.addListener(new ButtonTooltipListener(buttonToolTip, "Sort inventory"));
         helpButton.addListener(new ListenerMouseImageButton(this::showHelpMessage));
+        helpButton.addListener(new ButtonTooltipListener(buttonToolTip, "Help dialog"));
 
         var buttonTable = new Table();
         buttonTable.add(closeButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();

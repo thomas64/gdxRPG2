@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="26" height="42" tilewidth="24" tileheight="24" infinite="0" nextlayerid="23" nextobjectid="45">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="26" height="42" tilewidth="24" tileheight="24" infinite="0" nextlayerid="23" nextobjectid="47">
  <tileset firstgid="1" name="hero_s_hometown_chief_s_house" tilewidth="24" tileheight="24" tilecount="832" columns="32">
   <image source="tilesets/hero_s_hometown_chief_s_house.png" width="768" height="624"/>
  </tileset>
@@ -89,8 +89,8 @@
 1,202,135,278,342,278,342,278,342,278,342,278,342,278,342,278,603,659,348,410,20,21,665,659,281,1,
 1,261,144,338,210,338,210,338,210,338,210,338,210,338,210,338,210,338,349,411,210,338,666,660,468,1,
 1,202,135,278,342,278,342,278,342,278,342,278,342,278,342,278,342,278,350,351,342,278,667,668,281,1,
-1,261,136,808,809,808,809,808,809,808,809,810,811,209,210,338,210,338,210,338,339,219,210,338,468,1,
-1,202,137,140,203,140,203,140,203,140,203,206,207,208,342,278,342,278,342,278,340,341,342,278,281,1,
+1,261,136,808,809,808,809,808,809,808,809,810,811,209,210,338,210,338,210,338,339,219,3,4,468,1,
+1,202,137,140,203,140,203,140,203,140,203,206,207,208,342,278,342,278,342,278,340,341,279,280,281,1,
 1,261,138,139,204,139,204,139,204,139,204,205,811,209,210,338,210,338,3,4,3,4,3,4,468,1,
 1,202,137,140,203,140,203,140,203,140,203,206,207,208,342,278,342,278,279,280,279,280,279,280,281,1,
 1,199,0,0,0,0,204,139,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,282,1,
@@ -423,7 +423,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup color="#aa0000" id="11" name="collision_layer">
+ <objectgroup color="#aa0000" id="11" name="collision_layer" visible="0">
   <object id="4" x="192" y="888" width="432" height="120"/>
   <object id="5" x="0" y="888" width="144" height="120"/>
   <object id="6" x="576" y="0" width="48" height="888"/>
@@ -450,9 +450,9 @@
   <object id="34" x="48" y="144" width="48" height="96"/>
   <object id="35" x="432" y="720" height="48"/>
   <object id="36" x="480" y="720" height="48"/>
-  <object id="37" x="528" y="768" width="48"/>
-  <object id="38" x="528" y="744" height="24"/>
   <object id="44" x="144" y="960" width="48" height="48"/>
+  <object id="45" x="528" y="768" width="48" height="48"/>
+  <object id="46" x="528" y="744" height="24"/>
  </objectgroup>
  <objectgroup color="#55aaff" id="12" name="spawn_layer">
   <object id="2" name="hero_s_hometown" x="144" y="912" width="48" height="24"/>
