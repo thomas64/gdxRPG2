@@ -2,7 +2,7 @@
   "gold": {
     "name": "Gold",
     "group": "RESOURCE",
-    "sort": 5,
+    "sort": 999,
     "description": [
       "Gold can be used to pay for goods or services."
     ]

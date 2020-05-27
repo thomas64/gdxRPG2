@@ -48,7 +48,7 @@ public class InventoryContainer {
         if (newItem.isStackable()) {
             addResource(newItem);
         } else {
-            addEquipmentAtEmptySlot(newItem);
+            addItemAtEmptySlot(newItem);
         }
     }
 
@@ -127,16 +127,11 @@ public class InventoryContainer {
 
     private void addResource(InventoryItem newItem) {
         getItem(newItem.id).ifPresentOrElse(inventoryItem -> inventoryItem.increaseAmountWith(newItem),
-                                            addResourceAtEmptySlot(newItem)
+                                            () -> addItemAtEmptySlot(newItem)
         );
     }
 
-    private Runnable addResourceAtEmptySlot(InventoryItem newItem) {
-        return () -> findLastEmptySlot().ifPresentOrElse(index -> slotIsEmptySoSetItemAt(index, newItem),
-                                                         throwException("Inventory is full."));
-    }
-
-    private void addEquipmentAtEmptySlot(InventoryItem newItem) {
+    private void addItemAtEmptySlot(InventoryItem newItem) {
         findFirstEmptySlot().ifPresentOrElse(index -> slotIsEmptySoSetItemAt(index, newItem),
                                              throwException("Inventory is full."));
     }
@@ -172,19 +167,12 @@ public class InventoryContainer {
 
     public OptionalInt findFirstFilledSlot() {
         return IntStream.range(0, getSize())
-                        .filter(index -> getItemAt(index).isPresent())
+                        .filter(index -> !isSlotEmpty(index))
                         .findFirst();
     }
 
     public Optional<Integer> findFirstEmptySlot() {
         return IntStream.range(0, getSize()).boxed()
-                        .filter(this::isSlotEmpty)
-                        .findFirst();
-    }
-
-    private Optional<Integer> findLastEmptySlot() {
-        return IntStream.range(0, getSize()).boxed()
-                        .sorted(Collections.reverseOrder())
                         .filter(this::isSlotEmpty)
                         .findFirst();
     }

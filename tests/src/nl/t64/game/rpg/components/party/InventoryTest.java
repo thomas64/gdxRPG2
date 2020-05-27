@@ -33,13 +33,14 @@ class InventoryTest extends GameTest {
         gameData.onNotifyCreateProfile(profileManager);
         inventoryDB = InventoryDatabase.getInstance();
         inventory = gameData.getInventory();
+        inventory.sort();
     }
 
     @Test
     void whenResourceItemIsCreated_ShouldHaveVariables() {
         InventoryItem gold = inventoryDB.createInventoryItem(GOLD);
         assertThat(gold.name).isEqualTo("Gold");
-        assertThat(gold.sort).isEqualTo(5);
+        assertThat(gold.sort).isEqualTo(999);
         assertThat(gold.getGroup()).isEqualTo(InventoryGroup.RESOURCE);
         assertThat(gold.getDescription()).isEqualTo(
                 List.of("Gold can be used to pay for goods or services."));
@@ -111,14 +112,14 @@ class InventoryTest extends GameTest {
     }
 
     @Test
-    void whenResourceItemIsAdded_ShouldBeAddedToEndOfInventory() {
+    void whenResourceItemIsAdded_ShouldBeAddedToStartOfInventory() {
         InventoryItem herbs = inventoryDB.createInventoryItem(HERBS);
         assertThat(inventory.contains(HERBS)).isFalse();
-        assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex() - 1)).isEqualTo(0);
+        assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(0);
         inventory.autoSetItem(herbs);
         assertThat(inventory.contains(HERBS)).isTrue();
-        assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex() - 1)).isEqualTo(1);
-        assertThat(inventory.getItemAt(inventory.getLastIndex() - 1)).containsSame(herbs);
+        assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(1);
+        assertThat(inventory.getItemAt(1)).containsSame(herbs);
     }
 
     @Test
@@ -278,10 +279,10 @@ class InventoryTest extends GameTest {
 
         assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(1);
         assertThat(inventory.getItemAt(0)).containsSame(chest);
-        assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex())).isEqualTo(161);
-        assertThat(inventory.getItemAt(inventory.getLastIndex())).containsSame(herbs1);
-        assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex() - 1)).isEqualTo(3);
-        assertThat(inventory.getItemAt(inventory.getLastIndex() - 1)).containsSame(gold1);
+        assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex())).isEqualTo(3);
+        assertThat(inventory.getItemAt(inventory.getLastIndex())).containsSame(gold1);
+        assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex() - 1)).isEqualTo(161);
+        assertThat(inventory.getItemAt(inventory.getLastIndex() - 1)).containsSame(herbs1);
     }
 
     @Test
