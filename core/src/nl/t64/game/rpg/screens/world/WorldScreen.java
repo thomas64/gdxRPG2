@@ -30,7 +30,6 @@ import nl.t64.game.rpg.screens.LoadScreen;
 import nl.t64.game.rpg.screens.inventory.PartyObserver;
 import nl.t64.game.rpg.screens.inventory.PartySubject;
 import nl.t64.game.rpg.screens.loot.LootObserver;
-import nl.t64.game.rpg.screens.loot.LootScreen;
 import nl.t64.game.rpg.screens.loot.LootSubject;
 import nl.t64.game.rpg.screens.shop.ShopScreen;
 import nl.t64.game.rpg.screens.world.conversation.ConversationDialog;
@@ -54,23 +53,23 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
     private static boolean showDebug = false;
 
     private GameState gameState;
-    private Camera camera;
+    private final Camera camera;
+    private final OrthogonalTiledMapRenderer mapRenderer;
+    private final InputMultiplexer multiplexer;
+    private final ShapeRenderer shapeRenderer;
+    private final PartyWindow partyWindow;
+    private final ConversationDialog conversationDialog;
+    private final MessageDialog messageDialog;
+    private final DebugBox debugBox;
 
-    private OrthogonalTiledMapRenderer mapRenderer;
-    private InputMultiplexer multiplexer;
-    private Character player;
+    private final Character player;
     @Getter
     private List<Character> partyMembers;
     @Getter
     private List<Character> npcCharacters;
     private Character currentNpcCharacter;
     @Getter
-    private List<Character> sparkles;
-    private ShapeRenderer shapeRenderer;
-    private PartyWindow partyWindow;
-    private ConversationDialog conversationDialog;
-
-    private DebugBox debugBox;
+    private List<Character> lootList;
 
     public WorldScreen() {
         this.camera = new Camera();
@@ -79,13 +78,17 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
         this.multiplexer.addProcessor(new WorldScreenListener(this::openMenuPause,
                                                               this::openInventoryScreen,
                                                               this::showHidePartyWindow));
-        this.player = new Character(new InputPlayer(this.multiplexer), new PhysicsPlayer(), new GraphicsPlayer());
+        this.player = new Character(Constant.PLAYER_ID,
+                                    new InputPlayer(this.multiplexer),
+                                    new PhysicsPlayer(),
+                                    new GraphicsPlayer());
         this.player.registerObserver(this);
         this.npcCharacters = new ArrayList<>(0);
-        this.sparkles = new ArrayList<>(0);
+        this.lootList = new ArrayList<>(0);
         this.shapeRenderer = new ShapeRenderer();
         this.partyWindow = new PartyWindow();
         this.conversationDialog = new ConversationDialog(this::handleConversationCommand);
+        this.messageDialog = new MessageDialog(this.multiplexer);
 
         this.debugBox = new DebugBox(this.player);
 
@@ -101,19 +104,20 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
         player.send(new LoadCharacterEvent(currentMap.playerSpawnDirection,
                                            currentMap.playerSpawnLocation));
         npcCharacters.forEach(Character::unregisterObserver);
-        sparkles.forEach(Character::unregisterObserver);
+        lootList.forEach(Character::unregisterObserver);
         npcCharacters = new NpcCharactersLoader(currentMap).createNpcs();
-        sparkles = new SparklesLoader(currentMap).createSparkles();
+        lootList = new LootLoader(currentMap).createLoot();
         npcCharacters.forEach(npcCharacter -> npcCharacter.registerObserver(this));
-        sparkles.forEach(sparkle -> sparkle.registerObserver(this));
+        lootList.forEach(loot -> loot.registerObserver(this));
         partyMembers = new PartyMembersLoader(player).loadPartyMembers();
+        currentMap.setTiledGraph();
     }
 
     @Override
-    public void onNotifyShowConversationDialog(String conversationId, String characterId, Character npcCharacter) {
+    public void onNotifyShowConversationDialog(String conversationId, Character npcCharacter) {
         this.currentNpcCharacter = npcCharacter;
         player.resetInput();
-        conversationDialog.loadConversation(conversationId, characterId);
+        conversationDialog.loadConversation(conversationId, npcCharacter.getId());
         conversationDialog.show();
     }
 
@@ -125,8 +129,24 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
     }
 
     @Override
-    public void onNotifyShowSparkleDialog(Loot sparkle) {
-        openLootScreen(sparkle);
+    public void onNotifyShowLootDialog(Loot loot) {
+        player.resetInput();
+        var lootScreenLoader = new LootScreenLoader(this::openLoadScreen, loot);
+        lootScreenLoader.openLootScreen();
+    }
+
+    @Override
+    public void onNotifyShowLootDialog(Loot loot, String message) {
+        var lootScreenLoader = new LootScreenLoader(this::openLoadScreen, loot);
+        onNotifyShowMessageDialog(message);
+        messageDialog.setScreenAfterHide(lootScreenLoader::openLootScreen);
+    }
+
+    @Override
+    public void onNotifyShowMessageDialog(String message) {
+        player.resetInput();
+        messageDialog.setMessage(message);
+        messageDialog.show();
     }
 
     @Override
@@ -136,9 +156,9 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
 
     @Override
     public void onNotifyLootTaken() {
-        sparkles.forEach(Character::unregisterObserver);
-        sparkles = new SparklesLoader(Utils.getMapManager().currentMap).createSparkles();
-        sparkles.forEach(sparkle -> sparkle.registerObserver(this));
+        lootList.forEach(Character::unregisterObserver);
+        lootList = new LootLoader(Utils.getMapManager().currentMap).createLoot();
+        lootList.forEach(loot -> loot.registerObserver(this));
     }
 
     @Override
@@ -164,6 +184,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
         updateDebugBox(dt);
         partyWindow.update(dt);
         conversationDialog.update(dt);
+        messageDialog.update(dt);
     }
 
     public List<Character> createCopyOfCharactersWithPlayerButWithoutThisNpc(Character thisNpcCharacter) {
@@ -182,7 +203,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
 
     private void updateCharacters(float dt) {
         player.update(dt);
-        sparkles.forEach(sparkle -> sparkle.update(dt));
+        lootList.forEach(loot -> loot.update(dt));
         npcCharacters.forEach(npcCharacter -> npcCharacter.update(dt));
         partyMembers.forEach(partyMember -> partyMember.send(new PathUpdateEvent(getPathOf(partyMember))));
         partyMembers.forEach(partyMember -> partyMember.update(dt));
@@ -203,7 +224,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
         shapeRenderer.setProjectionMatrix(camera.combined);
         mapRenderer.getBatch().begin();
 
-        sparkles.forEach(sparkle -> sparkle.render(mapRenderer.getBatch(), shapeRenderer));
+        lootList.forEach(loot -> loot.render(mapRenderer.getBatch(), shapeRenderer));
 
         List<Character> allCharacters = new ArrayList<>();
         allCharacters.addAll(Utils.reverseList(partyMembers));
@@ -245,8 +266,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
                 conversationDialog.hideWithFade();
                 show();
             }
-            case HERO_DISMISS,
-                    NONE -> throw new IllegalAccessError(
+            default -> throw new IllegalAccessError(
                     String.format("ConversationCommand '%s' cannot be reached here.", command));
         }
     }
@@ -254,7 +274,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
     private void tryToAddHeroToParty() {
         HeroContainer heroes = Utils.getGameData().getHeroes();
         PartyContainer party = Utils.getGameData().getParty();
-        String heroId = currentNpcCharacter.getNpcId();
+        String heroId = currentNpcCharacter.getId();
         HeroItem hero = heroes.getHero(heroId);
 
         if (party.isFull()) {
@@ -290,18 +310,10 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
 
     private void openShopScreen() {
         var shopScreen = (ShopScreen) Utils.getScreenManager().getScreen(ScreenType.SHOP);
-        shopScreen.setNpcId(currentNpcCharacter.getNpcId());
+        shopScreen.setNpcId(currentNpcCharacter.getId());
         shopScreen.setShopId(currentNpcCharacter.getConversationId());
 
         openLoadScreen(ScreenType.SHOP_LOAD);
-    }
-
-    private void openLootScreen(Loot sparkle) {
-        var lootScreen = (LootScreen) Utils.getScreenManager().getScreen(ScreenType.LOOT);
-        lootScreen.setLoot(sparkle);
-        lootScreen.setLootTitle("   Found");
-
-        openLoadScreen(ScreenType.LOOT_LOAD);
     }
 
     private void openLoadScreen(ScreenType screenType) {
@@ -352,6 +364,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
         shapeRenderer.dispose();
         partyWindow.dispose();
         conversationDialog.dispose();
+        messageDialog.dispose();
         debugBox.dispose();
     }
 
@@ -394,7 +407,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
         if (showObjects) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             player.debug(shapeRenderer);
-            sparkles.forEach(sparkle -> sparkle.debug(shapeRenderer));
+            lootList.forEach(loot -> loot.debug(shapeRenderer));
             npcCharacters.forEach(npcCharacter -> npcCharacter.debug(shapeRenderer));
             partyMembers.forEach(partyMember -> partyMember.debug(shapeRenderer));
             Utils.getMapManager().currentMap.debug(shapeRenderer);

@@ -20,6 +20,7 @@ public final class Utils {
 
     private static final String CHAR_PATH = "sprites/characters/%s.png";
     private static final String FACE_PATH = "sprites/faces/%s.png";
+    private static final String CHEST_PATH = "sprites/objects/chest.png";
 
     private Utils() {
         throw new IllegalStateException("Utils class");
@@ -77,6 +78,18 @@ public final class Utils {
                                                              (int) Constant.FACE_SIZE);
         TextureRegion characterFace = splitOfEight[row][col];
         return new Image(characterFace);
+    }
+
+    public static List<TextureRegion> getChestImage() {
+        Texture completeChestTexture = getResourceManager().getTextureAsset(CHEST_PATH);
+        TextureRegion[][] eightChestTextures = TextureRegion.split(completeChestTexture,
+                                                                   Constant.SPRITE_GROUP_WIDTH,
+                                                                   Constant.SPRITE_GROUP_HEIGHT);
+        TextureRegion firstRedChest = eightChestTextures[0][0];
+        TextureRegion[][] twelveRedChestTextures = firstRedChest.split((int) Constant.TILE_SIZE,
+                                                                       (int) Constant.TILE_SIZE);
+        return List.of(twelveRedChestTextures[0][0],
+                       twelveRedChestTextures[3][0]);
     }
 
     public static Color getHpColor(Map<String, Integer> hpStats) {

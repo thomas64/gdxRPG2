@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import nl.t64.game.rpg.Utils;
-import nl.t64.game.rpg.components.loot.Content;
 import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.components.party.InventoryContainer;
 import nl.t64.game.rpg.components.party.InventoryDatabase;
@@ -16,7 +15,7 @@ import nl.t64.game.rpg.screens.inventory.*;
 import nl.t64.game.rpg.screens.inventory.tooltip.ItemSlotTooltip;
 import nl.t64.game.rpg.screens.inventory.tooltip.ItemSlotTooltipListener;
 
-import java.util.List;
+import java.util.Map;
 import java.util.OptionalInt;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -56,15 +55,10 @@ public class LootSlotsTable {
         return inventory.isEmpty();
     }
 
-    List<Content> getContent() {
+    Map<String, Integer> getContent() {
         return inventory.getAllFilledSlots()
                         .stream()
-                        .map(this::createContent)
-                        .collect(Collectors.toList());
-    }
-
-    private Content createContent(InventoryItem inventoryItem) {
-        return new Content(inventoryItem.getId(), inventoryItem.getAmount());
+                        .collect(Collectors.toMap(InventoryItem::getId, InventoryItem::getAmount));
     }
 
     boolean takeItem() {
@@ -79,13 +73,14 @@ public class LootSlotsTable {
 
     private void fillLootContainer(Loot loot) {
         loot.getContent()
+            .entrySet()
             .stream()
             .map(this::createInventoryItem)
             .forEach(inventory::autoSetItem);
     }
 
-    private InventoryItem createInventoryItem(Content content) {
-        return InventoryDatabase.getInstance().createInventoryItem(content.getItemId(), content.getAmount());
+    private InventoryItem createInventoryItem(Map.Entry<String, Integer> loot) {
+        return InventoryDatabase.getInstance().createInventoryItem(loot.getKey(), loot.getValue());
     }
 
     private void fillLootSlots() {

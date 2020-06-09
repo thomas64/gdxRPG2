@@ -46,8 +46,8 @@ class NpcCharactersLoader {
     }
 
     private void loadNpcCharacter(GameMapNpc gameMapNpc) {
-        String spriteId = gameMapNpc.name;
-        var npcCharacter = new Character(new InputNpc(), new PhysicsNpc(spriteId), new GraphicsNpc(spriteId));
+        String characterId = gameMapNpc.name;
+        var npcCharacter = new Character(characterId, new InputNpc(), new PhysicsNpc(), new GraphicsNpc(characterId));
         npcCharacters.add(npcCharacter);
         npcCharacter.send(new LoadCharacterEvent(gameMapNpc.state,
                                                  gameMapNpc.direction,

@@ -21,6 +21,10 @@ public class LoadCharacterEvent implements Event {
         this(null, direction, position, null);
     }
 
+    public LoadCharacterEvent(CharacterState state, Vector2 position) {
+        this(state, null, position, null);
+    }
+
     public LoadCharacterEvent(CharacterState state, Direction direction, Vector2 position) {
         this(state, direction, position, null);
     }

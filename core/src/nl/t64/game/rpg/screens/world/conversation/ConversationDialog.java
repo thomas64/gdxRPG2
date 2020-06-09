@@ -61,6 +61,7 @@ public class ConversationDialog {
     public void show() {
         Gdx.input.setInputProcessor(stage);
         dialog.show(stage, Actions.sequence(Actions.alpha(0f), Actions.fadeIn(0.4f, Interpolation.fade)));
+        stage.setKeyboardFocus(scrollPane);
     }
 
     public void hideWithFade() {
@@ -72,11 +73,8 @@ public class ConversationDialog {
     }
 
     public void update(float dt) {
-        if (dialog.isVisible()) {
-            stage.act(dt);
-            stage.draw();
-            stage.setKeyboardFocus(scrollPane);
-        }
+        stage.act(dt);
+        stage.draw();
     }
 
     public void loadConversation(String conversationId, String characterId) {

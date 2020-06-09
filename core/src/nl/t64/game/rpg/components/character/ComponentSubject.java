@@ -22,17 +22,25 @@ class ComponentSubject {
         observers.clear();
     }
 
-    void notifyShowConversationDialog(String conversationId, String characterId, Character npcCharacter) {
+    void notifyShowConversationDialog(String conversationId, Character npcCharacter) {
         observers.forEach(
-                observer -> observer.onNotifyShowConversationDialog(conversationId, characterId, npcCharacter));
+                observer -> observer.onNotifyShowConversationDialog(conversationId, npcCharacter));
     }
 
     void notifyShowNoteDialog(String noteId) {
         observers.forEach(observer -> observer.onNotifyShowNoteDialog(noteId));
     }
 
-    void notifyShowSparkleDialog(Loot sparkle) {
-        observers.forEach(observer -> observer.onNotifyShowSparkleDialog(sparkle));
+    void notifyShowLootDialog(Loot loot) {
+        observers.forEach(observer -> observer.onNotifyShowLootDialog(loot));
+    }
+
+    void notifyShowLootDialog(Loot loot, String message) {
+        observers.forEach(observer -> observer.onNotifyShowLootDialog(loot, message));
+    }
+
+    void notifyShowMessageDialog(String message) {
+        observers.forEach(observer -> observer.onNotifyShowMessageDialog(message));
     }
 
 }

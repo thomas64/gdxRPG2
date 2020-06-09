@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Utils;
-import nl.t64.game.rpg.components.loot.Content;
 import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.screens.inventory.EquipSlotsTable;
 import nl.t64.game.rpg.screens.inventory.InventorySlotsTable;
@@ -20,7 +19,6 @@ import nl.t64.game.rpg.screens.inventory.tooltip.ItemSlotTooltip;
 import nl.t64.game.rpg.screens.inventory.tooltip.LootSlotTooltip;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 
@@ -83,7 +81,7 @@ class LootUI implements ScreenUI {
         return lootSlotsTable.isEmpty();
     }
 
-    List<Content> getContent() {
+    Map<String, Integer> getContent() {
         return lootSlotsTable.getContent();
     }
 

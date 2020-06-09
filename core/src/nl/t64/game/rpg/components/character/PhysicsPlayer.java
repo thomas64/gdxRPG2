@@ -67,7 +67,7 @@ public class PhysicsPlayer extends PhysicsComponent {
     private void checkActionPressed() {
         if (isActionPressed) {
             selectNpcCharacterCandidate();
-            checkSparkles();
+            checkLoot();
             checkNotes();
             checkSavePoints();
             checkWarpPoints();
@@ -86,12 +86,12 @@ public class PhysicsPlayer extends PhysicsComponent {
                      });
     }
 
-    private void checkSparkles() {
-        Utils.getScreenManager().getWorldScreen().getSparkles()
+    private void checkLoot() {
+        Utils.getScreenManager().getWorldScreen().getLootList()
              .stream()
-             .filter(checkRectOverlapsSparkle())
+             .filter(this::isLootChecked)
              .findFirst()
-             .ifPresent(sparkle -> sparkle.send(new SelectEvent()));
+             .ifPresent(loot -> loot.send(new SelectEvent()));
     }
 
     private void checkNotes() {
@@ -138,8 +138,13 @@ public class PhysicsPlayer extends PhysicsComponent {
         return npcCharacter -> getCheckRect().overlaps(npcCharacter.getBoundingBox());
     }
 
-    private Predicate<Character> checkRectOverlapsSparkle() {
-        return sparkle -> getCheckRect().overlaps(sparkle.getRectangle());
+    private boolean isLootChecked(Character loot) {
+        if (loot.getId().startsWith("chest")) {
+            return direction.equals(Direction.NORTH)
+                   && getCheckRect().overlaps(loot.getRectangle());
+        } else {
+            return getCheckRect().overlaps(loot.getRectangle());
+        }
     }
 
     private Predicate<Character> littleBitBiggerBoxOverlapsNpc() {

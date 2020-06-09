@@ -40,9 +40,11 @@ class PartyMembersLoader {
     }
 
     private Character createCharacter(HeroItem hero) {
-        return new Character(new InputPartyMember(),
+        String heroId = hero.getId();
+        return new Character(heroId,
+                             new InputPartyMember(),
                              new PhysicsPartyMember(),
-                             new GraphicsPartyMember(hero.getId()));
+                             new GraphicsPartyMember(heroId));
     }
 
     private void addToPartyMembers(Character partyMember) {

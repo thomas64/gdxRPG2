@@ -16,8 +16,6 @@ import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.screens.inventory.ListenerMouseImageButton;
 
-import java.util.Collections;
-
 
 public class LootScreen extends LootSubject implements Screen {
 
@@ -124,10 +122,11 @@ public class LootScreen extends LootSubject implements Screen {
 
     private void closeScreen() {
         if (lootUI.isEmpty()) {
-            loot.setContent(Collections.emptyList());
+            loot.clearContent();
             notifyLootTaken();
         } else {
-            loot.setContent(lootUI.getContent());
+            var newContent = lootUI.getContent();
+            loot.updateContent(newContent);
         }
 
         Utils.getScreenManager().setScreen(ScreenType.WORLD);

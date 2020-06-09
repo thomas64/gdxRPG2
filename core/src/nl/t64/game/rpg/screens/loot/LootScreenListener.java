@@ -20,8 +20,7 @@ class LootScreenListener extends InputListener {
     public boolean keyDown(InputEvent event, int keycode) {
         switch (keycode) {
             case Input.Keys.ESCAPE -> closeScreenFunction.run();
-            case Input.Keys.ENTER,
-                    Input.Keys.A -> takeStackOfItems();
+            case Input.Keys.ENTER -> takeStackOfItems();
             case Input.Keys.SHIFT_LEFT,
                     Input.Keys.SHIFT_RIGHT -> InventoryUtils.setShiftPressed(true);
             case Input.Keys.CONTROL_LEFT,

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import lombok.Getter;
 import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.Direction;
@@ -14,13 +15,15 @@ import java.util.List;
 
 public class Character {
 
+    @Getter
+    private final String id;
     private final List<Component> components;
-
     private final InputComponent inputComponent;
     private final PhysicsComponent physicsComponent;
     private final GraphicsComponent graphicsComponent;
 
-    public Character(InputComponent input, PhysicsComponent physics, GraphicsComponent graphics) {
+    public Character(String id, InputComponent input, PhysicsComponent physics, GraphicsComponent graphics) {
+        this.id = id;
         this.inputComponent = input;
         this.physicsComponent = physics;
         this.graphicsComponent = graphics;
@@ -92,10 +95,6 @@ public class Character {
 
     public CharacterState getState() {
         return physicsComponent.state;
-    }
-
-    public String getNpcId() {
-        return ((PhysicsNpc) physicsComponent).npcId;
     }
 
     public String getConversationId() {

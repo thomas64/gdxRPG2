@@ -20,12 +20,10 @@ public class PhysicsNpc extends PhysicsComponent {
     private Character npcCharacter;
     private Rectangle wanderBox;
 
-    final String npcId;
     String conversationId;
     private boolean isSelected;
 
-    public PhysicsNpc(String npcId) {
-        this.npcId = npcId;
+    public PhysicsNpc() {
         this.isSelected = false;
         this.velocity = Constant.MOVE_SPEED_1;
         this.boundingBoxWidthPercentage = 0.60f;
@@ -67,7 +65,7 @@ public class PhysicsNpc extends PhysicsComponent {
         npcCharacter.send(new PositionEvent(currentPosition));
         if (isSelected) {
             isSelected = false;
-            notifyShowConversationDialog(conversationId, npcId, npcCharacter);
+            notifyShowConversationDialog(conversationId, npcCharacter);
         }
     }
 

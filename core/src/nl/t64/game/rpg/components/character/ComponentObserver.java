@@ -5,10 +5,14 @@ import nl.t64.game.rpg.components.loot.Loot;
 
 public interface ComponentObserver {
 
-    void onNotifyShowConversationDialog(String conversationId, String characterId, Character npcCharacter);
+    void onNotifyShowConversationDialog(String conversationId, Character npcCharacter);
 
     void onNotifyShowNoteDialog(String noteId);
 
-    void onNotifyShowSparkleDialog(Loot sparkle);
+    void onNotifyShowLootDialog(Loot loot);
+
+    void onNotifyShowLootDialog(Loot loot, String message);
+
+    void onNotifyShowMessageDialog(String message);
 
 }

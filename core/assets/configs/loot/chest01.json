@@ -1,0 +1,7 @@
+{
+  "chest0001": {"content": {"healing_potion": 3}},
+  "chest0002": {"content": {"gold": 1}},
+  "chest0003": {"content": {"gold": 10}, "trapLevel": 0, "lockLevel": 1},
+  "chest0004": {"content": {"gold": 100}, "trapLevel": 2, "lockLevel": 0},
+  "chest0005": {"content": {"gold": 1000}, "trapLevel": 6, "lockLevel": 10}
+}

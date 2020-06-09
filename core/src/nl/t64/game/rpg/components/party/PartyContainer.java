@@ -2,6 +2,7 @@ package nl.t64.game.rpg.components.party;
 
 import nl.t64.game.rpg.constants.Constant;
 
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,6 +92,12 @@ public class PartyContainer {
         return getAllHeroes().stream()
                              .mapToInt(heroItem -> heroItem.getCalculatedTotalSkillOf(skillItemId))
                              .sum();
+    }
+
+    public HeroItem getHeroWithHighestSkill(SkillItemId skillItemId) {
+        return getAllHeroes().stream()
+                             .max(Comparator.comparing(heroItem -> heroItem.getCalculatedTotalSkillOf(skillItemId)))
+                             .orElse(getFirstHero());
     }
 
     HeroItem getHero(String heroId) {

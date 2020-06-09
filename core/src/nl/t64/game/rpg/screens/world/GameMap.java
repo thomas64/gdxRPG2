@@ -45,13 +45,14 @@ class GameMap {
     final List<GameMapHero> heroes = new ArrayList<>();
     final List<Rectangle> blockers = new ArrayList<>();
     final List<RectangleMapObject> sparkles = new ArrayList<>();
+    final List<RectangleMapObject> chests = new ArrayList<>();
     private final List<Rectangle> savePoints = new ArrayList<>();
     private final List<GameMapSpawnPoint> spawnPoints = new ArrayList<>();
     private final List<GameMapPortal> portals = new ArrayList<>();
     private final List<GameMapWarpPoint> warpPoints = new ArrayList<>();
     private final List<RectangleMapObject> notes = new ArrayList<>();
 
-    final TiledGraph tiledGraph;
+    TiledGraph tiledGraph;
 
     GameMap(String mapTitle) {
         this.mapTitle = mapTitle;
@@ -62,12 +63,15 @@ class GameMap {
         this.loadHeroes();
         this.loadBlockers();
         this.loadSparkles();
+        this.loadChests();
         this.loadSavePoints();
         this.loadSpawnPoints();
         this.loadPortals();
         this.loadWarpPoints();
         this.loadNotes();
+    }
 
+    void setTiledGraph() {
         this.tiledGraph = new TiledGraph(this.getWidth(), this.getHeight(), this::areBlockersCurrentlyBlocking);
     }
 
@@ -198,6 +202,17 @@ class GameMap {
         });
     }
 
+    private void loadChests() {
+        getMapLayer(REST_LAYER).ifPresent(mapLayer -> {
+            for (MapObject mapObject : mapLayer.getObjects()) {
+                if (mapObject.getName().startsWith("chest")) {
+                    RectangleMapObject rectObject = (RectangleMapObject) mapObject;
+                    chests.add(rectObject);
+                }
+            }
+        });
+    }
+
     private void loadSavePoints() {
         getMapLayer(SAVE_LAYER).ifPresent(mapLayer -> {
             for (MapObject mapObject : mapLayer.getObjects()) {
@@ -281,6 +296,10 @@ class GameMap {
         }
         for (RectangleMapObject sparkle : sparkles) {
             rect = sparkle.getRectangle();
+            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+        }
+        for (RectangleMapObject chest : chests) {
+            rect = chest.getRectangle();
             shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
         }
     }
