@@ -60,7 +60,7 @@ public class PhysicsChest extends PhysicsComponent {
         if (isFailingOnLock()) return;
 
         character.send(new StateEvent(CharacterState.OPENED));
-        notifyShowLootDialog(chest, finishStringBuilder());
+        showLootDialog();
     }
 
     private boolean isFailingOnTrap() {
@@ -144,6 +144,15 @@ public class PhysicsChest extends PhysicsComponent {
                          .append(String.format(" and %s picked the lock", bestThief.getName()));
         }
         chest.pickLock();
+    }
+
+    private void showLootDialog() {
+        final String message = finishStringBuilder();
+        if (message.isBlank()) {
+            notifyShowLootDialog(chest);
+        } else {
+            notifyShowLootDialog(chest, message);
+        }
     }
 
     private String finishStringBuilder() {
