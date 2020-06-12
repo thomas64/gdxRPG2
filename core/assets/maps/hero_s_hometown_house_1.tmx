@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="26" height="26" tilewidth="24" tileheight="24" infinite="0" nextlayerid="13" nextobjectid="22">
+<map version="1.2" tiledversion="1.3.5" orientation="orthogonal" renderorder="right-down" width="26" height="26" tilewidth="24" tileheight="24" infinite="0" nextlayerid="14" nextobjectid="23">
  <tileset firstgid="1" name="hero_s_hometown_house_1" tilewidth="24" tileheight="24" tilecount="638" columns="29">
   <image source="tilesets/hero_s_hometown_house_1.png" width="696" height="528"/>
  </tileset>
@@ -292,6 +292,9 @@
   <object id="15" x="240" y="168" width="48" height="120"/>
   <object id="16" x="288" y="216" width="96" height="72"/>
   <object id="18" x="480" y="240" width="96" height="48"/>
+ </objectgroup>
+ <objectgroup color="#5500ff" id="13" name="rest_layer">
+  <object id="22" name="note_bed01" x="96" y="144" width="96" height="96"/>
  </objectgroup>
  <objectgroup color="#55aaff" id="11" name="spawn_layer">
   <object id="21" name="hero_s_hometown" x="432" y="528" width="48" height="24"/>
