@@ -16,7 +16,8 @@ import java.util.Map;
 public class ProfileManager extends ProfileSubject {
 
     private static final String SAVE_PATH = "saves/";
-    private static final String DEFAULT_PROFILE = Constant.PLAYER_ID;
+    private static final String DEFAULT_PROFILE =
+            Constant.PLAYER_ID.substring(0, 1).toUpperCase() + Constant.PLAYER_ID.substring(1);
     private static final String SAVEGAME_SUFFIX = ".dat";
 
     private final Json json = new Json();
@@ -34,7 +35,10 @@ public class ProfileManager extends ProfileSubject {
         if (newProfileName.isEmpty()) {
             newProfileName = DEFAULT_PROFILE;
         }
-        return profiles.containsKey(newProfileName);
+        for (String key : profiles.keySet()) {
+            if (newProfileName.equalsIgnoreCase(key)) return true;
+        }
+        return false;
     }
 
     public void createNewProfile(String newProfileName) {
@@ -88,11 +92,19 @@ public class ProfileManager extends ProfileSubject {
     }
 
     private void writeProfileToDisk() {
+        deleteProfileFromDisk();
         String fileData = json.prettyPrint(json.toJson(profileProperties));
         String fullFilename = profileName + SAVEGAME_SUFFIX;
         FileHandle file = Gdx.files.local(SAVE_PATH + fullFilename);
         file.writeString(fileData, false);
         profiles.put(profileName, file);
+    }
+
+    private void deleteProfileFromDisk() {
+        Arrays.stream(Gdx.files.local(SAVE_PATH).list(SAVEGAME_SUFFIX))
+              .filter(fileHandle -> fileHandle.nameWithoutExtension().equalsIgnoreCase(profileName))
+              .findFirst()
+              .ifPresent(FileHandle::delete);
     }
 
 }

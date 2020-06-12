@@ -30,7 +30,7 @@ class ListenerKeyInputField extends InputListener {
         final String inputCharacter = String.valueOf(character);
         if (inputCharacter.matches(VALID_CHARACTERS)
                 && inputField.length() < maxSizeOfInput) {
-            inputField.insert(inputField.length() - 1, inputCharacter.toLowerCase());
+            inputField.insert(inputField.length() - 1, inputCharacter);
             updateInputFunction.accept(inputField);
         }
         return true;
