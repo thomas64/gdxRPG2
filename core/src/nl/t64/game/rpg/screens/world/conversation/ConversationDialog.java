@@ -130,6 +130,7 @@ public class ConversationDialog {
     }
 
     private void fillDialogForConversation(String characterId) {
+        label.setAlignment(Align.left);
         var mainTable = new Table();
         mainTable.left();
         Image faceImage = Utils.getFaceImage(characterId);
@@ -147,6 +148,7 @@ public class ConversationDialog {
     }
 
     private void fillDialogForNote() {
+        label.setAlignment(Align.center);
         var textTable = new Table();
         textTable.pad(PAD * 2f, PAD * 3f, PAD, PAD * 2f);
         textTable.add(label).width(DIALOG_WIDTH - (PAD * 5f)).row();

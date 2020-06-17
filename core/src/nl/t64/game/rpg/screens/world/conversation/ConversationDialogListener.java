@@ -22,7 +22,8 @@ class ConversationDialogListener extends InputListener {
         switch (keycode) {
             case Input.Keys.UP -> inputUp();
             case Input.Keys.DOWN -> inputDown();
-            case Input.Keys.ENTER -> inputEnter();
+            case Input.Keys.ENTER,
+                    Input.Keys.A -> inputEnter();
         }
         return true;
     }
