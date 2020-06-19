@@ -183,7 +183,7 @@ public class InputPlayer extends InputComponent implements InputProcessor {
     }
 
     private void processOtherInput() {
-        if (pressAlign) {
+        if (pressAlign && Utils.getSettings().isInDebugMode()) {
             player.send(new StateEvent(CharacterState.ALIGNING));
         }
         if (pressAction) {
