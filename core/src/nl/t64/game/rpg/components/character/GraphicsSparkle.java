@@ -11,10 +11,13 @@ import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.LoadCharacterEvent;
 
+import java.util.stream.IntStream;
+
 
 public class GraphicsSparkle extends GraphicsComponent {
 
     private static final String SPARKLE_PATH = "sprites/objects/sparkle.png";
+    private static final int ANIMATION_LENGTH = 35;
 
     private final Animation<TextureRegion> animation;
 
@@ -49,13 +52,16 @@ public class GraphicsSparkle extends GraphicsComponent {
         Texture texture = Utils.getResourceManager().getTextureAsset(SPARKLE_PATH);
         TextureRegion[][] textures = TextureRegion.split(texture, (int) Constant.TILE_SIZE, (int) Constant.TILE_SIZE);
 
-        Array<TextureRegion> frames = new Array<>(4);
-        frames.insert(0, textures[3][1]);
-        frames.insert(1, textures[0][1]);
-        frames.insert(2, textures[3][0]);
-        frames.insert(3, textures[0][1]);
+        Array<TextureRegion> frames = new Array<>(ANIMATION_LENGTH);
+        IntStream.rangeClosed(0, 29)
+                 .forEach(i -> frames.insert(i, textures[4][0]));
+        frames.insert(30, textures[3][2]);
+        frames.insert(31, textures[3][1]);
+        frames.insert(32, textures[0][1]);
+        frames.insert(33, textures[3][1]);
+        frames.insert(34, textures[3][2]);
 
-        return new Animation<>(Constant.NORMAL_FRAMES, frames, Animation.PlayMode.LOOP);
+        return new Animation<>(Constant.FAST_FRAMES, frames, Animation.PlayMode.LOOP);
     }
 
 }

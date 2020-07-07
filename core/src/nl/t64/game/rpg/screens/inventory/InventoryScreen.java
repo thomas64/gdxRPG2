@@ -233,6 +233,9 @@ public class InventoryScreen extends PartySubject implements Screen, ProfileObse
     }
 
     private void closeScreen() {
+        if (isDialogVisibleThenClose()) {
+            return;
+        }
         storeWindowPositions();
         Utils.getScreenManager().setScreen(ScreenType.WORLD);
         Gdx.input.setCursorCatched(true);
@@ -309,16 +312,16 @@ public class InventoryScreen extends PartySubject implements Screen, ProfileObse
             return;
         }
         final String message = "Esc = Close screen" + System.lineSeparator() +
-                               "I = Close screen" + System.lineSeparator() +
-                               "R = Reset windows" + System.lineSeparator() +
-                               "Q = Previous hero" + System.lineSeparator() +
-                               "W = Next hero" + System.lineSeparator() +
-                               "D = Dismiss hero" + System.lineSeparator() +
-                               "S = Sort Inventory" + System.lineSeparator() +
-                               "Shift = Drag full stack" + System.lineSeparator() +
-                               "Ctrl = Drag half stack" + System.lineSeparator() +
-                               "H = This dialog";
-        final MessageDialog messageDialog = new MessageDialog(message);
+                "I = Close screen" + System.lineSeparator() +
+                "R = Reset windows" + System.lineSeparator() +
+                "Q = Previous hero" + System.lineSeparator() +
+                "W = Next hero" + System.lineSeparator() +
+                "D = Dismiss hero" + System.lineSeparator() +
+                "S = Sort Inventory" + System.lineSeparator() +
+                "Shift = Drag full stack" + System.lineSeparator() +
+                "Ctrl = Drag half stack" + System.lineSeparator() +
+                "H = This dialog";
+        final var messageDialog = new MessageDialog(message);
         messageDialog.setLeftAlignment();
         messageDialog.show(stage);
     }

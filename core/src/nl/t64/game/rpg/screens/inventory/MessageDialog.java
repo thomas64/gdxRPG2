@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Utils;
 
 
-class MessageDialog {
+public class MessageDialog {
 
     private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
     private static final String DIALOG_FONT = "fonts/fff_tusj.ttf";
@@ -26,7 +26,7 @@ class MessageDialog {
     private final BitmapFont dialogFont;
     private final Dialog dialog;
 
-    MessageDialog(String message) {
+    public MessageDialog(String message) {
         this.message = message;
         this.dialogHeight = ((message.lines().count()) * FONT_SIZE) + DIALOG_INIT_HEIGHT;
         this.dialogFont = Utils.getResourceManager().getTrueTypeAsset(DIALOG_FONT, FONT_SIZE);
@@ -34,11 +34,11 @@ class MessageDialog {
         applyListeners();
     }
 
-    void show(Stage stage) {
+    public void show(Stage stage) {
         dialog.show(stage);
     }
 
-    void setLeftAlignment() {
+    public void setLeftAlignment() {
         ((Label) dialog.getContentTable().getChildren().get(0)).setAlignment(Align.left);
     }
 

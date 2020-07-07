@@ -23,7 +23,7 @@ public class LootLoadScreen extends LoadScreen {
     public void setBackground(Image screenshot) {
         var texture = Utils.getResourceManager().getTextureAsset(SPRITE_PARCHMENT);
         var parchment = new Image(texture);
-        float width = Gdx.graphics.getWidth() / 2.5f;
+        float width = Gdx.graphics.getWidth() / 2.4f;
         float height = Gdx.graphics.getHeight() / 3f;
         parchment.setSize(width, height);
         parchment.setPosition((Gdx.graphics.getWidth() / 2f) - (width / 2f),

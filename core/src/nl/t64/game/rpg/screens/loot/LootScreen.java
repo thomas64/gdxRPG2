@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -15,6 +17,9 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.screens.inventory.ListenerMouseImageButton;
+import nl.t64.game.rpg.screens.inventory.MessageDialog;
+import nl.t64.game.rpg.screens.inventory.tooltip.ButtonToolTip;
+import nl.t64.game.rpg.screens.inventory.tooltip.ButtonTooltipListener;
 
 
 public class LootScreen extends LootSubject implements Screen {
@@ -22,18 +27,22 @@ public class LootScreen extends LootSubject implements Screen {
     private static final String BUTTON_CLOSE_UP = "close_up";
     private static final String BUTTON_CLOSE_OVER = "close_over";
     private static final String BUTTON_CLOSE_DOWN = "close_down";
+    private static final String BUTTON_HELP_UP = "help_up";
+    private static final String BUTTON_HELP_OVER = "help_over";
+    private static final String BUTTON_HELP_DOWN = "help_down";
 
     private static final float INVENTORY_WINDOW_POSITION_X = (Gdx.graphics.getWidth() / 2f) - 50f;
-    private static final float INVENTORY_WINDOW_POSITION_Y = (Gdx.graphics.getHeight() / 2f) - 140f;
+    private static final float INVENTORY_WINDOW_POSITION_Y = (Gdx.graphics.getHeight() / 2f) - 135f;
     private static final float LOOT_WINDOW_POSITION_X = (Gdx.graphics.getWidth() / 2f) - 330f;
-    private static final float LOOT_WINDOW_POSITION_Y = (Gdx.graphics.getHeight() / 2f) - 44f;
+    private static final float LOOT_WINDOW_POSITION_Y = (Gdx.graphics.getHeight() / 2f) - 39f;
 
     private static final float BUTTON_SIZE = 32f;
     private static final float BUTTON_SPACE = 5f;
-    private static final float RIGHT_SPACE = 12f;
-    private static final float TOP_SPACE = 49f;
+    private static final float RIGHT_SPACE = 6f;
+    private static final float TOP_SPACE = 75f;
 
     private final Stage stage;
+    private final ButtonToolTip buttonToolTip;
     @Getter
     private LootUI lootUI;
     @Setter
@@ -43,13 +52,14 @@ public class LootScreen extends LootSubject implements Screen {
 
     public LootScreen() {
         this.stage = new Stage();
+        this.buttonToolTip = new ButtonToolTip();
     }
 
     @Override
     public void show() {
         Gdx.input.setCursorCatched(false);
         Gdx.input.setInputProcessor(stage);
-        stage.addListener(new LootScreenListener(this::closeScreen, this::takeItem));
+        stage.addListener(new LootScreenListener(this::closeScreen, this::takeItem, this::showHelpMessage));
         createButtonTable();
 
         lootUI = new LootUI(loot, lootTitle);
@@ -57,6 +67,7 @@ public class LootScreen extends LootSubject implements Screen {
         lootUI.lootWindow.setPosition(LOOT_WINDOW_POSITION_X, LOOT_WINDOW_POSITION_Y);
         lootUI.addToStage(stage);
         lootUI.applyListeners(stage);
+        buttonToolTip.addToStage(stage);
     }
 
     @Override
@@ -104,10 +115,15 @@ public class LootScreen extends LootSubject implements Screen {
 
     private void createButtonTable() {
         var closeButton = createImageButton(BUTTON_CLOSE_UP, BUTTON_CLOSE_OVER, BUTTON_CLOSE_DOWN);
+        var helpButton = createImageButton(BUTTON_HELP_UP, BUTTON_HELP_OVER, BUTTON_HELP_DOWN);
         closeButton.addListener(new ListenerMouseImageButton(this::closeScreen));
+        closeButton.addListener(new ButtonTooltipListener(buttonToolTip, "Close screen"));
+        helpButton.addListener(new ListenerMouseImageButton(this::showHelpMessage));
+        helpButton.addListener(new ButtonTooltipListener(buttonToolTip, "Help dialog"));
 
         var buttonTable = new Table();
         buttonTable.add(closeButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
+        buttonTable.add(helpButton).size(BUTTON_SIZE);
         buttonTable.pack();
         buttonTable.setPosition((Gdx.graphics.getWidth() * 0.7f) - buttonTable.getWidth() - RIGHT_SPACE,
                                 (Gdx.graphics.getHeight() * 0.7f) - buttonTable.getHeight() - TOP_SPACE);
@@ -115,12 +131,18 @@ public class LootScreen extends LootSubject implements Screen {
     }
 
     private void takeItem() {
+        if (isDialogVisibleThenClose()) {
+            return;
+        }
         if (!lootUI.takeItem()) {
             closeScreen();
         }
     }
 
     private void closeScreen() {
+        if (isDialogVisibleThenClose()) {
+            return;
+        }
         if (lootUI.isEmpty()) {
             loot.clearContent();
             notifyLootTaken();
@@ -131,6 +153,21 @@ public class LootScreen extends LootSubject implements Screen {
 
         Utils.getScreenManager().setScreen(ScreenType.WORLD);
         Gdx.input.setCursorCatched(true);
+    }
+
+    private void showHelpMessage() {
+        if (isDialogVisibleThenClose()) {
+            return;
+        }
+        final String message = "Esc = Close screen" + System.lineSeparator() +
+                "A = Take full stack" + System.lineSeparator() +
+                "Enter = Take full stack" + System.lineSeparator() +
+                "Shift = Drag full stack" + System.lineSeparator() +
+                "Ctrl = Drag half stack" + System.lineSeparator() +
+                "H = This dialog";
+        final var messageDialog = new MessageDialog(message);
+        messageDialog.setLeftAlignment();
+        messageDialog.show(stage);
     }
 
     private ImageButton createImageButton(String up, String over, String down) {
@@ -145,6 +182,15 @@ public class LootScreen extends LootSubject implements Screen {
         var textureRegion = Utils.getResourceManager().getAtlasTexture(atlasId);
         var ninePatch = new NinePatch(textureRegion, 1, 1, 1, 1);
         return new NinePatchDrawable(ninePatch);
+    }
+
+    private boolean isDialogVisibleThenClose() {
+        Actor possibleOldDialog = stage.getActors().peek();
+        if (possibleOldDialog instanceof Dialog dialog) {
+            dialog.hide();
+            return true;
+        }
+        return false;
     }
 
 }

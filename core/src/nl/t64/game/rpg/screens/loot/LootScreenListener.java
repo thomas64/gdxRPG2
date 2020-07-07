@@ -10,10 +10,12 @@ class LootScreenListener extends InputListener {
 
     private final Runnable closeScreenFunction;
     private final Runnable takeItemFunction;
+    private final Runnable showHelpFunction;
 
-    LootScreenListener(Runnable closeScreenFunction, Runnable takeItemFunction) {
+    LootScreenListener(Runnable closeScreenFunction, Runnable takeItemFunction, Runnable showHelpFunction) {
         this.closeScreenFunction = closeScreenFunction;
         this.takeItemFunction = takeItemFunction;
+        this.showHelpFunction = showHelpFunction;
     }
 
     @Override
@@ -26,6 +28,7 @@ class LootScreenListener extends InputListener {
                     Input.Keys.SHIFT_RIGHT -> InventoryUtils.setShiftPressed(true);
             case Input.Keys.CONTROL_LEFT,
                     Input.Keys.CONTROL_RIGHT -> InventoryUtils.setCtrlPressed(true);
+            case Input.Keys.H -> showHelpFunction.run();
         }
         return true;
     }
