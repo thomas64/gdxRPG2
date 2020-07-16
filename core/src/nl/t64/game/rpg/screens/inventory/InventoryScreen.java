@@ -81,6 +81,7 @@ public class InventoryScreen extends PartySubject implements Screen, ProfileObse
     private Vector2 statsWindowPosition;
     private Vector2 calcsWindowPosition;
     private Vector2 heroesWindowPosition;
+    private boolean isMessageShown;
 
     public InventoryScreen() {
         this.stage = new Stage();
@@ -97,6 +98,7 @@ public class InventoryScreen extends PartySubject implements Screen, ProfileObse
         statsWindowPosition = new Vector2(STATS_WINDOW_POSITION_X, STATS_WINDOW_POSITION_Y);
         calcsWindowPosition = new Vector2(CALCS_WINDOW_POSITION_X, CALCS_WINDOW_POSITION_Y);
         heroesWindowPosition = new Vector2(HEROES_WINDOW_POSITION_X, HEROES_WINDOW_POSITION_Y);
+        isMessageShown = false;
         onNotifySaveProfile(profileManager);
     }
 
@@ -109,6 +111,7 @@ public class InventoryScreen extends PartySubject implements Screen, ProfileObse
         profileManager.setProperty("statsWindowPosition", statsWindowPosition);
         profileManager.setProperty("calcsWindowPosition", calcsWindowPosition);
         profileManager.setProperty("heroesWindowPosition", heroesWindowPosition);
+        profileManager.setProperty("isFirstTimeInventoryMessageShown", isMessageShown);
     }
 
     @Override
@@ -120,6 +123,7 @@ public class InventoryScreen extends PartySubject implements Screen, ProfileObse
         statsWindowPosition = profileManager.getProperty("statsWindowPosition", Vector2.class);
         calcsWindowPosition = profileManager.getProperty("calcsWindowPosition", Vector2.class);
         heroesWindowPosition = profileManager.getProperty("heroesWindowPosition", Vector2.class);
+        isMessageShown = profileManager.getProperty("isFirstTimeInventoryMessageShown", Boolean.class);
     }
 
     @Override
@@ -152,6 +156,10 @@ public class InventoryScreen extends PartySubject implements Screen, ProfileObse
 
     @Override
     public void render(float dt) {
+        if (!isMessageShown) {
+            isMessageShown = true;
+            showHelpMessage();
+        }
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(dt);

@@ -16,13 +16,15 @@ import lombok.Setter;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.constants.ScreenType;
+import nl.t64.game.rpg.profile.ProfileManager;
+import nl.t64.game.rpg.profile.ProfileObserver;
 import nl.t64.game.rpg.screens.inventory.ListenerMouseImageButton;
 import nl.t64.game.rpg.screens.inventory.MessageDialog;
 import nl.t64.game.rpg.screens.inventory.tooltip.ButtonToolTip;
 import nl.t64.game.rpg.screens.inventory.tooltip.ButtonTooltipListener;
 
 
-public class LootScreen extends LootSubject implements Screen {
+public class LootScreen extends LootSubject implements Screen, ProfileObserver {
 
     private static final String BUTTON_CLOSE_UP = "close_up";
     private static final String BUTTON_CLOSE_OVER = "close_over";
@@ -49,10 +51,27 @@ public class LootScreen extends LootSubject implements Screen {
     private Loot loot;
     @Setter
     private String lootTitle;
+    private boolean isMessageShown;
 
     public LootScreen() {
         this.stage = new Stage();
         this.buttonToolTip = new ButtonToolTip();
+    }
+
+    @Override
+    public void onNotifyCreateProfile(ProfileManager profileManager) {
+        isMessageShown = false;
+        onNotifySaveProfile(profileManager);
+    }
+
+    @Override
+    public void onNotifySaveProfile(ProfileManager profileManager) {
+        profileManager.setProperty("isFirstTimeLootMessageShown", isMessageShown);
+    }
+
+    @Override
+    public void onNotifyLoadProfile(ProfileManager profileManager) {
+        isMessageShown = profileManager.getProperty("isFirstTimeLootMessageShown", Boolean.class);
     }
 
     @Override
@@ -72,6 +91,10 @@ public class LootScreen extends LootSubject implements Screen {
 
     @Override
     public void render(float dt) {
+        if (!isMessageShown) {
+            isMessageShown = true;
+            showHelpMessage();
+        }
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(dt);
@@ -159,7 +182,7 @@ public class LootScreen extends LootSubject implements Screen {
         if (isDialogVisibleThenClose()) {
             return;
         }
-        final String message = "Esc = Close screen" + System.lineSeparator() +
+        final String message = "Esc = Close window" + System.lineSeparator() +
                 "A = Take full stack" + System.lineSeparator() +
                 "Enter = Take full stack" + System.lineSeparator() +
                 "Shift = Drag full stack" + System.lineSeparator() +

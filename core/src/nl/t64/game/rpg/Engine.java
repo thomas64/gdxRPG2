@@ -42,6 +42,7 @@ public class Engine extends Game {
         profileManager.addObserver(gameData);
         profileManager.addObserver(mapManager);
         profileManager.addObserver((ProfileObserver) screenManager.getScreen(ScreenType.INVENTORY));
+        profileManager.addObserver((ProfileObserver) screenManager.getScreen(ScreenType.LOOT));
 
         screenManager.setScreen(ScreenType.MENU_MAIN);
     }
