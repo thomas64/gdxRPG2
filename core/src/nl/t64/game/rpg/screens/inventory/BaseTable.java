@@ -2,19 +2,16 @@ package nl.t64.game.rpg.screens.inventory;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import nl.t64.game.rpg.Utils;
 
 
 public abstract class BaseTable {
 
-    private static final String SPRITE_TOP_BORDER = "sprites/top_border.png";
     private static final String TEXT_FONT = "fonts/spectral.ttf";
     private static final int TEXT_SIZE = 20;
     private static final float LINE_HEIGHT = 26f;
@@ -43,13 +40,6 @@ public abstract class BaseTable {
         } else {
             table.add("").row();
         }
-    }
-
-    protected void setTopBorder(Table table) {
-        var texture = Utils.getResourceManager().getTextureAsset(SPRITE_TOP_BORDER);
-        var ninepatch = new NinePatch(texture, 0, 0, 1, 0);
-        var drawable = new NinePatchDrawable(ninepatch);
-        table.setBackground(drawable);
     }
 
     Image createImageOf(String id) {

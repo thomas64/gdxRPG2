@@ -23,7 +23,6 @@ import java.util.Objects;
 public class HeroesTable {
 
     private static final String SPRITE_BORDER = "sprites/border.png";
-    private static final String SPRITE_TOP_BORDER = "sprites/top_border.png";
     private static final String SPRITE_RIGHT_BORDER = "sprites/right_border.png";
     private static final String SPRITE_GREY = "sprites/grey.png";
     private static final String FONT_PATH = "fonts/spectral.ttf";
@@ -49,7 +48,7 @@ public class HeroesTable {
         this.nameStyle = new Label.LabelStyle(fontBig, Color.BLACK);
         this.levelStyle = new Label.LabelStyle(font, Color.BLACK);
         this.heroes = new Table();
-        setTopBorder();
+        heroes.setBackground(Utils.createTopBorder());
         this.colorsOfHpBars = new Texture[PartyContainer.MAXIMUM];
     }
 
@@ -135,13 +134,6 @@ public class HeroesTable {
         statsTable.add(new Label("", levelStyle));
         statsTable.add(createHpBar(hero)).height(BAR_HEIGHT).padTop(BAR_PAD_TOP);
         statsTable.add(new Label("", levelStyle));
-    }
-
-    private void setTopBorder() {
-        var texture = Utils.getResourceManager().getTextureAsset(SPRITE_TOP_BORDER);
-        var ninepatch = new NinePatch(texture, 0, 0, 1, 0);
-        var drawable = new NinePatchDrawable(ninepatch);
-        heroes.setBackground(drawable);
     }
 
     private void setRightBorder(Table statsTable) {

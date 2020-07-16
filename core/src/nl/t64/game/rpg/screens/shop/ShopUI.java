@@ -1,14 +1,8 @@
 package nl.t64.game.rpg.screens.shop;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.PartyContainer;
@@ -23,16 +17,11 @@ import java.util.Map;
 
 class ShopUI implements ScreenUI {
 
-    private static final String TITLE_FONT = "fonts/fff_tusj.ttf";
-    private static final int TITLE_SIZE = 30;
-    private static final String SPRITE_BORDER = "sprites/border.png";
-
     private static final String TITLE_PERSONAL = "   Equipment";
     private static final String TITLE_GLOBAL = "   Inventory";
     private static final String TITLE_SHOP = "   Shop";
     private static final String TITLE_MERCHANT = "   Merchant";
     private static final String TITLE_HEROES = "   Heroes";
-    private static final float TITLE_PADDING = 50f;
 
     final Window equipWindow;
     final Window inventoryWindow;
@@ -57,21 +46,21 @@ class ShopUI implements ScreenUI {
         this.shopSlotTooltipBuy = new ShopSlotTooltipBuy();
 
         this.equipSlotsTables = new HashMap<>(PartyContainer.MAXIMUM);
-        fillEquipSlotsTables();
-        this.equipWindow = createWindow(TITLE_PERSONAL,
-                                        this.equipSlotsTables.get(InventoryUtils.getSelectedHeroId()).equipSlotTable);
+        this.fillEquipSlotsTables();
+        final EquipSlotsTable equipTableOfSelectedHero = this.equipSlotsTables.get(InventoryUtils.getSelectedHeroId());
+        this.equipWindow = Utils.createDefaultWindow(TITLE_PERSONAL, equipTableOfSelectedHero.container);
 
         this.inventorySlotsTable = new InventorySlotsTable(this.dragAndDrop, this.shopSlotTooltipSell);
-        this.inventoryWindow = createWindow(TITLE_GLOBAL, this.inventorySlotsTable.container);
+        this.inventoryWindow = Utils.createDefaultWindow(TITLE_GLOBAL, this.inventorySlotsTable.container);
 
         this.shopSlotsTable = new ShopSlotsTable(shopId, this.dragAndDrop, this.shopSlotTooltipBuy);
-        this.shopWindow = createWindow(TITLE_SHOP, this.shopSlotsTable.container);
+        this.shopWindow = Utils.createDefaultWindow(TITLE_SHOP, this.shopSlotsTable.container);
 
         this.merchantTable = new MarchantTable(npcId);
-        this.merchantWindow = createWindow(TITLE_MERCHANT, this.merchantTable.table);
+        this.merchantWindow = Utils.createDefaultWindow(TITLE_MERCHANT, this.merchantTable.table);
 
         this.heroesTable = new HeroesTable();
-        this.heroesWindow = createWindow(TITLE_HEROES, this.heroesTable.heroes);
+        this.heroesWindow = Utils.createDefaultWindow(TITLE_HEROES, this.heroesTable.heroes);
     }
 
     @Override
@@ -87,14 +76,6 @@ class ShopUI implements ScreenUI {
     @Override
     public InventorySlotsTable getInventorySlotsTable() {
         return inventorySlotsTable;
-    }
-
-    private static Window.WindowStyle createWindowStyle() {
-        var texture = Utils.getResourceManager().getTextureAsset(SPRITE_BORDER);
-        var ninepatch = new NinePatch(texture, 1, 1, 1, 1);
-        var drawable = new NinePatchDrawable(ninepatch);
-        BitmapFont font = Utils.getResourceManager().getTrueTypeAsset(TITLE_FONT, TITLE_SIZE);
-        return new Window.WindowStyle(font, Color.BLACK, drawable);
     }
 
     void addToStage(Stage stage) {
@@ -122,15 +103,6 @@ class ShopUI implements ScreenUI {
 
     void unloadAssets() {
         heroesTable.disposePixmapTextures();
-    }
-
-    private Window createWindow(String title, Table table) {
-        var window = new Window(title, createWindowStyle());
-        window.add(table);
-        window.padTop(TITLE_PADDING);
-        window.getTitleLabel().setAlignment(Align.left);
-        window.pack();
-        return window;
     }
 
     private void fillEquipSlotsTables() {

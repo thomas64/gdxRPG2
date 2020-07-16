@@ -41,7 +41,7 @@ class MarchantTable extends BaseTable {
         text.setWrap(true);
         text.setAlignment(Align.topLeft);
         this.table.add(text).padTop(PADDING);
-        setTopBorder(this.table);
+        this.table.setBackground(Utils.createTopBorder());
     }
 
     @Override

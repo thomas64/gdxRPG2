@@ -1,6 +1,7 @@
 package nl.t64.game.rpg.screens.inventory;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.StatItem;
 import nl.t64.game.rpg.screens.inventory.tooltip.PersonalityTooltip;
@@ -22,7 +23,7 @@ class StatsTable extends BaseTable {
         this.table.columnDefaults(0).width(FIRST_COLUMN_WIDTH);
         this.table.columnDefaults(1).width(SECOND_COLUMN_WIDTH);
         this.table.columnDefaults(2).width(THIRD_COLUMN_WIDTH);
-        setTopBorder(this.table);
+        this.table.setBackground(Utils.createTopBorder());
     }
 
     @Override

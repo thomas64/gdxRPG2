@@ -22,7 +22,7 @@ public class EquipSlotsTable {
     private static final float SLOT_SIZE = 64f;
     private static final float EQUIP_SPACING = 10f;
 
-    public final Table equipSlotTable;
+    public final Table container;
     private final HeroItem heroItem;
     private final DragAndDrop dragAndDrop;
     private final ItemSlotTooltip tooltip;
@@ -47,7 +47,7 @@ public class EquipSlotsTable {
         this.heroItem = heroItem;
         this.dragAndDrop = dragAndDrop;
         this.tooltip = tooltip;
-        this.equipSlotTable = new Table();
+        this.container = new Table();
 
         this.helmetSlot = createEquipSlot(InventoryGroup.HELMET);
         this.necklaceSlot = createEquipSlot(InventoryGroup.NECKLACE);
@@ -97,56 +97,56 @@ public class EquipSlotsTable {
     }
 
     private void setDefaults() {
-        equipSlotTable.defaults().space(EQUIP_SPACING).size(SLOT_SIZE, SLOT_SIZE);
+        container.defaults().space(EQUIP_SPACING).size(SLOT_SIZE, SLOT_SIZE);
         var texture = Utils.getResourceManager().getTextureAsset(SPRITE_SILHOUETTE);
         var sprite = new Sprite(texture);
         var silhouette = new SpriteDrawable(sprite);
-        equipSlotTable.setBackground(silhouette);
+        container.setBackground(silhouette);
     }
 
     private void fillTable() {
-        equipSlotTable.add(helmetSlot).colspan(3);
+        container.add(helmetSlot).colspan(3);
 
-        equipSlotTable.row();
+        container.row();
 
-        equipSlotTable.add();
-        equipSlotTable.add(necklaceSlot);
-        equipSlotTable.add(shouldersSlot).left();
+        container.add();
+        container.add(necklaceSlot);
+        container.add(shouldersSlot).left();
 
-        equipSlotTable.row();
+        container.row();
 
         Table bodySlots = new Table();
         bodySlots.defaults().space(EQUIP_SPACING).size(SLOT_SIZE, SLOT_SIZE);
         bodySlots.add(chestSlot);
         bodySlots.add(cloakSlot);
-        equipSlotTable.add(bodySlots).colspan(3);
+        container.add(bodySlots).colspan(3);
 
-        equipSlotTable.row();
+        container.row();
 
-        equipSlotTable.add(bracersSlot).expandX().left().padLeft(EQUIP_SPACING);
-        equipSlotTable.add();
-        equipSlotTable.add(accessorySlot).expandX().right().padRight(EQUIP_SPACING);
+        container.add(bracersSlot).expandX().left().padLeft(EQUIP_SPACING);
+        container.add();
+        container.add(accessorySlot).expandX().right().padRight(EQUIP_SPACING);
 
-        equipSlotTable.row();
+        container.row();
 
-        equipSlotTable.add(glovesSlot).expandX().left().padLeft(EQUIP_SPACING);
-        equipSlotTable.add(beltSlot);
-        equipSlotTable.add(ringSlot).expandX().right().padRight(EQUIP_SPACING);
+        container.add(glovesSlot).expandX().left().padLeft(EQUIP_SPACING);
+        container.add(beltSlot);
+        container.add(ringSlot).expandX().right().padRight(EQUIP_SPACING);
 
-        equipSlotTable.row();
+        container.row();
 
-        equipSlotTable.add(weaponSlot).expandX().left().padLeft(EQUIP_SPACING);
-        equipSlotTable.add(pantsSlot);
-        equipSlotTable.add(shieldSlot).expandX().right().padRight(EQUIP_SPACING);
+        container.add(weaponSlot).expandX().left().padLeft(EQUIP_SPACING);
+        container.add(pantsSlot);
+        container.add(shieldSlot).expandX().right().padRight(EQUIP_SPACING);
 
-        equipSlotTable.row();
+        container.row();
 
-        equipSlotTable.add().colspan(3);
-        equipSlotTable.row();
-        equipSlotTable.add().colspan(3);
-        equipSlotTable.row();
+        container.add().colspan(3);
+        container.row();
+        container.add().colspan(3);
+        container.row();
 
-        equipSlotTable.add(bootsSlot).colspan(3);
+        container.add(bootsSlot).colspan(3);
     }
 
     private Consumer<InventoryItem> addToSlot(ItemSlot equipSlot) {

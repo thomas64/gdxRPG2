@@ -16,24 +16,31 @@ public final class DoubleClickHandler {
 
     static void handleInventory(ItemSlot clickedSlot, DragAndDrop dragAndDrop) {
         clickedSlot.getPossibleInventoryImage()
-                   .ifPresent(clickedItem -> exchangeWithPossibleEquipSlotOfGroup(clickedItem, clickedSlot));
+                   .ifPresent(clickedItem -> exchangeWithPossibleEquipSlotOfGroup(clickedItem,
+                                                                                  clickedSlot,
+                                                                                  dragAndDrop));
     }
 
-    private static void exchangeWithPossibleEquipSlotOfGroup(InventoryImage clickedItem, ItemSlot clickedSlot) {
+    private static void exchangeWithPossibleEquipSlotOfGroup(InventoryImage clickedItem,
+                                                             ItemSlot clickedSlot,
+                                                             DragAndDrop dragAndDrop) {
         Map<String, EquipSlotsTable> equipSlotsTables = InventoryUtils.getScreenUI().getEquipSlotsTables();
         if (!equipSlotsTables.isEmpty()) {
             equipSlotsTables.get(InventoryUtils.getSelectedHero().getId())
                             .getPossibleSlotOfGroup(clickedItem.inventoryGroup)
                             .ifPresent(targetSlot -> exchangeWithEquipSlotOfGroup(clickedItem,
                                                                                   clickedSlot,
-                                                                                  targetSlot));
+                                                                                  targetSlot,
+                                                                                  dragAndDrop));
         }
     }
 
     private static void exchangeWithEquipSlotOfGroup(InventoryImage clickedItem,
                                                      ItemSlot clickedSlot,
-                                                     ItemSlot targetSlot) {
+                                                     ItemSlot targetSlot,
+                                                     DragAndDrop dragAndDrop) {
         clickedSlot.clearStack();
+        clickedItem = createDuplicate(clickedItem, 1, dragAndDrop);
         new ItemSlotsExchanger(clickedItem, clickedSlot, targetSlot).exchange();
     }
 

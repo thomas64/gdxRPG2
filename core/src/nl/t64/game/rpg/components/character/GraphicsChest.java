@@ -45,10 +45,18 @@ public class GraphicsChest extends GraphicsComponent {
     @Override
     void setFrame(float dt) {
         if (state.equals(CharacterState.OPENED)) {
-            currentFrame = chestImage.get(1);
+            currentFrame = getOpenFrame();
         } else {
-            currentFrame = chestImage.get(0);
+            currentFrame = getClosedFrame();
         }
+    }
+
+    private TextureRegion getOpenFrame() {
+        return chestImage.get(1);
+    }
+
+    private TextureRegion getClosedFrame() {
+        return chestImage.get(0);
     }
 
 }

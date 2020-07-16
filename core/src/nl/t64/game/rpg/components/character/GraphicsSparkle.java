@@ -1,6 +1,5 @@
 package nl.t64.game.rpg.components.character;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -49,8 +48,7 @@ public class GraphicsSparkle extends GraphicsComponent {
     }
 
     private Animation<TextureRegion> createAnimation() {
-        Texture texture = Utils.getResourceManager().getTextureAsset(SPARKLE_PATH);
-        TextureRegion[][] textures = TextureRegion.split(texture, (int) Constant.TILE_SIZE, (int) Constant.TILE_SIZE);
+        TextureRegion[][] textures = Utils.getSplitTexture(SPARKLE_PATH, (int) Constant.TILE_SIZE);
 
         Array<TextureRegion> frames = new Array<>(ANIMATION_LENGTH);
         IntStream.rangeClosed(0, 29)

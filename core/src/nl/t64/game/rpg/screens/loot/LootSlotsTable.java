@@ -1,10 +1,8 @@
 package nl.t64.game.rpg.screens.loot;
 
-import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.components.party.InventoryContainer;
@@ -24,7 +22,6 @@ import java.util.stream.IntStream;
 
 public class LootSlotsTable {
 
-    private static final String SPRITE_TOP_BORDER = "sprites/top_border.png";
     private static final float SLOT_SIZE = 64f;
     private static final int NUMBER_OF_SLOTS = 8;
     private static final int SLOTS_IN_ROW = 4;
@@ -48,7 +45,7 @@ public class LootSlotsTable {
         this.scrollPane = new ScrollPane(this.lootSlotTable);
         this.container = new Table();
         this.container.add(this.scrollPane).height(CONTAINER_HEIGHT);
-        setTopBorder();
+        container.setBackground(Utils.createTopBorder());
     }
 
     boolean isEmpty() {
@@ -86,13 +83,6 @@ public class LootSlotsTable {
     private void fillLootSlots() {
         IntStream.range(0, inventory.getSize())
                  .forEach(this::createLootSlot);
-    }
-
-    private void setTopBorder() {
-        var texture = Utils.getResourceManager().getTextureAsset(SPRITE_TOP_BORDER);
-        var ninepatch = new NinePatch(texture, 0, 0, 1, 0);
-        var drawable = new NinePatchDrawable(ninepatch);
-        container.setBackground(drawable);
     }
 
     private void createLootSlot(int index) {

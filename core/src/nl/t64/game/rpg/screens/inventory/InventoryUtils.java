@@ -43,10 +43,10 @@ public final class InventoryUtils {
 
     static void updateSelectedHero(HeroItem newSelectedHero) {
         final var screenUI = getScreenUI();
-        final Table oldEquipSlots = screenUI.getEquipSlotsTables().get(selectedHero.getId()).equipSlotTable;
+        final Table oldEquipSlots = screenUI.getEquipSlotsTables().get(selectedHero.getId()).container;
         screenUI.getEquipWindow().removeActor(oldEquipSlots);
         selectedHero = newSelectedHero;
-        final Table newEquipSlots = screenUI.getEquipSlotsTables().get(selectedHero.getId()).equipSlotTable;
+        final Table newEquipSlots = screenUI.getEquipSlotsTables().get(selectedHero.getId()).container;
         screenUI.getEquipWindow().add(newEquipSlots);
     }
 

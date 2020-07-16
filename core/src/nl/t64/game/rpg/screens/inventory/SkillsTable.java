@@ -3,6 +3,7 @@ package nl.t64.game.rpg.screens.inventory;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.SkillItem;
 import nl.t64.game.rpg.screens.inventory.tooltip.PersonalityTooltip;
@@ -38,7 +39,7 @@ class SkillsTable extends BaseTable {
         this.scrollPane = new ScrollPane(this.table);
         this.container = new Table();
         this.container.add(this.scrollPane).height(CONTAINER_HEIGHT);
-        setTopBorder(this.container);
+        this.container.setBackground(Utils.createTopBorder());
     }
 
     @Override
