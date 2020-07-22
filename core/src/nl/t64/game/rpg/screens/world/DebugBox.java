@@ -47,7 +47,7 @@ class DebugBox {
         table.add(String.valueOf(Gdx.graphics.getFramesPerSecond()));
         table.row();
         table.add("dt:");
-        table.add(String.valueOf(dt).substring(0, 5));
+        table.add(String.valueOf(dt));
         table.row();
         table.add("runTime:");
         String runTime = String.valueOf(Engine.getRunTime());
