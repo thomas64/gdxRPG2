@@ -27,11 +27,11 @@ allprojects {
         jvmArgs += "--enable-preview"
     }
 
-    version = '1.0'
+    version = "1.0"
     ext {
         appName = "gdx-rpg2"
-        gdxVersion = '1.9.8'
-        aiVersion = '1.8.2'
+        gdxVersion = "1.9.11"
+        aiVersion = "1.8.2"
     }
 
     repositories {

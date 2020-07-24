@@ -101,9 +101,14 @@ public class LootSlotsTable {
     private Consumer<InventoryItem> addToSlot(InventorySlot lootSlot) {
         return inventoryItem -> {
             var inventoryImage = new InventoryImage(inventoryItem);
+            makeDraggable(inventoryImage);
             lootSlot.addToStack(inventoryImage);
-            var itemSlotSource = new ItemSlotSource(inventoryImage, dragAndDrop);
-            dragAndDrop.addSource(itemSlotSource);
         };
     }
+
+    private void makeDraggable(InventoryImage inventoryImage) {
+        var itemSlotSource = new ItemSlotSource(inventoryImage, dragAndDrop);
+        dragAndDrop.addSource(itemSlotSource);
+    }
+
 }

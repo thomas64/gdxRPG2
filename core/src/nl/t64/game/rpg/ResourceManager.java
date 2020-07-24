@@ -94,7 +94,7 @@ public class ResourceManager {
     }
 
     public SpriteConfig getSpriteConfig(String spriteId) {
-        if (spriteConfigs.size == 0) {
+        if (spriteConfigs.isEmpty()) {
             loadSpriteConfigs();
         }
         return spriteConfigs.get(spriteId);

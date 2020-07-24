@@ -42,13 +42,11 @@ public final class InventoryDatabase {
         return inventoryItem;
     }
 
-    public InventoryItem createInventoryItem(String itemId, int amount) {
-        final InventoryItem inventoryItem = createInventoryItem(itemId);
-        inventoryItem.setAmount(amount);
-        return inventoryItem;
+    public InventoryItem createInventoryItem(String itemId) {
+        return createInventoryItem(itemId, 1);
     }
 
-    public InventoryItem createInventoryItem(String itemId) {
+    public InventoryItem createInventoryItem(String itemId, int amount) {
         if (inventoryItems.isEmpty()) {
             try {
                 loadInventoryItems();
@@ -58,7 +56,7 @@ public final class InventoryDatabase {
         }
         InventoryItem inventoryItem = inventoryItems.get(itemId);
         inventoryItem.setId(itemId);
-        return new InventoryItem(inventoryItem);
+        return new InventoryItem(inventoryItem, amount);
     }
 
     private void loadInventoryItems() throws IOException {

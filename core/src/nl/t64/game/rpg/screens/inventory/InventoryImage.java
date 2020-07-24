@@ -26,6 +26,16 @@ public class InventoryImage extends Image {
         super.setScaling(Scaling.none);
     }
 
+    public static InventoryImage copyOf(InventoryImage inventoryImage) {
+        var orgAmount = inventoryImage.inventoryItem.getAmount();
+        return copyOf(inventoryImage, orgAmount);
+    }
+
+    public static InventoryImage copyOf(InventoryImage inventoryImage, int amount) {
+        var copyItem = new InventoryItem(inventoryImage.inventoryItem, amount);
+        return new InventoryImage(copyItem);
+    }
+
     boolean isSameItemAs(InventoryImage candidateImage) {
         return inventoryItem.hasSameIdAs(candidateImage.inventoryItem);
     }

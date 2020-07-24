@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Payload;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
-import nl.t64.game.rpg.components.party.InventoryItem;
 
 
 public class ItemSlotSource extends Source {
@@ -29,31 +28,15 @@ public class ItemSlotSource extends Source {
     @Override
     public Payload dragStart(InputEvent event, float x, float y, int pointer) {
         sourceSlot = (ItemSlot) super.getActor().getParent();
-        var dragImage = sourceSlot.getCertainInventoryImage();
+        var imageToDrag = sourceSlot.getCertainInventoryImage();
         int startAmount = sourceSlot.getAmount();
         sourceSlot.clearStack();
         if (startAmount > 1) {
-            handlePartOfStack(dragImage, startAmount);
+            handlePartOfStack(imageToDrag, startAmount);
+        } else {
+            unmakeCurrentDragImageDraggable();
         }
-        var payload = new Payload();
-        payload.setDragActor(dragImage);
-        dragAndDrop.setDragActorPosition(payload.getDragActor().getWidth() / 2,
-                                         -payload.getDragActor().getHeight() / 2);
-        return payload;
-    }
-
-    private void handlePartOfStack(InventoryImage dragImage, int startAmount) {
-        if (InventoryUtils.isShiftPressed() && InventoryUtils.isCtrlPressed()) {
-            // do nothing
-        } else if (InventoryUtils.isCtrlPressed()) {
-            duplicateInSource(dragImage, startAmount);
-            dragImage.setAmount(sourceSlot.getHalfOfAmount());
-            sourceSlot.decrementAmountBy(sourceSlot.getHalfOfAmount());
-        } else if (!InventoryUtils.isShiftPressed()) {
-            duplicateInSource(dragImage, startAmount);
-            dragImage.setAmount(1);
-            sourceSlot.decrementAmountBy(1);
-        }
+        return createPayload(imageToDrag);
     }
 
     @Override
@@ -65,13 +48,46 @@ public class ItemSlotSource extends Source {
         }
     }
 
-    private void duplicateInSource(InventoryImage dragImage, int startAmount) {
-        var inventoryItem = new InventoryItem(dragImage.inventoryItem);
-        inventoryItem.setAmount(startAmount);
-        var inventoryImage = new InventoryImage(inventoryItem);
-        sourceSlot.addToStack(inventoryImage);
-        var itemSlotSource = new ItemSlotSource(inventoryImage, dragAndDrop);
-        dragAndDrop.addSource(itemSlotSource);
+    private void handlePartOfStack(InventoryImage imageToDrag, int startAmount) {
+        if (InventoryUtils.isShiftPressed() && InventoryUtils.isCtrlPressed()) {
+            // do nothing
+        } else if (InventoryUtils.isCtrlPressed()) {
+            duplicateInSource(imageToDrag, startAmount);
+            imageToDrag.setAmount(sourceSlot.getHalfOfAmount());
+            sourceSlot.decrementAmountBy(sourceSlot.getHalfOfAmount());
+        } else if (!InventoryUtils.isShiftPressed()) {
+            duplicateInSource(imageToDrag, startAmount);
+            imageToDrag.setAmount(1);
+            sourceSlot.decrementAmountBy(1);
+        }
+    }
+
+    private Payload createPayload(InventoryImage imageToDrag) {
+        var copyImage = InventoryImage.copyOf(imageToDrag);
+        var payload = new Payload();
+        payload.setDragActor(copyImage);
+        makeDraggable(copyImage);
+        dragAndDrop.setDragActorPosition(copyImage.getWidth() / 2,
+                                         -copyImage.getHeight() / 2);
+        return payload;
+    }
+
+    private void duplicateInSource(InventoryImage imageToDrag, int startAmount) {
+        var copyImage = InventoryImage.copyOf(imageToDrag, startAmount);
+        makeDraggable(copyImage);
+        sourceSlot.addToStack(copyImage);
+    }
+
+    private void makeDraggable(InventoryImage copyImage) {
+        if (copyImage.getAmount() == 1) {
+            var itemSlotSource = new ItemSlotSource(copyImage, dragAndDrop);
+            dragAndDrop.addSource(itemSlotSource);
+        }
+    }
+
+    private void unmakeCurrentDragImageDraggable() {
+        Source dragSource = dragAndDrop.getDragSource();
+        dragAndDrop.removeSource(dragSource);
     }
 
 }

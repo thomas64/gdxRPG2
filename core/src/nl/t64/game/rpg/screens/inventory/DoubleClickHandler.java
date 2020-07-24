@@ -1,7 +1,6 @@
 package nl.t64.game.rpg.screens.inventory;
 
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
-import nl.t64.game.rpg.components.party.InventoryItem;
 
 import java.util.Map;
 
@@ -141,21 +140,20 @@ public final class DoubleClickHandler {
                                           ItemSlot sourceSlot,
                                           int startAmount,
                                           DragAndDrop dragAndDrop) {
-        var inventoryItem = new InventoryItem(dragImage.inventoryItem);
-        inventoryItem.setAmount(startAmount);
-        var inventoryImage = new InventoryImage(inventoryItem);
+        var inventoryImage = InventoryImage.copyOf(dragImage, startAmount);
+        makeDraggable(inventoryImage, dragAndDrop);
         sourceSlot.addToStack(inventoryImage);
-        var itemSlotSource = new ItemSlotSource(inventoryImage, dragAndDrop);
-        dragAndDrop.addSource(itemSlotSource);
     }
 
     private static InventoryImage createDuplicate(InventoryImage dragImage, int dragAmount, DragAndDrop dragAndDrop) {
-        var inventoryItem = new InventoryItem(dragImage.inventoryItem);
-        inventoryItem.setAmount(dragAmount);
-        var inventoryImage = new InventoryImage(inventoryItem);
+        var inventoryImage = InventoryImage.copyOf(dragImage, dragAmount);
+        makeDraggable(inventoryImage, dragAndDrop);
+        return inventoryImage;
+    }
+
+    private static void makeDraggable(InventoryImage inventoryImage, DragAndDrop dragAndDrop) {
         var itemSlotSource = new ItemSlotSource(inventoryImage, dragAndDrop);
         dragAndDrop.addSource(itemSlotSource);
-        return inventoryImage;
     }
 
 }

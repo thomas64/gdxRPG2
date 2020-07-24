@@ -39,11 +39,15 @@ public class InventoryItem {
     int stealth;
 
     public InventoryItem(InventoryItem item) {
+        this(item, 1);
+    }
+
+    public InventoryItem(InventoryItem item, int amount) {
         this.id = item.id;
         this.name = item.name;
         this.sort = item.sort;
         this.description = item.description;
-        this.amount = 1;
+        this.amount = amount;
         this.group = item.group;
         this.skill = item.skill;
         this.price = item.price;

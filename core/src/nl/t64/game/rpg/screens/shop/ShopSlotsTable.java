@@ -71,10 +71,14 @@ class ShopSlotsTable {
     private Consumer<InventoryItem> addToSlot(InventorySlot shopslot) {
         return inventoryItem -> {
             var inventoryImage = new InventoryImage(inventoryItem);
+            makeDraggable(inventoryImage);
             shopslot.addToStack(inventoryImage);
-            var itemSlotSource = new ItemSlotSource(inventoryImage, dragAndDrop);
-            dragAndDrop.addSource(itemSlotSource);
         };
+    }
+
+    private void makeDraggable(InventoryImage inventoryImage) {
+        var itemSlotSource = new ItemSlotSource(inventoryImage, dragAndDrop);
+        dragAndDrop.addSource(itemSlotSource);
     }
 
 }
