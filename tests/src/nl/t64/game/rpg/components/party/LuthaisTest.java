@@ -36,45 +36,45 @@ class LuthaisTest extends DataProvider {
 
         assertThat(luthais.getSkillById(SkillItemId.ALCHEMIST).rank).isEqualTo(7);
         assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.ALCHEMIST)).isEqualTo(7);
-        assertThat(luthais.getSkillById(SkillItemId.DIPLOMAT).rank).isEqualTo(0);
-        assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.DIPLOMAT)).isEqualTo(0);
+        assertThat(luthais.getSkillById(SkillItemId.DIPLOMAT).rank).isZero();
+        assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.DIPLOMAT)).isZero();
         assertThat(luthais.getSkillById(SkillItemId.HEALER).rank).isEqualTo(8);
         assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.HEALER)).isEqualTo(8);
         assertThat(luthais.getSkillById(SkillItemId.LOREMASTER).rank).isEqualTo(9);
         assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.LOREMASTER)).isEqualTo(9);
         assertThat(luthais.getSkillById(SkillItemId.MECHANIC).rank).isEqualTo(6);
         assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.MECHANIC)).isEqualTo(6);
-        assertThat(luthais.getSkillById(SkillItemId.MERCHANT).rank).isEqualTo(0);
-        assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.MERCHANT)).isEqualTo(0);
-        assertThat(luthais.getSkillById(SkillItemId.RANGER).rank).isEqualTo(0);
-        assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.RANGER)).isEqualTo(0);
+        assertThat(luthais.getSkillById(SkillItemId.MERCHANT).rank).isZero();
+        assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.MERCHANT)).isZero();
+        assertThat(luthais.getSkillById(SkillItemId.RANGER).rank).isZero();
+        assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.RANGER)).isZero();
         assertThat(luthais.getSkillById(SkillItemId.STEALTH).rank).isEqualTo(5);
         assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.STEALTH)).isEqualTo(5);
-        assertThat(luthais.getSkillById(SkillItemId.THIEF).rank).isEqualTo(0);
-        assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.THIEF)).isEqualTo(0);
-        assertThat(luthais.getSkillById(SkillItemId.TROUBADOUR).rank).isEqualTo(0);
-        assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.TROUBADOUR)).isEqualTo(0);
-        assertThat(luthais.getSkillById(SkillItemId.WARRIOR).rank).isEqualTo(0);
-        assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.WARRIOR)).isEqualTo(0);
+        assertThat(luthais.getSkillById(SkillItemId.THIEF).rank).isZero();
+        assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.THIEF)).isZero();
+        assertThat(luthais.getSkillById(SkillItemId.TROUBADOUR).rank).isZero();
+        assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.TROUBADOUR)).isZero();
+        assertThat(luthais.getSkillById(SkillItemId.WARRIOR).rank).isZero();
+        assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.WARRIOR)).isZero();
         assertThat(luthais.getSkillById(SkillItemId.WIZARD).rank).isEqualTo(10);
         assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.WIZARD)).isEqualTo(10);
 
-        assertThat(luthais.getSkillById(SkillItemId.HAFTED).rank).isEqualTo(0);
-        assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.HAFTED)).isEqualTo(0);
+        assertThat(luthais.getSkillById(SkillItemId.HAFTED).rank).isZero();
+        assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.HAFTED)).isZero();
         assertThat(luthais.getSkillById(SkillItemId.MISSILE).rank).isEqualTo(-1);
-        assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.MISSILE)).isEqualTo(0);
+        assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.MISSILE)).isZero();
         assertThat(luthais.getSkillById(SkillItemId.POLE).rank).isEqualTo(8);
         assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.POLE)).isEqualTo(8);
         assertThat(luthais.getSkillById(SkillItemId.SHIELD).rank).isEqualTo(-1);
-        assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.SHIELD)).isEqualTo(0);
-        assertThat(luthais.getSkillById(SkillItemId.SWORD).rank).isEqualTo(0);
-        assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.SWORD)).isEqualTo(0);
+        assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.SHIELD)).isZero();
+        assertThat(luthais.getSkillById(SkillItemId.SWORD).rank).isZero();
+        assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.SWORD)).isZero();
         assertThat(luthais.getSkillById(SkillItemId.THROWN).rank).isEqualTo(8);
         assertThat(luthais.getCalculatedTotalSkillOf(SkillItemId.THROWN)).isEqualTo(8);
 
         assertThat(luthais.getCalcValueOf(InventoryGroup.WEAPON, CalcAttributeId.BASE_HIT)).isEqualTo(80);
         assertThat(luthais.getCalcValueOf(InventoryGroup.WEAPON, CalcAttributeId.DAMAGE)).isEqualTo(10);
-        assertThat(luthais.getCalcValueOf(InventoryGroup.SHIELD, CalcAttributeId.DEFENSE)).isEqualTo(0);
+        assertThat(luthais.getCalcValueOf(InventoryGroup.SHIELD, CalcAttributeId.DEFENSE)).isZero();
         assertThat(luthais.getTotalCalcOf(CalcAttributeId.PROTECTION)).isEqualTo(3);
     }
 

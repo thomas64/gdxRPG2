@@ -161,7 +161,7 @@ class HeroTest extends DataProvider {
         assertThat(mozes.hasSameIdAs(mozes)).isTrue();
         assertThat(mozes.isPlayer()).isTrue();
         assertThat(mozes.getXpDeltaBetweenLevels()).isEqualTo(20);
-        assertThat(mozes.getXpToInvest()).isEqualTo(0);
+        assertThat(mozes.getXpToInvest()).isZero();
         assertThat(mozes.getAllStats()).extracting("id")
                                        .containsExactly(StatItemId.INTELLIGENCE,
                                                         StatItemId.WILLPOWER,
@@ -200,7 +200,7 @@ class HeroTest extends DataProvider {
         assertThat(luthais.getAllSpells()).extracting("id", "rank")
                                           .contains(Tuple.tuple("fireball", 8));
         final int loremaster = luthais.getCalculatedTotalSkillOf(SkillItemId.LOREMASTER);
-        assertThat(luthais.getSkillById(SkillItemId.WIZARD).getXpCostForNextLevel(loremaster)).isEqualTo(0);
+        assertThat(luthais.getSkillById(SkillItemId.WIZARD).getXpCostForNextLevel(loremaster)).isZero();
 
         assertThat(StatItemId.INTELLIGENCE.getTitle()).isEqualTo("Intelligence");
         assertThat(SkillItemId.ALCHEMIST.getTitle()).isEqualTo("Alchemist");
@@ -243,7 +243,7 @@ class HeroTest extends DataProvider {
         Mockito.when(itemMock.getAttributeOfSkillItemId(SkillItemId.STEALTH)).thenReturn(-200);
         faeron.forceSetInventoryItemFor(InventoryGroup.SHIELD, itemMock);
 
-        assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.STEALTH)).isEqualTo(0);
+        assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.STEALTH)).isZero();
         assertThat(faeron.getExtraSkillForVisualOf(faeron.getSkillById(SkillItemId.STEALTH))).isEqualTo(-10);
     }
 
@@ -264,11 +264,25 @@ class HeroTest extends DataProvider {
 
     @Test
     void whenHeroesAreAdded_ShouldIncreaseTheSumOfSkill() {
-        assertThat(party.getSumOfSkill(SkillItemId.MERCHANT)).isEqualTo(0);
+        assertThat(party.getSumOfSkill(SkillItemId.MERCHANT)).isZero();
         addHeroToParty("kiara");
         assertThat(party.getSumOfSkill(SkillItemId.MERCHANT)).isEqualTo(4);
         addHeroToParty("duilio");
         assertThat(party.getSumOfSkill(SkillItemId.MERCHANT)).isEqualTo(9);
+    }
+
+    @Test
+    void whenAskedForHighestSkill_ShouldReturnThatBestHero() {
+        addHeroToParty("luana");
+        addHeroToParty("reignald");
+        addHeroToParty("ryiah");
+        addHeroToParty("valter");
+        assertThat(party.getHeroWithHighestSkill(SkillItemId.THIEF)).isEqualTo(party.getHero("luana"));
+        assertThat(party.getHeroWithHighestSkill(SkillItemId.MECHANIC)).isEqualTo(party.getHero("valter"));
+        // no ranger present
+        assertThat(party.getHeroWithHighestSkill(SkillItemId.RANGER)).isEqualTo(party.getHero("mozes"));
+        // two with same highest
+        assertThat(party.getHeroWithHighestSkill(SkillItemId.THROWN)).isEqualTo(party.getHero("luana"));
     }
 
 }

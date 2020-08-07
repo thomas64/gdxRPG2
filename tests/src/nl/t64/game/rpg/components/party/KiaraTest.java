@@ -34,47 +34,47 @@ class KiaraTest extends DataProvider {
         assertThat(kiara.getStatById(StatItemId.STAMINA).rank).isEqualTo(40);
         assertThat(kiara.getCalculatedTotalStatOf(StatItemId.STAMINA)).isEqualTo(40);
 
-        assertThat(kiara.getSkillById(SkillItemId.ALCHEMIST).rank).isEqualTo(0);
-        assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.ALCHEMIST)).isEqualTo(0);
-        assertThat(kiara.getSkillById(SkillItemId.DIPLOMAT).rank).isEqualTo(0);
-        assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.DIPLOMAT)).isEqualTo(0);
+        assertThat(kiara.getSkillById(SkillItemId.ALCHEMIST).rank).isZero();
+        assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.ALCHEMIST)).isZero();
+        assertThat(kiara.getSkillById(SkillItemId.DIPLOMAT).rank).isZero();
+        assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.DIPLOMAT)).isZero();
         assertThat(kiara.getSkillById(SkillItemId.HEALER).rank).isEqualTo(1);
         assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.HEALER)).isEqualTo(1);
-        assertThat(kiara.getSkillById(SkillItemId.LOREMASTER).rank).isEqualTo(0);
-        assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.LOREMASTER)).isEqualTo(0);
-        assertThat(kiara.getSkillById(SkillItemId.MECHANIC).rank).isEqualTo(0);
-        assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.MECHANIC)).isEqualTo(0);
+        assertThat(kiara.getSkillById(SkillItemId.LOREMASTER).rank).isZero();
+        assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.LOREMASTER)).isZero();
+        assertThat(kiara.getSkillById(SkillItemId.MECHANIC).rank).isZero();
+        assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.MECHANIC)).isZero();
         assertThat(kiara.getSkillById(SkillItemId.MERCHANT).rank).isEqualTo(4);
         assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.MERCHANT)).isEqualTo(4);
-        assertThat(kiara.getSkillById(SkillItemId.RANGER).rank).isEqualTo(0);
-        assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.RANGER)).isEqualTo(0);
+        assertThat(kiara.getSkillById(SkillItemId.RANGER).rank).isZero();
+        assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.RANGER)).isZero();
         assertThat(kiara.getSkillById(SkillItemId.STEALTH).rank).isEqualTo(5);
         assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.STEALTH)).isEqualTo(5);
         assertThat(kiara.getSkillById(SkillItemId.THIEF).rank).isEqualTo(8);
         assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.THIEF)).isEqualTo(8);
-        assertThat(kiara.getSkillById(SkillItemId.TROUBADOUR).rank).isEqualTo(0);
-        assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.TROUBADOUR)).isEqualTo(0);
-        assertThat(kiara.getSkillById(SkillItemId.WARRIOR).rank).isEqualTo(0);
-        assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.WARRIOR)).isEqualTo(0);
+        assertThat(kiara.getSkillById(SkillItemId.TROUBADOUR).rank).isZero();
+        assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.TROUBADOUR)).isZero();
+        assertThat(kiara.getSkillById(SkillItemId.WARRIOR).rank).isZero();
+        assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.WARRIOR)).isZero();
         assertThat(kiara.getSkillById(SkillItemId.WIZARD).rank).isEqualTo(4);
         assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.WIZARD)).isEqualTo(4);
 
         assertThat(kiara.getSkillById(SkillItemId.HAFTED).rank).isEqualTo(-1);
-        assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.HAFTED)).isEqualTo(0);
+        assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.HAFTED)).isZero();
         assertThat(kiara.getSkillById(SkillItemId.MISSILE).rank).isEqualTo(7);
         assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.MISSILE)).isEqualTo(7);
         assertThat(kiara.getSkillById(SkillItemId.POLE).rank).isEqualTo(2);
         assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.POLE)).isEqualTo(2);
         assertThat(kiara.getSkillById(SkillItemId.SHIELD).rank).isEqualTo(-1);
-        assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.SHIELD)).isEqualTo(0);
+        assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.SHIELD)).isZero();
         assertThat(kiara.getSkillById(SkillItemId.SWORD).rank).isEqualTo(7);
         assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.SWORD)).isEqualTo(7);
         assertThat(kiara.getSkillById(SkillItemId.THROWN).rank).isEqualTo(-1);
-        assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.THROWN)).isEqualTo(0);
+        assertThat(kiara.getCalculatedTotalSkillOf(SkillItemId.THROWN)).isZero();
 
         assertThat(kiara.getCalcValueOf(InventoryGroup.WEAPON, CalcAttributeId.BASE_HIT)).isEqualTo(50);
         assertThat(kiara.getCalcValueOf(InventoryGroup.WEAPON, CalcAttributeId.DAMAGE)).isEqualTo(13);
-        assertThat(kiara.getCalcValueOf(InventoryGroup.SHIELD, CalcAttributeId.DEFENSE)).isEqualTo(0);
+        assertThat(kiara.getCalcValueOf(InventoryGroup.SHIELD, CalcAttributeId.DEFENSE)).isZero();
         assertThat(kiara.getTotalCalcOf(CalcAttributeId.PROTECTION)).isEqualTo(2);
     }
 

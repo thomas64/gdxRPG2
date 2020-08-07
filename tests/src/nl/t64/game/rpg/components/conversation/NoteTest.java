@@ -13,14 +13,20 @@ class NoteTest extends GameTest {
         NoteDatabase noteDatabase = NoteDatabase.getInstance();
         ConversationGraph graph = noteDatabase.getNoteById("note_statue_hero_s_hometown_hero_s_chamber");
         assertThat(graph.getCurrentPhraseId()).isEqualTo("1");
-        assertThat(graph.getPhrases()).hasSize(1);
-        assertThat(graph.getPhraseById("1").getText()).containsOnly("What a beautiful statue. Somehow it looks a little bit like you. That's strange...");
+        assertThat(graph.getPhrases()).hasSize(2);
+        assertThat(graph.getPhraseById("1").getText()).containsOnly("What a beautiful statue.", "Somehow it looks a little bit like you.");
+        assertThat(graph.getPhraseById("2").getText()).containsOnly("That's strange...");
         assertThat(graph.getChoices()).hasSize(1);
-        assertThat(graph.getChoices().get("1")).hasSize(1);
+        assertThat(graph.getChoices().get("2")).hasSize(1);
+        assertThat(graph.getChoices().get("2").get(0).getText()).isEqualTo("->");
+        assertThat(graph.getChoices().get("2").get(0)).hasToString("->");
+        assertThat(graph.getChoices().get("2").get(0).getDestinationId()).isEqualTo("1");
+        assertThat(graph.getChoices().get("2").get(0).getConversationCommand()).isEqualTo(ConversationCommand.EXIT_CONVERSATION);
+        assertThat(graph.getAssociatedChoices()).hasSize(1);
         assertThat(graph.getAssociatedChoices().get(0).getText()).isEqualTo("->");
-        assertThat(graph.getAssociatedChoices().get(0).toString()).isEqualTo("->");
-        assertThat(graph.getAssociatedChoices().get(0).getDestinationId()).isEqualTo("1");
-        assertThat(graph.getAssociatedChoices().get(0).getConversationCommand()).isEqualTo(ConversationCommand.EXIT_CONVERSATION);
+        assertThat(graph.getAssociatedChoices().get(0)).hasToString("->");
+        assertThat(graph.getAssociatedChoices().get(0).getDestinationId()).isEqualTo("2");
+        assertThat(graph.getAssociatedChoices().get(0).getConversationCommand()).isEqualTo(ConversationCommand.NONE);
     }
 
 }

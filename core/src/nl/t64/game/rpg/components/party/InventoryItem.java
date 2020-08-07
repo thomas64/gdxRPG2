@@ -24,25 +24,21 @@ public class InventoryItem {
     @Getter
     InventoryGroup group;
     SkillItemId skill;
-    int price;
-    int weight;
+    private int price;
+    private int weight;
     @JsonProperty("min_intelligence")
     int minIntelligence;
     @JsonProperty("min_strength")
     int minStrength;
     @JsonProperty("base_hit")
-    int baseHit;
-    int damage;
-    int protection;
-    int defense;
-    int dexterity;
-    int stealth;
+    private int baseHit;
+    private int damage;
+    private int protection;
+    private int defense;
+    private int dexterity;
+    private int stealth;
 
-    public InventoryItem(InventoryItem item) {
-        this(item, 1);
-    }
-
-    public InventoryItem(InventoryItem item, int amount) {
+    InventoryItem(InventoryItem item, int amount) {
         this.id = item.id;
         this.name = item.name;
         this.sort = item.sort;
@@ -60,6 +56,10 @@ public class InventoryItem {
         this.defense = item.defense;
         this.dexterity = item.dexterity;
         this.stealth = item.stealth;
+    }
+
+    public static InventoryItem copyOf(InventoryItem inventoryItem, int amount) {
+        return new InventoryItem(inventoryItem, amount);
     }
 
     Object getAttributeOfMinimal(InventoryMinimal minimal) {
@@ -108,18 +108,25 @@ public class InventoryItem {
         return group.isStackable();
     }
 
-    public int getBuyPrice(int totalMerchant) {
+    public int getBuyPriceTotal(int totalMerchant) {
+        return getBuyPricePiece(totalMerchant) * amount;
+    }
+
+    public int getBuyPricePiece(int totalMerchant) {
         int salePrice = Math.round(price - ((price / 100f) * totalMerchant));
         if (salePrice == 0) {
             salePrice = 1;
         }
-        return salePrice * amount;
+        return salePrice;
     }
 
-    public int getSellValue(int totalMerchant) {
+    public int getSellValueTotal(int totalMerchant) {
+        return getSellValuePiece(totalMerchant) * amount;
+    }
+
+    public int getSellValuePiece(int totalMerchant) {
         int value = (int) Math.floor(price / 3f);
-        int saleValue = Math.round(value + ((value / 300f) * totalMerchant));
-        return saleValue * amount;
+        return Math.round(value + ((value / 300f) * totalMerchant));
     }
 
     void increaseAmountWith(InventoryItem sourceItem) {

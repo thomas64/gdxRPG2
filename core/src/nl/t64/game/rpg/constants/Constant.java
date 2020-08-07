@@ -32,7 +32,11 @@ public final class Constant {
     public static final String STARTING_MAP = "starter_area";
 
     public static final String DESCRIPTION_KEY_BUY = "Price";
+    public static final String DESCRIPTION_KEY_BUY_PIECE = "Price per piece";
+    public static final String DESCRIPTION_KEY_BUY_TOTAL = "Total price";
     public static final String DESCRIPTION_KEY_SELL = "Value";
+    public static final String DESCRIPTION_KEY_SELL_PIECE = "Value per piece";
+    public static final String DESCRIPTION_KEY_SELL_TOTAL = "Total value";
 
     private Constant() {
         throw new IllegalStateException("Constant class");

@@ -36,37 +36,37 @@ class ValterTest extends DataProvider {
 
         assertThat(valter.getSkillById(SkillItemId.ALCHEMIST).rank).isEqualTo(3);
         assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.ALCHEMIST)).isEqualTo(3);
-        assertThat(valter.getSkillById(SkillItemId.DIPLOMAT).rank).isEqualTo(0);
-        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.DIPLOMAT)).isEqualTo(0);
-        assertThat(valter.getSkillById(SkillItemId.HEALER).rank).isEqualTo(0);
-        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.HEALER)).isEqualTo(0);
+        assertThat(valter.getSkillById(SkillItemId.DIPLOMAT).rank).isZero();
+        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.DIPLOMAT)).isZero();
+        assertThat(valter.getSkillById(SkillItemId.HEALER).rank).isZero();
+        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.HEALER)).isZero();
         assertThat(valter.getSkillById(SkillItemId.LOREMASTER).rank).isEqualTo(2);
         assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.LOREMASTER)).isEqualTo(2);
         assertThat(valter.getSkillById(SkillItemId.MECHANIC).rank).isEqualTo(2);
         assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.MECHANIC)).isEqualTo(2);
-        assertThat(valter.getSkillById(SkillItemId.MERCHANT).rank).isEqualTo(0);
-        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.MERCHANT)).isEqualTo(0);
-        assertThat(valter.getSkillById(SkillItemId.RANGER).rank).isEqualTo(0);
-        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.RANGER)).isEqualTo(0);
-        assertThat(valter.getSkillById(SkillItemId.STEALTH).rank).isEqualTo(0);
-        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.STEALTH)).isEqualTo(0);
-        assertThat(valter.getSkillById(SkillItemId.THIEF).rank).isEqualTo(0);
-        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.THIEF)).isEqualTo(0);
-        assertThat(valter.getSkillById(SkillItemId.TROUBADOUR).rank).isEqualTo(0);
-        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.TROUBADOUR)).isEqualTo(0);
-        assertThat(valter.getSkillById(SkillItemId.WARRIOR).rank).isEqualTo(0);
-        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.WARRIOR)).isEqualTo(0);
+        assertThat(valter.getSkillById(SkillItemId.MERCHANT).rank).isZero();
+        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.MERCHANT)).isZero();
+        assertThat(valter.getSkillById(SkillItemId.RANGER).rank).isZero();
+        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.RANGER)).isZero();
+        assertThat(valter.getSkillById(SkillItemId.STEALTH).rank).isZero();
+        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.STEALTH)).isZero();
+        assertThat(valter.getSkillById(SkillItemId.THIEF).rank).isZero();
+        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.THIEF)).isZero();
+        assertThat(valter.getSkillById(SkillItemId.TROUBADOUR).rank).isZero();
+        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.TROUBADOUR)).isZero();
+        assertThat(valter.getSkillById(SkillItemId.WARRIOR).rank).isZero();
+        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.WARRIOR)).isZero();
         assertThat(valter.getSkillById(SkillItemId.WIZARD).rank).isEqualTo(2);
         assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.WIZARD)).isEqualTo(2);
 
         assertThat(valter.getSkillById(SkillItemId.HAFTED).rank).isEqualTo(-1);
-        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.HAFTED)).isEqualTo(0);
+        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.HAFTED)).isZero();
         assertThat(valter.getSkillById(SkillItemId.MISSILE).rank).isEqualTo(-1);
-        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.MISSILE)).isEqualTo(0);
-        assertThat(valter.getSkillById(SkillItemId.POLE).rank).isEqualTo(0);
-        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.POLE)).isEqualTo(0);
+        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.MISSILE)).isZero();
+        assertThat(valter.getSkillById(SkillItemId.POLE).rank).isZero();
+        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.POLE)).isZero();
         assertThat(valter.getSkillById(SkillItemId.SHIELD).rank).isEqualTo(-1);
-        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.SHIELD)).isEqualTo(0);
+        assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.SHIELD)).isZero();
         assertThat(valter.getSkillById(SkillItemId.SWORD).rank).isEqualTo(1);
         assertThat(valter.getCalculatedTotalSkillOf(SkillItemId.SWORD)).isEqualTo(1);
         assertThat(valter.getSkillById(SkillItemId.THROWN).rank).isEqualTo(1);
@@ -74,7 +74,7 @@ class ValterTest extends DataProvider {
 
         assertThat(valter.getCalcValueOf(InventoryGroup.WEAPON, CalcAttributeId.BASE_HIT)).isEqualTo(40);
         assertThat(valter.getCalcValueOf(InventoryGroup.WEAPON, CalcAttributeId.DAMAGE)).isEqualTo(11);
-        assertThat(valter.getCalcValueOf(InventoryGroup.SHIELD, CalcAttributeId.DEFENSE)).isEqualTo(0);
+        assertThat(valter.getCalcValueOf(InventoryGroup.SHIELD, CalcAttributeId.DEFENSE)).isZero();
         assertThat(valter.getTotalCalcOf(CalcAttributeId.PROTECTION)).isEqualTo(1);
     }
 

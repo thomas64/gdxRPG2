@@ -37,7 +37,7 @@ public class LootSlotTooltip extends ItemSlotTooltip {
         hoveredTable.defaults().align(Align.left);
 
         final int totalMerchant = Utils.getGameData().getParty().getSumOfSkill(SkillItemId.MERCHANT);
-        List<InventoryDescription> descriptionList = inventoryImage.getComparelessDescriptin(totalMerchant);
+        List<InventoryDescription> descriptionList = inventoryImage.getComparelessDescription(totalMerchant);
         descriptionList = removeLeftUnnecessaryAttributes(descriptionList);
         addAttributesForSingleDescription(descriptionList, hoveredTable);
         window.add(hoveredTable);

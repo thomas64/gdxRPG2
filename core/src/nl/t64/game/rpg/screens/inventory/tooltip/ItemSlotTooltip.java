@@ -140,17 +140,20 @@ public class ItemSlotTooltip extends BaseToolTip {
 
     List<InventoryDescription> removeBuy(List<InventoryDescription> descriptionList) {
         descriptionList.removeIf(attribute -> attribute.getKey().equals(Constant.DESCRIPTION_KEY_BUY));
+        descriptionList.removeIf(attribute -> attribute.getKey().equals(Constant.DESCRIPTION_KEY_BUY_PIECE));
+        descriptionList.removeIf(attribute -> attribute.getKey().equals(Constant.DESCRIPTION_KEY_BUY_TOTAL));
         return descriptionList;
     }
 
     List<InventoryDescription> removeSell(List<InventoryDescription> descriptionList) {
         descriptionList.removeIf(attribute -> attribute.getKey().equals(Constant.DESCRIPTION_KEY_SELL));
+        descriptionList.removeIf(attribute -> attribute.getKey().equals(Constant.DESCRIPTION_KEY_SELL_PIECE));
+        descriptionList.removeIf(attribute -> attribute.getKey().equals(Constant.DESCRIPTION_KEY_SELL_TOTAL));
         return descriptionList;
     }
 
     private Label.LabelStyle createLabelStyle(InventoryDescription attribute) {
-        if (attribute.getKey().equals(Constant.DESCRIPTION_KEY_BUY)
-            || attribute.getKey().equals(Constant.DESCRIPTION_KEY_SELL)) {
+        if (isBuyOrSellValue(attribute)) {
             return createLabelStyle(Color.GOLD);
         }
         return switch (attribute.getCompare()) {
@@ -160,8 +163,7 @@ public class ItemSlotTooltip extends BaseToolTip {
     }
 
     private Label.LabelStyle createDualLabelStyle(InventoryDescription attribute) {
-        if (attribute.getKey().equals(Constant.DESCRIPTION_KEY_BUY)
-            || attribute.getKey().equals(Constant.DESCRIPTION_KEY_SELL)) {
+        if (isBuyOrSellValue(attribute)) {
             return createLabelStyle(Color.GOLD);
         }
         return switch (attribute.getCompare()) {
@@ -202,6 +204,15 @@ public class ItemSlotTooltip extends BaseToolTip {
 
     private Label.LabelStyle createLabelStyle(Color color) {
         return new Label.LabelStyle(new BitmapFont(), color);
+    }
+
+    private boolean isBuyOrSellValue(InventoryDescription attribute) {
+        return attribute.getKey().equals(Constant.DESCRIPTION_KEY_BUY_TOTAL)
+               || attribute.getKey().equals(Constant.DESCRIPTION_KEY_SELL_TOTAL)
+               || attribute.getKey().equals(Constant.DESCRIPTION_KEY_BUY_PIECE)
+               || attribute.getKey().equals(Constant.DESCRIPTION_KEY_SELL_PIECE)
+               || attribute.getKey().equals(Constant.DESCRIPTION_KEY_BUY)
+               || attribute.getKey().equals(Constant.DESCRIPTION_KEY_SELL);
     }
 
 }

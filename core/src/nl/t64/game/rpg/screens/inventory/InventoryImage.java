@@ -32,7 +32,7 @@ public class InventoryImage extends Image {
     }
 
     public static InventoryImage copyOf(InventoryImage inventoryImage, int amount) {
-        var copyItem = new InventoryItem(inventoryImage.inventoryItem, amount);
+        InventoryItem copyItem = InventoryItem.copyOf(inventoryImage.inventoryItem, amount);
         return new InventoryImage(copyItem);
     }
 
@@ -52,7 +52,7 @@ public class InventoryImage extends Image {
         inventoryItem.setAmount(amount);
     }
 
-    public List<InventoryDescription> getComparelessDescriptin(int totalMerchant) {
+    public List<InventoryDescription> getComparelessDescription(int totalMerchant) {
         final var descriptionCreator = new DescriptionCreator(inventoryItem, totalMerchant);
         return descriptionCreator.createItemDescription();
     }

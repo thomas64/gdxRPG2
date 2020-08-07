@@ -43,7 +43,7 @@ class ItemSlotsExchanger {
 
     private void handlePurchase() {
         final int totalMerchant = Utils.getGameData().getParty().getSumOfSkill(SkillItemId.MERCHANT);
-        final int totalPrice = draggedItem.inventoryItem.getBuyPrice(totalMerchant);
+        final int totalPrice = draggedItem.inventoryItem.getBuyPriceTotal(totalMerchant);
         if (Utils.getGameData().getInventory().hasEnoughOfResource("gold", totalPrice)) {
             handlePossibleExchange();
             if (isSuccessfullyExchanged) {
@@ -57,7 +57,7 @@ class ItemSlotsExchanger {
 
     private void handleBarter() {
         final int totalMerchant = Utils.getGameData().getParty().getSumOfSkill(SkillItemId.MERCHANT);
-        final int totalValue = draggedItem.inventoryItem.getSellValue(totalMerchant);
+        final int totalValue = draggedItem.inventoryItem.getSellValueTotal(totalMerchant);
         if (totalValue == 0) {
             new MessageDialog("I'm sorry. I can't accept that.").show(sourceSlot.getStage());
             sourceSlot.putItemBack(draggedItem);

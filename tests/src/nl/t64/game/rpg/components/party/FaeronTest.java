@@ -38,12 +38,12 @@ class FaeronTest extends DataProvider {
         assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.ALCHEMIST)).isEqualTo(10);
         assertThat(faeron.getSkillById(SkillItemId.DIPLOMAT).rank).isEqualTo(10);
         assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.DIPLOMAT)).isEqualTo(10);
-        assertThat(faeron.getSkillById(SkillItemId.HEALER).rank).isEqualTo(0);
-        assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.HEALER)).isEqualTo(0);
+        assertThat(faeron.getSkillById(SkillItemId.HEALER).rank).isZero();
+        assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.HEALER)).isZero();
         assertThat(faeron.getSkillById(SkillItemId.LOREMASTER).rank).isEqualTo(10);
         assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.LOREMASTER)).isEqualTo(10);
-        assertThat(faeron.getSkillById(SkillItemId.MECHANIC).rank).isEqualTo(0);
-        assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.MECHANIC)).isEqualTo(0);
+        assertThat(faeron.getSkillById(SkillItemId.MECHANIC).rank).isZero();
+        assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.MECHANIC)).isZero();
         assertThat(faeron.getSkillById(SkillItemId.MERCHANT).rank).isEqualTo(10);
         assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.MERCHANT)).isEqualTo(10);
         assertThat(faeron.getSkillById(SkillItemId.RANGER).rank).isEqualTo(10);
@@ -57,24 +57,24 @@ class FaeronTest extends DataProvider {
         assertThat(faeron.getSkillById(SkillItemId.WARRIOR).rank).isEqualTo(10);
         assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.WARRIOR)).isEqualTo(10);
         assertThat(faeron.getSkillById(SkillItemId.WIZARD).rank).isEqualTo(-1);
-        assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.WIZARD)).isEqualTo(0);
+        assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.WIZARD)).isZero();
 
         assertThat(faeron.getSkillById(SkillItemId.HAFTED).rank).isEqualTo(10);
         assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.HAFTED)).isEqualTo(10);
         assertThat(faeron.getSkillById(SkillItemId.MISSILE).rank).isEqualTo(-1);
-        assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.MISSILE)).isEqualTo(0);
+        assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.MISSILE)).isZero();
         assertThat(faeron.getSkillById(SkillItemId.POLE).rank).isEqualTo(-1);
-        assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.POLE)).isEqualTo(0);
-        assertThat(faeron.getSkillById(SkillItemId.SHIELD).rank).isEqualTo(0);
-        assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.SHIELD)).isEqualTo(0);
+        assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.POLE)).isZero();
+        assertThat(faeron.getSkillById(SkillItemId.SHIELD).rank).isZero();
+        assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.SHIELD)).isZero();
         assertThat(faeron.getSkillById(SkillItemId.SWORD).rank).isEqualTo(10);
         assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.SWORD)).isEqualTo(10);
         assertThat(faeron.getSkillById(SkillItemId.THROWN).rank).isEqualTo(-1);
-        assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.THROWN)).isEqualTo(0);
+        assertThat(faeron.getCalculatedTotalSkillOf(SkillItemId.THROWN)).isZero();
 
         assertThat(faeron.getCalcValueOf(InventoryGroup.WEAPON, CalcAttributeId.BASE_HIT)).isEqualTo(60);
         assertThat(faeron.getCalcValueOf(InventoryGroup.WEAPON, CalcAttributeId.DAMAGE)).isEqualTo(24);
-        assertThat(faeron.getCalcValueOf(InventoryGroup.SHIELD, CalcAttributeId.DEFENSE)).isEqualTo(0);
+        assertThat(faeron.getCalcValueOf(InventoryGroup.SHIELD, CalcAttributeId.DEFENSE)).isZero();
         assertThat(faeron.getTotalCalcOf(CalcAttributeId.PROTECTION)).isEqualTo(4);
     }
 

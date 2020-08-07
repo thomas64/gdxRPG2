@@ -34,39 +34,39 @@ class LuanaTest extends DataProvider {
         assertThat(luana.getStatById(StatItemId.STAMINA).rank).isEqualTo(20);
         assertThat(luana.getCalculatedTotalStatOf(StatItemId.STAMINA)).isEqualTo(20);
 
-        assertThat(luana.getSkillById(SkillItemId.ALCHEMIST).rank).isEqualTo(0);
-        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.ALCHEMIST)).isEqualTo(0);
-        assertThat(luana.getSkillById(SkillItemId.DIPLOMAT).rank).isEqualTo(0);
-        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.DIPLOMAT)).isEqualTo(0);
-        assertThat(luana.getSkillById(SkillItemId.HEALER).rank).isEqualTo(0);
-        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.HEALER)).isEqualTo(0);
-        assertThat(luana.getSkillById(SkillItemId.LOREMASTER).rank).isEqualTo(0);
-        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.LOREMASTER)).isEqualTo(0);
+        assertThat(luana.getSkillById(SkillItemId.ALCHEMIST).rank).isZero();
+        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.ALCHEMIST)).isZero();
+        assertThat(luana.getSkillById(SkillItemId.DIPLOMAT).rank).isZero();
+        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.DIPLOMAT)).isZero();
+        assertThat(luana.getSkillById(SkillItemId.HEALER).rank).isZero();
+        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.HEALER)).isZero();
+        assertThat(luana.getSkillById(SkillItemId.LOREMASTER).rank).isZero();
+        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.LOREMASTER)).isZero();
         assertThat(luana.getSkillById(SkillItemId.MECHANIC).rank).isEqualTo(1);
         assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.MECHANIC)).isEqualTo(1);
-        assertThat(luana.getSkillById(SkillItemId.MERCHANT).rank).isEqualTo(0);
-        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.MERCHANT)).isEqualTo(0);
-        assertThat(luana.getSkillById(SkillItemId.RANGER).rank).isEqualTo(0);
-        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.RANGER)).isEqualTo(0);
+        assertThat(luana.getSkillById(SkillItemId.MERCHANT).rank).isZero();
+        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.MERCHANT)).isZero();
+        assertThat(luana.getSkillById(SkillItemId.RANGER).rank).isZero();
+        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.RANGER)).isZero();
         assertThat(luana.getSkillById(SkillItemId.STEALTH).rank).isEqualTo(3);
         assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.STEALTH)).isEqualTo(3);
         assertThat(luana.getSkillById(SkillItemId.THIEF).rank).isEqualTo(3);
         assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.THIEF)).isEqualTo(3);
-        assertThat(luana.getSkillById(SkillItemId.TROUBADOUR).rank).isEqualTo(0);
-        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.TROUBADOUR)).isEqualTo(0);
-        assertThat(luana.getSkillById(SkillItemId.WARRIOR).rank).isEqualTo(0);
-        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.WARRIOR)).isEqualTo(0);
-        assertThat(luana.getSkillById(SkillItemId.WIZARD).rank).isEqualTo(0);
-        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.WIZARD)).isEqualTo(0);
+        assertThat(luana.getSkillById(SkillItemId.TROUBADOUR).rank).isZero();
+        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.TROUBADOUR)).isZero();
+        assertThat(luana.getSkillById(SkillItemId.WARRIOR).rank).isZero();
+        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.WARRIOR)).isZero();
+        assertThat(luana.getSkillById(SkillItemId.WIZARD).rank).isZero();
+        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.WIZARD)).isZero();
 
         assertThat(luana.getSkillById(SkillItemId.HAFTED).rank).isEqualTo(-1);
-        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.HAFTED)).isEqualTo(0);
+        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.HAFTED)).isZero();
         assertThat(luana.getSkillById(SkillItemId.MISSILE).rank).isEqualTo(-1);
-        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.MISSILE)).isEqualTo(0);
-        assertThat(luana.getSkillById(SkillItemId.POLE).rank).isEqualTo(0);
-        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.POLE)).isEqualTo(0);
+        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.MISSILE)).isZero();
+        assertThat(luana.getSkillById(SkillItemId.POLE).rank).isZero();
+        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.POLE)).isZero();
         assertThat(luana.getSkillById(SkillItemId.SHIELD).rank).isEqualTo(-1);
-        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.SHIELD)).isEqualTo(0);
+        assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.SHIELD)).isZero();
         assertThat(luana.getSkillById(SkillItemId.SWORD).rank).isEqualTo(1);
         assertThat(luana.getCalculatedTotalSkillOf(SkillItemId.SWORD)).isEqualTo(1);
         assertThat(luana.getSkillById(SkillItemId.THROWN).rank).isEqualTo(2);
@@ -74,7 +74,7 @@ class LuanaTest extends DataProvider {
 
         assertThat(luana.getCalcValueOf(InventoryGroup.WEAPON, CalcAttributeId.BASE_HIT)).isEqualTo(40);
         assertThat(luana.getCalcValueOf(InventoryGroup.WEAPON, CalcAttributeId.DAMAGE)).isEqualTo(11);
-        assertThat(luana.getCalcValueOf(InventoryGroup.SHIELD, CalcAttributeId.DEFENSE)).isEqualTo(0);
+        assertThat(luana.getCalcValueOf(InventoryGroup.SHIELD, CalcAttributeId.DEFENSE)).isZero();
         assertThat(luana.getTotalCalcOf(CalcAttributeId.PROTECTION)).isEqualTo(1);
     }
 

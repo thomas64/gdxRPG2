@@ -34,26 +34,26 @@ class IellwenTest extends DataProvider {
         assertThat(iellwen.getStatById(StatItemId.STAMINA).rank).isEqualTo(60);
         assertThat(iellwen.getCalculatedTotalStatOf(StatItemId.STAMINA)).isEqualTo(60);
 
-        assertThat(iellwen.getSkillById(SkillItemId.ALCHEMIST).rank).isEqualTo(0);
-        assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.ALCHEMIST)).isEqualTo(0);
-        assertThat(iellwen.getSkillById(SkillItemId.DIPLOMAT).rank).isEqualTo(0);
-        assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.DIPLOMAT)).isEqualTo(0);
+        assertThat(iellwen.getSkillById(SkillItemId.ALCHEMIST).rank).isZero();
+        assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.ALCHEMIST)).isZero();
+        assertThat(iellwen.getSkillById(SkillItemId.DIPLOMAT).rank).isZero();
+        assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.DIPLOMAT)).isZero();
         assertThat(iellwen.getSkillById(SkillItemId.HEALER).rank).isEqualTo(10);
         assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.HEALER)).isEqualTo(10);
-        assertThat(iellwen.getSkillById(SkillItemId.LOREMASTER).rank).isEqualTo(0);
-        assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.LOREMASTER)).isEqualTo(0);
-        assertThat(iellwen.getSkillById(SkillItemId.MECHANIC).rank).isEqualTo(0);
-        assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.MECHANIC)).isEqualTo(0);
-        assertThat(iellwen.getSkillById(SkillItemId.MERCHANT).rank).isEqualTo(0);
-        assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.MERCHANT)).isEqualTo(0);
+        assertThat(iellwen.getSkillById(SkillItemId.LOREMASTER).rank).isZero();
+        assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.LOREMASTER)).isZero();
+        assertThat(iellwen.getSkillById(SkillItemId.MECHANIC).rank).isZero();
+        assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.MECHANIC)).isZero();
+        assertThat(iellwen.getSkillById(SkillItemId.MERCHANT).rank).isZero();
+        assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.MERCHANT)).isZero();
         assertThat(iellwen.getSkillById(SkillItemId.RANGER).rank).isEqualTo(6);
         assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.RANGER)).isEqualTo(6);
         assertThat(iellwen.getSkillById(SkillItemId.STEALTH).rank).isEqualTo(6);
         assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.STEALTH)).isEqualTo(5);
-        assertThat(iellwen.getSkillById(SkillItemId.THIEF).rank).isEqualTo(0);
-        assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.THIEF)).isEqualTo(0);
-        assertThat(iellwen.getSkillById(SkillItemId.TROUBADOUR).rank).isEqualTo(0);
-        assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.TROUBADOUR)).isEqualTo(0);
+        assertThat(iellwen.getSkillById(SkillItemId.THIEF).rank).isZero();
+        assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.THIEF)).isZero();
+        assertThat(iellwen.getSkillById(SkillItemId.TROUBADOUR).rank).isZero();
+        assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.TROUBADOUR)).isZero();
         assertThat(iellwen.getSkillById(SkillItemId.WARRIOR).rank).isEqualTo(10);
         assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.WARRIOR)).isEqualTo(10);
         assertThat(iellwen.getSkillById(SkillItemId.WIZARD).rank).isEqualTo(8);
@@ -63,18 +63,18 @@ class IellwenTest extends DataProvider {
         assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.HAFTED)).isEqualTo(5);
         assertThat(iellwen.getSkillById(SkillItemId.MISSILE).rank).isEqualTo(7);
         assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.MISSILE)).isEqualTo(7);
-        assertThat(iellwen.getSkillById(SkillItemId.POLE).rank).isEqualTo(0);
-        assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.POLE)).isEqualTo(0);
+        assertThat(iellwen.getSkillById(SkillItemId.POLE).rank).isZero();
+        assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.POLE)).isZero();
         assertThat(iellwen.getSkillById(SkillItemId.SHIELD).rank).isEqualTo(-1);
-        assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.SHIELD)).isEqualTo(0);
+        assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.SHIELD)).isZero();
         assertThat(iellwen.getSkillById(SkillItemId.SWORD).rank).isEqualTo(10);
         assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.SWORD)).isEqualTo(10);
         assertThat(iellwen.getSkillById(SkillItemId.THROWN).rank).isEqualTo(-1);
-        assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.THROWN)).isEqualTo(0);
+        assertThat(iellwen.getCalculatedTotalSkillOf(SkillItemId.THROWN)).isZero();
 
         assertThat(iellwen.getCalcValueOf(InventoryGroup.WEAPON, CalcAttributeId.BASE_HIT)).isEqualTo(60);
         assertThat(iellwen.getCalcValueOf(InventoryGroup.WEAPON, CalcAttributeId.DAMAGE)).isEqualTo(17);
-        assertThat(iellwen.getCalcValueOf(InventoryGroup.SHIELD, CalcAttributeId.DEFENSE)).isEqualTo(0);
+        assertThat(iellwen.getCalcValueOf(InventoryGroup.SHIELD, CalcAttributeId.DEFENSE)).isZero();
         assertThat(iellwen.getTotalCalcOf(CalcAttributeId.PROTECTION)).isEqualTo(7);
     }
 

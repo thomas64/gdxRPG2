@@ -59,6 +59,14 @@ class InventoryTest extends GameTest {
     }
 
     @Test
+    void whenCopyOfItemIsCreated_ShouldBeSameItemButNotSameObject() {
+        InventoryItem potion = inventoryDB.createInventoryItem(POTION);
+        InventoryItem copyPotion = InventoryItem.copyOf(potion, potion.amount);
+        assertThat(potion.hasSameIdAs(copyPotion)).isTrue();
+        assertThat(potion).isNotEqualTo(copyPotion);
+    }
+
+    @Test
     void whenResourceItemIsCreatedWithAmount_ShouldHaveCorrectAmountWithoutSet() {
         InventoryItem spices = inventoryDB.createInventoryItem("spices");
         InventoryItem gold = inventoryDB.createInventoryItem(GOLD, 5);
@@ -73,29 +81,33 @@ class InventoryTest extends GameTest {
     @Test
     void whenInventoryItemIsCreated_ShouldHaveTradeValue() {
         InventoryItem basicMace = inventoryDB.createInventoryItem(BASIC_MACE);
-        assertThat(basicMace.getBuyPrice(0)).isEqualTo(15);
-        assertThat(basicMace.getSellValue(0)).isEqualTo(5);
-        assertThat(basicMace.getBuyPrice(30)).isEqualTo(11);
-        assertThat(basicMace.getSellValue(30)).isEqualTo(6);
-        assertThat(basicMace.getBuyPrice(60)).isEqualTo(6);
-        assertThat(basicMace.getSellValue(60)).isEqualTo(6);
-        assertThat(basicMace.getBuyPrice(100)).isEqualTo(1);
-        assertThat(basicMace.getSellValue(100)).isEqualTo(7);
+        assertThat(basicMace.getBuyPriceTotal(0)).isEqualTo(15);
+        assertThat(basicMace.getSellValueTotal(0)).isEqualTo(5);
+        assertThat(basicMace.getBuyPriceTotal(30)).isEqualTo(11);
+        assertThat(basicMace.getSellValueTotal(30)).isEqualTo(6);
+        assertThat(basicMace.getBuyPriceTotal(60)).isEqualTo(6);
+        assertThat(basicMace.getSellValueTotal(60)).isEqualTo(6);
+        assertThat(basicMace.getBuyPriceTotal(100)).isEqualTo(1);
+        assertThat(basicMace.getSellValueTotal(100)).isEqualTo(7);
         InventoryItem ordinaryMace = inventoryDB.createInventoryItem("ordinary_mace");
-        assertThat(ordinaryMace.getBuyPrice(0)).isEqualTo(45);
-        assertThat(ordinaryMace.getSellValue(0)).isEqualTo(15);
+        assertThat(ordinaryMace.getBuyPriceTotal(0)).isEqualTo(45);
+        assertThat(ordinaryMace.getSellValueTotal(0)).isEqualTo(15);
         InventoryItem specialistMace = inventoryDB.createInventoryItem("specialist_mace");
-        assertThat(specialistMace.getBuyPrice(0)).isEqualTo(75);
-        assertThat(specialistMace.getSellValue(0)).isEqualTo(25);
+        assertThat(specialistMace.getBuyPriceTotal(0)).isEqualTo(75);
+        assertThat(specialistMace.getSellValueTotal(0)).isEqualTo(25);
         InventoryItem masterworkMace = inventoryDB.createInventoryItem("masterwork_mace");
-        assertThat(masterworkMace.getBuyPrice(0)).isEqualTo(105);
-        assertThat(masterworkMace.getSellValue(0)).isEqualTo(35);
+        assertThat(masterworkMace.getBuyPriceTotal(0)).isEqualTo(105);
+        assertThat(masterworkMace.getSellValueTotal(0)).isEqualTo(35);
         InventoryItem potion = inventoryDB.createInventoryItem(POTION);
-        assertThat(potion.getBuyPrice(0)).isEqualTo(4);
-        assertThat(potion.getSellValue(0)).isEqualTo(1);
+        assertThat(potion.getBuyPricePiece(0)).isEqualTo(4);
+        assertThat(potion.getBuyPriceTotal(0)).isEqualTo(4);
+        assertThat(potion.getSellValuePiece(0)).isEqualTo(1);
+        assertThat(potion.getSellValueTotal(0)).isEqualTo(1);
         potion.setAmount(20);
-        assertThat(potion.getBuyPrice(0)).isEqualTo(80);
-        assertThat(potion.getSellValue(0)).isEqualTo(20);
+        assertThat(potion.getBuyPricePiece(0)).isEqualTo(4);
+        assertThat(potion.getBuyPriceTotal(0)).isEqualTo(80);
+        assertThat(potion.getSellValuePiece(0)).isEqualTo(1);
+        assertThat(potion.getSellValueTotal(0)).isEqualTo(20);
     }
 
     @Test
@@ -115,7 +127,7 @@ class InventoryTest extends GameTest {
     void whenResourceItemIsAdded_ShouldBeAddedToStartOfInventory() {
         InventoryItem herbs = inventoryDB.createInventoryItem(HERBS);
         assertThat(inventory.contains(HERBS)).isFalse();
-        assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(0);
+        assertThat(inventory.getAmountOfItemAt(1)).isZero();
         inventory.autoSetItem(herbs);
         assertThat(inventory.contains(HERBS)).isTrue();
         assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(1);
@@ -196,7 +208,7 @@ class InventoryTest extends GameTest {
     void whenSameEquipmentItemIsAdded_ShouldNotIncreaseAmount() {
         InventoryItem basicMace = inventoryDB.createInventoryItem(BASIC_MACE);
         assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(1);
-        assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(0);
+        assertThat(inventory.getAmountOfItemAt(1)).isZero();
         inventory.autoSetItem(basicMace);
         assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(1);
         assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(1);
@@ -362,6 +374,31 @@ class InventoryTest extends GameTest {
         assertThat(description.get(5).key).isEqualTo(SkillItemId.STEALTH);
         assertThat(description.get(5).value).isEqualTo(0);
         assertThatExceptionOfType(IndexOutOfBoundsException.class).isThrownBy(() -> description.get(6));
+    }
+
+    @Test
+    void whenResourceItemHerbs_ShouldCreateDescription() {
+        InventoryItem potion = inventoryDB.createInventoryItem(POTION, 10);
+        List<InventoryDescription> description = new DescriptionCreator(potion, 0)
+                .createItemDescription();
+        assertThat(description.get(0).key).isEqualTo(InventoryGroup.POTION);
+        assertThat(description.get(0).value).isEqualTo("Healing Potion");
+        assertThat(description.get(1).key).isEqualTo("Price per piece");
+        assertThat(description.get(1).value).isEqualTo(4);
+        assertThat(description.get(2).key).isEqualTo("Total price");
+        assertThat(description.get(2).value).isEqualTo(40);
+        assertThat(description.get(3).key).isEqualTo("Value per piece");
+        assertThat(description.get(3).value).isEqualTo(1);
+        assertThat(description.get(4).key).isEqualTo("Total value");
+        assertThat(description.get(4).value).isEqualTo(10);
+        assertThatExceptionOfType(IndexOutOfBoundsException.class).isThrownBy(() -> description.get(5));
+    }
+
+    @Test
+    void whenAmountOfItemIsZero_ShouldThrowException() {
+        InventoryItem potion = inventoryDB.createInventoryItem(POTION, 0);
+        var creator = new DescriptionCreator(potion, 0);
+        assertThatExceptionOfType(IllegalStateException.class).isThrownBy(creator::createItemDescription);
     }
 
     @Test
