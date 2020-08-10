@@ -20,7 +20,7 @@ public final class InventoryUtils {
     private static boolean ctrlPressed = false;
 
     private InventoryUtils() {
-        throw new IllegalStateException("InventoryUtils class");
+        throw new IllegalCallerException("InventoryUtils class");
     }
 
     public static String getSelectedHeroId() {

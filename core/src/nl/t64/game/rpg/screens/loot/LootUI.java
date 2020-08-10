@@ -43,7 +43,7 @@ class LootUI implements ScreenUI {
 
     @Override
     public Window getEquipWindow() {
-        throw new IllegalAccessError("Double click loot cannot reach this.");
+        throw new IllegalCallerException("Double click loot cannot reach this.");
     }
 
     @Override

@@ -13,7 +13,7 @@ import java.io.IOException;
 public final class DesktopLauncher {
 
     private DesktopLauncher() {
-        throw new IllegalStateException("DesktopLauncher class");
+        throw new IllegalCallerException("DesktopLauncher class");
     }
 
     public static void main(String[] arg) throws IOException {

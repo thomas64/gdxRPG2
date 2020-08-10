@@ -8,7 +8,7 @@ import java.util.Map;
 public final class DoubleClickHandler {
 
     private DoubleClickHandler() {
-        throw new IllegalStateException("DoubleClickHandler class");
+        throw new IllegalCallerException("DoubleClickHandler class");
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,7 +115,7 @@ public final class DoubleClickHandler {
             dragImage.setAmount(dragAmount);
             sourceSlot.decrementAmountBy(dragAmount);
         } else {
-            throw new IllegalAccessError("Double click shop cannot reach this.");
+            throw new IllegalStateException("Double click shop cannot reach this.");
         }
         new ItemSlotsExchanger(dragImage, sourceSlot, targetSlot).exchange();
     }

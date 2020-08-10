@@ -39,7 +39,7 @@ public final class Constant {
     public static final String DESCRIPTION_KEY_SELL_TOTAL = "Total value";
 
     private Constant() {
-        throw new IllegalStateException("Constant class");
+        throw new IllegalCallerException("Constant class");
     }
 
 }

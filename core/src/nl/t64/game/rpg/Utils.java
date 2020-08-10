@@ -35,7 +35,7 @@ public final class Utils {
     private static final String CHEST_PATH = "sprites/objects/chest.png";
 
     private Utils() {
-        throw new IllegalStateException("Utils class");
+        throw new IllegalCallerException("Utils class");
     }
 
     public static ResourceManager getResourceManager() {

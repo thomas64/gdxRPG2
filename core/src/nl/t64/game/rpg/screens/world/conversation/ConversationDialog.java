@@ -24,6 +24,7 @@ public class ConversationDialog {
     private static final String SPRITE_TRANSPARENT = "sprites/transparent.png";
     private static final String CONVERSATION_FONT = "fonts/fff_tusj.ttf";
     private static final int FONT_SIZE = 30;
+    private static final float LINE_HEIGHT = 40f;
     private static final float DIALOG_WIDTH = 1000f;
     private static final float DIALOG_HEIGHT = 300f;
     private static final float PAD = 25f;
@@ -37,6 +38,7 @@ public class ConversationDialog {
     private Label label;
     private List<ConversationChoice> answers;
     private ScrollPane scrollPane;
+    private Cell<?> scrollPaneRow;
 
     private ConversationGraph graph;
 
@@ -111,9 +113,9 @@ public class ConversationDialog {
         scrollPane = new ScrollPane(answers);
         scrollPane.setOverscroll(false, false);
         scrollPane.setFadeScrollBars(false);
-        scrollPane.setScrollingDisabled(true, false);
-        scrollPane.setForceScroll(true, false);
-        scrollPane.setScrollBarPositions(false, true);
+        scrollPane.setScrollingDisabled(true, true);
+        scrollPane.setForceScroll(false, false);
+        scrollPane.setScrollBarPositions(false, false);
 
         // dialog
         var newDialog = new Dialog("", windowStyle);
@@ -141,8 +143,9 @@ public class ConversationDialog {
         textTable.add(label).width(DIALOG_WIDTH - ALL_PADS).row();
         textTable.add().height(PAD).row();
         textTable.add(scrollPane).left().padLeft(PAD);
-        mainTable.add(textTable);
+        scrollPaneRow = textTable.getCells().peek();
 
+        mainTable.add(textTable);
         dialog.getContentTable().clear();
         dialog.getContentTable().add(mainTable);
     }
@@ -154,6 +157,7 @@ public class ConversationDialog {
         textTable.add(label).width(DIALOG_WIDTH - (PAD * 5f)).row();
         textTable.add().height(PAD).row();
         textTable.add(scrollPane).left().padLeft(PAD);
+        scrollPaneRow = textTable.getCells().peek();
 
         dialog.getContentTable().clear();
         dialog.getContentTable().add(textTable);
@@ -191,6 +195,8 @@ public class ConversationDialog {
         ConversationChoice[] choices = graph.getAssociatedChoices().toArray(new ConversationChoice[0]);
         answers.setItems(choices);
         answers.setSelectedIndex(0);
+
+        scrollPaneRow.height(choices.length * LINE_HEIGHT);
     }
 
 }
