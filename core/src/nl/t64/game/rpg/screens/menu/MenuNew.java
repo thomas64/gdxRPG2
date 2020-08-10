@@ -92,7 +92,7 @@ public class MenuNew extends MenuScreen {
     }
 
     private void processStartButton() {
-        finalProfileName = profileName.toString().substring(0, profileName.length() - 1);
+        finalProfileName = profileName.substring(0, profileName.length() - 1);
         boolean profileExists = Utils.getProfileManager().doesProfileExist(finalProfileName);
         if (profileExists) {
             overwriteDialog.show(stage);

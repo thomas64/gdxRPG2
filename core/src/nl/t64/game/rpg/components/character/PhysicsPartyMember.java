@@ -19,7 +19,7 @@ public class PhysicsPartyMember extends PhysicsComponent {
     private DefaultGraphPath<TiledNode> path;
 
     public PhysicsPartyMember() {
-        this.boundingBoxWidthPercentage = 0.70f;
+        this.boundingBoxWidthPercentage = 0.50f;
         this.boundingBoxHeightPercentage = 0.20f;
     }
 

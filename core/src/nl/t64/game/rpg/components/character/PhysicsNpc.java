@@ -26,7 +26,7 @@ public class PhysicsNpc extends PhysicsComponent {
     public PhysicsNpc() {
         this.isSelected = false;
         this.velocity = Constant.MOVE_SPEED_1;
-        this.boundingBoxWidthPercentage = 0.60f;
+        this.boundingBoxWidthPercentage = 0.50f;
         this.boundingBoxHeightPercentage = 0.30f;
     }
 
