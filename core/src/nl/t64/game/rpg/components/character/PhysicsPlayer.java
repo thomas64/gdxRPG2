@@ -123,6 +123,7 @@ public class PhysicsPlayer extends PhysicsComponent {
                 checkBlocker(dt);
             }
             checkPortals();
+            checkDiscovers();
         } else if (state.equals(CharacterState.IDLE)) {
             turnCharacters();
         }
@@ -230,6 +231,10 @@ public class PhysicsPlayer extends PhysicsComponent {
 
     private void checkPortals() {
         Utils.getMapManager().checkPortals(boundingBox, direction);
+    }
+
+    private void checkDiscovers() {
+        Utils.getMapManager().checkDiscovers(boundingBox);
     }
 
     private void moveSide(Rectangle blocker, float dt) {

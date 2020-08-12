@@ -25,6 +25,10 @@ public class QuestGraph {
         return title;
     }
 
+    public void setLocationDiscoverd(String taskId) {
+        tasks.get(taskId).setLocationDiscovered();
+    }
+
     public boolean isFinished() {
         return currentState.equals(QuestState.FINISHED);
     }

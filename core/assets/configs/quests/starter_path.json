@@ -17,5 +17,22 @@
         "type": "RETURN"
       }
     }
+  },
+  "quest0003": {
+    "title": "Secret Gypsy room",
+    "tasks": {
+      "1": {
+        "taskPhrase": "Find the secret room",
+        "type": "DISCOVER"
+      },
+      "2": {
+        "taskPhrase": "See the statue with your own eyes",
+        "type": "DISCOVER"
+      },
+      "3": {
+        "taskPhrase": "Report back",
+        "type": "RETURN"
+      }
+    }
   }
 }

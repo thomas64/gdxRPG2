@@ -14,13 +14,19 @@ public class QuestTask {
     private String taskPhrase;
     QuestType type;
     private Map<String, Integer> target;
+    private boolean isComplete;
 
     private QuestTask() {
         this.target = Collections.emptyMap();
+        this.isComplete = false;
     }
 
     public String toString() {
         return taskPhrase;
+    }
+
+    void setLocationDiscovered() {
+        isComplete = true;
     }
 
     void removeTargetFromInventory() {
@@ -32,6 +38,7 @@ public class QuestTask {
         return switch (type) {
             case RETURN -> checkReturn();
             case FETCH -> checkFetch();
+            case DISCOVER -> checkDiscover();
             default -> throw new GdxRuntimeException(String.format("No %s quests for now.", type));
         };
     }
@@ -43,6 +50,10 @@ public class QuestTask {
     private boolean checkFetch() {
         return Utils.getGameData().getInventory().hasEnoughOfResource(getTargetEntry().getKey(),
                                                                       getTargetEntry().getValue());
+    }
+
+    private boolean checkDiscover() {
+        return isComplete;
     }
 
     private Map.Entry<String, Integer> getTargetEntry() {

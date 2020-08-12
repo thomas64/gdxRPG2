@@ -79,6 +79,11 @@ public class MapManager implements ProfileObserver {
                   });
     }
 
+    public void checkDiscovers(Rectangle playerRect) {
+        currentMap.getDiscoverCollisionBy(playerRect)
+                  .ifPresent(GameMapQuestDiscover::locationDiscovered);
+    }
+
     public void removeFromBlockers(Rectangle immobileNpc) {
         currentMap.removeFromBlockers(immobileNpc);
     }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="44" height="70" tilewidth="24" tileheight="24" infinite="0" nextlayerid="17" nextobjectid="41">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="44" height="70" tilewidth="24" tileheight="24" infinite="0" nextlayerid="17" nextobjectid="42">
  <tileset firstgid="1" name="starter_path" tilewidth="24" tileheight="24" tilecount="4352" columns="128">
   <image source="tilesets/starter_path.png" width="3072" height="816"/>
  </tileset>
@@ -82,6 +82,11 @@
   <object id="40" name="boy01" type="w" x="576" y="552" width="48" height="24">
    <properties>
     <property name="conversation" value="quest0001"/>
+   </properties>
+  </object>
+  <object id="41" name="gypsygirl01" type="w" x="480" y="1320" width="48" height="24">
+   <properties>
+    <property name="conversation" value="quest0003"/>
    </properties>
   </object>
  </objectgroup>

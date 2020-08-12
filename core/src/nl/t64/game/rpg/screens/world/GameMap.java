@@ -47,6 +47,7 @@ class GameMap {
     final List<GameMapHero> heroes = new ArrayList<>();
     final List<Rectangle> blockers = new ArrayList<>();
     final List<GameMapQuestBlocker> questBlockers = new ArrayList<>();
+    final List<GameMapQuestDiscover> questDiscovers = new ArrayList<>();
     final List<RectangleMapObject> sparkles = new ArrayList<>();
     final List<RectangleMapObject> chests = new ArrayList<>();
     private final List<Rectangle> savePoints = new ArrayList<>();
@@ -66,6 +67,7 @@ class GameMap {
         this.loadHeroes();
         this.loadBlockers();
         this.loadQuestBlockers();
+        this.loadQuestDiscovers();
         this.loadSparkles();
         this.loadChests();
         this.loadSavePoints();
@@ -111,6 +113,12 @@ class GameMap {
         return portals.stream()
                       .filter(portal -> playerRect.overlaps(portal.rectangle))
                       .findFirst();
+    }
+
+    Optional<GameMapQuestDiscover> getDiscoverCollisionBy(Rectangle playerRect) {
+        return questDiscovers.stream()
+                             .filter(discover -> playerRect.overlaps(discover.rectangle))
+                             .findFirst();
     }
 
     Optional<GameMapWarpPoint> getWarpPointBeingCheckedBy(Rectangle checkRect) {
@@ -206,6 +214,16 @@ class GameMap {
             for (MapObject mapObject : mapLayer.getObjects()) {
                 if (mapObject.getName().equalsIgnoreCase("blocker")) {
                     questBlockers.add(new GameMapQuestBlocker(mapObject));
+                }
+            }
+        });
+    }
+
+    private void loadQuestDiscovers() {
+        getMapLayer(QUEST_LAYER).ifPresent(mapLayer -> {
+            for (MapObject mapObject : mapLayer.getObjects()) {
+                if (mapObject.getName().equalsIgnoreCase("discover")) {
+                    questDiscovers.add(new GameMapQuestDiscover(mapObject));
                 }
             }
         });
@@ -324,6 +342,10 @@ class GameMap {
         }
         for (RectangleMapObject chest : chests) {
             rect = chest.getRectangle();
+            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+        }
+        for (GameMapQuestDiscover discover : questDiscovers) {
+            rect = discover.rectangle;
             shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
         }
     }

@@ -74,5 +74,94 @@
         }
       ]
     }
+  },
+  "quest0003": {
+    "phrases": {
+      "1": {"text": ["I've heard that there's a secret room in town."]},
+      "2": {"text": ["It's supposed to be hidden in a basement behind a portal."]},
+      "3": {"text": ["For real? A portal? I can hardly believe it."]},
+      "4": {"text": ["Would you be so kind to take a look?"]},
+      "5": {"text": ["You are to kind, thank you."]},
+      "6": {"text": ["I guess I'll have to take a look myself then."]},
+      "7": {"text": ["Have you changed you mind?"]},
+      "101": {"text": ["And? And? Have you found it?"]},
+      "102": {"text": ["I'm sorry, I can't."]},
+      "1000": {"text": ["I can see it in your eyes! You have been there!"]},
+      "1001": {"text": ["You have seen the statue of Legend!", "That's unreal!"]},
+      "1002": {"text": ["Thank you! Thank you!", "I can't thank you enough."]},
+      "1003": {"text": ["My believes have been restored.", "Here, this is for you."]},
+      "2000": {"text": ["You're lying. I can see it in your eyes."]},
+      "4000": {"text": ["I have to find it for myself!", "You still deserve some reward."]},
+      "5000": {"text": ["I have to find it for myself!"]}
+    },
+    "choices": {
+      "4": [
+        {
+          "text": "Yes of course! You've raised my curiosity.",
+          "conversationCommand": "ACCEPT_QUEST",
+          "destinationId": "5"
+        },
+        {
+          "text": "No way! Portals don't exist.",
+          "destinationId": "6"
+        }
+      ],
+      "5": [
+        {
+          "conversationCommand": "EXIT_CONVERSATION",
+          "destinationId": "101"
+        }
+      ],
+      "6": [
+        {
+          "conversationCommand": "EXIT_CONVERSATION",
+          "destinationId": "7"
+        }
+      ],
+      "7": [
+        {
+          "destinationId": "1"
+        }
+      ],
+      "101": [
+        {
+          "text": "Yes! Portals exist! Unbelievable!",
+          "conversationCommand": "RETURN_QUEST"
+        },
+        {
+          "text": "No, give up your believe!",
+          "destinationId": "102"
+        }
+      ],
+      "102": [
+        {
+          "conversationCommand": "EXIT_CONVERSATION",
+          "destinationId": "101"
+        }
+      ],
+      "1003": [
+        {
+          "conversationCommand": "REWARD_QUEST"
+        }
+      ],
+      "2000": [
+        {
+          "conversationCommand": "EXIT_CONVERSATION",
+          "destinationId": "101"
+        }
+      ],
+      "4000": [
+        {
+          "conversationCommand": "REWARD_QUEST",
+          "destinationId": "4000"
+        }
+      ],
+      "5000": [
+        {
+          "conversationCommand": "EXIT_CONVERSATION",
+          "destinationId": "5000"
+        }
+      ]
+    }
   }
 }
