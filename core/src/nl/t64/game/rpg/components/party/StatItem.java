@@ -3,6 +3,8 @@ package nl.t64.game.rpg.components.party;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.function.Consumer;
+
 
 @NoArgsConstructor
 class Level {
@@ -36,6 +38,18 @@ class Level {
         } else {
             int nextLevel = rank + 1;
             return getTotalXpForLevel(nextLevel) - totalXp;
+        }
+    }
+
+    void gainXp(int amount, Consumer<Boolean> hasGainedLevel) {
+        if (rank < MAXIMUM) {
+            xpToInvest += amount;
+            totalXp += amount;
+        }
+        while (getXpNeededForNextLevel() <= 0) {
+            rank += 1;
+            variable += 1;
+            hasGainedLevel.accept(true);
         }
     }
 

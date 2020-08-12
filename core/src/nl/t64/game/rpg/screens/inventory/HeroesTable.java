@@ -10,7 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Scaling;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.PartyContainer;
@@ -171,7 +173,13 @@ public class HeroesTable {
         pixmap.fill();
         colorsOfHpBars[index] = new Texture(pixmap);
         pixmap.dispose();
-        return new Image(colorsOfHpBars[index]);
+        var drawable = new TextureRegionDrawable(colorsOfHpBars[index]);
+        float fillWidth = (STATS_COLUMN_WIDTH / hero.getMaximumHp()) * hero.getCurrentHp();
+        drawable.setMinWidth(fillWidth);
+        var image = new Image(drawable);
+        image.setScaling(Scaling.stretchY);
+        image.setAlign(Align.left);
+        return image;
     }
 
     public void disposePixmapTextures() {

@@ -15,6 +15,7 @@ public class LootContainer {
     private static final String LOOT_CONFIGS = "configs/loot/";
     private static final String SPARKLE_FILE_LIST = LOOT_CONFIGS + "_files_sparkles.txt";
     private static final String CHEST_FILE_LIST = LOOT_CONFIGS + "_files_chests.txt";
+    private static final String QUEST_FILE_LIST = LOOT_CONFIGS + "_files_quests.txt";
 
     private final Map<String, Loot> loot;
 
@@ -28,7 +29,11 @@ public class LootContainer {
     }
 
     public Loot getLoot(String lootId) {
-        return loot.get(lootId);
+        if (loot.containsKey(lootId)) {
+            return loot.get(lootId);
+        } else {
+            return new Loot();
+        }
     }
 
     private void loadLoot() throws IOException {
@@ -40,6 +45,10 @@ public class LootContainer {
             loot.putAll(mapper.readValue(json, typeReference));
         }
         for (String filePath : getFileList(CHEST_FILE_LIST)) {
+            String json = Gdx.files.local(LOOT_CONFIGS + filePath).readString();
+            loot.putAll(mapper.readValue(json, typeReference));
+        }
+        for (String filePath : getFileList(QUEST_FILE_LIST)) {
             String json = Gdx.files.local(LOOT_CONFIGS + filePath).readString();
             loot.putAll(mapper.readValue(json, typeReference));
         }

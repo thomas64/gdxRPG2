@@ -1,38 +1,23 @@
 {
   "reignald01": {
     "phrases": {
-      "1": {
-        "text": ["Squire!"]
-      },
-      "2": {
-        "text": ["Look at me when I'm yelling at you!"]
-      },
-      "3": {
-        "text": ["Squire!"]
-      },
+      "1": {"text": ["Squire!"]},
+      "2": {"text": ["Look at me when I'm yelling at you!"]},
+      "3": {"text": ["Squire!"]},
       "4": {
         "text": [
           "If it wasn't for me you wouldn't be standing here before me now! You cannot let yourself get killed again!"
         ]
       },
-      "5": {
-        "text": ["If you go along without me, you'll probably end up dead! So I will join you now!"]
-      },
-      "6": {
-        "text": ["Excellent!"]
-      },
-      "7": {
-        "text": ["Squire! Come back here!"]
-      },
-      "101": {
-        "text": ["Squire!"]
-      },
-      "102": {
-        "text": ["Don't you dare to run away from me again!", "I will join you now!"]
-      },
-      "103": {
-        "text": ["Squire! Come back here!"]
-      }
+      "5": {"text": ["If you go along without me, you'll probably end up dead! So I will join you now!"]},
+      "6": {"text": ["Excellent!"]},
+      "7": {"text": ["Squire! Come back here!"]},
+      "101": {"text": ["Squire!"]},
+      "102": {"text": ["Don't you dare to run away from me again!", "I will join you now!"]},
+      "103": {"text": ["Squire! Come back here!"]},
+      "201": {"text": ["Squire!"]},
+      "202": {"text": ["You tell me you have made room in your party!", "I will join you now!"]},
+      "3000": {"text": ["It seems your party is already full.", "I cannot join you if there's no room."]}
     },
     "choices": {
       "5": [
@@ -47,7 +32,8 @@
       ],
       "6": [
         {
-          "conversationCommand": "HERO_JOIN"
+          "conversationCommand": "HERO_JOIN",
+          "destinationId": "301"
         }
       ],
       "7": [
@@ -71,14 +57,28 @@
           "conversationCommand": "EXIT_CONVERSATION",
           "destinationId": "101"
         }
+      ],
+      "202": [
+        {
+          "text": "Sir! Yes sir!",
+          "destinationId": "6"
+        },
+        {
+          "text": "Well... Whoa! Look over there, what's that?!",
+          "destinationId": "103"
+        }
+      ],
+      "3000": [
+        {
+          "conversationCommand": "EXIT_CONVERSATION",
+          "destinationId": "201"
+        }
       ]
     }
   },
   "dismiss_reignald": {
     "phrases": {
-      "1": {
-        "text": ["Hero specific text.", "Do you want me to leave your party?"]
-      }
+      "1": {"text": ["Hero specific text.", "Do you want me to leave your party?"]}
     },
     "choices": {
       "1": [

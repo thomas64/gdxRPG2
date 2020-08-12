@@ -29,6 +29,7 @@ class MessageDialog {
     private final Dialog dialog;
     private Label label;
     private Runnable actionAfterHide;
+    private boolean isVisible;
 
     MessageDialog(InputMultiplexer multiplexer) {
         this.multiplexer = multiplexer;
@@ -37,6 +38,7 @@ class MessageDialog {
         this.dialog = createDialog();
         applyListeners();
         this.actionAfterHide = null;
+        this.isVisible = false;
     }
 
     void dispose() {
@@ -59,11 +61,14 @@ class MessageDialog {
     }
 
     void show() {
-        Gdx.input.setInputProcessor(stage);
         dialog.show(stage);
+        isVisible = true;
     }
 
     void update(float dt) {
+        if (isVisible) {
+            Gdx.input.setInputProcessor(stage);
+        }
         stage.act(dt);
         stage.draw();
     }
@@ -109,6 +114,7 @@ class MessageDialog {
     }
 
     private void hide() {
+        isVisible = false;
         Gdx.input.setInputProcessor(multiplexer);
         if (actionAfterHide == null) {
             dialog.hide();

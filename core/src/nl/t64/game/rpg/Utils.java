@@ -135,7 +135,7 @@ public final class Utils {
             color = Color.LIME;
         }
         if (hpStats.get("staVari") < hpStats.get("staRank")) {
-            color = Color.YELLOW;
+            color = Color.GOLD;
         }
         if (hpStats.get("eduVari") < hpStats.get("eduRank")) {
             color = Color.FIREBRICK;

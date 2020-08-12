@@ -12,8 +12,8 @@ import java.util.function.Consumer;
 @AllArgsConstructor
 class LootScreenLoader {
 
-    private final Consumer<ScreenType> openLoadScreen;
-    private final Loot loot;
+    final Consumer<ScreenType> openLoadScreen;
+    final Loot loot;
 
     void openLootScreen() {
         var lootScreen = (LootScreen) Utils.getScreenManager().getScreen(ScreenType.LOOT);

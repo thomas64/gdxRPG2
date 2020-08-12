@@ -5,4 +5,6 @@ public interface LootObserver {
 
     void onNotifyLootTaken();
 
+    void onNotifyRewardTaken();
+
 }

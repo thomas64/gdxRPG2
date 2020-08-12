@@ -30,18 +30,14 @@ public class ConversationContainer {
         return conversations.get(conversationId);
     }
 
-    public PhraseIdContainer getCurrentPhraseIds() {
-        var currentPhraseIds = new PhraseIdContainer();
-        conversations.forEach(
-                (conversationId, graph) -> currentPhraseIds.setPhraseId(conversationId, graph.getCurrentPhraseId()));
-        return currentPhraseIds;
+    public PhraseIdContainer createPhraseIdContainer() {
+        var phraseIdContainer = new PhraseIdContainer();
+        conversations.forEach((id, graph) -> phraseIdContainer.setPhraseId(id, graph.currentPhraseId));
+        return phraseIdContainer;
     }
 
-    public void setCurrentPhraseIds(PhraseIdContainer currentPhraseIds) {
-        conversations.forEach((conversationId, graph) -> {
-            String phraseId = currentPhraseIds.getPhraseId(conversationId);
-            graph.setCurrentPhraseId(phraseId);
-        });
+    public void setCurrentPhraseIds(PhraseIdContainer phraseIdContainer) {
+        conversations.forEach((id, graph) -> graph.currentPhraseId = phraseIdContainer.getPhraseId(id));
     }
 
     private void loadConversations() throws IOException {

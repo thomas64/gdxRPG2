@@ -5,6 +5,8 @@ import nl.t64.game.rpg.components.conversation.ConversationContainer;
 import nl.t64.game.rpg.components.conversation.PhraseIdContainer;
 import nl.t64.game.rpg.components.loot.LootContainer;
 import nl.t64.game.rpg.components.party.*;
+import nl.t64.game.rpg.components.quest.QuestContainer;
+import nl.t64.game.rpg.components.quest.StateContainer;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.profile.ProfileObserver;
@@ -17,6 +19,7 @@ public class GameData implements ProfileObserver {
     private PartyContainer party;
     private InventoryContainer inventory;
     private ConversationContainer conversations;
+    private QuestContainer quests;
     private LootContainer loot;
 
     @Override
@@ -25,6 +28,7 @@ public class GameData implements ProfileObserver {
         party = new PartyContainer();
         inventory = new InventoryContainer();
         conversations = new ConversationContainer();
+        quests = new QuestContainer();
         loot = new LootContainer();
         addFirstHeroToParty();
         addFirstItemsToInventory();
@@ -36,7 +40,8 @@ public class GameData implements ProfileObserver {
         profileManager.setProperty("heroes", heroes);
         profileManager.setProperty("party", party);
         profileManager.setProperty("inventory", inventory);
-        profileManager.setProperty("conversations", conversations.getCurrentPhraseIds());
+        profileManager.setProperty("conversations", conversations.createPhraseIdContainer());
+        profileManager.setProperty("quests", quests.createStateContainer());
         profileManager.setProperty("loot", loot);
     }
 
@@ -48,6 +53,9 @@ public class GameData implements ProfileObserver {
         conversations = new ConversationContainer();
         var currentPhraseIds = profileManager.getProperty("conversations", PhraseIdContainer.class);
         conversations.setCurrentPhraseIds(currentPhraseIds);
+        quests = new QuestContainer();
+        var currentStates = profileManager.getProperty("quests", StateContainer.class);
+        quests.setCurrentStates(currentStates);
         loot = profileManager.getProperty("loot", LootContainer.class);
     }
 

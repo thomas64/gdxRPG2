@@ -24,4 +24,8 @@ public class LootSubject {
         observers.forEach(LootObserver::onNotifyLootTaken);
     }
 
+    void notifyRewardTaken() {
+        observers.forEach(LootObserver::onNotifyRewardTaken);
+    }
+
 }

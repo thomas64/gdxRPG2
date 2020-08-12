@@ -243,7 +243,7 @@ class PartyWindow {
 
     private void renderXpBar(int i) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.TAN);
+        shapeRenderer.setColor(Color.MAROON);
         renderBar(i, 3f, calculateXpBarWidth(i));
         shapeRenderer.end();
 

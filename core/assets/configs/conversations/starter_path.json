@@ -1,0 +1,78 @@
+{
+  "quest0001": {
+    "phrases": {
+      "1": {"text": ["I'm looking for 5 gemstones and 3 herbs.", "Can you help me find them?"]},
+      "2": {"text": ["Thank you!"]},
+      "3": {"text": ["Bye, I'll continue searching on my own."]},
+      "101": {"text": ["Have you found 5 gemstones and 3 herbs?"]},
+      "102": {"text": ["Please hurry up, will ya?"]},
+      "1000": {"text": ["Great! Here is your reward."]},
+      "2000": {"text": ["Bummer!"]},
+      "4000": {"text": ["Thanks again!", "You still deserve some reward."]},
+      "5000": {"text": ["Thanks again!"]}
+    },
+    "choices": {
+      "1": [
+        {
+          "text": "Yes",
+          "conversationCommand": "ACCEPT_QUEST",
+          "destinationId": "2"
+        },
+        {
+          "text": "No",
+          "destinationId": "3"
+        }
+      ],
+      "2": [
+        {
+          "conversationCommand": "EXIT_CONVERSATION",
+          "destinationId": "101"
+        }
+      ],
+      "3": [
+        {
+          "conversationCommand": "EXIT_CONVERSATION"
+        }
+      ],
+      "101": [
+        {
+          "text": "Yes",
+          "conversationCommand": "RETURN_QUEST"
+        },
+        {
+          "text": "No",
+          "destinationId": "102"
+        }
+      ],
+      "102": [
+        {
+          "conversationCommand": "EXIT_CONVERSATION",
+          "destinationId": "101"
+        }
+      ],
+      "1000": [
+        {
+          "conversationCommand": "REWARD_QUEST"
+        }
+      ],
+      "2000": [
+        {
+          "conversationCommand": "EXIT_CONVERSATION",
+          "destinationId": "101"
+        }
+      ],
+      "4000": [
+        {
+          "conversationCommand": "REWARD_QUEST",
+          "destinationId": "4000"
+        }
+      ],
+      "5000": [
+        {
+          "conversationCommand": "EXIT_CONVERSATION",
+          "destinationId": "5000"
+        }
+      ]
+    }
+  }
+}

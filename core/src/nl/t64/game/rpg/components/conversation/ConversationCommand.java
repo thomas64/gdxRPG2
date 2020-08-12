@@ -6,5 +6,8 @@ public enum ConversationCommand {
     HERO_DISMISS,
     LOAD_SHOP,
     SAVE_GAME,
+    ACCEPT_QUEST,
+    RETURN_QUEST,
+    REWARD_QUEST,
     NONE;
 }

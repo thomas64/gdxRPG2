@@ -1,0 +1,21 @@
+{
+  "quest0001": {
+    "title": "Gemstones for boy",
+    "tasks": {
+      "1": {
+        "taskPhrase": "Collect 5 gemstones",
+        "type": "FETCH",
+        "target": {"gemstones": 5}
+      },
+      "2": {
+        "taskPhrase": "Collect 3 herbs",
+        "type": "FETCH",
+        "target": {"herbs": 3}
+      },
+      "3": {
+        "taskPhrase": "Give them to the boy at Starter Path",
+        "type": "RETURN"
+      }
+    }
+  }
+}

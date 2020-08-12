@@ -16,11 +16,9 @@ import lombok.Getter;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.character.Character;
 import nl.t64.game.rpg.components.character.*;
-import nl.t64.game.rpg.components.conversation.ConversationCommand;
+import nl.t64.game.rpg.components.conversation.ConversationGraph;
 import nl.t64.game.rpg.components.loot.Loot;
-import nl.t64.game.rpg.components.party.HeroContainer;
-import nl.t64.game.rpg.components.party.HeroItem;
-import nl.t64.game.rpg.components.party.PartyContainer;
+import nl.t64.game.rpg.components.quest.QuestGraph;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.GameState;
 import nl.t64.game.rpg.constants.ScreenType;
@@ -33,6 +31,7 @@ import nl.t64.game.rpg.screens.loot.LootObserver;
 import nl.t64.game.rpg.screens.loot.LootSubject;
 import nl.t64.game.rpg.screens.shop.ShopScreen;
 import nl.t64.game.rpg.screens.world.conversation.ConversationDialog;
+import nl.t64.game.rpg.screens.world.conversation.ConversationObserver;
 import nl.t64.game.rpg.screens.world.pathfinding.TiledNode;
 
 import java.util.ArrayList;
@@ -42,11 +41,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class WorldScreen implements Screen, MapObserver, ComponentObserver, PartyObserver, LootObserver {
+public class WorldScreen implements Screen,
+                                    MapObserver, ComponentObserver, PartyObserver, LootObserver, ConversationObserver {
 
     private static final int[] UNDER_LAYERS = new int[]{0, 1, 2, 3, 4, 5};
     private static final int[] OVER_LAYERS = new int[]{6, 7, 8};
-    private static final String PARTY_FULL_CONVERSATION = "partyfull";
 
     private static boolean showGrid = false;
     private static boolean showObjects = false;
@@ -87,7 +86,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
         this.lootList = new ArrayList<>(0);
         this.shapeRenderer = new ShapeRenderer();
         this.partyWindow = new PartyWindow();
-        this.conversationDialog = new ConversationDialog(this::handleConversationCommand);
+        this.conversationDialog = new ConversationDialog();
         this.messageDialog = new MessageDialog(this.multiplexer);
 
         this.debugBox = new DebugBox(this.player);
@@ -95,7 +94,11 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
         Utils.getMapManager().addObserver(this);
         ((PartySubject) Utils.getScreenManager().getScreen(ScreenType.INVENTORY)).addObserver(this);
         ((LootSubject) Utils.getScreenManager().getScreen(ScreenType.LOOT)).addObserver(this);
+        ((LootSubject) Utils.getScreenManager().getScreen(ScreenType.REWARD)).addObserver(this);
+        this.conversationDialog.addObserver(this);
     }
+
+    // MapObserver /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     public void onMapChanged(GameMap currentMap) {
@@ -112,6 +115,8 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
         partyMembers = new PartyMembersLoader(player).loadPartyMembers();
         currentMap.setTiledGraph();
     }
+
+    // ComponentObserver ///////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     public void onNotifyShowConversationDialog(String conversationId, Character npcCharacter) {
@@ -130,7 +135,6 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
 
     @Override
     public void onNotifyShowLootDialog(Loot loot) {
-        player.resetInput();
         var lootScreenLoader = new LootScreenLoader(this::openLoadScreen, loot);
         lootScreenLoader.openLootScreen();
     }
@@ -142,17 +146,21 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
         messageDialog.setScreenAfterHide(lootScreenLoader::openLootScreen);
     }
 
-    @Override
+    @Override   // also ConversationObserver
     public void onNotifyShowMessageDialog(String message) {
         player.resetInput();
         messageDialog.setMessage(message);
         messageDialog.show();
     }
 
+    // PartyObserver ///////////////////////////////////////////////////////////////////////////////////////////////////
+
     @Override
     public void onNotifyHeroDismissed() {
         partyMembers = new PartyMembersLoader(player).loadPartyMembers();
     }
+
+    // LootObserver ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     public void onNotifyLootTaken() {
@@ -160,6 +168,54 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
         lootList = new LootLoader(Utils.getMapManager().currentMap).createLoot();
         lootList.forEach(loot -> loot.registerObserver(this));
     }
+
+    @Override
+    public void onNotifyRewardTaken() {
+        String conversationId = currentNpcCharacter.getConversationId();
+        QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
+        ConversationGraph conversation = Utils.getGameData().getConversations().getConversationById(conversationId);
+        quest.finish();
+        conversation.setCurrentPhraseId(Constant.PHRASE_ID_QUEST_FINISHED);
+    }
+
+    // ConversationObserver ////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public void onNotifyExitConversation() {
+        conversationDialog.hideWithFade();
+        show();
+    }
+
+    @Override
+    public void onNotifyLoadShop() {
+        conversationDialog.hide();
+        show();
+        openShopScreen();
+    }
+
+    @Override
+    public void onNotifyShowRewardDialog(Loot reward) {
+        var rewardScreenLoader = new RewardScreenLoader(this::openLoadScreen, reward);
+        rewardScreenLoader.openLootScreen();
+        conversationDialog.hideWithFade();
+    }
+
+    @Override
+    public void onNotifyHeroJoined() {
+        Utils.getMapManager().removeFromBlockers(currentNpcCharacter.getBoundingBox());
+        currentNpcCharacter.unregisterObserver();
+        npcCharacters = npcCharacters.stream()
+                                     .filter(npcCharacter -> !npcCharacter.equals(currentNpcCharacter))
+                                     .collect(Collectors.toUnmodifiableList());
+        partyMembers = new PartyMembersLoader(player).loadPartyMembers();
+    }
+
+    @Override
+    public void onNotifyHeroDismiss() {
+        throw new IllegalCallerException("Impossible to dismiss Hero from WorldScreen.");
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     public void show() {
@@ -176,6 +232,7 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        Utils.getMapManager().updateQuestBlockers();
         updateCharacters(dt);
         updateCameraPosition();
         renderMapLayers();
@@ -247,53 +304,6 @@ public class WorldScreen implements Screen, MapObserver, ComponentObserver, Part
             endPoint = partyMembers.get(index - 1).getPositionInGrid();
         }
         return Utils.getMapManager().currentMap.tiledGraph.findPath(startPoint, endPoint);
-    }
-
-    private void handleConversationCommand(ConversationCommand command) {
-        switch (command) {
-            case EXIT_CONVERSATION -> {
-                conversationDialog.hideWithFade();
-                show();
-            }
-            case HERO_JOIN -> tryToAddHeroToParty();
-            case LOAD_SHOP -> {
-                conversationDialog.hide();
-                show();
-                openShopScreen();
-            }
-            case SAVE_GAME -> {
-                Utils.getProfileManager().saveProfile();
-                conversationDialog.hideWithFade();
-                show();
-            }
-            default -> throw new IllegalAccessError(
-                    String.format("ConversationCommand '%s' cannot be reached here.", command));
-        }
-    }
-
-    private void tryToAddHeroToParty() {
-        HeroContainer heroes = Utils.getGameData().getHeroes();
-        PartyContainer party = Utils.getGameData().getParty();
-        String heroId = currentNpcCharacter.getId();
-        HeroItem hero = heroes.getHero(heroId);
-
-        if (party.isFull()) {
-            conversationDialog.loadConversation(PARTY_FULL_CONVERSATION, heroId);
-        } else {
-            heroes.removeHero(heroId);
-            party.addHero(hero);
-            refreshNpcCharacters();
-            handleConversationCommand(ConversationCommand.EXIT_CONVERSATION);
-        }
-    }
-
-    private void refreshNpcCharacters() {
-        Utils.getMapManager().removeFromBlockers(currentNpcCharacter.getBoundingBox());
-        currentNpcCharacter.unregisterObserver();
-        npcCharacters = npcCharacters.stream()
-                                     .filter(npcCharacter -> !npcCharacter.equals(currentNpcCharacter))
-                                     .collect(Collectors.toUnmodifiableList());
-        partyMembers = new PartyMembersLoader(player).loadPartyMembers();
     }
 
     private void openMenuPause() {

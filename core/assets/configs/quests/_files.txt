@@ -1,0 +1,2 @@
+starter_path.json
+hero_s_hometown.json

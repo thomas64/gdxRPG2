@@ -43,6 +43,10 @@ public class HeroItem {
         return stats.getXpDeltaBetweenLevels();
     }
 
+    public void gainXp(int amount, StringBuilder levelUpMessage) {
+        stats.gainXp(amount, hasGainedLevel -> append(levelUpMessage));
+    }
+
     public int getTotalXp() {
         return stats.getTotalXp();
     }
@@ -179,6 +183,12 @@ public class HeroItem {
     public int getTotalCalcOf(CalcAttributeId calcAttributeId) {
         // todo, er moet nog wel een bonus komen voor protection en etc. bijv met een protection spell.
         return inventory.getSumOfCalc(calcAttributeId);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private void append(StringBuilder levelUpMessage) {
+        levelUpMessage.append(name).append(" gained a level!").append(System.lineSeparator());
     }
 
 }

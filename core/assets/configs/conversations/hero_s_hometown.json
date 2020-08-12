@@ -1,0 +1,59 @@
+{
+  "quest0002": {
+    "phrases": {
+      "1": {"text": ["Halt! You may not enter this town!"]},
+      "2": {"text": ["Only if you can prove that you are worthy."]},
+      "3": {"text": ["Think? Prove your worthiness."]},
+      "4": {"text": ["Halt! You may not enter this town!"]},
+      "1000": {"text": ["It seems you are worthy."]},
+      "2000": {"text": ["It seems you are not worthy enough."]},
+      "5000": {"text": ["You may enter town."]}
+    },
+    "choices": {
+      "1": [
+        {
+          "conversationCommand": "ACCEPT_QUEST",
+          "destinationId": "2"
+        }
+      ],
+      "2": [
+        {
+          "text": "Here, have some gold.",
+          "conversationCommand": "RETURN_QUEST"
+        },
+        {
+          "text": "Wait! Let me think about this.",
+          "destinationId": "3"
+        }
+      ],
+      "3": [
+        {
+          "conversationCommand": "EXIT_CONVERSATION",
+          "destinationId": "4"
+        }
+      ],
+      "4": [
+        {
+          "destinationId": "2"
+        }
+      ],
+      "1000": [
+        {
+          "conversationCommand": "REWARD_QUEST"
+        }
+      ],
+      "2000": [
+        {
+          "conversationCommand": "EXIT_CONVERSATION",
+          "destinationId": "4"
+        }
+      ],
+      "5000": [
+        {
+          "conversationCommand": "EXIT_CONVERSATION",
+          "destinationId": "5000"
+        }
+      ]
+    }
+  }
+}

@@ -11,6 +11,7 @@ import nl.t64.game.rpg.profile.ProfileObserver;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 public class MapManager implements ProfileObserver {
@@ -40,8 +41,12 @@ public class MapManager implements ProfileObserver {
         observers.forEach(observer -> observer.onMapChanged(currentMap));
     }
 
-    public List<Rectangle> getBlockers() {
-        return currentMap.blockers;
+    public void updateQuestBlockers() {
+        currentMap.questBlockers.removeIf(GameMapQuestBlocker::isQuestOfThisBlockerFinished);
+    }
+
+    public List<Rectangle> getAllBlockers() {
+        return currentMap.getAllBlockers().collect(Collectors.toList());
     }
 
     public Optional<String> getNoteId(Rectangle checkRect) {

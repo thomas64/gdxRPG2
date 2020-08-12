@@ -1,9 +1,7 @@
 {
   "equipshop01": {
     "phrases": {
-      "1": {
-        "text": ["Hello Traveler. Would you like to see my wares?"]
-      }
+      "1": {"text": ["Hello Traveler. Would you like to see my wares?"]}
     },
     "choices": {
       "1": [

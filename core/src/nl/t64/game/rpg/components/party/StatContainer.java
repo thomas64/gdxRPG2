@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 
@@ -45,6 +46,10 @@ class StatContainer {
         return level.getXpDeltaBetweenLevels();
     }
 
+    void gainXp(int amount, Consumer<Boolean> hasGainedLevel) {
+        level.gainXp(amount, hasGainedLevel);
+    }
+
     int getTotalXp() {
         return level.totalXp;
     }
@@ -69,16 +74,16 @@ class StatContainer {
 
     int getMaximumHp() {
         return level.rank
-                + stats.get(StatItemId.STAMINA.name()).rank
-                + stats.get(StatItemId.ENDURANCE.name()).rank
-                + stats.get(StatItemId.ENDURANCE.name()).bonus;
+               + stats.get(StatItemId.STAMINA.name()).rank
+               + stats.get(StatItemId.ENDURANCE.name()).rank
+               + stats.get(StatItemId.ENDURANCE.name()).bonus;
     }
 
     int getCurrentHp() {
         return level.variable
-                + stats.get(StatItemId.STAMINA.name()).variable
-                + stats.get(StatItemId.ENDURANCE.name()).variable
-                + stats.get(StatItemId.ENDURANCE.name()).bonus;
+               + stats.get(StatItemId.STAMINA.name()).variable
+               + stats.get(StatItemId.ENDURANCE.name()).variable
+               + stats.get(StatItemId.ENDURANCE.name()).bonus;
     }
 
     StatItem getById(StatItemId statItemId) {

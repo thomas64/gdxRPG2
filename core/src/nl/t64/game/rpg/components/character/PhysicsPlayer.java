@@ -156,7 +156,7 @@ public class PhysicsPlayer extends PhysicsComponent {
     }
 
     private void checkBlocker(float dt) {
-        List<Rectangle> blockers = Utils.getMapManager().getBlockers();
+        List<Rectangle> blockers = Utils.getMapManager().getAllBlockers();
         List<Rectangle> walkingBlockers = npcCharacters.stream()
                                                        .filter(stateIsNotImmobileAndFloating())
                                                        .map(Character::getBoundingBox)

@@ -1,0 +1,16 @@
+{
+  "quest0002": {
+    "title": "Get through the guard",
+    "tasks": {
+      "1": {
+        "taskPhrase": "You need 1 gold",
+        "type": "FETCH",
+        "target": {"gold": 1}
+      },
+      "3": {
+        "taskPhrase": "Bribe the guard",
+        "type": "RETURN"
+      }
+    }
+  }
+}

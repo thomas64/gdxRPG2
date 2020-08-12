@@ -1,15 +1,10 @@
 {
   "onarr01": {
     "phrases": {
-      "1": {
-        "text": ["May I join your party?"]
-      },
-      "2": {
-        "text": ["Okay, perhaps another time then."]
-      },
-      "3": {
-        "text": ["Alright, thanks!"]
-      }
+      "1": {"text": ["May I join your party?"]},
+      "2": {"text": ["Okay, perhaps another time then."]},
+      "3": {"text": ["Alright, thanks!"]},
+      "3000": {"text": ["It seems your party is already full.", "I cannot join you if there's no room."]}
     },
     "choices": {
       "1": [
@@ -30,6 +25,11 @@
       "3": [
         {
           "conversationCommand": "HERO_JOIN"
+        }
+      ],
+      "3000": [
+        {
+          "conversationCommand": "EXIT_CONVERSATION"
         }
       ]
     }

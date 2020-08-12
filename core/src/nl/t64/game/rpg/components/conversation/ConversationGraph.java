@@ -13,7 +13,7 @@ public class ConversationGraph {
     private static final String DEFAULT_STARTING_PHRASE_ID = "1";
 
     @Setter
-    private String currentPhraseId;
+    String currentPhraseId;
     private Map<String, ConversationPhrase> phrases;
     private Map<String, List<ConversationChoice>> choices;
 

@@ -13,12 +13,16 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.conversation.*;
+import nl.t64.game.rpg.components.loot.Loot;
+import nl.t64.game.rpg.components.party.HeroContainer;
+import nl.t64.game.rpg.components.party.HeroItem;
+import nl.t64.game.rpg.components.party.PartyContainer;
+import nl.t64.game.rpg.components.quest.QuestGraph;
+import nl.t64.game.rpg.components.quest.QuestState;
 import nl.t64.game.rpg.constants.Constant;
 
-import java.util.function.Consumer;
 
-
-public class ConversationDialog {
+public class ConversationDialog extends ConversationSubject {
 
     private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
     private static final String SPRITE_TRANSPARENT = "sprites/transparent.png";
@@ -33,17 +37,17 @@ public class ConversationDialog {
     private final Stage stage;
     private final BitmapFont font;
     private final Dialog dialog;
-    private final Consumer<ConversationCommand> handleConversationCommand;
 
     private Label label;
     private List<ConversationChoice> answers;
     private ScrollPane scrollPane;
     private Cell<?> scrollPaneRow;
 
+    private String conversationId;
+    private String faceId;
     private ConversationGraph graph;
 
-    public ConversationDialog(Consumer<ConversationCommand> handleConversationCommand) {
-        this.handleConversationCommand = handleConversationCommand;
+    public ConversationDialog() {
         this.stage = new Stage();
         this.font = Utils.getResourceManager().getTrueTypeAsset(CONVERSATION_FONT, FONT_SIZE);
         this.dialog = this.createDialog();
@@ -80,12 +84,16 @@ public class ConversationDialog {
     }
 
     public void loadConversation(String conversationId, String characterId) {
-        graph = Utils.getGameData().getConversations().getConversationById(conversationId);
-        fillDialogForConversation(characterId);
+        this.conversationId = conversationId;
+        this.faceId = characterId;
+        this.graph = Utils.getGameData().getConversations().getConversationById(conversationId);
+        fillDialogForConversation();
         populateConversationDialog(graph.getCurrentPhraseId());
     }
 
     public void loadNote(String noteId) {
+        conversationId = null;
+        faceId = null;
         graph = NoteDatabase.getInstance().getNoteById(noteId);
         fillDialogForNote();
         populateConversationDialog(graph.getCurrentPhraseId());
@@ -131,11 +139,11 @@ public class ConversationDialog {
         return newDialog;
     }
 
-    private void fillDialogForConversation(String characterId) {
+    private void fillDialogForConversation() {
         label.setAlignment(Align.left);
         var mainTable = new Table();
         mainTable.left();
-        Image faceImage = Utils.getFaceImage(characterId);
+        Image faceImage = Utils.getFaceImage(faceId);
         mainTable.add(faceImage).width(Constant.FACE_SIZE).padLeft(PAD * 2f);
 
         var textTable = new Table();
@@ -167,24 +175,13 @@ public class ConversationDialog {
         scrollPane.addListener(new ConversationDialogListener(answers, this::selectAnswer));
     }
 
-    private void selectAnswer() {
-        final ConversationChoice selectedAnswer = answers.getSelected();
-        final String destinationId = selectedAnswer.getDestinationId();
-        final ConversationCommand conversationCommand = selectedAnswer.getConversationCommand();
-        if (conversationCommand.equals(ConversationCommand.NONE)) {
-            continueConversation(destinationId);
-        } else {
-            endConversation(destinationId, conversationCommand);
-        }
-    }
-
     private void continueConversation(String destinationId) {
         populateConversationDialog(destinationId);
     }
 
-    private void endConversation(String destinationId, ConversationCommand conversationCommand) {
+    private void endConversation(String destinationId) {
         graph.setCurrentPhraseId(destinationId);
-        handleConversationCommand.accept(conversationCommand);
+        notifyExitConversation();
     }
 
     private void populateConversationDialog(String phraseId) {
@@ -197,6 +194,98 @@ public class ConversationDialog {
         answers.setSelectedIndex(0);
 
         scrollPaneRow.height(choices.length * LINE_HEIGHT);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private void selectAnswer() {
+        final ConversationChoice selectedAnswer = answers.getSelected();
+        final String destinationId = selectedAnswer.getDestinationId();
+        final ConversationCommand conversationCommand = selectedAnswer.getConversationCommand();
+
+        switch (conversationCommand) {
+            case NONE -> continueConversation(destinationId);
+            case EXIT_CONVERSATION -> endConversation(destinationId);
+            case HERO_JOIN -> tryToAddHeroToParty(destinationId);
+            case HERO_DISMISS -> dismissHero(destinationId);
+            case LOAD_SHOP -> loadShop(destinationId);
+            case SAVE_GAME -> saveGame(destinationId);
+            case ACCEPT_QUEST -> acceptQuest(destinationId);
+            case RETURN_QUEST -> returnQuest();
+            case REWARD_QUEST -> rewardQuest();
+            default -> throw new IllegalStateException(
+                    String.format("ConversationCommand '%s' cannot be reached here.", conversationCommand));
+        }
+    }
+
+    private void tryToAddHeroToParty(String destinationId) {
+        HeroContainer heroes = Utils.getGameData().getHeroes();
+        PartyContainer party = Utils.getGameData().getParty();
+        HeroItem hero = heroes.getHero(faceId);
+
+        if (party.isFull()) {
+            continueConversation(Constant.PHRASE_ID_PARTY_FULL);
+        } else {
+            heroes.removeHero(faceId);
+            party.addHero(hero);
+            notifyHeroJoined();
+            endConversation(destinationId);
+        }
+    }
+
+    private void dismissHero(String destinationId) {
+        graph.setCurrentPhraseId(destinationId);
+        notifyHeroDismiss();                                // ends conversation
+    }
+
+    private void loadShop(String destinationId) {
+        graph.setCurrentPhraseId(destinationId);
+        notifyLoadShop();                                   // ends conversation
+    }
+
+    private void saveGame(String destinationId) {
+        Utils.getProfileManager().saveProfile();
+        continueConversation(destinationId);
+    }
+
+    private void acceptQuest(String destinationId) {
+        QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
+        quest.accept();
+        // todo, update logbook
+        continueConversation(destinationId);
+    }
+
+    private void returnQuest() {
+        QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
+        quest.tryToFulfill(this::continueConversation);     // sets new phraseId
+    }
+
+    private void rewardQuest() {
+        graph.setCurrentPhraseId(Constant.PHRASE_ID_QUEST_UNCLAIMED);
+        QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
+        Loot reward = Utils.getGameData().getLoot().getLoot(conversationId);
+        if (quest.getCurrentState().equals(QuestState.ACCEPTED)) {
+            quest.unclaim();
+            quest.takeDemands();
+            partyGainXp(reward);
+            // todo, set all tasks to complete indefinite
+        }
+        if (!reward.isTaken()) {
+            notifyShowRewardDialog(reward);                     // ends conversation, sets possible new phraseId
+        } else {
+            quest.finish();
+            endConversation(Constant.PHRASE_ID_QUEST_FINISHED);
+        }
+    }
+
+    private void partyGainXp(Loot reward) {
+        StringBuilder levelUpMessage = new StringBuilder();
+        Utils.getGameData().getParty().getAllHeroes().forEach(hero -> hero.gainXp(reward.getXp(), levelUpMessage));
+        reward.clearXp();
+        String finalMessage = levelUpMessage.toString().strip();
+        if (!finalMessage.isEmpty()) {
+            notifyShowMessageDialog(finalMessage);
+        }
     }
 
 }

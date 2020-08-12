@@ -16,6 +16,7 @@ import nl.t64.game.rpg.screens.world.pathfinding.TiledGraph;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 
 class GameMap {
@@ -23,6 +24,7 @@ class GameMap {
     private static final String MAP_PATH = "maps/";
     private static final String MAPFILE_SUFFIX = ".tmx";
 
+    private static final String QUEST_LAYER = "quest_layer";
     private static final String SAVE_LAYER = "save_layer";
     private static final String NPC_LAYER = "npc_layer";
     private static final String HERO_LAYER = "hero_layer";
@@ -44,6 +46,7 @@ class GameMap {
     final List<GameMapNpc> npcs = new ArrayList<>();
     final List<GameMapHero> heroes = new ArrayList<>();
     final List<Rectangle> blockers = new ArrayList<>();
+    final List<GameMapQuestBlocker> questBlockers = new ArrayList<>();
     final List<RectangleMapObject> sparkles = new ArrayList<>();
     final List<RectangleMapObject> chests = new ArrayList<>();
     private final List<Rectangle> savePoints = new ArrayList<>();
@@ -62,6 +65,7 @@ class GameMap {
         this.loadNpcs();
         this.loadHeroes();
         this.loadBlockers();
+        this.loadQuestBlockers();
         this.loadSparkles();
         this.loadChests();
         this.loadSavePoints();
@@ -81,6 +85,12 @@ class GameMap {
 
     void removeFromBlockers(Rectangle immobileNpc) {
         blockers.remove(immobileNpc);
+    }
+
+    Stream<Rectangle> getAllBlockers() {
+        return Stream.concat(blockers.stream(),
+                             questBlockers.stream()
+                                          .map(blocker -> blocker.rectangle));
     }
 
     boolean areBlockersCurrentlyBlocking(Rectangle characterRect) {
@@ -191,6 +201,16 @@ class GameMap {
         });
     }
 
+    private void loadQuestBlockers() {
+        getMapLayer(QUEST_LAYER).ifPresent(mapLayer -> {
+            for (MapObject mapObject : mapLayer.getObjects()) {
+                if (mapObject.getName().equalsIgnoreCase("blocker")) {
+                    questBlockers.add(new GameMapQuestBlocker(mapObject));
+                }
+            }
+        });
+    }
+
     private void loadSparkles() {
         getMapLayer(REST_LAYER).ifPresent(mapLayer -> {
             for (MapObject mapObject : mapLayer.getObjects()) {
@@ -271,6 +291,10 @@ class GameMap {
         shapeRenderer.setColor(Color.YELLOW);
         for (Rectangle blocker : blockers) {
             shapeRenderer.rect(blocker.x, blocker.y, blocker.width, blocker.height);
+        }
+        for (GameMapQuestBlocker blocker : questBlockers) {
+            rect = blocker.rectangle;
+            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
         }
 
         shapeRenderer.setColor(Color.BLUE);

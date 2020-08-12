@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import nl.t64.game.rpg.Utils;
-import nl.t64.game.rpg.components.conversation.ConversationCommand;
+import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.InventoryContainer;
 import nl.t64.game.rpg.components.party.InventoryDatabase;
@@ -24,9 +24,10 @@ import nl.t64.game.rpg.profile.ProfileObserver;
 import nl.t64.game.rpg.screens.inventory.tooltip.ButtonToolTip;
 import nl.t64.game.rpg.screens.inventory.tooltip.ButtonTooltipListener;
 import nl.t64.game.rpg.screens.world.conversation.ConversationDialog;
+import nl.t64.game.rpg.screens.world.conversation.ConversationObserver;
 
 
-public class InventoryScreen extends PartySubject implements Screen, ProfileObserver {
+public class InventoryScreen extends PartySubject implements Screen, ProfileObserver, ConversationObserver {
 
     private static final String BUTTON_CLOSE_UP = "close_up";
     private static final String BUTTON_CLOSE_OVER = "close_over";
@@ -85,8 +86,9 @@ public class InventoryScreen extends PartySubject implements Screen, ProfileObse
 
     public InventoryScreen() {
         this.stage = new Stage();
-        this.conversationDialog = new ConversationDialog(this::handleConversationCommand);
+        this.conversationDialog = new ConversationDialog();
         this.buttonToolTip = new ButtonToolTip();
+        this.conversationDialog.addObserver(this);
     }
 
     @Override
@@ -124,6 +126,42 @@ public class InventoryScreen extends PartySubject implements Screen, ProfileObse
         calcsWindowPosition = profileManager.getProperty("calcsWindowPosition", Vector2.class);
         heroesWindowPosition = profileManager.getProperty("heroesWindowPosition", Vector2.class);
         isMessageShown = profileManager.getProperty("isFirstTimeInventoryMessageShown", Boolean.class);
+    }
+
+    @Override
+    public void onNotifyExitConversation() {
+        hideConversationDialog();
+    }
+
+    @Override
+    public void onNotifyShowMessageDialog(String message) {
+        throw new IllegalCallerException("Impossible to show Message from Inventory.");
+    }
+
+    @Override
+    public void onNotifyLoadShop() {
+        throw new IllegalCallerException("Impossible to load Shop from Inventory.");
+    }
+
+    @Override
+    public void onNotifyShowRewardDialog(Loot reward) {
+        throw new IllegalCallerException("Impossible to show Reward from Inventory.");
+    }
+
+    @Override
+    public void onNotifyHeroJoined() {
+        throw new IllegalCallerException("Impossible to join Hero from Inventory.");
+    }
+
+    @Override
+    public void onNotifyHeroDismiss() {
+        HeroItem selectedHero = InventoryUtils.getSelectedHero();
+        Utils.getGameData().getHeroes().addHero(selectedHero);
+        String heroToDismiss = selectedHero.getId();
+        InventoryUtils.selectPreviousHero();
+        Utils.getGameData().getParty().removeHero(heroToDismiss);
+        hideConversationDialog();
+        notifyHeroDismissed();
     }
 
     @Override
@@ -264,25 +302,6 @@ public class InventoryScreen extends PartySubject implements Screen, ProfileObse
             conversationDialog.loadConversation("dismiss_" + currentHeroId, currentHeroId);
             conversationDialog.show();
         }
-    }
-
-    private void handleConversationCommand(ConversationCommand command) {
-        switch (command) {
-            case EXIT_CONVERSATION -> hideConversationDialog();
-            case HERO_DISMISS -> dismissHero();
-            default -> throw new IllegalAccessError(
-                    String.format("ConversationCommand '%s' cannot be reached here.", command));
-        }
-    }
-
-    private void dismissHero() {
-        HeroItem selectedHero = InventoryUtils.getSelectedHero();
-        Utils.getGameData().getHeroes().addHero(selectedHero);
-        String heroToDismiss = selectedHero.getId();
-        InventoryUtils.selectPreviousHero();
-        Utils.getGameData().getParty().removeHero(heroToDismiss);
-        hideConversationDialog();
-        notifyHeroDismissed();
     }
 
     private void hideConversationDialog() {

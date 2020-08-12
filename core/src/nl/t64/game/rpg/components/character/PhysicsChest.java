@@ -82,7 +82,8 @@ public class PhysicsChest extends PhysicsComponent {
     }
 
     private boolean canHandleTrapWith(HeroItem bestMechanic) {
-        return bestMechanic.getCalculatedTotalSkillOf(SkillItemId.MECHANIC) >= chest.getTrapLevel();
+        final int bestMechanicLevel = bestMechanic.getCalculatedTotalSkillOf(SkillItemId.MECHANIC);
+        return chest.canDisarmTrap(bestMechanicLevel);
     }
 
     private void dontHandleTrap() {
@@ -116,7 +117,8 @@ public class PhysicsChest extends PhysicsComponent {
     }
 
     private boolean canHandleLockWith(HeroItem bestThief) {
-        return bestThief.getCalculatedTotalSkillOf(SkillItemId.THIEF) >= chest.getLockLevel();
+        final int bestThiefLevel = bestThief.getCalculatedTotalSkillOf(SkillItemId.THIEF);
+        return chest.canPickLock(bestThiefLevel);
     }
 
     private void dontHandleLock() {

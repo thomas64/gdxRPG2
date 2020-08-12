@@ -168,7 +168,7 @@ public class LootScreen extends LootSubject implements Screen, ProfileObserver {
         }
         if (lootUI.isEmpty()) {
             loot.clearContent();
-            notifyLootTaken();
+            resolveAfterClearingContent();
         } else {
             var newContent = lootUI.getContent();
             loot.updateContent(newContent);
@@ -178,16 +178,20 @@ public class LootScreen extends LootSubject implements Screen, ProfileObserver {
         Gdx.input.setCursorCatched(true);
     }
 
+    void resolveAfterClearingContent() {
+        notifyLootTaken();
+    }
+
     private void showHelpMessage() {
         if (isDialogVisibleThenClose()) {
             return;
         }
         final String message = "Esc = Close window" + System.lineSeparator() +
-                "A = Take full stack" + System.lineSeparator() +
-                "Enter = Take full stack" + System.lineSeparator() +
-                "Shift = Drag full stack" + System.lineSeparator() +
-                "Ctrl = Drag half stack" + System.lineSeparator() +
-                "H = This dialog";
+                               "A = Take full stack" + System.lineSeparator() +
+                               "Enter = Take full stack" + System.lineSeparator() +
+                               "Shift = Drag full stack" + System.lineSeparator() +
+                               "Ctrl = Drag half stack" + System.lineSeparator() +
+                               "H = This dialog";
         final var messageDialog = new MessageDialog(message);
         messageDialog.setLeftAlignment();
         messageDialog.show(stage);
