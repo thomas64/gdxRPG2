@@ -1,56 +1,73 @@
 {
   "quest0001": {
     "phrases": {
-      "1": {"text": ["I'm looking for 5 gemstones and 3 herbs.", "Can you help me find them?"]},
-      "2": {"text": ["Thank you!"]},
-      "3": {"text": ["Bye, I'll continue searching on my own."]},
-      "101": {"text": ["Have you found 5 gemstones and 3 herbs?"]},
-      "102": {"text": ["Please hurry up, will ya?"]},
-      "1000": {"text": ["Great! Here is your reward."]},
-      "2000": {"text": ["Bummer!"]},
-      "4000": {"text": ["Thanks again!", "You still deserve some reward."]},
-      "5000": {"text": ["Thanks again!"]}
+      "1": {"text": ["Hi mister."]},
+      "2": {"text": ["I need 3 herbs for my mommy. She's ill."]},
+      "3": {"text": ["Can you please help me find some?"]},
+      "4": {"text": ["I also need 5 gemstones because the developer programmed me to ask that."]},
+      "5": {"text": ["Please help me mister!", "We're in desperate need."]},
+      "6": {"text": ["Thank you mister!"]},
+      "7": {"text": ["Aaaw... Booohooo! *SNIF*"]},
+      "101": {"text": ["Hi mister."]},
+      "102": {"text": ["If you got the herbs and gemstones, please give them to me."]},
+      "103": {"text": ["Aaaw... Booohooo! *SNIF*"]},
+      "1000": {"text": ["Thanks a lot mister!", "Now my mommy will be better soon."]},
+      "1001": {
+        "text": [
+          "Instead of the herbs and gemstones, I found this here in the forest.",
+          "You can have it, for helping my mommy."
+        ]
+      },
+      "2000": {"text": ["No mister I'm sorry, but this is not enough."]},
+      "4000": {
+        "text": [
+          "Hi mister. It seems my mommy is all better now. Thanks to you!",
+          "I still want you to give what I found."
+        ]
+      },
+      "5000": {"text": ["Hi mister. It seems my mommy is all better now. Thanks to you!"]}
     },
     "choices": {
-      "1": [
+      "5": [
         {
-          "text": "Yes",
+          "text": "Yes, of course!",
           "conversationCommand": "ACCEPT_QUEST",
-          "destinationId": "2"
+          "destinationId": "6"
         },
         {
-          "text": "No",
-          "destinationId": "3"
+          "text": "No, you'll have to dop your own beans.",
+          "destinationId": "7"
         }
       ],
-      "2": [
+      "6": [
         {
           "conversationCommand": "EXIT_CONVERSATION",
           "destinationId": "101"
         }
       ],
-      "3": [
+      "7": [
         {
-          "conversationCommand": "EXIT_CONVERSATION"
-        }
-      ],
-      "101": [
-        {
-          "text": "Yes",
-          "conversationCommand": "RETURN_QUEST"
-        },
-        {
-          "text": "No",
-          "destinationId": "102"
+          "conversationCommand": "EXIT_CONVERSATION",
+          "destinationId": "1"
         }
       ],
       "102": [
         {
+          "text": "Here you are, brave boy.",
+          "conversationCommand": "RETURN_QUEST"
+        },
+        {
+          "text": "No, these are my herbs!",
+          "destinationId": "103"
+        }
+      ],
+      "103": [
+        {
           "conversationCommand": "EXIT_CONVERSATION",
           "destinationId": "101"
         }
       ],
-      "1000": [
+      "1001": [
         {
           "conversationCommand": "REWARD_QUEST"
         }
@@ -91,7 +108,7 @@
       "1002": {"text": ["Thank you! Thank you!", "I can't thank you enough."]},
       "1003": {"text": ["My believes have been restored.", "Here, this is for you."]},
       "2000": {"text": ["You're lying. I can see it in your eyes."]},
-      "4000": {"text": ["I have to find it for myself!", "You still deserve some reward."]},
+      "4000": {"text": ["I have to find it for myself!", "I still want to give you my reward."]},
       "5000": {"text": ["I have to find it for myself!"]}
     },
     "choices": {
