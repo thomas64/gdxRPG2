@@ -290,10 +290,10 @@
     <property name="conversation" value="equipshop01"/>
    </properties>
   </object>
-  <object id="167" name="soldier01" x="1872" y="240" width="48" height="24">
+  <object id="167" name="soldier01" x="1968" y="192" width="48" height="24">
    <properties>
     <property name="conversation" value="quest0002"/>
-    <property name="direction" value="east"/>
+    <property name="direction" value="west"/>
    </properties>
   </object>
  </objectgroup>
@@ -324,7 +324,6 @@
   <object id="131" x="1056" y="1200" width="48" height="48"/>
  </objectgroup>
  <objectgroup color="#ffff00" id="44" name="quest_layer">
-  <object id="168" name="blocker" type="quest0002" x="1800" y="240" width="24" height="72"/>
-  <object id="169" name="blocker" type="quest0002" x="1824" y="288" width="336" height="24"/>
+  <object id="169" name="blocker" type="quest0002" x="1920" y="216" width="96" height="24"/>
  </objectgroup>
 </map>

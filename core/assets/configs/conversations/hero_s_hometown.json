@@ -18,7 +18,7 @@
       ],
       "2": [
         {
-          "text": "Here, have some gold.",
+          "text": "Here, have 1 gold piece.",
           "conversationCommand": "RETURN_QUEST"
         },
         {

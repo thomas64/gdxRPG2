@@ -8,7 +8,7 @@
         "target": {"gold": 1}
       },
       "3": {
-        "taskPhrase": "Bribe the guard",
+        "taskPhrase": "Bribe the guard at Hero's Hometown",
         "type": "RETURN"
       }
     }

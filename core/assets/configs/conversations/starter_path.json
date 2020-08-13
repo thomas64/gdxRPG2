@@ -22,7 +22,7 @@
       "4000": {
         "text": [
           "Hi mister. It seems my mommy is all better now. Thanks to you!",
-          "I still want you to give what I found."
+          "But you still didn't receive what I found that I wanted you to give."
         ]
       },
       "5000": {"text": ["Hi mister. It seems my mommy is all better now. Thanks to you!"]}
@@ -94,7 +94,7 @@
   },
   "quest0003": {
     "phrases": {
-      "1": {"text": ["I've heard that there's a secret room in town."]},
+      "1": {"text": ["I've heard that there's a secret chamber in town."]},
       "2": {"text": ["It's supposed to be hidden in a basement behind a portal."]},
       "3": {"text": ["For real? A portal? I can hardly believe it."]},
       "4": {"text": ["Would you be so kind to take a look?"]},
@@ -107,9 +107,9 @@
       "1001": {"text": ["You have seen the statue of Legend!", "That's unreal!"]},
       "1002": {"text": ["Thank you! Thank you!", "I can't thank you enough."]},
       "1003": {"text": ["My believes have been restored.", "Here, this is for you."]},
-      "2000": {"text": ["You're lying. I can see it in your eyes."]},
-      "4000": {"text": ["I have to find it for myself!", "I still want to give you my reward."]},
-      "5000": {"text": ["I have to find it for myself!"]}
+      "2000": {"text": ["You're lying. I can see it in your eyes.", "You haven't seen the statue of Legend."]},
+      "4000": {"text": ["So the legends are true. But you still didn't receive what I wanted you to give."]},
+      "5000": {"text": ["So the legends are true."]}
     },
     "choices": {
       "4": [

@@ -19,18 +19,18 @@
     }
   },
   "quest0003": {
-    "title": "Secret Gypsy room",
+    "title": "Secret Gypsy chamber",
     "tasks": {
       "1": {
-        "taskPhrase": "Find the secret room",
+        "taskPhrase": "Find the secret chamber",
         "type": "DISCOVER"
       },
       "2": {
-        "taskPhrase": "See the statue with your own eyes",
+        "taskPhrase": "See the statue of Legend with your own eyes",
         "type": "DISCOVER"
       },
       "3": {
-        "taskPhrase": "Report back",
+        "taskPhrase": "Report back to the Gypsy at Starter Path",
         "type": "RETURN"
       }
     }
