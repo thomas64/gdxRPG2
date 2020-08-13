@@ -109,7 +109,7 @@ public class WorldScreen implements Screen,
         npcCharacters.forEach(Character::unregisterObserver);
         lootList.forEach(Character::unregisterObserver);
         npcCharacters = new NpcCharactersLoader(currentMap).createNpcs();
-        lootList = new LootLoader(currentMap).createLoot();
+        lootList = new LootLoader(currentMap, true).createLoot();
         npcCharacters.forEach(npcCharacter -> npcCharacter.registerObserver(this));
         lootList.forEach(loot -> loot.registerObserver(this));
         partyMembers = new PartyMembersLoader(player).loadPartyMembers();
@@ -165,7 +165,7 @@ public class WorldScreen implements Screen,
     @Override
     public void onNotifyLootTaken() {
         lootList.forEach(Character::unregisterObserver);
-        lootList = new LootLoader(Utils.getMapManager().currentMap).createLoot();
+        lootList = new LootLoader(Utils.getMapManager().currentMap, false).createLoot();
         lootList.forEach(loot -> loot.registerObserver(this));
     }
 

@@ -18,10 +18,12 @@ class LootLoader {
 
     private final GameMap currentMap;
     private final List<Character> lootList;
+    private final boolean withBlockers;
 
-    LootLoader(GameMap currentMap) {
+    LootLoader(GameMap currentMap, boolean withBlockers) {
         this.currentMap = currentMap;
         this.lootList = new ArrayList<>();
+        this.withBlockers = withBlockers;
     }
 
     List<Character> createLoot() {
@@ -68,7 +70,9 @@ class LootLoader {
         } else {
             character.send(new LoadCharacterEvent(CharacterState.IMMOBILE, position));
         }
-        currentMap.addToBlockers(character.getBoundingBox());
+        if (withBlockers) {
+            currentMap.addToBlockers(character.getBoundingBox());
+        }
     }
 
 }
