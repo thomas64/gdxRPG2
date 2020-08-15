@@ -69,7 +69,7 @@ public class MapManager implements ProfileObserver {
                   });
     }
 
-    public void checkPortals(Rectangle playerRect, Direction direction) {
+    public void collisionPortals(Rectangle playerRect, Direction direction) {
         currentMap.getPortalOnCollisionBy(playerRect)
                   .ifPresent(portal -> {
                       portal.setEnterDirection(direction);
@@ -79,9 +79,14 @@ public class MapManager implements ProfileObserver {
                   });
     }
 
-    public void checkDiscovers(Rectangle playerRect) {
-        currentMap.getDiscoverCollisionBy(playerRect)
-                  .ifPresent(GameMapQuestDiscover::locationDiscovered);
+    public void collisionQuestTasks(Rectangle playerRect) {
+        currentMap.getQuestTaskCollisionBy(playerRect)
+                  .ifPresent(GameMapQuestObject::setQuestTaskComplete);
+    }
+
+    public void checkQuestTasks(Rectangle checkRect) {
+        currentMap.getQuestTaskBeingCheckedBy(checkRect)
+                  .ifPresent(GameMapQuestObject::setQuestTaskComplete);
     }
 
     public void removeFromBlockers(Rectangle immobileNpc) {

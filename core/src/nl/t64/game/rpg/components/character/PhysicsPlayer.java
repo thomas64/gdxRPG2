@@ -60,7 +60,7 @@ public class PhysicsPlayer extends PhysicsComponent {
         npcCharacters = Utils.getScreenManager().getWorldScreen().getNpcCharacters();
         checkActionPressed();
         relocate(dt);
-        checkObstacles(dt);
+        collisionObstacles(dt);
         player.send(new PositionEvent(currentPosition));
     }
 
@@ -69,6 +69,7 @@ public class PhysicsPlayer extends PhysicsComponent {
             selectNpcCharacterCandidate();
             checkLoot();
             checkNotes();
+            checkQuestTasks();
             checkSavePoints();
             checkWarpPoints();
             isActionPressed = false;
@@ -99,6 +100,10 @@ public class PhysicsPlayer extends PhysicsComponent {
              .ifPresent(this::notifyShowNoteDialog);
     }
 
+    private void checkQuestTasks() {
+        Utils.getMapManager().checkQuestTasks(getCheckRect());
+    }
+
     private void checkSavePoints() {
         Utils.getMapManager().checkSavePoints(getCheckRect());
     }
@@ -116,14 +121,14 @@ public class PhysicsPlayer extends PhysicsComponent {
         }
     }
 
-    private void checkObstacles(float dt) {
+    private void collisionObstacles(float dt) {
         if (state.equals(CharacterState.WALKING)) {
             if (velocity != Constant.MOVE_SPEED_4) {
                 turnCharacters();
-                checkBlocker(dt);
+                collisionBlockers(dt);
             }
-            checkPortals();
-            checkDiscovers();
+            collisionPortals();
+            collisionQuestTasks();
         } else if (state.equals(CharacterState.IDLE)) {
             turnCharacters();
         }
@@ -156,7 +161,7 @@ public class PhysicsPlayer extends PhysicsComponent {
         return npcCharacter -> npcCharacter.send(new WaitEvent(npcCharacter.getPosition(), currentPosition));
     }
 
-    private void checkBlocker(float dt) {
+    private void collisionBlockers(float dt) {
         List<Rectangle> blockers = Utils.getMapManager().getAllBlockers();
         List<Rectangle> walkingBlockers = npcCharacters.stream()
                                                        .filter(stateIsNotImmobileAndFloating())
@@ -229,12 +234,12 @@ public class PhysicsPlayer extends PhysicsComponent {
         return blockers.stream().anyMatch(boundingBox::overlaps);
     }
 
-    private void checkPortals() {
-        Utils.getMapManager().checkPortals(boundingBox, direction);
+    private void collisionPortals() {
+        Utils.getMapManager().collisionPortals(boundingBox, direction);
     }
 
-    private void checkDiscovers() {
-        Utils.getMapManager().checkDiscovers(boundingBox);
+    private void collisionQuestTasks() {
+        Utils.getMapManager().collisionQuestTasks(boundingBox);
     }
 
     private void moveSide(Rectangle blocker, float dt) {

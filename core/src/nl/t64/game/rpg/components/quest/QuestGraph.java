@@ -25,8 +25,8 @@ public class QuestGraph {
         return title;
     }
 
-    public void setLocationDiscoverd(String taskId) {
-        tasks.get(taskId).setLocationDiscovered();
+    public void setTaskComplete(String taskId) {
+        tasks.get(taskId).setTaskComplete();
     }
 
     public boolean isFinished() {
@@ -34,7 +34,7 @@ public class QuestGraph {
     }
 
     public void tryToFulfill(Consumer<String> continueConversation) {
-        if (doesMeetDemand()) {
+        if (doesReturnMeetDemand()) {
             continueConversation.accept(Constant.PHRASE_ID_QUEST_SUCCESS);
         } else {
             continueConversation.accept(Constant.PHRASE_ID_QUEST_FAILURE);
@@ -71,7 +71,7 @@ public class QuestGraph {
         }
     }
 
-    private boolean doesMeetDemand() {
+    private boolean doesReturnMeetDemand() {
         return getAllQuestTasks().stream().allMatch(QuestTask::isComplete);
     }
 

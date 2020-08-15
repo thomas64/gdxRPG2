@@ -27,7 +27,7 @@
       },
       "2": {
         "taskPhrase": "See the statue of Legend with your own eyes",
-        "type": "DISCOVER"
+        "type": "CHECK"
       },
       "3": {
         "taskPhrase": "Report back to the Gypsy at Starter Path",

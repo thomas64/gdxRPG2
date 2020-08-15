@@ -7,13 +7,13 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.quest.QuestGraph;
 
 
-class GameMapQuestDiscover {
+class GameMapQuestObject {
 
     final Rectangle rectangle;
-    final String questId;
-    final String taskId;
+    private final String questId;
+    private final String taskId;
 
-    GameMapQuestDiscover(MapObject mapObject) {
+    GameMapQuestObject(MapObject mapObject) {
         RectangleMapObject rectObject = (RectangleMapObject) mapObject;
 
         this.rectangle = rectObject.getRectangle();
@@ -21,9 +21,9 @@ class GameMapQuestDiscover {
         this.taskId = rectObject.getProperties().get("task", String.class);
     }
 
-    void locationDiscovered() {
+    void setQuestTaskComplete() {
         QuestGraph quest = Utils.getGameData().getQuests().getQuestById(questId);
-        quest.setLocationDiscoverd(taskId);
+        quest.setTaskComplete(taskId);
     }
 
 }

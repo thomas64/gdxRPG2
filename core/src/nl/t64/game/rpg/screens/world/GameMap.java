@@ -47,7 +47,8 @@ class GameMap {
     final List<GameMapHero> heroes = new ArrayList<>();
     final List<Rectangle> blockers = new ArrayList<>();
     final List<GameMapQuestBlocker> questBlockers = new ArrayList<>();
-    final List<GameMapQuestDiscover> questDiscovers = new ArrayList<>();
+    final List<GameMapQuestObject> questDiscovers = new ArrayList<>();
+    final List<GameMapQuestObject> questCheckers = new ArrayList<>();
     final List<RectangleMapObject> sparkles = new ArrayList<>();
     final List<RectangleMapObject> chests = new ArrayList<>();
     private final List<Rectangle> savePoints = new ArrayList<>();
@@ -66,15 +67,12 @@ class GameMap {
         this.loadNpcs();
         this.loadHeroes();
         this.loadBlockers();
-        this.loadQuestBlockers();
-        this.loadQuestDiscovers();
-        this.loadSparkles();
-        this.loadChests();
+        this.loadQuestLayer();
+        this.loadRestLayer();
         this.loadSavePoints();
         this.loadSpawnPoints();
         this.loadPortals();
         this.loadWarpPoints();
-        this.loadNotes();
     }
 
     void setTiledGraph() {
@@ -115,10 +113,16 @@ class GameMap {
                       .findFirst();
     }
 
-    Optional<GameMapQuestDiscover> getDiscoverCollisionBy(Rectangle playerRect) {
+    Optional<GameMapQuestObject> getQuestTaskCollisionBy(Rectangle playerRect) {
         return questDiscovers.stream()
                              .filter(discover -> playerRect.overlaps(discover.rectangle))
                              .findFirst();
+    }
+
+    Optional<GameMapQuestObject> getQuestTaskBeingCheckedBy(Rectangle checkRect) {
+        return questCheckers.stream()
+                            .filter(checker -> checkRect.overlaps(checkRect))
+                            .findFirst();
     }
 
     Optional<GameMapWarpPoint> getWarpPointBeingCheckedBy(Rectangle checkRect) {
@@ -209,43 +213,30 @@ class GameMap {
         });
     }
 
-    private void loadQuestBlockers() {
+    private void loadQuestLayer() {
         getMapLayer(QUEST_LAYER).ifPresent(mapLayer -> {
             for (MapObject mapObject : mapLayer.getObjects()) {
                 if (mapObject.getName().equalsIgnoreCase("blocker")) {
                     questBlockers.add(new GameMapQuestBlocker(mapObject));
+                } else if (mapObject.getName().equalsIgnoreCase("discover")) {
+                    questDiscovers.add(new GameMapQuestObject(mapObject));
+                } else if (mapObject.getName().equalsIgnoreCase("check")) {
+                    questCheckers.add(new GameMapQuestObject(mapObject));
                 }
             }
         });
     }
 
-    private void loadQuestDiscovers() {
-        getMapLayer(QUEST_LAYER).ifPresent(mapLayer -> {
-            for (MapObject mapObject : mapLayer.getObjects()) {
-                if (mapObject.getName().equalsIgnoreCase("discover")) {
-                    questDiscovers.add(new GameMapQuestDiscover(mapObject));
-                }
-            }
-        });
-    }
-
-    private void loadSparkles() {
+    private void loadRestLayer() {
         getMapLayer(REST_LAYER).ifPresent(mapLayer -> {
             for (MapObject mapObject : mapLayer.getObjects()) {
+                RectangleMapObject rectObject = (RectangleMapObject) mapObject;
                 if (mapObject.getName().startsWith("sparkle")) {
-                    RectangleMapObject rectObject = (RectangleMapObject) mapObject;
                     sparkles.add(rectObject);
-                }
-            }
-        });
-    }
-
-    private void loadChests() {
-        getMapLayer(REST_LAYER).ifPresent(mapLayer -> {
-            for (MapObject mapObject : mapLayer.getObjects()) {
-                if (mapObject.getName().startsWith("chest")) {
-                    RectangleMapObject rectObject = (RectangleMapObject) mapObject;
+                } else if (mapObject.getName().startsWith("chest")) {
                     chests.add(rectObject);
+                } else if (mapObject.getName().startsWith("note")) {
+                    notes.add(rectObject);
                 }
             }
         });
@@ -280,17 +271,6 @@ class GameMap {
         getMapLayer(WARP_LAYER).ifPresent(mapLayer -> {
             for (MapObject mapObject : mapLayer.getObjects()) {
                 warpPoints.add(new GameMapWarpPoint(mapObject, mapTitle));
-            }
-        });
-    }
-
-    private void loadNotes() {
-        getMapLayer(REST_LAYER).ifPresent(mapLayer -> {
-            for (MapObject mapObject : mapLayer.getObjects()) {
-                if (mapObject.getName().startsWith("note")) {
-                    RectangleMapObject rectObject = (RectangleMapObject) mapObject;
-                    notes.add(rectObject);
-                }
             }
         });
     }
@@ -344,8 +324,12 @@ class GameMap {
             rect = chest.getRectangle();
             shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
         }
-        for (GameMapQuestDiscover discover : questDiscovers) {
+        for (GameMapQuestObject discover : questDiscovers) {
             rect = discover.rectangle;
+            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+        }
+        for (GameMapQuestObject checker : questCheckers) {
+            rect = checker.rectangle;
             shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
         }
     }

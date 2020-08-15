@@ -9,7 +9,7 @@ import java.util.Map;
 
 
 @Getter
-public class QuestTask {
+class QuestTask {
 
     private String taskPhrase;
     QuestType type;
@@ -25,8 +25,13 @@ public class QuestTask {
         return taskPhrase;
     }
 
-    void setLocationDiscovered() {
-        isComplete = true;
+    void setTaskComplete() {
+        if (type.equals(QuestType.DISCOVER)
+            || type.equals(QuestType.CHECK)) {
+            isComplete = true;
+        } else {
+            throw new IllegalCallerException("Only possible to complete a DISCOVER or CHECK task.");
+        }
     }
 
     void removeTargetFromInventory() {
@@ -38,8 +43,8 @@ public class QuestTask {
         return switch (type) {
             case RETURN -> checkReturn();
             case FETCH -> checkFetch();
-            case DISCOVER -> checkDiscover();
-            default -> throw new GdxRuntimeException(String.format("No %s quests for now.", type));
+            case DISCOVER, CHECK -> checkTaskComplete();
+            default -> throw new GdxRuntimeException(String.format("No %s task for now.", type));
         };
     }
 
@@ -52,7 +57,7 @@ public class QuestTask {
                                                                       getTargetEntry().getValue());
     }
 
-    private boolean checkDiscover() {
+    private boolean checkTaskComplete() {
         return isComplete;
     }
 
