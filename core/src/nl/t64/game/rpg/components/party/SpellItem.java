@@ -25,7 +25,7 @@ public abstract class SpellItem implements PersonalityItem {
     int minWizard;                  // Constant value for minimal Wizard rank necessary to learn a spell.
     SchoolType school;              // Constant value
     ResourceType requiredResource;  // Constant value
-    int staminaCosts;               // Constant value
+    int staminaCost;                // Constant value
     int rank;
     int bonus;
 
@@ -44,7 +44,7 @@ public abstract class SpellItem implements PersonalityItem {
         return getDescription() + System.lineSeparator() + System.lineSeparator()
                + "School: " + school.title + System.lineSeparator()
                + "Requires: " + requiredResource.title + System.lineSeparator()
-               + "Stamina cost: " + staminaCosts + System.lineSeparator() + System.lineSeparator()
+               + "Stamina cost: " + staminaCost + System.lineSeparator() + System.lineSeparator()
                + getNeededXpForNextLevel(totalLoremaster) + System.lineSeparator()
                + getNeededGoldForNextLevel();
     }
@@ -98,7 +98,7 @@ class DispelElemental extends SpellItem {
         this.minWizard = 2;
         this.school = SchoolType.NEUTRAL;
         this.requiredResource = ResourceType.GEMSTONES;
-        this.staminaCosts = 0; // todo
+        this.staminaCost = 7;
     }
 
     @Override
@@ -117,7 +117,7 @@ class DispelNaming extends SpellItem {
         this.minWizard = 2;
         this.school = SchoolType.NEUTRAL;
         this.requiredResource = ResourceType.GEMSTONES;
-        this.staminaCosts = 0; // todo
+        this.staminaCost = 6;
     }
 
     @Override
@@ -136,7 +136,7 @@ class DispelNecromancy extends SpellItem {
         this.minWizard = 2;
         this.school = SchoolType.NEUTRAL;
         this.requiredResource = ResourceType.GEMSTONES;
-        this.staminaCosts = 5;
+        this.staminaCost = 6;
     }
 
     @Override
@@ -154,8 +154,8 @@ class DispelStar extends SpellItem {
         this.upgrade = 3.2f;
         this.minWizard = 2;
         this.school = SchoolType.NEUTRAL;
-        this.requiredResource = null; // todo
-        this.staminaCosts = 0; // todo
+        this.requiredResource = ResourceType.GEMSTONES;
+        this.staminaCost = 6;
     }
 
     @Override
@@ -174,7 +174,7 @@ class Mirror extends SpellItem {
         this.minWizard = 6;
         this.school = SchoolType.NEUTRAL;
         this.requiredResource = ResourceType.GEMSTONES;
-        this.staminaCosts = 2;
+        this.staminaCost = 10;
     }
 
     @Override
@@ -193,7 +193,7 @@ class VsElemental extends SpellItem {
         this.minWizard = 1;
         this.school = SchoolType.NEUTRAL;
         this.requiredResource = ResourceType.GEMSTONES;
-        this.staminaCosts = 0; // todo
+        this.staminaCost = 5;
     }
 
     @Override
@@ -212,7 +212,7 @@ class VsNaming extends SpellItem {
         this.minWizard = 1;
         this.school = SchoolType.NEUTRAL;
         this.requiredResource = ResourceType.GEMSTONES;
-        this.staminaCosts = 2;
+        this.staminaCost = 5;
     }
 
     @Override
@@ -231,7 +231,7 @@ class VsNecromancy extends SpellItem {
         this.minWizard = 1;
         this.school = SchoolType.NEUTRAL;
         this.requiredResource = ResourceType.GEMSTONES;
-        this.staminaCosts = 2;
+        this.staminaCost = 3;
     }
 
     @Override
@@ -250,7 +250,7 @@ class VsStar extends SpellItem {
         this.minWizard = 1;
         this.school = SchoolType.NEUTRAL;
         this.requiredResource = ResourceType.GEMSTONES;
-        this.staminaCosts = 0; // todo
+        this.staminaCost = 5;
     }
 
     @Override
@@ -271,7 +271,7 @@ class AirShield extends SpellItem {
         this.minWizard = 1;
         this.school = SchoolType.ELEMENTAL;
         this.requiredResource = ResourceType.GEMSTONES;
-        this.staminaCosts = 1;
+        this.staminaCost = 6;
     }
 
     @Override
@@ -290,7 +290,7 @@ class ControlElementals extends SpellItem {
         this.minWizard = 4;
         this.school = SchoolType.ELEMENTAL;
         this.requiredResource = ResourceType.SPICES;
-        this.staminaCosts = 0; // todo
+        this.staminaCost = 20;
     }
 
     @Override
@@ -309,7 +309,7 @@ class Debilitation extends SpellItem {
         this.minWizard = 2;
         this.school = SchoolType.ELEMENTAL;
         this.requiredResource = ResourceType.HERBS;
-        this.staminaCosts = 1;
+        this.staminaCost = 6;
     }
 
     @Override
@@ -328,7 +328,7 @@ class DragonFlames extends SpellItem {
         this.minWizard = 2;
         this.school = SchoolType.ELEMENTAL;
         this.requiredResource = ResourceType.GEMSTONES;
-        this.staminaCosts = 2;
+        this.staminaCost = 10;
     }
 
     @Override
@@ -347,7 +347,7 @@ class EarthSmite extends SpellItem {
         this.minWizard = 4;
         this.school = SchoolType.ELEMENTAL;
         this.requiredResource = ResourceType.GEMSTONES;
-        this.staminaCosts = 2;
+        this.staminaCost = 10;
     }
 
     @Override
@@ -366,7 +366,7 @@ class Fireball extends SpellItem {
         this.minWizard = 5;
         this.school = SchoolType.ELEMENTAL;
         this.requiredResource = ResourceType.SPICES;
-        this.staminaCosts = 7; // 8
+        this.staminaCost = 15;
     }
 
     @Override
@@ -385,7 +385,7 @@ class Immolation extends SpellItem {
         this.minWizard = 4;
         this.school = SchoolType.ELEMENTAL;
         this.requiredResource = ResourceType.SPICES;
-        this.staminaCosts = 1;
+        this.staminaCost = 8;
     }
 
     @Override
@@ -404,7 +404,7 @@ class Lightning extends SpellItem {
         this.minWizard = 3;
         this.school = SchoolType.ELEMENTAL;
         this.requiredResource = ResourceType.GEMSTONES;
-        this.staminaCosts = 1;
+        this.staminaCost = 3;
     }
 
     @Override
@@ -423,7 +423,7 @@ class RemovePoison extends SpellItem {
         this.minWizard = 2;
         this.school = SchoolType.ELEMENTAL;
         this.requiredResource = ResourceType.HERBS;
-        this.staminaCosts = 1;
+        this.staminaCost = 2;
     }
 
     @Override
@@ -442,7 +442,7 @@ class StrengthPlus extends SpellItem {
         this.minWizard = 1;
         this.school = SchoolType.ELEMENTAL;
         this.requiredResource = ResourceType.HERBS;
-        this.staminaCosts = 1;
+        this.staminaCost = 7;
     }
 
     @Override
@@ -461,7 +461,7 @@ class Wind extends SpellItem {
         this.minWizard = 2;
         this.school = SchoolType.ELEMENTAL;
         this.requiredResource = ResourceType.HERBS;
-        this.staminaCosts = 1;
+        this.staminaCost = 7;
     }
 
     @Override
@@ -482,7 +482,7 @@ class Banishing extends SpellItem {
         this.minWizard = 4;
         this.school = SchoolType.NAMING;
         this.requiredResource = ResourceType.GEMSTONES;
-        this.staminaCosts = 0; // todo
+        this.staminaCost = 15;
     }
 
     @Override
@@ -501,7 +501,7 @@ class Brilliance extends SpellItem {
         this.minWizard = 2;
         this.school = SchoolType.NAMING;
         this.requiredResource = ResourceType.GEMSTONES;
-        this.staminaCosts = 1;
+        this.staminaCost = 6;
     }
 
     @Override
@@ -520,7 +520,26 @@ class Charming extends SpellItem {
         this.minWizard = 3;
         this.school = SchoolType.NAMING;
         this.requiredResource = ResourceType.GEMSTONES;
-        this.staminaCosts = 5;
+        this.staminaCost = 6;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
+    }
+}
+
+@NoArgsConstructor
+class ControlMarquis extends SpellItem {
+    ControlMarquis(int rank) {
+        super(rank);
+        this.name = "Control Marquis";
+        this.sort = 222;
+        this.upgrade = 4f;
+        this.minWizard = 3;
+        this.school = SchoolType.NAMING;
+        this.requiredResource = ResourceType.GEMSTONES;
+        this.staminaCost = 10;
     }
 
     @Override
@@ -539,7 +558,7 @@ class EndurancePlus extends SpellItem {
         this.minWizard = 2;
         this.school = SchoolType.NAMING;
         this.requiredResource = ResourceType.SPICES;
-        this.staminaCosts = 1;
+        this.staminaCost = 6;
     }
 
     @Override
@@ -558,7 +577,7 @@ class SenseAura extends SpellItem {
         this.minWizard = 3;
         this.school = SchoolType.NAMING;
         this.requiredResource = ResourceType.HERBS;
-        this.staminaCosts = 1;
+        this.staminaCost = 2;
     }
 
     @Override
@@ -577,7 +596,7 @@ class Stupidity extends SpellItem {
         this.minWizard = 2;
         this.school = SchoolType.NAMING;
         this.requiredResource = ResourceType.HERBS;
-        this.staminaCosts = 1;
+        this.staminaCost = 6;
     }
 
     @Override
@@ -596,7 +615,7 @@ class Teleportation extends SpellItem {
         this.minWizard = 8;
         this.school = SchoolType.NAMING;
         this.requiredResource = ResourceType.GEMSTONES;
-        this.staminaCosts = 1;
+        this.staminaCost = 10;
     }
 
     @Override
@@ -615,7 +634,7 @@ class Weakness extends SpellItem {
         this.minWizard = 2;
         this.school = SchoolType.NAMING;
         this.requiredResource = ResourceType.HERBS;
-        this.staminaCosts = 0; // todo
+        this.staminaCost = 6;
     }
 
     @Override
@@ -636,7 +655,45 @@ class AcidBolt extends SpellItem {
         this.minWizard = 4;
         this.school = SchoolType.NECROMANCY;
         this.requiredResource = ResourceType.SPICES;
-        this.staminaCosts = 0; // todo
+        this.staminaCost = 8;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
+    }
+}
+
+@NoArgsConstructor
+class AuraOfDeath extends SpellItem {
+    AuraOfDeath(int rank) {
+        super(rank);
+        this.name = "Aura of Death";
+        this.sort = 312;
+        this.upgrade = 0.8f;
+        this.minWizard = 4;
+        this.school = SchoolType.NECROMANCY;
+        this.requiredResource = ResourceType.SPICES;
+        this.staminaCost = 5;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
+    }
+}
+
+@NoArgsConstructor
+class CheatDeath extends SpellItem {
+    CheatDeath(int rank) {
+        super(rank);
+        this.name = "Cheat Death";
+        this.sort = 314;
+        this.upgrade = 2.4f;
+        this.minWizard = 6;
+        this.school = SchoolType.NECROMANCY;
+        this.requiredResource = ResourceType.GEMSTONES;
+        this.staminaCost = 10;
     }
 
     @Override
@@ -655,7 +712,26 @@ class ControlZombies extends SpellItem {
         this.minWizard = 3;
         this.school = SchoolType.NECROMANCY;
         this.requiredResource = ResourceType.HERBS;
-        this.staminaCosts = 0; // todo
+        this.staminaCost = 10;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
+    }
+}
+
+@NoArgsConstructor
+class CrushingDeath extends SpellItem {
+    CrushingDeath(int rank) {
+        super(rank);
+        this.name = "Crushing Death";
+        this.sort = 317;
+        this.upgrade = 6f;
+        this.minWizard = 7;
+        this.school = SchoolType.NECROMANCY;
+        this.requiredResource = ResourceType.SPICES;
+        this.staminaCost = 10;
     }
 
     @Override
@@ -674,7 +750,7 @@ class Darkness extends SpellItem {
         this.minWizard = 2;
         this.school = SchoolType.NECROMANCY;
         this.requiredResource = ResourceType.GEMSTONES;
-        this.staminaCosts = 5;
+        this.staminaCost = 6;
     }
 
     @Override
@@ -693,7 +769,7 @@ class Exhaustion extends SpellItem {
         this.minWizard = 2;
         this.school = SchoolType.NECROMANCY;
         this.requiredResource = ResourceType.GEMSTONES;
-        this.staminaCosts = 0; // todo
+        this.staminaCost = 6;
     }
 
     @Override
@@ -712,7 +788,27 @@ class Haste extends SpellItem {
         this.minWizard = 4;
         this.school = SchoolType.NECROMANCY;
         this.requiredResource = ResourceType.SPICES;
-        this.staminaCosts = 0; // todo
+        this.staminaCost = 5;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
+    }
+
+}
+
+@NoArgsConstructor
+class SpiritShield extends SpellItem {
+    SpiritShield(int rank) {
+        super(rank);
+        this.name = "Spirit Shield";
+        this.sort = 335;
+        this.upgrade = 4f;
+        this.minWizard = 3;
+        this.school = SchoolType.NECROMANCY;
+        this.requiredResource = ResourceType.GEMSTONES;
+        this.staminaCost = 6;
     }
 
     @Override
@@ -726,12 +822,12 @@ class StaminaPlus extends SpellItem {
     StaminaPlus(int rank) {
         super(rank);
         this.name = "Stamina";
-        this.sort = 335;
+        this.sort = 340;
         this.upgrade = 3.2f;
         this.minWizard = 2;
         this.school = SchoolType.NECROMANCY;
         this.requiredResource = ResourceType.GEMSTONES;
-        this.staminaCosts = 5;
+        this.staminaCost = 6;
     }
 
     @Override
@@ -741,16 +837,16 @@ class StaminaPlus extends SpellItem {
 }
 
 @NoArgsConstructor
-class SpiritShield extends SpellItem {
-    SpiritShield(int rank) {
+class TapStamina extends SpellItem {
+    TapStamina(int rank) {
         super(rank);
-        this.name = "Spirit Shield";
-        this.sort = 340;
+        this.name = "Tap Stamina";
+        this.sort = 342;
         this.upgrade = 4f;
         this.minWizard = 3;
         this.school = SchoolType.NECROMANCY;
-        this.requiredResource = ResourceType.GEMSTONES;
-        this.staminaCosts = 5;
+        this.requiredResource = ResourceType.SPICES;
+        this.staminaCost = 5;
     }
 
     @Override
@@ -769,7 +865,26 @@ class WallOfBones extends SpellItem {
         this.minWizard = 5;
         this.school = SchoolType.NECROMANCY;
         this.requiredResource = ResourceType.HERBS;
-        this.staminaCosts = 12; // 14?
+        this.staminaCost = 15;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
+    }
+}
+
+@NoArgsConstructor
+class WraithTouch extends SpellItem {
+    WraithTouch(int rank) {
+        super(rank);
+        this.name = "Wraith Touch";
+        this.sort = 350;
+        this.upgrade = 1.6f;
+        this.minWizard = 8;
+        this.school = SchoolType.NECROMANCY;
+        this.requiredResource = ResourceType.GEMSTONES;
+        this.staminaCost = 2;
     }
 
     @Override
@@ -781,6 +896,44 @@ class WallOfBones extends SpellItem {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @NoArgsConstructor
+class Clumsiness extends SpellItem {
+    Clumsiness(int rank) {
+        super(rank);
+        this.name = "Clumsiness";
+        this.sort = 406;
+        this.upgrade = 3.2f;
+        this.minWizard = 2;
+        this.school = SchoolType.STAR;
+        this.requiredResource = ResourceType.SPICES;
+        this.staminaCost = 6;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
+    }
+}
+
+@NoArgsConstructor
+class DexterityPlus extends SpellItem {
+    DexterityPlus(int rank) {
+        super(rank);
+        this.name = "Dexterity";
+        this.sort = 408;
+        this.upgrade = 3.2f;
+        this.minWizard = 2;
+        this.school = SchoolType.STAR;
+        this.requiredResource = ResourceType.SPICES;
+        this.staminaCost = 7;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
+    }
+}
+
+@NoArgsConstructor
 class FrozenDoom extends SpellItem {
     FrozenDoom(int rank) {
         super(rank);
@@ -790,7 +943,45 @@ class FrozenDoom extends SpellItem {
         this.minWizard = 6;
         this.school = SchoolType.STAR;
         this.requiredResource = ResourceType.HERBS;
-        this.staminaCosts = 0; // todo
+        this.staminaCost = 10;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
+    }
+}
+
+@NoArgsConstructor
+class Light extends SpellItem {
+    Light(int rank) {
+        super(rank);
+        this.name = "Light";
+        this.sort = 412;
+        this.upgrade = 3.2f;
+        this.minWizard = 2;
+        this.school = SchoolType.STAR;
+        this.requiredResource = ResourceType.SPICES;
+        this.staminaCost = 5;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
+    }
+}
+
+@NoArgsConstructor
+class Photosynthesis extends SpellItem {
+    Photosynthesis(int rank) {
+        super(rank);
+        this.name = "Photosynthesis";
+        this.sort = 414;
+        this.upgrade = 1.6f;
+        this.minWizard = 3;
+        this.school = SchoolType.STAR;
+        this.requiredResource = ResourceType.HERBS;
+        this.staminaCost = 8;
     }
 
     @Override
@@ -806,10 +997,29 @@ class SolarWrath extends SpellItem {
         this.name = "Solar Wrath";
         this.sort = 415;
         this.upgrade = 0.8f;
-        this.minWizard = 0; // todo
+        this.minWizard = 4;
         this.school = SchoolType.STAR;
-        this.requiredResource = null; // todo
-        this.staminaCosts = 0; // todo
+        this.requiredResource = ResourceType.GEMSTONES;
+        this.staminaCost = 5;
+    }
+
+    @Override
+    String getDescription() {
+        return "Tekst en uitleg over " + name + ".";
+    }
+}
+
+@NoArgsConstructor
+class StarlightShield extends SpellItem {
+    StarlightShield(int rank) {
+        super(rank);
+        this.name = "Starlight Shield";
+        this.sort = 417;
+        this.upgrade = 4f;
+        this.minWizard = 3;
+        this.school = SchoolType.STAR;
+        this.requiredResource = ResourceType.GEMSTONES;
+        this.staminaCost = 8;
     }
 
     @Override
@@ -825,10 +1035,10 @@ class StellarGravity extends SpellItem {
         this.name = "Stellar Gravity";
         this.sort = 420;
         this.upgrade = 3.2f;
-        this.minWizard = 0; // todo
+        this.minWizard = 2;
         this.school = SchoolType.STAR;
-        this.requiredResource = null; // todo
-        this.staminaCosts = 0; // todo
+        this.requiredResource = ResourceType.SPICES;
+        this.staminaCost = 6;
     }
 
     @Override
@@ -847,7 +1057,7 @@ class WebOfStarlight extends SpellItem {
         this.minWizard = 3;
         this.school = SchoolType.STAR;
         this.requiredResource = ResourceType.GEMSTONES;
-        this.staminaCosts = 0; // todo
+        this.staminaCost = 10;
     }
 
     @Override
@@ -866,7 +1076,7 @@ class WhiteFire extends SpellItem {
         this.minWizard = 6;
         this.school = SchoolType.STAR;
         this.requiredResource = ResourceType.SPICES;
-        this.staminaCosts = 0; // todo
+        this.staminaCost = 15;
     }
 
     @Override
