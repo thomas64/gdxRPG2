@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 class InventoryTest extends GameTest {
 
     private static final String GOLD = "gold";
-    private static final String HERBS = "herbs";
+    private static final String HERB = "herb";
     private static final String POTION = "healing_potion";
     private static final String BASIC_MACE = "basic_mace";
     private static final String BASIC_LIGHT_CHEST = "basic_light_chest";
@@ -68,13 +68,13 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenResourceItemIsCreatedWithAmount_ShouldHaveCorrectAmountWithoutSet() {
-        InventoryItem spices = inventoryDB.createInventoryItem("spices");
+        InventoryItem spice = inventoryDB.createInventoryItem("spice");
         InventoryItem gold = inventoryDB.createInventoryItem(GOLD, 5);
-        InventoryItem herbs = inventoryDB.createInventoryItemForShop(HERBS);
+        InventoryItem herb = inventoryDB.createInventoryItemForShop(HERB);
         InventoryItem potion = inventoryDB.createInventoryItemForShop(POTION);
-        assertThat(spices.getAmount()).isEqualTo(1);
+        assertThat(spice.getAmount()).isEqualTo(1);
         assertThat(gold.getAmount()).isEqualTo(5);
-        assertThat(herbs.getAmount()).isEqualTo(100);
+        assertThat(herb.getAmount()).isEqualTo(100);
         assertThat(potion.getAmount()).isEqualTo(20);
     }
 
@@ -125,13 +125,13 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenResourceItemIsAdded_ShouldBeAddedToStartOfInventory() {
-        InventoryItem herbs = inventoryDB.createInventoryItem(HERBS);
-        assertThat(inventory.contains(HERBS)).isFalse();
+        InventoryItem herb = inventoryDB.createInventoryItem(HERB);
+        assertThat(inventory.contains(HERB)).isFalse();
         assertThat(inventory.getAmountOfItemAt(1)).isZero();
-        inventory.autoSetItem(herbs);
-        assertThat(inventory.contains(HERBS)).isTrue();
+        inventory.autoSetItem(herb);
+        assertThat(inventory.contains(HERB)).isTrue();
         assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(1);
-        assertThat(inventory.getItemAt(1)).containsSame(herbs);
+        assertThat(inventory.getItemAt(1)).containsSame(herb);
     }
 
     @Test
@@ -149,7 +149,7 @@ class InventoryTest extends GameTest {
         assertThatExceptionOfType(IllegalStateException.class).isThrownBy(
                 () -> inventory.autoRemoveResource(GOLD, 2));
         assertThatExceptionOfType(IllegalStateException.class).isThrownBy(
-                () -> inventory.autoRemoveResource(HERBS, 1));
+                () -> inventory.autoRemoveResource(HERB, 1));
     }
 
     @Test
@@ -178,10 +178,10 @@ class InventoryTest extends GameTest {
         IntStream.range(2, inventory.getSize())
                  .forEach(i -> inventory.forceSetItemAt(i, gold));
         assertThat(inventory.hasRoomForResource(GOLD)).isTrue();
-        assertThat(inventory.hasRoomForResource(HERBS)).isTrue();
+        assertThat(inventory.hasRoomForResource(HERB)).isTrue();
         inventory.forceSetItemAt(1, gold);
         assertThat(inventory.hasRoomForResource(GOLD)).isTrue();
-        assertThat(inventory.hasRoomForResource(HERBS)).isFalse();
+        assertThat(inventory.hasRoomForResource(HERB)).isFalse();
     }
 
     @Test
@@ -247,7 +247,7 @@ class InventoryTest extends GameTest {
     @Test
     void whenSearchingForSlotWithItem_ShouldReturnIndexOrNot() {
         assertThat(inventory.findFirstSlotWithItem(GOLD)).contains(65);
-        assertThat(inventory.findFirstSlotWithItem(HERBS)).isEmpty();
+        assertThat(inventory.findFirstSlotWithItem(HERB)).isEmpty();
     }
 
     @Test
@@ -272,19 +272,19 @@ class InventoryTest extends GameTest {
         InventoryItem gold1 = inventoryDB.createInventoryItem(GOLD);
         InventoryItem gold2 = inventoryDB.createInventoryItem(GOLD);
         InventoryItem gold3 = inventoryDB.createInventoryItem(GOLD);
-        InventoryItem herbs1 = inventoryDB.createInventoryItem(HERBS);
-        InventoryItem herbs2 = inventoryDB.createInventoryItem(HERBS);
-        InventoryItem herbs3 = inventoryDB.createInventoryItem(HERBS);
-        herbs1.setAmount(80);
-        herbs2.setAmount(80);
+        InventoryItem herb1 = inventoryDB.createInventoryItem(HERB);
+        InventoryItem herb2 = inventoryDB.createInventoryItem(HERB);
+        InventoryItem herb3 = inventoryDB.createInventoryItem(HERB);
+        herb1.setAmount(80);
+        herb2.setAmount(80);
         InventoryItem chest = inventoryDB.createInventoryItem(BASIC_LIGHT_CHEST);
 
         inventory.forceSetItemAt(0, gold1);
         inventory.forceSetItemAt(20, gold2);
         inventory.forceSetItemAt(65, gold3);
-        inventory.forceSetItemAt(10, herbs1);
-        inventory.forceSetItemAt(40, herbs2);
-        inventory.forceSetItemAt(50, herbs3);
+        inventory.forceSetItemAt(10, herb1);
+        inventory.forceSetItemAt(40, herb2);
+        inventory.forceSetItemAt(50, herb3);
         inventory.forceSetItemAt(36, chest);
 
         inventory.sort();
@@ -294,17 +294,17 @@ class InventoryTest extends GameTest {
         assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex())).isEqualTo(3);
         assertThat(inventory.getItemAt(inventory.getLastIndex())).containsSame(gold1);
         assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex() - 1)).isEqualTo(161);
-        assertThat(inventory.getItemAt(inventory.getLastIndex() - 1)).containsSame(herbs1);
+        assertThat(inventory.getItemAt(inventory.getLastIndex() - 1)).containsSame(herb1);
     }
 
     @Test
     void whenInventoryIsFull_ShouldNotThrowError() {
         InventoryItem gold = inventoryDB.createInventoryItem(GOLD);
-        InventoryItem herbs = inventoryDB.createInventoryItem(HERBS);
+        InventoryItem herb = inventoryDB.createInventoryItem(HERB);
         InventoryItem mace = inventoryDB.createInventoryItem(BASIC_MACE);
         IntStream.range(0, inventory.getSize())
                  .forEach(i -> inventory.forceSetItemAt(i, gold));
-        inventory.autoSetItem(herbs);
+        inventory.autoSetItem(herb);
         inventory.autoSetItem(mace);
     }
 
@@ -377,7 +377,7 @@ class InventoryTest extends GameTest {
     }
 
     @Test
-    void whenResourceItemHerbs_ShouldCreateDescription() {
+    void whenResourceItemHerb_ShouldCreateDescription() {
         InventoryItem potion = inventoryDB.createInventoryItem(POTION, 10);
         List<InventoryDescription> description = new DescriptionCreator(potion, 0)
                 .createItemDescription();

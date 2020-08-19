@@ -27,7 +27,7 @@ class LootTest extends GameTest {
     @Test
     void whenSparklesAreCreated_ShouldHaveCorrectDataInside() {
         Loot sparkle = lootContainer.getLoot("sparkle0001");
-        Map<String, Integer> expected = Map.of("gemstones", 1);
+        Map<String, Integer> expected = Map.of("gemstone", 1);
         assertThat(sparkle.isTaken()).isFalse();
         assertThat(sparkle.getContent()).hasSize(1);
         Map.Entry<String, Integer> entry = expected.entrySet().iterator().next();
@@ -67,7 +67,7 @@ class LootTest extends GameTest {
         assertThat(chest.isLocked()).isFalse();
         assertThat(chest.getLockLevel()).isEqualTo(0);
         assertThat(chest.getContent()).hasSize(0);
-        chest.updateContent(Map.of("herbs", 10));
+        chest.updateContent(Map.of("herb", 10));
         assertThat(chest.isTaken()).isFalse();
         assertThat(chest.isTrapped()).isFalse();
         assertThat(chest.getTrapLevel()).isEqualTo(0);

@@ -7,9 +7,9 @@ import lombok.AllArgsConstructor;
 public enum ResourceType implements SuperEnum {
 
     GOLD("Gold"),
-    HERBS("Herbs"),
-    SPICES("Spices"),
-    GEMSTONES("Gemstones");
+    HERB("Herb"),
+    SPICE("Spice"),
+    GEMSTONE("Gemstone");
 
     final String title;
 

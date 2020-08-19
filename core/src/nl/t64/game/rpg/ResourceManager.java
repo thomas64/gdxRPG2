@@ -31,6 +31,8 @@ public class ResourceManager {
     private static final String FILE_LIST_ATLAS_FILES = ATLAS_FILES + FILE_LIST;
     private static final String ATLAS_FILES2 = "sprites/inventory/";
     private static final String FILE_LIST_ATLAS_FILES2 = ATLAS_FILES2 + FILE_LIST;
+    private static final String ATLAS_FILES3 = "sprites/spells/";
+    private static final String FILE_LIST_ATLAS_FILES3 = ATLAS_FILES3 + FILE_LIST;
 
     private final AssetManager assetManager;
     private final ObjectMap<String, SpriteConfig> spriteConfigs;
@@ -112,6 +114,7 @@ public class ResourceManager {
         if (atlasList.isEmpty()) {
             loadAtlasTexture(FILE_LIST_ATLAS_FILES, ATLAS_FILES);
             loadAtlasTexture(FILE_LIST_ATLAS_FILES2, ATLAS_FILES2);
+            loadAtlasTexture(FILE_LIST_ATLAS_FILES3, ATLAS_FILES3);
         }
         TextureRegion textureRegion = null;
         for (TextureAtlas atlas : atlasList) {

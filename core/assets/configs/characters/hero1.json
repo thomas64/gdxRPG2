@@ -116,7 +116,7 @@
     },
     "spells": {
       "vs_necromancy": 1,
-      "endurance_plus": 4,
+      "endurance": 4,
       "sense_aura": 1,
       "weakness": 4
     },
@@ -402,7 +402,7 @@
     "spells": {
       "fireball": 6,
       "air_shield": 9,
-      "strength_plus": 9,
+      "strength": 9,
       "debilitation": 9,
       "mirror": 9
     },
