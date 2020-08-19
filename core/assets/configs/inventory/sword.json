@@ -9,8 +9,8 @@
     "base_hit": 40,
     "damage": 11
   },
-  "ordinary_dagger": {
-    "name": "Ordinary Dagger",
+  "fine_dagger": {
+    "name": "Fine Dagger",
     "group": "WEAPON",
     "sort": 2000,
     "skill": "SWORD",
@@ -49,8 +49,8 @@
     "base_hit": 40,
     "damage": 13
   },
-  "ordinary_shortsword": {
-    "name": "Ordinary Shortsword",
+  "fine_shortsword": {
+    "name": "Fine Shortsword",
     "group": "WEAPON",
     "sort": 2020,
     "skill": "SWORD",
@@ -89,8 +89,8 @@
     "base_hit": 40,
     "damage": 15
   },
-  "ordinary_longsword": {
-    "name": "Ordinary Longsword",
+  "fine_longsword": {
+    "name": "Fine Longsword",
     "group": "WEAPON",
     "sort": 2040,
     "skill": "SWORD",
@@ -129,8 +129,8 @@
     "base_hit": 40,
     "damage": 17
   },
-  "ordinary_greatsword": {
-    "name": "Ordinary Greatsword",
+  "fine_greatsword": {
+    "name": "Fine Greatsword",
     "group": "WEAPON",
     "sort": 2060,
     "skill": "SWORD",

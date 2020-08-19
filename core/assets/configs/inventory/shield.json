@@ -11,8 +11,8 @@
     "dexterity": -2,
     "stealth": -5
   },
-  "ordinary_light_shield": {
-    "name": "Ordinary Light Shield",
+  "fine_light_shield": {
+    "name": "Fine Light Shield",
     "group": "SHIELD",
     "sort": 200,
     "skill": "SHIELD",
@@ -59,8 +59,8 @@
     "dexterity": -6,
     "stealth": -10
   },
-  "ordinary_medium_shield": {
-    "name": "Ordinary Medium Shield",
+  "fine_medium_shield": {
+    "name": "Fine Medium Shield",
     "group": "SHIELD",
     "sort": 220,
     "skill": "SHIELD",
@@ -107,8 +107,8 @@
     "dexterity": -10,
     "stealth": -15
   },
-  "ordinary_heavy_shield": {
-    "name": "Ordinary Heavy Shield",
+  "fine_heavy_shield": {
+    "name": "Fine Heavy Shield",
     "group": "SHIELD",
     "sort": 240,
     "skill": "SHIELD",

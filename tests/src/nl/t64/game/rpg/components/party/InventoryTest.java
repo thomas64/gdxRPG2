@@ -89,9 +89,9 @@ class InventoryTest extends GameTest {
         assertThat(basicMace.getSellValueTotal(60)).isEqualTo(6);
         assertThat(basicMace.getBuyPriceTotal(100)).isEqualTo(1);
         assertThat(basicMace.getSellValueTotal(100)).isEqualTo(7);
-        InventoryItem ordinaryMace = inventoryDB.createInventoryItem("ordinary_mace");
-        assertThat(ordinaryMace.getBuyPriceTotal(0)).isEqualTo(45);
-        assertThat(ordinaryMace.getSellValueTotal(0)).isEqualTo(15);
+        InventoryItem fineMace = inventoryDB.createInventoryItem("fine_mace");
+        assertThat(fineMace.getBuyPriceTotal(0)).isEqualTo(45);
+        assertThat(fineMace.getSellValueTotal(0)).isEqualTo(15);
         InventoryItem specialistMace = inventoryDB.createInventoryItem("specialist_mace");
         assertThat(specialistMace.getBuyPriceTotal(0)).isEqualTo(75);
         assertThat(specialistMace.getSellValueTotal(0)).isEqualTo(25);

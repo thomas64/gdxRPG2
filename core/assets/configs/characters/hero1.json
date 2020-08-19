@@ -87,9 +87,9 @@
     "spells": {
     },
     "inventory": {
-      "weapon": "ordinary_shortsword",
-      "shield": "ordinary_light_shield",
-      "chest": "ordinary_medium_chest"
+      "weapon": "fine_shortsword",
+      "shield": "fine_light_shield",
+      "chest": "fine_medium_chest"
     }
   },
   "ryiah": {
@@ -257,8 +257,8 @@
       "wind": 3
     },
     "inventory": {
-      "weapon": "ordinary_dagger",
-      "chest": "ordinary_light_chest"
+      "weapon": "fine_dagger",
+      "chest": "fine_light_chest"
     }
   },
   "luthais": {
@@ -329,8 +329,8 @@
       "teleportation": 7
     },
     "inventory": {
-      "weapon": "ordinary_longsword",
-      "chest": "ordinary_medium_chest"
+      "weapon": "fine_longsword",
+      "chest": "fine_medium_chest"
     }
   },
   "onarr": {
@@ -363,9 +363,9 @@
     "spells": {
     },
     "inventory": {
-      "weapon": "ordinary_morningstar",
-      "shield": "ordinary_medium_shield",
-      "chest": "ordinary_heavy_chest"
+      "weapon": "fine_morningstar",
+      "shield": "fine_medium_shield",
+      "chest": "fine_heavy_chest"
     }
   },
   "duilio": {

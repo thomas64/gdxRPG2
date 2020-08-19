@@ -9,8 +9,8 @@
     "base_hit": 30,
     "damage": 18
   },
-  "ordinary_mace": {
-    "name": "Ordinary Mace",
+  "fine_mace": {
+    "name": "Fine Mace",
     "group": "WEAPON",
     "sort": 2100,
     "skill": "HAFTED",
@@ -59,8 +59,8 @@
     "base_hit": 30,
     "damage": 20
   },
-  "ordinary_axe": {
-    "name": "Ordinary Axe",
+  "fine_axe": {
+    "name": "Fine Axe",
     "group": "WEAPON",
     "sort": 2120,
     "skill": "HAFTED",
@@ -109,8 +109,8 @@
     "base_hit": 30,
     "damage": 22
   },
-  "ordinary_morningstar": {
-    "name": "Ordinary Morningstar",
+  "fine_morningstar": {
+    "name": "Fine Morningstar",
     "group": "WEAPON",
     "sort": 2140,
     "skill": "HAFTED",
@@ -149,8 +149,8 @@
     "base_hit": 30,
     "damage": 24
   },
-  "ordinary_maul": {
-    "name": "Ordinary Maul",
+  "fine_maul": {
+    "name": "Fine Maul",
     "group": "WEAPON",
     "sort": 2160,
     "skill": "HAFTED",

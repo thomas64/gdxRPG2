@@ -74,28 +74,28 @@ masterwork_staff
   orig: 62, 62
   offset: 0, 0
   index: -1
-ordinary_lance
+fine_lance
   rotate: false
   xy: 124, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-ordinary_pike
+fine_pike
   rotate: false
   xy: 186, 124
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-ordinary_spear
+fine_spear
   rotate: false
   xy: 0, 186
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
-ordinary_staff
+fine_staff
   rotate: false
   xy: 62, 186
   size: 62, 62

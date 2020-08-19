@@ -8,8 +8,8 @@
     "protection": 1,
     "stealth": 0
   },
-  "ordinary_light_chest": {
-    "name": "Ordinary Light Chest",
+  "fine_light_chest": {
+    "name": "Fine Light Chest",
     "group": "CHEST",
     "sort": 200,
     "price": 20,
@@ -44,8 +44,8 @@
     "protection": 5,
     "stealth": -1
   },
-  "ordinary_medium_chest": {
-    "name": "Ordinary Medium Chest",
+  "fine_medium_chest": {
+    "name": "Fine Medium Chest",
     "group": "CHEST",
     "sort": 220,
     "price": 50,
@@ -80,8 +80,8 @@
     "protection": 9,
     "stealth": -2
   },
-  "ordinary_heavy_chest": {
-    "name": "Ordinary Heavy Chest",
+  "fine_heavy_chest": {
+    "name": "Fine Heavy Chest",
     "group": "CHEST",
     "sort": 240,
     "price": 80,

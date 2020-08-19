@@ -15,7 +15,7 @@ public abstract class ItemSlot extends Stack {
     private static final String SPRITE_BACKGROUND = "sprites/inventoryslot.png";
     private static final String NOTHING = "nothing";
     private static final String BASIC = "basic";
-    private static final String ORDINARY = "ordinary";
+    private static final String FINE = "fine";
     private static final String SPECIALIST = "specialist";
     private static final String MASTERWORK = "masterwork";
     private static final String EPIC = "epic";
@@ -88,8 +88,8 @@ public abstract class ItemSlot extends Stack {
         String itemId = getCertainInventoryImage().inventoryItem.getId();
         if (itemId.contains(BASIC)) {
             return createTierColor(BASIC);
-        } else if (itemId.contains(ORDINARY)) {
-            return createTierColor(ORDINARY);
+        } else if (itemId.contains(FINE)) {
+            return createTierColor(FINE);
         } else if (itemId.contains(SPECIALIST)) {
             return createTierColor(SPECIALIST);
         } else if (itemId.contains(MASTERWORK)) {

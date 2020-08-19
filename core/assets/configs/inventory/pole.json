@@ -9,8 +9,8 @@
     "base_hit": 50,
     "damage": 4
   },
-  "ordinary_staff": {
-    "name": "Ordinary Staff",
+  "fine_staff": {
+    "name": "Fine Staff",
     "group": "WEAPON",
     "sort": 2200,
     "skill": "POLE",
@@ -71,8 +71,8 @@
     "base_hit": 50,
     "damage": 6
   },
-  "ordinary_spear": {
-    "name": "Ordinary Spear",
+  "fine_spear": {
+    "name": "Fine Spear",
     "group": "WEAPON",
     "sort": 2220,
     "skill": "POLE",
@@ -111,8 +111,8 @@
     "base_hit": 50,
     "damage": 8
   },
-  "ordinary_pike": {
-    "name": "Ordinary Pike",
+  "fine_pike": {
+    "name": "Fine Pike",
     "group": "WEAPON",
     "sort": 2240,
     "skill": "POLE",
@@ -151,8 +151,8 @@
     "base_hit": 50,
     "damage": 10
   },
-  "ordinary_lance": {
-    "name": "Ordinary Lance",
+  "fine_lance": {
+    "name": "Fine Lance",
     "group": "WEAPON",
     "sort": 2260,
     "skill": "POLE",
