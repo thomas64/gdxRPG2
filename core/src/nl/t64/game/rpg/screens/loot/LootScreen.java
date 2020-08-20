@@ -16,15 +16,13 @@ import lombok.Setter;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.constants.ScreenType;
-import nl.t64.game.rpg.profile.ProfileManager;
-import nl.t64.game.rpg.profile.ProfileObserver;
 import nl.t64.game.rpg.screens.inventory.ListenerMouseImageButton;
 import nl.t64.game.rpg.screens.inventory.MessageDialog;
 import nl.t64.game.rpg.screens.inventory.tooltip.ButtonToolTip;
 import nl.t64.game.rpg.screens.inventory.tooltip.ButtonTooltipListener;
 
 
-public class LootScreen extends LootSubject implements Screen, ProfileObserver {
+public abstract class LootScreen extends LootSubject implements Screen {
 
     private static final String BUTTON_CLOSE_UP = "close_up";
     private static final String BUTTON_CLOSE_OVER = "close_over";
@@ -51,27 +49,10 @@ public class LootScreen extends LootSubject implements Screen, ProfileObserver {
     private Loot loot;
     @Setter
     private String lootTitle;
-    private boolean isMessageShown;
 
     public LootScreen() {
         this.stage = new Stage();
         this.buttonToolTip = new ButtonToolTip();
-    }
-
-    @Override
-    public void onNotifyCreateProfile(ProfileManager profileManager) {
-        isMessageShown = false;
-        onNotifySaveProfile(profileManager);
-    }
-
-    @Override
-    public void onNotifySaveProfile(ProfileManager profileManager) {
-        profileManager.setProperty("isFirstTimeLootMessageShown", isMessageShown);
-    }
-
-    @Override
-    public void onNotifyLoadProfile(ProfileManager profileManager) {
-        isMessageShown = profileManager.getProperty("isFirstTimeLootMessageShown", Boolean.class);
     }
 
     @Override
@@ -91,8 +72,8 @@ public class LootScreen extends LootSubject implements Screen, ProfileObserver {
 
     @Override
     public void render(float dt) {
-        if (!isMessageShown) {
-            isMessageShown = true;
+        if (!Utils.getGameData().isFirstTimeLootMessageShown()) {
+            Utils.getGameData().setFirstTimeLootMessageShown(true);
             showHelpMessage();
         }
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
@@ -178,9 +159,7 @@ public class LootScreen extends LootSubject implements Screen, ProfileObserver {
         Gdx.input.setCursorCatched(true);
     }
 
-    void resolveAfterClearingContent() {
-        notifyLootTaken();
-    }
+    abstract void resolveAfterClearingContent();
 
     private void showHelpMessage() {
         if (isDialogVisibleThenClose()) {

@@ -3,21 +3,15 @@ package nl.t64.game.rpg.screens.loot;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import nl.t64.game.rpg.Utils;
-import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.screens.LoadScreen;
 
 
-public class LootLoadScreen extends LoadScreen {
+abstract class LootLoadScreen extends LoadScreen {
 
     private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
 
     @Override
-    protected void setScreen() {
-        var lootScreen = (LootScreen) Utils.getScreenManager().getScreen(ScreenType.LOOT);
-        lootScreen.setBackground((Image) stage.getActors().get(0),
-                                 (Image) stage.getActors().get(1));
-        Utils.getScreenManager().setScreen(ScreenType.LOOT);
-    }
+    protected abstract void setScreen();
 
     @Override
     public void setBackground(Image screenshot) {

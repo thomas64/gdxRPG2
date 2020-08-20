@@ -91,11 +91,19 @@ public class WorldScreen implements Screen,
 
         this.debugBox = new DebugBox(this.player);
 
+        this.setObservers();
+    }
+
+    private void setObservers() {
+        conversationDialog.addObserver(this);
         Utils.getMapManager().addObserver(this);
-        ((PartySubject) Utils.getScreenManager().getScreen(ScreenType.INVENTORY)).addObserver(this);
-        ((LootSubject) Utils.getScreenManager().getScreen(ScreenType.LOOT)).addObserver(this);
-        ((LootSubject) Utils.getScreenManager().getScreen(ScreenType.REWARD)).addObserver(this);
-        this.conversationDialog.addObserver(this);
+
+        final var inventoryScreen = (PartySubject) Utils.getScreenManager().getScreen(ScreenType.INVENTORY);
+        inventoryScreen.addObserver(this);
+        final var findScreen = (LootSubject) Utils.getScreenManager().getScreen(ScreenType.FIND);
+        findScreen.addObserver(this);
+        final var rewardScreen = (LootSubject) Utils.getScreenManager().getScreen(ScreenType.REWARD);
+        rewardScreen.addObserver(this);
     }
 
     // MapObserver /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -134,16 +142,16 @@ public class WorldScreen implements Screen,
     }
 
     @Override
-    public void onNotifyShowLootDialog(Loot loot) {
-        var lootScreenLoader = new LootScreenLoader(this::openLoadScreen, loot);
-        lootScreenLoader.openLootScreen();
+    public void onNotifyShowFindDialog(Loot loot) {
+        var findScreenLoader = new FindScreenLoader(this::openLoadScreen, loot);
+        findScreenLoader.openFindScreen();
     }
 
     @Override
-    public void onNotifyShowLootDialog(Loot loot, String message) {
-        var lootScreenLoader = new LootScreenLoader(this::openLoadScreen, loot);
+    public void onNotifyShowFindDialog(Loot loot, String message) {
+        var findScreenLoader = new FindScreenLoader(this::openLoadScreen, loot);
         onNotifyShowMessageDialog(message);
-        messageDialog.setScreenAfterHide(lootScreenLoader::openLootScreen);
+        messageDialog.setScreenAfterHide(findScreenLoader::openFindScreen);
     }
 
     @Override   // also ConversationObserver
@@ -196,7 +204,7 @@ public class WorldScreen implements Screen,
     @Override
     public void onNotifyShowRewardDialog(Loot reward) {
         var rewardScreenLoader = new RewardScreenLoader(this::openLoadScreen, reward);
-        rewardScreenLoader.openLootScreen();
+        rewardScreenLoader.openRewardScreen();
         conversationDialog.hideWithFade();
     }
 

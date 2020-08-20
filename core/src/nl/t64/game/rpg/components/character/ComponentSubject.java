@@ -31,12 +31,12 @@ class ComponentSubject {
         observers.forEach(observer -> observer.onNotifyShowNoteDialog(noteId));
     }
 
-    void notifyShowLootDialog(Loot loot) {
-        observers.forEach(observer -> observer.onNotifyShowLootDialog(loot));
+    void notifyShowFindDialog(Loot loot) {
+        observers.forEach(observer -> observer.onNotifyShowFindDialog(loot));
     }
 
-    void notifyShowLootDialog(Loot loot, String message) {
-        observers.forEach(observer -> observer.onNotifyShowLootDialog(loot, message));
+    void notifyShowFindDialog(Loot loot, String message) {
+        observers.forEach(observer -> observer.onNotifyShowFindDialog(loot, message));
     }
 
     void notifyShowMessageDialog(String message) {

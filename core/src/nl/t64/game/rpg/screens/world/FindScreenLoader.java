@@ -4,23 +4,23 @@ import lombok.AllArgsConstructor;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.constants.ScreenType;
-import nl.t64.game.rpg.screens.loot.LootScreen;
+import nl.t64.game.rpg.screens.loot.FindScreen;
 
 import java.util.function.Consumer;
 
 
 @AllArgsConstructor
-class LootScreenLoader {
+class FindScreenLoader {
 
     final Consumer<ScreenType> openLoadScreen;
     final Loot loot;
 
-    void openLootScreen() {
-        var lootScreen = (LootScreen) Utils.getScreenManager().getScreen(ScreenType.LOOT);
-        lootScreen.setLoot(loot);
-        lootScreen.setLootTitle("   Found");
+    void openFindScreen() {
+        var findScreen = (FindScreen) Utils.getScreenManager().getScreen(ScreenType.FIND);
+        findScreen.setLoot(loot);
+        findScreen.setLootTitle("   Found");
 
-        openLoadScreen.accept(ScreenType.LOOT_LOAD);
+        openLoadScreen.accept(ScreenType.FIND_LOAD);
     }
 
 }

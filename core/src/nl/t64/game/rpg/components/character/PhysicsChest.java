@@ -60,7 +60,7 @@ public class PhysicsChest extends PhysicsComponent {
         if (isFailingOnLock()) return;
 
         character.send(new StateEvent(CharacterState.OPENED));
-        showLootDialog();
+        showFindDialog();
     }
 
     private boolean isFailingOnTrap() {
@@ -148,12 +148,12 @@ public class PhysicsChest extends PhysicsComponent {
         chest.pickLock();
     }
 
-    private void showLootDialog() {
+    private void showFindDialog() {
         final String message = finishStringBuilder();
         if (message.isBlank()) {
-            notifyShowLootDialog(chest);
+            notifyShowFindDialog(chest);
         } else {
-            notifyShowLootDialog(chest, message);
+            notifyShowFindDialog(chest, message);
         }
     }
 

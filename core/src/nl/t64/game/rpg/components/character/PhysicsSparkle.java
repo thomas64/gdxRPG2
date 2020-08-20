@@ -36,7 +36,7 @@ public class PhysicsSparkle extends PhysicsComponent {
     public void update(Character character, float dt) {
         if (isSelected) {
             isSelected = false;
-            notifyShowLootDialog(sparkle);
+            notifyShowFindDialog(sparkle);
         }
     }
 

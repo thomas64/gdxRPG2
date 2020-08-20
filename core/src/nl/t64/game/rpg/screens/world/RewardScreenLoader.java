@@ -1,5 +1,6 @@
 package nl.t64.game.rpg.screens.world;
 
+import lombok.AllArgsConstructor;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.constants.ScreenType;
@@ -8,14 +9,13 @@ import nl.t64.game.rpg.screens.loot.RewardScreen;
 import java.util.function.Consumer;
 
 
-class RewardScreenLoader extends LootScreenLoader {
+@AllArgsConstructor
+class RewardScreenLoader {
 
-    RewardScreenLoader(Consumer<ScreenType> openLoadScreen, Loot reward) {
-        super(openLoadScreen, reward);
-    }
+    final Consumer<ScreenType> openLoadScreen;
+    final Loot loot;
 
-    @Override
-    void openLootScreen() {
+    void openRewardScreen() {
         var rewardScreen = (RewardScreen) Utils.getScreenManager().getScreen(ScreenType.REWARD);
         rewardScreen.setLoot(loot);
         rewardScreen.setLootTitle("   Reward");
