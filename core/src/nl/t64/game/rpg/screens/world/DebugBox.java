@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Engine;
+import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.character.Character;
 import nl.t64.game.rpg.constants.Constant;
 
@@ -110,6 +111,16 @@ class DebugBox {
         table.add("state:");
         table.add(String.valueOf(player.getState()));
         table.row();
+        table.add("").row();
+
+        table.add("quest0001:");
+        table.add(String.valueOf(Utils.getGameData().getQuests().getQuestById("quest0001").getCurrentState()));
+        table.add("").row();
+        table.add("quest0002:");
+        table.add(String.valueOf(Utils.getGameData().getQuests().getQuestById("quest0002").getCurrentState()));
+        table.add("").row();
+        table.add("quest0003:");
+        table.add(String.valueOf(Utils.getGameData().getQuests().getQuestById("quest0003").getCurrentState()));
         table.add("").row();
 
         table.pack();

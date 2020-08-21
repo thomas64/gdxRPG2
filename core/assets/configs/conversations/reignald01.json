@@ -17,7 +17,7 @@
       "103": {"text": ["Squire! Come back here!"]},
       "201": {"text": ["Squire!"]},
       "202": {"text": ["You tell me you have made room in your party!", "I will join you now!"]},
-      "3000": {"text": ["It seems your party is already full.", "I cannot join you if there's no room."]}
+      "9000": {"text": ["It seems your party is already full.", "I cannot join you if there's no room."]}
     },
     "choices": {
       "5": [
@@ -68,7 +68,7 @@
           "destinationId": "103"
         }
       ],
-      "3000": [
+      "9000": [
         {
           "conversationCommand": "EXIT_CONVERSATION",
           "destinationId": "201"

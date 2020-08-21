@@ -13,12 +13,10 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.conversation.*;
-import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.components.party.HeroContainer;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.PartyContainer;
 import nl.t64.game.rpg.components.quest.QuestGraph;
-import nl.t64.game.rpg.components.quest.QuestState;
 import nl.t64.game.rpg.constants.Constant;
 
 
@@ -210,7 +208,8 @@ public class ConversationDialog extends ConversationSubject {
             case HERO_DISMISS -> dismissHero(destinationId);
             case LOAD_SHOP -> loadShop(destinationId);
             case SAVE_GAME -> saveGame(destinationId);
-            case ACCEPT_QUEST -> acceptQuest(destinationId);
+            case ACCEPT_QUEST -> acceptQuest();
+            case REJECT_QUEST -> rejectQuest(destinationId);
             case RETURN_QUEST -> returnQuest();
             case REWARD_QUEST -> rewardQuest();
             default -> throw new IllegalStateException(
@@ -235,12 +234,12 @@ public class ConversationDialog extends ConversationSubject {
 
     private void dismissHero(String destinationId) {
         graph.setCurrentPhraseId(destinationId);
-        notifyHeroDismiss();                                // ends conversation
+        notifyHeroDismiss();                                        // ends conversation
     }
 
     private void loadShop(String destinationId) {
         graph.setCurrentPhraseId(destinationId);
-        notifyLoadShop();                                   // ends conversation
+        notifyLoadShop();                                           // ends conversation
     }
 
     private void saveGame(String destinationId) {
@@ -248,44 +247,28 @@ public class ConversationDialog extends ConversationSubject {
         continueConversation(destinationId);
     }
 
-    private void acceptQuest(String destinationId) {
+    private void acceptQuest() {
         QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
-        quest.accept();
-        // todo, update logbook
+        quest.handleAccept(this::continueConversation);             // sets new phraseId
+    }
+
+    private void rejectQuest(String destinationId) {
+        QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
+        quest.know();
         continueConversation(destinationId);
     }
 
     private void returnQuest() {
         QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
-        quest.tryToFulfill(this::continueConversation);     // sets new phraseId
+        quest.handleReturn(this::continueConversation);             // sets new phraseId
     }
 
     private void rewardQuest() {
         graph.setCurrentPhraseId(Constant.PHRASE_ID_QUEST_UNCLAIMED);
         QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
-        Loot reward = Utils.getGameData().getLoot().getLoot(conversationId);
-        if (quest.getCurrentState().equals(QuestState.ACCEPTED)) {
-            quest.unclaim();
-            quest.takeDemands();
-            partyGainXp(reward);
-            // todo, set all tasks to complete indefinite
-        }
-        if (!reward.isTaken()) {
-            notifyShowRewardDialog(reward);                     // ends conversation, sets possible new phraseId
-        } else {
-            quest.finish();
-            endConversation(Constant.PHRASE_ID_QUEST_FINISHED);
-        }
-    }
-
-    private void partyGainXp(Loot reward) {
-        StringBuilder levelUpMessage = new StringBuilder();
-        Utils.getGameData().getParty().getAllHeroes().forEach(hero -> hero.gainXp(reward.getXp(), levelUpMessage));
-        reward.clearXp();
-        String finalMessage = levelUpMessage.toString().strip();
-        if (!finalMessage.isEmpty()) {
-            notifyShowMessageDialog(finalMessage);
-        }
+        quest.handleReward(super::notifyShowMessageDialog,
+                           super::notifyShowRewardDialog,           // ends conversation, sets possible new phraseId
+                           this::endConversation);                  // sets new phraseId
     }
 
 }

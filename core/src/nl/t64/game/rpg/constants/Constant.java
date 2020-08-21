@@ -38,11 +38,13 @@ public final class Constant {
     public static final String DESCRIPTION_KEY_SELL_PIECE = "Value per piece";
     public static final String DESCRIPTION_KEY_SELL_TOTAL = "Total value";
 
-    public static final String PHRASE_ID_QUEST_SUCCESS = "1000";
+    public static final String PHRASE_ID_QUEST_ACCEPT = "50";
+    public static final String PHRASE_ID_QUEST_IMMEDIATE_SUCCESS = "1000";
+    public static final String PHRASE_ID_QUEST_SUCCESS = "1500";
     public static final String PHRASE_ID_QUEST_FAILURE = "2000";
-    public static final String PHRASE_ID_PARTY_FULL = "3000";
-    public static final String PHRASE_ID_QUEST_UNCLAIMED = "4000";
-    public static final String PHRASE_ID_QUEST_FINISHED = "5000";
+    public static final String PHRASE_ID_QUEST_UNCLAIMED = "3000";
+    public static final String PHRASE_ID_QUEST_FINISHED = "4000";
+    public static final String PHRASE_ID_PARTY_FULL = "9000";
 
     private Constant() {
         throw new IllegalCallerException("Constant class");

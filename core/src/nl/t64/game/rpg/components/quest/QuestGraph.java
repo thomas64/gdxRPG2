@@ -1,6 +1,8 @@
 package nl.t64.game.rpg.components.quest;
 
 import lombok.Getter;
+import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.constants.Constant;
 
 import java.util.List;
@@ -13,6 +15,7 @@ public class QuestGraph {
 
     private static final QuestState DEFAULT_STATE = QuestState.UNKNOWN;
 
+    String id;
     QuestState currentState;
     private String title;
     private Map<String, QuestTask> tasks;
@@ -33,7 +36,18 @@ public class QuestGraph {
         return currentState.equals(QuestState.FINISHED);
     }
 
-    public void tryToFulfill(Consumer<String> continueConversation) {
+    public void handleAccept(Consumer<String> continueConversation) {
+        know();
+        accept();
+        // todo, update logbook
+        if (doesReturnMeetDemand()) {
+            continueConversation.accept(Constant.PHRASE_ID_QUEST_IMMEDIATE_SUCCESS);
+        } else {
+            continueConversation.accept(Constant.PHRASE_ID_QUEST_ACCEPT);
+        }
+    }
+
+    public void handleReturn(Consumer<String> continueConversation) {
         if (doesReturnMeetDemand()) {
             continueConversation.accept(Constant.PHRASE_ID_QUEST_SUCCESS);
         } else {
@@ -41,21 +55,45 @@ public class QuestGraph {
         }
     }
 
-    public void takeDemands() {
-        getAllQuestTasks().stream()
-                          .filter(questTask -> questTask.type.equals(QuestType.FETCH))
-                          .forEach(QuestTask::removeTargetFromInventory);
-    }
-
-    public void accept() {
-        if (currentState.equals(QuestState.UNKNOWN)) {
-            currentState = QuestState.ACCEPTED;
+    public void handleReward(Consumer<String> notifyShowMessageDialog,
+                             Consumer<Loot> notifyShowRewardDialog,
+                             Consumer<String> endConversation) {
+        Loot reward = Utils.getGameData().getLoot().getLoot(id);
+        if (currentState.equals(QuestState.ACCEPTED)) {
+            unclaim();
+            takeDemands();
+            partyGainXp(reward, notifyShowMessageDialog);
+            // todo, set all tasks to complete indefinite
+        }
+        if (!reward.isTaken()) {
+            notifyShowRewardDialog.accept(reward);
         } else {
-            throw new IllegalStateException("Only quest UNKNOWN can be ACCEPTED.");
+            finish();
+            endConversation.accept(Constant.PHRASE_ID_QUEST_FINISHED);
         }
     }
 
-    public void unclaim() {
+    public void know() {
+        switch (currentState) {
+            case KNOWN:
+                break;
+            case UNKNOWN:
+                currentState = QuestState.KNOWN;
+                break;
+            default:
+                throw new IllegalStateException("Only quest UNKNOWN can be KNOWN.");
+        }
+    }
+
+    private void accept() {
+        if (currentState.equals(QuestState.KNOWN)) {
+            currentState = QuestState.ACCEPTED;
+        } else {
+            throw new IllegalStateException("Only quest KNOWN can be ACCEPTED.");
+        }
+    }
+
+    private void unclaim() {
         if (currentState.equals(QuestState.ACCEPTED)) {
             currentState = QuestState.UNCLAIMED;
         } else {
@@ -68,6 +106,22 @@ public class QuestGraph {
             currentState = QuestState.FINISHED;
         } else {
             throw new IllegalStateException("Only quest UNCLAIMED can be FINISHED.");
+        }
+    }
+
+    private void takeDemands() {
+        getAllQuestTasks().stream()
+                          .filter(questTask -> questTask.type.equals(QuestType.FETCH))
+                          .forEach(QuestTask::removeTargetFromInventory);
+    }
+
+    private void partyGainXp(Loot reward, Consumer<String> notifyShowMessageDialog) {
+        StringBuilder levelUpMessage = new StringBuilder();
+        Utils.getGameData().getParty().getAllHeroes().forEach(hero -> hero.gainXp(reward.getXp(), levelUpMessage));
+        reward.clearXp();
+        String finalMessage = levelUpMessage.toString().strip();
+        if (!finalMessage.isEmpty()) {
+            notifyShowMessageDialog.accept(finalMessage);
         }
     }
 

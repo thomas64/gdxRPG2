@@ -49,6 +49,7 @@ public class QuestContainer {
             String json = Gdx.files.local(QUEST_CONFIGS + filePath).readString();
             quests.putAll(mapper.readValue(json, typeReference));
         }
+        quests.forEach((questId, quest) -> quest.id = questId);
     }
 
 }

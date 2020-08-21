@@ -317,8 +317,15 @@ public class InventoryScreen extends PartySubject implements Screen, ProfileObse
     private void cheatAddGold() {
         if (Utils.getSettings().isInDebugMode()) {
             InventoryContainer inventory = Utils.getGameData().getInventory();
-            if (inventory.hasRoomForResource("gold")) {
-                inventory.autoSetItem(InventoryDatabase.getInstance().createInventoryItem("gold", 10));
+            if (inventory.hasRoomForResource("gold")
+                && inventory.hasRoomForResource("herb")
+                && inventory.hasRoomForResource("spice")
+                && inventory.hasRoomForResource("gemstone")) {
+                InventoryDatabase idb = InventoryDatabase.getInstance();
+                inventory.autoSetItem(idb.createInventoryItem("gold", 10));
+                inventory.autoSetItem(idb.createInventoryItem("herb", 10));
+                inventory.autoSetItem(idb.createInventoryItem("spice", 10));
+                inventory.autoSetItem(idb.createInventoryItem("gemstone", 10));
                 inventoryUI.reloadInventory();
             }
         }
@@ -339,15 +346,15 @@ public class InventoryScreen extends PartySubject implements Screen, ProfileObse
             return;
         }
         final String message = "Esc = Close screen" + System.lineSeparator() +
-                "I = Close screen" + System.lineSeparator() +
-                "R = Reset windows" + System.lineSeparator() +
-                "Q = Previous hero" + System.lineSeparator() +
-                "W = Next hero" + System.lineSeparator() +
-                "D = Dismiss hero" + System.lineSeparator() +
-                "S = Sort Inventory" + System.lineSeparator() +
-                "Shift = Drag full stack" + System.lineSeparator() +
-                "Ctrl = Drag half stack" + System.lineSeparator() +
-                "H = This dialog";
+                               "I = Close screen" + System.lineSeparator() +
+                               "R = Reset windows" + System.lineSeparator() +
+                               "Q = Previous hero" + System.lineSeparator() +
+                               "W = Next hero" + System.lineSeparator() +
+                               "D = Dismiss hero" + System.lineSeparator() +
+                               "S = Sort Inventory" + System.lineSeparator() +
+                               "Shift = Drag full stack" + System.lineSeparator() +
+                               "Ctrl = Drag half stack" + System.lineSeparator() +
+                               "H = This dialog";
         final var messageDialog = new MessageDialog(message);
         messageDialog.setLeftAlignment();
         messageDialog.show(stage);
