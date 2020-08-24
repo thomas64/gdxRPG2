@@ -1,20 +1,14 @@
 package nl.t64.game.rpg.screens.menu;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import nl.t64.game.rpg.Utils;
-import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.ScreenType;
-import nl.t64.game.rpg.screens.ScreenManager;
 
 
 public class MenuSettings extends MenuScreen {
-
-    private static final int MENU_SPACE_BOTTOM = 10;
 
     private static final String MENU_ITEM_FULL_SCREEN_ON = "Fullscreen: On";
     private static final String MENU_ITEM_FULL_SCREEN_OFF = "Fullscreen: Off";
@@ -26,9 +20,6 @@ public class MenuSettings extends MenuScreen {
     private static final int NUMBER_OF_ITEMS = 4;
     private static final int EXIT_INDEX = 3;
 
-    private ScreenType fromScreen;
-
-    private Table table;
     private TextButton fullscreenButton;
     private TextButton debugModeButton;
     private TextButton controlsButton;
@@ -41,17 +32,13 @@ public class MenuSettings extends MenuScreen {
     }
 
     @Override
-    void setFromScreen(ScreenType screenType) {
-        this.fromScreen = screenType;
-    }
-
-    @Override
     void setupScreen() {
+        setFontColor();
         table = createTable();
         applyListeners();
         stage.addActor(table);
         stage.setKeyboardFocus(table);
-        setCurrentTextButtonToRed();
+        setCurrentTextButtonToSelected();
     }
 
     @Override
@@ -64,12 +51,11 @@ public class MenuSettings extends MenuScreen {
     }
 
     private void selectMenuItem() {
-        var screenManager = Utils.getScreenManager();
         switch (selectedMenuIndex) {
             case 0 -> processFullscreenButton();
             case 1 -> processDebugModeButton();
-            case 2 -> processControlsButton(screenManager);
-            case 3 -> processBackButton(screenManager);
+            case 2 -> processButton(ScreenType.MENU_SETTINGS, ScreenType.MENU_CONTROLS);
+            case 3 -> processBackButton();
             default -> throw new IllegalArgumentException("SelectedIndex not found.");
         }
     }
@@ -84,49 +70,17 @@ public class MenuSettings extends MenuScreen {
         reloadScreen();
     }
 
-    private void processControlsButton(ScreenManager screenManager) {
-        var menuControls = screenManager.getMenuScreen(ScreenType.MENU_CONTROLS);
-        menuControls.setFromScreen(fromScreen);
-        if (fromScreen.equals(ScreenType.MENU_PAUSE)) {
-            menuControls.setBackground(screenshot);
-        }
-        screenManager.setScreen(ScreenType.MENU_CONTROLS);
-    }
-
-    private void processBackButton(ScreenManager screenManager) {
-        if (fromScreen.equals(ScreenType.MENU_PAUSE)) {
-            var menuPause = screenManager.getMenuScreen(fromScreen);
-            menuPause.setBackground(screenshot);
-        }
-        screenManager.setScreen(fromScreen);
-        fromScreen = null;
-    }
-
     private void reloadScreen() {
         stage.clear();
-        if (fromScreen.equals(ScreenType.MENU_PAUSE)) {
-            setBackground(screenshot);
-        }
+        setBackground(background);
         setupScreen();
-    }
-
-    @Override
-    void setAllTextButtonsToWhite() {
-        for (Actor actor : table.getChildren()) {
-            ((TextButton) actor).getStyle().fontColor = Color.WHITE;
-        }
-    }
-
-    @Override
-    void setCurrentTextButtonToRed() {
-        ((TextButton) table.getChildren().get(selectedMenuIndex)).getStyle().fontColor = Constant.DARK_RED;
     }
 
     private Table createTable() {
         // styles
         var buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = menuFont;
-        buttonStyle.fontColor = Color.WHITE;
+        buttonStyle.fontColor = fontColor;
 
         // actors
         fullscreenButton = new TextButton(getMenuItemFullScreen(), new TextButton.TextButtonStyle(buttonStyle));
@@ -137,9 +91,11 @@ public class MenuSettings extends MenuScreen {
         // table
         var newTable = new Table();
         newTable.setFillParent(true);
-        newTable.add(fullscreenButton).spaceBottom(MENU_SPACE_BOTTOM).row();
-        newTable.add(debugModeButton).spaceBottom(MENU_SPACE_BOTTOM).row();
-        newTable.add(controlsButton).spaceBottom(MENU_SPACE_BOTTOM).row();
+        newTable.top().padTop(PAD_TOP).right().padRight(PAD_RIGHT);
+        newTable.defaults().right();
+        newTable.add(fullscreenButton).row();
+        newTable.add(debugModeButton).row();
+        newTable.add(controlsButton).row();
         newTable.add(backButton);
         return newTable;
     }

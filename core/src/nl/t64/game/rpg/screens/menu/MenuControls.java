@@ -1,31 +1,25 @@
 package nl.t64.game.rpg.screens.menu;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import nl.t64.game.rpg.Utils;
-import nl.t64.game.rpg.constants.Constant;
-import nl.t64.game.rpg.constants.ScreenType;
-import nl.t64.game.rpg.screens.ScreenManager;
+import com.badlogic.gdx.utils.Align;
+
+import java.util.List;
 
 
 public class MenuControls extends MenuScreen {
 
-    private static final float TEXT_TABLE_Y = 50f;
     private static final float COLUMN_0_WIDTH = 200f;
     private static final float COLUMN_1_WIDTH = 120f;
+    private static final float BUTTON_TOP = 30f;
 
     private static final String MENU_ITEM_BACK = "Back";
     private static final int EXIT_INDEX = 0;
 
-    private ScreenType fromScreen;
-
     private Table textTable;
-    private Table buttonTable;
     private TextButton backButton;
 
     public MenuControls() {
@@ -33,18 +27,14 @@ public class MenuControls extends MenuScreen {
     }
 
     @Override
-    void setFromScreen(ScreenType screenType) {
-        this.fromScreen = screenType;
-    }
-
-    @Override
     void setupScreen() {
+        setFontColor();
         createTables();
         applyListeners();
         stage.addActor(textTable);
-        stage.addActor(buttonTable);
-        stage.setKeyboardFocus(buttonTable);
-        setCurrentTextButtonToRed();
+        stage.addActor(table);
+        stage.setKeyboardFocus(table);
+        setCurrentTextButtonToSelected();
     }
 
     @Override
@@ -55,81 +45,61 @@ public class MenuControls extends MenuScreen {
         stage.draw();
     }
 
-    @Override
-    void setAllTextButtonsToWhite() {
-        for (Actor actor : buttonTable.getChildren()) {
-            ((TextButton) actor).getStyle().fontColor = Color.WHITE;
-        }
-    }
-
-    @Override
-    void setCurrentTextButtonToRed() {
-        ((TextButton) buttonTable.getChildren().get(selectedMenuIndex)).getStyle().fontColor = Constant.DARK_RED;
-    }
-
     private void selectMenuItem() {
-        var screenManager = Utils.getScreenManager();
         if (selectedMenuIndex == 0) {
-            processBackButton(screenManager);
+            processBackButton();
         } else {
             throw new IllegalArgumentException("SelectedIndex not found.");
         }
     }
 
-    private void processBackButton(ScreenManager screenManager) {
-        if (fromScreen.equals(ScreenType.MENU_PAUSE)) {
-            var menuSettings = screenManager.getMenuScreen(ScreenType.MENU_SETTINGS);
-            menuSettings.setBackground(screenshot);
-        }
-        screenManager.setScreen(ScreenType.MENU_SETTINGS);
-        fromScreen = null;
-    }
-
     private void createTables() {
         // styles
-        var textStyle = new Label.LabelStyle(menuFont, Color.WHITE);
+        var textStyle = new Label.LabelStyle(menuFont, fontColor);
         var buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = menuFont;
-        buttonStyle.fontColor = Color.WHITE;
+        buttonStyle.fontColor = fontColor;
 
         // actors
         backButton = new TextButton(MENU_ITEM_BACK, new TextButton.TextButtonStyle(buttonStyle));
+        List<Label> labels = List.of(new Label("Movement", textStyle),
+                                     new Label("Arrows", textStyle),
+                                     new Label("Move fast", textStyle),
+                                     new Label("Shift", textStyle),
+                                     new Label("Move slow", textStyle),
+                                     new Label("Ctrl", textStyle),
+                                     new Label("Action", textStyle),
+                                     new Label("A", textStyle),
+                                     new Label("Inventory", textStyle),
+                                     new Label("I", textStyle),
+                                     new Label("Party", textStyle),
+                                     new Label("P", textStyle),
+                                     new Label("Pause", textStyle),
+                                     new Label("Esc", textStyle));
+        labels.forEach(label -> label.setAlignment(Align.right));
+
 
         // tables
         textTable = new Table();
         textTable.setFillParent(true);
+        textTable.top().padTop(PAD_TOP).right().padRight(PAD_RIGHT);
         textTable.columnDefaults(0).width(COLUMN_0_WIDTH);
         textTable.columnDefaults(1).width(COLUMN_1_WIDTH);
-        textTable.setY(TEXT_TABLE_Y);
-        textTable.add(new Label("Movement", textStyle));
-        textTable.add(new Label("Arrows", textStyle));
-        textTable.row();
-        textTable.add(new Label("Move fast", textStyle));
-        textTable.add(new Label("Shift", textStyle));
-        textTable.row();
-        textTable.add(new Label("Move slow", textStyle));
-        textTable.add(new Label("Ctrl", textStyle));
-        textTable.row();
-        textTable.add(new Label("Action", textStyle));
-        textTable.add(new Label("A", textStyle));
-        textTable.row();
-        textTable.add(new Label("Inventory", textStyle));
-        textTable.add(new Label("I", textStyle));
-        textTable.row();
-        textTable.add(new Label("Party", textStyle));
-        textTable.add(new Label("P", textStyle));
-        textTable.row();
-        textTable.add(new Label("Pause", textStyle));
-        textTable.add(new Label("Esc", textStyle));
+        for (int i = 0; i < labels.size(); i++) {
+            if (i % 2 == 0) textTable.row();
+            textTable.add(labels.get(i));
+        }
 
-        buttonTable = new Table();
-        buttonTable.setFillParent(true);
-        buttonTable.setY(-(TEXT_TABLE_Y + (textTable.getPrefHeight() / 2f)));
-        buttonTable.add(backButton);
+        // button table
+        table = new Table();
+        table.setFillParent(true);
+        table.top().padTop(BUTTON_TOP + textTable.getPrefHeight()).right().padRight(PAD_RIGHT);
+        table.defaults().right();
+        table.add(backButton);
     }
 
     private void applyListeners() {
-        buttonTable.addListener(new ListenerKeyConfirm(this::updateMenuIndex, this::selectMenuItem, EXIT_INDEX));
+        table.addListener(new ListenerKeyConfirm(this::updateMenuIndex, this::selectMenuItem, EXIT_INDEX));
         backButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 0));
     }
 

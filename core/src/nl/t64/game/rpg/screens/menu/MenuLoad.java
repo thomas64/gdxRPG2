@@ -1,12 +1,11 @@
 package nl.t64.game.rpg.screens.menu;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
@@ -24,23 +23,19 @@ public class MenuLoad extends MenuScreen {
     private static final String LOAD_MESSAGE = "Any unsaved progress will be lost." + System.lineSeparator() + "Are you sure?";
     private static final String DELETE_MESSAGE = "This save file will be removed." + System.lineSeparator() + "Are you sure?";
 
-    private static final float TITLE_SPACE_BOTTOM = 30f;
-    private static final float TOP_TABLE_Y = 50f;
-    private static final float SCROLL_PANE_HEIGHT = 380f;
-    private static final float BUTTON_SPACE_RIGHT = 150f;
+    private static final float TITLE_SPACE_BOTTOM = 10f;
+    private static final float SCROLL_PANE_HEIGHT = 220f;
+    private static final float BUTTON_SPACE_RIGHT = 20f;
 
     private static final int NUMBER_OF_ITEMS = 3;
     private static final int DELETE_INDEX = 1;
     private static final int EXIT_INDEX = 2;
-
-    private ScreenType fromScreen;
 
     private Array<String> profiles;
 
     private Table topTable;
     private List<String> listItems;
     private ScrollPane scrollPane;
-    private Table bottomTable;
     private TextButton loadButton;
     private TextButton deleteButton;
     private TextButton backButton;
@@ -55,28 +50,24 @@ public class MenuLoad extends MenuScreen {
     private boolean isMouseScrolled = false;
 
     @Override
-    void setFromScreen(ScreenType screenType) {
-        this.fromScreen = screenType;
-    }
-
-    @Override
     void setupScreen() {
         Utils.getProfileManager().loadAllProfiles();
         profiles = Utils.getProfileManager().getProfileList();
 
+        setFontColor();
         createTables();
         progressLostDialog = new DialogQuestion(this::openWorldScreen, LOAD_MESSAGE);
         deleteFileDialog = new DialogQuestion(this::deleteSaveFile, DELETE_MESSAGE);
         applyListeners();
 
         stage.addActor(topTable);
-        stage.addActor(bottomTable);
+        stage.addActor(table);
         stage.setKeyboardFocus(scrollPane);
         stage.setScrollFocus(scrollPane);
 
         selectedListIndex = 0;
         selectedMenuIndex = 0;
-        setCurrentTextButtonToRed();
+        setCurrentTextButtonToSelected();
     }
 
     @Override
@@ -123,7 +114,7 @@ public class MenuLoad extends MenuScreen {
     private void processLoadButton() {
         Object profileName = listItems.getSelected();
         if (profileName != null) {
-            if (fromScreen.equals(ScreenType.MENU_PAUSE)) {
+            if (startScreen.equals(ScreenType.MENU_PAUSE)) {
                 progressLostDialog.show(stage);
             } else {
                 openWorldScreen();
@@ -136,15 +127,6 @@ public class MenuLoad extends MenuScreen {
         if (profileName != null) {
             deleteFileDialog.show(stage);
         }
-    }
-
-    private void processBackButton() {
-        if (fromScreen.equals(ScreenType.MENU_PAUSE)) {
-            var menuPause = Utils.getScreenManager().getMenuScreen(fromScreen);
-            menuPause.setBackground(screenshot);
-        }
-        Utils.getScreenManager().setScreen(fromScreen);
-        fromScreen = null;
     }
 
     private void openWorldScreen() {
@@ -167,29 +149,17 @@ public class MenuLoad extends MenuScreen {
         listenerKeyVertical.updateNumberOfItems(listItems.getItems().size);
     }
 
-    @Override
-    void setAllTextButtonsToWhite() {
-        for (Actor actor : bottomTable.getChildren()) {
-            ((TextButton) actor).getStyle().fontColor = Color.WHITE;
-        }
-    }
-
-    @Override
-    void setCurrentTextButtonToRed() {
-        ((TextButton) bottomTable.getChildren().get(selectedMenuIndex)).getStyle().fontColor = Constant.DARK_RED;
-    }
-
     private void createTables() {
         var spriteTransparent = new Sprite(Utils.getResourceManager().getTextureAsset(SPRITE_TRANSPARENT));
         // styles
-        var titleStyle = new Label.LabelStyle(menuFont, Color.WHITE);
+        var titleStyle = new Label.LabelStyle(menuFont, fontColor);
         var buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = menuFont;
-        buttonStyle.fontColor = Color.WHITE;
+        buttonStyle.fontColor = fontColor;
         var listStyle = new List.ListStyle();
         listStyle.font = menuFont;
         listStyle.fontColorSelected = Constant.DARK_RED;
-        listStyle.fontColorUnselected = Color.WHITE;
+        listStyle.fontColorUnselected = fontColor;
         listStyle.background = new SpriteDrawable(spriteTransparent);
         listStyle.selection = new SpriteDrawable(spriteTransparent);
 
@@ -201,6 +171,7 @@ public class MenuLoad extends MenuScreen {
 
         listItems = new List<>(listStyle);
         listItems.setItems(profiles);
+        listItems.setAlignment(Align.center);
         scrollPane = new ScrollPane(listItems);
         scrollPane.setOverscroll(false, false);
         scrollPane.setFadeScrollBars(false);
@@ -210,17 +181,18 @@ public class MenuLoad extends MenuScreen {
         // tables
         topTable = new Table();
         topTable.setFillParent(true);
-        topTable.setY(TOP_TABLE_Y);
+        topTable.top().padTop(PAD_TOP).right().padRight(PAD_RIGHT);
         topTable.add(titleLabel).spaceBottom(TITLE_SPACE_BOTTOM).row();
         topTable.add(scrollPane);
         topTable.getCell(scrollPane).height(SCROLL_PANE_HEIGHT);
 
-        bottomTable = new Table();
-        bottomTable.setFillParent(true);
-        bottomTable.setY(-(TOP_TABLE_Y + (SCROLL_PANE_HEIGHT / 2f)));
-        bottomTable.add(loadButton).spaceRight(BUTTON_SPACE_RIGHT);
-        bottomTable.add(deleteButton).spaceRight(BUTTON_SPACE_RIGHT);
-        bottomTable.add(backButton);
+        // bottom table
+        table = new Table();
+        table.setFillParent(true);
+        table.top().padTop(TITLE_SPACE_BOTTOM + topTable.getPrefHeight()).right().padRight(PAD_RIGHT);
+        table.add(loadButton).spaceRight(BUTTON_SPACE_RIGHT);
+        table.add(deleteButton).spaceRight(BUTTON_SPACE_RIGHT);
+        table.add(backButton);
     }
 
     private void applyListeners() {

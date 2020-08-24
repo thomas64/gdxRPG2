@@ -1,20 +1,14 @@
 package nl.t64.game.rpg.screens.menu;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import nl.t64.game.rpg.Utils;
-import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.ScreenType;
-import nl.t64.game.rpg.screens.ScreenManager;
 
 
 public class MenuPause extends MenuScreen {
-
-    private static final int MENU_SPACE_BOTTOM = 10;
 
     private static final String MENU_ITEM_CONTINUE = "Continue";
     private static final String MENU_ITEM_LOAD_GAME = "Load Game";
@@ -26,7 +20,6 @@ public class MenuPause extends MenuScreen {
 
     private static final String DIALOG_MESSAGE = "Any unsaved progress will be lost." + System.lineSeparator() + "Are you sure?";
 
-    private Table table;
     private TextButton continueButton;
     private TextButton loadGameButton;
     private TextButton settingsButton;
@@ -36,17 +29,19 @@ public class MenuPause extends MenuScreen {
     private ListenerKeyVertical listenerKeyVertical;
 
     public MenuPause() {
+        super.startScreen = ScreenType.MENU_PAUSE;
         super.selectedMenuIndex = EXIT_INDEX;
     }
 
     @Override
     void setupScreen() {
+        setFontColor();
         table = createTable();
         progressLostDialog = new DialogQuestion(this::openMenuMain, DIALOG_MESSAGE);
         applyListeners();
         stage.addActor(table);
         stage.setKeyboardFocus(table);
-        setCurrentTextButtonToRed();
+        setCurrentTextButtonToSelected();
     }
 
     @Override
@@ -60,32 +55,17 @@ public class MenuPause extends MenuScreen {
     }
 
     private void selectMenuItem() {
-        var screenManager = Utils.getScreenManager();
         switch (selectedMenuIndex) {
-            case 0 -> processContinueButton(screenManager);
-            case 1 -> processLoadGameButton(screenManager);
-            case 2 -> processSettingsButton(screenManager);
+            case 0 -> processContinueButton();
+            case 1 -> processButton(ScreenType.MENU_PAUSE, ScreenType.MENU_LOAD);
+            case 2 -> processButton(ScreenType.MENU_PAUSE, ScreenType.MENU_SETTINGS);
             case 3 -> processMainMenuButton();
             default -> throw new IllegalArgumentException("SelectedIndex not found.");
         }
     }
 
-    private void processContinueButton(ScreenManager screenManager) {
-        screenManager.setScreen(ScreenType.WORLD);
-    }
-
-    private void processLoadGameButton(ScreenManager screenManager) {
-        var menuLoad = screenManager.getMenuScreen(ScreenType.MENU_LOAD);
-        menuLoad.setFromScreen(ScreenType.MENU_PAUSE);
-        menuLoad.setBackground(screenshot);
-        screenManager.setScreen(ScreenType.MENU_LOAD);
-    }
-
-    private void processSettingsButton(ScreenManager screenManager) {
-        var menuSettings = screenManager.getMenuScreen(ScreenType.MENU_SETTINGS);
-        menuSettings.setFromScreen(ScreenType.MENU_PAUSE);
-        menuSettings.setBackground(screenshot);
-        screenManager.setScreen(ScreenType.MENU_SETTINGS);
+    private void processContinueButton() {
+        Utils.getScreenManager().setScreen(ScreenType.WORLD);
     }
 
     private void processMainMenuButton() {
@@ -96,23 +76,11 @@ public class MenuPause extends MenuScreen {
         Utils.getScreenManager().setScreen(ScreenType.MENU_MAIN);
     }
 
-    @Override
-    void setAllTextButtonsToWhite() {
-        for (Actor actor : table.getChildren()) {
-            ((TextButton) actor).getStyle().fontColor = Color.WHITE;
-        }
-    }
-
-    @Override
-    void setCurrentTextButtonToRed() {
-        ((TextButton) table.getChildren().get(selectedMenuIndex)).getStyle().fontColor = Constant.DARK_RED;
-    }
-
     private Table createTable() {
         // styles
         var buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = menuFont;
-        buttonStyle.fontColor = Color.WHITE;
+        buttonStyle.fontColor = fontColor;
 
         // actors
         continueButton = new TextButton(MENU_ITEM_CONTINUE, new TextButton.TextButtonStyle(buttonStyle));
@@ -123,9 +91,11 @@ public class MenuPause extends MenuScreen {
         // table
         var newTable = new Table();
         newTable.setFillParent(true);
-        newTable.add(continueButton).spaceBottom(MENU_SPACE_BOTTOM).row();
-        newTable.add(loadGameButton).spaceBottom(MENU_SPACE_BOTTOM).row();
-        newTable.add(settingsButton).spaceBottom(MENU_SPACE_BOTTOM).row();
+        newTable.top().padTop(PAD_TOP).right().padRight(PAD_RIGHT);
+        newTable.defaults().right();
+        newTable.add(continueButton).row();
+        newTable.add(loadGameButton).row();
+        newTable.add(settingsButton).row();
         newTable.add(mainMenuButton);
         return newTable;
     }

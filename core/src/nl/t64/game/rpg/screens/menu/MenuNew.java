@@ -3,13 +3,13 @@ package nl.t64.game.rpg.screens.menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
@@ -18,25 +18,23 @@ import nl.t64.game.rpg.constants.ScreenType;
 
 public class MenuNew extends MenuScreen {
 
-    private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
+    private static final String SPRITE_BORDER = "sprites/border.png";
 
-    private static final String PROFILE_LABEL = "Enter Profile Name:";
+    private static final String PROFILE_LABEL = "Enter profile name:";
     private static final int PROFILE_INPUT_LENGTH = 8 + 1;
     private static final String DIALOG_MESSAGE = "Overwrite existing profile name?";
 
     private static final String MENU_ITEM_START = "Start";
     private static final String MENU_ITEM_BACK = "Back";
 
-    private static final float PROFILE_LABEL_SPACE_RIGHT = 20f;
     private static final float PROFILE_INPUT_WIDTH = 280f;
-    private static final float PROFILE_INPUT_HEIGHT = 75f;
-    private static final float START_BUTTON_SPACE_RIGHT = 150f;
-    private static final float UPPER_TABLE_SPACE_BOTTOM = 50f;
+    private static final float PROFILE_INPUT_HEIGHT = 50f;
+    private static final float BUTTON_SPACE_RIGHT = 50f;
+    private static final float SPACE_BOTTOM = 10f;
 
     private static final int NUMBER_OF_ITEMS = 2;
     private static final int EXIT_INDEX = 1;
 
-    private Table table;
     private TextField profileText;
     private TextButton startButton;
     private TextButton backButton;
@@ -52,6 +50,7 @@ public class MenuNew extends MenuScreen {
     void setupScreen() {
         Utils.getProfileManager().loadAllProfiles();
 
+        setFontColor();
         table = createTable();
         overwriteDialog = new DialogQuestion(this::createNewGame, DIALOG_MESSAGE);
 
@@ -64,7 +63,7 @@ public class MenuNew extends MenuScreen {
         updateInput(profileName);
 
         super.selectedMenuIndex = 0;
-        setCurrentTextButtonToRed();
+        setCurrentTextButtonToSelected();
     }
 
     @Override
@@ -101,25 +100,21 @@ public class MenuNew extends MenuScreen {
         }
     }
 
-    private void processBackButton() {
-        Utils.getScreenManager().setScreen(ScreenType.MENU_MAIN);
-    }
-
     private void createNewGame() {
         Utils.getScreenManager().setScreen(ScreenType.WORLD);
         Utils.getProfileManager().createNewProfile(finalProfileName);
     }
 
     @Override
-    void setAllTextButtonsToWhite() {
+    void setAllTextButtonsToDefault() {
         Table lowerTable = (Table) table.getChildren().get(1); // two tables inside the table, get the second.
         for (Actor actor : lowerTable.getChildren()) {
-            ((TextButton) actor).getStyle().fontColor = Color.WHITE;
+            ((TextButton) actor).getStyle().fontColor = fontColor;
         }
     }
 
     @Override
-    void setCurrentTextButtonToRed() {
+    void setCurrentTextButtonToSelected() {
         Table lowerTable = (Table) table.getChildren().get(1); // two tables inside the table, get the second.
         ((TextButton) lowerTable.getChildren().get(selectedMenuIndex)).getStyle().fontColor = Constant.DARK_RED;
     }
@@ -132,10 +127,10 @@ public class MenuNew extends MenuScreen {
 //        uiskin.load(Gdx.files.local(UISKIN_JSON));
 
         // styles
-        var menuStyle = new Label.LabelStyle(menuFont, Color.WHITE);
+        var menuStyle = new Label.LabelStyle(menuFont, fontColor);
         var buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = menuFont;
-        buttonStyle.fontColor = Color.WHITE;
+        buttonStyle.fontColor = fontColor;
 
         // actors
         var profileLabel = new Label(PROFILE_LABEL, menuStyle);
@@ -146,16 +141,17 @@ public class MenuNew extends MenuScreen {
         // table
         var newTable = new Table();
         newTable.setFillParent(true);
+        newTable.top().padTop(PAD_TOP).right().padRight(PAD_RIGHT);
 
         var upperTable = new Table();
-        upperTable.add(profileLabel).spaceRight(PROFILE_LABEL_SPACE_RIGHT);
+        upperTable.add(profileLabel).spaceBottom(SPACE_BOTTOM).row();
         upperTable.add(profileText).size(PROFILE_INPUT_WIDTH, PROFILE_INPUT_HEIGHT);
 
         var lowerTable = new Table();
-        lowerTable.add(startButton).spaceRight(START_BUTTON_SPACE_RIGHT);
+        lowerTable.add(startButton).spaceRight(BUTTON_SPACE_RIGHT);
         lowerTable.add(backButton);
 
-        newTable.add(upperTable).spaceBottom(UPPER_TABLE_SPACE_BOTTOM).row();
+        newTable.add(upperTable).spaceBottom(SPACE_BOTTOM).row();
         newTable.add(lowerTable);
         return newTable;
     }
@@ -165,8 +161,9 @@ public class MenuNew extends MenuScreen {
         var textFieldStyle = new TextField.TextFieldStyle();
         textFieldStyle.font = menuFont;
         textFieldStyle.fontColor = Color.BLACK;
-        var sprite = new Sprite(Utils.getResourceManager().getTextureAsset(SPRITE_PARCHMENT));
-        textFieldStyle.background = new SpriteDrawable(sprite);
+        var texture = Utils.getResourceManager().getTextureAsset(SPRITE_BORDER);
+        var ninepatch = new NinePatch(texture, 1, 1, 1, 1);
+        textFieldStyle.background = new NinePatchDrawable(ninepatch);
 
         // actor
         var textField = new TextField("", textFieldStyle);
