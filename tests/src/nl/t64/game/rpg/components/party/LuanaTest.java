@@ -1,16 +1,16 @@
 package nl.t64.game.rpg.components.party;
 
+import nl.t64.game.rpg.GameTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class LuanaTest extends DataProvider {
+class LuanaTest extends GameTest {
 
     @Test
     void whenHeroesAreCreated_LuanaShouldHaveRightStats() {
-        final HeroItem luana = heroes.getHero("luana");
-        assertThat(party.containsExactlyEqualTo(luana)).isFalse();
+        final HeroItem luana = new HeroContainer().getHero("luana");
 
         assertThat(luana.school).isEqualTo(SchoolType.ELEMENTAL);
         assertThat(luana.getLevel()).isEqualTo(1);

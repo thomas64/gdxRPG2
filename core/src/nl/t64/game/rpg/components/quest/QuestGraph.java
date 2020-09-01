@@ -60,8 +60,8 @@ public class QuestGraph {
                              Consumer<String> endConversation) {
         Loot reward = Utils.getGameData().getLoot().getLoot(id);
         if (currentState.equals(QuestState.ACCEPTED)) {
-            unclaim();
             takeDemands();
+            unclaim();
             partyGainXp(reward, notifyShowMessageDialog);
             // todo, set all tasks to complete indefinite
         }
@@ -85,7 +85,7 @@ public class QuestGraph {
         }
     }
 
-    private void accept() {
+    void accept() {
         if (currentState.equals(QuestState.KNOWN)) {
             currentState = QuestState.ACCEPTED;
         } else {
@@ -93,7 +93,7 @@ public class QuestGraph {
         }
     }
 
-    private void unclaim() {
+    void unclaim() {
         if (currentState.equals(QuestState.ACCEPTED)) {
             currentState = QuestState.UNCLAIMED;
         } else {

@@ -1,11 +1,9 @@
 package nl.t64.game.rpg.components.party;
 
 import com.badlogic.gdx.Gdx;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import nl.t64.game.rpg.Utils;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,26 +30,19 @@ public final class SpellDatabase {
 
     public SpellItem createSpellItem(String spellId, int rank) {
         if (spellItems.isEmpty()) {
-            try {
-                loadSpellItems();
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
+            loadSpellItems();
         }
         SpellItem spellItem = spellItems.get(spellId);
-        spellItem.setId(spellId);
         return new SpellItem(spellItem, rank);
     }
 
-    private void loadSpellItems() throws IOException {
-        var mapper = new ObjectMapper();
-        var typeReference = new TypeReference<HashMap<String, SpellItem>>() {
-        };
+    private void loadSpellItems() {
         String[] configFiles = Gdx.files.local(FILE_LIST).readString().split(System.lineSeparator());
-        for (String filePath : configFiles) {
-            String json = Gdx.files.local(SPELL_CONFIGS + filePath).readString();
-            spellItems.putAll(mapper.readValue(json, typeReference));
-        }
+        Arrays.stream(configFiles)
+              .map(filePath -> Gdx.files.local(SPELL_CONFIGS + filePath).readString())
+              .map(json -> Utils.readValue(json, SpellItem.class))
+              .forEach(spellItems::putAll);
+        spellItems.forEach((spellItemId, spellItem) -> spellItem.id = spellItemId);
     }
 
 }

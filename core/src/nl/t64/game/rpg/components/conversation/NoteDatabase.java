@@ -1,16 +1,14 @@
 package nl.t64.game.rpg.components.conversation;
 
 import com.badlogic.gdx.Gdx;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import nl.t64.game.rpg.Utils;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class NoteDatabase {
+public final class NoteDatabase {
 
     private static final String NOTES_CONFIGS = "configs/notes/";
     private static final String FILE_LIST = NOTES_CONFIGS + "_files.txt";
@@ -32,24 +30,17 @@ public class NoteDatabase {
 
     public ConversationGraph getNoteById(String noteId) {
         if (notes.isEmpty()) {
-            try {
-                loadNotes();
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
+            loadNotes();
         }
         return notes.get(noteId);
     }
 
-    private void loadNotes() throws IOException {
-        var mapper = new ObjectMapper();
-        var typeReference = new TypeReference<HashMap<String, ConversationGraph>>() {
-        };
+    private void loadNotes() {
         String[] configFiles = Gdx.files.local(FILE_LIST).readString().split(System.lineSeparator());
-        for (String filePath : configFiles) {
-            String json = Gdx.files.local(NOTES_CONFIGS + filePath).readString();
-            notes.putAll(mapper.readValue(json, typeReference));
-        }
+        Arrays.stream(configFiles)
+              .map(filePath -> Gdx.files.local(NOTES_CONFIGS + filePath).readString())
+              .map(json -> Utils.readValue(json, ConversationGraph.class))
+              .forEach(notes::putAll);
     }
 
 }

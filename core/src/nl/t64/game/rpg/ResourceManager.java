@@ -73,7 +73,8 @@ public class ResourceManager {
     }
 
     private void loadTrueTypeAsset(String trueTypeFilenamePath, int fontSize) {
-        assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(assetManager.getFileHandleResolver()));
+        assetManager.setLoader(FreeTypeFontGenerator.class,
+                               new FreeTypeFontGeneratorLoader(assetManager.getFileHandleResolver()));
         assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(assetManager.getFileHandleResolver()));
         var parameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         parameter.fontFileName = trueTypeFilenamePath;

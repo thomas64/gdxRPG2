@@ -1,16 +1,16 @@
 package nl.t64.game.rpg.components.party;
 
+import nl.t64.game.rpg.GameTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class FaeronTest extends DataProvider {
+class FaeronTest extends GameTest {
 
     @Test
     void whenHeroesAreCreated_FaeronShouldHaveRightStats() {
-        final HeroItem faeron = heroes.getHero("faeron");
-        assertThat(party.containsExactlyEqualTo(faeron)).isFalse();
+        final HeroItem faeron = new HeroContainer().getHero("faeron");
 
         assertThat(faeron.school).isEqualTo(SchoolType.NAMING);
         assertThat(faeron.getLevel()).isEqualTo(25);

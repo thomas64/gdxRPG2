@@ -8,13 +8,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class NoteTest extends GameTest {
 
+    private final NoteDatabase noteDB = NoteDatabase.getInstance();
+
     @Test
     void whenNoteDatabaseIsCreated_ShouldContainNotes() {
-        NoteDatabase noteDatabase = NoteDatabase.getInstance();
-        ConversationGraph graph = noteDatabase.getNoteById("note_statue_hero_s_hometown_hero_s_chamber");
+        ConversationGraph graph = noteDB.getNoteById("note_statue_hero_s_hometown_hero_s_chamber");
         assertThat(graph.getCurrentPhraseId()).isEqualTo("1");
         assertThat(graph.getPhrases()).hasSize(2);
-        assertThat(graph.getPhraseById("1").getText()).containsOnly("What a beautiful statue.", "Somehow it looks a little bit like you.");
+        assertThat(graph.getPhraseById("1").getText())
+                .containsOnly("What a beautiful statue.", "Somehow it looks a little bit like you.");
         assertThat(graph.getPhraseById("2").getText()).containsOnly("That's strange...");
         assertThat(graph.getChoices()).hasSize(1);
         assertThat(graph.getChoices().get("2")).hasSize(1);

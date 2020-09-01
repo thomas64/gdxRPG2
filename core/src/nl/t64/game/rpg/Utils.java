@@ -12,15 +12,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.screens.ScreenManager;
 import nl.t64.game.rpg.screens.world.MapManager;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.*;
 
 
 public final class Utils {
@@ -150,6 +150,16 @@ public final class Utils {
         List<T> reverse = new ArrayList<>(list);
         Collections.reverse(reverse);
         return reverse;
+    }
+
+    public static <T> HashMap<String, T> readValue(String json, Class<T> clazz) {
+        var mapper = new ObjectMapper();
+        var valueType = mapper.getTypeFactory().constructMapType(HashMap.class, String.class, clazz);
+        try {
+            return mapper.readValue(json, valueType);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
 }

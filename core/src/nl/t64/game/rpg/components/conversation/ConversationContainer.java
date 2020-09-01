@@ -1,11 +1,9 @@
 package nl.t64.game.rpg.components.conversation;
 
 import com.badlogic.gdx.Gdx;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import nl.t64.game.rpg.Utils;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,11 +17,7 @@ public class ConversationContainer {
 
     public ConversationContainer() {
         this.conversations = new HashMap<>();
-        try {
-            this.loadConversations();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        this.loadConversations();
     }
 
     public ConversationGraph getConversationById(String conversationId) {
@@ -40,15 +34,12 @@ public class ConversationContainer {
         conversations.forEach((id, graph) -> graph.currentPhraseId = phraseIdContainer.getPhraseId(id));
     }
 
-    private void loadConversations() throws IOException {
-        var mapper = new ObjectMapper();
-        var typeReference = new TypeReference<HashMap<String, ConversationGraph>>() {
-        };
+    private void loadConversations() {
         String[] configFiles = Gdx.files.local(FILE_LIST).readString().split(System.lineSeparator());
-        for (String filePath : configFiles) {
-            String json = Gdx.files.local(CONVERSATION_CONFIGS + filePath).readString();
-            conversations.putAll(mapper.readValue(json, typeReference));
-        }
+        Arrays.stream(configFiles)
+              .map(filePath -> Gdx.files.local(CONVERSATION_CONFIGS + filePath).readString())
+              .map(json -> Utils.readValue(json, ConversationGraph.class))
+              .forEach(conversations::putAll);
     }
 
 }

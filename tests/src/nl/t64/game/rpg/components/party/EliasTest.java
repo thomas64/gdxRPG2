@@ -1,16 +1,16 @@
 package nl.t64.game.rpg.components.party;
 
+import nl.t64.game.rpg.GameTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class EliasTest extends DataProvider {
+class EliasTest extends GameTest {
 
     @Test
     void whenHeroesAreCreated_EliasShouldHaveRightStats() {
-        final HeroItem elias = heroes.getHero("elias");
-        assertThat(party.containsExactlyEqualTo(elias)).isFalse();
+        final HeroItem elias = new HeroContainer().getHero("elias");
 
         assertThat(elias.school).isEqualTo(SchoolType.NAMING);
         assertThat(elias.getLevel()).isEqualTo(18);

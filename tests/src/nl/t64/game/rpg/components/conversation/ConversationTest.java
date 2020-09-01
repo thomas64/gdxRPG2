@@ -2,9 +2,7 @@ package nl.t64.game.rpg.components.conversation;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import nl.t64.game.rpg.GameData;
 import nl.t64.game.rpg.GameTest;
-import nl.t64.game.rpg.profile.ProfileManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,10 +15,7 @@ class ConversationTest extends GameTest {
 
     @BeforeEach
     private void setup() {
-        final var profileManager = new ProfileManager();
-        final var gameData = new GameData();
-        gameData.onNotifyCreateProfile(profileManager);
-        conversations = gameData.getConversations();
+        conversations = new ConversationContainer();
     }
 
     @Test
@@ -55,21 +50,23 @@ class ConversationTest extends GameTest {
         assertThat(graph.getChoices()).hasSize(7);
         assertThat(graph.getChoices().get("1")).isNull();
         assertThat(graph.getAssociatedChoices().get(0).getText()).isEqualTo("->");
-        assertThat(graph.getAssociatedChoices().get(0).toString()).isEqualTo("->");
+        assertThat(graph.getAssociatedChoices().get(0)).hasToString("->");
         assertThat(graph.getAssociatedChoices().get(0).getDestinationId()).isEqualTo("2");
         assertThat(graph.getAssociatedChoices().get(0).getConversationCommand()).isEqualTo(ConversationCommand.NONE);
     }
 
     @Test
-    void whenConversatinGraphIsLoaded_ShouldGetGivenChoices() {
+    void whenConversationGraphIsLoaded_ShouldGetGivenChoices() {
         ConversationGraph graph = conversations.getConversationById("luana01");
         graph.setCurrentPhraseId("8");
         assertThat(graph.getCurrentPhraseId()).isEqualTo("8");
         assertThat(graph.getPhrases()).hasSize(15);
-        assertThat(graph.getPhraseById("8").getText()).containsOnly("Okay, here's the deal. You are taking me with you and MAYBE I'll forgive you.");
+        assertThat(graph.getPhraseById("8").getText())
+                .containsOnly("Okay, here's the deal. You are taking me with you and MAYBE I'll forgive you.");
         assertThat(graph.getChoices()).hasSize(7);
         assertThat(graph.getChoices().get("8")).hasSize(2);
-        assertThat(graph.getAssociatedChoices().get(0).getText()).isEqualTo("Alright Luana, I will endure your presence.");
+        assertThat(graph.getAssociatedChoices().get(0).getText())
+                .isEqualTo("Alright Luana, I will endure your presence.");
         assertThat(graph.getAssociatedChoices().get(0).getDestinationId()).isEqualTo("9");
         assertThat(graph.getAssociatedChoices().get(0).getConversationCommand()).isEqualTo(ConversationCommand.NONE);
         assertThat(graph.getAssociatedChoices().get(1).getText()).isEqualTo("No, I don't WANT your protection.");
@@ -83,12 +80,14 @@ class ConversationTest extends GameTest {
         graph.setCurrentPhraseId("9");
         assertThat(graph.getCurrentPhraseId()).isEqualTo("9");
         assertThat(graph.getPhrases()).hasSize(15);
-        assertThat(graph.getPhraseById("9").getText()).containsOnly("Alright! Now were talking!", "You are so not gonna regret this.");
+        assertThat(graph.getPhraseById("9").getText())
+                .containsOnly("Alright! Now were talking!", "You are so not gonna regret this.");
         assertThat(graph.getChoices()).hasSize(7);
         assertThat(graph.getChoices().get("9")).hasSize(1);
         assertThat(graph.getAssociatedChoices().get(0).getText()).isEqualTo("->");
         assertThat(graph.getAssociatedChoices().get(0).getDestinationId()).isEqualTo("301");
-        assertThat(graph.getAssociatedChoices().get(0).getConversationCommand()).isEqualTo(ConversationCommand.HERO_JOIN);
+        assertThat(graph.getAssociatedChoices().get(0).getConversationCommand())
+                .isEqualTo(ConversationCommand.HERO_JOIN);
     }
 
 }

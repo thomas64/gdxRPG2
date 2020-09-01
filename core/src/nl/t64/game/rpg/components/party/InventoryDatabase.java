@@ -1,11 +1,9 @@
 package nl.t64.game.rpg.components.party;
 
 import com.badlogic.gdx.Gdx;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import nl.t64.game.rpg.Utils;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,26 +46,19 @@ public final class InventoryDatabase {
 
     public InventoryItem createInventoryItem(String itemId, int amount) {
         if (inventoryItems.isEmpty()) {
-            try {
-                loadInventoryItems();
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
+            loadInventoryItems();
         }
         InventoryItem inventoryItem = inventoryItems.get(itemId);
-        inventoryItem.setId(itemId);
         return new InventoryItem(inventoryItem, amount);
     }
 
-    private void loadInventoryItems() throws IOException {
-        var mapper = new ObjectMapper();
-        var typeReference = new TypeReference<HashMap<String, InventoryItem>>() {
-        };
+    private void loadInventoryItems() {
         String[] configFiles = Gdx.files.local(FILE_LIST).readString().split(System.lineSeparator());
-        for (String filePath : configFiles) {
-            String json = Gdx.files.local(INVENTORY_CONFIGS + filePath).readString();
-            inventoryItems.putAll(mapper.readValue(json, typeReference));
-        }
+        Arrays.stream(configFiles)
+              .map(filePath -> Gdx.files.local(INVENTORY_CONFIGS + filePath).readString())
+              .map(json -> Utils.readValue(json, InventoryItem.class))
+              .forEach(inventoryItems::putAll);
+        inventoryItems.forEach((inventoryItemId, inventoryItem) -> inventoryItem.id = inventoryItemId);
     }
 
 }

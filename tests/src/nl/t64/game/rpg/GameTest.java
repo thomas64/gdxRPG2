@@ -1,7 +1,6 @@
 package nl.t64.game.rpg;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.graphics.GL20;
@@ -16,7 +15,7 @@ public class GameTest {
 
     @BeforeAll
     public static void init() {
-        application = new HeadlessApplication(new ApplicationListener() {
+        application = new HeadlessApplication(new Engine(null) {
             //@formatter:off
             @Override public void create() {}
             @Override public void resize(int width, int height) {}

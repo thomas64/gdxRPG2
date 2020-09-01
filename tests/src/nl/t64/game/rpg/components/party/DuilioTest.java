@@ -1,16 +1,16 @@
 package nl.t64.game.rpg.components.party;
 
+import nl.t64.game.rpg.GameTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class DuilioTest extends DataProvider {
+class DuilioTest extends GameTest {
 
     @Test
     void whenHeroesAreCreated_DuilioShouldHaveRightStats() {
-        final HeroItem duilio = heroes.getHero("duilio");
-        assertThat(party.containsExactlyEqualTo(duilio)).isFalse();
+        final HeroItem duilio = new HeroContainer().getHero("duilio");
 
         assertThat(duilio.school).isEqualTo(SchoolType.ELEMENTAL);
         assertThat(duilio.getLevel()).isEqualTo(22);

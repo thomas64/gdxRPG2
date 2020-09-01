@@ -1,7 +1,9 @@
 package nl.t64.game.rpg.components.party;
 
+import nl.t64.game.rpg.GameTest;
 import nl.t64.game.rpg.constants.Constant;
 import org.assertj.core.groups.Tuple;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -12,15 +14,39 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 
-class HeroTest extends DataProvider {
+class HeroTest extends GameTest {
+
+    private HeroContainer heroes;
+    private PartyContainer party;
+
+    @BeforeEach
+    private void setup() {
+        heroes = new HeroContainer();
+        party = new PartyContainer();
+        addHeroToParty(Constant.PLAYER_ID);
+    }
+
+    private void addHeroToParty(String heroId) {
+        HeroItem hero = heroes.getHero(heroId);
+        heroes.removeHero(heroId);
+        party.addHero(hero);
+    }
+
+    private void removeHeroFromParty(String heroId) {
+        HeroItem hero = party.getHero(heroId);
+        party.removeHero(heroId);
+        heroes.addHero(hero);
+    }
 
     @Test
     void whenDataIsCreated_ShouldContainPlayer() {
+        final HeroItem mozes = party.getHero("mozes");
         assertThat(heroes.contains(Constant.PLAYER_ID)).isFalse();
         assertThat(heroes.getSize()).isEqualTo(13);
         assertThat(party.contains(Constant.PLAYER_ID)).isTrue();
         assertThat(party.getSize()).isEqualTo(1);
         assertThat(party.containsExactlyEqualTo(null)).isFalse();
+        assertThat(party.containsExactlyEqualTo(mozes)).isTrue();
     }
 
     @Test
@@ -161,7 +187,6 @@ class HeroTest extends DataProvider {
         assertThat(mozes.hasSameIdAs(mozes)).isTrue();
         assertThat(mozes.isPlayer()).isTrue();
         assertThat(mozes.getXpDeltaBetweenLevels()).isEqualTo(20);
-        assertThat(mozes.getXpToInvest()).isZero();
         assertThat(mozes.getAllStats()).extracting("id")
                                        .containsExactly(StatItemId.INTELLIGENCE,
                                                         StatItemId.WILLPOWER,
@@ -283,6 +308,36 @@ class HeroTest extends DataProvider {
         assertThat(party.getHeroWithHighestSkill(SkillItemId.RANGER)).isEqualTo(party.getHero("mozes"));
         // two with same highest
         assertThat(party.getHeroWithHighestSkill(SkillItemId.THROWN)).isEqualTo(party.getHero("luana"));
+    }
+
+    @Test
+    void whenHeroGainsXp_ShouldGainXp() {
+        final HeroItem mozes = party.getHero("mozes");
+        final StringBuilder sb = new StringBuilder();
+        assertThat(mozes.getTotalXp()).isEqualTo(5);
+        assertThat(mozes.getXpToInvest()).isZero();
+        assertThat(mozes.getLevel()).isEqualTo(1);
+        assertThat(sb).isBlank();
+        mozes.gainXp(10, sb);
+        assertThat(mozes.getTotalXp()).isEqualTo(15);
+        assertThat(mozes.getXpToInvest()).isEqualTo(10);
+        assertThat(mozes.getLevel()).isEqualTo(1);
+        assertThat(sb.toString().strip()).isBlank();
+    }
+
+    @Test
+    void whenHeroGainsEnoughXp_ShouldGainLevel() {
+        final HeroItem mozes = party.getHero("mozes");
+        final StringBuilder sb = new StringBuilder();
+        assertThat(mozes.getTotalXp()).isEqualTo(5);
+        assertThat(mozes.getXpToInvest()).isZero();
+        assertThat(mozes.getLevel()).isEqualTo(1);
+        assertThat(sb).isBlank();
+        mozes.gainXp(20, sb);
+        assertThat(mozes.getTotalXp()).isEqualTo(25);
+        assertThat(mozes.getXpToInvest()).isEqualTo(20);
+        assertThat(mozes.getLevel()).isEqualTo(2);
+        assertThat(sb.toString().strip()).isEqualTo("Mozes gained a level!");
     }
 
 }
