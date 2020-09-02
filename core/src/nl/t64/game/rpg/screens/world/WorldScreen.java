@@ -7,7 +7,6 @@ import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.GdxRuntimeException;
@@ -53,7 +52,7 @@ public class WorldScreen implements Screen,
 
     private GameState gameState;
     private final Camera camera;
-    private final OrthogonalTiledMapRenderer mapRenderer;
+    private final TextureMapObjectRenderer mapRenderer;
     private final InputMultiplexer multiplexer;
     private final ShapeRenderer shapeRenderer;
     private final PartyWindow partyWindow;
@@ -72,7 +71,7 @@ public class WorldScreen implements Screen,
 
     public WorldScreen() {
         this.camera = new Camera();
-        this.mapRenderer = new OrthogonalTiledMapRenderer(null);
+        this.mapRenderer = new TextureMapObjectRenderer();
         this.multiplexer = new InputMultiplexer();
         this.multiplexer.addProcessor(new WorldScreenListener(this::openMenuPause,
                                                               this::openInventoryScreen,
@@ -240,7 +239,7 @@ public class WorldScreen implements Screen,
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        Utils.getMapManager().updateQuestBlockers();
+        Utils.getMapManager().updateQuestLayers();
         updateCharacters(dt);
         updateCameraPosition();
         renderMapLayers();
@@ -281,14 +280,16 @@ public class WorldScreen implements Screen,
 
     private void renderMapLayers() {
         mapRenderer.render(UNDER_LAYERS);
+        mapRenderer.getBatch().begin();
+        mapRenderer.renderLowerTextures();
         renderCharacters();
+        mapRenderer.renderUpperTextures();
+        mapRenderer.getBatch().end();
         mapRenderer.render(OVER_LAYERS);
     }
 
     private void renderCharacters() {
         shapeRenderer.setProjectionMatrix(camera.combined);
-        mapRenderer.getBatch().begin();
-
         lootList.forEach(loot -> loot.render(mapRenderer.getBatch(), shapeRenderer));
 
         List<Character> allCharacters = new ArrayList<>();
@@ -298,8 +299,6 @@ public class WorldScreen implements Screen,
         allCharacters.sort(Comparator.comparingDouble((Character c) -> c.getPosition().y)
                                      .reversed());
         allCharacters.forEach(character -> character.render(mapRenderer.getBatch(), shapeRenderer));
-
-        mapRenderer.getBatch().end();
     }
 
     private DefaultGraphPath<TiledNode> getPathOf(Character partyMember) {

@@ -25,6 +25,8 @@ class GameMap {
     private static final String MAPFILE_SUFFIX = ".tmx";
 
     private static final String QUEST_LAYER = "quest_layer";
+    private static final String UPPER_TEXTURE_LAYER = "upper_texture_layer";
+    private static final String LOWER_TEXTURE_LAYER = "lower_texture_layer";
     private static final String SAVE_LAYER = "save_layer";
     private static final String NPC_LAYER = "npc_layer";
     private static final String HERO_LAYER = "hero_layer";
@@ -47,6 +49,8 @@ class GameMap {
     final List<GameMapHero> heroes = new ArrayList<>();
     final List<Rectangle> blockers = new ArrayList<>();
     final List<GameMapQuestBlocker> questBlockers = new ArrayList<>();
+    final List<GameMapQuestTexture> upperTextures = new ArrayList<>();
+    final List<GameMapQuestTexture> lowerTextures = new ArrayList<>();
     final List<GameMapQuestObject> questDiscovers = new ArrayList<>();
     final List<GameMapQuestObject> questCheckers = new ArrayList<>();
     final List<RectangleMapObject> sparkles = new ArrayList<>();
@@ -68,6 +72,7 @@ class GameMap {
         this.loadHeroes();
         this.loadBlockers();
         this.loadQuestLayer();
+        this.loadTextureLayers();
         this.loadRestLayer();
         this.loadSavePoints();
         this.loadSpawnPoints();
@@ -90,6 +95,7 @@ class GameMap {
     Stream<Rectangle> getAllBlockers() {
         return Stream.concat(blockers.stream(),
                              questBlockers.stream()
+                                          .filter(blocker -> blocker.isActive)
                                           .map(blocker -> blocker.rectangle));
     }
 
@@ -223,6 +229,19 @@ class GameMap {
                 } else if (mapObject.getName().equalsIgnoreCase("check")) {
                     questCheckers.add(new GameMapQuestObject(mapObject));
                 }
+            }
+        });
+    }
+
+    private void loadTextureLayers() {
+        getMapLayer(UPPER_TEXTURE_LAYER).ifPresent(mapLayer -> {
+            for (MapObject mapObject : mapLayer.getObjects()) {
+                upperTextures.add(new GameMapQuestTexture(mapObject));
+            }
+        });
+        getMapLayer(LOWER_TEXTURE_LAYER).ifPresent(mapLayer -> {
+            for (MapObject mapObject : mapLayer.getObjects()) {
+                lowerTextures.add(new GameMapQuestTexture(mapObject));
             }
         });
     }

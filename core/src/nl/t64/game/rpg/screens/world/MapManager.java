@@ -41,8 +41,18 @@ public class MapManager implements ProfileObserver {
         observers.forEach(observer -> observer.onMapChanged(currentMap));
     }
 
-    public void updateQuestBlockers() {
-        currentMap.questBlockers.removeIf(GameMapQuestBlocker::isQuestOfThisBlockerFinished);
+    public List<GameMapQuestTexture> getLowerMapTextures() {
+        return currentMap.lowerTextures;
+    }
+
+    public List<GameMapQuestTexture> getUpperMapTextures() {
+        return currentMap.upperTextures;
+    }
+
+    public void updateQuestLayers() {
+        currentMap.questBlockers.forEach(GameMapQuestBlocker::update);
+        currentMap.upperTextures.forEach(GameMapQuestTexture::update);
+        currentMap.lowerTextures.forEach(GameMapQuestTexture::update);
     }
 
     public List<Rectangle> getAllBlockers() {

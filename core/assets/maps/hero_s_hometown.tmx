@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="96" height="78" tilewidth="24" tileheight="24" infinite="0" nextlayerid="45" nextobjectid="170">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="96" height="78" tilewidth="24" tileheight="24" infinite="0" nextlayerid="52" nextobjectid="227">
  <tileset firstgid="1" name="hero_s_hometown" tilewidth="24" tileheight="24" tilecount="8294" columns="143">
   <image source="tilesets/hero_s_hometown.png" width="3432" height="1392"/>
  </tileset>
@@ -28,9 +28,9 @@
    eAHt2NFpwzAQAFD9NnO0NM0igS5S6CJJu2hJp8jdhyCYyCA7xAY/gTCWdLH1OAVzpWgECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIBAS+DvtZT9Wykf0fPaanU+r4eRda144/cFjmG5i/4T/TziWudfYs3nyLr7TzE6FKh5f4n8/+7w/Iq1/xHjHAxF++5v8/63w/8Ua/OcOAd93sPVmcc9ef/o+OHvbe0+83/O//jc+K152y8BAgQIECBAYOsCvv+XzYC53+9z45fd/fJPz/yfUsd5j7isk/bWjZbf8bre4BSGU+o4mfe76FkP7akbrWv363mb23OQed1qWe+U9y2d6eP1HGQ+53lotTov71tCxgkQIECAAAECBAgQIECAAAECBAgQIECAAAECBAg8T+AKQYQqPQ==
   </data>
  </layer>
- <layer id="36" name="under3_none" width="96" height="78">
+ <layer id="36" name="under3_objects" width="96" height="78">
   <data encoding="base64" compression="zlib">
-   eAHt0IEAAAAAw6D5U1/gCIVQYcCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAgT8wdQAAAQ==
+   eAHt0NEJACAMQ8EM5e52Ex3HblGEe5DvwCUiQIAAAQIECBAgQIAAAQL/COyVVE8zAqftL/8ZfK8ECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIEhgQeEUED7w==
   </data>
  </layer>
  <layer id="37" name="under4_none" width="96" height="78">
@@ -45,7 +45,7 @@
  </layer>
  <layer id="39" name="over6_objects" width="96" height="78">
   <data encoding="base64" compression="zlib">
-   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
+   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
   </data>
  </layer>
  <layer id="40" name="over7_over" width="96" height="78">
@@ -174,6 +174,7 @@
   <object id="151" x="528" y="840" width="48" height="24"/>
   <object id="154" x="672" y="1368" width="48" height="24"/>
   <object id="155" x="336" y="1368" width="288" height="24"/>
+  <object id="213" x="1968" y="216" width="48" height="36"/>
  </objectgroup>
  <objectgroup color="#5500ff" id="43" name="rest_layer">
   <object id="164" name="note_well_hero_s_hometown" x="1848" y="1296" width="96" height="96"/>
@@ -290,7 +291,7 @@
     <property name="conversation" value="equipshop01"/>
    </properties>
   </object>
-  <object id="167" name="soldier01" x="1968" y="192" width="48" height="24">
+  <object id="167" name="soldier01" x="1968" y="168" width="48" height="24">
    <properties>
     <property name="conversation" value="quest0002"/>
     <property name="direction" value="west"/>
@@ -323,7 +324,136 @@
  <objectgroup color="#ffaa7f" id="14" name="save_layer">
   <object id="131" x="1056" y="1200" width="48" height="48"/>
  </objectgroup>
+ <objectgroup id="50" name="lower_texture_layer">
+  <object id="218" type="quest0002" gid="13495" x="1872" y="240" width="24" height="24">
+   <properties>
+    <property name="isVisible" type="bool" value="false"/>
+    <property name="task" value="2"/>
+    <property name="visibleIfComplete" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="219" type="quest0002" gid="13496" x="1896" y="240" width="24" height="24">
+   <properties>
+    <property name="isVisible" type="bool" value="false"/>
+    <property name="task" value="2"/>
+    <property name="visibleIfComplete" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="220" type="quest0002" gid="13527" x="1872" y="264" width="24" height="24">
+   <properties>
+    <property name="isVisible" type="bool" value="false"/>
+    <property name="task" value="2"/>
+    <property name="visibleIfComplete" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="221" type="quest0002" gid="13528" x="1896" y="264" width="24" height="24">
+   <properties>
+    <property name="isVisible" type="bool" value="false"/>
+    <property name="task" value="2"/>
+    <property name="visibleIfComplete" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="209" type="quest0002" gid="13495" x="1920" y="240" width="24" height="24">
+   <properties>
+    <property name="isVisible" type="bool" value="true"/>
+    <property name="task" value="2"/>
+    <property name="visibleIfComplete" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="210" type="quest0002" gid="13496" x="1944" y="240" width="24" height="24">
+   <properties>
+    <property name="isVisible" type="bool" value="true"/>
+    <property name="task" value="2"/>
+    <property name="visibleIfComplete" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="211" type="quest0002" gid="13527" x="1920" y="264" width="24" height="24">
+   <properties>
+    <property name="isVisible" type="bool" value="true"/>
+    <property name="task" value="2"/>
+    <property name="visibleIfComplete" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="212" type="quest0002" gid="13528" x="1944" y="264" width="24" height="24">
+   <properties>
+    <property name="isVisible" type="bool" value="true"/>
+    <property name="task" value="2"/>
+    <property name="visibleIfComplete" type="bool" value="false"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="51" name="upper_texture_layer">
+  <object id="205" type="quest0002" gid="13431" x="1920" y="192" width="24" height="24">
+   <properties>
+    <property name="isVisible" type="bool" value="true"/>
+    <property name="task" value="2"/>
+    <property name="visibleIfComplete" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="206" type="quest0002" gid="13432" x="1944" y="192" width="24" height="24">
+   <properties>
+    <property name="isVisible" type="bool" value="true"/>
+    <property name="task" value="2"/>
+    <property name="visibleIfComplete" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="207" type="quest0002" gid="13463" x="1920" y="216" width="24" height="24">
+   <properties>
+    <property name="isVisible" type="bool" value="true"/>
+    <property name="task" value="2"/>
+    <property name="visibleIfComplete" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="208" type="quest0002" gid="13464" x="1944" y="216" width="24" height="24">
+   <properties>
+    <property name="isVisible" type="bool" value="true"/>
+    <property name="task" value="2"/>
+    <property name="visibleIfComplete" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="214" type="quest0002" gid="13431" x="1872" y="192" width="24" height="24">
+   <properties>
+    <property name="isVisible" type="bool" value="false"/>
+    <property name="task" value="2"/>
+    <property name="visibleIfComplete" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="215" type="quest0002" gid="13432" x="1896" y="192" width="24" height="24">
+   <properties>
+    <property name="isVisible" type="bool" value="false"/>
+    <property name="task" value="2"/>
+    <property name="visibleIfComplete" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="216" type="quest0002" gid="13463" x="1872" y="216" width="24" height="24">
+   <properties>
+    <property name="isVisible" type="bool" value="false"/>
+    <property name="task" value="2"/>
+    <property name="visibleIfComplete" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="217" type="quest0002" gid="13464" x="1896" y="216" width="24" height="24">
+   <properties>
+    <property name="isVisible" type="bool" value="false"/>
+    <property name="task" value="2"/>
+    <property name="visibleIfComplete" type="bool" value="true"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup color="#ffff00" id="44" name="quest_layer">
-  <object id="169" name="blocker" type="quest0002" x="1920" y="216" width="96" height="24"/>
+  <object id="169" name="blocker" type="quest0002" x="1920" y="216" width="48" height="36">
+   <properties>
+    <property name="activeIfComplete" type="bool" value="false"/>
+    <property name="isActive" type="bool" value="true"/>
+    <property name="task" value="2"/>
+   </properties>
+  </object>
+  <object id="222" name="blocker" type="quest0002" x="1872" y="216" width="48" height="36">
+   <properties>
+    <property name="activeIfComplete" type="bool" value="true"/>
+    <property name="isActive" type="bool" value="false"/>
+    <property name="task" value="2"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

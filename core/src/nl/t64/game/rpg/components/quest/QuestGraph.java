@@ -32,6 +32,10 @@ public class QuestGraph {
         tasks.get(taskId).setTaskComplete();
     }
 
+    public boolean isTaskComplete(String taskId) {
+        return false; // todo, yet to implement a quest with a subtask which will change the game map.
+    }
+
     public boolean isFinished() {
         return currentState.equals(QuestState.FINISHED);
     }
