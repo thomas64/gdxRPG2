@@ -210,6 +210,8 @@ public class ConversationDialog extends ConversationSubject {
             case SAVE_GAME -> saveGame(destinationId);
             case ACCEPT_QUEST -> acceptQuest();
             case REJECT_QUEST -> rejectQuest(destinationId);
+            case CHECK_IF_QUEST_ACCEPTED -> checkQuest(destinationId);
+            case COMPLETE_SUBTASK -> completeTask(destinationId);
             case RETURN_QUEST -> returnQuest();
             case REWARD_QUEST -> rewardQuest();
             default -> throw new IllegalStateException(
@@ -255,6 +257,19 @@ public class ConversationDialog extends ConversationSubject {
     private void rejectQuest(String destinationId) {
         QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
         quest.know();
+        continueConversation(destinationId);
+    }
+
+    private void checkQuest(String destinationId) {
+        String questId = conversationId.substring(0, conversationId.length() - 2);
+        QuestGraph quest = Utils.getGameData().getQuests().getQuestById(questId);
+        quest.handleCheck(destinationId, this::continueConversation, this::endConversation);
+    }
+
+    private void completeTask(String destinationId) {
+        String questId = conversationId.substring(0, conversationId.length() - 2);
+        QuestGraph quest = Utils.getGameData().getQuests().getQuestById(questId);
+        quest.setTaskComplete(conversationId.substring(conversationId.length() - 1));
         continueConversation(destinationId);
     }
 

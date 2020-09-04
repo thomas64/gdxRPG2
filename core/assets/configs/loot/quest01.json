@@ -1,4 +1,5 @@
 {
   "quest0001": {"content": {"masterwork_longsword": 1}, "xp": 2},
-  "quest0003": {"content": {"gemstone": 3, "herb": 3}, "xp": 2}
+  "quest0003": {"content": {"gemstone": 3, "herb": 3}, "xp": 2},
+  "quest0004": {"content": {"gold": 4000}, "xp": 2}
 }

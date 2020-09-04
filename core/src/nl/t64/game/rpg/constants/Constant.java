@@ -44,6 +44,7 @@ public final class Constant {
     public static final String PHRASE_ID_QUEST_FAILURE = "2000";
     public static final String PHRASE_ID_QUEST_UNCLAIMED = "3000";
     public static final String PHRASE_ID_QUEST_FINISHED = "4000";
+    public static final String PHRASE_ID_QUEST_DELIVERY = "5000";
     public static final String PHRASE_ID_PARTY_FULL = "9000";
 
     private Constant() {

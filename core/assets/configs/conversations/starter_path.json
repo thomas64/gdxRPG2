@@ -40,18 +40,8 @@
           "destinationId": "6"
         }
       ],
-      "6": [
-        {
-          "conversationCommand": "EXIT_CONVERSATION",
-          "destinationId": "1"
-        }
-      ],
-      "50": [
-        {
-          "conversationCommand": "EXIT_CONVERSATION",
-          "destinationId": "101"
-        }
-      ],
+      "6": [{"conversationCommand": "EXIT_CONVERSATION"}],
+      "50": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
       "102": [
         {
           "text": "Here you are, brave boy.",
@@ -62,12 +52,7 @@
           "destinationId": "103"
         }
       ],
-      "103": [
-        {
-          "conversationCommand": "EXIT_CONVERSATION",
-          "destinationId": "101"
-        }
-      ],
+      "103": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
       "1000": [
         {
           "text": "Here you are, brave boy.",
@@ -78,29 +63,10 @@
           "destinationId": "103"
         }
       ],
-      "1501": [
-        {
-          "conversationCommand": "REWARD_QUEST"
-        }
-      ],
-      "2000": [
-        {
-          "conversationCommand": "EXIT_CONVERSATION",
-          "destinationId": "101"
-        }
-      ],
-      "3000": [
-        {
-          "conversationCommand": "REWARD_QUEST",
-          "destinationId": "3000"
-        }
-      ],
-      "4000": [
-        {
-          "conversationCommand": "EXIT_CONVERSATION",
-          "destinationId": "4000"
-        }
-      ]
+      "1501": [{"conversationCommand": "REWARD_QUEST"}],
+      "2000": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
+      "3000": [{"conversationCommand": "REWARD_QUEST", "destinationId": "3000"}],
+      "4000": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "4000"}]
     }
   },
   "quest0003": {
@@ -136,23 +102,9 @@
           "destinationId": "6"
         }
       ],
-      "6": [
-        {
-          "conversationCommand": "EXIT_CONVERSATION",
-          "destinationId": "7"
-        }
-      ],
-      "7": [
-        {
-          "destinationId": "1"
-        }
-      ],
-      "50": [
-        {
-          "conversationCommand": "EXIT_CONVERSATION",
-          "destinationId": "101"
-        }
-      ],
+      "6": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "7"}],
+      "7": [{"destinationId": "1"}],
+      "50": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
       "101": [
         {
           "text": "Yes! Portals exist! Unbelievable!",
@@ -163,18 +115,8 @@
           "destinationId": "102"
         }
       ],
-      "102": [
-        {
-          "conversationCommand": "EXIT_CONVERSATION",
-          "destinationId": "101"
-        }
-      ],
-      "103": [
-        {
-          "conversationCommand": "EXIT_CONVERSATION",
-          "destinationId": "101"
-        }
-      ],
+      "102": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
+      "103": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
       "1000": [
         {
           "text": "Yes of course! She has to believe.",
@@ -185,29 +127,10 @@
           "destinationId": "103"
         }
       ],
-      "1503": [
-        {
-          "conversationCommand": "REWARD_QUEST"
-        }
-      ],
-      "2000": [
-        {
-          "conversationCommand": "EXIT_CONVERSATION",
-          "destinationId": "101"
-        }
-      ],
-      "3000": [
-        {
-          "conversationCommand": "REWARD_QUEST",
-          "destinationId": "3000"
-        }
-      ],
-      "4000": [
-        {
-          "conversationCommand": "EXIT_CONVERSATION",
-          "destinationId": "4000"
-        }
-      ]
+      "1503": [{"conversationCommand": "REWARD_QUEST"}],
+      "2000": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
+      "3000": [{"conversationCommand": "REWARD_QUEST", "destinationId": "3000"}],
+      "4000": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "4000"}]
     }
   }
 }

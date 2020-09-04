@@ -27,7 +27,8 @@ class QuestTask {
 
     void setTaskComplete() {
         if (type.equals(QuestType.DISCOVER)
-            || type.equals(QuestType.CHECK)) {
+            || type.equals(QuestType.CHECK)
+            || type.equals(QuestType.MESSAGE_DELIVERY)) {
             isComplete = true;
         } else {
             throw new IllegalCallerException("Only possible to complete a DISCOVER or CHECK task.");
@@ -43,7 +44,7 @@ class QuestTask {
         return switch (type) {
             case RETURN -> checkReturn();
             case FETCH -> checkFetch();
-            case DISCOVER, CHECK -> checkTaskComplete();
+            case DISCOVER, CHECK, MESSAGE_DELIVERY -> checkTaskComplete();
             default -> throw new GdxRuntimeException(String.format("No %s task for now.", type));
         };
     }

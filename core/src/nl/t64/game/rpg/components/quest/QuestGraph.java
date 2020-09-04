@@ -51,6 +51,14 @@ public class QuestGraph {
         }
     }
 
+    public void handleCheck(String phraseId, Consumer<String> continueConversation, Consumer<String> endConversation) {
+        if (currentState.equals(QuestState.ACCEPTED)) {
+            continueConversation.accept(Constant.PHRASE_ID_QUEST_DELIVERY);
+        } else {
+            endConversation.accept(phraseId);
+        }
+    }
+
     public void handleReturn(Consumer<String> continueConversation) {
         if (doesReturnMeetDemand()) {
             continueConversation.accept(Constant.PHRASE_ID_QUEST_SUCCESS);

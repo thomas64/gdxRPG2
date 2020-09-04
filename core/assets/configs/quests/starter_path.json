@@ -30,7 +30,7 @@
         "type": "CHECK"
       },
       "3": {
-        "taskPhrase": "Report back to the Gypsy at Starter Path",
+        "taskPhrase": "Tell the Gypsy at Starter Path about the chamber",
         "type": "RETURN"
       }
     }

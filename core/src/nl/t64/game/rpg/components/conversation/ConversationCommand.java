@@ -8,6 +8,8 @@ public enum ConversationCommand {
     SAVE_GAME,
     REJECT_QUEST,
     ACCEPT_QUEST,
+    CHECK_IF_QUEST_ACCEPTED,
+    COMPLETE_SUBTASK,
     RETURN_QUEST,
     REWARD_QUEST,
     NONE;

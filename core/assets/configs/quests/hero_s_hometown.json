@@ -12,5 +12,18 @@
         "type": "RETURN"
       }
     }
+  },
+  "quest0004": {
+    "title": "Secret love",
+    "tasks": {
+      "1": {
+        "taskPhrase": "Tell the girl about the young man's feelings",
+        "type": "MESSAGE_DELIVERY"
+      },
+      "2": {
+        "taskPhrase": "Tell the young man what she said",
+        "type": "RETURN"
+      }
+    }
   }
 }
