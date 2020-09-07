@@ -44,7 +44,7 @@ class ItemSlotsExchanger {
     private void handlePurchase() {
         final int totalMerchant = Utils.getGameData().getParty().getSumOfSkill(SkillItemId.MERCHANT);
         final int totalPrice = draggedItem.inventoryItem.getBuyPriceTotal(totalMerchant);
-        if (Utils.getGameData().getInventory().hasEnoughOfResource("gold", totalPrice)) {
+        if (Utils.getGameData().getInventory().hasEnoughOfItem("gold", totalPrice)) {
             handlePossibleExchange();
             if (isSuccessfullyExchanged) {
                 InventoryUtils.getScreenUI().getInventorySlotsTable().removeResource("gold", totalPrice);

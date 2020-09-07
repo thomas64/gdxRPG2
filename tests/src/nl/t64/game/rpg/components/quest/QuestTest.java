@@ -91,8 +91,8 @@ class QuestTest extends GameTest {
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.FINISHED);
         assertThat(quest0001.isFinished()).isTrue();
         assertThat(gameData.getParty().getHero(0).getXpToInvest()).isEqualTo(2);
-        assertThat(gameData.getInventory().hasEnoughOfResource("gemstone", 1)).isFalse();
-        assertThat(gameData.getInventory().hasEnoughOfResource("herb", 1)).isFalse();
+        assertThat(gameData.getInventory().hasEnoughOfItem("gemstone", 1)).isFalse();
+        assertThat(gameData.getInventory().hasEnoughOfItem("herb", 1)).isFalse();
     }
 
     @Test
@@ -148,7 +148,7 @@ class QuestTest extends GameTest {
     //@formatter:on
 
     @Test
-    void whenSubTaskIsCheckOrDiscover_ShouldSucceedToSetTaskComplete() {
+    void whenQuestTaskIsCheckOrDiscover_ShouldSucceedToSetTaskComplete() {
         QuestGraph quest0003 = quests.getQuestById("quest0003");
         quest0003.setTaskComplete("1");
         quest0003.setTaskComplete("2");

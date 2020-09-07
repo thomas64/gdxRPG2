@@ -110,7 +110,7 @@
       "5000": [
         {
           "text": "Yes, everybody needs a chance.",
-          "conversationCommand": "COMPLETE_SUBTASK",
+          "conversationCommand": "COMPLETE_QUEST_TASK",
           "destinationId": "5001"
         },
         {

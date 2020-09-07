@@ -33,7 +33,7 @@ public class QuestGraph {
     }
 
     public boolean isTaskComplete(String taskId) {
-        return false; // todo, yet to implement a quest with a subtask which will change the game map.
+        return false; // todo, yet to implement a quest with a quest task which will change the game map.
     }
 
     public boolean isFinished() {
@@ -51,8 +51,27 @@ public class QuestGraph {
         }
     }
 
+    public void handleReceive(Consumer<Loot> notifyShowReceiveDialog) {
+        know();
+        Loot receive = getAllQuestTasks().stream()
+                                         .filter(questTask -> questTask.type.equals(QuestType.ITEM_DELIVERY))
+                                         .findFirst()
+                                         .map(questTask -> new Loot(questTask.getTarget()))
+                                         .orElseThrow();
+        notifyShowReceiveDialog.accept(receive);
+    }
+
     public void handleCheck(String phraseId, Consumer<String> continueConversation, Consumer<String> endConversation) {
         if (currentState.equals(QuestState.ACCEPTED)) {
+            continueConversation.accept(Constant.PHRASE_ID_QUEST_DELIVERY);
+        } else {
+            endConversation.accept(phraseId);
+        }
+    }
+
+    public void handleInventory(String questTaskId, String phraseId,
+                                Consumer<String> continueConversation, Consumer<String> endConversation) {
+        if (tasks.get(questTaskId).hasTargetInInventory()) {
             continueConversation.accept(Constant.PHRASE_ID_QUEST_DELIVERY);
         } else {
             endConversation.accept(phraseId);
@@ -97,7 +116,7 @@ public class QuestGraph {
         }
     }
 
-    void accept() {
+    public void accept() {
         if (currentState.equals(QuestState.KNOWN)) {
             currentState = QuestState.ACCEPTED;
         } else {

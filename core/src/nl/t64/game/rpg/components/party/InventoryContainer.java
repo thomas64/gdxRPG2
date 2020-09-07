@@ -52,11 +52,11 @@ public class InventoryContainer {
         }
     }
 
-    public void autoRemoveResource(String itemId, int amount) {
-        if (!hasEnoughOfResource(itemId, amount)) {
+    public void autoRemoveItem(String itemId, int amount) {
+        if (!hasEnoughOfItem(itemId, amount)) {
             throw new IllegalStateException("Cannot remove this resource from Inventory.");
         }
-        for (Map.Entry<Integer, Integer> set : findAllSlotsWithAmountOfResource(itemId).entrySet()) {
+        for (Map.Entry<Integer, Integer> set : findAllSlotsWithAmountOfItem(itemId).entrySet()) {
             if (amount == 0) {
                 break;
             } else if (amount >= set.getValue()) {
@@ -92,8 +92,14 @@ public class InventoryContainer {
         inventory.sort(comparing);
     }
 
-    public boolean hasEnoughOfResource(String itemId, int amount) {
-        return getTotalOfResource(itemId) >= amount;
+    public boolean contains(Map<String, Integer> items) {
+        return items.entrySet()
+                    .stream()
+                    .allMatch(item -> hasEnoughOfItem(item.getKey(), item.getValue()));
+    }
+
+    public boolean hasEnoughOfItem(String itemId, int amount) {
+        return getTotalOfItem(itemId) >= amount;
     }
 
     public boolean hasRoomForResource(String itemId) {
@@ -111,7 +117,7 @@ public class InventoryContainer {
                         .anyMatch(item -> item.hasSameIdAs(itemId));
     }
 
-    int getTotalOfResource(String itemId) {
+    int getTotalOfItem(String itemId) {
         return inventory.stream()
                         .filter(Objects::nonNull)
                         .filter(item -> item.hasSameIdAs(itemId))
@@ -147,7 +153,7 @@ public class InventoryContainer {
                         .findFirst();
     }
 
-    private Map<Integer, Integer> findAllSlotsWithAmountOfResource(String itemId) {
+    private Map<Integer, Integer> findAllSlotsWithAmountOfItem(String itemId) {
         Map<Integer, Integer> resourceMap = new HashMap<>();
         IntStream.range(0, getSize())
                  .forEach(i -> {

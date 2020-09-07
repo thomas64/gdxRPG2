@@ -51,7 +51,7 @@ public class InventorySlotsTable {
     }
 
     void removeResource(String itemId, int amount) {
-        inventory.autoRemoveResource(itemId, amount);
+        inventory.autoRemoveItem(itemId, amount);
         clearAndFill();
     }
 

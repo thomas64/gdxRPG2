@@ -132,5 +132,47 @@
       "3000": [{"conversationCommand": "REWARD_QUEST", "destinationId": "3000"}],
       "4000": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "4000"}]
     }
+  },
+  "quest0005": {
+    "phrases": {
+      "1": {"text": ["Here, take this."]},
+      "50": {"text": ["Thanks for doing this."]},
+      "1500": {"text": ["It's great to be saved."]},
+      "2000": {"text": ["But please hurry."]},
+      "3000": {"text": ["You are the best.", "But you'll have to accept my reward."]},
+      "4000": {"text": ["Thanks again, I owe you big time!"]}
+    },
+    "choices": {
+      "1": [{"conversationCommand": "RECEIVE_ITEM"}],
+      "50": [{"conversationCommand": "RETURN_QUEST"}],
+      "1500": [{"conversationCommand": "REWARD_QUEST"}],
+      "2000": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "50"}],
+      "3000": [{"conversationCommand": "REWARD_QUEST", "destinationId": "3000"}],
+      "4000": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "4000"}]
+    }
+  },
+  "quest0005-1": {
+    "phrases": {
+      "1": {"text": ["God bless you my child."]},
+      "5000": {"text": ["(Deliver the expensive shield to the priest?)"]},
+      "5001": {"text": ["Thank you my child.", "May the Force be with you."]},
+      "5002": {"text": ["You are a blessed soul."]}
+    },
+    "choices": {
+      "1": [{"conversationCommand": "CHECK_IF_IN_INVENTORY"}],
+      "5000": [
+        {
+          "text": "Of course, salvation is not to be mocked with.",
+          "conversationCommand": "COMPLETE_QUEST_TASK",
+          "destinationId": "5001"
+        },
+        {
+          "text": "No way, that shield looks very expensive to me.",
+          "conversationCommand": "EXIT_CONVERSATION"
+        }
+      ],
+      "5001": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "5002"}],
+      "5002": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "5002"}]
+    }
   }
 }

@@ -6,6 +6,7 @@ import lombok.Getter;
 import nl.t64.game.rpg.screens.LoadScreen;
 import nl.t64.game.rpg.screens.inventory.InventoryScreen;
 import nl.t64.game.rpg.screens.loot.FindScreen;
+import nl.t64.game.rpg.screens.loot.ReceiveScreen;
 import nl.t64.game.rpg.screens.loot.RewardScreen;
 import nl.t64.game.rpg.screens.menu.*;
 import nl.t64.game.rpg.screens.shop.ShopScreen;
@@ -26,7 +27,8 @@ public enum ScreenType {
     INVENTORY(InventoryScreen.class),
     SHOP(ShopScreen.class),
     FIND(FindScreen.class),
-    REWARD(RewardScreen.class);
+    REWARD(RewardScreen.class),
+    RECEIVE(ReceiveScreen.class);
 
     @Getter
     private final Class<? extends Screen> screenClass;

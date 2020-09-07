@@ -13,6 +13,8 @@ public interface ConversationObserver {
 
     void onNotifyShowRewardDialog(Loot reward);
 
+    void onNotifyShowReceiveDialog(Loot receive);
+
     void onNotifyHeroJoined();
 
     void onNotifyHeroDismiss();
