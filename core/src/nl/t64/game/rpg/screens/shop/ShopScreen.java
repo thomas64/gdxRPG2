@@ -1,7 +1,6 @@
 package nl.t64.game.rpg.screens.shop;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -13,10 +12,11 @@ import lombok.Getter;
 import lombok.Setter;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.ScreenType;
+import nl.t64.game.rpg.screens.ScreenToLoad;
 import nl.t64.game.rpg.screens.inventory.ListenerMouseImageButton;
 
 
-public class ShopScreen implements Screen {
+public class ShopScreen implements ScreenToLoad {
 
     private static final String BUTTON_CLOSE_UP = "close_up";
     private static final String BUTTON_CLOSE_OVER = "close_over";
@@ -104,7 +104,8 @@ public class ShopScreen implements Screen {
         stage.dispose();
     }
 
-    void setBackground(Image screenshot, Image parchment) {
+    @Override
+    public void setBackground(Image screenshot, Image parchment) {
         stage.addActor(screenshot);
         stage.addActor(parchment);
     }

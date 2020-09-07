@@ -1,7 +1,6 @@
 package nl.t64.game.rpg.screens.inventory;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.math.Vector2;
@@ -21,13 +20,14 @@ import nl.t64.game.rpg.components.party.PartyContainer;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.profile.ProfileObserver;
+import nl.t64.game.rpg.screens.ScreenToLoad;
 import nl.t64.game.rpg.screens.inventory.tooltip.ButtonToolTip;
 import nl.t64.game.rpg.screens.inventory.tooltip.ButtonTooltipListener;
 import nl.t64.game.rpg.screens.world.conversation.ConversationDialog;
 import nl.t64.game.rpg.screens.world.conversation.ConversationObserver;
 
 
-public class InventoryScreen extends PartySubject implements Screen, ProfileObserver, ConversationObserver {
+public class InventoryScreen extends PartySubject implements ScreenToLoad, ProfileObserver, ConversationObserver {
 
     private static final String BUTTON_CLOSE_UP = "close_up";
     private static final String BUTTON_CLOSE_OVER = "close_over";
@@ -236,7 +236,8 @@ public class InventoryScreen extends PartySubject implements Screen, ProfileObse
         conversationDialog.dispose();
     }
 
-    void setBackground(Image screenshot, Image parchment) {
+    @Override
+    public void setBackground(Image screenshot, Image parchment) {
         stage.addActor(screenshot);
         stage.addActor(parchment);
     }

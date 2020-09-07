@@ -1,7 +1,6 @@
 package nl.t64.game.rpg.screens.loot;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -16,13 +15,14 @@ import lombok.Setter;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.constants.ScreenType;
+import nl.t64.game.rpg.screens.ScreenToLoad;
 import nl.t64.game.rpg.screens.inventory.ListenerMouseImageButton;
 import nl.t64.game.rpg.screens.inventory.MessageDialog;
 import nl.t64.game.rpg.screens.inventory.tooltip.ButtonToolTip;
 import nl.t64.game.rpg.screens.inventory.tooltip.ButtonTooltipListener;
 
 
-public abstract class LootScreen extends LootSubject implements Screen {
+public abstract class LootScreen extends LootSubject implements ScreenToLoad {
 
     private static final String BUTTON_CLOSE_UP = "close_up";
     private static final String BUTTON_CLOSE_OVER = "close_over";
@@ -112,7 +112,8 @@ public abstract class LootScreen extends LootSubject implements Screen {
         stage.dispose();
     }
 
-    void setBackground(Image screenshot, Image parchment) {
+    @Override
+    public void setBackground(Image screenshot, Image parchment) {
         stage.addActor(screenshot);
         stage.addActor(parchment);
     }

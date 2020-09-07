@@ -9,9 +9,9 @@ public interface ComponentObserver {
 
     void onNotifyShowNoteDialog(String noteId);
 
-    void onNotifyShowFindDialog(Loot loot);
-
     void onNotifyShowFindDialog(Loot loot, String message);
+
+    void onNotifyShowFindDialog(Loot loot);
 
     void onNotifyShowMessageDialog(String message);
 

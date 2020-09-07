@@ -26,8 +26,10 @@ import nl.t64.game.rpg.events.character.PathUpdateEvent;
 import nl.t64.game.rpg.screens.LoadScreen;
 import nl.t64.game.rpg.screens.inventory.PartyObserver;
 import nl.t64.game.rpg.screens.inventory.PartySubject;
+import nl.t64.game.rpg.screens.loot.FindScreen;
 import nl.t64.game.rpg.screens.loot.LootObserver;
 import nl.t64.game.rpg.screens.loot.LootSubject;
+import nl.t64.game.rpg.screens.loot.RewardScreen;
 import nl.t64.game.rpg.screens.shop.ShopScreen;
 import nl.t64.game.rpg.screens.world.conversation.ConversationDialog;
 import nl.t64.game.rpg.screens.world.conversation.ConversationObserver;
@@ -141,16 +143,17 @@ public class WorldScreen implements Screen,
     }
 
     @Override
-    public void onNotifyShowFindDialog(Loot loot) {
-        var findScreenLoader = new FindScreenLoader(this::openLoadScreen, loot);
-        findScreenLoader.openFindScreen();
+    public void onNotifyShowFindDialog(Loot loot, String message) {
+        onNotifyShowMessageDialog(message);
+        messageDialog.setScreenAfterHide(() -> onNotifyShowFindDialog(loot));
     }
 
     @Override
-    public void onNotifyShowFindDialog(Loot loot, String message) {
-        var findScreenLoader = new FindScreenLoader(this::openLoadScreen, loot);
-        onNotifyShowMessageDialog(message);
-        messageDialog.setScreenAfterHide(findScreenLoader::openFindScreen);
+    public void onNotifyShowFindDialog(Loot loot) {
+        var findScreen = (FindScreen) Utils.getScreenManager().getScreen(ScreenType.FIND);
+        findScreen.setLoot(loot);
+        findScreen.setLootTitle("   Found");
+        openLoadScreen(ScreenType.FIND);
     }
 
     @Override   // also ConversationObserver
@@ -202,8 +205,10 @@ public class WorldScreen implements Screen,
 
     @Override
     public void onNotifyShowRewardDialog(Loot reward) {
-        var rewardScreenLoader = new RewardScreenLoader(this::openLoadScreen, reward);
-        rewardScreenLoader.openRewardScreen();
+        var rewardScreen = (RewardScreen) Utils.getScreenManager().getScreen(ScreenType.REWARD);
+        rewardScreen.setLoot(reward);
+        rewardScreen.setLootTitle("   Reward");
+        openLoadScreen(ScreenType.REWARD);
         conversationDialog.hideWithFade();
     }
 
@@ -322,23 +327,23 @@ public class WorldScreen implements Screen,
     }
 
     private void openInventoryScreen() {
-        openLoadScreen(ScreenType.INVENTORY_LOAD);
+        openLoadScreen(ScreenType.INVENTORY);
     }
 
     private void openShopScreen() {
         var shopScreen = (ShopScreen) Utils.getScreenManager().getScreen(ScreenType.SHOP);
         shopScreen.setNpcId(currentNpcCharacter.getId());
         shopScreen.setShopId(currentNpcCharacter.getConversationId());
-
-        openLoadScreen(ScreenType.SHOP_LOAD);
+        openLoadScreen(ScreenType.SHOP);
     }
 
     private void openLoadScreen(ScreenType screenType) {
         player.resetInput();
         render(0f);
-        var loadScreen = (LoadScreen) Utils.getScreenManager().getScreen(screenType);
+        var loadScreen = (LoadScreen) Utils.getScreenManager().getScreen(ScreenType.LOAD_SCREEN);
+        loadScreen.setScreenType(screenType);
         loadScreen.setBackground(createScreenshot(true));
-        Utils.getScreenManager().setScreen(screenType);
+        Utils.getScreenManager().setScreen(ScreenType.LOAD_SCREEN);
     }
 
     private Image createScreenshot(boolean withBlur) {

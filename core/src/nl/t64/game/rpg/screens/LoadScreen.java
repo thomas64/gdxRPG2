@@ -5,17 +5,21 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import lombok.Setter;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.constants.ScreenType;
 
 
-public abstract class LoadScreen implements Screen {
+public class LoadScreen implements Screen {
 
     private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
 
-    protected final Stage stage;
+    private final Stage stage;
+    @Setter
+    private ScreenType screenType;
     private int timer = 0;
 
-    protected LoadScreen() {
+    public LoadScreen() {
         this.stage = new Stage();
     }
 
@@ -41,7 +45,12 @@ public abstract class LoadScreen implements Screen {
         }
     }
 
-    protected abstract void setScreen();
+    private void setScreen() {
+        var screenToLoad = (ScreenToLoad) Utils.getScreenManager().getScreen(screenType);
+        screenToLoad.setBackground((Image) stage.getActors().get(0),
+                                   (Image) stage.getActors().get(1));
+        Utils.getScreenManager().setScreen(screenType);
+    }
 
     @Override
     public void resize(int width, int height) {
@@ -74,9 +83,22 @@ public abstract class LoadScreen implements Screen {
     public void setBackground(Image screenshot) {
         var texture = Utils.getResourceManager().getTextureAsset(SPRITE_PARCHMENT);
         var parchment = new Image(texture);
-        parchment.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        if (hasSmallParchment()) {
+            float width = Gdx.graphics.getWidth() / 2.4f;
+            float height = Gdx.graphics.getHeight() / 3f;
+            parchment.setSize(width, height);
+            parchment.setPosition((Gdx.graphics.getWidth() / 2f) - (width / 2f),
+                                  (Gdx.graphics.getHeight() / 2f) - (height / 2f));
+        } else {
+            parchment.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        }
         stage.addActor(screenshot);
         stage.addActor(parchment);
+    }
+
+    private boolean hasSmallParchment() {
+        return screenType.equals(ScreenType.FIND)
+               || screenType.equals(ScreenType.REWARD);
     }
 
 }

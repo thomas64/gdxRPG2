@@ -3,14 +3,11 @@ package nl.t64.game.rpg.constants;
 import com.badlogic.gdx.Screen;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import nl.t64.game.rpg.screens.inventory.InventoryLoadScreen;
+import nl.t64.game.rpg.screens.LoadScreen;
 import nl.t64.game.rpg.screens.inventory.InventoryScreen;
-import nl.t64.game.rpg.screens.loot.FindLoadScreen;
 import nl.t64.game.rpg.screens.loot.FindScreen;
-import nl.t64.game.rpg.screens.loot.RewardLoadScreen;
 import nl.t64.game.rpg.screens.loot.RewardScreen;
 import nl.t64.game.rpg.screens.menu.*;
-import nl.t64.game.rpg.screens.shop.ShopLoadScreen;
 import nl.t64.game.rpg.screens.shop.ShopScreen;
 import nl.t64.game.rpg.screens.world.WorldScreen;
 
@@ -25,14 +22,11 @@ public enum ScreenType {
     MENU_CONTROLS(MenuControls.class),
     MENU_PAUSE(MenuPause.class),
     WORLD(WorldScreen.class),
+    LOAD_SCREEN(LoadScreen.class),
     INVENTORY(InventoryScreen.class),
-    INVENTORY_LOAD(InventoryLoadScreen.class),
     SHOP(ShopScreen.class),
-    SHOP_LOAD(ShopLoadScreen.class),
     FIND(FindScreen.class),
-    FIND_LOAD(FindLoadScreen.class),
-    REWARD(RewardScreen.class),
-    REWARD_LOAD(RewardLoadScreen.class);
+    REWARD(RewardScreen.class);
 
     @Getter
     private final Class<? extends Screen> screenClass;
