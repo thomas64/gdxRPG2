@@ -7,6 +7,7 @@ public enum QuestType {
     CHECK,
     KILL,
     MESSAGE_DELIVERY,
+    ITEM_DELIVERY,
     GUARD,
     ESCORT,
     RETURN;

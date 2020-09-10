@@ -149,6 +149,11 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
     }
 
     @Override
+    public void onNotifyShowReceiveDialog(Loot receive) {
+        throw new IllegalCallerException("Impossible to show Receive from Inventory.");
+    }
+
+    @Override
     public void onNotifyHeroJoined() {
         throw new IllegalCallerException("Impossible to join Hero from Inventory.");
     }
@@ -335,8 +340,8 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
     private void cheatRemoveGold() {
         if (Utils.getSettings().isInDebugMode()) {
             InventoryContainer inventory = Utils.getGameData().getInventory();
-            if (inventory.hasEnoughOfResource("gold", 1)) {
-                inventory.autoRemoveResource("gold", 1);
+            if (inventory.hasEnoughOfItem("gold", 1)) {
+                inventory.autoRemoveItem("gold", 1);
                 inventoryUI.reloadInventory();
             }
         }

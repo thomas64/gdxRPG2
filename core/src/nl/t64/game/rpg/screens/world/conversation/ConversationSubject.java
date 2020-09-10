@@ -38,6 +38,10 @@ public class ConversationSubject {
         observers.forEach(conversationObserver -> conversationObserver.onNotifyShowRewardDialog(reward));
     }
 
+    void notifyShowReceiveDialog(Loot receive) {
+        observers.forEach(conversationObserver -> conversationObserver.onNotifyShowReceiveDialog(receive));
+    }
+
     void notifyHeroJoined() {
         observers.forEach(ConversationObserver::onNotifyHeroJoined);
     }

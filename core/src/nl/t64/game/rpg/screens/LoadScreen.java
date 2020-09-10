@@ -98,7 +98,8 @@ public class LoadScreen implements Screen {
 
     private boolean hasSmallParchment() {
         return screenType.equals(ScreenType.FIND)
-               || screenType.equals(ScreenType.REWARD);
+               || screenType.equals(ScreenType.REWARD)
+               || screenType.equals(ScreenType.RECEIVE);
     }
 
 }

@@ -125,6 +125,9 @@ class DebugBox {
         table.add("quest0004:");
         table.add(String.valueOf(Utils.getGameData().getQuests().getQuestById("quest0004").getCurrentState()));
         table.add("").row();
+        table.add("quest0005:");
+        table.add(String.valueOf(Utils.getGameData().getQuests().getQuestById("quest0005").getCurrentState()));
+        table.add("").row();
 
         table.pack();
         table.setPosition(0, Gdx.graphics.getHeight() - table.getHeight());

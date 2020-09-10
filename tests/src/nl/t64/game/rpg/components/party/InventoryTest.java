@@ -146,9 +146,9 @@ class InventoryTest extends GameTest {
     @Test
     void whenInventoryDoesNotHoldEnoughOfResourceWhenRemoving_ShouldThrowException() {
         assertThatExceptionOfType(IllegalStateException.class).isThrownBy(
-                () -> inventory.autoRemoveResource(GOLD, 2));
+                () -> inventory.autoRemoveItem(GOLD, 2));
         assertThatExceptionOfType(IllegalStateException.class).isThrownBy(
-                () -> inventory.autoRemoveResource(HERB, 1));
+                () -> inventory.autoRemoveItem(HERB, 1));
     }
 
     @Test
@@ -165,10 +165,10 @@ class InventoryTest extends GameTest {
         inventory.forceSetItemAt(2, gold2);
         inventory.forceSetItemAt(3, gold3);
         inventory.forceSetItemAt(4, gold4);
-        assertThat(inventory.getTotalOfResource(GOLD)).isEqualTo(121);
+        assertThat(inventory.getTotalOfItem(GOLD)).isEqualTo(121);
 
-        inventory.autoRemoveResource(GOLD, 46);
-        assertThat(inventory.getTotalOfResource(GOLD)).isEqualTo(75);
+        inventory.autoRemoveItem(GOLD, 46);
+        assertThat(inventory.getTotalOfItem(GOLD)).isEqualTo(75);
     }
 
     @Test
@@ -251,8 +251,8 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenCheckingForAmountOfResourceIsEnough_ShouldTrueOrFalse() {
-        assertThat(inventory.hasEnoughOfResource(GOLD, 2)).isFalse();
-        assertThat(inventory.hasEnoughOfResource(GOLD, 1)).isTrue();
+        assertThat(inventory.hasEnoughOfItem(GOLD, 2)).isFalse();
+        assertThat(inventory.hasEnoughOfItem(GOLD, 1)).isTrue();
     }
 
     @Test

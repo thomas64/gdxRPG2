@@ -26,25 +26,30 @@ class QuestTask {
     }
 
     void setTaskComplete() {
-        if (type.equals(QuestType.DISCOVER)
-            || type.equals(QuestType.CHECK)
-            || type.equals(QuestType.MESSAGE_DELIVERY)) {
-            isComplete = true;
-        } else {
-            throw new IllegalCallerException("Only possible to complete a DISCOVER or CHECK task.");
+        switch (type) {
+            case ITEM_DELIVERY -> {
+                target.forEach((itemId, amount) -> Utils.getGameData().getInventory().autoRemoveItem(itemId, amount));
+                isComplete = true;
+            }
+            case DISCOVER, CHECK, MESSAGE_DELIVERY -> isComplete = true;
+            default -> throw new IllegalCallerException("Only possible to complete a DISCOVER, CHECK or DELIVERY task.");
         }
     }
 
     void removeTargetFromInventory() {
-        Utils.getGameData().getInventory().autoRemoveResource(getTargetEntry().getKey(),
-                                                              getTargetEntry().getValue());
+        Utils.getGameData().getInventory().autoRemoveItem(getTargetEntry().getKey(),
+                                                          getTargetEntry().getValue());
+    }
+
+    boolean hasTargetInInventory() {
+        return Utils.getGameData().getInventory().contains(target);
     }
 
     boolean isComplete() {
         return switch (type) {
             case RETURN -> checkReturn();
             case FETCH -> checkFetch();
-            case DISCOVER, CHECK, MESSAGE_DELIVERY -> checkTaskComplete();
+            case DISCOVER, CHECK, MESSAGE_DELIVERY, ITEM_DELIVERY -> checkTaskComplete();
             default -> throw new GdxRuntimeException(String.format("No %s task for now.", type));
         };
     }
@@ -54,8 +59,8 @@ class QuestTask {
     }
 
     private boolean checkFetch() {
-        return Utils.getGameData().getInventory().hasEnoughOfResource(getTargetEntry().getKey(),
-                                                                      getTargetEntry().getValue());
+        return Utils.getGameData().getInventory().hasEnoughOfItem(getTargetEntry().getKey(),
+                                                                  getTargetEntry().getValue());
     }
 
     private boolean checkTaskComplete() {

@@ -26,10 +26,7 @@ import nl.t64.game.rpg.events.character.PathUpdateEvent;
 import nl.t64.game.rpg.screens.LoadScreen;
 import nl.t64.game.rpg.screens.inventory.PartyObserver;
 import nl.t64.game.rpg.screens.inventory.PartySubject;
-import nl.t64.game.rpg.screens.loot.FindScreen;
-import nl.t64.game.rpg.screens.loot.LootObserver;
-import nl.t64.game.rpg.screens.loot.LootSubject;
-import nl.t64.game.rpg.screens.loot.RewardScreen;
+import nl.t64.game.rpg.screens.loot.*;
 import nl.t64.game.rpg.screens.shop.ShopScreen;
 import nl.t64.game.rpg.screens.world.conversation.ConversationDialog;
 import nl.t64.game.rpg.screens.world.conversation.ConversationObserver;
@@ -105,6 +102,8 @@ public class WorldScreen implements Screen,
         findScreen.addObserver(this);
         final var rewardScreen = (LootSubject) Utils.getScreenManager().getScreen(ScreenType.REWARD);
         rewardScreen.addObserver(this);
+        final var receiveScreen = (LootSubject) Utils.getScreenManager().getScreen(ScreenType.RECEIVE);
+        receiveScreen.addObserver(this);
     }
 
     // MapObserver /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -188,6 +187,15 @@ public class WorldScreen implements Screen,
         conversation.setCurrentPhraseId(Constant.PHRASE_ID_QUEST_FINISHED);
     }
 
+    @Override
+    public void onNotifyReceiveTaken() {
+        String conversationId = currentNpcCharacter.getConversationId();
+        QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
+        ConversationGraph conversation = Utils.getGameData().getConversations().getConversationById(conversationId);
+        quest.accept();
+        conversation.setCurrentPhraseId(Constant.PHRASE_ID_QUEST_ACCEPT);
+    }
+
     // ConversationObserver ////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
@@ -209,6 +217,15 @@ public class WorldScreen implements Screen,
         rewardScreen.setLoot(reward);
         rewardScreen.setLootTitle("   Reward");
         openLoadScreen(ScreenType.REWARD);
+        conversationDialog.hideWithFade();
+    }
+
+    @Override
+    public void onNotifyShowReceiveDialog(Loot receive) {
+        var receiveScreen = (ReceiveScreen) Utils.getScreenManager().getScreen(ScreenType.RECEIVE);
+        receiveScreen.setLoot(receive);
+        receiveScreen.setLootTitle("   Receive");
+        openLoadScreen(ScreenType.RECEIVE);
         conversationDialog.hideWithFade();
     }
 

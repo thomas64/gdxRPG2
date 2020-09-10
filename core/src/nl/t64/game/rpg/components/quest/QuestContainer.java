@@ -24,16 +24,6 @@ public class QuestContainer {
         return quests.get(questId);
     }
 
-    public StateContainer createStateContainer() {
-        var stateContainer = new StateContainer();
-        quests.forEach((id, graph) -> stateContainer.setState(id, graph.currentState));
-        return stateContainer;
-    }
-
-    public void setCurrentStates(StateContainer stateContainer) {
-        quests.forEach((id, graph) -> graph.currentState = stateContainer.getState(id));
-    }
-
     private void loadQuests() {
         String[] configFiles = Gdx.files.local(FILE_LIST).readString().split(System.lineSeparator());
         Arrays.stream(configFiles)

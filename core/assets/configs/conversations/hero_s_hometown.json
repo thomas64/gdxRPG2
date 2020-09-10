@@ -110,7 +110,7 @@
       "5000": [
         {
           "text": "Yes, everybody needs a chance.",
-          "conversationCommand": "COMPLETE_SUBTASK",
+          "conversationCommand": "COMPLETE_QUEST_TASK",
           "destinationId": "5001"
         },
         {
@@ -120,6 +120,84 @@
       ],
       "5001": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "5002"}],
       "5003": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "5002"}]
+    }
+  },
+  "quest0005": {
+    "phrases": {
+      "1": {"text": ["Hey you! What are you doing in my house?"]},
+      "2": {"text": ["Well, never mind. Soon I'm gone anyway."]},
+      "3": {"text": ["Would you hear an old man out his dying request?"]},
+      "4": {"text": ["Thank you."]},
+      "5": {"text": ["Do you know the priest in this town?"]},
+      "6": {"text": ["Soon I'll be leaving this plane of reality, but I'm so afraid I will go hell when I'm gone."]},
+      "7": {
+        "text": ["I'm certain that if I could present something valuable to our priest it will bring me salvation."]
+      },
+      "8": {"text": ["But alas, I'm not able to walk anymore."]},
+      "9": {"text": ["Would you go instead of me?"]},
+      "10": {"text": ["Please take this expensive artifact and deliver it to our priest."]},
+      "20": {"text": [". . . ?"]},
+      "30": {"text": [". . . ?"]},
+      "50": {"text": ["Thank you for doing this."]},
+      "1500": {"text": ["Now I can rest in peace and go to heaven."]},
+      "2000": {"text": ["But please hurry. I don't have much time left."]},
+      "3000": {"text": ["It's great to be saved.", "But you'll have to accept my reward."]},
+      "4000": {"text": ["It's great to be saved."]}
+    },
+    "choices": {
+      "3": [
+        {
+          "text": "Why not. I'm only a trespassing stranger.",
+          "destinationId": "4"
+        },
+        {
+          "text": "I'm sorry. I've got better things to do. Bye.",
+          "destinationId": "20"
+        }
+      ],
+      "10": [
+        {
+          "text": "Yes, I'll try to lower your burden.",
+          "conversationCommand": "RECEIVE_ITEM",
+          "destinationId": "10"
+        },
+        {
+          "text": "Nope, you'll die a lonely death.",
+          "conversationCommand": "REJECT_QUEST",
+          "destinationId": "30"
+        }
+      ],
+      "20": [{"conversationCommand": "EXIT_CONVERSATION"}],
+      "30": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "10"}],
+      "50": [{"conversationCommand": "RETURN_QUEST"}],
+      "1500": [{"conversationCommand": "REWARD_QUEST"}],
+      "2000": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "50"}],
+      "3000": [{"conversationCommand": "REWARD_QUEST", "destinationId": "3000"}],
+      "4000": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "4000"}]
+    }
+  },
+  "quest0005-1": {
+    "phrases": {
+      "1": {"text": ["God bless you my child."]},
+      "5000": {"text": ["(Deliver the expensive shield to the priest?)"]},
+      "5001": {"text": ["Thank you my child.", "May the Force be with you."]},
+      "5002": {"text": ["You are a blessed soul."]}
+    },
+    "choices": {
+      "1": [{"conversationCommand": "CHECK_IF_IN_INVENTORY"}],
+      "5000": [
+        {
+          "text": "Of course, salvation is not to be mocked with.",
+          "conversationCommand": "COMPLETE_QUEST_TASK",
+          "destinationId": "5001"
+        },
+        {
+          "text": "Hmmm, I think I'd better hold on to it.",
+          "conversationCommand": "EXIT_CONVERSATION"
+        }
+      ],
+      "5001": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "5002"}],
+      "5002": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "5002"}]
     }
   }
 }

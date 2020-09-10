@@ -14,6 +14,13 @@ public class Loot {
     private int lockLevel;
     private int xp;
 
+    public Loot(Map<String, Integer> content) {
+        this.content = content;
+        this.trapLevel = 0;
+        this.lockLevel = 0;
+        this.xp = 0;
+    }
+
     Loot() {
         this.content = Collections.emptyMap();
         this.trapLevel = 0;

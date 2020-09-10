@@ -1,7 +1,5 @@
 package nl.t64.game.rpg.components.quest;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import nl.t64.game.rpg.GameData;
 import nl.t64.game.rpg.GameTest;
 import nl.t64.game.rpg.Utils;
@@ -27,25 +25,7 @@ class QuestTest extends GameTest {
 
     @Test
     void whenQuestsAreCreated_ShouldHaveAllQuestsStartedAtStateUnknown() {
-        StateContainer stateContainer = quests.createStateContainer();
-        assertThat(stateContainer.getState("quest0001")).isEqualTo(QuestState.UNKNOWN);
-    }
-
-    @Test
-    void whenGameIsSaved_ShouldStoreAllCurrentStatesInContainer() {
-        StateContainer stateContainer = quests.createStateContainer();
-        FileHandle[] configDirList = Gdx.files.local("configs/quests/").list(".json");
-        int containerSize = stateContainer.getSize();
-        assertThat(configDirList).hasSizeLessThan(containerSize);
-    }
-
-    @Test
-    void whenGameIsLoaded_ShouldFillQuestContainerFromStateContainer() {
-        StateContainer stateContainer = quests.createStateContainer();
-        stateContainer.setState("quest0001", QuestState.ACCEPTED);
-        quests.setCurrentStates(stateContainer);
-        QuestGraph questGraph = quests.getQuestById("quest0001");
-        assertThat(questGraph.getCurrentState()).isEqualTo(QuestState.ACCEPTED);
+        assertThat(quests.getQuestById("quest0001").getCurrentState()).isEqualTo(QuestState.UNKNOWN);
     }
 
     @Test
@@ -91,8 +71,8 @@ class QuestTest extends GameTest {
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.FINISHED);
         assertThat(quest0001.isFinished()).isTrue();
         assertThat(gameData.getParty().getHero(0).getXpToInvest()).isEqualTo(2);
-        assertThat(gameData.getInventory().hasEnoughOfResource("gemstone", 1)).isFalse();
-        assertThat(gameData.getInventory().hasEnoughOfResource("herb", 1)).isFalse();
+        assertThat(gameData.getInventory().hasEnoughOfItem("gemstone", 1)).isFalse();
+        assertThat(gameData.getInventory().hasEnoughOfItem("herb", 1)).isFalse();
     }
 
     @Test
@@ -148,7 +128,7 @@ class QuestTest extends GameTest {
     //@formatter:on
 
     @Test
-    void whenSubTaskIsCheckOrDiscover_ShouldSucceedToSetTaskComplete() {
+    void whenQuestTaskIsCheckOrDiscover_ShouldSucceedToSetTaskComplete() {
         QuestGraph quest0003 = quests.getQuestById("quest0003");
         quest0003.setTaskComplete("1");
         quest0003.setTaskComplete("2");
