@@ -1,7 +1,5 @@
 package nl.t64.game.rpg.components.quest;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import nl.t64.game.rpg.GameData;
 import nl.t64.game.rpg.GameTest;
 import nl.t64.game.rpg.Utils;
@@ -27,25 +25,7 @@ class QuestTest extends GameTest {
 
     @Test
     void whenQuestsAreCreated_ShouldHaveAllQuestsStartedAtStateUnknown() {
-        StateContainer stateContainer = quests.createStateContainer();
-        assertThat(stateContainer.getState("quest0001")).isEqualTo(QuestState.UNKNOWN);
-    }
-
-    @Test
-    void whenGameIsSaved_ShouldStoreAllCurrentStatesInContainer() {
-        StateContainer stateContainer = quests.createStateContainer();
-        FileHandle[] configDirList = Gdx.files.local("configs/quests/").list(".json");
-        int containerSize = stateContainer.getSize();
-        assertThat(configDirList).hasSizeLessThan(containerSize);
-    }
-
-    @Test
-    void whenGameIsLoaded_ShouldFillQuestContainerFromStateContainer() {
-        StateContainer stateContainer = quests.createStateContainer();
-        stateContainer.setState("quest0001", QuestState.ACCEPTED);
-        quests.setCurrentStates(stateContainer);
-        QuestGraph questGraph = quests.getQuestById("quest0001");
-        assertThat(questGraph.getCurrentState()).isEqualTo(QuestState.ACCEPTED);
+        assertThat(quests.getQuestById("quest0001").getCurrentState()).isEqualTo(QuestState.UNKNOWN);
     }
 
     @Test

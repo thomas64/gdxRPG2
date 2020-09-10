@@ -34,19 +34,5 @@
         "type": "RETURN"
       }
     }
-  },
-  "quest0005": {
-    "title": "Buy salvation",
-    "tasks": {
-      "1": {
-        "taskPhrase": "Deliver present to the priest",
-        "type": "ITEM_DELIVERY",
-        "target": {"masterwork_heavy_shield": 1}
-      },
-      "2": {
-        "taskPhrase": "Report back",
-        "type": "RETURN"
-      }
-    }
   }
 }

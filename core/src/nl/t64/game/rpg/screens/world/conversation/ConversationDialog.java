@@ -30,7 +30,7 @@ public class ConversationDialog extends ConversationSubject {
     private static final float DIALOG_WIDTH = 1000f;
     private static final float DIALOG_HEIGHT = 300f;
     private static final float PAD = 25f;
-    private static final float ALL_PADS = (PAD * 2f) + Constant.FACE_SIZE + PAD + (PAD * 2f);
+    private static final float ALL_PADS = (PAD * 2f) + Constant.FACE_SIZE + PAD + (PAD * 3f);
 
     private final Stage stage;
     private final BitmapFont font;
@@ -145,7 +145,7 @@ public class ConversationDialog extends ConversationSubject {
         mainTable.add(faceImage).width(Constant.FACE_SIZE).padLeft(PAD * 2f);
 
         var textTable = new Table();
-        textTable.pad(PAD, PAD, PAD, PAD * 2f);
+        textTable.pad(PAD, PAD, PAD, PAD * 3f);
         textTable.add(label).width(DIALOG_WIDTH - ALL_PADS).row();
         textTable.add().height(PAD).row();
         textTable.add(scrollPane).left().padLeft(PAD);
@@ -210,7 +210,7 @@ public class ConversationDialog extends ConversationSubject {
             case SAVE_GAME -> saveGame(destinationId);
             case ACCEPT_QUEST -> acceptQuest();
             case REJECT_QUEST -> rejectQuest(destinationId);
-            case RECEIVE_ITEM -> receiveItem();
+            case RECEIVE_ITEM -> receiveItem(destinationId);
             case CHECK_IF_QUEST_ACCEPTED -> checkQuest(destinationId);
             case CHECK_IF_IN_INVENTORY -> checkInventory(destinationId);
             case COMPLETE_QUEST_TASK -> completeTask(destinationId);
@@ -262,7 +262,8 @@ public class ConversationDialog extends ConversationSubject {
         continueConversation(destinationId);
     }
 
-    private void receiveItem() {
+    private void receiveItem(String destinationId) {
+        graph.setCurrentPhraseId(destinationId);
         QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
         quest.handleReceive(super::notifyShowReceiveDialog);        // ends conversation, sets possible new phraseId
     }

@@ -7,7 +7,6 @@ import nl.t64.game.rpg.components.conversation.PhraseIdContainer;
 import nl.t64.game.rpg.components.loot.LootContainer;
 import nl.t64.game.rpg.components.party.*;
 import nl.t64.game.rpg.components.quest.QuestContainer;
-import nl.t64.game.rpg.components.quest.StateContainer;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.profile.ProfileObserver;
@@ -45,7 +44,7 @@ public class GameData implements ProfileObserver {
         profileManager.setProperty("party", party);
         profileManager.setProperty("inventory", inventory);
         profileManager.setProperty("conversations", conversations.createPhraseIdContainer());
-        profileManager.setProperty("quests", quests.createStateContainer());
+        profileManager.setProperty("quests", quests);
         profileManager.setProperty("loot", loot);
         profileManager.setProperty("isFirstTimeLootMessageShown", isFirstTimeLootMessageShown);
     }
@@ -58,9 +57,7 @@ public class GameData implements ProfileObserver {
         conversations = new ConversationContainer();
         var currentPhraseIds = profileManager.getProperty("conversations", PhraseIdContainer.class);
         conversations.setCurrentPhraseIds(currentPhraseIds);
-        quests = new QuestContainer();
-        var currentStates = profileManager.getProperty("quests", StateContainer.class);
-        quests.setCurrentStates(currentStates);
+        quests = profileManager.getProperty("quests", QuestContainer.class);
         loot = profileManager.getProperty("loot", LootContainer.class);
         isFirstTimeLootMessageShown = profileManager.getProperty("isFirstTimeLootMessageShown", Boolean.class);
     }
