@@ -1,10 +1,11 @@
 package nl.t64.game.rpg.components.party;
 
 import lombok.AllArgsConstructor;
+import nl.t64.game.rpg.constants.SuperEnum;
 
 
 @AllArgsConstructor
-public enum ResourceType implements SuperEnum {
+enum ResourceType implements SuperEnum {
 
     GOLD("Gold"),
     HERB("Herb"),

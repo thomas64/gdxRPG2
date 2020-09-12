@@ -1,7 +1,7 @@
 package nl.t64.game.rpg.components.party;
 
 import lombok.AllArgsConstructor;
-import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.constants.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;

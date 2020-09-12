@@ -1,5 +1,7 @@
 package nl.t64.game.rpg.components.party;
 
+import nl.t64.game.rpg.constants.InventoryGroup;
+
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;

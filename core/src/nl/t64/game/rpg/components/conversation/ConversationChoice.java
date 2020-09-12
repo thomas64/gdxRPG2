@@ -1,6 +1,7 @@
 package nl.t64.game.rpg.components.conversation;
 
 import lombok.Getter;
+import nl.t64.game.rpg.constants.ConversationCommand;
 
 
 @Getter

@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.components.party.InventoryContainer;
-import nl.t64.game.rpg.components.party.InventoryGroup;
+import nl.t64.game.rpg.constants.InventoryGroup;
 
 
 public class InventorySlot extends ItemSlot {

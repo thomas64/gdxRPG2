@@ -2,6 +2,7 @@ package nl.t64.game.rpg.components.party;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import nl.t64.game.rpg.constants.SkillItemId;
 
 import java.util.List;
 

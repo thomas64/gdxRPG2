@@ -1,7 +1,7 @@
 package nl.t64.game.rpg.components.quest;
 
 
-public enum QuestState {
+enum QuestState {
     UNKNOWN,
     KNOWN,
     ACCEPTED,

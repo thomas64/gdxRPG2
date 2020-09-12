@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.utils.Scaling;
 import nl.t64.game.rpg.Utils;
-import nl.t64.game.rpg.components.party.InventoryGroup;
+import nl.t64.game.rpg.constants.InventoryGroup;
 
 import java.util.Optional;
 

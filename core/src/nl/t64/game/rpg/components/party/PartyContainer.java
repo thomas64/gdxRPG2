@@ -1,6 +1,7 @@
 package nl.t64.game.rpg.components.party;
 
 import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.constants.SkillItemId;
 
 import java.util.Comparator;
 import java.util.LinkedHashMap;

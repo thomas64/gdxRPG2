@@ -1,7 +1,7 @@
 package nl.t64.game.rpg.components.party;
 
 import nl.t64.game.rpg.GameTest;
-import nl.t64.game.rpg.constants.ThreeState;
+import nl.t64.game.rpg.constants.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

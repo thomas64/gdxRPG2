@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.components.party;
+package nl.t64.game.rpg.constants;
 
 import lombok.AllArgsConstructor;
 
@@ -38,7 +38,7 @@ public enum InventoryGroup implements SuperEnum {
         return title;
     }
 
-    boolean isStackable() {
+    public boolean isStackable() {
         return switch (this) {
             case POTION, RESOURCE -> true;
             default -> false;

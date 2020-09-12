@@ -2,7 +2,7 @@ package nl.t64.game.rpg.components.party;
 
 import lombok.Getter;
 import lombok.Setter;
-import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.constants.*;
 
 import java.util.List;
 import java.util.Map;

@@ -1,6 +1,7 @@
 package nl.t64.game.rpg.components.party;
 
 import nl.t64.game.rpg.GameTest;
+import nl.t64.game.rpg.constants.*;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

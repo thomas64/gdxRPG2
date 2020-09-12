@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.components.party;
+package nl.t64.game.rpg.constants;
 
 
 public interface SuperEnum {

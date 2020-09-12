@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.components.party;
+package nl.t64.game.rpg.constants;
 
 import lombok.AllArgsConstructor;
 
@@ -14,7 +14,7 @@ public enum SchoolType implements SuperEnum {
     NECROMANCY("Necromancy"),
     STAR("Star");
 
-    final String title;
+    private final String title;
 
     @Override
     public String getTitle() {

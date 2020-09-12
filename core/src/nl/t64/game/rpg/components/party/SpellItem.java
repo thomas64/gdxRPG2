@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import nl.t64.game.rpg.constants.SchoolType;
 
 import java.util.List;
 
@@ -65,7 +66,7 @@ public class SpellItem implements PersonalityItem {
     public String getDescription(int totalLoremaster) {
         return String.join(System.lineSeparator(), description) + System.lineSeparator()
                + System.lineSeparator()
-               + "School: " + school.title + System.lineSeparator()
+               + "School: " + school.getTitle() + System.lineSeparator()
                + "Requires: " + requiredResource.title + System.lineSeparator()
                + "Stamina cost: " + staminaCost + System.lineSeparator()
                + System.lineSeparator()

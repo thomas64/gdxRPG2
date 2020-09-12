@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.components.party;
+package nl.t64.game.rpg.constants;
 
 import lombok.AllArgsConstructor;
 
@@ -14,7 +14,7 @@ public enum StatItemId implements SuperEnum {
     STRENGTH("Strength"),
     STAMINA("Stamina");
 
-    final String title;
+    private final String title;
 
     @Override
     public String getTitle() {

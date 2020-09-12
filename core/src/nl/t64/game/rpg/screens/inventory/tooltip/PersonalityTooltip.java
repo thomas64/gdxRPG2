@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import nl.t64.game.rpg.components.party.PersonalityItem;
-import nl.t64.game.rpg.components.party.SkillItemId;
+import nl.t64.game.rpg.constants.SkillItemId;
 import nl.t64.game.rpg.screens.inventory.InventoryUtils;
 
 

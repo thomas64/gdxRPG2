@@ -2,9 +2,9 @@ package nl.t64.game.rpg.screens.inventory;
 
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.InventoryDatabase;
-import nl.t64.game.rpg.components.party.InventoryGroup;
 import nl.t64.game.rpg.components.party.InventoryItem;
-import nl.t64.game.rpg.components.party.SkillItemId;
+import nl.t64.game.rpg.constants.InventoryGroup;
+import nl.t64.game.rpg.constants.SkillItemId;
 
 import java.util.Optional;
 

@@ -5,8 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.InventoryContainer;
-import nl.t64.game.rpg.components.party.InventoryGroup;
 import nl.t64.game.rpg.components.party.InventoryItem;
+import nl.t64.game.rpg.constants.InventoryGroup;
 import nl.t64.game.rpg.screens.inventory.tooltip.ItemSlotTooltip;
 import nl.t64.game.rpg.screens.inventory.tooltip.ItemSlotTooltipListener;
 

@@ -2,6 +2,7 @@ package nl.t64.game.rpg.components.party;
 
 import com.badlogic.gdx.Gdx;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.constants.InventoryGroup;
 
 import java.util.Arrays;
 import java.util.HashMap;

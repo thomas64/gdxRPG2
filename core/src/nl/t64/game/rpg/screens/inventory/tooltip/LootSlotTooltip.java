@@ -4,8 +4,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.InventoryDescription;
-import nl.t64.game.rpg.components.party.InventoryGroup;
-import nl.t64.game.rpg.components.party.SkillItemId;
+import nl.t64.game.rpg.constants.InventoryGroup;
+import nl.t64.game.rpg.constants.SkillItemId;
 import nl.t64.game.rpg.screens.inventory.InventoryImage;
 import nl.t64.game.rpg.screens.inventory.ItemSlot;
 
