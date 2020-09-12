@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -120,6 +122,13 @@ class InventoryTest extends GameTest {
         assertThat(inventory.contains(GOLD)).isTrue();
         assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex())).isEqualTo(1);
         assertThat(inventory.getItemAt(inventory.getLastIndex())).get().hasFieldOrPropertyWithValue("id", GOLD);
+    }
+
+    @Test
+    void whenDataIsCreated_ShouldContainItems2() {
+        Map<String, Integer> map = Map.of(BASIC_MACE, 1, GOLD, 1);
+        assertThat(inventory.contains(map)).isTrue();
+        assertThat(inventory.contains(Collections.emptyMap())).isFalse();
     }
 
     @Test
@@ -306,6 +315,12 @@ class InventoryTest extends GameTest {
                  .forEach(i -> inventory.forceSetItemAt(i, gold));
         inventory.autoSetItem(herb);
         inventory.autoSetItem(mace);
+    }
+
+    @Test
+    void whenEmptyIndexIsIncreased_ShouldThrowException() {
+        assertThatExceptionOfType(IllegalStateException.class)
+                .isThrownBy(() -> inventory.incrementAmountAt(2, 1));
     }
 
     @Test

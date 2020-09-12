@@ -69,9 +69,10 @@ public class QuestGraph {
         }
     }
 
-    public void handleInventory(String questTaskId, String phraseId,
+    public void handleInventory(String taskId, String phraseId,
                                 Consumer<String> continueConversation, Consumer<String> endConversation) {
-        if (tasks.get(questTaskId).hasTargetInInventory()) {
+        if (currentState.equals(QuestState.ACCEPTED)
+            && tasks.get(taskId).hasTargetInInventory()) {
             continueConversation.accept(Constant.PHRASE_ID_QUEST_DELIVERY);
         } else {
             endConversation.accept(phraseId);

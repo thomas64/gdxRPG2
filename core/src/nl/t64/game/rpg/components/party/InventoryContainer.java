@@ -93,6 +93,9 @@ public class InventoryContainer {
     }
 
     public boolean contains(Map<String, Integer> items) {
+        if (items.isEmpty()) {
+            return false;
+        }
         return items.entrySet()
                     .stream()
                     .allMatch(item -> hasEnoughOfItem(item.getKey(), item.getValue()));

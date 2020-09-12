@@ -1,96 +1,96 @@
 {
-  "quest0002": {
+  "quest0002"  : {
     "phrases": {
-      "1": {"text": ["Halt! You may not enter this town!"]},
-      "2": {"text": ["Only if you can prove that you are worthy."]},
-      "3": {"text": ["Think? Prove your worthiness."]},
-      "50": {"text": ["It seems you are not worthy enough."]},
-      "101": {"text": ["Halt! You may not enter this town!"]},
-      "102": {"text": ["Only if you can prove that you are worthy."]},
-      "103": {"text": ["Think? Prove your worthiness."]},
+      "1"   : {"text": ["Halt! You may not enter this town!"]},
+      "2"   : {"text": ["Only if you can prove that you are worthy."]},
+      "3"   : {"text": ["Think? Prove your worthiness."]},
+      "50"  : {"text": ["It seems you are not worthy enough."]},
+      "101" : {"text": ["Halt! You may not enter this town!"]},
+      "102" : {"text": ["Only if you can prove that you are worthy."]},
+      "103" : {"text": ["Think? Prove your worthiness."]},
       "1000": {"text": ["It seems you are worthy."]},
       "1500": {"text": ["It seems you are worthy."]},
       "2000": {"text": ["It seems you are not worthy enough."]},
       "4000": {"text": ["You may enter town."]}
     },
     "choices": {
-      "2": [
+      "2"   : [
         {
-          "text": "Here, have 1 gold piece.",
+          "text"               : "Here, have 1 gold piece.",
           "conversationCommand": "ACCEPT_QUEST"
         },
         {
-          "text": "Wait! Let me think about this.",
+          "text"               : "Wait! Let me think about this.",
           "conversationCommand": "REJECT_QUEST",
-          "destinationId": "3"
+          "destinationId"      : "3"
         }
       ],
-      "3": [{"conversationCommand": "EXIT_CONVERSATION"}],
-      "50": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
-      "102": [
+      "3"   : [{"conversationCommand": "EXIT_CONVERSATION"}],
+      "50"  : [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
+      "102" : [
         {
-          "text": "Here, have 1 gold piece.",
+          "text"               : "Here, have 1 gold piece.",
           "conversationCommand": "RETURN_QUEST"
         },
         {
-          "text": "Wait! Let me think about this.",
+          "text"         : "Wait! Let me think about this.",
           "destinationId": "103"
         }
       ],
-      "103": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
+      "103" : [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
       "1000": [{"conversationCommand": "REWARD_QUEST"}],
       "1500": [{"conversationCommand": "REWARD_QUEST"}],
       "2000": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
       "4000": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "4000"}]
     }
   },
-  "quest0004": {
+  "quest0004"  : {
     "phrases": {
-      "1": {"text": ["How are you?"]},
-      "2": {"text": ["May I ask you something?"]},
-      "3": {"text": ["I'm a bit shy and there is this girl that I like,", "but I'm afraid to tell her."]},
-      "4": {
+      "1"   : {"text": ["How are you?"]},
+      "2"   : {"text": ["May I ask you something?"]},
+      "3"   : {"text": ["I'm a bit shy and there is this girl that I like,", "but I'm afraid to tell her."]},
+      "4"   : {
         "text": [
           "Would you tell her for me instead? Please?",
           "She was just outside a moment ago, but I won't dare to come near, so I ran inside this house.",
           "I'm so pathetic."
         ]
       },
-      "5": {"text": ["Would you help a guy out here?"]},
-      "6": {"text": ["You are right, I am pathetic."]},
-      "50": {"text": ["Thank you so much."]},
-      "101": {"text": ["Did you get a chance to tell her?"]},
-      "102": {"text": ["You are destroying my world."]},
+      "5"   : {"text": ["Would you help a guy out here?"]},
+      "6"   : {"text": ["You are right, I am pathetic."]},
+      "50"  : {"text": ["Thank you so much."]},
+      "101" : {"text": ["Did you get a chance to tell her?"]},
+      "102" : {"text": ["You are destroying my world."]},
       "1500": {"text": ["Thank you for telling her!", "You can have this, for helping me out."]},
       "2000": {"text": ["Don't play with my feelings.", "I wish that could be true."]},
       "3000": {"text": ["You are the best.", "But you'll have to accept my reward."]},
       "4000": {"text": ["Thanks again, I owe you big time!"]}
     },
     "choices": {
-      "5": [
+      "5"   : [
         {
-          "text": "Yes, love needs to be everywhere.",
+          "text"               : "Yes, love needs to be everywhere.",
           "conversationCommand": "ACCEPT_QUEST"
         },
         {
-          "text": "No, you're pathetic indeed.",
+          "text"               : "No, you're pathetic indeed.",
           "conversationCommand": "REJECT_QUEST",
-          "destinationId": "6"
+          "destinationId"      : "6"
         }
       ],
-      "6": [{"conversationCommand": "EXIT_CONVERSATION"}],
-      "50": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
-      "101": [
+      "6"   : [{"conversationCommand": "EXIT_CONVERSATION"}],
+      "50"  : [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
+      "101" : [
         {
-          "text": "Yes, and her reaction was amazing.",
+          "text"               : "Yes, and her reaction was amazing.",
           "conversationCommand": "RETURN_QUEST"
         },
         {
-          "text": "No, she'll probably also think you're pathetic.",
+          "text"         : "No, she'll probably also think you're pathetic.",
           "destinationId": "102"
         }
       ],
-      "102": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
+      "102" : [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
       "1500": [{"conversationCommand": "REWARD_QUEST"}],
       "2000": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
       "3000": [{"conversationCommand": "REWARD_QUEST", "destinationId": "3000"}],
@@ -99,22 +99,22 @@
   },
   "quest0004-1": {
     "phrases": {
-      "1": {"text": ["How are you?"]},
+      "1"   : {"text": ["How are you?"]},
       "5000": {"text": ["(Deliver the pathetic message to her?)"]},
       "5001": {"text": ["I... I didn't know that...", "Thank you for telling me."]},
       "5002": {"text": ["How are you?"]},
       "5003": {"text": ["I'm also pretty shy myself."]}
     },
     "choices": {
-      "1": [{"conversationCommand": "CHECK_IF_QUEST_ACCEPTED"}],
+      "1"   : [{"conversationCommand": "CHECK_IF_QUEST_ACCEPTED"}],
       "5000": [
         {
-          "text": "Yes, everybody needs a chance.",
+          "text"               : "Yes, everybody needs a chance.",
           "conversationCommand": "COMPLETE_QUEST_TASK",
-          "destinationId": "5001"
+          "destinationId"      : "5001"
         },
         {
-          "text": "No, he has to grow up and be a man.",
+          "text"               : "No, he has to grow up and be a man.",
           "conversationCommand": "EXIT_CONVERSATION"
         }
       ],
@@ -122,54 +122,52 @@
       "5003": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "5002"}]
     }
   },
-  "quest0005": {
+  "quest0005"  : {
     "phrases": {
-      "1": {"text": ["Hey you! What are you doing in my house?"]},
-      "2": {"text": ["Well, never mind. Soon I'm gone anyway."]},
-      "3": {"text": ["Would you hear an old man out his dying request?"]},
-      "4": {"text": ["Thank you."]},
-      "5": {"text": ["Do you know the priest in this town?"]},
-      "6": {"text": ["Soon I'll be leaving this plane of reality, but I'm so afraid I will go hell when I'm gone."]},
-      "7": {
-        "text": ["I'm certain that if I could present something valuable to our priest it will bring me salvation."]
-      },
-      "8": {"text": ["But alas, I'm not able to walk anymore."]},
-      "9": {"text": ["Would you go instead of me?"]},
-      "10": {"text": ["Please take this expensive artifact and deliver it to our priest."]},
-      "20": {"text": [". . . ?"]},
-      "30": {"text": [". . . ?"]},
-      "50": {"text": ["Thank you for doing this."]},
+      "1"   : {"text": ["Hey you! What are you doing in my house?"]},
+      "2"   : {"text": ["Well, never mind. Soon I'm gone anyway."]},
+      "3"   : {"text": ["Would you hear an old man out about his dying request?"]},
+      "4"   : {"text": ["Thank you."]},
+      "5"   : {"text": ["Do you know the priest in this town?"]},
+      "6"   : {"text": ["Soon I'll be leaving this plane of reality, but I'm so afraid I will go to hell when I'm gone."]},
+      "7"   : {"text": ["I'm certain that if I could present something valuable to our priest it will bring me salvation."]},
+      "8"   : {"text": ["But alas, I'm not able to walk anymore."]},
+      "9"   : {"text": ["Would you go instead of me?"]},
+      "10"  : {"text": ["Please take this expensive artifact and deliver it to our priest."]},
+      "20"  : {"text": [". . . ?"]},
+      "30"  : {"text": [". . . ?"]},
+      "50"  : {"text": ["Thank you for doing this."]},
       "1500": {"text": ["Now I can rest in peace and go to heaven."]},
       "2000": {"text": ["But please hurry. I don't have much time left."]},
       "3000": {"text": ["It's great to be saved.", "But you'll have to accept my reward."]},
       "4000": {"text": ["It's great to be saved."]}
     },
     "choices": {
-      "3": [
+      "3"   : [
         {
-          "text": "Why not. I'm only a trespassing stranger.",
+          "text"         : "Why not. I'm only a trespassing stranger.",
           "destinationId": "4"
         },
         {
-          "text": "I'm sorry. I've got better things to do. Bye.",
+          "text"         : "I'm sorry. I've got better things to do. Bye.",
           "destinationId": "20"
         }
       ],
-      "10": [
+      "10"  : [
         {
-          "text": "Yes, I'll try to lower your burden.",
+          "text"               : "Yes, I'll try to lower your burden.",
           "conversationCommand": "RECEIVE_ITEM",
-          "destinationId": "10"
+          "destinationId"      : "10"
         },
         {
-          "text": "Nope, you'll die a lonely death.",
+          "text"               : "Nope, you'll die a lonely death.",
           "conversationCommand": "REJECT_QUEST",
-          "destinationId": "30"
+          "destinationId"      : "30"
         }
       ],
-      "20": [{"conversationCommand": "EXIT_CONVERSATION"}],
-      "30": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "10"}],
-      "50": [{"conversationCommand": "RETURN_QUEST"}],
+      "20"  : [{"conversationCommand": "EXIT_CONVERSATION"}],
+      "30"  : [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "10"}],
+      "50"  : [{"conversationCommand": "RETURN_QUEST"}],
       "1500": [{"conversationCommand": "REWARD_QUEST"}],
       "2000": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "50"}],
       "3000": [{"conversationCommand": "REWARD_QUEST", "destinationId": "3000"}],
@@ -178,21 +176,21 @@
   },
   "quest0005-1": {
     "phrases": {
-      "1": {"text": ["God bless you my child."]},
+      "1"   : {"text": ["God bless you my child."]},
       "5000": {"text": ["(Deliver the expensive shield to the priest?)"]},
       "5001": {"text": ["Thank you my child.", "May the Force be with you."]},
       "5002": {"text": ["You are a blessed soul."]}
     },
     "choices": {
-      "1": [{"conversationCommand": "CHECK_IF_IN_INVENTORY"}],
+      "1"   : [{"conversationCommand": "CHECK_IF_IN_INVENTORY"}],
       "5000": [
         {
-          "text": "Of course, salvation is not to be mocked with.",
+          "text"               : "Of course, salvation is not to be mocked with.",
           "conversationCommand": "COMPLETE_QUEST_TASK",
-          "destinationId": "5001"
+          "destinationId"      : "5001"
         },
         {
-          "text": "Hmmm, I think I'd better hold on to it.",
+          "text"               : "Hmmm, I think I'd better hold on to it.",
           "conversationCommand": "EXIT_CONVERSATION"
         }
       ],
