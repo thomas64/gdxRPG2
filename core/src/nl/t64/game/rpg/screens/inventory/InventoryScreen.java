@@ -351,16 +351,17 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
         if (isDialogVisibleThenClose()) {
             return;
         }
-        final String message = "Esc = Close screen" + System.lineSeparator() +
-                               "I = Close screen" + System.lineSeparator() +
-                               "R = Reset windows" + System.lineSeparator() +
-                               "Q = Previous hero" + System.lineSeparator() +
-                               "W = Next hero" + System.lineSeparator() +
-                               "D = Dismiss hero" + System.lineSeparator() +
-                               "S = Sort Inventory" + System.lineSeparator() +
-                               "Shift = Drag full stack" + System.lineSeparator() +
-                               "Ctrl = Drag half stack" + System.lineSeparator() +
-                               "H = This dialog";
+        final String message = """
+                Esc = Close screen
+                I = Close screen
+                R = Reset windows
+                Q = Previous hero
+                W = Next hero
+                D = Dismiss hero
+                S = Sort Inventory
+                Shift = Drag full stack
+                Ctrl = Drag half stack
+                H = This dialog""";
         final var messageDialog = new MessageDialog(message);
         messageDialog.setLeftAlignment();
         messageDialog.show(stage);

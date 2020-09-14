@@ -8,13 +8,16 @@ class WorldScreenListener implements InputProcessor {
 
     private final Runnable openMenuFunction;
     private final Runnable openInventoryFunction;
+    private final Runnable openQuestLogFunction;
     private final Runnable showHidePartyWindowFunction;
 
     WorldScreenListener(Runnable openMenuFunction,
                         Runnable openInventoryFunction,
+                        Runnable openQuestLogFunction,
                         Runnable showHidePartyWindowFunction) {
         this.openMenuFunction = openMenuFunction;
         this.openInventoryFunction = openInventoryFunction;
+        this.openQuestLogFunction = openQuestLogFunction;
         this.showHidePartyWindowFunction = showHidePartyWindowFunction;
     }
 
@@ -23,6 +26,7 @@ class WorldScreenListener implements InputProcessor {
         switch (keycode) {
             case Input.Keys.ESCAPE -> openMenuFunction.run();
             case Input.Keys.I -> openInventoryFunction.run();
+            case Input.Keys.L -> openQuestLogFunction.run();
             case Input.Keys.P -> showHidePartyWindowFunction.run();
         }
         return false;

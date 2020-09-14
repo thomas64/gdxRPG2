@@ -2,10 +2,10 @@ package nl.t64.game.rpg.components.quest;
 
 import com.badlogic.gdx.Gdx;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.constants.QuestState;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class QuestContainer {
@@ -18,6 +18,14 @@ public class QuestContainer {
     public QuestContainer() {
         this.quests = new HashMap<>();
         this.loadQuests();
+    }
+
+    public List<QuestGraph> getAllKnownQuests() {
+        return quests.values().stream()
+                     .filter(questGraph -> !questGraph.currentState.equals(QuestState.UNKNOWN))
+                     .sorted(Comparator.comparing((QuestGraph questGraph) -> questGraph.currentState)
+                                       .thenComparing((QuestGraph questGraph) -> questGraph.id))
+                     .collect(Collectors.toList());
     }
 
     public QuestGraph getQuestById(String questId) {

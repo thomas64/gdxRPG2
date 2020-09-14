@@ -9,12 +9,13 @@ import java.util.Map;
 
 
 @Getter
-class QuestTask {
+public class QuestTask {
 
-    private String taskPhrase;
     QuestType type;
+    private String taskPhrase;
     private Map<String, Integer> target;
     private boolean isComplete;
+    private boolean isQuestFinished;
 
     private QuestTask() {
         this.target = Collections.emptyMap();
@@ -22,10 +23,22 @@ class QuestTask {
     }
 
     public String toString() {
-        return taskPhrase;
+        if (isQuestFinished) {
+            return "v  " + taskPhrase;
+        } else if (type.equals(QuestType.RETURN)) {
+            return "     " + taskPhrase;
+        } else if (isCompleteForReturn()) {
+            return "v  " + taskPhrase;
+        } else {
+            return "     " + taskPhrase;
+        }
     }
 
-    void setTaskComplete() {
+    void forceFinished() {
+        isQuestFinished = true;
+    }
+
+    void setComplete() {
         switch (type) {
             case ITEM_DELIVERY -> {
                 target.forEach((itemId, amount) -> Utils.getGameData().getInventory().autoRemoveItem(itemId, amount));
@@ -45,11 +58,11 @@ class QuestTask {
         return Utils.getGameData().getInventory().contains(target);
     }
 
-    boolean isComplete() {
+    boolean isCompleteForReturn() {
         return switch (type) {
             case RETURN -> checkReturn();
             case FETCH -> checkFetch();
-            case DISCOVER, CHECK, MESSAGE_DELIVERY, ITEM_DELIVERY -> checkTaskComplete();
+            case DISCOVER, CHECK, MESSAGE_DELIVERY, ITEM_DELIVERY -> checkComplete();
             default -> throw new GdxRuntimeException(String.format("No %s task for now.", type));
         };
     }
@@ -63,7 +76,7 @@ class QuestTask {
                                                                   getTargetEntry().getValue());
     }
 
-    private boolean checkTaskComplete() {
+    private boolean checkComplete() {
         return isComplete;
     }
 

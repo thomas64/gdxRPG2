@@ -40,7 +40,7 @@ public class LootSlotsTable {
         this.dragAndDrop = dragAndDrop;
         this.tooltip = tooltip;
         this.lootSlotTable = new Table();
-        fillLootSlots();
+        this.fillLootSlots();
 
         this.scrollPane = new ScrollPane(this.lootSlotTable);
         this.container = new Table();

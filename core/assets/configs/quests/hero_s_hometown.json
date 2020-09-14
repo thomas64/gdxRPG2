@@ -4,12 +4,12 @@
     "tasks": {
       "1": {
         "taskPhrase": "You need 1 gold",
-        "type": "FETCH",
-        "target": {"gold": 1}
+        "type"      : "FETCH",
+        "target"    : {"gold": 1}
       },
       "2": {
         "taskPhrase": "Bribe the guard at Hero's Hometown",
-        "type": "RETURN"
+        "type"      : "RETURN"
       }
     }
   },
@@ -18,25 +18,25 @@
     "tasks": {
       "1": {
         "taskPhrase": "Tell the girl about the young man's feelings",
-        "type": "MESSAGE_DELIVERY"
+        "type"      : "MESSAGE_DELIVERY"
       },
       "2": {
-        "taskPhrase": "Tell the young man what she said",
-        "type": "RETURN"
+        "taskPhrase": "Report back to the young man about what she said",
+        "type"      : "RETURN"
       }
     }
   },
   "quest0005": {
-    "title": "Buy salvation",
+    "title": "Buying salvation",
     "tasks": {
       "1": {
-        "taskPhrase": "Deliver present to the priest",
-        "type": "ITEM_DELIVERY",
-        "target": {"masterwork_heavy_shield": 1}
+        "taskPhrase": "Deliver exclusive present to the priest",
+        "type"      : "ITEM_DELIVERY",
+        "target"    : {"masterwork_heavy_shield": 1}
       },
       "2": {
-        "taskPhrase": "Report back",
-        "type": "RETURN"
+        "taskPhrase": "Ease the burden of the dying man",
+        "type"      : "RETURN"
       }
     }
   }

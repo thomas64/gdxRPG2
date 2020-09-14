@@ -9,6 +9,7 @@ import nl.t64.game.rpg.screens.loot.FindScreen;
 import nl.t64.game.rpg.screens.loot.ReceiveScreen;
 import nl.t64.game.rpg.screens.loot.RewardScreen;
 import nl.t64.game.rpg.screens.menu.*;
+import nl.t64.game.rpg.screens.questlog.QuestLogScreen;
 import nl.t64.game.rpg.screens.shop.ShopScreen;
 import nl.t64.game.rpg.screens.world.WorldScreen;
 
@@ -25,6 +26,7 @@ public enum ScreenType {
     WORLD(WorldScreen.class),
     LOAD_SCREEN(LoadScreen.class),
     INVENTORY(InventoryScreen.class),
+    QUEST_LOG(QuestLogScreen.class),
     SHOP(ShopScreen.class),
     FIND(FindScreen.class),
     REWARD(RewardScreen.class),

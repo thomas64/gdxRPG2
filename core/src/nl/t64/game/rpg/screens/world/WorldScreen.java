@@ -74,6 +74,7 @@ public class WorldScreen implements Screen,
         this.multiplexer = new InputMultiplexer();
         this.multiplexer.addProcessor(new WorldScreenListener(this::openMenuPause,
                                                               this::openInventoryScreen,
+                                                              this::openQuestLogScreen,
                                                               this::showHidePartyWindow));
         this.player = new Character(Constant.PLAYER_ID,
                                     new InputPlayer(this.multiplexer),
@@ -345,6 +346,10 @@ public class WorldScreen implements Screen,
 
     private void openInventoryScreen() {
         openLoadScreen(ScreenType.INVENTORY);
+    }
+
+    private void openQuestLogScreen() {
+        openLoadScreen(ScreenType.QUEST_LOG);
     }
 
     private void openShopScreen() {

@@ -4,10 +4,12 @@ import lombok.Getter;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.constants.QuestState;
 
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 
 @Getter
@@ -25,15 +27,28 @@ public class QuestGraph {
     }
 
     public String toString() {
-        return title;
+        if (currentState.equals(QuestState.FINISHED)) {
+            return "v  " + title;
+        } else if (currentState.equals(QuestState.UNCLAIMED)) {
+            return "o   " + title;
+        } else {
+            return "     " + title;
+        }
+    }
+
+    public List<QuestTask> getAllTasks() {
+        return tasks.entrySet().stream()
+                    .sorted(Map.Entry.comparingByKey())
+                    .map(Map.Entry::getValue)
+                    .collect(Collectors.toList());
     }
 
     public void setTaskComplete(String taskId) {
-        tasks.get(taskId).setTaskComplete();
+        tasks.get(taskId).setComplete();
     }
 
     public boolean isTaskComplete(String taskId) {
-        return false; // todo, yet to implement a quest with a quest task which will change the game map.
+        return tasks.get(taskId).isComplete();
     }
 
     public boolean isFinished() {
@@ -43,7 +58,6 @@ public class QuestGraph {
     public void handleAccept(Consumer<String> continueConversation) {
         know();
         accept();
-        // todo, update logbook
         if (doesReturnMeetDemand()) {
             continueConversation.accept(Constant.PHRASE_ID_QUEST_IMMEDIATE_SUCCESS);
         } else {
@@ -95,7 +109,7 @@ public class QuestGraph {
             takeDemands();
             unclaim();
             partyGainXp(reward, notifyShowMessageDialog);
-            // todo, set all tasks to complete indefinite
+            getAllQuestTasks().forEach(QuestTask::forceFinished);
         }
         if (!reward.isTaken()) {
             notifyShowRewardDialog.accept(reward);
@@ -158,7 +172,7 @@ public class QuestGraph {
     }
 
     private boolean doesReturnMeetDemand() {
-        return getAllQuestTasks().stream().allMatch(QuestTask::isComplete);
+        return getAllQuestTasks().stream().allMatch(QuestTask::isCompleteForReturn);
     }
 
     private List<QuestTask> getAllQuestTasks() {

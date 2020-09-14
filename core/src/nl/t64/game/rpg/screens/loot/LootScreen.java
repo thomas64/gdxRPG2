@@ -166,12 +166,13 @@ public abstract class LootScreen extends LootSubject implements ScreenToLoad {
         if (isDialogVisibleThenClose()) {
             return;
         }
-        final String message = "Esc = Close window" + System.lineSeparator() +
-                               "A = Take full stack" + System.lineSeparator() +
-                               "Enter = Take full stack" + System.lineSeparator() +
-                               "Shift = Drag full stack" + System.lineSeparator() +
-                               "Ctrl = Drag half stack" + System.lineSeparator() +
-                               "H = This dialog";
+        final String message = """
+                Esc = Close window
+                A = Take full stack
+                Enter = Take full stack
+                Shift = Drag full stack
+                Ctrl = Drag half stack
+                H = This dialog""";
         final var messageDialog = new MessageDialog(message);
         messageDialog.setLeftAlignment();
         messageDialog.show(stage);

@@ -6,6 +6,7 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.InventoryDatabase;
 import nl.t64.game.rpg.components.party.InventoryItem;
 import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.constants.QuestState;
 import nl.t64.game.rpg.profile.ProfileManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -72,6 +72,8 @@ public class MenuControls extends MenuScreen {
                                      new Label("A", textStyle),
                                      new Label("Inventory", textStyle),
                                      new Label("I", textStyle),
+                                     new Label("Quest log", textStyle),
+                                     new Label("L", textStyle),
                                      new Label("Party", textStyle),
                                      new Label("P", textStyle),
                                      new Label("Pause", textStyle),

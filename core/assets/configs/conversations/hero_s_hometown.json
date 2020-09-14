@@ -82,7 +82,7 @@
       "50"  : [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
       "101" : [
         {
-          "text"               : "Yes, and her reaction was amazing.",
+          "text"               : "Yes, and you two should now marry.",
           "conversationCommand": "RETURN_QUEST"
         },
         {

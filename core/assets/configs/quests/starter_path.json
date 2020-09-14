@@ -4,17 +4,17 @@
     "tasks": {
       "1": {
         "taskPhrase": "Collect 5 gemstones",
-        "type": "FETCH",
-        "target": {"gemstone": 5}
+        "type"      : "FETCH",
+        "target"    : {"gemstone": 5}
       },
       "2": {
         "taskPhrase": "Collect 3 herbs",
-        "type": "FETCH",
-        "target": {"herb": 3}
+        "type"      : "FETCH",
+        "target"    : {"herb": 3}
       },
       "3": {
         "taskPhrase": "Give them to the boy at Starter Path",
-        "type": "RETURN"
+        "type"      : "RETURN"
       }
     }
   },
@@ -23,15 +23,15 @@
     "tasks": {
       "1": {
         "taskPhrase": "Find the secret chamber",
-        "type": "DISCOVER"
+        "type"      : "DISCOVER"
       },
       "2": {
         "taskPhrase": "See the statue of Legend with your own eyes",
-        "type": "CHECK"
+        "type"      : "CHECK"
       },
       "3": {
-        "taskPhrase": "Tell the Gypsy at Starter Path about the chamber",
-        "type": "RETURN"
+        "taskPhrase": "Inform the Gypsy at Starter Path about the chamber",
+        "type"      : "RETURN"
       }
     }
   }
