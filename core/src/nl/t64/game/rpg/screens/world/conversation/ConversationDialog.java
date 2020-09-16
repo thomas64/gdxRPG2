@@ -214,6 +214,7 @@ public class ConversationDialog extends ConversationSubject {
             case SAVE_GAME -> saveGame(destinationId);
             case ACCEPT_QUEST -> acceptQuest();
             case REJECT_QUEST -> rejectQuest(destinationId);
+            case TOLERATE_QUEST -> tolerateQuest();
             case RECEIVE_ITEM -> receiveItem(destinationId);
             case CHECK_IF_QUEST_ACCEPTED -> checkQuest(destinationId);
             case CHECK_IF_IN_INVENTORY -> checkInventory(destinationId);
@@ -264,6 +265,11 @@ public class ConversationDialog extends ConversationSubject {
         QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
         quest.know();
         continueConversation(destinationId);
+    }
+
+    private void tolerateQuest() {
+        QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
+        quest.handleTolerate(this::continueConversation);           // sets new phraseId
     }
 
     private void receiveItem(String destinationId) {

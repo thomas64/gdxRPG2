@@ -39,6 +39,7 @@ public final class Constant {
     public static final String DESCRIPTION_KEY_SELL_TOTAL = "Total value";
 
     public static final String PHRASE_ID_QUEST_ACCEPT = "50";
+    public static final String PHRASE_ID_QUEST_TOLERATE = "250";
     public static final String PHRASE_ID_QUEST_IMMEDIATE_SUCCESS = "1000";
     public static final String PHRASE_ID_QUEST_SUCCESS = "1500";
     public static final String PHRASE_ID_QUEST_FAILURE = "2000";

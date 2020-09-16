@@ -65,6 +65,12 @@ public class QuestGraph {
         }
     }
 
+    public void handleTolerate(Consumer<String> continueConversation) {
+        know();
+        accept();
+        continueConversation.accept(Constant.PHRASE_ID_QUEST_TOLERATE);
+    }
+
     public void handleReceive(Consumer<Loot> notifyShowReceiveDialog) {
         know();
         Loot receive = getAllQuestTasks().stream()

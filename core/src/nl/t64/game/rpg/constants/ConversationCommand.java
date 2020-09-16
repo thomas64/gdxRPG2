@@ -8,6 +8,7 @@ public enum ConversationCommand {
     LOAD_SHOP,
     SAVE_GAME,
     REJECT_QUEST,
+    TOLERATE_QUEST,
     ACCEPT_QUEST,
     RECEIVE_ITEM,
     CHECK_IF_QUEST_ACCEPTED,

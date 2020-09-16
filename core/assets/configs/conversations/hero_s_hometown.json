@@ -3,11 +3,10 @@
     "phrases": {
       "1"   : {"text": ["Halt! You may not enter this town!"]},
       "2"   : {"text": ["Only if you can prove that you are worthy."]},
-      "3"   : {"text": ["Think? Prove your worthiness."]},
       "50"  : {"text": ["It seems you are not worthy enough."]},
       "101" : {"text": ["Halt! You may not enter this town!"]},
       "102" : {"text": ["Only if you can prove that you are worthy."]},
-      "103" : {"text": ["Think? Prove your worthiness."]},
+      "250" : {"text": ["Think? Prove your worthiness."]},
       "1000": {"text": ["It seems you are worthy."]},
       "1500": {"text": ["It seems you are worthy."]},
       "2000": {"text": ["It seems you are not worthy enough."]},
@@ -21,11 +20,9 @@
         },
         {
           "text"               : "Wait! Let me think about this.",
-          "conversationCommand": "REJECT_QUEST",
-          "destinationId"      : "3"
+          "conversationCommand": "TOLERATE_QUEST"
         }
       ],
-      "3"   : [{"conversationCommand": "EXIT_CONVERSATION"}],
       "50"  : [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
       "102" : [
         {
@@ -34,10 +31,10 @@
         },
         {
           "text"         : "Wait! Let me think about this.",
-          "destinationId": "103"
+          "destinationId": "250"
         }
       ],
-      "103" : [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
+      "250" : [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
       "1000": [{"conversationCommand": "REWARD_QUEST"}],
       "1500": [{"conversationCommand": "REWARD_QUEST"}],
       "2000": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
