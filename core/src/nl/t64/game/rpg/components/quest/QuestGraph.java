@@ -20,6 +20,8 @@ public class QuestGraph {
     String id;
     QuestState currentState;
     private String title;
+    private String character;
+    private String summary;
     private Map<String, QuestTask> tasks;
 
     private QuestGraph() {

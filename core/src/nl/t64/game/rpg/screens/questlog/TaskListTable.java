@@ -20,7 +20,7 @@ class TaskListTable {
     private static final String TEXT_FONT = "fonts/spectral.ttf";
     private static final int TEXT_SIZE = 20;
     private static final float WIDTH = -102f;
-    private static final float HEIGHT = -152f;
+    private static final float HEIGHT = 704f;
     private static final float PAD_LEFT = 20f;
 
     private final BitmapFont font;
@@ -35,8 +35,7 @@ class TaskListTable {
         this.container = this.fillContainer();
     }
 
-    void populateTaskList(String questId) {
-        QuestGraph quest = Utils.getGameData().getQuests().getQuestById(questId);
+    void populateTaskList(QuestGraph quest) {
         if (!quest.getCurrentState().equals(QuestState.KNOWN)) {
             taskList.setItems(quest.getAllTasks().toArray(new QuestTask[0]));
         } else {
@@ -71,7 +70,7 @@ class TaskListTable {
         newContainer.padLeft(PAD_LEFT);
         newContainer.add(scrollPane)
                     .width((Gdx.graphics.getWidth() / 2f) + WIDTH)
-                    .height(Gdx.graphics.getHeight() + HEIGHT);
+                    .height(HEIGHT);
         return newContainer;
     }
 

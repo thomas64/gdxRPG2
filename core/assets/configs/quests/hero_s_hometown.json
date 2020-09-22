@@ -1,41 +1,47 @@
 {
   "quest0002": {
-    "title": "Get through the guard",
-    "tasks": {
+    "title"    : "Get through the gatekeeper",
+    "character": "soldier01",
+    "summary"  : "Bob the gatekeeper of Hero's Hometown likes nothing more to make a few extra bucks at his job.",
+    "tasks"    : {
       "1": {
         "taskPhrase": "You need 1 gold",
         "type"      : "FETCH",
         "target"    : {"gold": 1}
       },
       "2": {
-        "taskPhrase": "Bribe the guard at Hero's Hometown",
+        "taskPhrase": "Bribe Bob the gatekeeper at Hero's Hometown",
         "type"      : "RETURN"
       }
     }
   },
   "quest0004": {
-    "title": "Secret love",
-    "tasks": {
+    "title"    : "Secret love",
+    "character": "youngman01",
+    "summary"  : "William is so anxious for a girl he secretly loves. He even ran away from her just now.",
+    "tasks"    : {
       "1": {
-        "taskPhrase": "Tell the girl about the young man's feelings",
+        "taskPhrase": "Find the girl Sarah and tell her about William's feelings",
         "type"      : "MESSAGE_DELIVERY"
       },
       "2": {
-        "taskPhrase": "Report back to the young man about what she said",
+        "taskPhrase": "Report back to William about how Sarah replied",
         "type"      : "RETURN"
       }
     }
   },
   "quest0005": {
-    "title": "Buying salvation",
-    "tasks": {
+    "title"    : "Buying salvation",
+    "character": "oldman01",
+    "summary"  : "Charles is dying and he is afraid to go to hell. He thinks that the priest of Hero's Hometown can help him.",
+    "tasks"    : {
       "1": {
         "taskPhrase": "Deliver exclusive present to the priest",
         "type"      : "ITEM_DELIVERY",
         "target"    : {"masterwork_heavy_shield": 1}
       },
       "2": {
-        "taskPhrase": "Ease the burden of the dying man",
+        "taskPhrase": "Ease the burden of Charles",
         "type"      : "RETURN"
       }
     }

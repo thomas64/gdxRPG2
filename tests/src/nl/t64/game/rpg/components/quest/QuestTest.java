@@ -36,14 +36,14 @@ class QuestTest extends GameTest {
         QuestGraph quest0001 = quests.getQuestById("quest0001");
         assertThat(quest0001.getId()).isEqualTo("quest0001");
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.UNKNOWN);
-        assertThat(quest0001.getTitle()).isEqualTo("Gemstones for boy");
-        assertThat(quest0001).hasToString("Gemstones for boy");
+        assertThat(quest0001.getTitle()).isEqualTo("Herbs for boy");
+        assertThat(quest0001).hasToString("     Herbs for boy");
         Map<String, QuestTask> tasks = quest0001.getTasks();
         assertThat(tasks).hasSize(3);
-        assertThat(tasks.get("1").getTaskPhrase()).isEqualTo("Collect 5 gemstones");
+        assertThat(tasks.get("1").getTaskPhrase()).isEqualTo("Collect 3 herbs");
         assertThat(tasks.get("1").getType()).isEqualTo(QuestType.FETCH);
-        assertThat(tasks.get("1").getTarget()).containsOnly(entry("gemstone", 5));
-        assertThat(tasks.get("1")).hasToString("Collect 5 gemstones");
+        assertThat(tasks.get("1").getTarget()).containsOnly(entry("herb", 3));
+        assertThat(tasks.get("1")).hasToString("     Collect 3 herbs");
     }
 
     @Test

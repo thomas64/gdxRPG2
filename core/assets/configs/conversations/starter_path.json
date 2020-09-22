@@ -1,16 +1,16 @@
 {
   "quest0001": {
     "phrases": {
-      "1": {"text": ["Hi mister."]},
-      "2": {"text": ["I need 3 herbs for my mommy. She's ill."]},
-      "3": {"text": ["Can you please help me find some?"]},
-      "4": {"text": ["I also need 5 gemstones because the developer programmed me to ask that."]},
-      "5": {"text": ["Please help me mister!", "We're in desperate need."]},
-      "6": {"text": ["Aaaw... Booohooo! *SNIF*"]},
-      "50": {"text": ["Thank you mister!"]},
-      "101": {"text": ["Hi mister."]},
-      "102": {"text": ["If you got the herbs and gemstones, please give them to me."]},
-      "103": {"text": ["Aaaw... Booohooo! *SNIF*"]},
+      "1"   : {"text": ["Hi mister."]},
+      "2"   : {"text": ["I need 3 herbs for my mommy. She's ill."]},
+      "3"   : {"text": ["Can you please help me find some?"]},
+      "4"   : {"text": ["I also need 5 gemstones because the developer programmed me to ask that."]},
+      "5"   : {"text": ["Please help me mister!", "We're in desperate need."]},
+      "6"   : {"text": ["Aaaw... Booohooo! *SNIF*"]},
+      "50"  : {"text": ["Thank you mister!"]},
+      "101" : {"text": ["Hi mister."]},
+      "102" : {"text": ["If you got the herbs and gemstones, please give them to me."]},
+      "103" : {"text": ["Aaaw... Booohooo! *SNIF*"]},
       "1000": {"text": ["As a matter of fact, I've already got your herbs", "and gemstones."]},
       "1500": {"text": ["Thanks a lot mister!", "Now my mommy will be better soon."]},
       "1501": {
@@ -29,37 +29,37 @@
       "4000": {"text": ["Hi mister. It seems my mommy is all better now. Thanks to you!"]}
     },
     "choices": {
-      "5": [
+      "5"   : [
         {
-          "text": "Yes, of course!",
+          "text"               : "Yes, of course!",
           "conversationCommand": "ACCEPT_QUEST"
         },
         {
-          "text": "No, you'll have to dop your own beans.",
+          "text"               : "No, you'll have to dop your own beans.",
           "conversationCommand": "REJECT_QUEST",
-          "destinationId": "6"
+          "destinationId"      : "6"
         }
       ],
-      "6": [{"conversationCommand": "EXIT_CONVERSATION"}],
-      "50": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
-      "102": [
+      "6"   : [{"conversationCommand": "EXIT_CONVERSATION"}],
+      "50"  : [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
+      "102" : [
         {
-          "text": "Here you are, brave boy.",
+          "text"               : "Here you are, brave boy.",
           "conversationCommand": "RETURN_QUEST"
         },
         {
-          "text": "No, these are my herbs!",
+          "text"         : "No, these are my herbs!",
           "destinationId": "103"
         }
       ],
-      "103": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
+      "103" : [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
       "1000": [
         {
-          "text": "Here you are, brave boy.",
+          "text"               : "Here you are, brave boy.",
           "conversationCommand": "RETURN_QUEST"
         },
         {
-          "text": "But these are my mine. So... No.",
+          "text"         : "But these are my mine. So... No.",
           "destinationId": "103"
         }
       ],
@@ -71,16 +71,16 @@
   },
   "quest0003": {
     "phrases": {
-      "1": {"text": ["I've heard that there's a secret chamber in town."]},
-      "2": {"text": ["It's supposed to be hidden in a basement behind a portal."]},
-      "3": {"text": ["For real? A portal? I can hardly believe it."]},
-      "4": {"text": ["Would you be so kind to take a look?"]},
-      "6": {"text": ["I guess I'll have to take a look myself then."]},
-      "7": {"text": ["Have you changed you mind?"]},
-      "50": {"text": ["You are to kind, thank you."]},
-      "101": {"text": ["And? And? Have you found it?"]},
-      "102": {"text": ["I'm sorry, I can't."]},
-      "103": {"text": [". . . ."]},
+      "1"   : {"text": ["I've heard that there's a secret chamber in town."]},
+      "2"   : {"text": ["It's supposed to be hidden in a basement behind a portal."]},
+      "3"   : {"text": ["For real? A portal? I can hardly believe it."]},
+      "4"   : {"text": ["Would you be so kind to take a look?"]},
+      "6"   : {"text": ["I guess I'll have to take a look myself then."]},
+      "7"   : {"text": ["Have you changed you mind?"]},
+      "50"  : {"text": ["You are to kind, thank you."]},
+      "101" : {"text": ["And? And? Have you found it?"]},
+      "102" : {"text": ["I'm sorry, I can't."]},
+      "103" : {"text": [". . . ."]},
       "1000": {"text": ["(You've already been there. Tell her?)"]},
       "1500": {"text": ["I can see it in your eyes! You have been there!"]},
       "1501": {"text": ["You have seen the statue of Legend!", "That's unreal!"]},
@@ -91,39 +91,39 @@
       "4000": {"text": ["So the legends are true."]}
     },
     "choices": {
-      "4": [
+      "4"   : [
         {
-          "text": "Yes of course! You've raised my curiosity.",
+          "text"               : "Yes of course! You've raised my curiosity.",
           "conversationCommand": "ACCEPT_QUEST"
         },
         {
-          "text": "No way! Portals don't exist.",
+          "text"               : "No way! Portals don't exist.",
           "conversationCommand": "REJECT_QUEST",
-          "destinationId": "6"
+          "destinationId"      : "6"
         }
       ],
-      "6": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "7"}],
-      "7": [{"destinationId": "1"}],
-      "50": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
-      "101": [
+      "6"   : [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "7"}],
+      "7"   : [{"destinationId": "1"}],
+      "50"  : [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
+      "101" : [
         {
-          "text": "Yes! Portals exist! Unbelievable!",
+          "text"               : "Yes! Portals exist! Unbelievable!",
           "conversationCommand": "RETURN_QUEST"
         },
         {
-          "text": "No, give up your believe!",
+          "text"         : "No, give up your believe!",
           "destinationId": "102"
         }
       ],
-      "102": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
-      "103": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
+      "102" : [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
+      "103" : [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "101"}],
       "1000": [
         {
-          "text": "Yes of course! She has to believe.",
+          "text"               : "Yes of course! She has to believe.",
           "conversationCommand": "RETURN_QUEST"
         },
         {
-          "text": "No, she is stupid.",
+          "text"         : "No, she is stupid.",
           "destinationId": "103"
         }
       ],

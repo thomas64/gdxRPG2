@@ -60,12 +60,13 @@ public class LootSlotsTable {
 
     boolean takeItem() {
         OptionalInt firstFilledSlot = inventory.findFirstFilledSlot();
-        boolean wasPresent = firstFilledSlot.isPresent();
-        firstFilledSlot.ifPresent(index -> {
-            var lootSlot = (InventorySlot) lootSlotTable.getChildren().get(index);
+        if (firstFilledSlot.isPresent()) {
+            var lootSlot = (InventorySlot) lootSlotTable.getChildren().get(firstFilledSlot.getAsInt());
             DoubleClickHandler.handleShop(lootSlot, dragAndDrop);
-        });
-        return wasPresent;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void fillLootContainer(Loot loot) {

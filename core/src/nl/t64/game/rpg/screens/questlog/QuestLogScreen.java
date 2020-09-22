@@ -22,6 +22,8 @@ public class QuestLogScreen implements ScreenToLoad {
 
     private static final float QUESTS_WINDOW_POSITION_X = 63f;
     private static final float QUESTS_WINDOW_POSITION_Y = 50f;
+    private static final float SUMMARY_WINDOW_POSITION_X = 18f;
+    private static final float SUMMARY_WINDOW_POSITION_Y = 834f;
     private static final float TASKS_WINDOW_POSITION_X = 18f;
     private static final float TASKS_WINDOW_POSITION_Y = 50f;
 
@@ -46,6 +48,8 @@ public class QuestLogScreen implements ScreenToLoad {
 
         questLogUI = new QuestLogUI();
         questLogUI.questListWindow.setPosition(QUESTS_WINDOW_POSITION_X, QUESTS_WINDOW_POSITION_Y);
+        questLogUI.summaryWindow.setPosition((Gdx.graphics.getWidth() / 2f) + SUMMARY_WINDOW_POSITION_X,
+                                             SUMMARY_WINDOW_POSITION_Y);
         questLogUI.taskListWindow.setPosition((Gdx.graphics.getWidth() / 2f) + TASKS_WINDOW_POSITION_X,
                                               TASKS_WINDOW_POSITION_Y);
         questLogUI.addToStage(stage);

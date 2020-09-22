@@ -11,11 +11,11 @@ import java.util.function.Consumer;
 class QuestListListener extends ClickListener {
 
     private final List<QuestGraph> questList;
-    private final Consumer<String> populateTaskList;
+    private final Consumer<QuestGraph> populateQuestSpecifics;
 
-    QuestListListener(List<QuestGraph> questList, Consumer<String> populateTaskList) {
+    QuestListListener(List<QuestGraph> questList, Consumer<QuestGraph> populateQuestSpecifics) {
         this.questList = questList;
-        this.populateTaskList = populateTaskList;
+        this.populateQuestSpecifics = populateQuestSpecifics;
     }
 
     @Override
@@ -31,7 +31,7 @@ class QuestListListener extends ClickListener {
     private boolean isSelected() {
         QuestGraph quest = questList.getSelected();
         if (quest == null) return false;
-        populateTaskList.accept(quest.getId());
+        populateQuestSpecifics.accept(quest);
         return true;
     }
 
