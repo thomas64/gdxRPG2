@@ -37,6 +37,8 @@ class QuestTest extends GameTest {
         assertThat(quest0001.getId()).isEqualTo("quest0001");
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.UNKNOWN);
         assertThat(quest0001.getTitle()).isEqualTo("Herbs for boy");
+        assertThat(quest0001.getCharacter()).isEqualTo("boy01");
+        assertThat(quest0001.getSummary()).contains("Johnny's mother is ill and ");
         assertThat(quest0001).hasToString("     Herbs for boy");
         Map<String, QuestTask> tasks = quest0001.getTasks();
         assertThat(tasks).hasSize(3);
@@ -86,6 +88,14 @@ class QuestTest extends GameTest {
         gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("herb", 3));
         QuestGraph quest0001 = quests.getQuestById("quest0001");
         quest0001.handleAccept(s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_IMMEDIATE_SUCCESS));
+    }
+
+    @Test
+    void whenQuestIsTolerated_ShouldNotHandleQuickFlow() {
+        QuestGraph quest0002 = quests.getQuestById("quest0002");
+        assertThat(quest0002.getCurrentState()).isEqualTo(QuestState.UNKNOWN);
+        quest0002.handleTolerate(s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_TOLERATE));
+        assertThat(quest0002.getCurrentState()).isEqualTo(QuestState.ACCEPTED);
     }
 
     //@formatter:off
@@ -184,6 +194,70 @@ class QuestTest extends GameTest {
         quest0003.setTaskComplete("1");
         quest0003.setTaskComplete("2");
         quest0003.handleReturn(s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_SUCCESS));
+    }
+
+    @Test
+    void whenQuestsAreNotUnknown_ShouldBecomeVisibleInQuestLogInCorrectOrder() {
+        assertThat(quests.getAllKnownQuests()).isEmpty();
+        quests.getQuestById("quest0001").know();
+        assertThat(quests.getAllKnownQuests()).extracting("id").containsExactly("quest0001");
+        quests.getQuestById("quest0003").know();
+        quests.getQuestById("quest0003").accept();
+        assertThat(quests.getAllKnownQuests()).extracting("id").containsExactly("quest0001", "quest0003");
+        quests.getQuestById("quest0001").accept();
+        quests.getQuestById("quest0001").unclaim();
+        assertThat(quests.getAllKnownQuests()).extracting("id").containsExactly("quest0003", "quest0001");
+    }
+
+    @Test
+    void whenStatesOfQuestChanges_ShouldChangeToString() {
+        QuestGraph quest0001 = quests.getQuestById("quest0001");
+        assertThat(quest0001).hasToString("     Herbs for boy");
+        quest0001.know();
+        assertThat(quest0001).hasToString("     Herbs for boy");
+        quest0001.accept();
+        assertThat(quest0001).hasToString("     Herbs for boy");
+        quest0001.unclaim();
+        assertThat(quest0001).hasToString("o   Herbs for boy");
+        quest0001.finish();
+        assertThat(quest0001).hasToString("v  Herbs for boy");
+    }
+
+    @Test
+    void whenQuestTaskIsCompleted_ShouldChangeToString() {
+        final GameData gameData = Utils.getGameData();
+        gameData.onNotifyCreateProfile(new ProfileManager());
+
+        QuestGraph quest0001 = quests.getQuestById("quest0001");
+        assertThat(quest0001.getTasks().get("1").isQuestFinished()).isFalse();
+        assertThat(quest0001.getTasks().get("1")).hasToString("     Collect 3 herbs");
+
+        gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("herb", 3));
+        assertThat(quest0001.getTasks().get("1")).hasToString("v  Collect 3 herbs");
+
+        gameData.getInventory().autoRemoveItem("herb", 3);
+        assertThat(quest0001.getTasks().get("1")).hasToString("     Collect 3 herbs");
+
+        quest0001.getTasks().get("1").forceFinished();
+        assertThat(quest0001.getTasks().get("1")).hasToString("v  Collect 3 herbs");
+
+        assertThat(quest0001.getTasks().get("3")).hasToString("     Give them to Johnny at Starter Path");
+        assertThat(quest0001.getTasks().get("1").isQuestFinished()).isTrue();
+    }
+
+    @Test
+    void whenQuestIsShownInQuestLog_ShouldShowTasksInCorrectOrder() {
+        QuestGraph quest0001 = quests.getQuestById("quest0001");
+        assertThat(quest0001.getAllTasks()).extracting("taskPhrase").containsExactly(
+                "Collect 3 herbs", "Collect 5 gemstones for the programmer", "Give them to Johnny at Starter Path");
+    }
+
+    @Test
+    void whenSetCompletableTaskIsSetComplete_ShouldBeComplete() {
+        QuestGraph quest0003 = quests.getQuestById("quest0003");
+        assertThat(quest0003.isTaskComplete("1")).isFalse();
+        quest0003.setTaskComplete("1");
+        assertThat(quest0003.isTaskComplete("1")).isTrue();
     }
 
 }
