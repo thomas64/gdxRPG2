@@ -10,8 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.quest.QuestGraph;
+import nl.t64.game.rpg.components.quest.QuestState;
 import nl.t64.game.rpg.components.quest.QuestTask;
-import nl.t64.game.rpg.constants.QuestState;
 
 
 class TaskListTable {

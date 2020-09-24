@@ -1,7 +1,5 @@
 package nl.t64.game.rpg.components.character;
 
-import nl.t64.game.rpg.constants.Direction;
-
 
 abstract class InputComponent extends ComponentSubject implements Component {
 

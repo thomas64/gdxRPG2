@@ -2,7 +2,6 @@ package nl.t64.game.rpg.components.quest;
 
 import com.badlogic.gdx.Gdx;
 import nl.t64.game.rpg.Utils;
-import nl.t64.game.rpg.constants.QuestState;
 
 import java.util.*;
 import java.util.stream.Collectors;

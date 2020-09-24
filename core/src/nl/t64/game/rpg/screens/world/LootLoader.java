@@ -6,7 +6,6 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.character.Character;
 import nl.t64.game.rpg.components.character.*;
 import nl.t64.game.rpg.components.loot.Loot;
-import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.events.character.LoadCharacterEvent;
 
 import java.util.ArrayList;

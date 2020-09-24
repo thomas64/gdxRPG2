@@ -2,12 +2,9 @@ package nl.t64.game.rpg.screens.world;
 
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.character.Character;
-import nl.t64.game.rpg.components.character.GraphicsPartyMember;
-import nl.t64.game.rpg.components.character.InputPartyMember;
-import nl.t64.game.rpg.components.character.PhysicsPartyMember;
+import nl.t64.game.rpg.components.character.*;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.PartyContainer;
-import nl.t64.game.rpg.constants.CharacterState;
 import nl.t64.game.rpg.events.character.LoadCharacterEvent;
 
 import java.util.ArrayList;

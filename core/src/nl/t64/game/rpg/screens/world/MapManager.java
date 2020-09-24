@@ -3,8 +3,8 @@ package nl.t64.game.rpg.screens.world;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.components.character.Direction;
 import nl.t64.game.rpg.constants.Constant;
-import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.profile.ProfileObserver;
 

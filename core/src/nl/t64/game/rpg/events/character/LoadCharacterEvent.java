@@ -1,8 +1,8 @@
 package nl.t64.game.rpg.events.character;
 
 import com.badlogic.gdx.math.Vector2;
-import nl.t64.game.rpg.constants.CharacterState;
-import nl.t64.game.rpg.constants.Direction;
+import nl.t64.game.rpg.components.character.CharacterState;
+import nl.t64.game.rpg.components.character.Direction;
 import nl.t64.game.rpg.events.Event;
 
 

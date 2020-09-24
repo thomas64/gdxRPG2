@@ -2,10 +2,6 @@ package nl.t64.game.rpg.components.party;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import nl.t64.game.rpg.constants.CalcAttributeId;
-import nl.t64.game.rpg.constants.InventoryGroup;
-import nl.t64.game.rpg.constants.SkillItemId;
-import nl.t64.game.rpg.constants.StatItemId;
 
 import java.util.HashMap;
 import java.util.Map;

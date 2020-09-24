@@ -1,9 +1,9 @@
 package nl.t64.game.rpg.screens.inventory;
 
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.components.party.CalcAttributeId;
 import nl.t64.game.rpg.components.party.HeroItem;
-import nl.t64.game.rpg.constants.CalcAttributeId;
-import nl.t64.game.rpg.constants.InventoryGroup;
+import nl.t64.game.rpg.components.party.InventoryGroup;
 
 
 class CalcsTable extends BaseTable {

@@ -1,8 +1,6 @@
 package nl.t64.game.rpg.components.party;
 
 import lombok.AllArgsConstructor;
-import nl.t64.game.rpg.constants.StatItemId;
-import nl.t64.game.rpg.constants.SuperEnum;
 
 import java.util.Optional;
 

@@ -3,7 +3,6 @@ package nl.t64.game.rpg.components.conversation;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import nl.t64.game.rpg.GameTest;
-import nl.t64.game.rpg.constants.ConversationCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

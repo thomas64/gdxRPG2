@@ -2,8 +2,6 @@ package nl.t64.game.rpg.components.character;
 
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.math.Vector2;
-import nl.t64.game.rpg.constants.CharacterState;
-import nl.t64.game.rpg.constants.Direction;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.DirectionEvent;
 import nl.t64.game.rpg.events.character.PathUpdateEvent;

@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.constants;
+package nl.t64.game.rpg.components.character;
 
 import com.badlogic.gdx.math.MathUtils;
 

@@ -1,7 +1,6 @@
 package nl.t64.game.rpg.components.conversation;
 
 import nl.t64.game.rpg.GameTest;
-import nl.t64.game.rpg.constants.ConversationCommand;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

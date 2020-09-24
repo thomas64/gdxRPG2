@@ -4,7 +4,6 @@ import lombok.Getter;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.constants.Constant;
-import nl.t64.game.rpg.constants.QuestState;
 
 import java.util.List;
 import java.util.Map;

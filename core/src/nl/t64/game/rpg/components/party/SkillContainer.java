@@ -1,7 +1,6 @@
 package nl.t64.game.rpg.components.party;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import nl.t64.game.rpg.constants.SkillItemId;
 
 import java.beans.ConstructorProperties;
 import java.util.Arrays;

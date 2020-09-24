@@ -7,8 +7,8 @@ import com.badlogic.gdx.utils.Scaling;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.DescriptionCreator;
 import nl.t64.game.rpg.components.party.InventoryDescription;
+import nl.t64.game.rpg.components.party.InventoryGroup;
 import nl.t64.game.rpg.components.party.InventoryItem;
-import nl.t64.game.rpg.constants.InventoryGroup;
 
 import java.util.List;
 

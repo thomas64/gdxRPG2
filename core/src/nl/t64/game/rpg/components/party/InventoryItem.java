@@ -4,10 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import nl.t64.game.rpg.constants.CalcAttributeId;
-import nl.t64.game.rpg.constants.InventoryGroup;
-import nl.t64.game.rpg.constants.SkillItemId;
-import nl.t64.game.rpg.constants.StatItemId;
 
 import java.util.List;
 import java.util.Objects;

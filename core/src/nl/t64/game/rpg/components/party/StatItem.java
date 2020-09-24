@@ -2,7 +2,6 @@ package nl.t64.game.rpg.components.party;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import nl.t64.game.rpg.constants.StatItemId;
 
 import java.util.function.Consumer;
 

@@ -1,10 +1,6 @@
 package nl.t64.game.rpg.components.party;
 
 import lombok.Getter;
-import nl.t64.game.rpg.constants.CalcAttributeId;
-import nl.t64.game.rpg.constants.SkillItemId;
-import nl.t64.game.rpg.constants.StatItemId;
-import nl.t64.game.rpg.constants.ThreeState;
 
 
 @Getter
