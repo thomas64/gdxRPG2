@@ -66,23 +66,32 @@ public class ItemSlotSource extends Source {
         var copyImage = InventoryImage.copyOf(imageToDrag);
         var payload = new Payload();
         payload.setDragActor(copyImage);
-        makeDraggable(copyImage);
-        dragAndDrop.setDragActorPosition(copyImage.getWidth() / 2,
-                                         -copyImage.getHeight() / 2);
+        makeSingleItemDraggable(copyImage);
+        dragAndDrop.setDragActorPosition(copyImage.getWidth() / 2, -copyImage.getHeight() / 2);
         return payload;
     }
 
     private void duplicateInSource(InventoryImage imageToDrag, int startAmount) {
         var copyImage = InventoryImage.copyOf(imageToDrag, startAmount);
-        makeDraggable(copyImage);
+        makeLastItemDraggable(copyImage);
         sourceSlot.addToStack(copyImage);
     }
 
-    private void makeDraggable(InventoryImage copyImage) {
+    private void makeSingleItemDraggable(InventoryImage copyImage) {
         if (copyImage.getAmount() == 1) {
-            var itemSlotSource = new ItemSlotSource(copyImage, dragAndDrop);
-            dragAndDrop.addSource(itemSlotSource);
+            makeDraggable(copyImage);
         }
+    }
+
+    private void makeLastItemDraggable(InventoryImage copyImage) {
+        if (copyImage.getAmount() == 2) {
+            makeDraggable(copyImage);
+        }
+    }
+
+    private void makeDraggable(InventoryImage copyImage) {
+        var itemSlotSource = new ItemSlotSource(copyImage, dragAndDrop);
+        dragAndDrop.addSource(itemSlotSource);
     }
 
     private void unmakeCurrentDragImageDraggable() {
