@@ -2,31 +2,25 @@ package nl.t64.game.rpg.screens.world;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import nl.t64.game.rpg.screens.ScreenLoader;
 
 
 class WorldScreenListener implements InputProcessor {
 
-    private final Runnable openMenuFunction;
-    private final Runnable openInventoryFunction;
-    private final Runnable openQuestLogFunction;
+    private final ScreenLoader screenLoader;
     private final Runnable showHidePartyWindowFunction;
 
-    WorldScreenListener(Runnable openMenuFunction,
-                        Runnable openInventoryFunction,
-                        Runnable openQuestLogFunction,
-                        Runnable showHidePartyWindowFunction) {
-        this.openMenuFunction = openMenuFunction;
-        this.openInventoryFunction = openInventoryFunction;
-        this.openQuestLogFunction = openQuestLogFunction;
+    WorldScreenListener(ScreenLoader screenLoader, Runnable showHidePartyWindowFunction) {
+        this.screenLoader = screenLoader;
         this.showHidePartyWindowFunction = showHidePartyWindowFunction;
     }
 
     @Override
     public boolean keyDown(int keycode) {
         switch (keycode) {
-            case Input.Keys.ESCAPE -> openMenuFunction.run();
-            case Input.Keys.I -> openInventoryFunction.run();
-            case Input.Keys.L -> openQuestLogFunction.run();
+            case Input.Keys.ESCAPE -> screenLoader.openMenuPause();
+            case Input.Keys.I -> screenLoader.openInventoryScreen();
+            case Input.Keys.L -> screenLoader.openQuestLogScreen();
             case Input.Keys.P -> showHidePartyWindowFunction.run();
         }
         return false;

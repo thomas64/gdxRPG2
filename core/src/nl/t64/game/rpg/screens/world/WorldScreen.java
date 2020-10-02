@@ -8,9 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.ScreenUtils;
 import lombok.Getter;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.character.Character;
@@ -23,11 +21,11 @@ import nl.t64.game.rpg.constants.GameState;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.events.character.LoadCharacterEvent;
 import nl.t64.game.rpg.events.character.PathUpdateEvent;
-import nl.t64.game.rpg.screens.LoadScreen;
+import nl.t64.game.rpg.screens.ScreenLoader;
 import nl.t64.game.rpg.screens.inventory.PartyObserver;
 import nl.t64.game.rpg.screens.inventory.PartySubject;
-import nl.t64.game.rpg.screens.loot.*;
-import nl.t64.game.rpg.screens.shop.ShopScreen;
+import nl.t64.game.rpg.screens.loot.LootObserver;
+import nl.t64.game.rpg.screens.loot.LootSubject;
 import nl.t64.game.rpg.screens.world.conversation.ConversationDialog;
 import nl.t64.game.rpg.screens.world.conversation.ConversationObserver;
 import nl.t64.game.rpg.screens.world.pathfinding.TiledNode;
@@ -50,6 +48,7 @@ public class WorldScreen implements Screen,
     private static boolean showDebug = false;
 
     private GameState gameState;
+    private final ScreenLoader screenLoader;
     private final Camera camera;
     private final TextureMapObjectRenderer mapRenderer;
     private final InputMultiplexer multiplexer;
@@ -69,17 +68,13 @@ public class WorldScreen implements Screen,
     private List<Character> lootList;
 
     public WorldScreen() {
+        this.screenLoader = new ScreenLoader(this::doBeforeLoadScreen);
         this.camera = new Camera();
         this.mapRenderer = new TextureMapObjectRenderer();
         this.multiplexer = new InputMultiplexer();
-        this.multiplexer.addProcessor(new WorldScreenListener(this::openMenuPause,
-                                                              this::openInventoryScreen,
-                                                              this::openQuestLogScreen,
-                                                              this::showHidePartyWindow));
+        this.multiplexer.addProcessor(new WorldScreenListener(this.screenLoader, this::showHidePartyWindow));
         this.player = new Character(Constant.PLAYER_ID,
-                                    new InputPlayer(this.multiplexer),
-                                    new PhysicsPlayer(),
-                                    new GraphicsPlayer());
+                                    new InputPlayer(this.multiplexer), new PhysicsPlayer(), new GraphicsPlayer());
         this.player.registerObserver(this);
         this.npcCharacters = new ArrayList<>(0);
         this.lootList = new ArrayList<>(0);
@@ -150,10 +145,7 @@ public class WorldScreen implements Screen,
 
     @Override
     public void onNotifyShowFindDialog(Loot loot) {
-        var findScreen = (FindScreen) Utils.getScreenManager().getScreen(ScreenType.FIND);
-        findScreen.setLoot(loot);
-        findScreen.setLootTitle("   Found");
-        openLoadScreen(ScreenType.FIND);
+        screenLoader.openFindDialog(loot);
     }
 
     @Override   // also ConversationObserver
@@ -209,24 +201,18 @@ public class WorldScreen implements Screen,
     public void onNotifyLoadShop() {
         conversationDialog.hide();
         show();
-        openShopScreen();
+        screenLoader.openShopScreen(currentNpcCharacter.getId(), currentNpcCharacter.getConversationId());
     }
 
     @Override
     public void onNotifyShowRewardDialog(Loot reward) {
-        var rewardScreen = (RewardScreen) Utils.getScreenManager().getScreen(ScreenType.REWARD);
-        rewardScreen.setLoot(reward);
-        rewardScreen.setLootTitle("   Reward");
-        openLoadScreen(ScreenType.REWARD);
+        screenLoader.openRewardDialog(reward);
         conversationDialog.hideWithFade();
     }
 
     @Override
     public void onNotifyShowReceiveDialog(Loot receive) {
-        var receiveScreen = (ReceiveScreen) Utils.getScreenManager().getScreen(ScreenType.RECEIVE);
-        receiveScreen.setLoot(receive);
-        receiveScreen.setLootTitle("   Receive");
-        openLoadScreen(ScreenType.RECEIVE);
+        screenLoader.openReceiveDialog(receive);
         conversationDialog.hideWithFade();
     }
 
@@ -336,44 +322,9 @@ public class WorldScreen implements Screen,
         return Utils.getMapManager().currentMap.tiledGraph.findPath(startPoint, endPoint);
     }
 
-    private void openMenuPause() {
-        player.resetInput();
-        var menuPause = Utils.getScreenManager().getMenuScreen(ScreenType.MENU_PAUSE);
-        menuPause.setBackground(createScreenshot(true));
-        Utils.getScreenManager().setScreen(ScreenType.MENU_PAUSE);
-        menuPause.updateMenuIndex(0);
-    }
-
-    private void openInventoryScreen() {
-        openLoadScreen(ScreenType.INVENTORY);
-    }
-
-    private void openQuestLogScreen() {
-        openLoadScreen(ScreenType.QUEST_LOG);
-    }
-
-    private void openShopScreen() {
-        var shopScreen = (ShopScreen) Utils.getScreenManager().getScreen(ScreenType.SHOP);
-        shopScreen.setNpcId(currentNpcCharacter.getId());
-        shopScreen.setShopId(currentNpcCharacter.getConversationId());
-        openLoadScreen(ScreenType.SHOP);
-    }
-
-    private void openLoadScreen(ScreenType screenType) {
+    private void doBeforeLoadScreen() {
         player.resetInput();
         render(0f);
-        var loadScreen = (LoadScreen) Utils.getScreenManager().getScreen(ScreenType.LOAD_SCREEN);
-        loadScreen.setScreenType(screenType);
-        loadScreen.setBackground(createScreenshot(true));
-        Utils.getScreenManager().setScreen(ScreenType.LOAD_SCREEN);
-    }
-
-    private Image createScreenshot(boolean withBlur) {
-        var screenshot = new Image(ScreenUtils.getFrameBufferTexture());
-        if (withBlur) {
-            screenshot.setColor(Color.DARK_GRAY);
-        }
-        return screenshot;
     }
 
     private void showHidePartyWindow() {
