@@ -33,6 +33,13 @@ public class MenuPause extends MenuScreen {
         super.selectedMenuIndex = EXIT_INDEX;
     }
 
+    public static void load() {
+        var menuPause = Utils.getScreenManager().getMenuScreen(ScreenType.MENU_PAUSE);
+        menuPause.setBackground(Utils.createScreenshot(true));
+        Utils.getScreenManager().setScreen(ScreenType.MENU_PAUSE);
+        menuPause.updateMenuIndex(0);
+    }
+
     @Override
     void setupScreen() {
         setFontColor();

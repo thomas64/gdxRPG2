@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import lombok.Getter;
-import lombok.Setter;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.screens.ScreenToLoad;
@@ -40,13 +39,18 @@ public class ShopScreen implements ScreenToLoad {
     private final Stage stage;
     @Getter
     private ShopUI shopUI;
-    @Setter
     private String npcId;
-    @Setter
     private String shopId;
 
     public ShopScreen() {
         this.stage = new Stage();
+    }
+
+    public static void load(String npcId, String shopId) {
+        var shopScreen = (ShopScreen) Utils.getScreenManager().getScreen(ScreenType.SHOP);
+        shopScreen.npcId = npcId;
+        shopScreen.shopId = shopId;
+        Utils.getScreenManager().openParchmentLoadScreen(ScreenType.SHOP);
     }
 
     @Override

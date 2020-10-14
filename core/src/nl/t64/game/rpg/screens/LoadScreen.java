@@ -5,7 +5,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import lombok.Setter;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.ScreenType;
 
@@ -15,8 +14,7 @@ public class LoadScreen implements Screen {
     private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
 
     private final Stage stage;
-    @Setter
-    private ScreenType screenType;
+    ScreenType screenTypeToLoad;
     private int timer = 0;
 
     public LoadScreen() {
@@ -46,10 +44,10 @@ public class LoadScreen implements Screen {
     }
 
     private void setScreen() {
-        var screenToLoad = (ScreenToLoad) Utils.getScreenManager().getScreen(screenType);
+        var screenToLoad = (ScreenToLoad) Utils.getScreenManager().getScreen(screenTypeToLoad);
         screenToLoad.setBackground((Image) stage.getActors().get(0),
                                    (Image) stage.getActors().get(1));
-        Utils.getScreenManager().setScreen(screenType);
+        Utils.getScreenManager().setScreen(screenTypeToLoad);
     }
 
     @Override
@@ -80,7 +78,7 @@ public class LoadScreen implements Screen {
         stage.dispose();
     }
 
-    public void setBackground(Image screenshot) {
+    void setBackground(Image screenshot) {
         var texture = Utils.getResourceManager().getTextureAsset(SPRITE_PARCHMENT);
         var parchment = new Image(texture);
         if (hasSmallParchment()) {
@@ -97,9 +95,9 @@ public class LoadScreen implements Screen {
     }
 
     private boolean hasSmallParchment() {
-        return screenType.equals(ScreenType.FIND)
-               || screenType.equals(ScreenType.REWARD)
-               || screenType.equals(ScreenType.RECEIVE);
+        return screenTypeToLoad.equals(ScreenType.FIND)
+               || screenTypeToLoad.equals(ScreenType.REWARD)
+               || screenTypeToLoad.equals(ScreenType.RECEIVE);
     }
 
 }

@@ -91,6 +91,10 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
         this.conversationDialog.addObserver(this);
     }
 
+    public static void load() {
+        Utils.getScreenManager().openParchmentLoadScreen(ScreenType.INVENTORY);
+    }
+
     @Override
     public void onNotifyCreateProfile(ProfileManager profileManager) {
         spellsWindowPosition = new Vector2(SPELLS_WINDOW_POSITION_X, SPELLS_WINDOW_POSITION_Y);

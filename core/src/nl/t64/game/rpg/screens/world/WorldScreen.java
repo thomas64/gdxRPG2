@@ -21,11 +21,10 @@ import nl.t64.game.rpg.constants.GameState;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.events.character.LoadCharacterEvent;
 import nl.t64.game.rpg.events.character.PathUpdateEvent;
-import nl.t64.game.rpg.screens.ScreenLoader;
 import nl.t64.game.rpg.screens.inventory.PartyObserver;
 import nl.t64.game.rpg.screens.inventory.PartySubject;
-import nl.t64.game.rpg.screens.loot.LootObserver;
-import nl.t64.game.rpg.screens.loot.LootSubject;
+import nl.t64.game.rpg.screens.loot.*;
+import nl.t64.game.rpg.screens.shop.ShopScreen;
 import nl.t64.game.rpg.screens.world.conversation.ConversationDialog;
 import nl.t64.game.rpg.screens.world.conversation.ConversationObserver;
 import nl.t64.game.rpg.screens.world.pathfinding.TiledNode;
@@ -48,7 +47,6 @@ public class WorldScreen implements Screen,
     private static boolean showDebug = false;
 
     private GameState gameState;
-    private final ScreenLoader screenLoader;
     private final Camera camera;
     private final TextureMapObjectRenderer mapRenderer;
     private final InputMultiplexer multiplexer;
@@ -68,11 +66,10 @@ public class WorldScreen implements Screen,
     private List<Character> lootList;
 
     public WorldScreen() {
-        this.screenLoader = new ScreenLoader(this::doBeforeLoadScreen);
         this.camera = new Camera();
         this.mapRenderer = new TextureMapObjectRenderer();
         this.multiplexer = new InputMultiplexer();
-        this.multiplexer.addProcessor(new WorldScreenListener(this.screenLoader, this::showHidePartyWindow));
+        this.multiplexer.addProcessor(new WorldScreenListener(this::doBeforeLoadScreen, this::showHidePartyWindow));
         this.player = new Character(Constant.PLAYER_ID,
                                     new InputPlayer(this.multiplexer), new PhysicsPlayer(), new GraphicsPlayer());
         this.player.registerObserver(this);
@@ -145,7 +142,8 @@ public class WorldScreen implements Screen,
 
     @Override
     public void onNotifyShowFindDialog(Loot loot) {
-        screenLoader.openFindDialog(loot);
+        doBeforeLoadScreen();
+        FindScreen.load(loot);
     }
 
     @Override   // also ConversationObserver
@@ -201,18 +199,21 @@ public class WorldScreen implements Screen,
     public void onNotifyLoadShop() {
         conversationDialog.hide();
         show();
-        screenLoader.openShopScreen(currentNpcCharacter.getId(), currentNpcCharacter.getConversationId());
+        doBeforeLoadScreen();
+        ShopScreen.load(currentNpcCharacter.getId(), currentNpcCharacter.getConversationId());
     }
 
     @Override
     public void onNotifyShowRewardDialog(Loot reward) {
-        screenLoader.openRewardDialog(reward);
+        doBeforeLoadScreen();
+        RewardScreen.load(reward);
         conversationDialog.hideWithFade();
     }
 
     @Override
     public void onNotifyShowReceiveDialog(Loot receive) {
-        screenLoader.openReceiveDialog(receive);
+        doBeforeLoadScreen();
+        ReceiveScreen.load(receive);
         conversationDialog.hideWithFade();
     }
 

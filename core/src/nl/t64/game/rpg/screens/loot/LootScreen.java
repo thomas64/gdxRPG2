@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import lombok.Getter;
-import lombok.Setter;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.constants.ScreenType;
@@ -45,10 +44,8 @@ public abstract class LootScreen extends LootSubject implements ScreenToLoad {
     private final ButtonToolTip buttonToolTip;
     @Getter
     private LootUI lootUI;
-    @Setter
-    private Loot loot;
-    @Setter
-    private String lootTitle;
+    Loot loot;
+    String lootTitle;
 
     public LootScreen() {
         this.stage = new Stage();

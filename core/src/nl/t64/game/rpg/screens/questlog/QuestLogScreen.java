@@ -39,6 +39,10 @@ public class QuestLogScreen implements ScreenToLoad {
         this.stage = new Stage();
     }
 
+    public static void load() {
+        Utils.getScreenManager().openParchmentLoadScreen(ScreenType.QUEST_LOG);
+    }
+
     @Override
     public void show() {
         Gdx.input.setCursorCatched(false);

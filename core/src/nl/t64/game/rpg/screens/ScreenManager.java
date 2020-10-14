@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 import nl.t64.game.rpg.Engine;
+import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.screens.menu.MenuScreen;
 import nl.t64.game.rpg.screens.world.WorldScreen;
@@ -19,6 +20,13 @@ public class ScreenManager {
 
     public ScreenManager() {
         this.screenCache = new EnumMap<>(ScreenType.class);
+    }
+
+    public void openParchmentLoadScreen(ScreenType screenTypeToLoad) {
+        var loadScreen = (LoadScreen) getScreen(ScreenType.LOAD_SCREEN);
+        loadScreen.screenTypeToLoad = screenTypeToLoad;
+        loadScreen.setBackground(Utils.createScreenshot(true));
+        setScreen(ScreenType.LOAD_SCREEN);
     }
 
     public MenuScreen getMenuScreen(ScreenType screenType) {

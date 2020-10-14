@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.profile.ProfileManager;
@@ -144,6 +145,14 @@ public final class Utils {
             }
         }
         return color;
+    }
+
+    public static Image createScreenshot(boolean withBlur) {
+        var screenshot = new Image(ScreenUtils.getFrameBufferTexture());
+        if (withBlur) {
+            screenshot.setColor(Color.DARK_GRAY);
+        }
+        return screenshot;
     }
 
     public static <T> List<T> reverseList(List<T> list) {
