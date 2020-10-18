@@ -3,6 +3,8 @@ package nl.t64.game.rpg.screens.world;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.audio.AudioCommand;
+import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.character.Direction;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.profile.ProfileManager;
@@ -72,6 +74,7 @@ public class MapManager implements ProfileObserver {
     public void checkWarpPoints(Rectangle checkRect, Direction direction) {
         currentMap.getWarpPointBeingCheckedBy(checkRect)
                   .ifPresent(warpPoint -> {
+                      Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_WARP);
                       warpPoint.setEnterDirection(direction);
                       loadMap(warpPoint.toMapName);
                       currentMap.setPlayerSpawnLocation(warpPoint);
@@ -120,13 +123,36 @@ public class MapManager implements ProfileObserver {
     }
 
     private void loadMap(String mapTitle) {
+        AudioEvent prevBgm = getMapBgm();
+        List<AudioEvent> prevBgs = getMapBgs();
         disposeOldMap();
         currentMap = new GameMap(mapTitle);
+        AudioEvent nextBgm = currentMap.bgm;
+        List<AudioEvent> nextBgs = currentMap.bgs;
+        Utils.getAudioManager().possibleBgmSwitch(prevBgm, nextBgm);
+        Utils.getAudioManager().possibleBgsSwitch(prevBgs, nextBgs);
     }
 
-    private void disposeOldMap() {
+    public void disposeOldMap() {
         if (currentMap != null) {
             currentMap.dispose();
+            currentMap = null;
+        }
+    }
+
+    private AudioEvent getMapBgm() {
+        if (currentMap != null) {
+            return currentMap.bgm;
+        } else {
+            return AudioEvent.NONE;
+        }
+    }
+
+    private List<AudioEvent> getMapBgs() {
+        if (currentMap != null) {
+            return currentMap.bgs;
+        } else {
+            return List.of(AudioEvent.NONE);
         }
     }
 

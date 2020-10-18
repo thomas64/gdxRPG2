@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.audio.AudioCommand;
+import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.InventoryContainer;
@@ -138,7 +140,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
     }
 
     @Override
-    public void onNotifyShowMessageDialog(String message) {
+    public void onNotifyShowMessageDialog(String message, AudioEvent event) {
         throw new IllegalCallerException("Impossible to show Message from Inventory.");
     }
 
@@ -175,12 +177,15 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
 
     @Override
     public void show() {
+        Utils.getAudioManager().handle(AudioCommand.BGM_PAUSE_ALL, AudioEvent.NONE);
+        Utils.getAudioManager().handle(AudioCommand.BGS_PAUSE_ALL, AudioEvent.NONE);
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
         Gdx.input.setCursorCatched(false);
         Gdx.input.setInputProcessor(stage);
         stage.addListener(new InventoryScreenListener(this::closeScreen,
                                                       this::resetWindowsPositions,
-                                                      InventoryUtils::selectPreviousHero,
-                                                      InventoryUtils::selectNextHero,
+                                                      this::selectPreviousHero,
+                                                      this::selectNextHero,
                                                       this::tryToDismissHero,
                                                       this::sortInventory,
                                                       this::showHelpMessage,
@@ -232,6 +237,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
 
     @Override
     public void hide() {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
         inventoryUI.unloadAssets();
         stage.clear();
         Gdx.input.setInputProcessor(null);
@@ -263,9 +269,9 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
         closeButton.addListener(new ButtonTooltipListener(buttonToolTip, "Close screen"));
         resetButton.addListener(new ListenerMouseImageButton(this::resetWindowsPositions));
         resetButton.addListener(new ButtonTooltipListener(buttonToolTip, "Reset windows"));
-        previousButton.addListener(new ListenerMouseImageButton(InventoryUtils::selectPreviousHero));
+        previousButton.addListener(new ListenerMouseImageButton(this::selectPreviousHero));
         previousButton.addListener(new ButtonTooltipListener(buttonToolTip, "Previous hero"));
-        nextButton.addListener(new ListenerMouseImageButton(InventoryUtils::selectNextHero));
+        nextButton.addListener(new ListenerMouseImageButton(this::selectNextHero));
         nextButton.addListener(new ButtonTooltipListener(buttonToolTip, "Next hero"));
         dismissButton.addListener(new ListenerMouseImageButton(this::tryToDismissHero));
         dismissButton.addListener(new ButtonTooltipListener(buttonToolTip, "Dismiss hero"));
@@ -297,6 +303,16 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
         Gdx.input.setCursorCatched(true);
     }
 
+    private void selectPreviousHero() {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_CURSOR);
+        InventoryUtils.selectPreviousHero();
+    }
+
+    private void selectNextHero() {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_CURSOR);
+        InventoryUtils.selectNextHero();
+    }
+
     private void tryToDismissHero() {
         if (isDialogVisibleThenClose()) {
             return;
@@ -305,9 +321,9 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
         HeroItem currentHero = InventoryUtils.getSelectedHero();
         String currentHeroId = currentHero.getId();
         if (party.isPlayer(currentHeroId)) {
-            String message = "You cannot dismiss the party leader.";
-            MessageDialog messageDialog = new MessageDialog(message);
-            messageDialog.show(stage);
+            String errorMessage = "You cannot dismiss the party leader.";
+            MessageDialog messageDialog = new MessageDialog(errorMessage);
+            messageDialog.show(stage, AudioEvent.SE_MENU_ERROR);
         } else {
             conversationDialog.loadConversation("dismiss_" + currentHeroId, currentHeroId);
             conversationDialog.show();
@@ -320,6 +336,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
     }
 
     private void sortInventory() {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_CONFIRM);
         Utils.getGameData().getInventory().sort();
         inventoryUI.reloadInventory();
     }
@@ -368,7 +385,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
                 H = This dialog""";
         final var messageDialog = new MessageDialog(message);
         messageDialog.setLeftAlignment();
-        messageDialog.show(stage);
+        messageDialog.show(stage, AudioEvent.SE_CONVERSATION_NEXT);
     }
 
     private void storeWindowPositions() {
@@ -389,6 +406,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
     }
 
     private void resetWindowsPositions() {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_CONFIRM);
         inventoryUI.spellsWindow.setPosition(SPELLS_WINDOW_POSITION_X, SPELLS_WINDOW_POSITION_Y);
         inventoryUI.inventoryWindow.setPosition(INVENTORY_WINDOW_POSITION_X, INVENTORY_WINDOW_POSITION_Y);
         inventoryUI.equipWindow.setPosition(EQUIP_WINDOW_POSITION_X, EQUIP_WINDOW_POSITION_Y);

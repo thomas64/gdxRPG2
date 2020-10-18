@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import lombok.Getter;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.audio.AudioCommand;
+import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.screens.ScreenToLoad;
@@ -97,6 +99,7 @@ public abstract class LootScreen extends LootSubject implements ScreenToLoad {
 
     @Override
     public void hide() {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
         lootUI.unloadAssets();
         stage.clear();
         Gdx.input.setInputProcessor(null);
@@ -172,7 +175,7 @@ public abstract class LootScreen extends LootSubject implements ScreenToLoad {
                 H = This dialog""";
         final var messageDialog = new MessageDialog(message);
         messageDialog.setLeftAlignment();
-        messageDialog.show(stage);
+        messageDialog.show(stage, AudioEvent.SE_CONVERSATION_NEXT);
     }
 
     private ImageButton createImageButton(String up, String over, String down) {

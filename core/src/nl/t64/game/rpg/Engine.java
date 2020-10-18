@@ -2,6 +2,7 @@ package nl.t64.game.rpg;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import nl.t64.game.rpg.audio.AudioManager;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.profile.ProfileObserver;
@@ -18,6 +19,7 @@ public class Engine extends Game {
     final ProfileManager profileManager;
     final GameData gameData;
     final ScreenManager screenManager;
+    final AudioManager audioManager;
     final MapManager mapManager;
 
     public Engine(Settings settings) {
@@ -26,6 +28,7 @@ public class Engine extends Game {
         this.profileManager = new ProfileManager();
         this.gameData = new GameData();
         this.screenManager = new ScreenManager();
+        this.audioManager = new AudioManager();
         this.mapManager = new MapManager();
     }
 

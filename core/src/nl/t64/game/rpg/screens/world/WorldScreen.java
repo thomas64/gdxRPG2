@@ -11,6 +11,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import lombok.Getter;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.audio.AudioCommand;
+import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.character.Character;
 import nl.t64.game.rpg.components.character.*;
 import nl.t64.game.rpg.components.conversation.ConversationGraph;
@@ -135,22 +137,21 @@ public class WorldScreen implements Screen,
     }
 
     @Override
-    public void onNotifyShowFindDialog(Loot loot, String message) {
+    public void onNotifyShowFindDialog(Loot loot, AudioEvent event, String message) {
         onNotifyShowMessageDialog(message);
-        messageDialog.setScreenAfterHide(() -> onNotifyShowFindDialog(loot));
+        messageDialog.setScreenAfterHide(() -> onNotifyShowFindDialog(loot, event));
     }
 
     @Override
-    public void onNotifyShowFindDialog(Loot loot) {
+    public void onNotifyShowFindDialog(Loot loot, AudioEvent event) {
         doBeforeLoadScreen();
-        FindScreen.load(loot);
+        FindScreen.load(loot, event);
     }
 
-    @Override   // also ConversationObserver
+    @Override
     public void onNotifyShowMessageDialog(String message) {
         player.resetInput();
-        messageDialog.setMessage(message);
-        messageDialog.show();
+        messageDialog.show(message, AudioEvent.SE_CONVERSATION_NEXT);
     }
 
     // PartyObserver ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -196,6 +197,12 @@ public class WorldScreen implements Screen,
     }
 
     @Override
+    public void onNotifyShowMessageDialog(String message, AudioEvent event) {
+        player.resetInput();
+        messageDialog.show(message, event);
+    }
+
+    @Override
     public void onNotifyLoadShop() {
         conversationDialog.hide();
         show();
@@ -238,6 +245,7 @@ public class WorldScreen implements Screen,
     public void show() {
         gameState = GameState.RUNNING;
         Gdx.input.setInputProcessor(multiplexer);
+        continueBgmBgsWhenReturnFromMenuPause();
     }
 
     @Override
@@ -330,6 +338,14 @@ public class WorldScreen implements Screen,
 
     private void showHidePartyWindow() {
         partyWindow.showHide();
+    }
+
+    private void continueBgmBgsWhenReturnFromMenuPause() {
+        GameMap currentMap = Utils.getMapManager().currentMap;
+        if (currentMap != null) {
+            Utils.getAudioManager().handle(AudioCommand.BGM_PLAY_LOOP, currentMap.bgm);
+            Utils.getAudioManager().handle(AudioCommand.BGS_PLAY_LOOP, currentMap.bgs);
+        }
     }
 
     @Override

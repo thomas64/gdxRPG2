@@ -2,7 +2,7 @@
   "quest0002": {
     "title"    : "Get through the gatekeeper",
     "character": "soldier01",
-    "summary"  : "Bob the gatekeeper of Hero's Hometown likes nothing more to make a few extra bucks at his job.",
+    "summary"  : "Bob the gatekeeper of Hero's Hometown likes nothing more than to make a few extra bucks while on the job. It does not make him very likeable or trustworthy with the people.",
     "tasks"    : {
       "1": {
         "taskPhrase": "You need 1 gold",
@@ -18,7 +18,7 @@
   "quest0004": {
     "title"    : "Secret love",
     "character": "youngman01",
-    "summary"  : "William is so anxious for a girl he secretly loves. He even ran away from her just now.",
+    "summary"  : "William is so anxious for a girl he secretly loves. He even ran away from her when he saw her just now.",
     "tasks"    : {
       "1": {
         "taskPhrase": "Find the girl Sarah and tell her about William's feelings",
@@ -33,7 +33,7 @@
   "quest0005": {
     "title"    : "Buying salvation",
     "character": "oldman01",
-    "summary"  : "Charles is dying and he is afraid to go to hell. He thinks that the priest of Hero's Hometown can help him.",
+    "summary"  : "Charles is dying and he is afraid to go to hell. He believes that the priest of Hero's Hometown can help him to not go to hell.",
     "tasks"    : {
       "1": {
         "taskPhrase": "Deliver exclusive present to the priest",

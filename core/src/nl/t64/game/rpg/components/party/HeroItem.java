@@ -2,7 +2,7 @@ package nl.t64.game.rpg.components.party;
 
 import lombok.Getter;
 import lombok.Setter;
-import nl.t64.game.rpg.constants.*;
+import nl.t64.game.rpg.constants.Constant;
 
 import java.util.List;
 import java.util.Map;
@@ -123,9 +123,9 @@ public class HeroItem {
 
     public Optional<String> isAbleToEquip(InventoryItem inventoryItem) {
         for (InventoryMinimal minimal : InventoryMinimal.values()) {
-            Optional<String> message = minimal.createMessageIfHeroHasNotEnoughFor(inventoryItem, this);
-            if (message.isPresent()) {
-                return message;
+            Optional<String> errorMessage = minimal.createMessageIfHeroHasNotEnoughFor(inventoryItem, this);
+            if (errorMessage.isPresent()) {
+                return errorMessage;
             }
         }
         return Optional.empty();    // Yes, is able to equip.

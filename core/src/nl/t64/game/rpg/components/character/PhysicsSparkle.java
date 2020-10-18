@@ -1,6 +1,7 @@
 package nl.t64.game.rpg.components.character;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.events.Event;
 import nl.t64.game.rpg.events.character.LoadCharacterEvent;
@@ -36,7 +37,7 @@ public class PhysicsSparkle extends PhysicsComponent {
     public void update(Character character, float dt) {
         if (isSelected) {
             isSelected = false;
-            notifyShowFindDialog(sparkle);
+            notifyShowFindDialog(sparkle, AudioEvent.SE_SPARKLE);
         }
     }
 

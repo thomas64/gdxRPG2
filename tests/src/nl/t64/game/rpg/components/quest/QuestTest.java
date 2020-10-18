@@ -64,12 +64,12 @@ class QuestTest extends GameTest {
         gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("gemstone", 5));
         gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("herb", 3));
         quest0001.handleReturn(s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_SUCCESS));
-        quest0001.handleReward(s -> assertThat(s).isNull(),
+        quest0001.handleReward((s, e) -> assertThat(s).isNull(),
                                l -> assertThat(l.isTaken()).isFalse(),
                                null);
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.UNCLAIMED);
         gameData.getLoot().getLoot("quest0001").clearContent();
-        quest0001.handleReward(s -> assertThat(s).isNull(),
+        quest0001.handleReward((s, e) -> assertThat(s).isNull(),
                                l -> assertThat(l.isTaken()).isTrue(),
                                s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_FINISHED));
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.FINISHED);
@@ -116,11 +116,11 @@ class QuestTest extends GameTest {
         assertThatExceptionOfType(IllegalStateException.class).isThrownBy(quest0001::accept);
         gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("gemstone", 5));
         gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("herb", 3));
-        quest0001.handleReward(s -> { }, l -> { }, null);
+        quest0001.handleReward((s, e) -> { }, l -> { }, null);
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.UNCLAIMED);
         assertThatExceptionOfType(IllegalStateException.class).isThrownBy(quest0001::unclaim);
         gameData.getLoot().getLoot("quest0001").clearContent();
-        quest0001.handleReward(s -> { }, l -> { }, s -> { });
+        quest0001.handleReward((s, e) -> { }, l -> { }, s -> { });
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.FINISHED);
         assertThatExceptionOfType(IllegalStateException.class).isThrownBy(quest0001::finish);
     }
@@ -183,7 +183,7 @@ class QuestTest extends GameTest {
         quest0001.handleAccept(s -> { });
         quest0001.handleReturn(s -> { });
         gameData.getLoot().getLoot("quest0001").clearContent();
-        quest0001.handleReward(s -> assertThat(s).isEqualTo("Mozes gained a level!"), l -> { }, s -> { });
+        quest0001.handleReward((s, e) -> assertThat(s).isEqualTo("Mozes gained a level!"), l -> { }, s -> { });
     }
     //@formatter:on
 

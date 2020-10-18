@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.InventoryGroup;
 
@@ -96,9 +97,9 @@ class EquipSlot extends ItemSlot {
     }
 
     private boolean doesHeroAcceptItem(InventoryImage draggedItem) {
-        Optional<String> message = heroItem.isAbleToEquip(draggedItem.inventoryItem);
-        if (message.isPresent()) {
-            new MessageDialog(message.get()).show(getStage());
+        Optional<String> errorMessage = heroItem.isAbleToEquip(draggedItem.inventoryItem);
+        if (errorMessage.isPresent()) {
+            new MessageDialog(errorMessage.get()).show(getStage(), AudioEvent.SE_MENU_ERROR);
             return false;
         } else {
             return true;

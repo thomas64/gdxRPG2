@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.audio.AudioCommand;
+import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.ScreenType;
 
@@ -20,9 +22,11 @@ public abstract class MenuScreen implements Screen {
 
     static final float PAD_TOP = 120f;
     static final float PAD_RIGHT = 40f;
+
     private static final String TITLE_LOGO = "sprites/titlelogo.png";
     private static final String MENU_FONT = "fonts/calibril.ttf";
     private static final int MENU_SIZE = 34;
+
     final Stage stage;
     final BitmapFont menuFont;
 
@@ -66,6 +70,8 @@ public abstract class MenuScreen implements Screen {
     }
 
     void processBackButton() {
+        Utils.getAudioManager().handle(AudioCommand.SE_STOP, AudioEvent.SE_MENU_CONFIRM);
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_BACK);
         var screenManager = Utils.getScreenManager();
         var backScreen = screenManager.getMenuScreen(fromScreen);
         backScreen.setBackground(background);

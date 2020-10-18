@@ -1,0 +1,43 @@
+CREDITS
+GdxRpg 2
+
+
+GAME DESIGN
+Thomas M. Hesselink
+
+PROGRAMMING
+Thomas M. Hesselink
+
+
+Graphics Copyright Notice
+
+"Titlelogo"
+"Titlescreen"
+
+by N. van der Stoep
+
+
+"Painterly Spell Icons"
+
+by J.W. Bjerk (eleazzaar)
+www.jwbjerk.com/art
+
+
+Music Copyright Notice
+
+"Fantascape"
+"Home Forest"
+"Netherplace"
+"The Magic Box"
+
+by Eric Matyas
+www.soundimage.org
+
+
+Some of the sounds in this project were created
+by David McKee (ViRiX)
+soundcloud.com/virix
+
+
+COPYRIGHT
+T64.nl

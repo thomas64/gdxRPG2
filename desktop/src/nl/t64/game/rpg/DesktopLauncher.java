@@ -32,9 +32,7 @@ public final class DesktopLauncher {
 
         Gdx.app = new LwjglApplication(new Engine(settings), config);
         Gdx.app.setLogLevel(Application.LOG_ERROR);
-        if (config.fullscreen) {
-            Gdx.input.setCursorCatched(true);
-        }
+        Gdx.input.setCursorCatched(true);
     }
 
 }

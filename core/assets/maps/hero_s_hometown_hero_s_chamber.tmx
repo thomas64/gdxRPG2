@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="38" height="54" tilewidth="24" tileheight="24" infinite="0" nextlayerid="17" nextobjectid="27">
+ <properties>
+  <property name="bgm" value="bgm_secret_chamber"/>
+  <property name="bgs" value="bgs_spring_flow"/>
+ </properties>
  <tileset firstgid="1" name="hero_s_hometown_hero_s_chamber" tilewidth="24" tileheight="24" tilecount="950" columns="38">
   <image source="tilesets/hero_s_hometown_hero_s_chamber.png" width="912" height="600"/>
  </tileset>

@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.audio.AudioCommand;
+import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.ScreenType;
 
@@ -126,11 +128,15 @@ public class MenuLoad extends MenuScreen {
         Object profileName = listItems.getSelected();
         if (profileName != null) {
             deleteFileDialog.show(stage);
+        } else {
+            Utils.getAudioManager().handle(AudioCommand.SE_STOP, AudioEvent.SE_MENU_CONFIRM);
+            Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_ERROR);
         }
     }
 
     private void openWorldScreen() {
         Object profileName = listItems.getSelected();
+        Utils.getMapManager().disposeOldMap();
         Utils.getScreenManager().setScreen(ScreenType.WORLD);
         Utils.getProfileManager().loadProfile(profileName.toString());
     }

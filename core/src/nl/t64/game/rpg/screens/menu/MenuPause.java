@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.audio.AudioCommand;
+import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.constants.ScreenType;
 
 
@@ -34,6 +36,9 @@ public class MenuPause extends MenuScreen {
     }
 
     public static void load() {
+        Utils.getAudioManager().handle(AudioCommand.BGM_PAUSE_ALL, AudioEvent.NONE);
+        Utils.getAudioManager().handle(AudioCommand.BGS_PAUSE_ALL, AudioEvent.NONE);
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_CONFIRM);
         var menuPause = Utils.getScreenManager().getMenuScreen(ScreenType.MENU_PAUSE);
         menuPause.setBackground(Utils.createScreenshot(true));
         Utils.getScreenManager().setScreen(ScreenType.MENU_PAUSE);
@@ -80,6 +85,7 @@ public class MenuPause extends MenuScreen {
     }
 
     private void openMenuMain() {
+        Utils.getMapManager().disposeOldMap();
         Utils.getScreenManager().setScreen(ScreenType.MENU_MAIN);
     }
 

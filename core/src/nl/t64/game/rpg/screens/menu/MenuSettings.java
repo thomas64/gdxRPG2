@@ -12,15 +12,21 @@ public class MenuSettings extends MenuScreen {
 
     private static final String MENU_ITEM_FULL_SCREEN_ON = "Fullscreen: On";
     private static final String MENU_ITEM_FULL_SCREEN_OFF = "Fullscreen: Off";
+    private static final String MENU_ITEM_MUSIC_ON = "Music: On";
+    private static final String MENU_ITEM_MUSIC_OFF = "Music: Off";
+    private static final String MENU_ITEM_SOUND_ON = "Sound: On";
+    private static final String MENU_ITEM_SOUND_OFF = "Sound: Off";
     private static final String MENU_ITEM_DEBUG_MODE_ON = "Debug mode: On";
     private static final String MENU_ITEM_DEBUG_MODE_OFF = "Debug mode: Off";
     private static final String MENU_ITEM_CONTROLS = "View controls";
     private static final String MENU_ITEM_BACK = "Back";
 
-    private static final int NUMBER_OF_ITEMS = 4;
-    private static final int EXIT_INDEX = 3;
+    private static final int NUMBER_OF_ITEMS = 6;
+    private static final int EXIT_INDEX = 5;
 
     private TextButton fullscreenButton;
+    private TextButton musicButton;
+    private TextButton soundButton;
     private TextButton debugModeButton;
     private TextButton controlsButton;
     private TextButton backButton;
@@ -53,27 +59,34 @@ public class MenuSettings extends MenuScreen {
     private void selectMenuItem() {
         switch (selectedMenuIndex) {
             case 0 -> processFullscreenButton();
-            case 1 -> processDebugModeButton();
-            case 2 -> processButton(ScreenType.MENU_SETTINGS, ScreenType.MENU_CONTROLS);
-            case 3 -> processBackButton();
+            case 1 -> processMusicButton();
+            case 2 -> processSoundButton();
+            case 3 -> processDebugModeButton();
+            case 4 -> processButton(ScreenType.MENU_SETTINGS, ScreenType.MENU_CONTROLS);
+            case 5 -> processBackButton();
             default -> throw new IllegalArgumentException("SelectedIndex not found.");
         }
     }
 
     private void processFullscreenButton() {
         Utils.getSettings().toggleFullscreen();
-        reloadScreen();
+        fullscreenButton.setText(getMenuItemFullScreen());
+    }
+
+    private void processMusicButton() {
+        boolean mustPlayBgmImmediately = startScreen.equals(ScreenType.MENU_MAIN);
+        Utils.getSettings().toggleMusic(mustPlayBgmImmediately);
+        musicButton.setText(getMenuItemMusic());
+    }
+
+    private void processSoundButton() {
+        Utils.getSettings().toggleSound();
+        soundButton.setText(getMenuItemSound());
     }
 
     private void processDebugModeButton() {
         Utils.getSettings().toggleDebugMode();
-        reloadScreen();
-    }
-
-    private void reloadScreen() {
-        stage.clear();
-        setBackground(background);
-        setupScreen();
+        debugModeButton.setText(getMenuItemDebugMode());
     }
 
     private Table createTable() {
@@ -84,6 +97,8 @@ public class MenuSettings extends MenuScreen {
 
         // actors
         fullscreenButton = new TextButton(getMenuItemFullScreen(), new TextButton.TextButtonStyle(buttonStyle));
+        musicButton = new TextButton(getMenuItemMusic(), new TextButton.TextButtonStyle(buttonStyle));
+        soundButton = new TextButton(getMenuItemSound(), new TextButton.TextButtonStyle(buttonStyle));
         debugModeButton = new TextButton(getMenuItemDebugMode(), new TextButton.TextButtonStyle(buttonStyle));
         controlsButton = new TextButton(MENU_ITEM_CONTROLS, new TextButton.TextButtonStyle(buttonStyle));
         backButton = new TextButton(MENU_ITEM_BACK, new TextButton.TextButtonStyle(buttonStyle));
@@ -94,6 +109,8 @@ public class MenuSettings extends MenuScreen {
         newTable.top().padTop(PAD_TOP).right().padRight(PAD_RIGHT);
         newTable.defaults().right();
         newTable.add(fullscreenButton).row();
+        newTable.add(musicButton).row();
+        newTable.add(soundButton).row();
         newTable.add(debugModeButton).row();
         newTable.add(controlsButton).row();
         newTable.add(backButton);
@@ -102,6 +119,14 @@ public class MenuSettings extends MenuScreen {
 
     private String getMenuItemFullScreen() {
         return Utils.getSettings().isFullscreen() ? MENU_ITEM_FULL_SCREEN_ON : MENU_ITEM_FULL_SCREEN_OFF;
+    }
+
+    private String getMenuItemMusic() {
+        return Utils.getSettings().isMusicOn() ? MENU_ITEM_MUSIC_ON : MENU_ITEM_MUSIC_OFF;
+    }
+
+    private String getMenuItemSound() {
+        return Utils.getSettings().isSoundOn() ? MENU_ITEM_SOUND_ON : MENU_ITEM_SOUND_OFF;
     }
 
     private String getMenuItemDebugMode() {
@@ -113,9 +138,11 @@ public class MenuSettings extends MenuScreen {
         table.addListener(listenerKeyVertical);
         table.addListener(new ListenerKeyConfirm(this::updateMenuIndex, this::selectMenuItem, EXIT_INDEX));
         fullscreenButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 0));
-        debugModeButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 1));
-        controlsButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 2));
-        backButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 3));
+        musicButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 1));
+        soundButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 2));
+        debugModeButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 3));
+        controlsButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 4));
+        backButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 5));
     }
 
 }

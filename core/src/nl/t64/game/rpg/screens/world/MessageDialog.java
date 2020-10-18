@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.audio.AudioCommand;
+import nl.t64.game.rpg.audio.AudioEvent;
 
 
 class MessageDialog {
@@ -28,17 +30,20 @@ class MessageDialog {
     private final BitmapFont font;
     private final Dialog dialog;
     private Label label;
+    private AudioEvent audioEvent;
     private Runnable actionAfterHide;
     private boolean isVisible;
+    private int timer;
 
     MessageDialog(InputMultiplexer multiplexer) {
         this.multiplexer = multiplexer;
         this.stage = new Stage();
         this.font = Utils.getResourceManager().getTrueTypeAsset(DIALOG_FONT, FONT_SIZE);
-        this.dialog = createDialog();
-        applyListeners();
+        this.dialog = this.createDialog();
+        this.applyListeners();
         this.actionAfterHide = null;
         this.isVisible = false;
+        this.timer = 0;
     }
 
     void dispose() {
@@ -51,26 +56,32 @@ class MessageDialog {
         }
     }
 
-    void setMessage(String message) {
-        long dialogHeight = ((message.lines().count()) * FONT_SIZE) + DIALOG_INIT_HEIGHT;
-        fillDialog(message, dialogHeight);
-    }
-
     void setScreenAfterHide(Runnable actionAfterHide) {
         this.actionAfterHide = actionAfterHide;
     }
 
-    void show() {
+    void show(String message, AudioEvent event) {
+        fillDialog(message);
         dialog.show(stage);
+        audioEvent = event;
         isVisible = true;
+        timer = 0;
     }
 
     void update(float dt) {
         if (isVisible) {
             Gdx.input.setInputProcessor(stage);
+            playAudio();
         }
         stage.act(dt);
         stage.draw();
+    }
+
+    private void playAudio() {
+        timer++;            // when dialog really REALLY is in the front, play audio sample. because it is shown for a
+        if (timer == 2) {   // real short time, but it must be put on hold until for example RewardScreen is gone.
+            Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, audioEvent);
+        }
     }
 
     private Dialog createDialog() {
@@ -101,7 +112,8 @@ class MessageDialog {
         return newDialog;
     }
 
-    private void fillDialog(String message, long dialogHeight) {
+    private void fillDialog(String message) {
+        long dialogHeight = ((message.lines().count()) * FONT_SIZE) + DIALOG_INIT_HEIGHT;
         label.setText(message);
         dialog.getContentTable().clear();
         dialog.getContentTable().defaults().width(label.getPrefWidth());
@@ -115,8 +127,10 @@ class MessageDialog {
 
     private void hide() {
         isVisible = false;
+        timer = 0;
         Gdx.input.setInputProcessor(multiplexer);
         if (actionAfterHide == null) {
+            Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_CONVERSATION_NEXT);
             dialog.hide();
         } else {
             actionAfterHide.run();

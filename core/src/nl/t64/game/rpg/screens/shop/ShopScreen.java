@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import lombok.Getter;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.audio.AudioCommand;
+import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.screens.ScreenToLoad;
 import nl.t64.game.rpg.screens.inventory.ListenerMouseImageButton;
@@ -55,6 +57,7 @@ public class ShopScreen implements ScreenToLoad {
 
     @Override
     public void show() {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
         Gdx.input.setCursorCatched(false);
         Gdx.input.setInputProcessor(stage);
         stage.addListener(new ShopScreenListener(this::closeScreen));
@@ -96,6 +99,7 @@ public class ShopScreen implements ScreenToLoad {
 
     @Override
     public void hide() {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
         shopUI.unloadAssets();
         stage.clear();
         Gdx.input.setInputProcessor(null);

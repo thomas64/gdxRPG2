@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.audio.AudioCommand;
+import nl.t64.game.rpg.audio.AudioEvent;
 
 
 public class MessageDialog {
@@ -30,11 +32,12 @@ public class MessageDialog {
         this.message = message;
         this.dialogHeight = ((message.lines().count()) * FONT_SIZE) + DIALOG_INIT_HEIGHT;
         this.dialogFont = Utils.getResourceManager().getTrueTypeAsset(DIALOG_FONT, FONT_SIZE);
-        this.dialog = createDialog();
-        applyListeners();
+        this.dialog = this.createDialog();
+        this.applyListeners();
     }
 
-    public void show(Stage stage) {
+    public void show(Stage stage, AudioEvent event) {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, event);
         dialog.show(stage);
     }
 
@@ -74,7 +77,12 @@ public class MessageDialog {
     }
 
     private void applyListeners() {
-        dialog.addListener(new MessageDialogListener(dialog::hide));
+        dialog.addListener(new MessageDialogListener(this::hide));
+    }
+
+    private void hide() {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_CONVERSATION_NEXT);
+        dialog.hide();
     }
 
 }

@@ -2,6 +2,7 @@ package nl.t64.game.rpg.components.character;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.SkillItemId;
@@ -150,9 +151,9 @@ public class PhysicsChest extends PhysicsComponent {
     private void showFindDialog() {
         final String message = finishStringBuilder();
         if (message.isBlank()) {
-            notifyShowFindDialog(chest);
+            notifyShowFindDialog(chest, AudioEvent.SE_CHEST);
         } else {
-            notifyShowFindDialog(chest, message);
+            notifyShowFindDialog(chest, AudioEvent.SE_CHEST, message);
         }
     }
 

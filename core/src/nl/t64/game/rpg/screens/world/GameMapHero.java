@@ -3,8 +3,6 @@ package nl.t64.game.rpg.screens.world;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 
-import java.util.Optional;
-
 
 class GameMapHero extends GameMapNpc {
 
@@ -17,9 +15,7 @@ class GameMapHero extends GameMapNpc {
     }
 
     private boolean createHasBeenRecruited(RectangleMapObject rectObject) {
-        Optional<Boolean> newHasBeenRecruited = Optional.ofNullable(
-                rectObject.getProperties().get("hasBeenRecruited", Boolean.class));
-        return newHasBeenRecruited.orElse(false);
+        return rectObject.getProperties().get("hasBeenRecruited", false, Boolean.class);
     }
 
 }

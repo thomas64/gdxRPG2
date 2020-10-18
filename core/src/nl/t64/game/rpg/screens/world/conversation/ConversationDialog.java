@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.audio.AudioCommand;
+import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.conversation.*;
 import nl.t64.game.rpg.components.party.HeroContainer;
 import nl.t64.game.rpg.components.party.HeroItem;
@@ -86,6 +88,7 @@ public class ConversationDialog extends ConversationSubject {
         this.faceId = characterId;
         this.graph = Utils.getGameData().getConversations().getConversationById(conversationId);
         fillDialogForConversation();
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_CONVERSATION_START);
         populateConversationDialog(graph.getCurrentPhraseId());
     }
 
@@ -94,6 +97,7 @@ public class ConversationDialog extends ConversationSubject {
         faceId = null;
         graph = NoteDatabase.getInstance().getNoteById(noteId);
         fillDialogForNote();
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_CONVERSATION_START);
         populateConversationDialog(graph.getCurrentPhraseId());
     }
 
@@ -174,10 +178,20 @@ public class ConversationDialog extends ConversationSubject {
     }
 
     private void continueConversation(String destinationId) {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_CONVERSATION_NEXT);
+        continueConversationWithoutSound(destinationId);
+    }
+
+    private void continueConversationWithoutSound(String destinationId) {
         populateConversationDialog(destinationId);
     }
 
     private void endConversation(String destinationId) {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_CONVERSATION_END);
+        endConversationWithoutSound(destinationId);
+    }
+
+    private void endConversationWithoutSound(String destinationId) {
         graph.setCurrentPhraseId(destinationId);
         notifyExitConversation();
     }
@@ -230,14 +244,16 @@ public class ConversationDialog extends ConversationSubject {
         if (party.isFull()) {
             continueConversation(Constant.PHRASE_ID_PARTY_FULL);
         } else {
+            Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_JOIN);
             heroes.removeHero(faceId);
             party.addHero(hero);
             notifyHeroJoined();
-            endConversation(destinationId);
+            endConversationWithoutSound(destinationId);
         }
     }
 
     private void dismissHero(String destinationId) {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_CONVERSATION_END);
         graph.setCurrentPhraseId(destinationId);
         notifyHeroDismiss();                                        // ends conversation
     }
@@ -288,11 +304,12 @@ public class ConversationDialog extends ConversationSubject {
     }
 
     private void completeTask(String destinationId) {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_REWARD);
         String questId = conversationId.substring(0, conversationId.length() - 2);
         QuestGraph quest = Utils.getGameData().getQuests().getQuestById(questId);
         String questTaskId = conversationId.substring(conversationId.length() - 1);
         quest.setTaskComplete(questTaskId);
-        continueConversation(destinationId);
+        continueConversationWithoutSound(destinationId);
     }
 
     private void returnQuest() {
@@ -301,11 +318,12 @@ public class ConversationDialog extends ConversationSubject {
     }
 
     private void rewardQuest() {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_REWARD);
         graph.setCurrentPhraseId(Constant.PHRASE_ID_QUEST_UNCLAIMED);
         QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
         quest.handleReward(super::notifyShowMessageDialog,
                            super::notifyShowRewardDialog,           // ends conversation, sets possible new phraseId
-                           this::endConversation);                  // sets new phraseId
+                           this::endConversationWithoutSound);      // sets new phraseId
     }
 
 }

@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.audio.AudioCommand;
+import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.screens.ScreenToLoad;
 import nl.t64.game.rpg.screens.inventory.ListenerMouseImageButton;
@@ -45,7 +47,9 @@ public class QuestLogScreen implements ScreenToLoad {
 
     @Override
     public void show() {
-        Gdx.input.setCursorCatched(false);
+        Utils.getAudioManager().handle(AudioCommand.BGM_PAUSE_ALL, AudioEvent.NONE);
+        Utils.getAudioManager().handle(AudioCommand.BGS_PAUSE_ALL, AudioEvent.NONE);
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
         Gdx.input.setInputProcessor(stage);
         stage.addListener(new QuestLogScreenListener(this::closeScreen));
         createButtonTable();
@@ -88,6 +92,7 @@ public class QuestLogScreen implements ScreenToLoad {
 
     @Override
     public void hide() {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
         questLogUI.unloadAssets();
         stage.clear();
         Gdx.input.setInputProcessor(null);
@@ -120,7 +125,6 @@ public class QuestLogScreen implements ScreenToLoad {
 
     private void closeScreen() {
         Utils.getScreenManager().setScreen(ScreenType.WORLD);
-        Gdx.input.setCursorCatched(true);
     }
 
     private ImageButton createImageButton(String up, String over, String down) {

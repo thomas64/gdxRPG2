@@ -21,6 +21,7 @@ public enum ScreenType {
     MENU_NEW(MenuNew.class),
     MENU_LOAD(MenuLoad.class),
     MENU_SETTINGS(MenuSettings.class),
+    MENU_CREDITS(MenuCredits.class),
     MENU_CONTROLS(MenuControls.class),
     MENU_PAUSE(MenuPause.class),
     WORLD(WorldScreen.class),

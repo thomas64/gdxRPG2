@@ -24,13 +24,19 @@ public class Settings {
 
     private static final String SETTINGS_FILE = "settings/settings.dat";
     private static final boolean FULLSCREEN_DEFAULT = true;
+    private static final boolean MUSIC_DEFAULT = true;
+    private static final boolean SOUND_DEFAULT = true;
     private static final boolean DEBUG_MODE_DEFAULT = false;
 
     private boolean isFullscreen;
+    private boolean isMusicOn;
+    private boolean isSoundOn;
     private boolean isInDebugMode;
 
     private Settings() {
         this.isFullscreen = FULLSCREEN_DEFAULT;
+        this.isMusicOn = MUSIC_DEFAULT;
+        this.isSoundOn = SOUND_DEFAULT;
         this.isInDebugMode = DEBUG_MODE_DEFAULT;
     }
 
@@ -61,13 +67,24 @@ public class Settings {
         writeSettingsFile();
     }
 
+    public void toggleMusic(boolean mustPlayBgmImmediately) {
+        isMusicOn ^= true;
+        Utils.getAudioManager().toggleMusic(isMusicOn, mustPlayBgmImmediately);
+        writeSettingsFile();
+    }
+
+    public void toggleSound() {
+        isSoundOn ^= true;
+        Utils.getAudioManager().toggleSound(isSoundOn);
+        writeSettingsFile();
+    }
+
     public void toggleDebugMode() {
         isInDebugMode ^= true;
     }
 
     private void setWindowedMode() {
         Gdx.graphics.setWindowedMode(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGHT);
-        Gdx.input.setCursorCatched(false);
     }
 
     private void setFullscreenMode() {
@@ -77,7 +94,6 @@ public class Settings {
                                                  .max(Comparator.comparing(mode -> mode.refreshRate))
                                                  .orElseThrow(NoSuchElementException::new);
         Gdx.graphics.setFullscreenMode(displayMode);
-        Gdx.input.setCursorCatched(true);
     }
 
     private void writeSettingsFile() {

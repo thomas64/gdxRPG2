@@ -2,11 +2,13 @@ package nl.t64.game.rpg.components.quest;
 
 import lombok.Getter;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.constants.Constant;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -108,7 +110,7 @@ public class QuestGraph {
         }
     }
 
-    public void handleReward(Consumer<String> notifyShowMessageDialog,
+    public void handleReward(BiConsumer<String, AudioEvent> notifyShowMessageDialog,
                              Consumer<Loot> notifyShowRewardDialog,
                              Consumer<String> endConversation) {
         Loot reward = Utils.getGameData().getLoot().getLoot(id);
@@ -168,13 +170,13 @@ public class QuestGraph {
                           .forEach(QuestTask::removeTargetFromInventory);
     }
 
-    private void partyGainXp(Loot reward, Consumer<String> notifyShowMessageDialog) {
+    private void partyGainXp(Loot reward, BiConsumer<String, AudioEvent> notifyShowMessageDialog) {
         StringBuilder levelUpMessage = new StringBuilder();
         Utils.getGameData().getParty().getAllHeroes().forEach(hero -> hero.gainXp(reward.getXp(), levelUpMessage));
         reward.clearXp();
         String finalMessage = levelUpMessage.toString().strip();
         if (!finalMessage.isEmpty()) {
-            notifyShowMessageDialog.accept(finalMessage);
+            notifyShowMessageDialog.accept(finalMessage, AudioEvent.SE_LEVELUP);
         }
     }
 

@@ -5,8 +5,6 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import nl.t64.game.rpg.components.character.Direction;
 
-import java.util.Optional;
-
 
 class GameMapSpawnPoint {
 
@@ -38,16 +36,13 @@ class GameMapSpawnPoint {
     }
 
     private String createFromMapLocation(RectangleMapObject rectObject) {
-        Optional<String> newFromMapLocation = Optional.ofNullable(
-                rectObject.getProperties().get("type", String.class));
-        return newFromMapLocation.orElse("");
+        return rectObject.getProperties().get("type", "", String.class);
     }
 
     private Direction createDirection(RectangleMapObject rectObject) {
-        Optional<String> directionString = Optional.ofNullable(
-                rectObject.getProperties().get("direction", String.class));
-        return directionString.map(string -> Direction.valueOf(string.toUpperCase()))
-                              .orElse(Direction.NONE);
+        return Direction.valueOf(rectObject.getProperties()
+                                           .get("direction", "NONE", String.class)
+                                           .toUpperCase());
     }
 
 }

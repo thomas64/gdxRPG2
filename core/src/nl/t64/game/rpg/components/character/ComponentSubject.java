@@ -1,5 +1,6 @@
 package nl.t64.game.rpg.components.character;
 
+import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.loot.Loot;
 
 import java.util.ArrayList;
@@ -31,12 +32,12 @@ class ComponentSubject {
         observers.forEach(observer -> observer.onNotifyShowNoteDialog(noteId));
     }
 
-    void notifyShowFindDialog(Loot loot, String message) {
-        observers.forEach(observer -> observer.onNotifyShowFindDialog(loot, message));
+    void notifyShowFindDialog(Loot loot, AudioEvent event, String message) {
+        observers.forEach(observer -> observer.onNotifyShowFindDialog(loot, event, message));
     }
 
-    void notifyShowFindDialog(Loot loot) {
-        observers.forEach(observer -> observer.onNotifyShowFindDialog(loot));
+    void notifyShowFindDialog(Loot loot, AudioEvent event) {
+        observers.forEach(observer -> observer.onNotifyShowFindDialog(loot, event));
     }
 
     void notifyShowMessageDialog(String message) {

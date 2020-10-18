@@ -9,13 +9,16 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.character.Direction;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.screens.world.pathfinding.TiledGraph;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -41,6 +44,8 @@ class GameMap {
 
     final String mapTitle;
     final TiledMap tiledMap;
+    final AudioEvent bgm;
+    final List<AudioEvent> bgs;
 
     Vector2 playerSpawnLocation;
     Direction playerSpawnDirection;
@@ -66,6 +71,11 @@ class GameMap {
     GameMap(String mapTitle) {
         this.mapTitle = mapTitle;
         this.tiledMap = Utils.getResourceManager().getMapAsset(MAP_PATH + mapTitle + MAPFILE_SUFFIX);
+        this.bgm = AudioEvent.valueOf(this.tiledMap.getProperties().get("bgm", String.class).toUpperCase());
+        String audioEventStrings = this.tiledMap.getProperties().get("bgs", "NONE", String.class);
+        this.bgs = Arrays.stream(audioEventStrings.toUpperCase().split("\\s*,\\s*"))
+                         .map(AudioEvent::valueOf)
+                         .collect(Collectors.toList());
         this.playerSpawnLocation = new Vector2();
 
         this.loadNpcs();

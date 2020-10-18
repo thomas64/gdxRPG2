@@ -23,7 +23,6 @@ public class LoadScreen implements Screen {
 
     @Override
     public void show() {
-        Gdx.input.setCursorCatched(false);
         Gdx.input.setInputProcessor(stage);
     }
 

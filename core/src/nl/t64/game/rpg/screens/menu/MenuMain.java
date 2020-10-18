@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.audio.AudioCommand;
+import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.constants.ScreenType;
 
 
@@ -17,14 +19,16 @@ public class MenuMain extends MenuScreen {
     private static final String MENU_ITEM_NEW_GAME = "New Game";
     private static final String MENU_ITEM_LOAD_GAME = "Load Game";
     private static final String MENU_ITEM_SETTINGS = "Settings";
+    private static final String MENU_ITEM_CREDITS = "Credits";
     private static final String MENU_ITEM_EXIT = "Exit";
 
-    private static final int NUMBER_OF_ITEMS = 4;
-    private static final int EXIT_INDEX = 3;
+    private static final int NUMBER_OF_ITEMS = 5;
+    private static final int EXIT_INDEX = 4;
 
     private TextButton newGameButton;
     private TextButton loadGameButton;
     private TextButton settingsButton;
+    private TextButton creditsButton;
     private TextButton exitButton;
 
     private ListenerKeyVertical listenerKeyVertical;
@@ -36,6 +40,7 @@ public class MenuMain extends MenuScreen {
 
     @Override
     void setupScreen() {
+        Utils.getAudioManager().handle(AudioCommand.BGM_PLAY_LOOP, AudioEvent.BGM_TITLE);
         stage.clear();
         Texture texture = Utils.getResourceManager().getTextureAsset(BACKGROUND);
         setBackground(new Image(texture));
@@ -61,7 +66,8 @@ public class MenuMain extends MenuScreen {
             case 0 -> processButton(ScreenType.MENU_MAIN, ScreenType.MENU_NEW);
             case 1 -> processButton(ScreenType.MENU_MAIN, ScreenType.MENU_LOAD);
             case 2 -> processButton(ScreenType.MENU_MAIN, ScreenType.MENU_SETTINGS);
-            case 3 -> processExitButton();
+            case 3 -> processButton(ScreenType.MENU_MAIN, ScreenType.MENU_CREDITS);
+            case 4 -> processExitButton();
             default -> throw new IllegalArgumentException("SelectedIndex not found.");
         }
     }
@@ -80,6 +86,7 @@ public class MenuMain extends MenuScreen {
         newGameButton = new TextButton(MENU_ITEM_NEW_GAME, new TextButton.TextButtonStyle(buttonStyle));
         loadGameButton = new TextButton(MENU_ITEM_LOAD_GAME, new TextButton.TextButtonStyle(buttonStyle));
         settingsButton = new TextButton(MENU_ITEM_SETTINGS, new TextButton.TextButtonStyle(buttonStyle));
+        creditsButton = new TextButton(MENU_ITEM_CREDITS, new TextButton.TextButtonStyle(buttonStyle));
         exitButton = new TextButton(MENU_ITEM_EXIT, new TextButton.TextButtonStyle(buttonStyle));
 
         // table
@@ -90,6 +97,7 @@ public class MenuMain extends MenuScreen {
         newTable.add(newGameButton).row();
         newTable.add(loadGameButton).row();
         newTable.add(settingsButton).row();
+        newTable.add(creditsButton).row();
         newTable.add(exitButton);
         return newTable;
     }
@@ -101,7 +109,8 @@ public class MenuMain extends MenuScreen {
         newGameButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 0));
         loadGameButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 1));
         settingsButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 2));
-        exitButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 3));
+        creditsButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 3));
+        exitButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 4));
     }
 
 }

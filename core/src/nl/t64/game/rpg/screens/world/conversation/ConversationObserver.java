@@ -1,5 +1,6 @@
 package nl.t64.game.rpg.screens.world.conversation;
 
+import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.loot.Loot;
 
 
@@ -7,7 +8,7 @@ public interface ConversationObserver {
 
     void onNotifyExitConversation();
 
-    void onNotifyShowMessageDialog(String message);
+    void onNotifyShowMessageDialog(String message, AudioEvent event);
 
     void onNotifyLoadShop();
 

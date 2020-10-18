@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="26" height="26" tilewidth="24" tileheight="24" infinite="0" nextlayerid="15" nextobjectid="24">
+ <properties>
+  <property name="bgm" value="bgm_town"/>
+ </properties>
  <tileset firstgid="1" name="hero_s_hometown_house_1" tilewidth="24" tileheight="24" tilecount="638" columns="29">
   <image source="tilesets/hero_s_hometown_house_1.png" width="696" height="528"/>
  </tileset>

@@ -1,6 +1,8 @@
 package nl.t64.game.rpg.screens.inventory;
 
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.audio.AudioCommand;
+import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.party.InventoryDatabase;
 import nl.t64.game.rpg.components.party.InventoryGroup;
 import nl.t64.game.rpg.components.party.InventoryItem;
@@ -50,7 +52,8 @@ class ItemSlotsExchanger {
                 InventoryUtils.getScreenUI().getInventorySlotsTable().removeResource("gold", totalPrice);
             }
         } else {
-            new MessageDialog("I'm sorry. You don't seem to have enough gold.").show(sourceSlot.getStage());
+            String errorMessage = "I'm sorry. You don't seem to have enough gold.";
+            new MessageDialog(errorMessage).show(sourceSlot.getStage(), AudioEvent.SE_MENU_ERROR);
             sourceSlot.putItemBack(draggedItem);
         }
     }
@@ -59,7 +62,8 @@ class ItemSlotsExchanger {
         final int totalMerchant = Utils.getGameData().getParty().getSumOfSkill(SkillItemId.MERCHANT);
         final int totalValue = draggedItem.inventoryItem.getSellValueTotal(totalMerchant);
         if (totalValue == 0) {
-            new MessageDialog("I'm sorry. I can't accept that.").show(sourceSlot.getStage());
+            String errorMessage = "I'm sorry. I can't accept that.";
+            new MessageDialog(errorMessage).show(sourceSlot.getStage(), AudioEvent.SE_MENU_ERROR);
             sourceSlot.putItemBack(draggedItem);
             return;
         }
@@ -71,7 +75,8 @@ class ItemSlotsExchanger {
                 InventoryUtils.getScreenUI().getInventorySlotsTable().addResource(gold);
             }
         } else {
-            new MessageDialog("I'm sorry. You don't seem to have room for gold.").show(sourceSlot.getStage());
+            String errorMessage = "I'm sorry. You don't seem to have room for gold.";
+            new MessageDialog(errorMessage).show(sourceSlot.getStage(), AudioEvent.SE_MENU_ERROR);
             sourceSlot.putItemBack(draggedItem);
         }
     }
@@ -86,6 +91,7 @@ class ItemSlotsExchanger {
         if (targetSlot.equals(sourceSlot)
             || (draggedItem.isSameItemAs(itemAtTarget)
                 && draggedItem.isStackable())) {
+            doAudio();
             targetSlot.incrementAmountBy(draggedItem.getAmount());
             isSuccessfullyExchanged = true;
         } else {
@@ -96,6 +102,7 @@ class ItemSlotsExchanger {
     private void swapStacks() {
         if (doTargetAndSourceAcceptEachOther()
             && !sourceSlot.hasItem()) {
+            doAudio();
             sourceSlot.addToStack(targetSlot.getCertainInventoryImage());
             targetSlot.addToStack(draggedItem);
             isSuccessfullyExchanged = true;
@@ -106,8 +113,23 @@ class ItemSlotsExchanger {
     }
 
     private void putItemInEmptySlot() {
+        doAudio();
         targetSlot.putInSlot(draggedItem);
         isSuccessfullyExchanged = true;
+    }
+
+    private void doAudio() {
+        if (isShopPurchase()) {
+            Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_COINS_BUY);
+        } else if (isShopBarter()) {
+            Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_COINS_SELL);
+        } else if (isEquipingOrDequiping()) {
+            Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_EQUIP);
+        } else if (isSameSlotOrBox()) {
+            // do nothing
+        } else {
+            Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_TAKE);
+        }
     }
 
     private boolean isShopPurchase() {
@@ -125,6 +147,16 @@ class ItemSlotsExchanger {
                  || targetSlot.filterGroup.equals(InventoryGroup.SHOP_ITEM))
                && targetSlot.doesAcceptItem(draggedItem)
                && sourceSlot.doesAcceptItem(targetSlot.getCertainInventoryImage());
+    }
+
+    private boolean isEquipingOrDequiping() {
+        return (!sourceSlot.isOnHero() && targetSlot.isOnHero())
+               || (sourceSlot.isOnHero() && !targetSlot.isOnHero());
+    }
+
+    private boolean isSameSlotOrBox() {
+        return targetSlot.equals(sourceSlot)
+               || targetSlot.filterGroup.equals(sourceSlot.filterGroup);
     }
 
 }

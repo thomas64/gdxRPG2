@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import nl.t64.game.rpg.audio.AudioManager;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.screens.ScreenManager;
@@ -57,6 +58,10 @@ public final class Utils {
 
     public static ScreenManager getScreenManager() {
         return getEngine().screenManager;
+    }
+
+    public static AudioManager getAudioManager() {
+        return getEngine().audioManager;
     }
 
     public static MapManager getMapManager() {

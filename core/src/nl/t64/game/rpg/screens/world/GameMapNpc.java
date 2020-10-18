@@ -55,9 +55,7 @@ class GameMapNpc {
     }
 
     private String createConversation(RectangleMapObject rectObject) {
-        Optional<String> newConversation = Optional.ofNullable(
-                rectObject.getProperties().get("conversation", String.class));
-        return newConversation.orElse("default");
+        return rectObject.getProperties().get("conversation", "default", String.class);
     }
 
 }

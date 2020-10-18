@@ -21,8 +21,13 @@ class MessageDialogListener extends InputListener {
 
     @Override
     public boolean keyDown(InputEvent event, int keycode) {
-        if (keycode == Input.Keys.ENTER) {
-            closeDialogFunction.run();
+        switch (keycode) {
+            case Input.Keys.ENTER,
+                    Input.Keys.ESCAPE,
+                    Input.Keys.A,
+                    Input.Keys.D,
+                    Input.Keys.H,
+                    Input.Keys.I -> closeDialogFunction.run();
         }
         return true;
     }

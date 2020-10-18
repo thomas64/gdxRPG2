@@ -1,5 +1,6 @@
 package nl.t64.game.rpg.screens.world.conversation;
 
+import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.loot.Loot;
 
 import java.util.ArrayList;
@@ -26,8 +27,8 @@ public class ConversationSubject {
         observers.forEach(ConversationObserver::onNotifyExitConversation);
     }
 
-    void notifyShowMessageDialog(String message) {
-        observers.forEach(conversationObserver -> conversationObserver.onNotifyShowMessageDialog(message));
+    void notifyShowMessageDialog(String message, AudioEvent event) {
+        observers.forEach(conversationObserver -> conversationObserver.onNotifyShowMessageDialog(message, event));
     }
 
     void notifyLoadShop() {

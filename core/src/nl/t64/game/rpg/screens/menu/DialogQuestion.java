@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.audio.AudioCommand;
+import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.constants.Constant;
 
 
@@ -49,8 +51,8 @@ class DialogQuestion {
         this.dialogHeight = ((message.lines().count()) * FONT_SIZE) + DIALOG_INIT_HEIGHT;
         this.yesFunction = yesFunction;
         this.dialogFont = Utils.getResourceManager().getTrueTypeAsset(DIALOG_FONT, FONT_SIZE);
-        this.dialog = createDialog();
-        applyListeners();
+        this.dialog = this.createDialog();
+        this.applyListeners();
     }
 
     void show(Stage stage) {
@@ -82,6 +84,8 @@ class DialogQuestion {
     }
 
     private void processNoButton() {
+        Utils.getAudioManager().handle(AudioCommand.SE_STOP, AudioEvent.SE_MENU_CONFIRM);
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_BACK);
         dialog.hide();
     }
 

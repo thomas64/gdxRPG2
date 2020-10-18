@@ -2,7 +2,11 @@ package nl.t64.game.rpg;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.MusicLoader;
+import com.badlogic.gdx.assets.loaders.SoundLoader;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -94,6 +98,32 @@ public class ResourceManager {
         assetManager.setLoader(Texture.class, new TextureLoader(assetManager.getFileHandleResolver()));
         assetManager.load(textureFilenamePath, Texture.class);
         assetManager.finishLoadingAsset(textureFilenamePath);
+    }
+
+    public Sound getSoundAsset(String soundFilenamePath) {
+        if (!assetManager.isLoaded(soundFilenamePath)) {
+            loadSoundAsset(soundFilenamePath);
+        }
+        return assetManager.get(soundFilenamePath, Sound.class);
+    }
+
+    private void loadSoundAsset(String soundFilenamePath) {
+        assetManager.setLoader(Sound.class, new SoundLoader(assetManager.getFileHandleResolver()));
+        assetManager.load(soundFilenamePath, Sound.class);
+        assetManager.finishLoadingAsset(soundFilenamePath);
+    }
+
+    public Music getMusicAsset(String musicFilenamePath) {
+        if (!assetManager.isLoaded(musicFilenamePath)) {
+            loadMusicAsset(musicFilenamePath);
+        }
+        return assetManager.get(musicFilenamePath, Music.class);
+    }
+
+    private void loadMusicAsset(String musicFilenamePath) {
+        assetManager.setLoader(Music.class, new MusicLoader(assetManager.getFileHandleResolver()));
+        assetManager.load(musicFilenamePath, Music.class);
+        assetManager.finishLoadingAsset(musicFilenamePath);
     }
 
     public SpriteConfig getSpriteConfig(String spriteId) {
