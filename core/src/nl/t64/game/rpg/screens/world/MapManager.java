@@ -21,7 +21,6 @@ public class MapManager implements ProfileObserver {
     GameMap currentMap;
     private final List<MapObserver> observers = new ArrayList<>();
 
-
     @Override
     public void onNotifyCreateProfile(ProfileManager profileManager) {
         loadMap(Constant.STARTING_MAP);
@@ -55,6 +54,10 @@ public class MapManager implements ProfileObserver {
         currentMap.questBlockers.forEach(GameMapQuestBlocker::update);
         currentMap.upperTextures.forEach(GameMapQuestTexture::update);
         currentMap.lowerTextures.forEach(GameMapQuestTexture::update);
+    }
+
+    public AudioEvent getGroundSound(Vector2 playerFeetPosition) {
+        return AudioEvent.from(currentMap.getUnderground(playerFeetPosition));
     }
 
     public List<Rectangle> getAllBlockers() {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="96" height="78" tilewidth="24" tileheight="24" infinite="0" nextlayerid="52" nextobjectid="228">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="96" height="78" tilewidth="24" tileheight="24" infinite="0" nextlayerid="53" nextobjectid="333">
  <properties>
   <property name="bgm" value="bgm_town"/>
  </properties>
@@ -61,7 +61,99 @@
    eJzt0FcNAgEURNH3R9ECFtYPxQHFAcUFxQjFCEUFI4LshnBOcv8nUwUAAAAAAAAAwC87jKqO6ZTOo67X/J9LPr+mW7r7v3WPfP5Mr/T2f+t646p+GqThuOs1AAAAAABMmqppmqV50/Wa/7PI58u0Smv/t26Tz7dpl/b+BwAAAAAAAAAAAAAAAPi6D+a0FQs=
   </data>
  </layer>
- <objectgroup color="#aa0000" id="8" name="collision_layer">
+ <objectgroup color="#0055ff" id="52" name="sound">
+  <object id="228" name="sand" x="1920" y="0" width="48" height="24"/>
+  <object id="229" name="sand" x="1632" y="384" width="408" height="48"/>
+  <object id="231" name="sand" x="1680" y="432" width="336" height="24"/>
+  <object id="232" name="sand" x="1704" y="456" width="288" height="24"/>
+  <object id="234" name="sand" x="1800" y="504" width="168" height="24"/>
+  <object id="235" name="sand" x="1776" y="480" width="192" height="24"/>
+  <object id="236" name="sand" x="1728" y="360" width="240" height="24"/>
+  <object id="238" name="sand" x="1776" y="312" width="144" height="24"/>
+  <object id="239" name="sand" x="1800" y="288" width="120" height="24"/>
+  <object id="240" name="sand" x="1800" y="1200" width="192" height="240"/>
+  <object id="241" name="sand" x="1992" y="1224" width="24" height="168"/>
+  <object id="242" name="sand" x="2040" y="1272" width="24" height="120"/>
+  <object id="243" name="sand" x="1728" y="1248" width="48" height="168"/>
+  <object id="244" name="sand" x="1440" y="1248" width="288" height="96"/>
+  <object id="245" name="sand" x="1296" y="1152" width="144" height="264"/>
+  <object id="246" name="sand" x="1056" y="1656" width="48" height="144"/>
+  <object id="249" name="sand" x="1152" y="1440" width="96" height="144"/>
+  <object id="250" name="sand" x="1248" y="1392" width="48" height="168"/>
+  <object id="251" name="sand" x="1296" y="1464" width="72" height="24"/>
+  <object id="252" name="sand" x="1296" y="1416" width="120" height="24"/>
+  <object id="256" name="sand" x="1296" y="1056" width="72" height="96"/>
+  <object id="257" name="sand" x="1248" y="1008" width="120" height="48"/>
+  <object id="259" name="sand" x="1152" y="912" width="120" height="24"/>
+  <object id="260" name="sand" x="1152" y="936" width="144" height="72"/>
+  <object id="261" name="sand" x="1296" y="960" width="72" height="48"/>
+  <object id="262" name="sand" x="1368" y="984" width="24" height="168"/>
+  <object id="263" name="sand" x="672" y="1392" width="240" height="48"/>
+  <object id="264" name="sand" x="552" y="1464" width="456" height="24"/>
+  <object id="265" name="sand" x="528" y="1440" width="480" height="24"/>
+  <object id="266" name="sand" x="792" y="1512" width="216" height="24"/>
+  <object id="267" name="sand" x="768" y="1488" width="240" height="24"/>
+  <object id="268" name="sand" x="864" y="1536" width="144" height="48"/>
+  <object id="269" name="sand" x="936" y="1608" width="240" height="24"/>
+  <object id="270" name="sand" x="720" y="1344" width="144" height="48"/>
+  <object id="271" name="sand" x="768" y="1056" width="96" height="288"/>
+  <object id="272" name="sand" x="720" y="1008" width="192" height="48"/>
+  <object id="273" name="sand" x="744" y="1056" width="24" height="48"/>
+  <object id="274" name="sand" x="984" y="912" width="24" height="96"/>
+  <object id="276" name="sand" x="192" y="864" width="648" height="24"/>
+  <object id="277" name="sand" x="336" y="912" width="528" height="48"/>
+  <object id="279" name="sand" x="336" y="960" width="48" height="24"/>
+  <object id="280" name="sand" x="624" y="960" width="336" height="24"/>
+  <object id="281" name="sand" x="648" y="984" width="312" height="24"/>
+  <object id="282" name="sand" x="720" y="1056" width="24" height="24"/>
+  <object id="283" name="sand" x="912" y="1584" width="288" height="24"/>
+  <object id="286" name="sand" x="1296" y="1440" width="96" height="24"/>
+  <object id="288" name="sand" x="960" y="936" width="24" height="72"/>
+  <object id="289" name="sand" x="336" y="984" width="24" height="24"/>
+  <object id="290" name="sand" x="2016" y="1248" width="24" height="144"/>
+  <object id="291" name="sand" x="1776" y="1224" width="24" height="192"/>
+  <object id="292" name="sand" x="1728" y="336" width="216" height="24"/>
+  <object id="294" name="sand" x="192" y="888" width="672" height="24"/>
+  <object id="295" name="sand" x="1008" y="1632" width="144" height="24"/>
+  <object id="296" name="sand" x="720" y="768" width="96" height="96"/>
+  <object id="297" name="sand" x="528" y="552" width="48" height="48"/>
+  <object id="298" name="sand" x="720" y="552" width="48" height="48"/>
+  <object id="299" name="sand" x="672" y="624" width="48" height="120"/>
+  <object id="300" name="sand" x="672" y="744" width="96" height="24"/>
+  <object id="301" name="sand" x="720" y="720" width="24" height="24"/>
+  <object id="302" name="sand" x="672" y="600" width="72" height="24"/>
+  <object id="303" name="sand" x="696" y="576" width="24" height="24"/>
+  <object id="304" name="sand" x="552" y="600" width="72" height="24"/>
+  <object id="305" name="sand" x="576" y="576" width="24" height="24"/>
+  <object id="306" name="sand" x="576" y="624" width="96" height="24"/>
+  <object id="307" name="sand" x="600" y="648" width="72" height="24"/>
+  <object id="308" name="sand" x="336" y="336" width="144" height="144"/>
+  <object id="309" name="sand" x="288" y="384" width="48" height="144"/>
+  <object id="310" name="sand" x="336" y="480" width="96" height="48"/>
+  <object id="311" name="sand" x="960" y="1056" width="48" height="48"/>
+  <object id="312" name="sand" x="912" y="1104" width="48" height="48"/>
+  <object id="313" name="sand" x="1152" y="1056" width="48" height="48"/>
+  <object id="314" name="sand" x="1200" y="1104" width="48" height="48"/>
+  <object id="315" name="sand" x="912" y="1296" width="48" height="48"/>
+  <object id="316" name="sand" x="960" y="1344" width="48" height="48"/>
+  <object id="317" name="sand" x="1152" y="1344" width="48" height="48"/>
+  <object id="318" name="sand" x="1200" y="1296" width="48" height="48"/>
+  <object id="319" name="stone" x="1008" y="912" width="144" height="96"/>
+  <object id="320" name="stone" x="1008" y="1440" width="144" height="144"/>
+  <object id="321" name="sand" x="480" y="1392" width="144" height="48"/>
+  <object id="322" name="stone" x="624" y="1392" width="48" height="48"/>
+  <object id="323" name="stone" x="912" y="1152" width="336" height="144"/>
+  <object id="324" name="stone" x="960" y="1104" width="240" height="48"/>
+  <object id="325" name="stone" x="1008" y="1056" width="120" height="48"/>
+  <object id="326" name="stone" x="960" y="1296" width="240" height="48"/>
+  <object id="327" name="stone" x="1008" y="1344" width="144" height="48"/>
+  <object id="328" name="wood" x="864" y="1152" width="48" height="144"/>
+  <object id="329" name="wood" x="1008" y="1008" width="144" height="48"/>
+  <object id="330" name="wood" x="1248" y="1152" width="48" height="144"/>
+  <object id="331" name="wood" x="1008" y="1392" width="144" height="48"/>
+  <object id="332" name="stone" x="1056" y="864" width="48" height="48"/>
+ </objectgroup>
+ <objectgroup color="#aa0000" id="8" name="collision">
   <object id="2" x="768" y="0" width="1152" height="240"/>
   <object id="3" x="0" y="0" width="768" height="144"/>
   <object id="4" x="720" y="192" width="48" height="48"/>
@@ -179,13 +271,13 @@
   <object id="155" x="336" y="1368" width="288" height="24"/>
   <object id="213" x="1968" y="216" width="48" height="36"/>
  </objectgroup>
- <objectgroup color="#5500ff" id="43" name="rest_layer">
+ <objectgroup color="#5500ff" id="43" name="rest">
   <object id="164" name="note_well_hero_s_hometown" x="1848" y="1296" width="96" height="96"/>
   <object id="163" name="note_stump_hero_s_hometown" x="1824" y="384" width="48" height="48"/>
   <object id="165" name="note_resource_shop" x="1440" y="1248" width="48" height="48"/>
   <object id="166" name="note_equipment_shop" x="1584" y="1248" width="48" height="48"/>
  </objectgroup>
- <objectgroup color="#aa55ff" id="13" name="hero_layer">
+ <objectgroup color="#aa55ff" id="13" name="hero">
   <object id="118" name="luana" x="984" y="1128" width="48" height="24">
    <properties>
     <property name="conversation" value="luana01"/>
@@ -271,7 +363,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup color="#55ff7f" id="42" name="npc_layer">
+ <objectgroup color="#55ff7f" id="42" name="npc">
   <object id="158" name="woman01" x="1488" y="1176" width="48" height="24">
    <properties>
     <property name="conversation" value="resourceshop01"/>
@@ -306,7 +398,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup color="#55aaff" id="11" name="spawn_layer">
+ <objectgroup color="#55aaff" id="11" name="spawn">
   <object id="113" name="starter_path" x="1920" y="24" width="48" height="24"/>
   <object id="132" name="hero_s_hometown" x="1056" y="1272" width="48" height="24">
    <properties>
@@ -320,7 +412,7 @@
   <object id="153" name="hero_s_hometown_house_1" x="480" y="864" width="48" height="24"/>
   <object id="157" name="hero_s_hometown_inn" x="624" y="1392" width="48" height="24"/>
  </objectgroup>
- <objectgroup color="#ffff7f" id="12" name="portal_layer">
+ <objectgroup color="#ffff7f" id="12" name="portal">
   <object id="114" name="starter_path" x="1896" y="-24" width="96" height="24"/>
   <object id="135" name="hero_s_hometown_chief_s_house" x="1056" y="840" width="48" height="24"/>
   <object id="139" name="map1" x="744" y="1872" width="624" height="24"/>
@@ -329,10 +421,10 @@
   <object id="152" name="hero_s_hometown_house_1" x="480" y="840" width="48" height="24"/>
   <object id="156" name="hero_s_hometown_inn" x="624" y="1368" width="48" height="24"/>
  </objectgroup>
- <objectgroup color="#ffaa7f" id="14" name="save_layer">
+ <objectgroup color="#ffaa7f" id="14" name="save">
   <object id="131" x="1056" y="1200" width="48" height="48"/>
  </objectgroup>
- <objectgroup id="50" name="lower_texture_layer">
+ <objectgroup id="50" name="lower_texture">
   <object id="218" type="quest0002" gid="13495" x="1872" y="240" width="24" height="24">
    <properties>
     <property name="isVisible" type="bool" value="false"/>
@@ -390,7 +482,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="51" name="upper_texture_layer">
+ <objectgroup id="51" name="upper_texture">
   <object id="205" type="quest0002" gid="13431" x="1920" y="192" width="24" height="24">
    <properties>
     <property name="isVisible" type="bool" value="true"/>
@@ -448,7 +540,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup color="#ffff00" id="44" name="quest_layer">
+ <objectgroup color="#ffff00" id="44" name="quest">
   <object id="169" name="blocker" type="quest0002" x="1920" y="216" width="48" height="36">
    <properties>
     <property name="activeIfComplete" type="bool" value="false"/>

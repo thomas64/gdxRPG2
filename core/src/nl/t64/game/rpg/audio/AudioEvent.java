@@ -1,5 +1,6 @@
 package nl.t64.game.rpg.audio;
 
+import com.badlogic.gdx.math.MathUtils;
 import lombok.AllArgsConstructor;
 
 
@@ -43,6 +44,27 @@ public enum AudioEvent {
     SE_COINS_SELL("audio/se/kenney_handle_coins2.ogg"),
     SE_WARP("audio/se/whooshes_impacts_impact_01.ogg", 0.4f),
 
+    SE_STEP_CARPET1("audio/se/footsteps/oot_step_carpet1.ogg"),
+    SE_STEP_CARPET2("audio/se/footsteps/oot_step_carpet2.ogg"),
+    SE_STEP_CARPET3("audio/se/footsteps/oot_step_carpet3.ogg"),
+    SE_STEP_CARPET4("audio/se/footsteps/oot_step_carpet4.ogg"),
+    SE_STEP_GRASS1("audio/se/footsteps/oot_step_grass1.ogg"),
+    SE_STEP_GRASS2("audio/se/footsteps/oot_step_grass2.ogg"),
+    SE_STEP_GRASS3("audio/se/footsteps/oot_step_grass3.ogg"),
+    SE_STEP_GRASS4("audio/se/footsteps/oot_step_grass4.ogg"),
+    SE_STEP_SAND1("audio/se/footsteps/oot_step_sand1.ogg"),
+    SE_STEP_SAND2("audio/se/footsteps/oot_step_sand2.ogg"),
+    SE_STEP_SAND3("audio/se/footsteps/oot_step_sand3.ogg"),
+    SE_STEP_SAND4("audio/se/footsteps/oot_step_sand4.ogg"),
+    SE_STEP_STONE1("audio/se/footsteps/oot_step_stone1.ogg"),
+    SE_STEP_STONE2("audio/se/footsteps/oot_step_stone2.ogg"),
+    SE_STEP_STONE3("audio/se/footsteps/oot_step_stone3.ogg"),
+    SE_STEP_STONE4("audio/se/footsteps/oot_step_stone4.ogg"),
+    SE_STEP_WOOD1("audio/se/footsteps/oot_step_wood1.ogg"),
+    SE_STEP_WOOD2("audio/se/footsteps/oot_step_wood2.ogg"),
+    SE_STEP_WOOD3("audio/se/footsteps/oot_step_wood3.ogg"),
+    SE_STEP_WOOD4("audio/se/footsteps/oot_step_wood4.ogg"),
+
     NONE("");
 
     final String filePath;
@@ -50,6 +72,10 @@ public enum AudioEvent {
 
     AudioEvent(String filePath) {
         this(filePath, 1.0f);
+    }
+
+    public static AudioEvent from(String underground) {
+        return AudioEvent.valueOf("SE_STEP_" + underground.toUpperCase() + MathUtils.random(1, 4));
     }
 
 }

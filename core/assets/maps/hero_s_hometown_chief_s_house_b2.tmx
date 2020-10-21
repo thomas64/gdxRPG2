@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="14" height="20" tilewidth="24" tileheight="24" infinite="0" nextlayerid="23" nextobjectid="13">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="14" height="20" tilewidth="24" tileheight="24" infinite="0" nextlayerid="24" nextobjectid="14">
  <properties>
   <property name="bgm" value="bgm_cellar"/>
  </properties>
@@ -52,7 +52,10 @@
    eJxjYBgFo2AUjALaAAAEYAAB
   </data>
  </layer>
- <objectgroup color="#aa0000" id="7" name="collision_layer">
+ <objectgroup color="#0055ff" id="23" name="sound">
+  <object id="13" name="stone" x="48" y="144" width="240" height="288"/>
+ </objectgroup>
+ <objectgroup color="#aa0000" id="7" name="collision" visible="0">
   <object id="3" x="288" y="0" width="48" height="480"/>
   <object id="4" x="0" y="0" width="48" height="480"/>
   <object id="5" x="48" y="0" width="240" height="144"/>
@@ -61,7 +64,7 @@
   <object id="8" x="144" y="432" width="48" height="48"/>
   <object id="9" x="144" y="144" width="48" height="48"/>
  </objectgroup>
- <objectgroup color="#55aaff" id="11" name="spawn_layer">
+ <objectgroup color="#55aaff" id="11" name="spawn">
   <object id="1" name="hero_s_hometown_chief_s_house_b1" x="144" y="384" width="48" height="24"/>
   <object id="12" name="hero_s_hometown_hero_s_chamber" x="144" y="192" width="48" height="24">
    <properties>
@@ -69,10 +72,10 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup color="#ffff7f" id="12" name="portal_layer">
+ <objectgroup color="#ffff7f" id="12" name="portal">
   <object id="2" name="hero_s_hometown_chief_s_house_b1" x="144" y="408" width="48" height="24"/>
  </objectgroup>
- <objectgroup color="#ffaa7f" id="13" name="warp_layer">
+ <objectgroup color="#ffaa7f" id="13" name="warp">
   <object id="11" name="hero_s_hometown_hero_s_chamber" x="144" y="144" width="48" height="48"/>
  </objectgroup>
 </map>

@@ -27,20 +27,23 @@ class GameMap {
     private static final String MAP_PATH = "maps/";
     private static final String MAPFILE_SUFFIX = ".tmx";
 
-    private static final String QUEST_LAYER = "quest_layer";
-    private static final String UPPER_TEXTURE_LAYER = "upper_texture_layer";
-    private static final String LOWER_TEXTURE_LAYER = "lower_texture_layer";
-    private static final String SAVE_LAYER = "save_layer";
-    private static final String NPC_LAYER = "npc_layer";
-    private static final String HERO_LAYER = "hero_layer";
-    private static final String COLLISION_LAYER = "collision_layer";
-    private static final String SPAWN_LAYER = "spawn_layer";
-    private static final String PORTAL_LAYER = "portal_layer";
-    private static final String WARP_LAYER = "warp_layer";
-    private static final String REST_LAYER = "rest_layer";
+    private static final String SOUND_LAYER = "sound";
+    private static final String QUEST_LAYER = "quest";
+    private static final String UPPER_TEXTURE_LAYER = "upper_texture";
+    private static final String LOWER_TEXTURE_LAYER = "lower_texture";
+    private static final String SAVE_LAYER = "save";
+    private static final String NPC_LAYER = "npc";
+    private static final String HERO_LAYER = "hero";
+    private static final String COLLISION_LAYER = "collision";
+    private static final String SPAWN_LAYER = "spawn";
+    private static final String PORTAL_LAYER = "portal";
+    private static final String WARP_LAYER = "warp";
+    private static final String REST_LAYER = "rest";
 
     private static final String WIDTH_PROPERTY = "width";
     private static final String HEIGHT_PROPERTY = "height";
+
+    private static final String DEFAULT_STEP_SOUND = "grass";
 
     final String mapTitle;
     final TiledMap tiledMap;
@@ -50,6 +53,7 @@ class GameMap {
     Vector2 playerSpawnLocation;
     Direction playerSpawnDirection;
 
+    final List<RectangleMapObject> sounds = new ArrayList<>();
     final List<GameMapNpc> npcs = new ArrayList<>();
     final List<GameMapHero> heroes = new ArrayList<>();
     final List<Rectangle> blockers = new ArrayList<>();
@@ -78,6 +82,7 @@ class GameMap {
                          .collect(Collectors.toList());
         this.playerSpawnLocation = new Vector2();
 
+        this.loadSounds();
         this.loadNpcs();
         this.loadHeroes();
         this.loadBlockers();
@@ -117,6 +122,14 @@ class GameMap {
         return blockers.stream()
                        .anyMatch(blocker -> blocker.contains(point.x * (Constant.TILE_SIZE / 2f) + 1f,
                                                              point.y * (Constant.TILE_SIZE / 2f) + 1f));
+    }
+
+    String getUnderground(Vector2 point) {
+        return sounds.stream()
+                     .filter(underground -> underground.getRectangle().contains(point))
+                     .findAny()
+                     .map(MapObject::getName)
+                     .orElse(DEFAULT_STEP_SOUND);
     }
 
     boolean areSavePointsBeingCheckedBy(Rectangle checkRect) {
@@ -198,6 +211,15 @@ class GameMap {
 
     private int getHeight() {
         return (int) tiledMap.getProperties().get(HEIGHT_PROPERTY);
+    }
+
+    private void loadSounds() {
+        getMapLayer(SOUND_LAYER).ifPresent(mapLayer -> {
+            for (MapObject mapObject : mapLayer.getObjects()) {
+                RectangleMapObject rectObject = (RectangleMapObject) mapObject;
+                sounds.add(rectObject);
+            }
+        });
     }
 
     private void loadNpcs() {

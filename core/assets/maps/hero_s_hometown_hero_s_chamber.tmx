@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="38" height="54" tilewidth="24" tileheight="24" infinite="0" nextlayerid="17" nextobjectid="27">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="38" height="54" tilewidth="24" tileheight="24" infinite="0" nextlayerid="18" nextobjectid="31">
  <properties>
   <property name="bgm" value="bgm_secret_chamber"/>
   <property name="bgs" value="bgs_spring_flow"/>
@@ -59,7 +59,13 @@
    eJztwQENAAAAwqD3T20PBxQAAAAAAAAA8GYgEAAB
   </data>
  </layer>
- <objectgroup color="#aa0000" id="10" name="collision_layer">
+ <objectgroup color="#0055ff" id="17" name="sound">
+  <object id="27" name="stone" x="336" y="1008" width="240" height="216"/>
+  <object id="28" name="stone" x="384" y="624" width="144" height="384"/>
+  <object id="29" name="stone" x="336" y="528" width="240" height="96"/>
+  <object id="30" name="stone" x="240" y="192" width="432" height="336"/>
+ </objectgroup>
+ <objectgroup color="#aa0000" id="10" name="collision" visible="0">
   <object id="1" x="672" y="0" width="240" height="1296"/>
   <object id="2" x="0" y="0" width="240" height="1296"/>
   <object id="3" x="240" y="1224" width="432" height="72"/>
@@ -79,11 +85,11 @@
   <object id="19" x="336" y="1200" width="48" height="24"/>
   <object id="20" x="528" y="1200" width="48" height="24"/>
  </objectgroup>
- <objectgroup color="#5500ff" id="14" name="rest_layer">
+ <objectgroup color="#5500ff" id="14" name="rest">
   <object id="23" name="note_statue_hero_s_hometown_hero_s_chamber" x="432" y="360" width="48" height="24"/>
   <object id="24" name="note_plaque_hero_s_hometown_hero_s_chamber" x="408" y="168" width="96" height="24"/>
  </objectgroup>
- <objectgroup color="#55ff7f" id="13" name="npc_layer">
+ <objectgroup color="#55ff7f" id="13" name="npc">
   <object id="21" name="fairy01" type="f" x="432" y="216" width="48" height="24">
    <properties>
     <property name="conversation" value="save01"/>
@@ -91,7 +97,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup color="#55aaff" id="11" name="spawn_layer">
+ <objectgroup color="#55aaff" id="11" name="spawn">
   <object id="18" name="hero_s_hometown_chief_s_house_b2" x="432" y="1056" width="48" height="24">
    <properties>
     <property name="direction" value="north"/>
@@ -103,10 +109,10 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup color="#ffaa7f" id="12" name="warp_layer">
+ <objectgroup color="#ffaa7f" id="12" name="warp">
   <object id="17" name="hero_s_hometown_chief_s_house_b2" x="432" y="1104" width="48" height="48"/>
  </objectgroup>
- <objectgroup color="#ffff00" id="16" name="quest_layer">
+ <objectgroup color="#ffff00" id="16" name="quest">
   <object id="25" name="discover" type="quest0003" x="384" y="1008" width="144" height="48">
    <properties>
     <property name="task" value="1"/>
