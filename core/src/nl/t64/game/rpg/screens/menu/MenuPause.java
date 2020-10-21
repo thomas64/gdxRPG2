@@ -20,7 +20,8 @@ public class MenuPause extends MenuScreen {
     private static final int NUMBER_OF_ITEMS = 4;
     private static final int EXIT_INDEX = 0;
 
-    private static final String DIALOG_MESSAGE = "Any unsaved progress will be lost." + System.lineSeparator() + "Are you sure?";
+    private static final String DIALOG_MESSAGE = "All progress after the last save will be lost."
+                                                 + System.lineSeparator() + "Are you sure you want to exit?";
 
     private TextButton continueButton;
     private TextButton loadGameButton;

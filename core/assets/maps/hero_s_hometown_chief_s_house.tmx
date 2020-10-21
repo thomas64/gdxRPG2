@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="26" height="42" tilewidth="24" tileheight="24" infinite="0" nextlayerid="24" nextobjectid="48">
  <properties>
-  <property name="bgm" value="bgm_town"/>
+  <property name="bgm" value="bgm_house"/>
   <property name="bgs" value="bgs_fireplace"/>
  </properties>
  <tileset firstgid="1" name="hero_s_hometown_chief_s_house" tilewidth="24" tileheight="24" tilecount="832" columns="32">

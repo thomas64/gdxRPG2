@@ -11,7 +11,8 @@ import java.util.Map;
 
 public class AudioManager {
 
-    private static final float BGM_VOLUME = 0.15f;
+    private static final float BGM_VOLUME = 0.2f;
+    private static final float BGS_VOLUME = 0.5f;
 
     private final Map<String, Music> queuedBgm;
     private final Map<String, Music> queuedBgs;
@@ -122,10 +123,12 @@ public class AudioManager {
                 Music bgs = queuedBgs.get(filePath);
                 bgs.setLooping(isLooping);
                 bgs.play();
+                bgs.setVolume(BGS_VOLUME);
             } else {
                 Music bgs = Utils.getResourceManager().getMusicAsset(filePath);
                 bgs.setLooping(isLooping);
                 bgs.play();
+                bgs.setVolume(BGS_VOLUME);
                 queuedBgs.put(filePath, bgs);
             }
         }

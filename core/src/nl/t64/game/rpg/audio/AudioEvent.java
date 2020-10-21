@@ -6,10 +6,13 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum AudioEvent {
 
-    BGM_TITLE("audio/bgm/fantascape.mp3"),
-    BGM_FOREST("audio/bgm/home_forest.mp3"),
-    BGM_TOWN("audio/bgm/netherplace.mp3"),
-    BGM_SECRET_CHAMBER("audio/bgm/magic_box.mp3"),
+    BGM_TITLE("audio/bgm/brave.mp3"),
+    BGM_FOREST("audio/bgm/journey.ogg"),
+    BGM_TOWN("audio/bgm/town.ogg"),
+    BGM_INN("audio/bgm/store.ogg"),
+    BGM_HOUSE("audio/bgm/wake_up.ogg"),
+    BGM_CELLAR("audio/bgm/quiet_town.ogg"),
+    BGM_SECRET_CHAMBER("audio/bgm/woods.ogg"),
 
     BGS_BIRDS("audio/bgs/birds.ogg"),
     BGS_CREEK("audio/bgs/creek.ogg"),

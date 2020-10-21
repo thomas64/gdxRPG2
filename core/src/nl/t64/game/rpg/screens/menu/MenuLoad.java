@@ -22,8 +22,10 @@ public class MenuLoad extends MenuScreen {
     private static final String MENU_ITEM_LOAD = "Load";
     private static final String MENU_ITEM_DELETE = "Delete";
     private static final String MENU_ITEM_BACK = "Back";
-    private static final String LOAD_MESSAGE = "Any unsaved progress will be lost." + System.lineSeparator() + "Are you sure?";
-    private static final String DELETE_MESSAGE = "This save file will be removed." + System.lineSeparator() + "Are you sure?";
+    private static final String LOAD_MESSAGE = "All progress after the last save will be lost."
+                                               + System.lineSeparator() + "Are you sure you want to load this profile?";
+    private static final String DELETE_MESSAGE = "This save file will be removed."
+                                                 + System.lineSeparator() + "Are you sure?";
 
     private static final float TITLE_SPACE_BOTTOM = 10f;
     private static final float SCROLL_PANE_HEIGHT = 220f;
