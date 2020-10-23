@@ -302,7 +302,7 @@ public class PhysicsPlayer extends PhysicsComponent {
     }
 
     private Rectangle getCheckRect() {
-        Rectangle checkRect = new Rectangle(boundingBox);
+        Rectangle checkRect = new Rectangle();
         switch (direction) {
             case NORTH -> setNorth(checkRect);
             case SOUTH -> setSouth(checkRect);
@@ -328,11 +328,17 @@ public class PhysicsPlayer extends PhysicsComponent {
     }
 
     private void setWest(Rectangle checkRect) {
+        checkRect.setWidth(Constant.TILE_SIZE / 2f);
+        checkRect.setHeight(boundingBox.height + 6f);
         checkRect.setX(boundingBox.x - (Constant.TILE_SIZE / 2f));
+        checkRect.setY(boundingBox.y - 3f);
     }
 
     private void setEast(Rectangle checkRect) {
-        checkRect.setX(boundingBox.x + (Constant.TILE_SIZE / 2f));
+        checkRect.setWidth(Constant.TILE_SIZE / 2f);
+        checkRect.setHeight(boundingBox.height + 6f);
+        checkRect.setX(boundingBox.x + boundingBox.width);
+        checkRect.setY(boundingBox.y - 3f);
     }
 
     @Override
