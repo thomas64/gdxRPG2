@@ -119,7 +119,6 @@ public abstract class MenuScreen implements Screen {
         } catch (GdxRuntimeException e) {
             // font is already exposed.
         }
-        stage.clear();
         stage.dispose();
     }
 

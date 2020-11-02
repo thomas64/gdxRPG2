@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -45,6 +46,7 @@ public class MenuNew extends MenuScreen {
 
     private String finalProfileName;
     private StringBuilder profileName;
+    private boolean isBgmFading = false;
 
     @Override
     void setupScreen() {
@@ -52,11 +54,12 @@ public class MenuNew extends MenuScreen {
 
         setFontColor();
         table = createTable();
-        overwriteDialog = new DialogQuestion(this::createNewGame, DIALOG_MESSAGE);
+        overwriteDialog = new DialogQuestion(this::fadeBeforeCreateNewGame, DIALOG_MESSAGE);
 
         applyListeners();
         stage.addActor(table);
         stage.setKeyboardFocus(table);
+        stage.addAction(Actions.alpha(1f));
 
         finalProfileName = "";
         profileName = new StringBuilder("_");
@@ -74,6 +77,9 @@ public class MenuNew extends MenuScreen {
         listenerKeyInputField.updateInputField(profileName);
         listenerKeyHorizontal.updateSelectedIndex(selectedMenuIndex);
         overwriteDialog.update(); // for updating the index in de listener.
+        if (isBgmFading) {
+            Utils.getAudioManager().fadeBgmBgs();
+        }
         stage.draw();
     }
 
@@ -96,8 +102,15 @@ public class MenuNew extends MenuScreen {
         if (profileExists) {
             overwriteDialog.show(stage);
         } else {
-            createNewGame();
+            fadeBeforeCreateNewGame();
         }
+    }
+
+    private void fadeBeforeCreateNewGame() {
+        stage.addAction(Actions.sequence(Actions.run(() -> isBgmFading = true),
+                                         Actions.fadeOut(Constant.FADE_DURATION),
+                                         Actions.run(() -> isBgmFading = false),
+                                         Actions.run(this::createNewGame)));
     }
 
     private void createNewGame() {

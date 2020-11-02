@@ -4,25 +4,32 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.ScreenType;
 
 
 public class LoadScreen implements Screen {
 
-    private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
-
     private final Stage stage;
     ScreenType screenTypeToLoad;
-    private int timer = 0;
+    private boolean isLoaded;
 
     public LoadScreen() {
         this.stage = new Stage();
+        this.isLoaded = false;
     }
 
     @Override
     public void show() {
+        stage.addActor(Utils.createScreenshot(true));
+        Image parchment = createParchment();
+        parchment.addAction(Actions.alpha(0f));
+        stage.addActor(parchment);
+        parchment.addAction(Actions.sequence(Actions.fadeIn(Constant.FADE_DURATION),
+                                             Actions.run(() -> isLoaded = true)));
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -32,17 +39,12 @@ public class LoadScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(dt);
         stage.draw();
-        loadScreen();
-    }
-
-    private void loadScreen() {
-        timer++;
-        if (timer > 1) {
-            setScreen();
+        if (isLoaded) {
+            setScreenThatJustLoaded();
         }
     }
 
-    private void setScreen() {
+    private void setScreenThatJustLoaded() {
         var screenToLoad = (ScreenToLoad) Utils.getScreenManager().getScreen(screenTypeToLoad);
         screenToLoad.setBackground((Image) stage.getActors().get(0),
                                    (Image) stage.getActors().get(1));
@@ -66,37 +68,29 @@ public class LoadScreen implements Screen {
 
     @Override
     public void hide() {
-        timer = 0;
+        isLoaded = false;
         stage.clear();
         Gdx.input.setInputProcessor(null);
     }
 
     @Override
     public void dispose() {
-        stage.clear();
         stage.dispose();
     }
 
-    void setBackground(Image screenshot) {
-        var texture = Utils.getResourceManager().getTextureAsset(SPRITE_PARCHMENT);
-        var parchment = new Image(texture);
+    private Image createParchment() {
         if (hasSmallParchment()) {
-            float width = Gdx.graphics.getWidth() / 2.4f;
-            float height = Gdx.graphics.getHeight() / 3f;
-            parchment.setSize(width, height);
-            parchment.setPosition((Gdx.graphics.getWidth() / 2f) - (width / 2f),
-                                  (Gdx.graphics.getHeight() / 2f) - (height / 2f));
+            return Utils.createSmallParchment();
         } else {
-            parchment.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            return Utils.createLargeParchment();
         }
-        stage.addActor(screenshot);
-        stage.addActor(parchment);
     }
 
     private boolean hasSmallParchment() {
-        return screenTypeToLoad.equals(ScreenType.FIND)
-               || screenTypeToLoad.equals(ScreenType.REWARD)
-               || screenTypeToLoad.equals(ScreenType.RECEIVE);
+        return switch (screenTypeToLoad) {
+            case FIND, REWARD, RECEIVE -> true;
+            default -> false;
+        };
     }
 
 }

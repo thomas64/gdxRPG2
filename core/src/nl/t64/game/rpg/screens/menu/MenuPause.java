@@ -37,8 +37,6 @@ public class MenuPause extends MenuScreen {
     }
 
     public static void load() {
-        Utils.getAudioManager().handle(AudioCommand.BGM_PAUSE_ALL, AudioEvent.NONE);
-        Utils.getAudioManager().handle(AudioCommand.BGS_PAUSE_ALL, AudioEvent.NONE);
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_CONFIRM);
         var menuPause = Utils.getScreenManager().getMenuScreen(ScreenType.MENU_PAUSE);
         menuPause.setBackground(Utils.createScreenshot(true));
@@ -62,6 +60,7 @@ public class MenuPause extends MenuScreen {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(dt);
+        Utils.getAudioManager().fadeBgmBgs();
         listenerKeyVertical.updateSelectedIndex(selectedMenuIndex);
         progressLostDialog.update(); // for updating the index in de listener.
         stage.draw();

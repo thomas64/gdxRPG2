@@ -26,6 +26,8 @@ public final class Constant {
     public static final float FAST_FRAMES = 0.15f;
     public static final float NO_FRAMES = 0f;
 
+    public static final float FADE_DURATION = 0.5f;
+
     public static final Color DARK_RED = new Color(0.5f, 0f, 0f, 1f);
 
     public static final String PLAYER_ID = "mozes";

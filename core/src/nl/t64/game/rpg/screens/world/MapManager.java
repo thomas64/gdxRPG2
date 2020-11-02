@@ -1,5 +1,6 @@
 package nl.t64.game.rpg.screens.world;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.Utils;
@@ -10,23 +11,21 @@ import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.profile.ProfileObserver;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 
-public class MapManager implements ProfileObserver {
+public class MapManager extends MapSubject implements ProfileObserver {
 
     GameMap currentMap;
-    private final List<MapObserver> observers = new ArrayList<>();
 
     @Override
     public void onNotifyCreateProfile(ProfileManager profileManager) {
         loadMap(Constant.STARTING_MAP);
         currentMap.setPlayerSpawnLocationForNewLoad(Constant.STARTING_MAP);
         onNotifySaveProfile(profileManager);
-        observers.forEach(observer -> observer.onMapChanged(currentMap));
+        notifyMapChanged(currentMap);
     }
 
     @Override
@@ -39,7 +38,7 @@ public class MapManager implements ProfileObserver {
         String mapTitle = profileManager.getProperty("mapTitle", String.class);
         loadMap(mapTitle);
         currentMap.setPlayerSpawnLocationForNewLoad(mapTitle);
-        observers.forEach(observer -> observer.onMapChanged(currentMap));
+        notifyMapChanged(currentMap);
     }
 
     public List<GameMapQuestTexture> getLowerMapTextures() {
@@ -78,21 +77,20 @@ public class MapManager implements ProfileObserver {
         currentMap.getWarpPointBeingCheckedBy(checkRect)
                   .ifPresent(warpPoint -> {
                       Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_WARP);
-                      warpPoint.setEnterDirection(direction);
-                      loadMap(warpPoint.toMapName);
-                      currentMap.setPlayerSpawnLocation(warpPoint);
-                      observers.forEach(observer -> observer.onMapChanged(currentMap));
+                      notifyMapWillChange(() -> changeMap(warpPoint, direction), Color.WHITE);
                   });
     }
 
     public void collisionPortals(Rectangle playerRect, Direction direction) {
         currentMap.getPortalOnCollisionBy(playerRect)
-                  .ifPresent(portal -> {
-                      portal.setEnterDirection(direction);
-                      loadMap(portal.toMapName);
-                      currentMap.setPlayerSpawnLocation(portal);
-                      observers.forEach(observer -> observer.onMapChanged(currentMap));
-                  });
+                  .ifPresent(portal -> notifyMapWillChange(() -> changeMap(portal, direction), Color.BLACK));
+    }
+
+    private void changeMap(GameMapPortal portal, Direction direction) {
+        portal.setEnterDirection(direction);
+        loadMap(portal.toMapName);
+        currentMap.setPlayerSpawnLocation(portal);
+        notifyMapChanged(currentMap);
     }
 
     public void collisionQuestTasks(Rectangle playerRect) {
@@ -115,14 +113,6 @@ public class MapManager implements ProfileObserver {
 
     public boolean areBlockersCurrentlyBlocking(Vector2 point) {
         return currentMap.areBlockersCurrentlyBlocking(point);
-    }
-
-    public void addObserver(MapObserver observer) {
-        observers.add(observer);
-    }
-
-    public void removeObserver(MapObserver observer) {
-        observers.remove(observer);
     }
 
     private void loadMap(String mapTitle) {

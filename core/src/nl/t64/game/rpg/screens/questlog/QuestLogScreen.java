@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.audio.AudioEvent;
+import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.screens.ScreenToLoad;
 import nl.t64.game.rpg.screens.inventory.ListenerMouseImageButton;
@@ -42,14 +44,12 @@ public class QuestLogScreen implements ScreenToLoad {
     }
 
     public static void load() {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
         Utils.getScreenManager().openParchmentLoadScreen(ScreenType.QUEST_LOG);
     }
 
     @Override
     public void show() {
-        Utils.getAudioManager().handle(AudioCommand.BGM_PAUSE_ALL, AudioEvent.NONE);
-        Utils.getAudioManager().handle(AudioCommand.BGS_PAUSE_ALL, AudioEvent.NONE);
-        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
         Gdx.input.setInputProcessor(stage);
         stage.addListener(new QuestLogScreenListener(this::closeScreen));
         createButtonTable();
@@ -92,16 +92,13 @@ public class QuestLogScreen implements ScreenToLoad {
 
     @Override
     public void hide() {
-        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
         questLogUI.unloadAssets();
         stage.clear();
-        Gdx.input.setInputProcessor(null);
     }
 
     @Override
     public void dispose() {
         // todo, de buttons bewaren hun mouse-over state op de een of andere vage manier.
-        stage.clear();
         stage.dispose();
     }
 
@@ -124,7 +121,18 @@ public class QuestLogScreen implements ScreenToLoad {
     }
 
     private void closeScreen() {
-        Utils.getScreenManager().setScreen(ScreenType.WORLD);
+        Gdx.input.setInputProcessor(null);
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
+        fadeParchment();
+    }
+
+    private void fadeParchment() {
+        var screenshot = (Image) stage.getActors().get(0);
+        var parchment = (Image) stage.getActors().get(1);
+        stage.clear();
+        setBackground(screenshot, parchment);
+        parchment.addAction(Actions.sequence(Actions.fadeOut(Constant.FADE_DURATION),
+                                             Actions.run(() -> Utils.getScreenManager().setScreen(ScreenType.WORLD))));
     }
 
     private ImageButton createImageButton(String up, String over, String down) {

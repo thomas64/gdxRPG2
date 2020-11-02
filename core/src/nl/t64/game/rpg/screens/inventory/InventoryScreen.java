@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -19,6 +20,7 @@ import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.InventoryContainer;
 import nl.t64.game.rpg.components.party.InventoryDatabase;
 import nl.t64.game.rpg.components.party.PartyContainer;
+import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.profile.ProfileObserver;
@@ -94,6 +96,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
     }
 
     public static void load() {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
         Utils.getScreenManager().openParchmentLoadScreen(ScreenType.INVENTORY);
     }
 
@@ -177,9 +180,6 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
 
     @Override
     public void show() {
-        Utils.getAudioManager().handle(AudioCommand.BGM_PAUSE_ALL, AudioEvent.NONE);
-        Utils.getAudioManager().handle(AudioCommand.BGS_PAUSE_ALL, AudioEvent.NONE);
-        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
         Gdx.input.setCursorCatched(false);
         Gdx.input.setInputProcessor(stage);
         stage.addListener(new InventoryScreenListener(this::closeScreen,
@@ -237,16 +237,13 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
 
     @Override
     public void hide() {
-        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
         inventoryUI.unloadAssets();
         stage.clear();
-        Gdx.input.setInputProcessor(null);
     }
 
     @Override
     public void dispose() {
         // todo, de buttons bewaren hun mouse-over state op de een of andere vage manier.
-        stage.clear();
         stage.dispose();
         conversationDialog.dispose();
     }
@@ -299,8 +296,19 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
             return;
         }
         storeWindowPositions();
-        Utils.getScreenManager().setScreen(ScreenType.WORLD);
         Gdx.input.setCursorCatched(true);
+        Gdx.input.setInputProcessor(null);
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
+        fadeParchment();
+    }
+
+    private void fadeParchment() {
+        var screenshot = (Image) stage.getActors().get(0);
+        var parchment = (Image) stage.getActors().get(1);
+        stage.clear();
+        setBackground(screenshot, parchment);
+        parchment.addAction(Actions.sequence(Actions.fadeOut(Constant.FADE_DURATION),
+                                             Actions.run(() -> Utils.getScreenManager().setScreen(ScreenType.WORLD))));
     }
 
     private void selectPreviousHero() {
@@ -322,7 +330,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
         String currentHeroId = currentHero.getId();
         if (party.isPlayer(currentHeroId)) {
             String errorMessage = "You cannot dismiss the party leader.";
-            MessageDialog messageDialog = new MessageDialog(errorMessage);
+            var messageDialog = new MessageDialog(errorMessage);
             messageDialog.show(stage, AudioEvent.SE_MENU_ERROR);
         } else {
             conversationDialog.loadConversation("dismiss_" + currentHeroId, currentHeroId);

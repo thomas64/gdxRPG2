@@ -35,6 +35,7 @@ public final class Utils {
     private static final String CHAR_PATH = "sprites/characters/%s.png";
     private static final String FACE_PATH = "sprites/faces/%s.png";
     private static final String CHEST_PATH = "sprites/objects/chest.png";
+    private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
 
     private Utils() {
         throw new IllegalCallerException("Utils class");
@@ -82,10 +83,10 @@ public final class Utils {
     }
 
     private static Window.WindowStyle createDefaultWindowStyle() {
-        var texture = Utils.getResourceManager().getTextureAsset(SPRITE_BORDER);
+        var texture = getResourceManager().getTextureAsset(SPRITE_BORDER);
         var ninepatch = new NinePatch(texture, 1, 1, 1, 1);
         var drawable = new NinePatchDrawable(ninepatch);
-        BitmapFont font = Utils.getResourceManager().getTrueTypeAsset(TITLE_FONT, TITLE_SIZE);
+        BitmapFont font = getResourceManager().getTrueTypeAsset(TITLE_FONT, TITLE_SIZE);
         return new Window.WindowStyle(font, Color.BLACK, drawable);
     }
 
@@ -158,6 +159,22 @@ public final class Utils {
             screenshot.setColor(Color.DARK_GRAY);
         }
         return screenshot;
+    }
+
+    public static Image createLargeParchment() {
+        var parchment = new Image(getResourceManager().getTextureAsset(SPRITE_PARCHMENT));
+        parchment.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        return parchment;
+    }
+
+    public static Image createSmallParchment() {
+        var parchment = new Image(getResourceManager().getTextureAsset(SPRITE_PARCHMENT));
+        float width = Gdx.graphics.getWidth() / 2.4f;
+        float height = Gdx.graphics.getHeight() / 3f;
+        parchment.setSize(width, height);
+        parchment.setPosition((Gdx.graphics.getWidth() / 2f) - (width / 2f),
+                              (Gdx.graphics.getHeight() / 2f) - (height / 2f));
+        return parchment;
     }
 
     public static <T> List<T> reverseList(List<T> list) {

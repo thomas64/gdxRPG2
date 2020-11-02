@@ -37,7 +37,6 @@ class DebugBox {
     }
 
     void dispose() {
-        stage.clear();
         stage.dispose();
     }
 

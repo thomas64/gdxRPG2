@@ -3,7 +3,10 @@ package nl.t64.game.rpg.screens.shop;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -12,6 +15,7 @@ import lombok.Getter;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.audio.AudioEvent;
+import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.screens.ScreenToLoad;
 import nl.t64.game.rpg.screens.inventory.ListenerMouseImageButton;
@@ -49,6 +53,7 @@ public class ShopScreen implements ScreenToLoad {
     }
 
     public static void load(String npcId, String shopId) {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
         var shopScreen = (ShopScreen) Utils.getScreenManager().getScreen(ScreenType.SHOP);
         shopScreen.npcId = npcId;
         shopScreen.shopId = shopId;
@@ -57,7 +62,6 @@ public class ShopScreen implements ScreenToLoad {
 
     @Override
     public void show() {
-        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
         Gdx.input.setCursorCatched(false);
         Gdx.input.setInputProcessor(stage);
         stage.addListener(new ShopScreenListener(this::closeScreen));
@@ -99,16 +103,13 @@ public class ShopScreen implements ScreenToLoad {
 
     @Override
     public void hide() {
-        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
         shopUI.unloadAssets();
         stage.clear();
-        Gdx.input.setInputProcessor(null);
     }
 
     @Override
     public void dispose() {
         // todo, de buttons bewaren hun mouse-over state op de een of andere vage manier.
-        stage.clear();
         stage.dispose();
     }
 
@@ -131,8 +132,22 @@ public class ShopScreen implements ScreenToLoad {
     }
 
     private void closeScreen() {
-        Utils.getScreenManager().setScreen(ScreenType.WORLD);
+        if (isDialogVisibleThenClose()) {
+            return;
+        }
         Gdx.input.setCursorCatched(true);
+        Gdx.input.setInputProcessor(null);
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
+        fadeParchment();
+    }
+
+    private void fadeParchment() {
+        var screenshot = (Image) stage.getActors().get(0);
+        var parchment = (Image) stage.getActors().get(1);
+        stage.clear();
+        setBackground(screenshot, parchment);
+        parchment.addAction(Actions.sequence(Actions.fadeOut(Constant.FADE_DURATION),
+                                             Actions.run(() -> Utils.getScreenManager().setScreen(ScreenType.WORLD))));
     }
 
     private ImageButton createImageButton(String up, String over, String down) {
@@ -147,6 +162,15 @@ public class ShopScreen implements ScreenToLoad {
         var textureRegion = Utils.getResourceManager().getAtlasTexture(atlasId);
         var ninePatch = new NinePatch(textureRegion, 1, 1, 1, 1);
         return new NinePatchDrawable(ninePatch);
+    }
+
+    private boolean isDialogVisibleThenClose() {
+        Actor possibleOldDialog = stage.getActors().peek();
+        if (possibleOldDialog instanceof Dialog dialog) {
+            dialog.hide();
+            return true;
+        }
+        return false;
     }
 
 }

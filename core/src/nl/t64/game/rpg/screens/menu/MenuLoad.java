@@ -3,6 +3,7 @@ package nl.t64.game.rpg.screens.menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -52,6 +53,7 @@ public class MenuLoad extends MenuScreen {
     private int selectedListIndex;
 
     private boolean isMouseScrolled = false;
+    private boolean isBgmFading = false;
 
     @Override
     void setupScreen() {
@@ -60,7 +62,7 @@ public class MenuLoad extends MenuScreen {
 
         setFontColor();
         createTables();
-        progressLostDialog = new DialogQuestion(this::openWorldScreen, LOAD_MESSAGE);
+        progressLostDialog = new DialogQuestion(this::fadeBeforeOpenWorldScreen, LOAD_MESSAGE);
         deleteFileDialog = new DialogQuestion(this::deleteSaveFile, DELETE_MESSAGE);
         applyListeners();
 
@@ -68,6 +70,7 @@ public class MenuLoad extends MenuScreen {
         stage.addActor(table);
         stage.setKeyboardFocus(scrollPane);
         stage.setScrollFocus(scrollPane);
+        stage.addAction(Actions.alpha(1f));
 
         selectedListIndex = 0;
         selectedMenuIndex = 0;
@@ -85,6 +88,9 @@ public class MenuLoad extends MenuScreen {
         listenerKeyHorizontal.updateSelectedIndex(selectedMenuIndex);
         progressLostDialog.update(); // for updating the index in de listener.
         deleteFileDialog.update();
+        if (isBgmFading) {
+            Utils.getAudioManager().fadeBgmBgs();
+        }
         stage.draw();
     }
 
@@ -121,7 +127,7 @@ public class MenuLoad extends MenuScreen {
             if (startScreen.equals(ScreenType.MENU_PAUSE)) {
                 progressLostDialog.show(stage);
             } else {
-                openWorldScreen();
+                fadeBeforeOpenWorldScreen();
             }
         }
     }
@@ -134,6 +140,13 @@ public class MenuLoad extends MenuScreen {
             Utils.getAudioManager().handle(AudioCommand.SE_STOP, AudioEvent.SE_MENU_CONFIRM);
             Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_ERROR);
         }
+    }
+
+    private void fadeBeforeOpenWorldScreen() {
+        stage.addAction(Actions.sequence(Actions.run(() -> isBgmFading = true),
+                                         Actions.fadeOut(Constant.FADE_DURATION),
+                                         Actions.run(() -> isBgmFading = false),
+                                         Actions.run(this::openWorldScreen)));
     }
 
     private void openWorldScreen() {

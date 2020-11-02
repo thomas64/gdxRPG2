@@ -47,7 +47,6 @@ class MessageDialog {
     }
 
     void dispose() {
-        stage.clear();
         stage.dispose();
         try {
             font.dispose();

@@ -76,7 +76,6 @@ class PartyWindow {
     }
 
     void dispose() {
-        stage.clear();
         stage.dispose();
         font.dispose();
         fontBig.dispose();

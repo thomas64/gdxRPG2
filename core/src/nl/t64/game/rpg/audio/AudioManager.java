@@ -1,8 +1,10 @@
 package nl.t64.game.rpg.audio;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.constants.Constant;
 
 import java.util.HashMap;
 import java.util.List;
@@ -58,6 +60,11 @@ public class AudioManager {
                .filter(event -> !event.equals(AudioEvent.NONE))
                .filter(event -> !prevBgs.contains(event))
                .forEach(event -> handle(AudioCommand.BGS_PLAY_LOOP, event));
+    }
+
+    public void fadeBgmBgs() {
+        queuedBgm.values().forEach(bgm -> fade(bgm, BGM_VOLUME));
+        queuedBgs.values().forEach(bgs -> fade(bgs, BGS_VOLUME));
     }
 
     public void handle(AudioCommand command, List<AudioEvent> events) {
@@ -164,6 +171,19 @@ public class AudioManager {
                 se.setVolume(seId, volume);
                 se.setLooping(seId, isLooping);
                 queuedSe.put(filePath, se);
+            }
+        }
+    }
+
+    private void fade(Music bgmBgs, float defaultVolume) {
+        if (bgmBgs.isPlaying()) {
+            float volume = bgmBgs.getVolume();
+            if (volume > 0f) {
+                volume -= Gdx.graphics.getDeltaTime() * Constant.FADE_DURATION;
+                bgmBgs.setVolume(Math.max(volume, 0f));
+            } else {
+                bgmBgs.setVolume(defaultVolume);
+                bgmBgs.pause();
             }
         }
     }

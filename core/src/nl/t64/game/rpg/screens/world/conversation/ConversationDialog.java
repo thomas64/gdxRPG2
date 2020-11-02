@@ -55,7 +55,6 @@ public class ConversationDialog extends ConversationSubject {
     }
 
     public void dispose() {
-        stage.clear();
         stage.dispose();
         try {
             font.dispose();

@@ -90,7 +90,7 @@ public class MenuMain extends MenuScreen {
         exitButton = new TextButton(MENU_ITEM_EXIT, new TextButton.TextButtonStyle(buttonStyle));
 
         // table
-        Table newTable = new Table();
+        var newTable = new Table();
         newTable.setFillParent(true);
         newTable.top().padTop(PAD_TOP).right().padRight(PAD_RIGHT);
         newTable.defaults().right();

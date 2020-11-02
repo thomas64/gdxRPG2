@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import lombok.Getter;
 import nl.t64.game.rpg.Utils;
@@ -30,6 +32,7 @@ import nl.t64.game.rpg.screens.shop.ShopScreen;
 import nl.t64.game.rpg.screens.world.conversation.ConversationDialog;
 import nl.t64.game.rpg.screens.world.conversation.ConversationObserver;
 import nl.t64.game.rpg.screens.world.pathfinding.TiledNode;
+import nl.t64.game.rpg.sfx.TransitionImage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,6 +52,7 @@ public class WorldScreen implements Screen,
     private static boolean showDebug = false;
 
     private GameState gameState;
+    private final Stage stage;
     private final Camera camera;
     private final TextureMapObjectRenderer mapRenderer;
     private final InputMultiplexer multiplexer;
@@ -67,7 +71,10 @@ public class WorldScreen implements Screen,
     @Getter
     private List<Character> lootList;
 
+    private boolean isFading = false;
+
     public WorldScreen() {
+        this.stage = new Stage();
         this.camera = new Camera();
         this.mapRenderer = new TextureMapObjectRenderer();
         this.multiplexer = new InputMultiplexer();
@@ -104,7 +111,19 @@ public class WorldScreen implements Screen,
     // MapObserver /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public void onMapChanged(GameMap currentMap) {
+    public void onNotifyMapWillChange(Runnable changeMap, Color transitionColor) {
+        var transition = new TransitionImage(transitionColor);
+        transition.addAction(Actions.alpha(0f));
+        stage.addActor(transition);
+        transition.addAction(Actions.sequence(Actions.run(() -> isFading = true),
+                                              Actions.fadeIn(Constant.FADE_DURATION),
+                                              Actions.run(changeMap),
+                                              Actions.run(() -> isFading = false),
+                                              Actions.run(stage::clear)));
+    }
+
+    @Override
+    public void onNotifyMapChanged(GameMap currentMap) {
         mapRenderer.setMap(currentMap.tiledMap);
         camera.setNewMapSize(currentMap.getPixelWidth(), currentMap.getPixelHeight());
         player.send(new LoadCharacterEvent(currentMap.playerSpawnDirection,
@@ -267,6 +286,9 @@ public class WorldScreen implements Screen,
         partyWindow.update(dt);
         conversationDialog.update(dt);
         messageDialog.update(dt);
+
+        stage.act(dt);
+        stage.draw();
     }
 
     public List<Character> createCopyOfCharactersWithPlayerButWithoutThisNpc(Character thisNpcCharacter) {
@@ -284,7 +306,9 @@ public class WorldScreen implements Screen,
     }
 
     private void updateCharacters(float dt) {
-        player.update(dt);
+        if (!isFading) {
+            player.update(dt);
+        }
         lootList.forEach(loot -> loot.update(dt));
         npcCharacters.forEach(npcCharacter -> npcCharacter.update(dt));
         partyMembers.forEach(partyMember -> partyMember.send(new PathUpdateEvent(getPathOf(partyMember))));
@@ -366,6 +390,7 @@ public class WorldScreen implements Screen,
     @Override
     public void hide() {
         gameState = GameState.PAUSED;
+        stage.clear();
         Gdx.input.setInputProcessor(null);
     }
 
@@ -378,6 +403,7 @@ public class WorldScreen implements Screen,
         conversationDialog.dispose();
         messageDialog.dispose();
         debugBox.dispose();
+        stage.dispose();
     }
 
     static void setShowGrid() {
