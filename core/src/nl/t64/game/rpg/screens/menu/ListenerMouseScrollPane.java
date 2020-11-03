@@ -13,7 +13,7 @@ class ListenerMouseScrollPane extends InputListener {
     }
 
     @Override
-    public boolean scrolled(InputEvent event, float x, float y, int amount) {
+    public boolean scrolled(InputEvent event, float x, float y, float amountX, float amountY) {
         scrollFunction.run();
         return true;
     }

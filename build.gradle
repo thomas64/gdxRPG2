@@ -30,12 +30,12 @@ allprojects {
     version = "1.0"
     ext {
         appName = "gdx-rpg2"
-        gdxVersion = "1.9.11"
+        gdxVersion = "1.9.12"
         aiVersion = "1.8.2"
-        lombokVersion = "1.18.12"
-        jacksonVersion = "2.11.2"
-        assertjVersion = "3.17.2"
-        mockitoVersion = "3.5.11"
+        lombokVersion = "1.18.16"
+        jacksonVersion = "2.11.3"
+        assertjVersion = "3.18.0"
+        mockitoVersion = "3.6.0"
         junitVersion = "5.7.0"
     }
 
