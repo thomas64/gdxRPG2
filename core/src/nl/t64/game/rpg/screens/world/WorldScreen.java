@@ -295,7 +295,7 @@ public class WorldScreen implements Screen,
         var theOtherCharacters = new ArrayList<>(npcCharacters);
         theOtherCharacters.add(player);
         theOtherCharacters.remove(thisNpcCharacter);
-        return Collections.unmodifiableList(theOtherCharacters);
+        return List.copyOf(theOtherCharacters);
     }
 
     public Character getVisibleNpcOfInvisibleNpcBy(String conversationId) {

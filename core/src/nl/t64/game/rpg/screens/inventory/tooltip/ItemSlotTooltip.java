@@ -42,7 +42,7 @@ public class ItemSlotTooltip extends BaseToolTip {
             final InventoryItem hoveredItem = hoveredImage.inventoryItem;
             final InventoryGroup inventoryGroup = hoveredItem.getGroup();
             final HeroItem selectedHero = InventoryUtils.getSelectedHero();
-            final Optional<String> isAbleToEquip = selectedHero.isAbleToEquip(hoveredItem);
+            final Optional<String> errorMessage = selectedHero.createMessageIfNotAbleToEquip(hoveredItem);
             final Optional<InventoryItem> equippedItem = selectedHero.getInventoryItem(inventoryGroup);
 
             if (itemSlot.isOnHero()) {
@@ -50,7 +50,7 @@ public class ItemSlotTooltip extends BaseToolTip {
             } else if (inventoryGroup.equals(InventoryGroup.RESOURCE)
                        || inventoryGroup.equals(InventoryGroup.POTION)) {
                 createResourceTooltip(hoveredImage);
-            } else if (isAbleToEquip.isEmpty() && equippedItem.isPresent()) {
+            } else if (errorMessage.isEmpty() && equippedItem.isPresent()) {
                 createDualTooltip(hoveredImage, new InventoryImage(equippedItem.get()));
             } else {
                 createSingleTooltip(hoveredImage);

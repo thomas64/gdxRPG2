@@ -7,7 +7,6 @@ import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.events.character.LoadCharacterEvent;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -24,21 +23,21 @@ class NpcCharactersLoader {
     List<Character> createNpcs() {
         loadNpcs();
         loadHeroes();
-        return Collections.unmodifiableList(npcCharacters);
+        return List.copyOf(npcCharacters);
     }
 
     private void loadNpcs() {
-        for (GameMapNpc gameMapNpc : currentMap.npcs) {
-            loadNpcCharacter(gameMapNpc);
-        }
+        currentMap.npcs.forEach(this::loadNpcCharacter);
     }
 
     private void loadHeroes() {
-        for (GameMapHero gameMapHero : currentMap.heroes) {
-            HeroItem hero = Utils.getGameData().getHeroes().getHero(gameMapHero.name);
-            if (gameMapHero.hasBeenRecruited == hero.isHasBeenRecruited()) {
-                loadNpcCharacter(gameMapHero);
-            }
+        currentMap.heroes.forEach(this::loadHero);
+    }
+
+    private void loadHero(GameMapHero gameMapHero) {
+        HeroItem hero = Utils.getGameData().getHeroes().getHero(gameMapHero.name);
+        if (gameMapHero.hasBeenRecruited == hero.isHasBeenRecruited()) {
+            loadNpcCharacter(gameMapHero);
         }
     }
 

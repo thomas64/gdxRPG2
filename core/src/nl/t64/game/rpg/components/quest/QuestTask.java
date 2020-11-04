@@ -4,7 +4,6 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import lombok.Getter;
 import nl.t64.game.rpg.Utils;
 
-import java.util.Collections;
 import java.util.Map;
 
 
@@ -18,7 +17,7 @@ public class QuestTask {
     private boolean isQuestFinished;
 
     private QuestTask() {
-        this.target = Collections.emptyMap();
+        this.target = Map.of();
         this.isComplete = false;
     }
 

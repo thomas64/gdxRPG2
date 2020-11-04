@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
@@ -127,7 +126,7 @@ class InventoryTest extends GameTest {
     void whenDataIsCreated_ShouldContainItems2() {
         Map<String, Integer> map = Map.of(BASIC_MACE, 1, GOLD, 1);
         assertThat(inventory.contains(map)).isTrue();
-        assertThat(inventory.contains(Collections.emptyMap())).isFalse();
+        assertThat(inventory.contains(Map.of())).isFalse();
     }
 
     @Test

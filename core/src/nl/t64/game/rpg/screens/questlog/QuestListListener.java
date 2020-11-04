@@ -9,6 +9,7 @@ import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.quest.QuestGraph;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 
 
@@ -39,8 +40,12 @@ class QuestListListener extends ClickListener {
     }
 
     private boolean isSelected() {
-        QuestGraph quest = questList.getSelected();
-        if (quest == null) return false;
+        return Optional.ofNullable(questList.getSelected())
+                       .map(this::isSelected)
+                       .orElse(false);
+    }
+
+    private boolean isSelected(QuestGraph quest) {
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_CURSOR);
         populateQuestSpecifics.accept(quest);
         return true;

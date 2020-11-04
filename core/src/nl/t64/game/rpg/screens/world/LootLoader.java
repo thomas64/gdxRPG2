@@ -9,7 +9,6 @@ import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.events.character.LoadCharacterEvent;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -28,7 +27,7 @@ class LootLoader {
     List<Character> createLoot() {
         loadSparkles();
         loadChests();
-        return Collections.unmodifiableList(lootList);
+        return List.copyOf(lootList);
     }
 
     private void loadSparkles() {

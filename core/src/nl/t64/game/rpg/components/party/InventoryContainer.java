@@ -174,9 +174,9 @@ public class InventoryContainer {
                         .findFirst();
     }
 
-    public OptionalInt findFirstFilledSlot() {
-        return IntStream.range(0, getSize())
-                        .filter(index -> !isSlotEmpty(index))
+    public Optional<Integer> findFirstFilledSlot() {
+        return IntStream.range(0, getSize()).boxed()
+                        .filter(this::isSlotFilled)
                         .findFirst();
     }
 
@@ -184,6 +184,10 @@ public class InventoryContainer {
         return IntStream.range(0, getSize()).boxed()
                         .filter(this::isSlotEmpty)
                         .findFirst();
+    }
+
+    private boolean isSlotFilled(int index){
+        return !isSlotEmpty(index);
     }
 
     private boolean isSlotEmpty(int index) {
@@ -196,17 +200,15 @@ public class InventoryContainer {
     }
 
     private InventoryGroup getInventoryGroup(InventoryItem inventoryItem) {
-        if (inventoryItem == null) {
-            return InventoryGroup.EMPTY;
-        }
-        return inventoryItem.group;
+        return Optional.ofNullable(inventoryItem)
+                       .map(item -> item.group)
+                       .orElse(InventoryGroup.EMPTY);
     }
 
     private int getSort(InventoryItem inventoryItem) {
-        if (inventoryItem == null) {
-            return 0;
-        }
-        return inventoryItem.sort;
+        return Optional.ofNullable(inventoryItem)
+                       .map(item -> item.sort)
+                       .orElse(0);
     }
 
     private Runnable throwException(String exceptionMessage) {

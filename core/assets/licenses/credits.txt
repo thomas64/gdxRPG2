@@ -1,6 +1,7 @@
 CREDITS
 GdxRpg 2
 
+---
 
 GAME DESIGN
 Thomas M. Hesselink
@@ -17,6 +18,7 @@ Martijn Hazendonk
 Daniel Rosenkranz
 Sieger Noppe
 
+---
 
 Graphics Copyright Notice
 
@@ -31,6 +33,7 @@ by N. van der Stoep
 by J.W. Bjerk (eleazzaar)
 www.jwbjerk.com/art
 
+---
 
 Music Copyright Notice
 
@@ -50,6 +53,7 @@ Some of the sounds in this project were created
 by David McKee (ViRiX)
 www.soundcloud.com/virix
 
+---
 
 COPYRIGHT
 T64.nl

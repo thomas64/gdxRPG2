@@ -8,7 +8,6 @@ import nl.t64.game.rpg.components.party.PartyContainer;
 import nl.t64.game.rpg.events.character.LoadCharacterEvent;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -29,7 +28,7 @@ class PartyMembersLoader {
              .map(this::createCharacter)
              .forEach(this::addToPartyMembers);
 
-        return Collections.unmodifiableList(partyMembers);
+        return List.copyOf(partyMembers);
     }
 
     private boolean isHeroNotPlayer(HeroItem hero) {

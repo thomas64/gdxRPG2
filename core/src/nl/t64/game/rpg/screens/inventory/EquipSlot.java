@@ -9,8 +9,6 @@ import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.InventoryGroup;
 
-import java.util.Optional;
-
 
 class EquipSlot extends ItemSlot {
 
@@ -97,13 +95,14 @@ class EquipSlot extends ItemSlot {
     }
 
     private boolean doesHeroAcceptItem(InventoryImage draggedItem) {
-        Optional<String> errorMessage = heroItem.isAbleToEquip(draggedItem.inventoryItem);
-        if (errorMessage.isPresent()) {
-            new MessageDialog(errorMessage.get()).show(getStage(), AudioEvent.SE_MENU_ERROR);
-            return false;
-        } else {
-            return true;
-        }
+        return heroItem.createMessageIfNotAbleToEquip(draggedItem.inventoryItem)
+                       .map(this::showDialogHeroDoesNotAccept)
+                       .orElse(true);
+    }
+
+    private boolean showDialogHeroDoesNotAccept(String message) {
+        new MessageDialog(message).show(getStage(), AudioEvent.SE_MENU_ERROR);
+        return false;
     }
 
     private void refreshSlot() {

@@ -14,7 +14,6 @@ import nl.t64.game.rpg.screens.inventory.tooltip.ItemSlotTooltip;
 import nl.t64.game.rpg.screens.inventory.tooltip.ItemSlotTooltipListener;
 
 import java.util.Map;
-import java.util.OptionalInt;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -58,15 +57,16 @@ public class LootSlotsTable {
                         .collect(Collectors.toMap(InventoryItem::getId, InventoryItem::getAmount));
     }
 
-    boolean takeItem() {
-        OptionalInt firstFilledSlot = inventory.findFirstFilledSlot();
-        if (firstFilledSlot.isPresent()) {
-            var lootSlot = (InventorySlot) lootSlotTable.getChildren().get(firstFilledSlot.getAsInt());
-            DoubleClickHandler.handleShop(lootSlot, dragAndDrop);
-            return true;
-        } else {
-            return false;
-        }
+    boolean hasTakenItem() {
+        return inventory.findFirstFilledSlot()
+                        .map(this::hasHandledShop)
+                        .orElse(false);
+    }
+
+    private boolean hasHandledShop(Integer index) {
+        var lootSlot = (InventorySlot) lootSlotTable.getChildren().get(index);
+        DoubleClickHandler.handleShop(lootSlot, dragAndDrop);
+        return true;
     }
 
     private void fillLootContainer(Loot loot) {

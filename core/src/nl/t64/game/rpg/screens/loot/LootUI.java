@@ -12,7 +12,6 @@ import nl.t64.game.rpg.screens.inventory.ScreenUI;
 import nl.t64.game.rpg.screens.inventory.tooltip.ItemSlotTooltip;
 import nl.t64.game.rpg.screens.inventory.tooltip.LootSlotTooltip;
 
-import java.util.Collections;
 import java.util.Map;
 
 
@@ -48,7 +47,7 @@ class LootUI implements ScreenUI {
 
     @Override
     public Map<String, EquipSlotsTable> getEquipSlotsTables() {
-        return Collections.emptyMap();
+        return Map.of();
     }
 
     @Override
@@ -57,7 +56,7 @@ class LootUI implements ScreenUI {
     }
 
     boolean takeItem() {
-        return lootSlotsTable.takeItem();
+        return lootSlotsTable.hasTakenItem();
     }
 
     boolean isEmpty() {

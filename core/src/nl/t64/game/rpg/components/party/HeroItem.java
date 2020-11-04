@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import nl.t64.game.rpg.constants.Constant;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -121,14 +122,10 @@ public class HeroItem {
         inventory.forceSetInventoryItem(inventoryGroup, inventoryItem);
     }
 
-    public Optional<String> isAbleToEquip(InventoryItem inventoryItem) {
-        for (InventoryMinimal minimal : InventoryMinimal.values()) {
-            Optional<String> errorMessage = minimal.createMessageIfHeroHasNotEnoughFor(inventoryItem, this);
-            if (errorMessage.isPresent()) {
-                return errorMessage;
-            }
-        }
-        return Optional.empty();    // Yes, is able to equip.
+    public Optional<String> createMessageIfNotAbleToEquip(InventoryItem inventoryItem) {
+        return Arrays.stream(InventoryMinimal.values())
+                     .flatMap(minimal -> minimal.createMessageIfHeroHasNotEnoughFor(inventoryItem, this).stream())
+                     .findFirst();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

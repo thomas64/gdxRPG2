@@ -11,14 +11,10 @@ enum InventoryMinimal implements SuperEnum {
     SKILL("Skill") {
         @Override
         Optional<String> createMessageIfHeroHasNotEnoughFor(InventoryItem item, HeroItem hero) {
-            if (item.skill == null) {
-                return Optional.empty();
-            }
-            if (hero.getSkillById(item.skill).rank <= 0) {
-                return Optional.of(String.format("%s needs the %s skill%nto equip that %s.",
-                                                 hero.name, item.skill.getTitle(), item.name));
-            }
-            return Optional.empty();
+            return Optional.ofNullable(item.skill)
+                           .filter(skillItemId -> hero.getSkillById(skillItemId).rank <= 0)
+                           .map(skillItemId -> String.format("%s needs the %s skill%nto equip that %s.",
+                                                             hero.name, skillItemId.getTitle(), item.name));
         }
     },
 

@@ -22,7 +22,7 @@ public class Loot {
     }
 
     Loot() {
-        this.content = Collections.emptyMap();
+        this.content = Map.of();
         this.trapLevel = 0;
         this.lockLevel = 0;
         this.xp = 0;
@@ -33,7 +33,7 @@ public class Loot {
     }
 
     public void clearContent() {
-        content = Collections.emptyMap();
+        content = Map.of();
     }
 
     public void updateContent(Map<String, Integer> newContent) {
