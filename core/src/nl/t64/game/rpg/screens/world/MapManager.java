@@ -1,6 +1,5 @@
 package nl.t64.game.rpg.screens.world;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.Utils;
@@ -77,13 +76,13 @@ public class MapManager extends MapSubject implements ProfileObserver {
         currentMap.getWarpPointBeingCheckedBy(checkRect)
                   .ifPresent(warpPoint -> {
                       Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_WARP);
-                      notifyMapWillChange(() -> changeMap(warpPoint, direction), Color.WHITE);
+                      notifyMapWillChange(() -> changeMap(warpPoint, direction), warpPoint.fadeColor);
                   });
     }
 
     public void collisionPortals(Rectangle playerRect, Direction direction) {
         currentMap.getPortalOnCollisionBy(playerRect)
-                  .ifPresent(portal -> notifyMapWillChange(() -> changeMap(portal, direction), Color.BLACK));
+                  .ifPresent(portal -> notifyMapWillChange(() -> changeMap(portal, direction), portal.fadeColor));
     }
 
     private void changeMap(GameMapPortal portal, Direction direction) {

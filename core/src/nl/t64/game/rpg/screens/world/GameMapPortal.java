@@ -1,5 +1,6 @@
 package nl.t64.game.rpg.screens.world;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
@@ -14,15 +15,21 @@ class GameMapPortal {
     final String fromMapName;
     final String toMapName;
     final String toMapLocation;
+    final Color fadeColor;
     Direction enterDirection;
 
     GameMapPortal(MapObject mapObject, String fromMapName) {
+        this(mapObject, fromMapName, Color.BLACK);
+    }
+
+    GameMapPortal(MapObject mapObject, String fromMapName, Color fadeColor) {
         RectangleMapObject rectObject = (RectangleMapObject) mapObject;
 
         this.rectangle = rectObject.getRectangle();
         this.fromMapName = fromMapName;
         this.toMapName = rectObject.getName();
         this.toMapLocation = createToMapLocation(rectObject);
+        this.fadeColor = fadeColor;
     }
 
     void setEnterDirection(Direction enterDirection) {
