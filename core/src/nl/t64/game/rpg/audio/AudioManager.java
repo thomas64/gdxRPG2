@@ -1,6 +1,5 @@
 package nl.t64.game.rpg.audio;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import nl.t64.game.rpg.Utils;
@@ -62,9 +61,9 @@ public class AudioManager {
                .forEach(event -> handle(AudioCommand.BGS_PLAY_LOOP, event));
     }
 
-    public void fadeBgmBgs() {
-        queuedBgm.values().forEach(bgm -> fade(bgm, BGM_VOLUME));
-        queuedBgs.values().forEach(bgs -> fade(bgs, BGS_VOLUME));
+    public void fadeBgmBgs(float dt) {
+        queuedBgm.values().forEach(bgm -> fade(bgm, BGM_VOLUME, dt));
+        queuedBgs.values().forEach(bgs -> fade(bgs, BGS_VOLUME, dt));
     }
 
     public void handle(AudioCommand command, List<AudioEvent> events) {
@@ -105,19 +104,19 @@ public class AudioManager {
     }
 
     private void playBgm(String filePath, boolean isLooping) {
+        Music bgm;
+        if (queuedBgm.containsKey(filePath)) {
+            bgm = queuedBgm.get(filePath);
+        } else {
+            bgm = Utils.getResourceManager().getMusicAsset(filePath);
+            queuedBgm.put(filePath, bgm);
+        }
         if (Utils.getSettings().isMusicOn()) {
-            if (queuedBgm.containsKey(filePath)) {
-                Music bgm = queuedBgm.get(filePath);
-                bgm.setLooping(isLooping);
-                bgm.play();
-                bgm.setVolume(BGM_VOLUME);
-            } else {
-                Music bgm = Utils.getResourceManager().getMusicAsset(filePath);
-                bgm.setLooping(isLooping);
-                bgm.play();
-                bgm.setVolume(BGM_VOLUME);
-                queuedBgm.put(filePath, bgm);
-            }
+            bgm.setLooping(isLooping);
+            bgm.play();
+            bgm.setVolume(BGM_VOLUME);
+        } else {
+            bgm.stop();
         }
     }
 
@@ -125,61 +124,62 @@ public class AudioManager {
         if (filePath.isEmpty()) {
             return;
         }
+        Music bgs;
+        if (queuedBgs.containsKey(filePath)) {
+            bgs = queuedBgs.get(filePath);
+        } else {
+            bgs = Utils.getResourceManager().getMusicAsset(filePath);
+            queuedBgs.put(filePath, bgs);
+        }
         if (Utils.getSettings().isSoundOn()) {
-            if (queuedBgs.containsKey(filePath)) {
-                Music bgs = queuedBgs.get(filePath);
-                bgs.setLooping(isLooping);
-                bgs.play();
-                bgs.setVolume(BGS_VOLUME);
-            } else {
-                Music bgs = Utils.getResourceManager().getMusicAsset(filePath);
-                bgs.setLooping(isLooping);
-                bgs.play();
-                bgs.setVolume(BGS_VOLUME);
-                queuedBgs.put(filePath, bgs);
-            }
+            bgs.setLooping(isLooping);
+            bgs.play();
+            bgs.setVolume(BGS_VOLUME);
+        } else {
+            bgs.stop();
         }
     }
 
     private void playMe(String filePath, boolean isLooping) {
+        Sound me;
+        if (queuedMe.containsKey(filePath)) {
+            me = queuedMe.get(filePath);
+        } else {
+            me = Utils.getResourceManager().getSoundAsset(filePath);
+            queuedMe.put(filePath, me);
+        }
         if (Utils.getSettings().isMusicOn()) {
-            if (queuedMe.containsKey(filePath)) {
-                Sound me = queuedMe.get(filePath);
-                long meId = me.play();
-                me.setLooping(meId, isLooping);
-            } else {
-                Sound me = Utils.getResourceManager().getSoundAsset(filePath);
-                long meId = me.play();
-                me.setLooping(meId, isLooping);
-                queuedMe.put(filePath, me);
-            }
+            long meId = me.play();
+            me.setLooping(meId, isLooping);
+        } else {
+            me.stop();
         }
     }
 
     private void playSe(AudioEvent event, boolean isLooping) {
+        String filePath = event.filePath;
+        float volume = event.volume;
+        Sound se;
+        if (queuedSe.containsKey(filePath)) {
+            se = queuedSe.get(filePath);
+        } else {
+            se = Utils.getResourceManager().getSoundAsset(filePath);
+            queuedSe.put(filePath, se);
+        }
         if (Utils.getSettings().isSoundOn()) {
-            String filePath = event.filePath;
-            float volume = event.volume;
-            if (queuedSe.containsKey(filePath)) {
-                Sound se = queuedSe.get(filePath);
-                long seId = se.play();
-                se.setVolume(seId, volume);
-                se.setLooping(seId, isLooping);
-            } else {
-                Sound se = Utils.getResourceManager().getSoundAsset(filePath);
-                long seId = se.play();
-                se.setVolume(seId, volume);
-                se.setLooping(seId, isLooping);
-                queuedSe.put(filePath, se);
-            }
+            long seId = se.play();
+            se.setVolume(seId, volume);
+            se.setLooping(seId, isLooping);
+        } else {
+            se.stop();
         }
     }
 
-    private void fade(Music bgmBgs, float defaultVolume) {
+    private void fade(Music bgmBgs, float defaultVolume, float dt) {
         if (bgmBgs.isPlaying()) {
             float volume = bgmBgs.getVolume();
             if (volume > 0f) {
-                volume -= Gdx.graphics.getDeltaTime() * Constant.FADE_DURATION;
+                volume -= (defaultVolume / Constant.FADE_DURATION) * dt;
                 bgmBgs.setVolume(Math.max(volume, 0f));
             } else {
                 bgmBgs.setVolume(defaultVolume);

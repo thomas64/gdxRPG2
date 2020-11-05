@@ -89,7 +89,7 @@ public class MenuLoad extends MenuScreen {
         progressLostDialog.update(); // for updating the index in de listener.
         deleteFileDialog.update();
         if (isBgmFading) {
-            Utils.getAudioManager().fadeBgmBgs();
+            Utils.getAudioManager().fadeBgmBgs(dt);
         }
         stage.draw();
     }
