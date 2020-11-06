@@ -158,14 +158,14 @@ public class InventoryContainer {
 
     private Map<Integer, Integer> findAllSlotsWithAmountOfItem(String itemId) {
         Map<Integer, Integer> resourceMap = new HashMap<>();
-        IntStream.range(0, getSize())
-                 .forEach(i -> {
-                     InventoryItem item = inventory.get(i);
-                     if (item != null && item.id.equals(itemId)) {
-                         resourceMap.put(i, item.amount);
-                     }
-                 });
+        IntStream.range(0, getSize()).forEach(index -> possibleAddToAmountToResourceMap(index, resourceMap, itemId));
         return resourceMap;
+    }
+
+    private void possibleAddToAmountToResourceMap(int index, Map<Integer, Integer> resourceMap, String itemId) {
+        Optional.ofNullable(inventory.get(index))
+                .filter(item -> item.id.equals(itemId))
+                .ifPresent(item -> resourceMap.put(index, item.amount));
     }
 
     public Optional<Integer> findFirstSlotWithItem(String itemId) {
@@ -186,7 +186,7 @@ public class InventoryContainer {
                         .findFirst();
     }
 
-    private boolean isSlotFilled(int index){
+    private boolean isSlotFilled(int index) {
         return !isSlotEmpty(index);
     }
 

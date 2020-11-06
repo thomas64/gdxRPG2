@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 public class MapManager extends MapSubject implements ProfileObserver {
 
     GameMap currentMap;
+    private GameMap newMap;
 
     @Override
     public void onNotifyCreateProfile(ProfileManager profileManager) {
@@ -76,13 +77,17 @@ public class MapManager extends MapSubject implements ProfileObserver {
         currentMap.getWarpPointBeingCheckedBy(checkRect)
                   .ifPresent(warpPoint -> {
                       Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_WARP);
+                      newMap = new GameMap(warpPoint.toMapName);
                       notifyMapWillChange(() -> changeMap(warpPoint, direction), warpPoint.fadeColor);
                   });
     }
 
     public void collisionPortals(Rectangle playerRect, Direction direction) {
         currentMap.getPortalOnCollisionBy(playerRect)
-                  .ifPresent(portal -> notifyMapWillChange(() -> changeMap(portal, direction), portal.fadeColor));
+                  .ifPresent(portal -> {
+                      newMap = new GameMap(portal.toMapName);
+                      notifyMapWillChange(() -> changeMap(portal, direction), portal.fadeColor);
+                  });
     }
 
     private void changeMap(GameMapPortal portal, Direction direction) {
@@ -114,38 +119,50 @@ public class MapManager extends MapSubject implements ProfileObserver {
         return currentMap.areBlockersCurrentlyBlocking(point);
     }
 
+    public void continueAudio() {
+        if (currentMap != null) {
+            Utils.getAudioManager().handle(AudioCommand.BGM_PLAY_LOOP, currentMap.bgm);
+            Utils.getAudioManager().handle(AudioCommand.BGS_PLAY_LOOP, currentMap.bgs);
+        }
+    }
+
+    public void fadeAudio(float dt) {
+        Utils.getAudioManager().possibleBgmFade(getMapBgm(currentMap), getMapBgm(newMap), dt);
+        Utils.getAudioManager().possibleBgsFade(getMapBgs(currentMap), getMapBgs(newMap), dt);
+    }
+
     private void loadMap(String mapTitle) {
-        AudioEvent prevBgm = getMapBgm();
-        List<AudioEvent> prevBgs = getMapBgs();
-        disposeOldMap();
+        AudioEvent prevBgm = getMapBgm(currentMap);
+        List<AudioEvent> prevBgs = getMapBgs(currentMap);
+        disposeOldMaps();
         currentMap = new GameMap(mapTitle);
-        AudioEvent nextBgm = currentMap.bgm;
-        List<AudioEvent> nextBgs = currentMap.bgs;
+        AudioEvent nextBgm = getMapBgm(currentMap);
+        List<AudioEvent> nextBgs = getMapBgs(currentMap);
         Utils.getAudioManager().possibleBgmSwitch(prevBgm, nextBgm);
         Utils.getAudioManager().possibleBgsSwitch(prevBgs, nextBgs);
     }
 
-    public void disposeOldMap() {
+    public void disposeOldMaps() {
         if (currentMap != null) {
             currentMap.dispose();
             currentMap = null;
         }
-    }
-
-    private AudioEvent getMapBgm() {
-        if (currentMap != null) {
-            return currentMap.bgm;
-        } else {
-            return AudioEvent.NONE;
+        if (newMap != null) {
+            newMap.dispose();
+            newMap = null;
         }
     }
 
-    private List<AudioEvent> getMapBgs() {
-        if (currentMap != null) {
-            return currentMap.bgs;
-        } else {
-            return List.of(AudioEvent.NONE);
-        }
+    private AudioEvent getMapBgm(GameMap gameMap) {
+        return Optional.ofNullable(gameMap)
+                       .map(map -> map.bgm)
+                       .orElse(AudioEvent.NONE);
+    }
+
+    private List<AudioEvent> getMapBgs(GameMap gameMap) {
+        return Optional.ofNullable(gameMap)
+                       .map(map -> map.bgs)
+                       .orElse(List.of(AudioEvent.NONE));
     }
 
 }

@@ -151,7 +151,7 @@ public class MenuLoad extends MenuScreen {
 
     private void openWorldScreen() {
         Object profileName = listItems.getSelected();
-        Utils.getMapManager().disposeOldMap();
+        Utils.getMapManager().disposeOldMaps();
         Utils.getScreenManager().setScreen(ScreenType.WORLD);
         Utils.getProfileManager().loadProfile(profileName.toString());
     }

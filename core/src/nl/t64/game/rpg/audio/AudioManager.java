@@ -43,6 +43,19 @@ public class AudioManager {
         }
     }
 
+    public void possibleBgmFade(AudioEvent currentBgm, AudioEvent newBgm, float dt) {
+        if (currentBgm != newBgm) {
+            queuedBgm.values().forEach(bgm -> fade(bgm, BGM_VOLUME, dt));
+        }
+    }
+
+    public void possibleBgsFade(List<AudioEvent> currentBgs, List<AudioEvent> newBgs, float dt) {
+        currentBgs.stream()
+                  .filter(event -> !event.equals(AudioEvent.NONE))
+                  .filter(event -> !newBgs.contains(event))
+                  .forEach(event -> fade(queuedBgs.get(event.filePath), BGS_VOLUME, dt));
+    }
+
     public void possibleBgmSwitch(AudioEvent prevBgm, AudioEvent nextBgm) {
         if (prevBgm != nextBgm) {
             handle(AudioCommand.BGM_STOP_ALL, AudioEvent.NONE);

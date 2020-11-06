@@ -48,10 +48,9 @@ class GameMapNpc {
     }
 
     private Direction createDirection(RectangleMapObject rectObject) {
-        Optional<String> newDirection = Optional.ofNullable(
-                rectObject.getProperties().get("direction", String.class));
-        return newDirection.map(string -> Direction.valueOf(string.toUpperCase()))
-                           .orElseGet(Direction::getRandom);
+        return Optional.ofNullable(rectObject.getProperties().get("direction", String.class))
+                       .map(directionString -> Direction.valueOf(directionString.toUpperCase()))
+                       .orElseGet(Direction::getRandom);
     }
 
     private String createConversation(RectangleMapObject rectObject) {

@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import lombok.Getter;
 import nl.t64.game.rpg.Utils;
-import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.character.Character;
 import nl.t64.game.rpg.components.character.*;
@@ -35,7 +34,6 @@ import nl.t64.game.rpg.screens.world.pathfinding.TiledNode;
 import nl.t64.game.rpg.sfx.TransitionImage;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -264,7 +262,7 @@ public class WorldScreen implements Screen,
     public void show() {
         gameState = GameState.RUNNING;
         Gdx.input.setInputProcessor(multiplexer);
-        continueBgmBgsWhenReturnFromMenuPause();
+        Utils.getMapManager().continueAudio();
     }
 
     @Override
@@ -288,6 +286,9 @@ public class WorldScreen implements Screen,
         messageDialog.update(dt);
 
         stage.act(dt);
+        if (isFading) {
+            Utils.getMapManager().fadeAudio(dt);
+        }
         stage.draw();
     }
 
@@ -362,14 +363,6 @@ public class WorldScreen implements Screen,
 
     private void showHidePartyWindow() {
         partyWindow.showHide();
-    }
-
-    private void continueBgmBgsWhenReturnFromMenuPause() {
-        GameMap currentMap = Utils.getMapManager().currentMap;
-        if (currentMap != null) {
-            Utils.getAudioManager().handle(AudioCommand.BGM_PLAY_LOOP, currentMap.bgm);
-            Utils.getAudioManager().handle(AudioCommand.BGS_PLAY_LOOP, currentMap.bgs);
-        }
     }
 
     @Override

@@ -2,10 +2,7 @@ package nl.t64.game.rpg.components.party;
 
 import nl.t64.game.rpg.constants.Constant;
 
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class PartyContainer {
@@ -69,11 +66,10 @@ public class PartyContainer {
     }
 
     public boolean containsExactlyEqualTo(HeroItem candidateHeroObject) {
-        if (candidateHeroObject == null) {
-            return false;
-        }
-        final HeroItem possibleFoundHero = getHero(candidateHeroObject.id);
-        return possibleFoundHero != null && possibleFoundHero.equals(candidateHeroObject);
+        return Optional.ofNullable(candidateHeroObject)
+                       .map(candidateHero -> getHero(candidateHero.id))
+                       .filter(possibleFoundHero -> possibleFoundHero.equals(candidateHeroObject))
+                       .isPresent();
     }
 
     public boolean isHeroLast(HeroItem hero) {

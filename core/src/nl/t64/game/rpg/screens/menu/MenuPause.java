@@ -85,7 +85,7 @@ public class MenuPause extends MenuScreen {
     }
 
     private void openMenuMain() {
-        Utils.getMapManager().disposeOldMap();
+        Utils.getMapManager().disposeOldMaps();
         Utils.getScreenManager().setScreen(ScreenType.MENU_MAIN);
     }
 
