@@ -78,7 +78,7 @@ public class MenuNew extends MenuScreen {
         listenerKeyHorizontal.updateSelectedIndex(selectedMenuIndex);
         overwriteDialog.update(); // for updating the index in de listener.
         if (isBgmFading) {
-            Utils.getAudioManager().fadeBgmBgs(dt);
+            Utils.getAudioManager().fadeBgmBgs();
         }
         stage.draw();
     }

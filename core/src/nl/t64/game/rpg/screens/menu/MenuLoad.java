@@ -89,7 +89,7 @@ public class MenuLoad extends MenuScreen {
         progressLostDialog.update(); // for updating the index in de listener.
         deleteFileDialog.update();
         if (isBgmFading) {
-            Utils.getAudioManager().fadeBgmBgs(dt);
+            Utils.getAudioManager().fadeBgmBgs();
         }
         stage.draw();
     }
@@ -143,6 +143,7 @@ public class MenuLoad extends MenuScreen {
     }
 
     private void fadeBeforeOpenWorldScreen() {
+        Gdx.input.setInputProcessor(null);
         stage.addAction(Actions.sequence(Actions.run(() -> isBgmFading = true),
                                          Actions.fadeOut(Constant.FADE_DURATION),
                                          Actions.run(() -> isBgmFading = false),

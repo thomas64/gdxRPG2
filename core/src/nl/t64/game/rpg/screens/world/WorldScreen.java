@@ -50,7 +50,7 @@ public class WorldScreen implements Screen,
     private static boolean showDebug = false;
 
     private GameState gameState;
-    private final Stage stage;
+    private final Stage transitionStage;
     private final Camera camera;
     private final TextureMapObjectRenderer mapRenderer;
     private final InputMultiplexer multiplexer;
@@ -72,7 +72,7 @@ public class WorldScreen implements Screen,
     private boolean isFading = false;
 
     public WorldScreen() {
-        this.stage = new Stage();
+        this.transitionStage = new Stage();
         this.camera = new Camera();
         this.mapRenderer = new TextureMapObjectRenderer();
         this.multiplexer = new InputMultiplexer();
@@ -112,12 +112,12 @@ public class WorldScreen implements Screen,
     public void onNotifyMapWillChange(Runnable changeMap, Color transitionColor) {
         var transition = new TransitionImage(transitionColor);
         transition.addAction(Actions.alpha(0f));
-        stage.addActor(transition);
+        transitionStage.addActor(transition);
         transition.addAction(Actions.sequence(Actions.run(() -> isFading = true),
                                               Actions.fadeIn(Constant.FADE_DURATION),
                                               Actions.run(changeMap),
                                               Actions.run(() -> isFading = false),
-                                              Actions.run(stage::clear)));
+                                              Actions.run(transitionStage::clear)));
     }
 
     @Override
@@ -285,11 +285,11 @@ public class WorldScreen implements Screen,
         conversationDialog.update(dt);
         messageDialog.update(dt);
 
-        stage.act(dt);
+        transitionStage.act(dt);
         if (isFading) {
-            Utils.getMapManager().fadeAudio(dt);
+            Utils.getMapManager().fadeAudio();
         }
-        stage.draw();
+        transitionStage.draw();
     }
 
     public List<Character> createCopyOfCharactersWithPlayerButWithoutThisNpc(Character thisNpcCharacter) {
@@ -383,7 +383,7 @@ public class WorldScreen implements Screen,
     @Override
     public void hide() {
         gameState = GameState.PAUSED;
-        stage.clear();
+        transitionStage.clear();
         Gdx.input.setInputProcessor(null);
     }
 
@@ -396,7 +396,7 @@ public class WorldScreen implements Screen,
         conversationDialog.dispose();
         messageDialog.dispose();
         debugBox.dispose();
-        stage.dispose();
+        transitionStage.dispose();
     }
 
     static void setShowGrid() {

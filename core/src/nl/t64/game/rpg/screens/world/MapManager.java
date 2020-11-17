@@ -126,9 +126,9 @@ public class MapManager extends MapSubject implements ProfileObserver {
         }
     }
 
-    public void fadeAudio(float dt) {
-        Utils.getAudioManager().possibleBgmFade(getMapBgm(currentMap), getMapBgm(newMap), dt);
-        Utils.getAudioManager().possibleBgsFade(getMapBgs(currentMap), getMapBgs(newMap), dt);
+    public void fadeAudio() {
+        Utils.getAudioManager().possibleBgmFade(getMapBgm(currentMap), getMapBgm(newMap));
+        Utils.getAudioManager().possibleBgsFade(getMapBgs(currentMap), getMapBgs(newMap));
     }
 
     private void loadMap(String mapTitle) {

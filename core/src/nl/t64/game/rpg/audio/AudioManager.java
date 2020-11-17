@@ -1,5 +1,6 @@
 package nl.t64.game.rpg.audio;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import nl.t64.game.rpg.Utils;
@@ -43,17 +44,17 @@ public class AudioManager {
         }
     }
 
-    public void possibleBgmFade(AudioEvent currentBgm, AudioEvent newBgm, float dt) {
+    public void possibleBgmFade(AudioEvent currentBgm, AudioEvent newBgm) {
         if (currentBgm != newBgm) {
-            queuedBgm.values().forEach(bgm -> fade(bgm, BGM_VOLUME, dt));
+            queuedBgm.values().forEach(bgm -> fade(bgm, BGM_VOLUME));
         }
     }
 
-    public void possibleBgsFade(List<AudioEvent> currentBgs, List<AudioEvent> newBgs, float dt) {
+    public void possibleBgsFade(List<AudioEvent> currentBgs, List<AudioEvent> newBgs) {
         currentBgs.stream()
                   .filter(event -> !event.equals(AudioEvent.NONE))
                   .filter(event -> !newBgs.contains(event))
-                  .forEach(event -> fade(queuedBgs.get(event.filePath), BGS_VOLUME, dt));
+                  .forEach(event -> fade(queuedBgs.get(event.filePath), BGS_VOLUME));
     }
 
     public void possibleBgmSwitch(AudioEvent prevBgm, AudioEvent nextBgm) {
@@ -74,9 +75,9 @@ public class AudioManager {
                .forEach(event -> handle(AudioCommand.BGS_PLAY_LOOP, event));
     }
 
-    public void fadeBgmBgs(float dt) {
-        queuedBgm.values().forEach(bgm -> fade(bgm, BGM_VOLUME, dt));
-        queuedBgs.values().forEach(bgs -> fade(bgs, BGS_VOLUME, dt));
+    public void fadeBgmBgs() {
+        queuedBgm.values().forEach(bgm -> fade(bgm, BGM_VOLUME));
+        queuedBgs.values().forEach(bgs -> fade(bgs, BGS_VOLUME));
     }
 
     public void handle(AudioCommand command, List<AudioEvent> events) {
@@ -188,11 +189,11 @@ public class AudioManager {
         }
     }
 
-    private void fade(Music bgmBgs, float defaultVolume, float dt) {
+    private void fade(Music bgmBgs, float defaultVolume) {
         if (bgmBgs.isPlaying()) {
             float volume = bgmBgs.getVolume();
             if (volume > 0f) {
-                volume -= (defaultVolume / Constant.FADE_DURATION) * dt;
+                volume -= (defaultVolume / Constant.FADE_DURATION) * Gdx.graphics.getDeltaTime();
                 bgmBgs.setVolume(Math.max(volume, 0f));
             } else {
                 bgmBgs.setVolume(defaultVolume);
