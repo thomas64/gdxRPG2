@@ -150,7 +150,7 @@ class GameMap {
 
     Optional<GameMapQuestObject> getQuestTaskBeingCheckedBy(Rectangle checkRect) {
         return questCheckers.stream()
-                            .filter(checker -> checkRect.overlaps(checkRect))
+                            .filter(checker -> checkRect.overlaps(checker.rectangle))
                             .findFirst();
     }
 
