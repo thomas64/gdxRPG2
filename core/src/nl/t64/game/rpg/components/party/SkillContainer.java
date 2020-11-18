@@ -57,7 +57,7 @@ class SkillContainer {
         return Arrays.stream(SkillItemId.values())
                      .map(skillItemId -> skills.get(skillItemId.name()))
                      .filter(this::hasPositiveQuantity)
-                     .collect(Collectors.toList());
+                     .collect(Collectors.toUnmodifiableList());
     }
 
     private boolean hasPositiveQuantity(SkillItem skillItem) {

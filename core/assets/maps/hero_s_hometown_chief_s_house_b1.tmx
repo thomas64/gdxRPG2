@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="20" height="14" tilewidth="24" tileheight="24" infinite="0" nextlayerid="23" nextobjectid="17">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="20" height="14" tilewidth="24" tileheight="24" infinite="0" nextlayerid="23" nextobjectid="17">
  <properties>
   <property name="bgm" value="bgm_cellar"/>
-  <property name="lightmap_player" value="darkness"/>
+  <property name="lightmap_player" value="light_player"/>
  </properties>
  <tileset firstgid="1" name="hero_s_hometown_chief_s_house_b1" tilewidth="24" tileheight="24" tilecount="384" columns="24">
   <image source="tilesets/hero_s_hometown_chief_s_house_b1.png" width="576" height="384"/>

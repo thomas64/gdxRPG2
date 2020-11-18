@@ -35,7 +35,7 @@ class SpellContainer {
         return spells.values()
                      .stream()
                      .sorted(Comparator.comparing(SpellItem::getSort))
-                     .collect(Collectors.toList());
+                     .collect(Collectors.toUnmodifiableList());
     }
 
 }

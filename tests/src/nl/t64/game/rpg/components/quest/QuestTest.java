@@ -52,7 +52,7 @@ class QuestTest extends GameTest {
         final GameData gameData = Utils.getGameData();
         gameData.onNotifyCreateProfile(new ProfileManager());
 
-        assertThat(gameData.getParty().getHero(0).getXpToInvest()).isEqualTo(0);
+        assertThat(gameData.getParty().getHero(0).getXpToInvest()).isZero();
         QuestGraph quest0001 = quests.getQuestById("quest0001");
         assertThatExceptionOfType(IllegalCallerException.class).isThrownBy(() -> quest0001.setTaskComplete("1"));
         assertThat(quest0001.isFinished()).isFalse();

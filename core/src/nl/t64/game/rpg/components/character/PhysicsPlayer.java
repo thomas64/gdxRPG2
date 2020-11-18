@@ -164,7 +164,7 @@ public class PhysicsPlayer extends PhysicsComponent {
         List<Rectangle> walkingBlockers = npcCharacters.stream()
                                                        .filter(stateIsNotImmobileAndFloating())
                                                        .map(Character::getBoundingBox)
-                                                       .collect(Collectors.toList());
+                                                       .collect(Collectors.toUnmodifiableList());
 
         List<Rectangle> copyBlockers = new ArrayList<>(blockers);
         List<Rectangle> copyWalkingBlockers = new ArrayList<>(walkingBlockers);

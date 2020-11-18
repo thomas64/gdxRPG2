@@ -43,7 +43,7 @@ public class QuestGraph {
         return tasks.entrySet().stream()
                     .sorted(Map.Entry.comparingByKey())
                     .map(Map.Entry::getValue)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toUnmodifiableList());
     }
 
     public void setTaskComplete(String taskId) {

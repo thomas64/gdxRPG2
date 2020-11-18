@@ -19,7 +19,7 @@ class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
     private static final int[] UNDER_LAYERS = new int[]{0, 1, 2, 3, 4, 5};
     private static final int[] OVER_LAYERS = new int[]{6, 7, 8};
     private static final float SCROLL_SPEED = 10f;
-    private static final String LIGHTMAP_ID = "darkness";
+    private static final String LIGHTMAP_ID = "light_object";
 
     private final FrameBuffer frameBuffer;
     private final Camera camera;
@@ -27,25 +27,28 @@ class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
 
     TextureMapObjectRenderer(Camera camera) {
         super(null);
-        this.frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888,
-                                           Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+        this.frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         this.camera = camera;
     }
 
     void renderAll(Vector2 playerPosition, Runnable renderCharacters) {
         Utils.getMapManager().getLightmapPlayer()
-             .ifPresentOrElse(sprite -> {
-                                  frameBuffer.begin();
-                                  clear();
-                                  renderLightmapPlayer(playerPosition, sprite);
-                                  frameBuffer.end();
-                                  renderMapLayers(renderCharacters);
-                                  renderFrameBuffer();
-                              }, () -> {
-                                  clear();
-                                  renderMapLayers(renderCharacters);
-                              }
-             );
+             .ifPresentOrElse(sprite -> renderWithPlayerLight(playerPosition, sprite, renderCharacters),
+                              () -> renderWithoutPlayerLight(renderCharacters));
+    }
+
+    private void renderWithPlayerLight(Vector2 playerPosition, Sprite sprite, Runnable renderCharacters) {
+        frameBuffer.begin();
+        clear();
+        renderLightmapPlayer(playerPosition, sprite);
+        frameBuffer.end();
+        renderMapLayers(renderCharacters);
+        renderFrameBuffer();
+    }
+
+    private void renderWithoutPlayerLight(Runnable renderCharacters) {
+        clear();
+        renderMapLayers(renderCharacters);
     }
 
     void updateCamera() {

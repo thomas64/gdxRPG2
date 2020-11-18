@@ -93,7 +93,7 @@ public class MapManager extends MapSubject implements ProfileObserver {
     }
 
     public List<Rectangle> getAllBlockers() {
-        return currentMap.getAllBlockers().collect(Collectors.toList());
+        return currentMap.getAllBlockers().collect(Collectors.toUnmodifiableList());
     }
 
     public Optional<String> getNoteId(Rectangle checkRect) {

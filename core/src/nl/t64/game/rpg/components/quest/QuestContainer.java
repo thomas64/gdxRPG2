@@ -24,7 +24,7 @@ public class QuestContainer {
                      .filter(questGraph -> !questGraph.currentState.equals(QuestState.UNKNOWN))
                      .sorted(Comparator.comparing((QuestGraph questGraph) -> questGraph.currentState)
                                        .thenComparing((QuestGraph questGraph) -> questGraph.id))
-                     .collect(Collectors.toList());
+                     .collect(Collectors.toUnmodifiableList());
     }
 
     public QuestGraph getQuestById(String questId) {

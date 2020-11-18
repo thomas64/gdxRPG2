@@ -17,7 +17,10 @@ import nl.t64.game.rpg.components.character.Direction;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.screens.world.pathfinding.TiledGraph;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -70,7 +73,7 @@ class GameMap {
     final List<GameMapNpc> npcs = new ArrayList<>();
     final List<GameMapHero> heroes = new ArrayList<>();
     final List<Rectangle> blockers = new ArrayList<>();
-    final Set<Vector2> lights = new HashSet<>();
+    final List<Vector2> lights = new ArrayList<>();
     final List<GameMapQuestBlocker> questBlockers = new ArrayList<>();
     final List<GameMapQuestTexture> upperTextures = new ArrayList<>();
     final List<GameMapQuestTexture> lowerTextures = new ArrayList<>();

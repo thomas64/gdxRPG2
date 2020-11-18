@@ -93,7 +93,7 @@ class StatContainer {
     List<StatItem> getAll() {
         return Arrays.stream(StatItemId.values())
                      .map(statItemId -> stats.get(statItemId.name()))
-                     .collect(Collectors.toList());
+                     .collect(Collectors.toUnmodifiableList());
     }
 
 }

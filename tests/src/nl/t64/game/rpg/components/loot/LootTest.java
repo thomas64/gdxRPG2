@@ -49,7 +49,7 @@ class LootTest extends GameTest {
         assertThat(reward.getXp()).isEqualTo(2);
         reward.clearXp();
         assertThat(reward.getContent()).hasSize(1);
-        assertThat(reward.getXp()).isEqualTo(0);
+        assertThat(reward.getXp()).isZero();
     }
 
     @Test
@@ -85,19 +85,19 @@ class LootTest extends GameTest {
         chest.clearContent();
         assertThat(chest.isTaken()).isTrue();
         assertThat(chest.isTrapped()).isFalse();
-        assertThat(chest.getTrapLevel()).isEqualTo(0);
+        assertThat(chest.getTrapLevel()).isZero();
         assertThat(chest.canDisarmTrap(mechaniclevel)).isTrue();
         assertThat(chest.isLocked()).isFalse();
-        assertThat(chest.getLockLevel()).isEqualTo(0);
+        assertThat(chest.getLockLevel()).isZero();
         assertThat(chest.canPickLock(thieflevel)).isTrue();
-        assertThat(chest.getContent()).hasSize(0);
+        assertThat(chest.getContent()).isEmpty();
         chest.updateContent(Map.of("herb", 10));
         assertThat(chest.isTaken()).isFalse();
         assertThat(chest.isTrapped()).isFalse();
-        assertThat(chest.getTrapLevel()).isEqualTo(0);
+        assertThat(chest.getTrapLevel()).isZero();
         assertThat(chest.canDisarmTrap(mechaniclevel)).isTrue();
         assertThat(chest.isLocked()).isFalse();
-        assertThat(chest.getLockLevel()).isEqualTo(0);
+        assertThat(chest.getLockLevel()).isZero();
         assertThat(chest.canPickLock(thieflevel)).isTrue();
         assertThat(chest.getContent()).hasSize(1);
     }
