@@ -1,81 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="14" height="20" tilewidth="24" tileheight="24" infinite="0" nextlayerid="24" nextobjectid="14">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="26" height="22" tilewidth="24" tileheight="24" infinite="0" nextlayerid="25" nextobjectid="19">
  <properties>
   <property name="bgm" value="bgm_cellar"/>
+  <property name="lightmap_player" value="darkness"/>
  </properties>
  <tileset firstgid="1" name="hero_s_hometown_chief_s_house_b2" tilewidth="24" tileheight="24" tilecount="171" columns="19">
   <image source="tilesets/hero_s_hometown_chief_s_house_b2.png" width="456" height="216"/>
  </tileset>
  <tileset firstgid="172" source="tilesets/fsm_object02.tsx"/>
- <layer id="14" name="under0_none" width="14" height="20">
+ <tileset firstgid="940" source="tilesets/fsm_flame02.tsx"/>
+ <layer id="14" name="under0_none" width="26" height="22">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjALaAAAEYAAB
+   eJxjYBgFo2AUjIJRMApGwSgY3gAACPAAAQ==
   </data>
  </layer>
- <layer id="15" name="under1_ground" width="14" height="20">
+ <layer id="15" name="under1_ground" width="26" height="22">
   <data encoding="base64" compression="zlib">
-   eJy902kKwjAQhuH0jwtux3BBcG/xGm5V9CTuHqWKyzF9f6QQx2hDEQcehiZMPxKIp5TyUqqihrpDbxhzY2ywdugrY26ELTIOfSnyiigYfYesZV3mlXA1+h45y7rMm+CMCCEOyKOFG8p6X+ZNcYGPAEec0MYdC72flDdHHx08EvJm6KKn/y+/P+WF4jxm7uBLXmCcpyJyfMc8eY+RY568R1teU71XnCdrqF7fhKw4T5Z8S671q7l/eQLbKTZj
+   eJzN0mkKwjAQhmH944LbMVwQ3Ctew130JO4epYrLMX0LLYQQJHVSNPAwNGk6/UhSqc8j7UjS37fpU0UNdYvaEPSZYIetRd0I+oyxR8airoV5iigo9YCsYV6ap4S7Uo/IGealeaa4wscCJ+TRwgPlcF2aZ4YbPAxxxgVtPLEK113nWaKPDl6O88zRRS/8f/3ZVZ4gh3oeaq6BwzzBuUTnUdFyeAnl0e+Zn1Ae/Z7peeKOYE/TMB/l0cdI0Me0L8pj+/63fVy9/6s+cf1rH9fjDfu5NsM=
   </data>
  </layer>
- <layer id="16" name="under2_objects" width="14" height="20">
+ <layer id="16" name="under2_objects" width="26" height="22">
   <data encoding="base64" compression="zlib">
-   eJxjYBiZQIKRgUGSkXR9BkA9hmTo8wDq8SRDXwJQTyIZ+kbBKBgMAAC2swHt
+   eJxjYBgFo4B0IMHIwCDJSHt7DIB2GNLBHg+gHZ50sCcBaEciHewZBaNgFIyCUYAKAGH9Ae0=
   </data>
  </layer>
- <layer id="17" name="under3_none" width="14" height="20">
+ <layer id="17" name="under3_none" width="26" height="22">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjALaAAAEYAAB
+   eJxjYBgFo2AUjIJRMApGwSgY3gAACPAAAQ==
   </data>
  </layer>
- <layer id="18" name="under4_none" width="14" height="20">
+ <layer id="18" name="under4_none" width="26" height="22">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjALaAAAEYAAB
+   eJxjYBgFo2AUjIJRMApGwSgY3gAACPAAAQ==
   </data>
  </layer>
- <layer id="19" name="under5_none" width="14" height="20">
+ <layer id="19" name="under5_none" width="26" height="22">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjALaAAAEYAAB
+   eJxjYBgFo2AUjIJRMApGwSgY3gAACPAAAQ==
   </data>
  </layer>
- <layer id="20" name="over6_objects" width="14" height="20">
+ <layer id="20" name="over6_objects" width="26" height="22">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUoANdILaA0npI4lFI4hZY9DEi4SAk8Wg0OXz6dJDMtyRBHz48UAAAbfEDRQ==
+   eJxjYBgFAwF4WBgYeFlob48K0A5VOthjA7TDlg72jIJRMAoGHugCsQWU1kMSj0ISt6CCPYxIOAhJPBpNjpr26DAg3G9JQ3vw4VFAGwAAOuIEOA==
   </data>
  </layer>
- <layer id="21" name="over7_none" width="14" height="20">
+ <layer id="21" name="over7_none" width="26" height="22">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjALaAAAEYAAB
+   eJxjYBgFo2AUjIJRMApGwSgY3gAACPAAAQ==
   </data>
  </layer>
- <layer id="22" name="over8_none" width="14" height="20">
+ <layer id="22" name="over8_none" width="26" height="22">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjALaAAAEYAAB
+   eJxjYBgFo2AUjIJRMApGwSgY3gAACPAAAQ==
   </data>
  </layer>
- <objectgroup color="#0055ff" id="23" name="sound">
-  <object id="13" name="stone" x="48" y="144" width="240" height="288"/>
+ <objectgroup color="#0055ff" id="23" name="sound" visible="0">
+  <object id="13" name="stone" x="192" y="72" width="240" height="384"/>
  </objectgroup>
  <objectgroup color="#aa0000" id="7" name="collision" visible="0">
-  <object id="3" x="288" y="0" width="48" height="480"/>
-  <object id="4" x="0" y="0" width="48" height="480"/>
-  <object id="5" x="48" y="0" width="240" height="144"/>
-  <object id="6" x="48" y="360" width="96" height="120"/>
-  <object id="7" x="192" y="360" width="96" height="120"/>
-  <object id="8" x="144" y="432" width="48" height="48"/>
-  <object id="9" x="144" y="144" width="48" height="48"/>
+  <object id="3" x="432" y="24" width="48" height="480"/>
+  <object id="4" x="144" y="24" width="48" height="480"/>
+  <object id="5" x="192" y="24" width="240" height="144"/>
+  <object id="6" x="192" y="384" width="96" height="120"/>
+  <object id="7" x="336" y="384" width="96" height="120"/>
+  <object id="8" x="288" y="456" width="48" height="48"/>
+  <object id="9" x="288" y="168" width="48" height="48"/>
  </objectgroup>
  <objectgroup color="#55aaff" id="11" name="spawn">
-  <object id="1" name="hero_s_hometown_chief_s_house_b1" x="144" y="384" width="48" height="24"/>
-  <object id="12" name="hero_s_hometown_hero_s_chamber" x="144" y="192" width="48" height="24">
+  <object id="1" name="hero_s_hometown_chief_s_house_b1" x="288" y="408" width="48" height="24"/>
+  <object id="12" name="hero_s_hometown_hero_s_chamber" x="288" y="216" width="48" height="24">
    <properties>
     <property name="direction" value="south"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup color="#ffff7f" id="12" name="portal">
-  <object id="2" name="hero_s_hometown_chief_s_house_b1" x="144" y="408" width="48" height="24"/>
+  <object id="2" name="hero_s_hometown_chief_s_house_b1" x="288" y="432" width="48" height="24"/>
  </objectgroup>
  <objectgroup color="#ffaa7f" id="13" name="warp">
-  <object id="11" name="hero_s_hometown_hero_s_chamber" x="144" y="144" width="48" height="48"/>
+  <object id="11" name="hero_s_hometown_hero_s_chamber" x="288" y="168" width="48" height="48"/>
+ </objectgroup>
+ <objectgroup color="#ffffff" id="24" name="lights">
+  <object id="15" x="402" y="108" width="12" height="12"/>
  </objectgroup>
 </map>

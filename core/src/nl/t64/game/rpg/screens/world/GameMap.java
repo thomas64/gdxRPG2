@@ -1,6 +1,9 @@
 package nl.t64.game.rpg.screens.world;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
@@ -14,15 +17,14 @@ import nl.t64.game.rpg.components.character.Direction;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.screens.world.pathfinding.TiledGraph;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
 class GameMap {
+
+    public static final int LIGHTMAP_REGION_MULTIPLIER = 10;
 
     private static final String MAP_PATH = "maps/";
     private static final String MAPFILE_SUFFIX = ".tmx";
@@ -39,16 +41,27 @@ class GameMap {
     private static final String PORTAL_LAYER = "portal";
     private static final String WARP_LAYER = "warp";
     private static final String REST_LAYER = "rest";
+    private static final String LIGHTS_LAYER = "lights";
 
     private static final String WIDTH_PROPERTY = "width";
     private static final String HEIGHT_PROPERTY = "height";
+    private static final String BGM_PROPERTY = "bgm";
+    private static final String BGS_PROPERTY = "bgs";
+    private static final String LIGHTMAP_CAMERA_PROPERTY = "lightmap_camera";
+    private static final String LIGHTMAP_MAP_PROPERTY = "lightmap_map";
+    private static final String LIGHTMAP_PLAYER_PROPERTY = "lightmap_player";
 
+    private static final String DEFAULT_BGS = "NONE";
+    private static final String DEFAULT_LIGHTMAP = "default";
     private static final String DEFAULT_STEP_SOUND = "grass";
 
     final String mapTitle;
     final TiledMap tiledMap;
     final AudioEvent bgm;
     final List<AudioEvent> bgs;
+    final List<Texture> lightmapCamera;
+    final Sprite lightmapMap;
+    final Sprite lightmapPlayer;
 
     Vector2 playerSpawnLocation;
     Direction playerSpawnDirection;
@@ -57,6 +70,7 @@ class GameMap {
     final List<GameMapNpc> npcs = new ArrayList<>();
     final List<GameMapHero> heroes = new ArrayList<>();
     final List<Rectangle> blockers = new ArrayList<>();
+    final Set<Vector2> lights = new HashSet<>();
     final List<GameMapQuestBlocker> questBlockers = new ArrayList<>();
     final List<GameMapQuestTexture> upperTextures = new ArrayList<>();
     final List<GameMapQuestTexture> lowerTextures = new ArrayList<>();
@@ -75,17 +89,19 @@ class GameMap {
     GameMap(String mapTitle) {
         this.mapTitle = mapTitle;
         this.tiledMap = Utils.getResourceManager().getMapAsset(MAP_PATH + mapTitle + MAPFILE_SUFFIX);
-        this.bgm = AudioEvent.valueOf(this.tiledMap.getProperties().get("bgm", String.class).toUpperCase());
-        String audioEventStrings = this.tiledMap.getProperties().get("bgs", "NONE", String.class);
-        this.bgs = Arrays.stream(audioEventStrings.toUpperCase().split("\\s*,\\s*"))
-                         .map(AudioEvent::valueOf)
-                         .collect(Collectors.toList());
+        this.bgm = this.loadBgm();
+        this.bgs = this.loadBgs();
+        this.lightmapCamera = this.loadLightmapCamera();
+        this.lightmapMap = this.loadLightmapMap();
+        this.lightmapPlayer = this.loadLightmapPlayer();
+
         this.playerSpawnLocation = new Vector2();
 
         this.loadSounds();
         this.loadNpcs();
         this.loadHeroes();
         this.loadBlockers();
+        this.loadLights();
         this.loadQuestLayer();
         this.loadTextureLayers();
         this.loadRestLayer();
@@ -213,6 +229,41 @@ class GameMap {
         return (int) tiledMap.getProperties().get(HEIGHT_PROPERTY);
     }
 
+    private AudioEvent loadBgm() {
+        return AudioEvent.valueOf(tiledMap.getProperties().get(BGM_PROPERTY, String.class).toUpperCase());
+    }
+
+    private List<AudioEvent> loadBgs() {
+        String audioEventStrings = tiledMap.getProperties().get(BGS_PROPERTY, DEFAULT_BGS, String.class);
+        return Arrays.stream(audioEventStrings.toUpperCase().split("\\s*,\\s*"))
+                     .map(AudioEvent::valueOf)
+                     .collect(Collectors.toUnmodifiableList());
+    }
+
+    private List<Texture> loadLightmapCamera() {
+        String lightmapStrings = tiledMap.getProperties().get(LIGHTMAP_CAMERA_PROPERTY, DEFAULT_LIGHTMAP, String.class);
+        return Arrays.stream(lightmapStrings.split("\\s*,\\s*"))
+                     .map(Utils::createLightmap)
+                     .collect(Collectors.toUnmodifiableList());
+    }
+
+    private Sprite loadLightmapMap() {
+        String id = tiledMap.getProperties().get(LIGHTMAP_MAP_PROPERTY, DEFAULT_LIGHTMAP, String.class);
+        Texture texture = Utils.createLightmap(id);
+        texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+        var region = new TextureRegion(texture);
+        region.setRegionWidth(texture.getWidth() * LIGHTMAP_REGION_MULTIPLIER);
+        region.setRegionHeight(texture.getHeight() * LIGHTMAP_REGION_MULTIPLIER);
+        return new Sprite(region);
+    }
+
+    private Sprite loadLightmapPlayer() {
+        return Optional.ofNullable(tiledMap.getProperties().get(LIGHTMAP_PLAYER_PROPERTY, String.class))
+                       .map(Utils::createLightmap)
+                       .map(Sprite::new)
+                       .orElse(null);
+    }
+
     private void loadSounds() {
         getMapLayer(SOUND_LAYER).ifPresent(mapLayer -> {
             for (MapObject mapObject : mapLayer.getObjects()) {
@@ -247,6 +298,16 @@ class GameMap {
             for (MapObject mapObject : mapLayer.getObjects()) {
                 RectangleMapObject rectObject = (RectangleMapObject) mapObject;
                 blockers.add(rectObject.getRectangle());
+            }
+        });
+    }
+
+    private void loadLights() {
+        getMapLayer(LIGHTS_LAYER).ifPresent(mapLayer -> {
+            for (MapObject mapObject : mapLayer.getObjects()) {
+                RectangleMapObject rectObject = (RectangleMapObject) mapObject;
+                Rectangle rectangle = rectObject.getRectangle();
+                lights.add(rectangle.getCenter(new Vector2(rectangle.x, rectangle.y)));
             }
         });
     }

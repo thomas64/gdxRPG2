@@ -56,11 +56,11 @@
   </data>
  </layer>
  <objectgroup color="#0055ff" id="32" name="sound">
-  <object id="29" name="carpet" x="48" y="144" width="240" height="192"/>
-  <object id="30" name="carpet" x="48" y="552" width="192" height="144"/>
-  <object id="31" name="wood" x="48" y="336" width="192" height="72"/>
-  <object id="32" name="wood" x="240" y="336" width="48" height="312"/>
-  <object id="33" name="wood" x="288" y="144" width="96" height="552"/>
+  <object id="29" name="carpet" x="48" y="48" width="240" height="288"/>
+  <object id="30" name="carpet" x="48" y="456" width="192" height="264"/>
+  <object id="31" name="wood" x="48" y="336" width="240" height="120"/>
+  <object id="32" name="wood" x="240" y="456" width="48" height="264"/>
+  <object id="33" name="wood" x="288" y="48" width="96" height="672"/>
  </objectgroup>
  <objectgroup color="#aa0000" id="10" name="collision" visible="0">
   <object id="1" x="240" y="648" width="48" height="48"/>

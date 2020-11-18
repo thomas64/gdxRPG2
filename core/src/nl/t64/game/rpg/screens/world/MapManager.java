@@ -1,5 +1,7 @@
 package nl.t64.game.rpg.screens.world;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.Utils;
@@ -10,6 +12,7 @@ import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.profile.ProfileObserver;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,6 +42,36 @@ public class MapManager extends MapSubject implements ProfileObserver {
         loadMap(mapTitle);
         currentMap.setPlayerSpawnLocationForNewLoad(mapTitle);
         notifyMapChanged(currentMap);
+    }
+
+    public List<Sprite> getLightmapCamera(Camera camera) {
+        final float cameraWidth = camera.viewportWidth;
+        final float cameraHeight = camera.viewportHeight;
+        final float mapWidth = currentMap.getPixelWidth() / camera.zoom;
+        final float mapHeight = currentMap.getPixelHeight() / camera.zoom;
+        final float minWidth = Math.min(cameraWidth, mapWidth);
+        final float minHeight = Math.min(cameraHeight, mapHeight);
+        final float halfWidth = minWidth / 2f;
+        final float halfHeight = minHeight / 2f;
+        final float quarterWidth = minWidth / 4f;
+        final float quarterHeight = minHeight / 4f;
+
+        List<Sprite> lightmap = new ArrayList<>();
+        for (Texture texture : currentMap.lightmapCamera) {
+            var sprite = new Sprite(texture);
+            sprite.setSize(halfWidth, halfHeight);
+            sprite.setPosition(-quarterWidth, -quarterHeight);
+            lightmap.add(sprite);
+        }
+        return lightmap;
+    }
+
+    public Sprite getLightmapMap() {
+        return currentMap.lightmapMap;
+    }
+
+    public Optional<Sprite> getLightmapPlayer() {
+        return Optional.ofNullable(currentMap.lightmapPlayer);
     }
 
     public List<GameMapQuestTexture> getLowerMapTextures() {

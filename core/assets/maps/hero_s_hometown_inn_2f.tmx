@@ -55,8 +55,8 @@
   </data>
  </layer>
  <objectgroup color="#0055ff" id="14" name="sound">
-  <object id="23" name="wood" x="48" y="144" width="432" height="192"/>
-  <object id="24" name="carpet" x="48" y="336" width="432" height="168"/>
+  <object id="23" name="wood" x="48" y="48" width="432" height="288"/>
+  <object id="24" name="carpet" x="48" y="336" width="432" height="192"/>
  </objectgroup>
  <objectgroup color="#aa0000" id="10" name="collision" visible="0">
   <object id="1" x="0" y="0" width="48" height="528"/>

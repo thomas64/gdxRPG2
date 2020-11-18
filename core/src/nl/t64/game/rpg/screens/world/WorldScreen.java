@@ -5,7 +5,6 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -42,9 +41,6 @@ import java.util.stream.Collectors;
 public class WorldScreen implements Screen,
                                     MapObserver, ComponentObserver, PartyObserver, LootObserver, ConversationObserver {
 
-    private static final int[] UNDER_LAYERS = new int[]{0, 1, 2, 3, 4, 5};
-    private static final int[] OVER_LAYERS = new int[]{6, 7, 8};
-
     private static boolean showGrid = false;
     private static boolean showObjects = false;
     private static boolean showDebug = false;
@@ -74,7 +70,7 @@ public class WorldScreen implements Screen,
     public WorldScreen() {
         this.transitionStage = new Stage();
         this.camera = new Camera();
-        this.mapRenderer = new TextureMapObjectRenderer();
+        this.mapRenderer = new TextureMapObjectRenderer(this.camera);
         this.multiplexer = new InputMultiplexer();
         this.multiplexer.addProcessor(new WorldScreenListener(this::doBeforeLoadScreen, this::showHidePartyWindow));
         this.player = new Character(Constant.PLAYER_ID,
@@ -271,13 +267,10 @@ public class WorldScreen implements Screen,
             return;
         }
 
-        Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         Utils.getMapManager().updateQuestLayers();
         updateCharacters(dt);
         updateCameraPosition();
-        renderMapLayers();
+        mapRenderer.renderAll(player.getPosition(), this::renderCharacters);
         renderGrid();
         renderObjects();
         updateDebugBox(dt);
@@ -318,17 +311,7 @@ public class WorldScreen implements Screen,
 
     private void updateCameraPosition() {
         camera.setPosition(player.getPosition());
-        mapRenderer.setView(camera);
-    }
-
-    private void renderMapLayers() {
-        mapRenderer.render(UNDER_LAYERS);
-        mapRenderer.getBatch().begin();
-        mapRenderer.renderLowerTextures();
-        renderCharacters();
-        mapRenderer.renderUpperTextures();
-        mapRenderer.getBatch().end();
-        mapRenderer.render(OVER_LAYERS);
+        mapRenderer.updateCamera();
     }
 
     private void renderCharacters() {

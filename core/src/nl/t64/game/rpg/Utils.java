@@ -36,6 +36,7 @@ public final class Utils {
     private static final String FACE_PATH = "sprites/faces/%s.png";
     private static final String CHEST_PATH = "sprites/objects/chest.png";
     private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
+    private static final String LIGHTMAP_PATH = "sprites/lightmaps/%s.png";
 
     private Utils() {
         throw new IllegalCallerException("Utils class");
@@ -94,6 +95,10 @@ public final class Utils {
         var texture = getResourceManager().getTextureAsset(SPRITE_TOP_BORDER);
         var ninepatch = new NinePatch(texture, 0, 0, 1, 0);
         return new NinePatchDrawable(ninepatch);
+    }
+
+    public static Texture createLightmap(String lightmapId) {
+        return getResourceManager().getTextureAsset(String.format(LIGHTMAP_PATH, lightmapId));
     }
 
     public static TextureRegion[][] getCharImage(String spriteId) {

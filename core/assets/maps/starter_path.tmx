@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="44" height="70" tilewidth="24" tileheight="24" infinite="0" nextlayerid="18" nextobjectid="53">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="44" height="70" tilewidth="24" tileheight="24" infinite="0" nextlayerid="19" nextobjectid="53">
  <properties>
   <property name="bgm" value="bgm_forest"/>
   <property name="bgs" value="bgs_birds, bgs_creek"/>
+  <property name="lightmap_camera" value="sunlight, forest"/>
  </properties>
  <tileset firstgid="1" name="starter_path" tilewidth="24" tileheight="24" tilecount="4352" columns="128">
   <image source="tilesets/starter_path.png" width="3072" height="816"/>
@@ -65,7 +66,7 @@
   <object id="49" name="sand" x="432" y="1104" width="48" height="24"/>
   <object id="50" name="sand" x="480" y="1128" width="48" height="192"/>
   <object id="51" name="sand" x="480" y="1368" width="48" height="144"/>
-  <object id="52" name="sand" x="480" y="1560" width="48" height="120"/>
+  <object id="52" name="sand" x="480" y="1560" width="48" height="144"/>
  </objectgroup>
  <objectgroup color="#aa0000" id="11" name="collision">
   <object id="1" x="336" y="960" width="96" height="96"/>

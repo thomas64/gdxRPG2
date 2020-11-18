@@ -53,7 +53,7 @@
   </data>
  </layer>
  <objectgroup color="#0055ff" id="16" name="sound">
-  <object id="22" name="wood" x="48" y="144" width="336" height="528"/>
+  <object id="22" name="wood" x="48" y="48" width="336" height="624"/>
  </objectgroup>
  <objectgroup color="#aa0000" id="10" name="collision" visible="0">
   <object id="1" x="0" y="0" width="432" height="144"/>
