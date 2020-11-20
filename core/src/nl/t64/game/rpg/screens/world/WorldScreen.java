@@ -65,8 +65,6 @@ public class WorldScreen implements Screen,
     @Getter
     private List<Character> lootList;
 
-    private boolean isFading = false;
-
     public WorldScreen() {
         this.transitionStage = new Stage();
         this.camera = new Camera();
@@ -109,10 +107,8 @@ public class WorldScreen implements Screen,
         var transition = new TransitionImage(transitionColor);
         transition.addAction(Actions.alpha(0f));
         transitionStage.addActor(transition);
-        transition.addAction(Actions.sequence(Actions.run(() -> isFading = true),
-                                              Actions.fadeIn(Constant.FADE_DURATION),
+        transition.addAction(Actions.sequence(Actions.fadeIn(Constant.FADE_DURATION),
                                               Actions.run(changeMap),
-                                              Actions.run(() -> isFading = false),
                                               Actions.run(transitionStage::clear)));
     }
 
@@ -279,7 +275,7 @@ public class WorldScreen implements Screen,
         messageDialog.update(dt);
 
         transitionStage.act(dt);
-        if (isFading) {
+        if (transitionStage.getActors().notEmpty()) {
             Utils.getMapManager().fadeAudio();
         }
         transitionStage.draw();
@@ -300,7 +296,7 @@ public class WorldScreen implements Screen,
     }
 
     private void updateCharacters(float dt) {
-        if (!isFading) {
+        if (transitionStage.getActors().isEmpty()) {
             player.update(dt);
         }
         lootList.forEach(loot -> loot.update(dt));
