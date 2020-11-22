@@ -118,6 +118,9 @@ public class AudioManager {
     }
 
     private void playBgm(String filePath, boolean isLooping) {
+        if (filePath.isEmpty()) {
+            return;
+        }
         Music bgm;
         if (queuedBgm.containsKey(filePath)) {
             bgm = queuedBgm.get(filePath);

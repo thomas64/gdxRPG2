@@ -3,6 +3,7 @@
  <properties>
   <property name="bgm" value="bgm_cellar"/>
   <property name="lightmap_player" value="light_player"/>
+  <property name="step_sound" value="stone"/>
  </properties>
  <tileset firstgid="1" name="hero_s_hometown_chief_s_house_b1" tilewidth="24" tileheight="24" tilecount="384" columns="24">
   <image source="tilesets/hero_s_hometown_chief_s_house_b1.png" width="576" height="384"/>
@@ -55,8 +56,6 @@
  </layer>
  <objectgroup color="#0055ff" id="22" name="sound">
   <object id="14" name="wood" x="48" y="48" width="48" height="120"/>
-  <object id="15" name="stone" x="48" y="168" width="48" height="120"/>
-  <object id="16" name="stone" x="96" y="48" width="336" height="240"/>
  </objectgroup>
  <objectgroup color="#aa0000" id="4" name="collision" visible="0">
   <object id="1" x="0" y="0" width="48" height="336"/>

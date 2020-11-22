@@ -44,6 +44,8 @@ public abstract class LootScreen extends LootSubject implements ScreenToLoad {
     private static final float RIGHT_SPACE = 6f;
     private static final float TOP_SPACE = 75f;
 
+    private static final float INPUT_DELAY = 0.2f;
+
     private final Stage stage;
     private final ButtonToolTip buttonToolTip;
     @Getter
@@ -60,7 +62,6 @@ public abstract class LootScreen extends LootSubject implements ScreenToLoad {
     public void show() {
         Gdx.input.setCursorCatched(false);
         Gdx.input.setInputProcessor(stage);
-        stage.addListener(new LootScreenListener(this::closeScreen, this::takeItem, this::showHelpMessage));
         createButtonTable();
 
         lootUI = new LootUI(loot, lootTitle);
@@ -69,6 +70,10 @@ public abstract class LootScreen extends LootSubject implements ScreenToLoad {
         lootUI.addToStage(stage);
         lootUI.applyListeners(stage);
         buttonToolTip.addToStage(stage);
+
+        var listener = new LootScreenListener(this::closeScreen, this::takeItem, this::showHelpMessage);
+        stage.addAction(Actions.sequence(Actions.delay(INPUT_DELAY),
+                                         Actions.addListener(listener, false)));
     }
 
     @Override

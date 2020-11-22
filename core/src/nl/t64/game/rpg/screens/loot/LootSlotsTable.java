@@ -54,7 +54,7 @@ public class LootSlotsTable {
     Map<String, Integer> getContent() {
         return inventory.getAllFilledSlots()
                         .stream()
-                        .collect(Collectors.toUnmodifiableMap(InventoryItem::getId, InventoryItem::getAmount));
+                        .collect(Collectors.toMap(InventoryItem::getId, InventoryItem::getAmount));
     }
 
     boolean hasTakenItem() {

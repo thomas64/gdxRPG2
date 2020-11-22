@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="40" height="56" tilewidth="24" tileheight="24" infinite="0" nextlayerid="18" nextobjectid="34">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="40" height="56" tilewidth="24" tileheight="24" infinite="0" nextlayerid="18" nextobjectid="34">
  <properties>
   <property name="bgm" value="bgm_secret_chamber"/>
   <property name="bgs" value="bgs_spring_flow"/>
   <property name="lightmap_camera" value="heaven"/>
   <property name="lightmap_map" value="bubbles"/>
+  <property name="step_sound" value="stone"/>
  </properties>
  <tileset firstgid="1" name="hero_s_hometown_hero_s_chamber" tilewidth="24" tileheight="24" tilecount="950" columns="38">
   <image source="tilesets/hero_s_hometown_hero_s_chamber.png" width="912" height="600"/>
@@ -62,9 +63,7 @@
    eJztwQENAAAAwqD3T20ON6AAAAAAAAAAAODXACMAAAE=
   </data>
  </layer>
- <objectgroup color="#0055ff" id="17" name="sound" visible="0">
-  <object id="30" name="stone" x="96" y="96" width="768" height="1176"/>
- </objectgroup>
+ <objectgroup color="#0055ff" id="17" name="sound"/>
  <objectgroup color="#aa0000" id="10" name="collision" visible="0">
   <object id="1" x="696" y="96" width="168" height="1176"/>
   <object id="2" x="96" y="96" width="168" height="1176"/>

@@ -53,8 +53,9 @@ class GameMap {
     private static final String LIGHTMAP_CAMERA_PROPERTY = "lightmap_camera";
     private static final String LIGHTMAP_MAP_PROPERTY = "lightmap_map";
     private static final String LIGHTMAP_PLAYER_PROPERTY = "lightmap_player";
+    private static final String STEP_SOUND_PROPERTY = "step_sound";
 
-    private static final String DEFAULT_BGS = "NONE";
+    private static final String DEFAULT_BG = "NONE";
     private static final String DEFAULT_LIGHTMAP = "default";
     private static final String DEFAULT_STEP_SOUND = "grass";
 
@@ -87,6 +88,8 @@ class GameMap {
     private final List<GameMapWarpPoint> warpPoints = new ArrayList<>();
     private final List<RectangleMapObject> notes = new ArrayList<>();
 
+    private final String defaultStepSound;
+
     TiledGraph tiledGraph;
 
     GameMap(String mapTitle) {
@@ -97,6 +100,7 @@ class GameMap {
         this.lightmapCamera = this.loadLightmapCamera();
         this.lightmapMap = this.loadLightmapMap();
         this.lightmapPlayer = this.loadLightmapPlayer();
+        this.defaultStepSound = this.tiledMap.getProperties().get(STEP_SOUND_PROPERTY, DEFAULT_STEP_SOUND, String.class);
 
         this.playerSpawnLocation = new Vector2();
 
@@ -148,7 +152,7 @@ class GameMap {
                      .filter(underground -> underground.getRectangle().contains(point))
                      .findAny()
                      .map(MapObject::getName)
-                     .orElse(DEFAULT_STEP_SOUND);
+                     .orElse(defaultStepSound);
     }
 
     boolean areSavePointsBeingCheckedBy(Rectangle checkRect) {
@@ -233,11 +237,11 @@ class GameMap {
     }
 
     private AudioEvent loadBgm() {
-        return AudioEvent.valueOf(tiledMap.getProperties().get(BGM_PROPERTY, String.class).toUpperCase());
+        return AudioEvent.valueOf(tiledMap.getProperties().get(BGM_PROPERTY, DEFAULT_BG, String.class).toUpperCase());
     }
 
     private List<AudioEvent> loadBgs() {
-        String audioEventStrings = tiledMap.getProperties().get(BGS_PROPERTY, DEFAULT_BGS, String.class);
+        String audioEventStrings = tiledMap.getProperties().get(BGS_PROPERTY, DEFAULT_BG, String.class);
         return Arrays.stream(audioEventStrings.toUpperCase().split("\\s*,\\s*"))
                      .map(AudioEvent::valueOf)
                      .collect(Collectors.toUnmodifiableList());

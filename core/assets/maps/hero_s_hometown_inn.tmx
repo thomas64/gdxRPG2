@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="34" height="30" tilewidth="24" tileheight="24" infinite="0" nextlayerid="14" nextobjectid="44">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="34" height="30" tilewidth="24" tileheight="24" infinite="0" nextlayerid="14" nextobjectid="44">
  <properties>
   <property name="bgm" value="bgm_inn"/>
   <property name="bgs" value="bgs_fireplace"/>
+  <property name="step_sound" value="wood"/>
  </properties>
  <tileset firstgid="1" name="hero_s_hometown_inn" tilewidth="24" tileheight="24" tilecount="936" columns="36">
   <image source="tilesets/hero_s_hometown_inn.png" width="864" height="624"/>
@@ -60,11 +61,6 @@
  <objectgroup color="#0055ff" id="13" name="sound">
   <object id="34" name="carpet" x="48" y="192" width="240" height="144"/>
   <object id="35" name="carpet" x="528" y="432" width="240" height="48"/>
-  <object id="36" name="wood" x="48" y="480" width="720" height="192"/>
-  <object id="37" name="wood" x="48" y="432" width="480" height="48"/>
-  <object id="40" name="wood" x="48" y="336" width="720" height="96"/>
-  <object id="42" name="wood" x="288" y="192" width="480" height="144"/>
-  <object id="43" name="wood" x="48" y="48" width="720" height="144"/>
  </objectgroup>
  <objectgroup color="#aa0000" id="10" name="collision" visible="0">
   <object id="1" x="0" y="0" width="48" height="720"/>
