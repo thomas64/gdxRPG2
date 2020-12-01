@@ -26,7 +26,7 @@ public class LootContainer {
         if (loot.containsKey(lootId)) {
             return loot.get(lootId);
         } else {
-            return new Loot();
+            return new Loot(); // empty loot for a questId without a reward.
         }
     }
 

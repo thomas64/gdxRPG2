@@ -66,6 +66,7 @@ public class PhysicsPlayer extends PhysicsComponent {
         if (isActionPressed) {
             selectNpcCharacterCandidate();
             checkLoot();
+            checkDoors();
             checkNotes();
             checkQuestTasks();
             checkSavePoints();
@@ -91,6 +92,14 @@ public class PhysicsPlayer extends PhysicsComponent {
              .filter(this::isLootChecked)
              .findFirst()
              .ifPresent(loot -> loot.send(new SelectEvent()));
+    }
+
+    private void checkDoors() {
+        Utils.getScreenManager().getWorldScreen().getDoorList()
+             .stream()
+             .filter(this::isDoorChecked)
+             .findFirst()
+             .ifPresent(door -> door.send(new SelectEvent()));
     }
 
     private void checkNotes() {
@@ -145,10 +154,15 @@ public class PhysicsPlayer extends PhysicsComponent {
     private boolean isLootChecked(Character loot) {
         if (loot.getId().startsWith("chest")) {
             return direction.equals(Direction.NORTH)
-                   && getCheckRect().overlaps(loot.getRectangle());
+                   && getCheckRect().overlaps(loot.getBoundingBox());
         } else {
             return getCheckRect().overlaps(loot.getRectangle());
         }
+    }
+
+    private boolean isDoorChecked(Character door) {
+        return (direction.equals(Direction.NORTH) || direction.equals(Direction.SOUTH))
+               && getCheckRect().overlaps(door.getBoundingBox());
     }
 
     private Predicate<Character> littleBitBiggerBoxOverlapsNpc() {

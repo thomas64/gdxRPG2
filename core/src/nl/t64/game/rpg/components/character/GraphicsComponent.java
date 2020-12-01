@@ -89,30 +89,17 @@ abstract class GraphicsComponent extends ComponentSubject implements Component {
     void loadWalkingAnimation(String spriteId) {
         TextureRegion[][] textureFrames = Utils.getCharImage(spriteId);
 
-        Array<TextureRegion> walkNorthFrames = new Array<>(4);
-        Array<TextureRegion> walkSouthFrames = new Array<>(4);
-        Array<TextureRegion> walkWestFrames = new Array<>(4);
-        Array<TextureRegion> walkEastFrames = new Array<>(4);
+        Array<TextureRegion> walkSouthFrames = new Array<>(new TextureRegion[]{
+                textureFrames[0][1], textureFrames[0][0], textureFrames[0][1], textureFrames[0][2]});
 
-        walkSouthFrames.insert(0, textureFrames[0][1]);
-        walkSouthFrames.insert(1, textureFrames[0][0]);
-        walkSouthFrames.insert(2, textureFrames[0][1]);
-        walkSouthFrames.insert(3, textureFrames[0][2]);
+        Array<TextureRegion> walkWestFrames = new Array<>(new TextureRegion[]{
+                textureFrames[1][1], textureFrames[1][0], textureFrames[1][1], textureFrames[1][2]});
 
-        walkWestFrames.insert(0, textureFrames[1][1]);
-        walkWestFrames.insert(1, textureFrames[1][0]);
-        walkWestFrames.insert(2, textureFrames[1][1]);
-        walkWestFrames.insert(3, textureFrames[1][2]);
+        Array<TextureRegion> walkEastFrames = new Array<>(new TextureRegion[]{
+                textureFrames[2][1], textureFrames[2][0], textureFrames[2][1], textureFrames[2][2]});
 
-        walkEastFrames.insert(0, textureFrames[2][1]);
-        walkEastFrames.insert(1, textureFrames[2][0]);
-        walkEastFrames.insert(2, textureFrames[2][1]);
-        walkEastFrames.insert(3, textureFrames[2][2]);
-
-        walkNorthFrames.insert(0, textureFrames[3][1]);
-        walkNorthFrames.insert(1, textureFrames[3][0]);
-        walkNorthFrames.insert(2, textureFrames[3][1]);
-        walkNorthFrames.insert(3, textureFrames[3][2]);
+        Array<TextureRegion> walkNorthFrames = new Array<>(new TextureRegion[]{
+                textureFrames[3][1], textureFrames[3][0], textureFrames[3][1], textureFrames[3][2]});
 
         walkSouthAnimation = new Animation<>(frameDuration, walkSouthFrames, Animation.PlayMode.LOOP);
         walkWestAnimation = new Animation<>(frameDuration, walkWestFrames, Animation.PlayMode.LOOP);

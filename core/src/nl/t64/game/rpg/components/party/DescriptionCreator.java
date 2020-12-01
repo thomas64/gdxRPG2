@@ -1,7 +1,7 @@
 package nl.t64.game.rpg.components.party;
 
 import lombok.AllArgsConstructor;
-import nl.t64.game.rpg.constants.*;
+import nl.t64.game.rpg.constants.Constant;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -108,7 +108,8 @@ public class DescriptionCreator {
             && (inventoryItem.group.equals(InventoryGroup.SHIELD)
                 || inventoryItem.group.equals(InventoryGroup.WEAPON)
                 || inventoryItem.group.equals(InventoryGroup.RESOURCE)
-                || inventoryItem.group.equals(InventoryGroup.POTION))) {
+                || inventoryItem.group.equals(InventoryGroup.POTION)
+                || inventoryItem.group.equals(InventoryGroup.ITEM))) {
             return false;
         }
         if (description.key.equals(CalcAttributeId.WEIGHT)) {

@@ -29,6 +29,7 @@ public enum InventoryGroup implements SuperEnum {
     EMPTY(""),
 
     POTION("Potion"),
+    ITEM("Item"),
     RESOURCE("Resource");
 
     private final String title;

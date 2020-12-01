@@ -81,4 +81,36 @@
    <frame tileid="230" duration="200"/>
   </animation>
  </tile>
+ <tile id="252">
+  <animation>
+   <frame tileid="252" duration="200"/>
+   <frame tileid="254" duration="200"/>
+   <frame tileid="256" duration="200"/>
+   <frame tileid="254" duration="200"/>
+  </animation>
+ </tile>
+ <tile id="301">
+  <animation>
+   <frame tileid="301" duration="200"/>
+   <frame tileid="303" duration="200"/>
+   <frame tileid="305" duration="200"/>
+   <frame tileid="303" duration="200"/>
+  </animation>
+ </tile>
+ <tile id="325">
+  <animation>
+   <frame tileid="325" duration="200"/>
+   <frame tileid="327" duration="200"/>
+   <frame tileid="329" duration="200"/>
+   <frame tileid="327" duration="200"/>
+  </animation>
+ </tile>
+ <tile id="349">
+  <animation>
+   <frame tileid="349" duration="200"/>
+   <frame tileid="351" duration="200"/>
+   <frame tileid="353" duration="200"/>
+   <frame tileid="351" duration="200"/>
+  </animation>
+ </tile>
 </tileset>

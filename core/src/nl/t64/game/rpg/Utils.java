@@ -34,6 +34,7 @@ public final class Utils {
     private static final String SPRITE_TOP_BORDER = "sprites/top_border.png";
     private static final String CHAR_PATH = "sprites/characters/%s.png";
     private static final String FACE_PATH = "sprites/faces/%s.png";
+    private static final String DOOR_PATH = "sprites/objects/%s.png";
     private static final String CHEST_PATH = "sprites/objects/chest.png";
     private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
     private static final String LIGHTMAP_PATH = "sprites/lightmaps/%s.png";
@@ -120,6 +121,16 @@ public final class Utils {
         TextureRegion[][] splitOfEight = getSplitTexture(path, (int) Constant.FACE_SIZE);
         TextureRegion characterFace = splitOfEight[row][col];
         return new Image(characterFace);
+    }
+
+    public static TextureRegion[][] getDoorImage(String spriteId, int width) {
+        SpriteConfig doorConfig = getResourceManager().getSpriteConfig(spriteId);
+        String path = String.format(DOOR_PATH, doorConfig.getSource());
+        int row = doorConfig.getRow() - 1;
+        int col = doorConfig.getCol() - 1;
+        TextureRegion[][] allDoors = getSplitTexture(path, width, Constant.SPRITE_GROUP_HEIGHT * 2);
+        TextureRegion doorSprite = allDoors[row][col];
+        return doorSprite.split(width, (int) Constant.TILE_SIZE * 2);
     }
 
     public static List<TextureRegion> getChestImage() {

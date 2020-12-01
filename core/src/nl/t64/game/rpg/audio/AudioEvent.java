@@ -14,12 +14,14 @@ public enum AudioEvent {
     BGM_HOUSE("audio/bgm/wake_up.ogg"),
     BGM_CELLAR("audio/bgm/quiet_town.ogg"),
     BGM_SECRET_CHAMBER("audio/bgm/woods.ogg"),
+    BGM_MYSTERIOUS_TUNNEL("audio/bgm/cave.ogg"),
 
     BGS_BIRDS("audio/bgs/birds.ogg"),
     BGS_CREEK("audio/bgs/creek.ogg"),
     BGS_FIREPLACE("audio/bgs/fireplace.ogg"),
     BGS_SPRING_FLOW("audio/bgs/spring_flow.ogg"),
     BGS_CROWS("audio/bgs/crows.ogg"),
+    BGS_RIVER("audio/bgs/fsm_river.ogg"),
 
     SE_MENU_CURSOR("audio/se/botw_menu_cursor.wav"),
     SE_MENU_CONFIRM("audio/se/botw_menu_confirm.wav"),
@@ -43,6 +45,9 @@ public enum AudioEvent {
     SE_COINS_BUY("audio/se/kenney_handle_coins.ogg"),
     SE_COINS_SELL("audio/se/kenney_handle_coins2.ogg"),
     SE_WARP("audio/se/whooshes_impacts_impact_01.ogg", 0.4f),
+    SE_GATE("audio/se/fsm_gate.ogg", 0.2f),
+    SE_SMALL_DOOR("audio/se/fsm_small_door.ogg", 0.2f),
+    SE_LARGE_DOOR("audio/se/fsm_large_door.ogg", 0.2f),
 
     SE_STEP_CARPET1("audio/se/footsteps/oot_step_carpet1.ogg"),
     SE_STEP_CARPET2("audio/se/footsteps/oot_step_carpet2.ogg"),

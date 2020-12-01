@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import nl.t64.game.rpg.components.conversation.ConversationContainer;
 import nl.t64.game.rpg.components.conversation.PhraseIdContainer;
+import nl.t64.game.rpg.components.door.DoorContainer;
 import nl.t64.game.rpg.components.loot.LootContainer;
 import nl.t64.game.rpg.components.party.*;
 import nl.t64.game.rpg.components.quest.QuestContainer;
@@ -21,6 +22,7 @@ public class GameData implements ProfileObserver {
     private ConversationContainer conversations;
     private QuestContainer quests;
     private LootContainer loot;
+    private DoorContainer doors;
     @Setter
     private boolean isFirstTimeLootMessageShown;
 
@@ -32,6 +34,7 @@ public class GameData implements ProfileObserver {
         conversations = new ConversationContainer();
         quests = new QuestContainer();
         loot = new LootContainer();
+        doors = new DoorContainer();
         isFirstTimeLootMessageShown = false;
         addFirstHeroToParty();
         addFirstItemsToInventory();
@@ -46,6 +49,7 @@ public class GameData implements ProfileObserver {
         profileManager.setProperty("conversations", conversations.createPhraseIdContainer());
         profileManager.setProperty("quests", quests);
         profileManager.setProperty("loot", loot);
+        profileManager.setProperty("doors", doors);
         profileManager.setProperty("isFirstTimeLootMessageShown", isFirstTimeLootMessageShown);
     }
 
@@ -59,6 +63,7 @@ public class GameData implements ProfileObserver {
         conversations.setCurrentPhraseIds(currentPhraseIds);
         quests = profileManager.getProperty("quests", QuestContainer.class);
         loot = profileManager.getProperty("loot", LootContainer.class);
+        doors = profileManager.getProperty("doors", DoorContainer.class);
         isFirstTimeLootMessageShown = profileManager.getProperty("isFirstTimeLootMessageShown", Boolean.class);
     }
 

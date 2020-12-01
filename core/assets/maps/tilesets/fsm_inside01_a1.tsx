@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.2.3" name="fsm_inside01_a1" tilewidth="24" tileheight="24" tilecount="768" columns="32">
+<tileset version="1.4" tiledversion="1.4.3" name="fsm_inside01_a1" tilewidth="24" tileheight="24" tilecount="768" columns="32">
  <image source="fsm_inside01_a1.png" width="768" height="576"/>
  <tile id="0">
   <animation>
@@ -392,6 +392,20 @@
    <frame tileid="524" duration="200"/>
   </animation>
  </tile>
+ <tile id="397">
+  <animation>
+   <frame tileid="397" duration="200"/>
+   <frame tileid="461" duration="200"/>
+   <frame tileid="525" duration="200"/>
+  </animation>
+ </tile>
+ <tile id="398">
+  <animation>
+   <frame tileid="398" duration="200"/>
+   <frame tileid="462" duration="200"/>
+   <frame tileid="526" duration="200"/>
+  </animation>
+ </tile>
  <tile id="399">
   <animation>
    <frame tileid="399" duration="200"/>
@@ -404,6 +418,20 @@
    <frame tileid="428" duration="200"/>
    <frame tileid="492" duration="200"/>
    <frame tileid="556" duration="200"/>
+  </animation>
+ </tile>
+ <tile id="429">
+  <animation>
+   <frame tileid="429" duration="200"/>
+   <frame tileid="493" duration="200"/>
+   <frame tileid="557" duration="200"/>
+  </animation>
+ </tile>
+ <tile id="430">
+  <animation>
+   <frame tileid="430" duration="200"/>
+   <frame tileid="494" duration="200"/>
+   <frame tileid="558" duration="200"/>
   </animation>
  </tile>
  <tile id="431">

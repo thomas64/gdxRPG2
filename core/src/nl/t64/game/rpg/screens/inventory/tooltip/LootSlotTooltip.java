@@ -22,7 +22,8 @@ public class LootSlotTooltip extends ItemSlotTooltip {
             InventoryGroup inventoryGroup = hoveredImage.inventoryItem.getGroup();
 
             if (inventoryGroup.equals(InventoryGroup.RESOURCE)
-                || inventoryGroup.equals(InventoryGroup.POTION)) {
+                || inventoryGroup.equals(InventoryGroup.POTION)
+                || inventoryGroup.equals(InventoryGroup.ITEM)) {
                 createResourceTooltip(hoveredImage);
             } else {
                 createSingleTooltip(hoveredImage);

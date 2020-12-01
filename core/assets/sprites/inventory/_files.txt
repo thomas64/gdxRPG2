@@ -1,6 +1,7 @@
 armor.atlas
 group.atlas
 hafted.atlas
+item.atlas
 pole.atlas
 potion.atlas
 resource.atlas

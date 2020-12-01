@@ -48,7 +48,7 @@ class LootLoader {
 
     private void loadSparkle(RectangleMapObject gameMapSparkle, Loot sparkle) {
         var character = new Character(gameMapSparkle.getName(),
-                                      new InputLoot(),
+                                      new InputEmpty(),
                                       new PhysicsSparkle(sparkle),
                                       new GraphicsSparkle());
         lootList.add(character);
@@ -58,7 +58,7 @@ class LootLoader {
 
     private void loadChest(RectangleMapObject gameMapChest, Loot chest) {
         var character = new Character(gameMapChest.getName(),
-                                      new InputLoot(),
+                                      new InputEmpty(),
                                       new PhysicsChest(chest),
                                       new GraphicsChest());
         lootList.add(character);

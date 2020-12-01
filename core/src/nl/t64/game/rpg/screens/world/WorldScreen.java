@@ -64,6 +64,8 @@ public class WorldScreen implements Screen,
     private Character currentNpcCharacter;
     @Getter
     private List<Character> lootList;
+    @Getter
+    private List<Character> doorList;
 
     public WorldScreen() {
         this.stage = new Stage();
@@ -76,6 +78,7 @@ public class WorldScreen implements Screen,
         this.player.registerObserver(this);
         this.npcCharacters = new ArrayList<>(0);
         this.lootList = new ArrayList<>(0);
+        this.doorList = new ArrayList<>(0);
         this.shapeRenderer = new ShapeRenderer();
         this.partyWindow = new PartyWindow();
         this.conversationDialog = new ConversationDialog();
@@ -120,10 +123,13 @@ public class WorldScreen implements Screen,
                                            currentMap.playerSpawnLocation));
         npcCharacters.forEach(Character::unregisterObserver);
         lootList.forEach(Character::unregisterObserver);
+        doorList.forEach(Character::unregisterObserver);
         npcCharacters = new NpcCharactersLoader(currentMap).createNpcs();
         lootList = new LootLoader(currentMap, true).createLoot();
+        doorList = new DoorLoader(currentMap).createDoors();
         npcCharacters.forEach(npcCharacter -> npcCharacter.registerObserver(this));
         lootList.forEach(loot -> loot.registerObserver(this));
+        doorList.forEach(door -> door.registerObserver(this));
         partyMembers = new PartyMembersLoader(player).loadPartyMembers();
         currentMap.setTiledGraph();
     }
@@ -299,6 +305,7 @@ public class WorldScreen implements Screen,
         if (stage.getActors().isEmpty()) {
             player.update(dt);
         }
+        doorList.forEach(door -> door.update(dt));
         lootList.forEach(loot -> loot.update(dt));
         npcCharacters.forEach(npcCharacter -> npcCharacter.update(dt));
         partyMembers.forEach(partyMember -> partyMember.send(new PathUpdateEvent(getPathOf(partyMember))));
@@ -313,6 +320,9 @@ public class WorldScreen implements Screen,
     private void renderCharacters() {
         shapeRenderer.setProjectionMatrix(camera.combined);
         lootList.forEach(loot -> loot.render(mapRenderer.getBatch(), shapeRenderer));
+        doorList.stream()
+                .filter(door -> door.getPosition().y >= player.getPosition().y)
+                .forEach(door -> door.render(mapRenderer.getBatch(), shapeRenderer));
 
         List<Character> allCharacters = new ArrayList<>();
         allCharacters.addAll(Utils.reverseList(partyMembers));
@@ -321,6 +331,10 @@ public class WorldScreen implements Screen,
         allCharacters.sort(Comparator.comparingDouble((Character c) -> c.getPosition().y)
                                      .reversed());
         allCharacters.forEach(character -> character.render(mapRenderer.getBatch(), shapeRenderer));
+
+        doorList.stream()
+                .filter(door -> door.getPosition().y < player.getPosition().y)
+                .forEach(door -> door.render(mapRenderer.getBatch(), shapeRenderer));
     }
 
     private DefaultGraphPath<TiledNode> getPathOf(Character partyMember) {
@@ -417,6 +431,7 @@ public class WorldScreen implements Screen,
         if (showObjects) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             player.debug(shapeRenderer);
+            doorList.forEach(door -> door.debug(shapeRenderer));
             lootList.forEach(loot -> loot.debug(shapeRenderer));
             npcCharacters.forEach(npcCharacter -> npcCharacter.debug(shapeRenderer));
             partyMembers.forEach(partyMember -> partyMember.debug(shapeRenderer));

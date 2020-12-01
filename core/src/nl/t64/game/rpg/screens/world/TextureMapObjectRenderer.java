@@ -1,6 +1,7 @@
 package nl.t64.game.rpg.screens.world;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -82,11 +83,15 @@ class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
     }
 
     private void renderOtherMapLights() {
-        for (Vector2 point : Utils.getMapManager().currentMap.lights) {
-            Texture darkness = Utils.createLightmap(LIGHTMAP_ID);
-            float x = point.x - (darkness.getWidth() / 2f);
-            float y = point.y - (darkness.getHeight() / 2f);
+        Texture darkness = Utils.createLightmap(LIGHTMAP_ID);
+        for (GameMapLight light : Utils.getMapManager().currentMap.lights) {
+            if (light.id.equals("blue")) {
+                batch.setColor(Color.ROYAL);
+            }
+            float x = light.center.x - (darkness.getWidth() / 2f);
+            float y = light.center.y - (darkness.getHeight() / 2f);
             batch.draw(darkness, x, y);
+            batch.setColor(Color.WHITE);
         }
     }
 

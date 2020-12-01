@@ -74,7 +74,7 @@ class GameMap {
     final List<GameMapNpc> npcs = new ArrayList<>();
     final List<GameMapHero> heroes = new ArrayList<>();
     final List<Rectangle> blockers = new ArrayList<>();
-    final List<Vector2> lights = new ArrayList<>();
+    final List<GameMapLight> lights = new ArrayList<>();
     final List<GameMapQuestBlocker> questBlockers = new ArrayList<>();
     final List<GameMapQuestTexture> upperTextures = new ArrayList<>();
     final List<GameMapQuestTexture> lowerTextures = new ArrayList<>();
@@ -82,6 +82,7 @@ class GameMap {
     final List<GameMapQuestObject> questCheckers = new ArrayList<>();
     final List<RectangleMapObject> sparkles = new ArrayList<>();
     final List<RectangleMapObject> chests = new ArrayList<>();
+    final List<RectangleMapObject> doors = new ArrayList<>();
     private final List<Rectangle> savePoints = new ArrayList<>();
     private final List<GameMapSpawnPoint> spawnPoints = new ArrayList<>();
     private final List<GameMapPortal> portals = new ArrayList<>();
@@ -312,9 +313,7 @@ class GameMap {
     private void loadLights() {
         getMapLayer(LIGHTS_LAYER).ifPresent(mapLayer -> {
             for (MapObject mapObject : mapLayer.getObjects()) {
-                RectangleMapObject rectObject = (RectangleMapObject) mapObject;
-                Rectangle rectangle = rectObject.getRectangle();
-                lights.add(rectangle.getCenter(new Vector2(rectangle.x, rectangle.y)));
+                lights.add(new GameMapLight(mapObject));
             }
         });
     }
@@ -354,6 +353,8 @@ class GameMap {
                     sparkles.add(rectObject);
                 } else if (mapObject.getName().startsWith("chest")) {
                     chests.add(rectObject);
+                } else if (mapObject.getName().startsWith("door")) {
+                    doors.add(rectObject);
                 } else if (mapObject.getName().startsWith("note")) {
                     notes.add(rectObject);
                 }
@@ -441,6 +442,10 @@ class GameMap {
         }
         for (RectangleMapObject chest : chests) {
             rect = chest.getRectangle();
+            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+        }
+        for (RectangleMapObject door : doors) {
+            rect = door.getRectangle();
             shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
         }
         for (GameMapQuestObject discover : questDiscovers) {

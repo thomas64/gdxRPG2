@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.2.3" name="fsm_flame01" tilewidth="24" tileheight="24" tilecount="768" columns="24">
+<tileset version="1.4" tiledversion="1.4.3" name="fsm_flame01" tilewidth="24" tileheight="24" tilecount="768" columns="24">
  <image source="fsm_flame01.png" width="576" height="768"/>
  <tile id="480">
   <animation>
@@ -47,6 +47,54 @@
    <frame tileid="531" duration="200"/>
    <frame tileid="533" duration="200"/>
    <frame tileid="531" duration="200"/>
+  </animation>
+ </tile>
+ <tile id="576">
+  <animation>
+   <frame tileid="576" duration="200"/>
+   <frame tileid="578" duration="200"/>
+   <frame tileid="580" duration="200"/>
+   <frame tileid="578" duration="200"/>
+  </animation>
+ </tile>
+ <tile id="577">
+  <animation>
+   <frame tileid="577" duration="200"/>
+   <frame tileid="579" duration="200"/>
+   <frame tileid="581" duration="200"/>
+   <frame tileid="579" duration="200"/>
+  </animation>
+ </tile>
+ <tile id="600">
+  <animation>
+   <frame tileid="600" duration="200"/>
+   <frame tileid="602" duration="200"/>
+   <frame tileid="604" duration="200"/>
+   <frame tileid="602" duration="200"/>
+  </animation>
+ </tile>
+ <tile id="601">
+  <animation>
+   <frame tileid="601" duration="200"/>
+   <frame tileid="603" duration="200"/>
+   <frame tileid="605" duration="200"/>
+   <frame tileid="603" duration="200"/>
+  </animation>
+ </tile>
+ <tile id="624">
+  <animation>
+   <frame tileid="624" duration="200"/>
+   <frame tileid="626" duration="200"/>
+   <frame tileid="628" duration="200"/>
+   <frame tileid="626" duration="200"/>
+  </animation>
+ </tile>
+ <tile id="625">
+  <animation>
+   <frame tileid="625" duration="200"/>
+   <frame tileid="627" duration="200"/>
+   <frame tileid="629" duration="200"/>
+   <frame tileid="627" duration="200"/>
   </animation>
  </tile>
 </tileset>

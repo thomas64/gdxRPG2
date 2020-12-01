@@ -48,7 +48,8 @@ public class ItemSlotTooltip extends BaseToolTip {
             if (itemSlot.isOnHero()) {
                 createSingleTooltip(hoveredImage);
             } else if (inventoryGroup.equals(InventoryGroup.RESOURCE)
-                       || inventoryGroup.equals(InventoryGroup.POTION)) {
+                       || inventoryGroup.equals(InventoryGroup.POTION)
+                       || inventoryGroup.equals(InventoryGroup.ITEM)) {
                 createResourceTooltip(hoveredImage);
             } else if (errorMessage.isEmpty() && equippedItem.isPresent()) {
                 createDualTooltip(hoveredImage, new InventoryImage(equippedItem.get()));

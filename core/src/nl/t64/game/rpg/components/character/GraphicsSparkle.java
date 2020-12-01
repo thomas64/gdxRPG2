@@ -52,12 +52,12 @@ public class GraphicsSparkle extends GraphicsComponent {
 
         Array<TextureRegion> frames = new Array<>(ANIMATION_LENGTH);
         IntStream.rangeClosed(0, 29)
-                 .forEach(i -> frames.insert(i, textures[4][0]));
-        frames.insert(30, textures[3][2]);
-        frames.insert(31, textures[3][1]);
-        frames.insert(32, textures[0][1]);
-        frames.insert(33, textures[3][1]);
-        frames.insert(34, textures[3][2]);
+                 .forEach(i -> frames.add(textures[4][0]));
+        frames.add(textures[3][2]);
+        frames.add(textures[3][1]);
+        frames.add(textures[0][1]);
+        frames.add(textures[3][1]);
+        frames.add(textures[3][2]);
 
         return new Animation<>(Constant.FAST_FRAMES, frames, Animation.PlayMode.LOOP);
     }

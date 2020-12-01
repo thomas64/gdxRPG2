@@ -142,6 +142,7 @@ public class MapManager extends MapSubject implements ProfileObserver {
 
     public void removeFromBlockers(Rectangle immobileNpc) {
         currentMap.removeFromBlockers(immobileNpc);
+        currentMap.setTiledGraph();
     }
 
     public boolean areBlockersCurrentlyBlocking(Rectangle characterRect) {

@@ -16,6 +16,7 @@ Thomas M. Hesselink
 TESTING
 Martijn Hazendonk
 Daniel Rosenkranz
+Machteld Hesselink
 Sieger Noppe
 
 ---
@@ -38,6 +39,7 @@ www.jwbjerk.com/art
 Music Copyright Notice
 
 "Brave"
+"Cave"
 "Journey"
 "Quiet town"
 "Store"
