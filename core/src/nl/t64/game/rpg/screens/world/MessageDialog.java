@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.audio.AudioEvent;
+import nl.t64.game.rpg.constants.Constant;
 
 
 class MessageDialog {
@@ -30,10 +32,7 @@ class MessageDialog {
     private final BitmapFont font;
     private final Dialog dialog;
     private Label label;
-    private AudioEvent audioEvent;
     private Runnable actionAfterHide;
-    private boolean isVisible;
-    private int timer;
 
     MessageDialog(InputMultiplexer multiplexer) {
         this.multiplexer = multiplexer;
@@ -42,8 +41,6 @@ class MessageDialog {
         this.dialog = this.createDialog();
         this.applyListeners();
         this.actionAfterHide = null;
-        this.isVisible = false;
-        this.timer = 0;
     }
 
     void dispose() {
@@ -59,28 +56,16 @@ class MessageDialog {
         this.actionAfterHide = actionAfterHide;
     }
 
-    void show(String message, AudioEvent event) {
+    void show(String message, AudioEvent audioEvent) {
         fillDialog(message);
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, audioEvent);
         dialog.show(stage);
-        audioEvent = event;
-        isVisible = true;
-        timer = 0;
+        Gdx.input.setInputProcessor(stage);
     }
 
     void update(float dt) {
-        if (isVisible) {
-            Gdx.input.setInputProcessor(stage);
-            playAudio();
-        }
         stage.act(dt);
         stage.draw();
-    }
-
-    private void playAudio() {
-        timer++;            // when dialog really REALLY is in the front, play audio sample. because it is shown for a
-        if (timer == 2) {   // real short time, but it must be put on hold until for example RewardScreen is gone.
-            Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, audioEvent);
-        }
     }
 
     private Dialog createDialog() {
@@ -125,16 +110,15 @@ class MessageDialog {
     }
 
     private void hide() {
-        isVisible = false;
-        timer = 0;
         Gdx.input.setInputProcessor(multiplexer);
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_CONVERSATION_NEXT);
         if (actionAfterHide == null) {
-            Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_CONVERSATION_NEXT);
             dialog.hide();
         } else {
-            actionAfterHide.run();
-            actionAfterHide = null;
-            dialog.hide(null);
+            stage.addAction(Actions.sequence(Actions.run(dialog::hide),
+                                             Actions.delay(Constant.DIALOG_FADE_OUT_DURATION),
+                                             Actions.run(() -> actionAfterHide.run()),
+                                             Actions.run(() -> actionAfterHide = null)));
         }
     }
 

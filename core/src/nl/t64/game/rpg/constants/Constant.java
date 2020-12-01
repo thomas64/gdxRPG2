@@ -27,6 +27,7 @@ public final class Constant {
     public static final float NO_FRAMES = 0f;
 
     public static final float FADE_DURATION = 0.5f;
+    public static final float DIALOG_FADE_OUT_DURATION = 0.4f - 0.1f;
 
     public static final Color DARK_RED = new Color(0.5f, 0f, 0f, 1f);
 

@@ -143,7 +143,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
     }
 
     @Override
-    public void onNotifyShowMessageDialog(String message, AudioEvent event) {
+    public void onNotifyShowLevelUpDialog(String message) {
         throw new IllegalCallerException("Impossible to show Message from Inventory.");
     }
 
@@ -153,7 +153,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
     }
 
     @Override
-    public void onNotifyShowRewardDialog(Loot reward) {
+    public void onNotifyShowRewardDialog(Loot reward, String levelUpMessage) {
         throw new IllegalCallerException("Impossible to show Reward from Inventory.");
     }
 

@@ -1,6 +1,5 @@
 package nl.t64.game.rpg.screens.world.conversation;
 
-import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.loot.Loot;
 
 import java.util.ArrayList;
@@ -27,16 +26,17 @@ public class ConversationSubject {
         observers.forEach(ConversationObserver::onNotifyExitConversation);
     }
 
-    void notifyShowMessageDialog(String message, AudioEvent event) {
-        observers.forEach(conversationObserver -> conversationObserver.onNotifyShowMessageDialog(message, event));
+    void notifyShowLevelUpDialog(String message) {
+        observers.forEach(conversationObserver -> conversationObserver.onNotifyShowLevelUpDialog(message));
     }
 
     void notifyLoadShop() {
         observers.forEach(ConversationObserver::onNotifyLoadShop);
     }
 
-    void notifyShowRewardDialog(Loot reward) {
-        observers.forEach(conversationObserver -> conversationObserver.onNotifyShowRewardDialog(reward));
+    void notifyShowRewardDialog(Loot reward, String levelUpMessage) {
+        observers.forEach(conversationObserver -> conversationObserver.onNotifyShowRewardDialog(reward,
+                                                                                                levelUpMessage));
     }
 
     void notifyShowReceiveDialog(Loot receive) {

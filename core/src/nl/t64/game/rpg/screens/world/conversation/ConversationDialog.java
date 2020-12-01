@@ -320,7 +320,7 @@ public class ConversationDialog extends ConversationSubject {
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_REWARD);
         graph.setCurrentPhraseId(Constant.PHRASE_ID_QUEST_UNCLAIMED);
         QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
-        quest.handleReward(super::notifyShowMessageDialog,
+        quest.handleReward(super::notifyShowLevelUpDialog,
                            super::notifyShowRewardDialog,           // ends conversation, sets possible new phraseId
                            this::endConversationWithoutSound);      // sets new phraseId
     }

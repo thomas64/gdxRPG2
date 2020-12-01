@@ -3,6 +3,7 @@ package nl.t64.game.rpg.components.quest;
 import nl.t64.game.rpg.GameData;
 import nl.t64.game.rpg.GameTest;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.components.party.InventoryDatabase;
 import nl.t64.game.rpg.components.party.InventoryItem;
 import nl.t64.game.rpg.constants.Constant;
@@ -64,13 +65,13 @@ class QuestTest extends GameTest {
         gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("gemstone", 5));
         gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("herb", 3));
         quest0001.handleReturn(s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_SUCCESS));
-        quest0001.handleReward((s, e) -> assertThat(s).isNull(),
-                               l -> assertThat(l.isTaken()).isFalse(),
+        quest0001.handleReward(s -> assertThat(s).isNull(),
+                               (l, s) -> assertThat(l.isTaken()).isFalse(),
                                null);
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.UNCLAIMED);
         gameData.getLoot().getLoot("quest0001").clearContent();
-        quest0001.handleReward((s, e) -> assertThat(s).isNull(),
-                               l -> assertThat(l.isTaken()).isTrue(),
+        quest0001.handleReward(s -> assertThat(s).isNull(),
+                               (l, s) -> assertThat(l.isTaken()).isTrue(),
                                s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_FINISHED));
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.FINISHED);
         assertThat(quest0001.isFinished()).isTrue();
@@ -116,11 +117,11 @@ class QuestTest extends GameTest {
         assertThatExceptionOfType(IllegalStateException.class).isThrownBy(quest0001::accept);
         gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("gemstone", 5));
         gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("herb", 3));
-        quest0001.handleReward((s, e) -> { }, l -> { }, null);
+        quest0001.handleReward(s -> { }, (l, s) -> { }, null);
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.UNCLAIMED);
         assertThatExceptionOfType(IllegalStateException.class).isThrownBy(quest0001::unclaim);
         gameData.getLoot().getLoot("quest0001").clearContent();
-        quest0001.handleReward((s, e) -> { }, l -> { }, s -> { });
+        quest0001.handleReward(s -> { }, (l, s) -> { }, s -> { });
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.FINISHED);
         assertThatExceptionOfType(IllegalStateException.class).isThrownBy(quest0001::finish);
     }
@@ -180,10 +181,13 @@ class QuestTest extends GameTest {
         gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("herb", 3));
         gameData.getParty().getHero(0).gainXp(19, new StringBuilder());
         QuestGraph quest0001 = quests.getQuestById("quest0001");
+        Loot questLoot = gameData.getLoot().getLoot("quest0001");
+        assertThat(questLoot.isXpGained()).isFalse();
         quest0001.handleAccept(s -> { });
         quest0001.handleReturn(s -> { });
-        gameData.getLoot().getLoot("quest0001").clearContent();
-        quest0001.handleReward((s, e) -> assertThat(s).isEqualTo("Mozes gained a level!"), l -> { }, s -> { });
+        questLoot.clearContent();
+        quest0001.handleReward(s -> assertThat(s).isEqualTo("Mozes gained a level!"), (l, s) -> { }, s -> { });
+        assertThat(questLoot.isXpGained()).isTrue();
     }
     //@formatter:on
 

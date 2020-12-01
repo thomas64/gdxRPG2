@@ -2,7 +2,6 @@ package nl.t64.game.rpg.components.loot;
 
 import lombok.Getter;
 
-import java.util.Collections;
 import java.util.Map;
 
 
@@ -66,6 +65,10 @@ public class Loot {
 
     public void clearXp() {
         xp = 0;
+    }
+
+    public boolean isXpGained() {
+        return xp == 0;
     }
 
 }

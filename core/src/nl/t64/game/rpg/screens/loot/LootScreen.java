@@ -46,7 +46,7 @@ public abstract class LootScreen extends LootSubject implements ScreenToLoad {
 
     private static final float INPUT_DELAY = 0.2f;
 
-    private final Stage stage;
+    final Stage stage;
     private final ButtonToolTip buttonToolTip;
     @Getter
     private LootUI lootUI;

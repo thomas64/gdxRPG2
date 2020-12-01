@@ -46,7 +46,7 @@ public class WorldScreen implements Screen,
     private static boolean showDebug = false;
 
     private GameState gameState;
-    private final Stage transitionStage;
+    private final Stage stage;
     private final Camera camera;
     private final TextureMapObjectRenderer mapRenderer;
     private final InputMultiplexer multiplexer;
@@ -66,7 +66,7 @@ public class WorldScreen implements Screen,
     private List<Character> lootList;
 
     public WorldScreen() {
-        this.transitionStage = new Stage();
+        this.stage = new Stage();
         this.camera = new Camera();
         this.mapRenderer = new TextureMapObjectRenderer(this.camera);
         this.multiplexer = new InputMultiplexer();
@@ -106,10 +106,10 @@ public class WorldScreen implements Screen,
     public void onNotifyMapWillChange(Runnable changeMap, Color transitionColor) {
         var transition = new TransitionImage(transitionColor);
         transition.addAction(Actions.alpha(0f));
-        transitionStage.addActor(transition);
+        stage.addActor(transition);
         transition.addAction(Actions.sequence(Actions.fadeIn(Constant.FADE_DURATION),
                                               Actions.run(changeMap),
-                                              Actions.run(transitionStage::clear)));
+                                              Actions.run(stage::clear)));
     }
 
     @Override
@@ -206,9 +206,9 @@ public class WorldScreen implements Screen,
     }
 
     @Override
-    public void onNotifyShowMessageDialog(String message, AudioEvent event) {
+    public void onNotifyShowLevelUpDialog(String message) {
         player.resetInput();
-        messageDialog.show(message, event);
+        messageDialog.show(message, AudioEvent.SE_LEVELUP);
     }
 
     @Override
@@ -220,17 +220,17 @@ public class WorldScreen implements Screen,
     }
 
     @Override
-    public void onNotifyShowRewardDialog(Loot reward) {
-        doBeforeLoadScreen();
-        RewardScreen.load(reward);
-        conversationDialog.hideWithFade();
+    public void onNotifyShowRewardDialog(Loot reward, String levelUpMessage) {
+        stage.addAction(Actions.sequence(Actions.run(conversationDialog::hideWithFade),
+                                         Actions.delay(Constant.DIALOG_FADE_OUT_DURATION),
+                                         Actions.run(() -> RewardScreen.load(reward, levelUpMessage))));
     }
 
     @Override
     public void onNotifyShowReceiveDialog(Loot receive) {
-        doBeforeLoadScreen();
-        ReceiveScreen.load(receive);
-        conversationDialog.hideWithFade();
+        stage.addAction(Actions.sequence(Actions.run(conversationDialog::hideWithFade),
+                                         Actions.delay(Constant.DIALOG_FADE_OUT_DURATION),
+                                         Actions.run(() -> ReceiveScreen.load(receive))));
     }
 
     @Override
@@ -274,11 +274,11 @@ public class WorldScreen implements Screen,
         conversationDialog.update(dt);
         messageDialog.update(dt);
 
-        transitionStage.act(dt);
-        if (transitionStage.getActors().notEmpty()) {
+        stage.act(dt);
+        if (stage.getActors().notEmpty()) {
             Utils.getMapManager().fadeAudio();
         }
-        transitionStage.draw();
+        stage.draw();
     }
 
     public List<Character> createCopyOfCharactersWithPlayerButWithoutThisNpc(Character thisNpcCharacter) {
@@ -296,7 +296,7 @@ public class WorldScreen implements Screen,
     }
 
     private void updateCharacters(float dt) {
-        if (transitionStage.getActors().isEmpty()) {
+        if (stage.getActors().isEmpty()) {
             player.update(dt);
         }
         lootList.forEach(loot -> loot.update(dt));
@@ -362,7 +362,7 @@ public class WorldScreen implements Screen,
     @Override
     public void hide() {
         gameState = GameState.PAUSED;
-        transitionStage.clear();
+        stage.clear();
         Gdx.input.setInputProcessor(null);
     }
 
@@ -375,7 +375,7 @@ public class WorldScreen implements Screen,
         conversationDialog.dispose();
         messageDialog.dispose();
         debugBox.dispose();
-        transitionStage.dispose();
+        stage.dispose();
     }
 
     static void setShowGrid() {
