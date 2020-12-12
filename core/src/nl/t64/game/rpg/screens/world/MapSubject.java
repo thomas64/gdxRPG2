@@ -30,4 +30,8 @@ public class MapSubject {
         observers.forEach(mapObserver -> mapObserver.onNotifyMapChanged(currentMap));
     }
 
+    public void notifyShakeCamera() {
+        observers.forEach(MapObserver::onNotifyShakeCamera);
+    }
+
 }

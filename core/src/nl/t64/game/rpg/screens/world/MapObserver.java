@@ -9,4 +9,6 @@ interface MapObserver {
 
     void onNotifyMapChanged(GameMap currentMap);
 
+    void onNotifyShakeCamera();
+
 }

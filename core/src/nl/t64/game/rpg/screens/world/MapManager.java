@@ -111,7 +111,7 @@ public class MapManager extends MapSubject implements ProfileObserver {
                   .ifPresent(warpPoint -> {
                       Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_WARP);
                       newMap = new GameMap(warpPoint.toMapName);
-                      notifyMapWillChange(() -> changeMap(warpPoint, direction), warpPoint.fadeColor);
+                      notifyMapWillChange(() -> changeMapWithCameraShake(warpPoint, direction), warpPoint.fadeColor);
                   });
     }
 
@@ -121,6 +121,11 @@ public class MapManager extends MapSubject implements ProfileObserver {
                       newMap = new GameMap(portal.toMapName);
                       notifyMapWillChange(() -> changeMap(portal, direction), portal.fadeColor);
                   });
+    }
+
+    private void changeMapWithCameraShake(GameMapPortal portal, Direction direction) {
+        changeMap(portal, direction);
+        notifyShakeCamera();
     }
 
     private void changeMap(GameMapPortal portal, Direction direction) {

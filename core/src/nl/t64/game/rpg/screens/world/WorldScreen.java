@@ -134,6 +134,11 @@ public class WorldScreen implements Screen,
         currentMap.setTiledGraph();
     }
 
+    @Override
+    public void onNotifyShakeCamera() {
+        camera.startShaking();
+    }
+
     // ComponentObserver ///////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
