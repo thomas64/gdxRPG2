@@ -2,13 +2,11 @@ package nl.t64.game.rpg.screens.world;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.math.Rectangle;
 import nl.t64.game.rpg.Utils;
 
 
-class GameMapQuestBlocker {
+class GameMapQuestBlocker extends GameMapObject {
 
-    final Rectangle rectangle;
     private final String questId;
     private final boolean isActiveIfComplete;
     private final String taskId;

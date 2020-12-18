@@ -17,10 +17,7 @@ import nl.t64.game.rpg.components.character.Direction;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.screens.world.pathfinding.TiledGraph;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -404,58 +401,25 @@ class GameMap {
     }
 
     void debug(ShapeRenderer shapeRenderer) {
-        Rectangle rect;
 
         shapeRenderer.setColor(Color.YELLOW);
-        for (Rectangle blocker : blockers) {
-            shapeRenderer.rect(blocker.x, blocker.y, blocker.width, blocker.height);
-        }
-        for (GameMapQuestBlocker blocker : questBlockers) {
-            rect = blocker.rectangle;
-            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-        }
+
+        blockers.forEach(rect -> shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height));
+        questBlockers.stream()
+                     .map(GameMapObject::getRectangle)
+                     .forEach(rect -> shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height));
 
         shapeRenderer.setColor(Color.BLUE);
-        for (GameMapPortal portal : portals) {
-            rect = portal.rectangle;
-            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-        }
-        for (GameMapSpawnPoint spawnPoint : spawnPoints) {
-            rect = spawnPoint.rectangle;
-            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-        }
-        for (GameMapNpc npc : npcs) {
-            rect = npc.rectangle;
-            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-        }
-        for (GameMapHero hero : heroes) {
-            rect = hero.rectangle;
-            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-        }
-        for (RectangleMapObject note : notes) {
-            rect = note.getRectangle();
-            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-        }
-        for (RectangleMapObject sparkle : sparkles) {
-            rect = sparkle.getRectangle();
-            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-        }
-        for (RectangleMapObject chest : chests) {
-            rect = chest.getRectangle();
-            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-        }
-        for (RectangleMapObject door : doors) {
-            rect = door.getRectangle();
-            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-        }
-        for (GameMapQuestObject discover : questDiscovers) {
-            rect = discover.rectangle;
-            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-        }
-        for (GameMapQuestObject checker : questCheckers) {
-            rect = checker.rectangle;
-            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-        }
+
+        Stream.of(portals, spawnPoints, npcs, heroes, questDiscovers, questCheckers)
+              .flatMap(Collection::stream)
+              .map(GameMapObject::getRectangle)
+              .forEach(rect -> shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height));
+
+        Stream.of(notes, sparkles, chests, doors)
+              .flatMap(Collection::stream)
+              .map(RectangleMapObject::getRectangle)
+              .forEach(rect -> shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height));
     }
 
 }

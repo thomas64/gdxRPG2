@@ -2,13 +2,11 @@ package nl.t64.game.rpg.screens.world;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.math.Rectangle;
 import nl.t64.game.rpg.components.character.Direction;
 
 
-class GameMapSpawnPoint {
+class GameMapSpawnPoint extends GameMapObject {
 
-    final Rectangle rectangle;
     private final String fromMapName;
     private final String fromMapLocation;
     final Direction direction;

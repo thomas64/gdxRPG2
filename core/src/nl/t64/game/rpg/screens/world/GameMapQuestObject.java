@@ -2,14 +2,12 @@ package nl.t64.game.rpg.screens.world;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.math.Rectangle;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.quest.QuestGraph;
 
 
-class GameMapQuestObject {
+class GameMapQuestObject extends GameMapObject {
 
-    final Rectangle rectangle;
     private final String questId;
     private final String taskId;
 

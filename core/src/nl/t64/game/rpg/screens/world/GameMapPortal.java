@@ -3,15 +3,13 @@ package nl.t64.game.rpg.screens.world;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.math.Rectangle;
 import nl.t64.game.rpg.components.character.Direction;
 
 import java.util.Optional;
 
 
-class GameMapPortal {
+class GameMapPortal extends GameMapObject {
 
-    final Rectangle rectangle;
     final String fromMapName;
     final String toMapName;
     final String toMapLocation;
