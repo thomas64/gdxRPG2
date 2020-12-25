@@ -25,6 +25,8 @@ public class GameData implements ProfileObserver {
     private DoorContainer doors;
     @Setter
     private boolean isFirstTimeLootMessageShown;
+    @Setter
+    private boolean isComparingEnabled;
 
     @Override
     public void onNotifyCreateProfile(ProfileManager profileManager) {
@@ -36,6 +38,7 @@ public class GameData implements ProfileObserver {
         loot = new LootContainer();
         doors = new DoorContainer();
         isFirstTimeLootMessageShown = false;
+        isComparingEnabled = true;
         addFirstHeroToParty();
         addFirstItemsToInventory();
         onNotifySaveProfile(profileManager);
@@ -51,6 +54,7 @@ public class GameData implements ProfileObserver {
         profileManager.setProperty("loot", loot);
         profileManager.setProperty("doors", doors);
         profileManager.setProperty("isFirstTimeLootMessageShown", isFirstTimeLootMessageShown);
+        profileManager.setProperty("isComparingEnabled", isComparingEnabled);
     }
 
     @Override
@@ -65,6 +69,7 @@ public class GameData implements ProfileObserver {
         loot = profileManager.getProperty("loot", LootContainer.class);
         doors = profileManager.getProperty("doors", DoorContainer.class);
         isFirstTimeLootMessageShown = profileManager.getProperty("isFirstTimeLootMessageShown", Boolean.class);
+        isComparingEnabled = profileManager.getProperty("isComparingEnabled", Boolean.class);
     }
 
     private void addFirstHeroToParty() {

@@ -1,6 +1,6 @@
 
 buttons.png
-size: 384,256
+size: 384,320
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -25,128 +25,156 @@ close_up
   orig: 64, 64
   offset: 0, 0
   index: -1
-help_down
+compare_disabled
   rotate: false
   xy: 192, 0
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-help_over
+compare_enabled
   rotate: false
   xy: 256, 0
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-help_up
+compare_over_disabled
   rotate: false
   xy: 320, 0
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-dismiss_down
+compare_over_enabled
   rotate: false
   xy: 0, 64
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-dismiss_over
+dismiss_down
   rotate: false
   xy: 64, 64
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-dismiss_up
+dismiss_over
   rotate: false
   xy: 128, 64
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-next_down
+dismiss_up
   rotate: false
   xy: 192, 64
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-next_over
+help_down
   rotate: false
   xy: 256, 64
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-next_up
+help_over
   rotate: false
   xy: 320, 64
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-previous_down
+help_up
   rotate: false
   xy: 0, 128
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-previous_over
+next_down
   rotate: false
   xy: 64, 128
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-previous_up
+next_over
   rotate: false
   xy: 128, 128
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-reset_down
+next_up
   rotate: false
   xy: 192, 128
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-reset_over
+previous_down
   rotate: false
   xy: 256, 128
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-reset_up
+previous_over
   rotate: false
   xy: 320, 128
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-sort_down
+previous_up
   rotate: false
   xy: 0, 192
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-sort_over
+reset_down
   rotate: false
   xy: 64, 192
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-sort_up
+reset_over
   rotate: false
   xy: 128, 192
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+reset_up
+  rotate: false
+  xy: 192, 192
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+sort_down
+  rotate: false
+  xy: 256, 192
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+sort_over
+  rotate: false
+  xy: 320, 192
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+sort_up
+  rotate: false
+  xy: 0, 256
   size: 64, 64
   orig: 64, 64
   offset: 0, 0

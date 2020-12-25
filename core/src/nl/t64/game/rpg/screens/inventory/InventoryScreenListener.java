@@ -13,6 +13,7 @@ class InventoryScreenListener extends InputListener {
     private final Runnable nextHeroFunction;
     private final Runnable dismissHeroFunction;
     private final Runnable sortInventoryFunction;
+    private final Runnable toggleCompareFunction;
     private final Runnable showHelpFunction;
     private final Runnable cheatAddGoldFunction;
     private final Runnable cheatRemoveGoldFunction;
@@ -23,6 +24,7 @@ class InventoryScreenListener extends InputListener {
                             Runnable nextHeroFunction,
                             Runnable dismissHeroFunction,
                             Runnable sortInventoryFunction,
+                            Runnable toggleCompareFunction,
                             Runnable showHelpFunction,
                             Runnable cheatAddGoldFunction,
                             Runnable cheatRemoveGoldFunction) {
@@ -32,6 +34,7 @@ class InventoryScreenListener extends InputListener {
         this.nextHeroFunction = nextHeroFunction;
         this.dismissHeroFunction = dismissHeroFunction;
         this.sortInventoryFunction = sortInventoryFunction;
+        this.toggleCompareFunction = toggleCompareFunction;
         this.showHelpFunction = showHelpFunction;
         this.cheatAddGoldFunction = cheatAddGoldFunction;
         this.cheatRemoveGoldFunction = cheatRemoveGoldFunction;
@@ -47,6 +50,7 @@ class InventoryScreenListener extends InputListener {
             case Input.Keys.W -> nextHeroFunction.run();
             case Input.Keys.D -> dismissHeroFunction.run();
             case Input.Keys.S -> sortInventoryFunction.run();
+            case Input.Keys.C -> toggleCompareFunction.run();
             case Input.Keys.SHIFT_LEFT,
                     Input.Keys.SHIFT_RIGHT -> InventoryUtils.setShiftPressed(true);
             case Input.Keys.CONTROL_LEFT,

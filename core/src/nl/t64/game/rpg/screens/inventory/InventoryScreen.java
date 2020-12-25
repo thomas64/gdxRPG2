@@ -51,6 +51,10 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
     private static final String BUTTON_SORT_UP = "sort_up";
     private static final String BUTTON_SORT_OVER = "sort_over";
     private static final String BUTTON_SORT_DOWN = "sort_down";
+    private static final String BUTTON_COMPARE_DISABLED = "compare_disabled";
+    private static final String BUTTON_COMPARE_ENABLED = "compare_enabled";
+    private static final String BUTTON_COMPARE_OVER_DISABLED = "compare_over_disabled";
+    private static final String BUTTON_COMPARE_OVER_ENABLED = "compare_over_enabled";
     private static final String BUTTON_HELP_UP = "help_up";
     private static final String BUTTON_HELP_OVER = "help_over";
     private static final String BUTTON_HELP_DOWN = "help_down";
@@ -188,6 +192,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
                                                       this::selectNextHero,
                                                       this::tryToDismissHero,
                                                       this::sortInventory,
+                                                      this::toggleCompare,
                                                       this::showHelpMessage,
                                                       this::cheatAddGold,
                                                       this::cheatRemoveGold));
@@ -261,6 +266,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
         var nextButton = createImageButton(BUTTON_NEXT_UP, BUTTON_NEXT_OVER, BUTTON_NEXT_DOWN);
         var dismissButton = createImageButton(BUTTON_DISMISS_UP, BUTTON_DISMISS_OVER, BUTTON_DISMISS_DOWN);
         var sortButton = createImageButton(BUTTON_SORT_UP, BUTTON_SORT_OVER, BUTTON_SORT_DOWN);
+        var compareButton = createImageToggleButton(BUTTON_COMPARE_DISABLED, BUTTON_COMPARE_ENABLED, BUTTON_COMPARE_OVER_DISABLED, BUTTON_COMPARE_OVER_ENABLED);
         var helpButton = createImageButton(BUTTON_HELP_UP, BUTTON_HELP_OVER, BUTTON_HELP_DOWN);
         closeButton.addListener(new ListenerMouseImageButton(this::closeScreen));
         closeButton.addListener(new ButtonTooltipListener(buttonToolTip, "Close screen"));
@@ -274,6 +280,9 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
         dismissButton.addListener(new ButtonTooltipListener(buttonToolTip, "Dismiss hero"));
         sortButton.addListener(new ListenerMouseImageButton(this::sortInventory));
         sortButton.addListener(new ButtonTooltipListener(buttonToolTip, "Sort inventory"));
+        compareButton.addListener(new ListenerMouseImageButton(this::toggleCompare));
+        compareButton.addListener(new ButtonTooltipListener(buttonToolTip, "Toggle compare"));
+        compareButton.setChecked(Utils.getGameData().isComparingEnabled());
         helpButton.addListener(new ListenerMouseImageButton(this::showHelpMessage));
         helpButton.addListener(new ButtonTooltipListener(buttonToolTip, "Help dialog"));
 
@@ -284,6 +293,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
         buttonTable.add(nextButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
         buttonTable.add(dismissButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
         buttonTable.add(sortButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
+        buttonTable.add(compareButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
         buttonTable.add(helpButton).size(BUTTON_SIZE);
         buttonTable.pack();
         buttonTable.setPosition(Gdx.graphics.getWidth() - buttonTable.getWidth() - RIGHT_SPACE,
@@ -349,6 +359,10 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
         inventoryUI.reloadInventory();
     }
 
+    private void toggleCompare() {
+        Utils.getGameData().setComparingEnabled(!Utils.getGameData().isComparingEnabled());
+    }
+
     private void cheatAddGold() {
         if (Utils.getSettings().isInDebugMode()) {
             InventoryContainer inventory = Utils.getGameData().getInventory();
@@ -387,7 +401,8 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
                 Q = Previous hero
                 W = Next hero
                 D = Dismiss hero
-                S = Sort Inventory
+                S = Sort inventory
+                C = Toggle compare
                 Shift = Drag full stack
                 Ctrl = Drag half stack
                 H = This dialog""";
@@ -429,6 +444,15 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
         buttonStyle.up = createDrawable(up);
         buttonStyle.down = createDrawable(down);
         buttonStyle.over = createDrawable(over);
+        return new ImageButton(buttonStyle);
+    }
+
+    private ImageButton createImageToggleButton(String disabled, String enabled, String overDisabled, String overEnabled) {
+        var buttonStyle = new ImageButton.ImageButtonStyle();
+        buttonStyle.up = createDrawable(disabled);
+        buttonStyle.checked = createDrawable(enabled);
+        buttonStyle.over = createDrawable(overDisabled);
+        buttonStyle.checkedOver = createDrawable(overEnabled);
         return new ImageButton(buttonStyle);
     }
 
