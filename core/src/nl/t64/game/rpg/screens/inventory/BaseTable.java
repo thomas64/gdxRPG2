@@ -12,7 +12,7 @@ import nl.t64.game.rpg.Utils;
 
 public abstract class BaseTable {
 
-    private static final String TEXT_FONT = "fonts/spectral.ttf";
+    private static final String TEXT_FONT = "fonts/spectral_extra_bold_20.ttf";
     private static final int TEXT_SIZE = 20;
     private static final float LINE_HEIGHT = 26f;
     private static final float PADDING = 20f;

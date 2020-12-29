@@ -20,8 +20,8 @@ import java.util.stream.IntStream;
 
 class PartyWindow {
 
-    private static final String FONT_PATH = "fonts/spectral.ttf";
-    private static final String FONT_BIG_PATH = "fonts/spectral_big.ttf";
+    private static final String FONT_PATH = "fonts/spectral_extra_bold_20.ttf";
+    private static final String FONT_BIG_PATH = "fonts/spectral_extra_bold_28.ttf";
     private static final Color TRANSPARENT_BLACK = new Color(0f, 0f, 0f, 0.8f);
     private static final Color TRANSPARENT_WHITE = new Color(1f, 1f, 1f, 0.3f);
     private static final Color TRANSPARENT_FACES = new Color(1f, 1f, 1f, 0.7f);

@@ -22,7 +22,7 @@
   },
   "quest0003": {
     "title"    : "Secret Gypsy chamber",
-    "character": "gypsygirl01",
+    "character": "youngwoman02",
     "summary"  : "Angela heard about a special chamber and want to know if the rumors are true.",
     "tasks"    : {
       "1": {

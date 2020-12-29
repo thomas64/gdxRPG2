@@ -27,8 +27,8 @@ public class HeroesTable {
     private static final String SPRITE_BORDER = "sprites/border.png";
     private static final String SPRITE_RIGHT_BORDER = "sprites/right_border.png";
     private static final String SPRITE_GREY = "sprites/grey.png";
-    private static final String FONT_PATH = "fonts/spectral.ttf";
-    private static final String FONT_BIG_PATH = "fonts/spectral_big.ttf";
+    private static final String FONT_PATH = "fonts/spectral_extra_bold_20.ttf";
+    private static final String FONT_BIG_PATH = "fonts/spectral_extra_bold_28.ttf";
     private static final int FONT_BIG_SIZE = 28;
     private static final int FONT_SIZE = 20;
     private static final float STATS_COLUMN_WIDTH = 134f;

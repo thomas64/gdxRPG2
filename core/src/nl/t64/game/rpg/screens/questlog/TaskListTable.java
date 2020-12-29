@@ -17,7 +17,7 @@ import nl.t64.game.rpg.components.quest.QuestTask;
 class TaskListTable {
 
     private static final String SPRITE_TRANSPARENT = "sprites/transparent.png";
-    private static final String TEXT_FONT = "fonts/spectral.ttf";
+    private static final String TEXT_FONT = "fonts/spectral_extra_bold_20.ttf";
     private static final int TEXT_SIZE = 20;
     private static final float WIDTH = -102f;
     private static final float HEIGHT = 704f;

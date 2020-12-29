@@ -12,7 +12,7 @@ import nl.t64.game.rpg.constants.Constant;
 
 class SummaryTable {
 
-    private static final String TEXT_FONT = "fonts/spectral.ttf";
+    private static final String TEXT_FONT = "fonts/spectral_extra_bold_20.ttf";
     private static final int TEXT_SIZE = 20;
     private static final float WIDTH = -102f;
     private static final float PAD = 20f;

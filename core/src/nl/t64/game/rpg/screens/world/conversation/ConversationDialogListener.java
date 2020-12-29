@@ -32,21 +32,27 @@ class ConversationDialogListener extends InputListener {
     }
 
     private void inputUp() {
-        if (answers.getSelectedIndex() > 0) {
+        if (answers.getItems().size > 1 && answers.getSelectedIndex() > 0) {
             Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_CONVERSATION_CURSOR);
             answers.setSelectedIndex(answers.getSelectedIndex() - 1);
+        }
+        if (answers.getSelectedIndex() == -1) {
+            Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_CONVERSATION_CURSOR);
+            answers.setSelectedIndex(answers.getItems().size - 1);
         }
     }
 
     private void inputDown() {
-        if (answers.getSelectedIndex() < answers.getItems().size - 1) {
+        if (answers.getItems().size > 1 && answers.getSelectedIndex() < answers.getItems().size - 1) {
             Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_CONVERSATION_CURSOR);
             answers.setSelectedIndex(answers.getSelectedIndex() + 1);
         }
     }
 
     private void inputEnter() {
-        selectAnswer.run();
+        if (answers.getSelectedIndex() != -1) {
+            selectAnswer.run();
+        }
     }
 
 }

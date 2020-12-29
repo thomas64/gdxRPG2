@@ -26,9 +26,12 @@ public class ConversationDialog extends ConversationSubject {
 
     private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
     private static final String SPRITE_TRANSPARENT = "sprites/transparent.png";
-    private static final String CONVERSATION_FONT = "fonts/fff_tusj.ttf";
-    private static final int FONT_SIZE = 30;
-    private static final float LINE_HEIGHT = 40f;
+    private static final String CONVERSATION_FONT = "fonts/spectral_regular_24.ttf";
+    private static final int FONT_SIZE = 24;
+    private static final float LINE_HEIGHT = 26f;
+    private static final float SCROLL_PANE_LINE_HEIGHT = 32f;
+    private static final float SCROLL_PANE_LINE_PAD = -4f;
+    private static final float SCROLL_PANE_TOP_PAD = 10f;
     private static final float DIALOG_WIDTH = 1000f;
     private static final float DIALOG_HEIGHT = 300f;
     private static final float PAD = 25f;
@@ -41,7 +44,7 @@ public class ConversationDialog extends ConversationSubject {
     private Label label;
     private List<ConversationChoice> answers;
     private ScrollPane scrollPane;
-    private Cell<?> scrollPaneRow;
+    private Cell<ScrollPane> rowWithScrollPane;
 
     private String conversationId;
     private String faceId;
@@ -50,6 +53,7 @@ public class ConversationDialog extends ConversationSubject {
     public ConversationDialog() {
         this.stage = new Stage();
         this.font = Utils.getResourceManager().getTrueTypeAsset(CONVERSATION_FONT, FONT_SIZE);
+        this.font.getData().setLineHeight(LINE_HEIGHT);
         this.dialog = this.createDialog();
         this.applyListeners();
     }
@@ -112,8 +116,10 @@ public class ConversationDialog extends ConversationSubject {
         listStyle.font = font;
         listStyle.fontColorSelected = Constant.DARK_RED;
         listStyle.fontColorUnselected = Color.BLACK;
-        listStyle.background = new SpriteDrawable(spriteTransparent);
-        listStyle.selection = new SpriteDrawable(spriteTransparent);
+        var drawable = new SpriteDrawable(spriteTransparent);
+        drawable.setTopHeight(SCROLL_PANE_LINE_PAD);
+        drawable.setBottomHeight(SCROLL_PANE_LINE_PAD);
+        listStyle.selection = drawable;
 
         // actors
         label = new Label("No Conversation", labelStyle);
@@ -150,9 +156,9 @@ public class ConversationDialog extends ConversationSubject {
         var textTable = new Table();
         textTable.pad(PAD, PAD, PAD, PAD * 3f);
         textTable.add(label).width(DIALOG_WIDTH - ALL_PADS).row();
-        textTable.add().height(PAD).row();
+        textTable.add().height(SCROLL_PANE_TOP_PAD).row();
         textTable.add(scrollPane).left().padLeft(PAD);
-        scrollPaneRow = textTable.getCells().peek();
+        rowWithScrollPane = textTable.getCell(scrollPane);
 
         mainTable.add(textTable);
         dialog.getContentTable().clear();
@@ -164,9 +170,9 @@ public class ConversationDialog extends ConversationSubject {
         var textTable = new Table();
         textTable.pad(PAD * 2f, PAD * 3f, PAD, PAD * 2f);
         textTable.add(label).width(DIALOG_WIDTH - (PAD * 5f)).row();
-        textTable.add().height(PAD).row();
+        textTable.add().height(SCROLL_PANE_TOP_PAD).row();
         textTable.add(scrollPane).left().padLeft(PAD);
-        scrollPaneRow = textTable.getCells().peek();
+        rowWithScrollPane = null;
 
         dialog.getContentTable().clear();
         dialog.getContentTable().add(textTable);
@@ -196,15 +202,36 @@ public class ConversationDialog extends ConversationSubject {
     }
 
     private void populateConversationDialog(String phraseId) {
+        populatePhrase(phraseId);
+        populateChoices();
+    }
+
+    private void populatePhrase(String phraseId) {
         ConversationPhrase phrase = graph.getPhraseById(phraseId);
         graph.setCurrentPhraseId(phraseId);
         String text = String.join(System.lineSeparator(), phrase.getText());
         label.setText(text);
+    }
+
+    private void populateChoices() {
         ConversationChoice[] choices = graph.getAssociatedChoices().toArray(new ConversationChoice[0]);
         answers.setItems(choices);
-        answers.setSelectedIndex(0);
+        setDefaultSelectedChoice(choices);
+        setScrollPaneHeightIfAmountOfChoicesIsEven(choices);
+    }
 
-        scrollPaneRow.height(choices.length * LINE_HEIGHT);
+    private void setDefaultSelectedChoice(ConversationChoice[] choices) {
+        if (choices.length == 1) {
+            answers.setSelectedIndex(0);
+        } else {
+            answers.setSelectedIndex(-1);
+        }
+    }
+
+    private void setScrollPaneHeightIfAmountOfChoicesIsEven(ConversationChoice[] choices) {
+        if (choices.length % 2 == 0) {
+            rowWithScrollPane.height((choices.length * SCROLL_PANE_LINE_HEIGHT));
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

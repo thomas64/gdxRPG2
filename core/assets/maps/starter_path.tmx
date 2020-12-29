@@ -101,7 +101,7 @@
     <property name="conversation" value="quest0001"/>
    </properties>
   </object>
-  <object id="41" name="gypsygirl01" type="w" x="480" y="1320" width="48" height="24">
+  <object id="41" name="youngwoman02" type="w" x="480" y="1320" width="48" height="24">
    <properties>
     <property name="conversation" value="quest0003"/>
    </properties>
