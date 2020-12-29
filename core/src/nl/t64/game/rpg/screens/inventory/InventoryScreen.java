@@ -92,6 +92,8 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
     private Vector2 heroesWindowPosition;
     private boolean isMessageShown;
 
+    private ImageButton compareButton;
+
     public InventoryScreen() {
         this.stage = new Stage();
         this.conversationDialog = new ConversationDialog();
@@ -266,7 +268,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
         var nextButton = createImageButton(BUTTON_NEXT_UP, BUTTON_NEXT_OVER, BUTTON_NEXT_DOWN);
         var dismissButton = createImageButton(BUTTON_DISMISS_UP, BUTTON_DISMISS_OVER, BUTTON_DISMISS_DOWN);
         var sortButton = createImageButton(BUTTON_SORT_UP, BUTTON_SORT_OVER, BUTTON_SORT_DOWN);
-        var compareButton = createImageToggleButton(BUTTON_COMPARE_DISABLED, BUTTON_COMPARE_ENABLED, BUTTON_COMPARE_OVER_DISABLED, BUTTON_COMPARE_OVER_ENABLED);
+        compareButton = createImageToggleButton(BUTTON_COMPARE_DISABLED, BUTTON_COMPARE_ENABLED, BUTTON_COMPARE_OVER_DISABLED, BUTTON_COMPARE_OVER_ENABLED);
         var helpButton = createImageButton(BUTTON_HELP_UP, BUTTON_HELP_OVER, BUTTON_HELP_DOWN);
         closeButton.addListener(new ListenerMouseImageButton(this::closeScreen));
         closeButton.addListener(new ButtonTooltipListener(buttonToolTip, "Close screen"));
@@ -360,7 +362,9 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
     }
 
     private void toggleCompare() {
-        Utils.getGameData().setComparingEnabled(!Utils.getGameData().isComparingEnabled());
+        boolean isEnabled = Utils.getGameData().isComparingEnabled();
+        Utils.getGameData().setComparingEnabled(!isEnabled);
+        compareButton.setChecked(!isEnabled);
     }
 
     private void cheatAddGold() {
