@@ -1,0 +1,10 @@
+{
+  "event0001": {
+    "condition"     : {
+      "quest0006": "!UNKNOWN",
+      "quest0007": "UNKNOWN"
+    },
+    "conversationId": "event0001",
+    "characterId"   : "man02"
+  }
+}

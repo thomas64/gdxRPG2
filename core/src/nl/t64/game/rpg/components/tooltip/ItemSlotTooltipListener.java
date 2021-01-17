@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.inventory.tooltip;
+package nl.t64.game.rpg.components.tooltip;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -12,14 +12,14 @@ public class ItemSlotTooltipListener extends ClickListener {
     private static final float OFFSET_X = 20f;
     private static final float OFFSET_Y = 10f;
 
-    private final ItemSlotTooltip toolTip;
+    private final ItemSlotTooltip tooltip;
     private final Vector2 currentCoords;
     private final Vector2 offset;
     private boolean isInside;
     private boolean touchDown;
 
-    public ItemSlotTooltipListener(ItemSlotTooltip toolTip) {
-        this.toolTip = toolTip;
+    public ItemSlotTooltipListener(ItemSlotTooltip tooltip) {
+        this.tooltip = tooltip;
         this.currentCoords = new Vector2();
         this.offset = new Vector2(OFFSET_X, OFFSET_Y);
         this.isInside = false;
@@ -32,7 +32,7 @@ public class ItemSlotTooltipListener extends ClickListener {
         if (isInside) {
             currentCoords.set(x, y);
             itemSlot.localToStageCoordinates(currentCoords);
-            toolTip.setPosition(currentCoords.x + offset.x, currentCoords.y + offset.y);
+            tooltip.setPosition(currentCoords.x + offset.x, currentCoords.y + offset.y);
         }
         return false;
     }
@@ -40,7 +40,7 @@ public class ItemSlotTooltipListener extends ClickListener {
     @Override
     public void touchDragged(InputEvent event, float x, float y, int pointer) {
         ItemSlot itemSlot = (ItemSlot) event.getListenerActor();
-        toolTip.setVisible(itemSlot, false);
+        tooltip.setVisible(itemSlot, false);
         touchDown = false;
     }
 
@@ -48,7 +48,7 @@ public class ItemSlotTooltipListener extends ClickListener {
     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
         touchDown = true;
         ItemSlot itemSlot = (ItemSlot) event.getListenerActor();
-        toolTip.setVisible(itemSlot, false);
+        tooltip.setVisible(itemSlot, false);
         return true;
     }
 
@@ -62,17 +62,17 @@ public class ItemSlotTooltipListener extends ClickListener {
             currentCoords.set(x, y);
             itemSlot.localToStageCoordinates(currentCoords);
 
-            toolTip.updateDescription(itemSlot);
-            toolTip.setPosition(currentCoords.x + offset.x, currentCoords.y + offset.y);
-            toolTip.toFront();
-            toolTip.setVisible(itemSlot, true);
+            tooltip.updateDescription(itemSlot);
+            tooltip.setPosition(currentCoords.x + offset.x, currentCoords.y + offset.y);
+            tooltip.toFront();
+            tooltip.setVisible(itemSlot, true);
         }
     }
 
     @Override
     public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
         ItemSlot itemSlot = (ItemSlot) event.getListenerActor();
-        toolTip.setVisible(itemSlot, false);
+        tooltip.setVisible(itemSlot, false);
         isInside = false;
 
         currentCoords.set(x, y);

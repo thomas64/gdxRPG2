@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.inventory.tooltip;
+package nl.t64.game.rpg.components.tooltip;
 
 import nl.t64.game.rpg.components.party.InventoryDescription;
 

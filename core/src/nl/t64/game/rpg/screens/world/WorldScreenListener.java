@@ -7,15 +7,8 @@ import nl.t64.game.rpg.screens.menu.MenuPause;
 import nl.t64.game.rpg.screens.questlog.QuestLogScreen;
 
 
-class WorldScreenListener implements InputProcessor {
-
-    private final Runnable doBeforeLoadScreen;
-    private final Runnable showHidePartyWindowFunction;
-
-    WorldScreenListener(Runnable doBeforeLoadScreen, Runnable showHidePartyWindowFunction) {
-        this.doBeforeLoadScreen = doBeforeLoadScreen;
-        this.showHidePartyWindowFunction = showHidePartyWindowFunction;
-    }
+record WorldScreenListener(Runnable doBeforeLoadScreen,
+                           Runnable showHidePartyWindowFunction) implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {

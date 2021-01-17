@@ -26,6 +26,10 @@ public class ConversationSubject {
         observers.forEach(ConversationObserver::onNotifyExitConversation);
     }
 
+    void notifyShowMessageTooltip(String message) {
+        observers.forEach(conversationObserver -> conversationObserver.onNotifyShowMessageTooltip(message));
+    }
+
     void notifyShowLevelUpDialog(String message) {
         observers.forEach(conversationObserver -> conversationObserver.onNotifyShowLevelUpDialog(message));
     }

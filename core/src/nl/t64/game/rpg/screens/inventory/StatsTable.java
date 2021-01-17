@@ -4,8 +4,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.StatItem;
-import nl.t64.game.rpg.screens.inventory.tooltip.PersonalityTooltip;
-import nl.t64.game.rpg.screens.inventory.tooltip.PersonalityTooltipListener;
+import nl.t64.game.rpg.components.tooltip.PersonalityTooltip;
+import nl.t64.game.rpg.components.tooltip.PersonalityTooltipListener;
 
 
 class StatsTable extends BaseTable {

@@ -2,6 +2,9 @@ package nl.t64.game.rpg.components.party;
 
 import lombok.AllArgsConstructor;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 
 @AllArgsConstructor
 public enum SkillItemId implements SuperEnum {
@@ -31,6 +34,12 @@ public enum SkillItemId implements SuperEnum {
     @Override
     public String getTitle() {
         return title;
+    }
+
+    public static Optional<SkillItemId> from(String possibleSkillItemId) {
+        return Arrays.stream(SkillItemId.values())
+                     .filter(skillItemId -> possibleSkillItemId.equalsIgnoreCase(skillItemId.name()))
+                     .findFirst();
     }
 
 }

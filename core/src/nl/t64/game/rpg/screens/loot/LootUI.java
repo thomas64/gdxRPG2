@@ -5,12 +5,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.loot.Loot;
+import nl.t64.game.rpg.components.tooltip.ItemSlotTooltip;
+import nl.t64.game.rpg.components.tooltip.LootSlotTooltip;
 import nl.t64.game.rpg.screens.inventory.EquipSlotsTable;
 import nl.t64.game.rpg.screens.inventory.InventorySlotsTable;
 import nl.t64.game.rpg.screens.inventory.ListenerMouseScrollPane;
 import nl.t64.game.rpg.screens.inventory.ScreenUI;
-import nl.t64.game.rpg.screens.inventory.tooltip.ItemSlotTooltip;
-import nl.t64.game.rpg.screens.inventory.tooltip.LootSlotTooltip;
 
 import java.util.Map;
 

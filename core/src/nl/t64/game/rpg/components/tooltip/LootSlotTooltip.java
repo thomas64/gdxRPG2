@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.inventory.tooltip;
+package nl.t64.game.rpg.components.tooltip;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;

@@ -22,7 +22,8 @@ public class QuestContainer {
     public List<QuestGraph> getAllKnownQuests() {
         return quests.values().stream()
                      .filter(questGraph -> !questGraph.currentState.equals(QuestState.UNKNOWN))
-                     .sorted(Comparator.comparing((QuestGraph questGraph) -> questGraph.currentState)
+                     .sorted(Comparator.comparing((QuestGraph questGraph) -> questGraph.isFailed)
+                                       .thenComparing((QuestGraph questGraph) -> questGraph.currentState)
                                        .thenComparing((QuestGraph questGraph) -> questGraph.id))
                      .collect(Collectors.toUnmodifiableList());
     }

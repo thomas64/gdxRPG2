@@ -16,13 +16,13 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.loot.Loot;
+import nl.t64.game.rpg.components.tooltip.ButtonTooltip;
+import nl.t64.game.rpg.components.tooltip.ButtonTooltipListener;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.screens.ScreenToLoad;
 import nl.t64.game.rpg.screens.inventory.ListenerMouseImageButton;
 import nl.t64.game.rpg.screens.inventory.MessageDialog;
-import nl.t64.game.rpg.screens.inventory.tooltip.ButtonToolTip;
-import nl.t64.game.rpg.screens.inventory.tooltip.ButtonTooltipListener;
 
 
 public abstract class LootScreen extends LootSubject implements ScreenToLoad {
@@ -47,7 +47,7 @@ public abstract class LootScreen extends LootSubject implements ScreenToLoad {
     private static final float INPUT_DELAY = 0.2f;
 
     final Stage stage;
-    private final ButtonToolTip buttonToolTip;
+    private final ButtonTooltip buttonTooltip;
     @Getter
     private LootUI lootUI;
     Loot loot;
@@ -55,7 +55,7 @@ public abstract class LootScreen extends LootSubject implements ScreenToLoad {
 
     public LootScreen() {
         this.stage = new Stage();
-        this.buttonToolTip = new ButtonToolTip();
+        this.buttonTooltip = new ButtonTooltip();
     }
 
     @Override
@@ -69,7 +69,7 @@ public abstract class LootScreen extends LootSubject implements ScreenToLoad {
         lootUI.lootWindow.setPosition(LOOT_WINDOW_POSITION_X, LOOT_WINDOW_POSITION_Y);
         lootUI.addToStage(stage);
         lootUI.applyListeners(stage);
-        buttonToolTip.addToStage(stage);
+        buttonTooltip.addToStage(stage);
 
         var listener = new LootScreenListener(this::closeScreen, this::takeItem, this::showHelpMessage);
         stage.addAction(Actions.sequence(Actions.delay(INPUT_DELAY),
@@ -126,9 +126,9 @@ public abstract class LootScreen extends LootSubject implements ScreenToLoad {
         var closeButton = createImageButton(BUTTON_CLOSE_UP, BUTTON_CLOSE_OVER, BUTTON_CLOSE_DOWN);
         var helpButton = createImageButton(BUTTON_HELP_UP, BUTTON_HELP_OVER, BUTTON_HELP_DOWN);
         closeButton.addListener(new ListenerMouseImageButton(this::closeScreen));
-        closeButton.addListener(new ButtonTooltipListener(buttonToolTip, "Close screen"));
+        closeButton.addListener(new ButtonTooltipListener(buttonTooltip, "Close screen"));
         helpButton.addListener(new ListenerMouseImageButton(this::showHelpMessage));
-        helpButton.addListener(new ButtonTooltipListener(buttonToolTip, "Help dialog"));
+        helpButton.addListener(new ButtonTooltipListener(buttonTooltip, "Help dialog"));
 
         var buttonTable = new Table();
         buttonTable.add(closeButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();

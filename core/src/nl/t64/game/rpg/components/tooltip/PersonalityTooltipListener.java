@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.inventory.tooltip;
+package nl.t64.game.rpg.components.tooltip;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -12,13 +12,13 @@ public class PersonalityTooltipListener extends ClickListener {
     private static final float OFFSET_X = 20f;
     private static final float OFFSET_Y = 10f;
 
-    private final PersonalityTooltip toolTip;
+    private final PersonalityTooltip tooltip;
     private final PersonalityItem personalityItem;
     private final Vector2 currentCoords;
     private final Vector2 offset;
 
-    public PersonalityTooltipListener(PersonalityTooltip toolTip, PersonalityItem personalityItem) {
-        this.toolTip = toolTip;
+    public PersonalityTooltipListener(PersonalityTooltip tooltip, PersonalityItem personalityItem) {
+        this.tooltip = tooltip;
         this.personalityItem = personalityItem;
         this.currentCoords = new Vector2();
         this.offset = new Vector2(OFFSET_X, OFFSET_Y);
@@ -33,20 +33,20 @@ public class PersonalityTooltipListener extends ClickListener {
     @Override
     public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
         setTooltipPosition(event, x, y);
-        toolTip.updateDescription(personalityItem);
-        toolTip.toFront();
-        toolTip.setVisible(true);
+        tooltip.updateDescription(personalityItem);
+        tooltip.toFront();
+        tooltip.setVisible(true);
     }
 
     @Override
     public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-        toolTip.setVisible(false);
+        tooltip.setVisible(false);
     }
 
     private void setTooltipPosition(InputEvent event, float x, float y) {
         currentCoords.set(x, y);
         event.getListenerActor().localToStageCoordinates(currentCoords);
-        toolTip.setPosition(currentCoords.x + offset.x, currentCoords.y + offset.y);
+        tooltip.setPosition(currentCoords.x + offset.x, currentCoords.y + offset.y);
     }
 
 }

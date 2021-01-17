@@ -41,14 +41,15 @@ public final class Constant {
     public static final String DESCRIPTION_KEY_SELL_PIECE = "Value per piece";
     public static final String DESCRIPTION_KEY_SELL_TOTAL = "Total value";
 
-    public static final String PHRASE_ID_QUEST_ACCEPT = "50";
-    public static final String PHRASE_ID_QUEST_TOLERATE = "250";
-    public static final String PHRASE_ID_QUEST_IMMEDIATE_SUCCESS = "1000";
-    public static final String PHRASE_ID_QUEST_SUCCESS = "1500";
-    public static final String PHRASE_ID_QUEST_FAILURE = "2000";
-    public static final String PHRASE_ID_QUEST_UNCLAIMED = "3000";
-    public static final String PHRASE_ID_QUEST_FINISHED = "4000";
-    public static final String PHRASE_ID_QUEST_DELIVERY = "5000";
+    public static final String PHRASE_ID_QUEST_ACCEPT = "1000";
+    public static final String PHRASE_ID_QUEST_TOLERATE = "1500";
+    public static final String PHRASE_ID_QUEST_IMMEDIATE_SUCCESS = "2000";
+    public static final String PHRASE_ID_QUEST_SUCCESS = "2100";
+    public static final String PHRASE_ID_QUEST_NO_SUCCESS = "2200";
+    public static final String PHRASE_ID_QUEST_UNCLAIMED = "2300";
+    public static final String PHRASE_ID_QUEST_FINISHED = "2400";
+    public static final String PHRASE_ID_QUEST_DELIVERY = "2500";
+    public static final String PHRASE_ID_QUEST_LINKED = "2600";
     public static final String PHRASE_ID_PARTY_FULL = "9000";
 
     private Constant() {

@@ -30,15 +30,16 @@ public enum AudioEvent {
     SE_MENU_TYPING("audio/se/botw_menu_typing.wav"),
 
     SE_CONVERSATION_START("audio/se/botw_conversation_start.ogg"),
-    SE_CONVERSATION_NEXT("audio/se/botw_conversation_next.wav"),
+    SE_CONVERSATION_NEXT("audio/se/botw_conversation_next.wav", 0.4f),
     SE_CONVERSATION_END("audio/se/botw_conversation_end.wav"),
-    SE_CONVERSATION_CURSOR("audio/se/botw_conversation_cursor.wav"),
+    SE_CONVERSATION_CURSOR("audio/se/botw_conversation_cursor.wav", 0.2f),
 
     SE_SCROLL("audio/se/scroll.ogg"),
     SE_CHEST("audio/se/chest.ogg"),
     SE_SPARKLE("audio/se/sparkle.ogg"),
-    SE_REWARD("audio/se/virix_reward.wav", 0.6f),
-    SE_JOIN("audio/se/virix_join.wav", 0.5f),
+    SE_REWARD("audio/se/virix_reward.wav", 0.5f),
+    SE_QUEST_FAIL("audio/se/virix_quest_fail.wav", 0.5f),
+    SE_JOIN("audio/se/virix_join.wav", 0.6f),
     SE_LEVELUP("audio/se/copyc4t_levelup.ogg", 0.3f),
     SE_EQUIP("audio/se/kenney_cloth3.ogg"),
     SE_TAKE("audio/se/kenney_handle_small_leather2.ogg"),
@@ -80,7 +81,7 @@ public enum AudioEvent {
     }
 
     public static AudioEvent from(String underground) {
-        return AudioEvent.valueOf("SE_STEP_" + underground.toUpperCase() + MathUtils.random(1, 4));
+        return valueOf("SE_STEP_" + underground.toUpperCase() + MathUtils.random(1, 4));
     }
 
 }

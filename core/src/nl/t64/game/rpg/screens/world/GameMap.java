@@ -30,6 +30,7 @@ class GameMap {
     private static final String MAPFILE_SUFFIX = ".tmx";
 
     private static final String SOUND_LAYER = "sound";
+    private static final String EVENT_LAYER = "event";
     private static final String QUEST_LAYER = "quest";
     private static final String UPPER_TEXTURE_LAYER = "upper_texture";
     private static final String LOWER_TEXTURE_LAYER = "lower_texture";
@@ -72,6 +73,7 @@ class GameMap {
     final List<GameMapHero> heroes = new ArrayList<>();
     final List<Rectangle> blockers = new ArrayList<>();
     final List<GameMapLight> lights = new ArrayList<>();
+    final List<GameMapEvent> eventDiscovers = new ArrayList<>();
     final List<GameMapQuestBlocker> questBlockers = new ArrayList<>();
     final List<GameMapQuestTexture> upperTextures = new ArrayList<>();
     final List<GameMapQuestTexture> lowerTextures = new ArrayList<>();
@@ -107,6 +109,7 @@ class GameMap {
         this.loadHeroes();
         this.loadBlockers();
         this.loadLights();
+        this.loadEventLayer();
         this.loadQuestLayer();
         this.loadTextureLayers();
         this.loadRestLayer();
@@ -163,16 +166,22 @@ class GameMap {
                       .findFirst();
     }
 
+    Optional<GameMapEvent> getEventCollisionBy(Rectangle playerRect) {
+        return eventDiscovers.stream()
+                             .filter(discover -> playerRect.overlaps(discover.rectangle))
+                             .findFirst();
+    }
+
     Optional<GameMapQuestObject> getQuestTaskCollisionBy(Rectangle playerRect) {
         return questDiscovers.stream()
                              .filter(discover -> playerRect.overlaps(discover.rectangle))
                              .findFirst();
     }
 
-    Optional<GameMapQuestObject> getQuestTaskBeingCheckedBy(Rectangle checkRect) {
+    List<GameMapQuestObject> getQuestTaskBeingCheckedBy(Rectangle checkRect) {
         return questCheckers.stream()
                             .filter(checker -> checkRect.overlaps(checker.rectangle))
-                            .findFirst();
+                            .collect(Collectors.toList());
     }
 
     Optional<GameMapWarpPoint> getWarpPointBeingCheckedBy(Rectangle checkRect) {
@@ -315,6 +324,16 @@ class GameMap {
         });
     }
 
+    private void loadEventLayer() {
+        getMapLayer(EVENT_LAYER).ifPresent(mapLayer -> {
+            for (MapObject mapObject : mapLayer.getObjects()) {
+                if (mapObject.getName().equalsIgnoreCase("discover")) {
+                    eventDiscovers.add(new GameMapEvent(mapObject));
+                }
+            }
+        });
+    }
+
     private void loadQuestLayer() {
         getMapLayer(QUEST_LAYER).ifPresent(mapLayer -> {
             for (MapObject mapObject : mapLayer.getObjects()) {
@@ -411,7 +430,7 @@ class GameMap {
 
         shapeRenderer.setColor(Color.BLUE);
 
-        Stream.of(portals, spawnPoints, npcs, heroes, questDiscovers, questCheckers)
+        Stream.of(portals, spawnPoints, npcs, heroes, eventDiscovers, questDiscovers, questCheckers)
               .flatMap(Collection::stream)
               .map(GameMapObject::getRectangle)
               .forEach(rect -> shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height));

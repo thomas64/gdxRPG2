@@ -69,7 +69,6 @@ class LootTest extends GameTest {
         int thieflevel = 8;
         int mechaniclevel = 8;
         Loot chest = lootContainer.getLoot("chest0005");
-        Map<String, Integer> expected = Map.of("gold", 1000);
         assertThat(chest.isTaken()).isFalse();
         assertThat(chest.isTrapped()).isTrue();
         assertThat(chest.getTrapLevel()).isEqualTo(6);
@@ -78,8 +77,7 @@ class LootTest extends GameTest {
         assertThat(chest.getLockLevel()).isEqualTo(10);
         assertThat(chest.canPickLock(thieflevel)).isFalse();
         assertThat(chest.getContent()).hasSize(1);
-        Map.Entry<String, Integer> entry = expected.entrySet().iterator().next();
-        assertThat(chest.getContent()).containsOnly(entry(entry.getKey(), entry.getValue()));
+        assertThat(chest.getContent()).isEqualTo(Map.of("gold", 1000));
         chest.disarmTrap();
         chest.pickLock();
         chest.clearContent();
@@ -100,6 +98,30 @@ class LootTest extends GameTest {
         assertThat(chest.getLockLevel()).isZero();
         assertThat(chest.canPickLock(thieflevel)).isTrue();
         assertThat(chest.getContent()).hasSize(1);
+    }
+
+    @Test
+    void whenQuestHasBonusRemoved_ShouldRemoveBonus() {
+        Loot reward = lootContainer.getLoot("quest0006");
+        assertThat(reward.isTaken()).isFalse();
+        assertThat(reward.getContent()).hasSize(3);
+        assertThat(reward.getContent()).isEqualTo(Map.of("gold", 1, "bonus_gold", 1, "bonus_herb", 1));
+        assertThat(reward.getXp()).isEqualTo(2);
+        reward.removeBonus();
+        assertThat(reward.getContent()).hasSize(1);
+        assertThat(reward.getContent()).isEqualTo(Map.of("gold", 1));
+    }
+
+    @Test
+    void whenQuestHasBonusHandled_ShouldMergeAndRemoveBonus() {
+        Loot reward = lootContainer.getLoot("quest0006");
+        assertThat(reward.isTaken()).isFalse();
+        assertThat(reward.getContent()).hasSize(3);
+        assertThat(reward.getContent()).isEqualTo(Map.of("gold", 1, "bonus_gold", 1, "bonus_herb", 1));
+        assertThat(reward.getXp()).isEqualTo(2);
+        reward.handleBonus();
+        assertThat(reward.getContent()).hasSize(2);
+        assertThat(reward.getContent()).isEqualTo(Map.of("gold", 2, "herb", 1));
     }
 
 }

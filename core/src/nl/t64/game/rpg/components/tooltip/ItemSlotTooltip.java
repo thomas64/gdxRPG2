@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.inventory.tooltip;
+package nl.t64.game.rpg.components.tooltip;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public class ItemSlotTooltip extends BaseToolTip {
+public class ItemSlotTooltip extends BaseTooltip {
 
     private static final String RIGHT_BORDER = "sprites/tooltip_right.png";
     private static final float COLUMN_SPACING = 20f;

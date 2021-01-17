@@ -5,6 +5,7 @@ import lombok.Setter;
 import nl.t64.game.rpg.components.conversation.ConversationContainer;
 import nl.t64.game.rpg.components.conversation.PhraseIdContainer;
 import nl.t64.game.rpg.components.door.DoorContainer;
+import nl.t64.game.rpg.components.event.EventContainer;
 import nl.t64.game.rpg.components.loot.LootContainer;
 import nl.t64.game.rpg.components.party.*;
 import nl.t64.game.rpg.components.quest.QuestContainer;
@@ -21,6 +22,7 @@ public class GameData implements ProfileObserver {
     private InventoryContainer inventory;
     private ConversationContainer conversations;
     private QuestContainer quests;
+    private EventContainer events;
     private LootContainer loot;
     private DoorContainer doors;
     @Setter
@@ -35,6 +37,7 @@ public class GameData implements ProfileObserver {
         inventory = new InventoryContainer();
         conversations = new ConversationContainer();
         quests = new QuestContainer();
+        events = new EventContainer();
         loot = new LootContainer();
         doors = new DoorContainer();
         isFirstTimeLootMessageShown = false;
@@ -51,6 +54,7 @@ public class GameData implements ProfileObserver {
         profileManager.setProperty("inventory", inventory);
         profileManager.setProperty("conversations", conversations.createPhraseIdContainer());
         profileManager.setProperty("quests", quests);
+        profileManager.setProperty("events", events);
         profileManager.setProperty("loot", loot);
         profileManager.setProperty("doors", doors);
         profileManager.setProperty("isFirstTimeLootMessageShown", isFirstTimeLootMessageShown);
@@ -66,6 +70,7 @@ public class GameData implements ProfileObserver {
         var currentPhraseIds = profileManager.getProperty("conversations", PhraseIdContainer.class);
         conversations.setCurrentPhraseIds(currentPhraseIds);
         quests = profileManager.getProperty("quests", QuestContainer.class);
+        events = profileManager.getProperty("events", EventContainer.class);
         loot = profileManager.getProperty("loot", LootContainer.class);
         doors = profileManager.getProperty("doors", DoorContainer.class);
         isFirstTimeLootMessageShown = profileManager.getProperty("isFirstTimeLootMessageShown", Boolean.class);

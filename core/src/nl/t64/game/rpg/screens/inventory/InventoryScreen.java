@@ -20,13 +20,13 @@ import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.InventoryContainer;
 import nl.t64.game.rpg.components.party.InventoryDatabase;
 import nl.t64.game.rpg.components.party.PartyContainer;
+import nl.t64.game.rpg.components.tooltip.ButtonTooltip;
+import nl.t64.game.rpg.components.tooltip.ButtonTooltipListener;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.profile.ProfileObserver;
 import nl.t64.game.rpg.screens.ScreenToLoad;
-import nl.t64.game.rpg.screens.inventory.tooltip.ButtonToolTip;
-import nl.t64.game.rpg.screens.inventory.tooltip.ButtonTooltipListener;
 import nl.t64.game.rpg.screens.world.conversation.ConversationDialog;
 import nl.t64.game.rpg.screens.world.conversation.ConversationObserver;
 
@@ -80,7 +80,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
 
     private final Stage stage;
     private final ConversationDialog conversationDialog;
-    private final ButtonToolTip buttonToolTip;
+    private final ButtonTooltip buttonTooltip;
     InventoryUI inventoryUI;
 
     private Vector2 spellsWindowPosition;
@@ -97,7 +97,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
     public InventoryScreen() {
         this.stage = new Stage();
         this.conversationDialog = new ConversationDialog();
-        this.buttonToolTip = new ButtonToolTip();
+        this.buttonTooltip = new ButtonTooltip();
         this.conversationDialog.addObserver(this);
     }
 
@@ -146,6 +146,11 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
     @Override
     public void onNotifyExitConversation() {
         hideConversationDialog();
+    }
+
+    @Override
+    public void onNotifyShowMessageTooltip(String message) {
+        throw new IllegalCallerException("Impossible to show Message from Inventory.");
     }
 
     @Override
@@ -210,7 +215,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
         inventoryUI.heroesWindow.setPosition(heroesWindowPosition.x, heroesWindowPosition.y);
         inventoryUI.addToStage(stage);
         inventoryUI.applyListeners(stage);
-        buttonToolTip.addToStage(stage);
+        buttonTooltip.addToStage(stage);
     }
 
     @Override
@@ -271,22 +276,22 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
         compareButton = createImageToggleButton(BUTTON_COMPARE_DISABLED, BUTTON_COMPARE_ENABLED, BUTTON_COMPARE_OVER_DISABLED, BUTTON_COMPARE_OVER_ENABLED);
         var helpButton = createImageButton(BUTTON_HELP_UP, BUTTON_HELP_OVER, BUTTON_HELP_DOWN);
         closeButton.addListener(new ListenerMouseImageButton(this::closeScreen));
-        closeButton.addListener(new ButtonTooltipListener(buttonToolTip, "Close screen"));
+        closeButton.addListener(new ButtonTooltipListener(buttonTooltip, "Close screen"));
         resetButton.addListener(new ListenerMouseImageButton(this::resetWindowsPositions));
-        resetButton.addListener(new ButtonTooltipListener(buttonToolTip, "Reset windows"));
+        resetButton.addListener(new ButtonTooltipListener(buttonTooltip, "Reset windows"));
         previousButton.addListener(new ListenerMouseImageButton(this::selectPreviousHero));
-        previousButton.addListener(new ButtonTooltipListener(buttonToolTip, "Previous hero"));
+        previousButton.addListener(new ButtonTooltipListener(buttonTooltip, "Previous hero"));
         nextButton.addListener(new ListenerMouseImageButton(this::selectNextHero));
-        nextButton.addListener(new ButtonTooltipListener(buttonToolTip, "Next hero"));
+        nextButton.addListener(new ButtonTooltipListener(buttonTooltip, "Next hero"));
         dismissButton.addListener(new ListenerMouseImageButton(this::tryToDismissHero));
-        dismissButton.addListener(new ButtonTooltipListener(buttonToolTip, "Dismiss hero"));
+        dismissButton.addListener(new ButtonTooltipListener(buttonTooltip, "Dismiss hero"));
         sortButton.addListener(new ListenerMouseImageButton(this::sortInventory));
-        sortButton.addListener(new ButtonTooltipListener(buttonToolTip, "Sort inventory"));
+        sortButton.addListener(new ButtonTooltipListener(buttonTooltip, "Sort inventory"));
         compareButton.addListener(new ListenerMouseImageButton(this::toggleCompare));
-        compareButton.addListener(new ButtonTooltipListener(buttonToolTip, "Toggle compare"));
+        compareButton.addListener(new ButtonTooltipListener(buttonTooltip, "Toggle compare"));
         compareButton.setChecked(Utils.getGameData().isComparingEnabled());
         helpButton.addListener(new ListenerMouseImageButton(this::showHelpMessage));
-        helpButton.addListener(new ButtonTooltipListener(buttonToolTip, "Help dialog"));
+        helpButton.addListener(new ButtonTooltipListener(buttonTooltip, "Help dialog"));
 
         var buttonTable = new Table();
         buttonTable.add(closeButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();

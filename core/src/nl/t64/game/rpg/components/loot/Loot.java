@@ -8,6 +8,8 @@ import java.util.Map;
 @Getter
 public class Loot {
 
+    private static final String BONUS_PREFIX = "bonus_";
+
     private Map<String, Integer> content;
     private int trapLevel;
     private int lockLevel;
@@ -69,6 +71,29 @@ public class Loot {
 
     public boolean isXpGained() {
         return xp == 0;
+    }
+
+    public void handleBonus() {
+        content.entrySet()
+               .stream()
+               .filter(entry -> entry.getKey().startsWith(BONUS_PREFIX))
+               .forEach(bonusEntry -> handleBonus(bonusEntry.getKey(), bonusEntry.getValue()));
+        removeBonus();
+    }
+
+    public void removeBonus() {
+        content.keySet()
+               .removeIf(itemId -> itemId.startsWith(BONUS_PREFIX));
+    }
+
+    private void handleBonus(String bonusItemId, int bonusAmount) {
+        String itemId = bonusItemId.substring(BONUS_PREFIX.length());
+        if (content.containsKey(itemId)) {
+            int amount = content.get(itemId);
+            content.put(itemId, amount + bonusAmount);
+        } else {
+            content.put(itemId, bonusAmount);
+        }
     }
 
 }

@@ -15,6 +15,7 @@ import nl.t64.game.rpg.profile.ProfileObserver;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 
@@ -135,6 +136,11 @@ public class MapManager extends MapSubject implements ProfileObserver {
         notifyMapChanged(currentMap);
     }
 
+    public void collisionEvent(Rectangle playerRect, BiConsumer<String, String> notifyShowConversationDialog) {
+        currentMap.getEventCollisionBy(playerRect)
+                  .ifPresent(event -> event.startConversation(notifyShowConversationDialog));
+    }
+
     public void collisionQuestTasks(Rectangle playerRect) {
         currentMap.getQuestTaskCollisionBy(playerRect)
                   .ifPresent(GameMapQuestObject::setQuestTaskComplete);
@@ -142,7 +148,7 @@ public class MapManager extends MapSubject implements ProfileObserver {
 
     public void checkQuestTasks(Rectangle checkRect) {
         currentMap.getQuestTaskBeingCheckedBy(checkRect)
-                  .ifPresent(GameMapQuestObject::setQuestTaskComplete);
+                  .forEach(GameMapQuestObject::setQuestTaskComplete);
     }
 
     public void removeFromBlockers(Rectangle immobileNpc) {

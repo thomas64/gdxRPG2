@@ -26,9 +26,9 @@ public class LoadScreen implements Screen {
     public void show() {
         stage.addActor(Utils.createScreenshot(true));
         Image parchment = createParchment();
-        parchment.addAction(Actions.alpha(0f));
         stage.addActor(parchment);
-        parchment.addAction(Actions.sequence(Actions.fadeIn(Constant.FADE_DURATION),
+        parchment.addAction(Actions.sequence(Actions.alpha(0f),
+                                             Actions.fadeIn(Constant.FADE_DURATION),
                                              Actions.run(() -> isLoaded = true)));
         Gdx.input.setInputProcessor(stage);
     }

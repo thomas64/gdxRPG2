@@ -14,7 +14,10 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.audio.AudioEvent;
-import nl.t64.game.rpg.components.conversation.*;
+import nl.t64.game.rpg.components.conversation.ConversationChoice;
+import nl.t64.game.rpg.components.conversation.ConversationCommand;
+import nl.t64.game.rpg.components.conversation.ConversationGraph;
+import nl.t64.game.rpg.components.conversation.NoteDatabase;
 import nl.t64.game.rpg.components.party.HeroContainer;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.PartyContainer;
@@ -172,7 +175,7 @@ public class ConversationDialog extends ConversationSubject {
         textTable.add(label).width(DIALOG_WIDTH - (PAD * 5f)).row();
         textTable.add().height(SCROLL_PANE_TOP_PAD).row();
         textTable.add(scrollPane).left().padLeft(PAD);
-        rowWithScrollPane = null;
+        rowWithScrollPane = textTable.getCell(scrollPane);
 
         dialog.getContentTable().clear();
         dialog.getContentTable().add(textTable);
@@ -202,14 +205,13 @@ public class ConversationDialog extends ConversationSubject {
     }
 
     private void populateConversationDialog(String phraseId) {
-        populatePhrase(phraseId);
+        graph.setCurrentPhraseId(phraseId);
+        populatePhrase();
         populateChoices();
     }
 
-    private void populatePhrase(String phraseId) {
-        ConversationPhrase phrase = graph.getPhraseById(phraseId);
-        graph.setCurrentPhraseId(phraseId);
-        String text = String.join(System.lineSeparator(), phrase.getText());
+    private void populatePhrase() {
+        String text = String.join(System.lineSeparator(), graph.getCurrentPhrase());
         label.setText(text);
     }
 
@@ -217,7 +219,7 @@ public class ConversationDialog extends ConversationSubject {
         ConversationChoice[] choices = graph.getAssociatedChoices().toArray(new ConversationChoice[0]);
         answers.setItems(choices);
         setDefaultSelectedChoice(choices);
-        setScrollPaneHeightIfAmountOfChoicesIsEven(choices);
+        setScrollPaneHeight(choices);
     }
 
     private void setDefaultSelectedChoice(ConversationChoice[] choices) {
@@ -228,9 +230,11 @@ public class ConversationDialog extends ConversationSubject {
         }
     }
 
-    private void setScrollPaneHeightIfAmountOfChoicesIsEven(ConversationChoice[] choices) {
+    private void setScrollPaneHeight(ConversationChoice[] choices) {
         if (choices.length % 2 == 0) {
-            rowWithScrollPane.height((choices.length * SCROLL_PANE_LINE_HEIGHT));
+            rowWithScrollPane.height(choices.length * SCROLL_PANE_LINE_HEIGHT);
+        } else {
+            rowWithScrollPane.height(choices.length * SCROLL_PANE_LINE_HEIGHT + 2f);
         }
     }
 
@@ -238,6 +242,10 @@ public class ConversationDialog extends ConversationSubject {
 
     private void selectAnswer() {
         final ConversationChoice selectedAnswer = answers.getSelected();
+        if (!selectedAnswer.isMeetingCondition(conversationId)) {
+            Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_ERROR);
+            return;
+        }
         final String destinationId = selectedAnswer.getDestinationId();
         final ConversationCommand conversationCommand = selectedAnswer.getConversationCommand();
 
@@ -249,14 +257,17 @@ public class ConversationDialog extends ConversationSubject {
             case LOAD_SHOP -> loadShop(destinationId);
             case SAVE_GAME -> saveGame(destinationId);
             case ACCEPT_QUEST -> acceptQuest();
-            case REJECT_QUEST -> rejectQuest(destinationId);
+            case KNOW_QUEST -> knowQuest(destinationId);
             case TOLERATE_QUEST -> tolerateQuest();
             case RECEIVE_ITEM -> receiveItem(destinationId);
-            case CHECK_IF_QUEST_ACCEPTED -> checkQuest(destinationId);
-            case CHECK_IF_IN_INVENTORY -> checkInventory(destinationId);
+            case CHECK_IF_LINKED_QUEST_KNOWN -> checkIfLinkedQuestKnown(destinationId);
+            case CHECK_IF_QUEST_ACCEPTED -> checkIfQuestAccepted(destinationId);
+            case CHECK_IF_IN_INVENTORY -> checkIfInInventory(destinationId);
             case COMPLETE_QUEST_TASK -> completeTask(destinationId);
             case RETURN_QUEST -> returnQuest();
             case REWARD_QUEST -> rewardQuest();
+            case BONUS_REWARD_QUEST -> bonusRewardQuest();
+            case FAIL_QUEST -> failQuest(destinationId);
             default -> throw new IllegalStateException(
                     String.format("ConversationCommand '%s' cannot be reached here.", conversationCommand));
         }
@@ -296,10 +307,10 @@ public class ConversationDialog extends ConversationSubject {
 
     private void acceptQuest() {
         QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
-        quest.handleAccept(this::continueConversation);             // sets new phraseId
+        quest.handleAccept(super::notifyShowMessageTooltip, this::continueConversation);    // sets new phraseId
     }
 
-    private void rejectQuest(String destinationId) {
+    private void knowQuest(String destinationId) {
         QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
         quest.know();
         continueConversation(destinationId);
@@ -307,7 +318,8 @@ public class ConversationDialog extends ConversationSubject {
 
     private void tolerateQuest() {
         QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
-        quest.handleTolerate(this::continueConversation);           // sets new phraseId
+        quest.handleTolerate(super::notifyShowMessageTooltip);
+        continueConversation(Constant.PHRASE_ID_QUEST_TOLERATE);
     }
 
     private void receiveItem(String destinationId) {
@@ -316,17 +328,22 @@ public class ConversationDialog extends ConversationSubject {
         quest.handleReceive(super::notifyShowReceiveDialog);        // ends conversation, sets possible new phraseId
     }
 
-    private void checkQuest(String destinationId) {
-        String questId = conversationId.substring(0, conversationId.length() - 2);
-        QuestGraph quest = Utils.getGameData().getQuests().getQuestById(questId);
-        quest.handleCheck(destinationId, this::continueConversation, this::endConversation);
+    private void checkIfLinkedQuestKnown(String destinationId) {
+        QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
+        quest.handleCheckIfLinkedIsKnown(destinationId, this::continueConversation);    // sets possible new phraseId
     }
 
-    private void checkInventory(String destinationId) {
+    private void checkIfQuestAccepted(String destinationId) {
+        String questId = conversationId.substring(0, conversationId.length() - 2);
+        QuestGraph quest = Utils.getGameData().getQuests().getQuestById(questId);
+        quest.handleCheckIfAccepted(destinationId, this::continueConversation, this::endConversation);
+    }
+
+    private void checkIfInInventory(String destinationId) {
         String questId = conversationId.substring(0, conversationId.length() - 2);
         QuestGraph quest = Utils.getGameData().getQuests().getQuestById(questId);
         String questTaskId = conversationId.substring(conversationId.length() - 1);
-        quest.handleInventory(questTaskId, destinationId, this::continueConversation, this::endConversation);
+        quest.handleCheckIfAcceptedInventory(questTaskId, destinationId, this::continueConversation, this::endConversation);
     }
 
     private void completeTask(String destinationId) {
@@ -343,13 +360,26 @@ public class ConversationDialog extends ConversationSubject {
         quest.handleReturn(this::continueConversation);             // sets new phraseId
     }
 
+    private void bonusRewardQuest() {
+        Utils.getGameData().getLoot().getLoot(conversationId).handleBonus();
+        rewardQuest();
+    }
+
     private void rewardQuest() {
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_REWARD);
         graph.setCurrentPhraseId(Constant.PHRASE_ID_QUEST_UNCLAIMED);
         QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
-        quest.handleReward(super::notifyShowLevelUpDialog,
+        quest.handleReward(super::notifyShowMessageTooltip,
+                           super::notifyShowLevelUpDialog,
                            super::notifyShowRewardDialog,           // ends conversation, sets possible new phraseId
                            this::endConversationWithoutSound);      // sets new phraseId
+    }
+
+    private void failQuest(String destinationId) {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_QUEST_FAIL);
+        QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
+        quest.handleFail(super::notifyShowMessageTooltip);
+        continueConversation(destinationId);
     }
 
 }

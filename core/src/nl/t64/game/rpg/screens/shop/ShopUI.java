@@ -6,10 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.PartyContainer;
+import nl.t64.game.rpg.components.tooltip.ItemSlotTooltip;
+import nl.t64.game.rpg.components.tooltip.ShopSlotTooltipBuy;
+import nl.t64.game.rpg.components.tooltip.ShopSlotTooltipSell;
 import nl.t64.game.rpg.screens.inventory.*;
-import nl.t64.game.rpg.screens.inventory.tooltip.ItemSlotTooltip;
-import nl.t64.game.rpg.screens.inventory.tooltip.ShopSlotTooltipBuy;
-import nl.t64.game.rpg.screens.inventory.tooltip.ShopSlotTooltipSell;
 
 import java.util.HashMap;
 import java.util.Map;

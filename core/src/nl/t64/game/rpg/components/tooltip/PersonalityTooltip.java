@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.inventory.tooltip;
+package nl.t64.game.rpg.components.tooltip;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -8,7 +8,7 @@ import nl.t64.game.rpg.components.party.SkillItemId;
 import nl.t64.game.rpg.screens.inventory.InventoryUtils;
 
 
-public class PersonalityTooltip extends BaseToolTip {
+public class PersonalityTooltip extends BaseTooltip {
 
     void setVisible(boolean visible) {
         window.setVisible(visible);

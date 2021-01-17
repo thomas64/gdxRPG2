@@ -18,6 +18,7 @@ import nl.t64.game.rpg.components.character.*;
 import nl.t64.game.rpg.components.conversation.ConversationGraph;
 import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.components.quest.QuestGraph;
+import nl.t64.game.rpg.components.tooltip.MessageTooltip;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.GameState;
 import nl.t64.game.rpg.constants.ScreenType;
@@ -54,6 +55,7 @@ public class WorldScreen implements Screen,
     private final PartyWindow partyWindow;
     private final ConversationDialog conversationDialog;
     private final MessageDialog messageDialog;
+    private final MessageTooltip messageTooltip;
     private final DebugBox debugBox;
 
     private final Character player;
@@ -83,6 +85,7 @@ public class WorldScreen implements Screen,
         this.partyWindow = new PartyWindow();
         this.conversationDialog = new ConversationDialog();
         this.messageDialog = new MessageDialog(this.multiplexer);
+        this.messageTooltip = new MessageTooltip();
 
         this.debugBox = new DebugBox(this.player);
 
@@ -108,11 +111,11 @@ public class WorldScreen implements Screen,
     @Override
     public void onNotifyMapWillChange(Runnable changeMap, Color transitionColor) {
         var transition = new TransitionImage(transitionColor);
-        transition.addAction(Actions.alpha(0f));
         stage.addActor(transition);
-        transition.addAction(Actions.sequence(Actions.fadeIn(Constant.FADE_DURATION),
+        transition.addAction(Actions.sequence(Actions.alpha(0f),
+                                              Actions.fadeIn(Constant.FADE_DURATION),
                                               Actions.run(changeMap),
-                                              Actions.run(stage::clear)));
+                                              Actions.removeActor()));
     }
 
     @Override
@@ -146,6 +149,13 @@ public class WorldScreen implements Screen,
         this.currentNpcCharacter = npcCharacter;
         player.resetInput();
         conversationDialog.loadConversation(conversationId, npcCharacter.getId());
+        conversationDialog.show();
+    }
+
+    @Override
+    public void onNotifyShowConversationDialog(String conversationId, String characterId) {
+        player.resetInput();
+        conversationDialog.loadConversation(conversationId, characterId);
         conversationDialog.show();
     }
 
@@ -214,6 +224,11 @@ public class WorldScreen implements Screen,
     public void onNotifyExitConversation() {
         conversationDialog.hideWithFade();
         show();
+    }
+
+    @Override
+    public void onNotifyShowMessageTooltip(String message) {
+        messageTooltip.show(message, stage);
     }
 
     @Override
@@ -286,7 +301,7 @@ public class WorldScreen implements Screen,
         messageDialog.update(dt);
 
         stage.act(dt);
-        if (stage.getActors().notEmpty()) {
+        if (isInTransition()) {
             Utils.getMapManager().fadeAudio();
         }
         stage.draw();
@@ -307,7 +322,7 @@ public class WorldScreen implements Screen,
     }
 
     private void updateCharacters(float dt) {
-        if (stage.getActors().isEmpty()) {
+        if (!isInTransition()) {
             player.update(dt);
         }
         doorList.forEach(door -> door.update(dt));
@@ -363,6 +378,10 @@ public class WorldScreen implements Screen,
         partyWindow.showHide();
     }
 
+    private boolean isInTransition() {
+        return stage.getActors().notEmpty() && stage.getActors().peek() instanceof TransitionImage;
+    }
+
     @Override
     public void resize(int width, int height) {
         // empty
@@ -381,7 +400,6 @@ public class WorldScreen implements Screen,
     @Override
     public void hide() {
         gameState = GameState.PAUSED;
-        stage.clear();
         Gdx.input.setInputProcessor(null);
     }
 

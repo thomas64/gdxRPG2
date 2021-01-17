@@ -135,6 +135,7 @@ public class PhysicsPlayer extends PhysicsComponent {
                 collisionBlockers(dt);
             }
             collisionPortals();
+            collisionEvents();
             collisionQuestTasks();
         } else if (state.equals(CharacterState.IDLE)) {
             turnCharacters();
@@ -248,6 +249,12 @@ public class PhysicsPlayer extends PhysicsComponent {
 
     private void collisionPortals() {
         Utils.getMapManager().collisionPortals(boundingBox, direction);
+    }
+
+    // todo, een event zal niet altijd alleen een conversation zijn. oplossen wanneer dat moment daar is.
+    // oplossen hier en in de hele keten aan methodes die hierop volgen. (MapManager, GameMapEvent, Event)
+    private void collisionEvents() {
+        Utils.getMapManager().collisionEvent(boundingBox, super::notifyShowConversationDialog);
     }
 
     private void collisionQuestTasks() {

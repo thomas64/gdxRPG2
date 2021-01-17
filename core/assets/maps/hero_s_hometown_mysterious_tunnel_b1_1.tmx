@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="140" height="92" tilewidth="24" tileheight="24" infinite="0" nextlayerid="23" nextobjectid="135">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="140" height="92" tilewidth="24" tileheight="24" infinite="0" nextlayerid="24" nextobjectid="143">
  <properties>
   <property name="bgm" value="bgm_mysterious_tunnel"/>
   <property name="lightmap_player" value="light_player"/>
@@ -44,7 +44,7 @@
  </layer>
  <layer id="20" name="over6_objects" width="140" height="92">
   <data encoding="base64" compression="zlib">
-   eJzt3D1uE0EUAOBxAqlIEIgrpIAmCHIPIpGLIMEhuEB6CgpoUIKUPnQkEoJcAUTBKTJIpCBZ2zPeWe/PfJ80suXGz+PZ0frN8wsBAAAAAAAAAFjkeDuEk+3brz/YCeHhzvrjKWXe56Kdr3FOzxvm9XFcK09GvF7mfS5o63LE1wXr98d6IcPG/b4jAABS7N4N4c0shNez5Y9HG31HC/ThVeZvwfd3QvjVTSiD0rR/2idDeCt3QIZ3ievl+npbVco+dtpD/r0prkX52s/OCNYiZR/71sN30RTXonztRUOMfcQ9VKXuV1L2sd89zHtTXIvytT+tDWit7f0KAEANTu71HUE56n+79SOulc0J5dtrqv/toh715vnLzfOZR5vl37MLuedtU9OUr6ypHjU3X+u87bYu61Gv95OxSj1vo4zZvwFAe86vASjt0wo56CnlrcnzbCuE7xnf/9Ty1nvxXuxpHB/iPHyM43l8vl/R/dkq+dr9rbT/XY0pb53qRVwbB3GcxTn4EsfL+PywovXSlK+t+fdM6T5PueeuQ+8zJV/7v9J9nnLPXcfeZ4phGvo+xLDYh+iS+jVy1FS/BgDAcqv2ScrpU6ePHfDXsuu9q/4MY9h/1KuQamr1KlNX4j6pzePU6lUAYIpy+89St9z+s9Qtt/8sAAAAAHnm9cUFKGXsfXFZL31xAQAAAAAAYJyuADXJcbs=
+   eJzt3D1uE0EUAOBxAqlIEIgrUEADCrkHSHARJHIILkCfggIaRJDoQwdICLgCiIJTMEhxkWTWnvHuen/m+6SRLTcej2dH6/eeXwgAAAAAAAAAwCrv90M43b/6+q2DEG4fbH8+XWn6XLTzOa7pl8S63ot75f6E90vT54K2fk74umD7/tovFNi5OfQMAIAcd6+HcLwI4cVi/eOrnaFnCwzheeFvwdfXQvjdz1RGJXV+OidDeCl2QIGTzP2yvN42lXOOfRwg/p6a16p47Qc5gq3IOce+DfBdpOa1Kl77NTHHIeY9Vl3dr+ScY38GWPfUvFbFa3/ZG9Ba2/sVAIAanN4YegbdUf/brx9xr+zOKN5eU/1vH/Wol/Mvl/Mzd3a7f88+lObb5iYVr6ypHrU0XivfdlWf9ajL82SqcvNtdGNxPgBoT/4agK692yAGPae4NWUO90L4XvD9zy1u/SDeiz2M401ch7dxPIrPjyq6P9skXnu0l/e/qynFrddZrtPjuDeexHEW1+BTHE/j82fn+6WGPhWpeG3Nv2ea+jzlxLVTeYHSvOvY+0yJ117U1OcpZ51SeYHSvOvU+0wxTmM/hxgX5xB9Ur9GiZrq1wAAWG/TPkklfer0sQP+W3e999WfYQrnj3oVcs2tXmXuurhPavM4l3oVAJiz0v6z1K20/yx1K+0/CwAAAECZpr64AF2Zel9ctktfXAAAAAAAAJimf+HXdWk=
   </data>
  </layer>
  <layer id="21" name="over7_none" width="140" height="92">
@@ -134,7 +134,20 @@
   <object id="51" name="door_gate_mysterious_tunnel" x="792" y="1104" width="48" height="96"/>
  </objectgroup>
  <objectgroup color="#aa55ff" id="12" name="hero"/>
- <objectgroup color="#55ff7f" id="13" name="npc"/>
+ <objectgroup color="#55ff7f" id="13" name="npc">
+  <object id="135" name="duke01" x="696" y="1224" width="48" height="24">
+   <properties>
+    <property name="conversation" value="quest0006"/>
+    <property name="direction" value="east"/>
+   </properties>
+  </object>
+  <object id="138" name="man02" x="1080" y="1392" width="48" height="24">
+   <properties>
+    <property name="conversation" value="quest0007"/>
+    <property name="direction" value="north"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup color="#55aaff" id="3" name="spawn">
   <object id="2" name="hero_s_hometown_mysterious_tunnel" x="792" y="1872" width="48" height="24"/>
   <object id="132" name="hero_s_hometown_mysterious_tunnel_b1_2" x="2040" y="1296" width="48" height="24"/>
@@ -149,7 +162,21 @@
  <objectgroup color="#ffaa7f" id="11" name="save"/>
  <objectgroup id="9" name="lower_texture"/>
  <objectgroup id="10" name="upper_texture"/>
- <objectgroup color="#ffff00" id="8" name="quest"/>
+ <objectgroup color="#ffff00" id="8" name="quest">
+  <object id="142" name="check" type="quest0007" x="792" y="1104" width="48" height="96">
+   <properties>
+    <property name="task" value="3"/>
+   </properties>
+  </object>
+  <object id="141" name="check" type="quest0006" x="792" y="1104" width="48" height="96">
+   <properties>
+    <property name="task" value="3"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup color="#ff55ff" id="23" name="event">
+  <object id="139" name="discover" type="event0001" x="1116" y="1248" width="48" height="144"/>
+ </objectgroup>
  <objectgroup color="#ffffff" id="6" name="lights">
   <object id="3" x="744" y="1614" width="12" height="12"/>
   <object id="4" x="876" y="1614" width="12" height="12"/>
@@ -160,7 +187,6 @@
   <object id="14" x="1290" y="366" width="12" height="12"/>
   <object id="15" x="1368" y="654" width="12" height="12"/>
   <object id="18" x="1146" y="546" width="12" height="12"/>
-  <object id="19" x="1050" y="1410" width="12" height="12"/>
   <object id="21" x="1866" y="1506" width="12" height="12"/>
   <object id="23" x="2280" y="1134" width="12" height="12"/>
   <object id="28" x="2280" y="654" width="12" height="12"/>
@@ -168,5 +194,7 @@
   <object id="32" x="2700" y="414" width="12" height="12"/>
   <object id="39" x="1578" y="1230" width="12" height="12"/>
   <object id="129" x="2568" y="894" width="12" height="12"/>
+  <object id="136" x="696" y="1158" width="12" height="12"/>
+  <object id="137" x="924" y="1158" width="12" height="12"/>
  </objectgroup>
 </map>

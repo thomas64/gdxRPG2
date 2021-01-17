@@ -20,17 +20,22 @@ public class QuestGraph {
 
     String id;
     QuestState currentState;
+    boolean isFailed;
     private String title;
     private String character;
     private String summary;
+    private String linkedWith;
     private Map<String, QuestTask> tasks;
 
     private QuestGraph() {
         this.currentState = DEFAULT_STATE;
+        this.isFailed = false;
     }
 
     public String toString() {
-        if (currentState.equals(QuestState.FINISHED)) {
+        if (isFailed) {
+            return "x  " + title;
+        } else if (currentState.equals(QuestState.FINISHED)) {
             return "v  " + title;
         } else if (currentState.equals(QuestState.UNCLAIMED)) {
             return "o   " + title;
@@ -58,9 +63,10 @@ public class QuestGraph {
         return currentState.equals(QuestState.FINISHED);
     }
 
-    public void handleAccept(Consumer<String> continueConversation) {
+    public void handleAccept(Consumer<String> notifyShowMessageTooltip, Consumer<String> continueConversation) {
         know();
         accept();
+        notifyShowMessageTooltip.accept("New quest:\n\n" + title);
         if (doesReturnMeetDemand()) {
             continueConversation.accept(Constant.PHRASE_ID_QUEST_IMMEDIATE_SUCCESS);
         } else {
@@ -68,10 +74,10 @@ public class QuestGraph {
         }
     }
 
-    public void handleTolerate(Consumer<String> continueConversation) {
+    public void handleTolerate(Consumer<String> notifyShowMessageTooltip) {
         know();
         accept();
-        continueConversation.accept(Constant.PHRASE_ID_QUEST_TOLERATE);
+        notifyShowMessageTooltip.accept("New quest:\n\n" + title);
     }
 
     public void handleReceive(Consumer<Loot> notifyShowReceiveDialog) {
@@ -84,7 +90,17 @@ public class QuestGraph {
         notifyShowReceiveDialog.accept(receive);
     }
 
-    public void handleCheck(String phraseId, Consumer<String> continueConversation, Consumer<String> endConversation) {
+    public void handleCheckIfLinkedIsKnown(String phraseId, Consumer<String> continueConversation) {
+        if (linkedWith != null
+            && !Utils.getGameData().getQuests().getQuestById(linkedWith).getCurrentState().equals(QuestState.UNKNOWN)) {
+            continueConversation.accept(Constant.PHRASE_ID_QUEST_LINKED);
+        } else {
+            continueConversation.accept(phraseId);
+        }
+    }
+
+    public void handleCheckIfAccepted(String phraseId,
+                                      Consumer<String> continueConversation, Consumer<String> endConversation) {
         if (currentState.equals(QuestState.ACCEPTED)) {
             continueConversation.accept(Constant.PHRASE_ID_QUEST_DELIVERY);
         } else {
@@ -92,8 +108,8 @@ public class QuestGraph {
         }
     }
 
-    public void handleInventory(String taskId, String phraseId,
-                                Consumer<String> continueConversation, Consumer<String> endConversation) {
+    public void handleCheckIfAcceptedInventory(String taskId, String phraseId,
+                                               Consumer<String> continueConversation, Consumer<String> endConversation) {
         if (currentState.equals(QuestState.ACCEPTED)
             && tasks.get(taskId).hasTargetInInventory()) {
             continueConversation.accept(Constant.PHRASE_ID_QUEST_DELIVERY);
@@ -106,15 +122,17 @@ public class QuestGraph {
         if (doesReturnMeetDemand()) {
             continueConversation.accept(Constant.PHRASE_ID_QUEST_SUCCESS);
         } else {
-            continueConversation.accept(Constant.PHRASE_ID_QUEST_FAILURE);
+            continueConversation.accept(Constant.PHRASE_ID_QUEST_NO_SUCCESS);
         }
     }
 
-    public void handleReward(Consumer<String> notifyShowLevelUpDialog,
+    public void handleReward(Consumer<String> notifyShowMessageTooltip,
+                             Consumer<String> notifyShowLevelUpDialog,
                              BiConsumer<Loot, String> notifyShowRewardDialog,
                              Consumer<String> endConversation) {
         Loot reward = Utils.getGameData().getLoot().getLoot(id);
-        Optional<String> levelUpMessage = partyGainXp(reward);
+        reward.removeBonus();
+        Optional<String> levelUpMessage = partyGainXp(reward, notifyShowMessageTooltip);
         if (currentState.equals(QuestState.ACCEPTED)) {
             takeDemands();
             unclaim();
@@ -127,6 +145,11 @@ public class QuestGraph {
         } else {
             notifyShowRewardDialog.accept(reward, levelUpMessage.orElse(null));
         }
+    }
+
+    public void handleFail(Consumer<String> notifyShowMessageTooltip) {
+        isFailed = true;
+        notifyShowMessageTooltip.accept("Quest failed:\n\n" + title);
     }
 
     public void know() {
@@ -149,7 +172,7 @@ public class QuestGraph {
         }
     }
 
-    void unclaim() {
+    public void unclaim() {
         if (currentState.equals(QuestState.ACCEPTED)) {
             currentState = QuestState.UNCLAIMED;
         } else {
@@ -171,12 +194,13 @@ public class QuestGraph {
                           .forEach(QuestTask::removeTargetFromInventory);
     }
 
-    private Optional<String> partyGainXp(Loot reward) {
+    private Optional<String> partyGainXp(Loot reward, Consumer<String> notifyShowMessageTooltip) {
         if (reward.isXpGained()) {
             return Optional.empty();
         }
         StringBuilder levelUpMessage = new StringBuilder();
         Utils.getGameData().getParty().getAllHeroes().forEach(hero -> hero.gainXp(reward.getXp(), levelUpMessage));
+        notifyShowMessageTooltip.accept(String.format("+ %s XP", reward.getXp()));
         reward.clearXp();
         String finalMessage = levelUpMessage.toString().strip();
         if (finalMessage.isEmpty()) {
@@ -187,7 +211,9 @@ public class QuestGraph {
     }
 
     private boolean doesReturnMeetDemand() {
-        return getAllQuestTasks().stream().allMatch(QuestTask::isCompleteForReturn);
+        return getAllQuestTasks().stream()
+                                 .filter(task -> !task.isOptional())
+                                 .allMatch(QuestTask::isCompleteForReturn);
     }
 
     private List<QuestTask> getAllQuestTasks() {

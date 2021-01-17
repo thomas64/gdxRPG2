@@ -90,6 +90,12 @@ public class PartyContainer {
                              .sum();
     }
 
+    public int getBestSkillLevel(String skillItemId) {
+        return SkillItemId.from(skillItemId)
+                          .map(this::getBestSkillLevel)
+                          .orElse(0);
+    }
+
     public HeroItem getHeroWithHighestSkill(SkillItemId skillItemId) {
         return getAllHeroes().stream()
                              .max(Comparator.comparing(heroItem -> heroItem.getCalculatedTotalSkillOf(skillItemId)))
@@ -102,6 +108,13 @@ public class PartyContainer {
 
     boolean contains(String heroId) {
         return party.containsKey(heroId);
+    }
+
+    private int getBestSkillLevel(SkillItemId skillItemId) {
+        return getAllHeroes().stream()
+                             .map(heroItem -> heroItem.getCalculatedTotalSkillOf(skillItemId))
+                             .max(Integer::compare)
+                             .orElse(0);
     }
 
     private HeroItem getFirstHero() {

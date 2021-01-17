@@ -8,6 +8,8 @@ public interface ComponentObserver {
 
     void onNotifyShowConversationDialog(String conversationId, Character npcCharacter);
 
+    void onNotifyShowConversationDialog(String conversationId, String characterId);
+
     void onNotifyShowNoteDialog(String noteId);
 
     void onNotifyShowFindDialog(Loot loot, AudioEvent event, String message);

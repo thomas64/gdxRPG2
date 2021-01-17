@@ -4,13 +4,17 @@ import nl.t64.game.rpg.GameData;
 import nl.t64.game.rpg.GameTest;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.loot.Loot;
+import nl.t64.game.rpg.components.loot.LootContainer;
+import nl.t64.game.rpg.components.party.InventoryContainer;
 import nl.t64.game.rpg.components.party.InventoryDatabase;
 import nl.t64.game.rpg.components.party.InventoryItem;
+import nl.t64.game.rpg.components.party.PartyContainer;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.profile.ProfileManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -20,10 +24,18 @@ import static org.assertj.core.api.Assertions.*;
 class QuestTest extends GameTest {
 
     private QuestContainer quests;
+    private InventoryContainer inventory;
+    private PartyContainer party;
+    private LootContainer loot;
 
     @BeforeEach
     private void setup() {
-        quests = new QuestContainer();
+        final GameData gameData = Utils.getGameData();
+        gameData.onNotifyCreateProfile(new ProfileManager());
+        quests = gameData.getQuests();
+        inventory = gameData.getInventory();
+        party = gameData.getParty();
+        loot = gameData.getLoot();
     }
 
     @Test
@@ -50,60 +62,60 @@ class QuestTest extends GameTest {
 
     @Test
     void whenQuestGraphIsLoaded_ShouldHandleFlow() {
-        final GameData gameData = Utils.getGameData();
-        gameData.onNotifyCreateProfile(new ProfileManager());
-
-        assertThat(gameData.getParty().getHero(0).getXpToInvest()).isZero();
+        assertThat(party.getHero(0).getXpToInvest()).isZero();
         QuestGraph quest0001 = quests.getQuestById("quest0001");
         assertThatExceptionOfType(IllegalCallerException.class).isThrownBy(() -> quest0001.setTaskComplete("1"));
         assertThat(quest0001.isFinished()).isFalse();
-        quest0001.handleAccept(s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_ACCEPT));
+        quest0001.handleAccept(s -> assertThat(s).isEqualTo("""
+                                                                    New quest:
+                                                                    
+                                                                    Herbs for boy"""),
+                               s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_ACCEPT));
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.ACCEPTED);
-        quest0001.handleReturn(s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_FAILURE));
+        quest0001.handleReturn(s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_NO_SUCCESS));
         assertThatExceptionOfType(IllegalStateException.class)
-                .isThrownBy(() -> quest0001.handleReward(null, null, null));
-        gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("gemstone", 5));
-        gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("herb", 3));
+                .isThrownBy(() -> quest0001.handleReward(s -> {}, null, null, null));
+        inventory.autoSetItem(InventoryDatabase.getInstance().createInventoryItem("gemstone", 5));
+        inventory.autoSetItem(InventoryDatabase.getInstance().createInventoryItem("herb", 3));
         quest0001.handleReturn(s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_SUCCESS));
         quest0001.handleReward(s -> assertThat(s).isNull(),
+                               s -> assertThat(s).isNull(),
                                (l, s) -> assertThat(l.isTaken()).isFalse(),
                                null);
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.UNCLAIMED);
-        gameData.getLoot().getLoot("quest0001").clearContent();
+        loot.getLoot("quest0001").clearContent();
         quest0001.handleReward(s -> assertThat(s).isNull(),
+                               s -> assertThat(s).isNull(),
                                (l, s) -> assertThat(l.isTaken()).isTrue(),
                                s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_FINISHED));
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.FINISHED);
         assertThat(quest0001.isFinished()).isTrue();
-        assertThat(gameData.getParty().getHero(0).getXpToInvest()).isEqualTo(2);
-        assertThat(gameData.getInventory().hasEnoughOfItem("gemstone", 1)).isFalse();
-        assertThat(gameData.getInventory().hasEnoughOfItem("herb", 1)).isFalse();
+        assertThat(party.getHero(0).getXpToInvest()).isEqualTo(2);
+        assertThat(inventory.hasEnoughOfItem("gemstone", 1)).isFalse();
+        assertThat(inventory.hasEnoughOfItem("herb", 1)).isFalse();
     }
 
     @Test
     void whenDemandsAreCompleteFromTheStart_ShouldHandleQuickFlow() {
-        final GameData gameData = Utils.getGameData();
-        gameData.onNotifyCreateProfile(new ProfileManager());
-        gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("gemstone", 5));
-        gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("herb", 3));
+        inventory.autoSetItem(InventoryDatabase.getInstance().createInventoryItem("gemstone", 5));
+        inventory.autoSetItem(InventoryDatabase.getInstance().createInventoryItem("herb", 3));
         QuestGraph quest0001 = quests.getQuestById("quest0001");
-        quest0001.handleAccept(s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_IMMEDIATE_SUCCESS));
+        quest0001.handleAccept(s -> {}, s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_IMMEDIATE_SUCCESS));
     }
 
     @Test
     void whenQuestIsTolerated_ShouldNotHandleQuickFlow() {
         QuestGraph quest0002 = quests.getQuestById("quest0002");
         assertThat(quest0002.getCurrentState()).isEqualTo(QuestState.UNKNOWN);
-        quest0002.handleTolerate(s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_TOLERATE));
+        quest0002.handleTolerate(s -> assertThat(s).isEqualTo("""
+                                                                      New quest:
+                                                                      
+                                                                      Get through the gatekeeper"""));
         assertThat(quest0002.getCurrentState()).isEqualTo(QuestState.ACCEPTED);
     }
 
-    //@formatter:off
     @Test
     void whenSearchingForEdgeCases_ShouldThrowExceptions() {
-        final GameData gameData = Utils.getGameData();
-        gameData.onNotifyCreateProfile(new ProfileManager());
-
         QuestGraph quest0001 = quests.getQuestById("quest0001");
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.UNKNOWN);
         quest0001.know();
@@ -111,85 +123,104 @@ class QuestTest extends GameTest {
         quest0001.know();
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.KNOWN);
         assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(() -> quest0001.handleReceive(loot -> { }));
-        quest0001.handleAccept(s -> { });
+        quest0001.handleAccept(s -> {}, s -> {});
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.ACCEPTED);
         assertThatExceptionOfType(IllegalStateException.class).isThrownBy(quest0001::know);
         assertThatExceptionOfType(IllegalStateException.class).isThrownBy(quest0001::accept);
-        gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("gemstone", 5));
-        gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("herb", 3));
-        quest0001.handleReward(s -> { }, (l, s) -> { }, null);
+        inventory.autoSetItem(InventoryDatabase.getInstance().createInventoryItem("gemstone", 5));
+        inventory.autoSetItem(InventoryDatabase.getInstance().createInventoryItem("herb", 3));
+        quest0001.handleReward(s -> {}, s -> {}, (l, s) -> {}, null);
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.UNCLAIMED);
         assertThatExceptionOfType(IllegalStateException.class).isThrownBy(quest0001::unclaim);
-        gameData.getLoot().getLoot("quest0001").clearContent();
-        quest0001.handleReward(s -> { }, (l, s) -> { }, s -> { });
+        loot.getLoot("quest0001").clearContent();
+        quest0001.handleReward(s -> {}, s -> {}, (l, s) -> {}, s -> {});
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.FINISHED);
         assertThatExceptionOfType(IllegalStateException.class).isThrownBy(quest0001::finish);
     }
 
     @Test
     void whenQuestReceiveItemQuestIsHandled_ShouldBeHandled() {
-        final GameData gameData = Utils.getGameData();
-        gameData.onNotifyCreateProfile(new ProfileManager());
-
         QuestGraph quest0005 = quests.getQuestById("quest0005");
         quest0005.handleReceive(l -> { });
         assertThat(quest0005.getCurrentState()).isEqualTo(QuestState.KNOWN);
 
-        quest0005.handleInventory("1", "xxx",
-                                  s -> assertThat(s).isNull(),
-                                  s -> assertThat(s).isEqualTo("xxx"));
+        quest0005.handleCheckIfAcceptedInventory("1", "xxx",
+                                                 s -> assertThat(s).isNull(),
+                                                 s -> assertThat(s).isEqualTo("xxx"));
 
         String targetId = quest0005.getTasks().get("1").getTarget().entrySet().iterator().next().getKey();
         InventoryItem targetItem = InventoryDatabase.getInstance().createInventoryItem(targetId);
-        Utils.getGameData().getInventory().autoSetItem(targetItem);
+        inventory.autoSetItem(targetItem);
 
-        quest0005.handleInventory("1", "xxx",
-                                  s -> assertThat(s).isNull(),
-                                  s -> assertThat(s).isEqualTo("xxx"));
+        quest0005.handleCheckIfAcceptedInventory("1", "xxx",
+                                                 s -> assertThat(s).isNull(),
+                                                 s -> assertThat(s).isEqualTo("xxx"));
 
         quest0005.accept();
 
-        quest0005.handleInventory("1", "xxx",
-                                  s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_DELIVERY),
-                                  s -> assertThat(s).isNull());
+        quest0005.handleCheckIfAcceptedInventory("1", "xxx",
+                                                 s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_DELIVERY),
+                                                 s -> assertThat(s).isNull());
 
-        assertThat(Utils.getGameData().getInventory().contains(Map.of(targetId, 1))).isTrue();
+        assertThat(inventory.contains(Map.of(targetId, 1))).isTrue();
         quest0005.setTaskComplete("1");
-        assertThat(Utils.getGameData().getInventory().contains(Map.of(targetId, 1))).isFalse();
+        assertThat(inventory.contains(Map.of(targetId, 1))).isFalse();
     }
 
     @Test
     void whenQuestReceiveMessageQuestIsHandled_ShouldBeHandled() {
         QuestGraph quest0004 = quests.getQuestById("quest0004");
 
-        quest0004.handleCheck("xxx",
-                              s -> assertThat(s).isNull(),
-                              s -> assertThat(s).isEqualTo("xxx"));
+        quest0004.handleCheckIfAccepted("xxx",
+                                        s -> assertThat(s).isNull(),
+                                        s -> assertThat(s).isEqualTo("xxx"));
 
-        quest0004.handleAccept(s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_ACCEPT));
+        quest0004.handleAccept(s -> {}, s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_ACCEPT));
 
-        quest0004.handleCheck("xxx",
-                              s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_DELIVERY),
-                              s -> assertThat(s).isNull());
+        quest0004.handleCheckIfAccepted("xxx",
+                                        s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_DELIVERY),
+                                        s -> assertThat(s).isNull());
     }
 
     @Test
     void whenPartyGainsEnoughXp_ShouldShowMessageThatMemberGainedLevel() {
-        final GameData gameData = Utils.getGameData();
-        gameData.onNotifyCreateProfile(new ProfileManager());
-        gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("gemstone", 5));
-        gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("herb", 3));
-        gameData.getParty().getHero(0).gainXp(19, new StringBuilder());
+        inventory.autoSetItem(InventoryDatabase.getInstance().createInventoryItem("gemstone", 5));
+        inventory.autoSetItem(InventoryDatabase.getInstance().createInventoryItem("herb", 3));
+        party.getHero(0).gainXp(19, new StringBuilder());
         QuestGraph quest0001 = quests.getQuestById("quest0001");
-        Loot questLoot = gameData.getLoot().getLoot("quest0001");
+        Loot questLoot = loot.getLoot("quest0001");
         assertThat(questLoot.isXpGained()).isFalse();
-        quest0001.handleAccept(s -> { });
-        quest0001.handleReturn(s -> { });
+        quest0001.handleAccept(s -> {}, s -> {});
+        quest0001.handleReturn(s -> {});
         questLoot.clearContent();
-        quest0001.handleReward(s -> assertThat(s).isEqualTo("Mozes gained a level!"), (l, s) -> { }, s -> { });
+        quest0001.handleReward(s -> assertThat(s).isEqualTo("+ 2 XP"),
+                               s -> assertThat(s).isEqualTo("Mozes gained a level!"),
+                               (l, s) -> {},
+                               s -> {});
         assertThat(questLoot.isXpGained()).isTrue();
     }
-    //@formatter:on
+
+    @Test
+    void whenQuestFails_ShouldSetSubtasksAccordingly() {
+        inventory.autoSetItem(InventoryDatabase.getInstance()
+                                               .createInventoryItem("key_mysterious_tunnel", 1));
+
+        QuestGraph quest0006 = quests.getQuestById("quest0006");
+        assertThat(quest0006.getAllTasks()).extracting("isOptional").containsExactly(
+                true, false, true, false);
+        quest0006.handleAccept(s -> { }, s -> { });
+        List<QuestTask> allTasks = quest0006.getAllTasks();
+        assertThat(allTasks.get(0).isFailed()).isFalse();
+        assertThat(allTasks.get(1).isFailed()).isFalse();
+        assertThat(allTasks.get(2).isFailed()).isFalse();
+        assertThat(allTasks.get(3).isFailed()).isFalse();
+        quest0006.handleReward(s -> { }, null, (l, s) -> { }, null);
+        assertThat(allTasks.get(0).isFailed()).isTrue();
+        assertThat(allTasks.get(0)).hasToString("x  [Optional] Search for clues about the key");
+        assertThat(allTasks.get(1).isFailed()).isFalse();
+        assertThat(allTasks.get(2).isFailed()).isTrue();
+        assertThat(allTasks.get(3).isFailed()).isFalse();
+    }
 
     @Test
     void whenQuestTaskIsCheckOrDiscover_ShouldSucceedToSetTaskComplete() {
@@ -201,15 +232,19 @@ class QuestTest extends GameTest {
 
     @Test
     void whenQuestsAreNotUnknown_ShouldBecomeVisibleInQuestLogInCorrectOrder() {
+        QuestGraph quest0001 = quests.getQuestById("quest0001");
+        QuestGraph quest0003 = quests.getQuestById("quest0003");
         assertThat(quests.getAllKnownQuests()).isEmpty();
-        quests.getQuestById("quest0001").know();
+        quest0001.know();
         assertThat(quests.getAllKnownQuests()).extracting("id").containsExactly("quest0001");
-        quests.getQuestById("quest0003").know();
-        quests.getQuestById("quest0003").accept();
+        quest0003.know();
+        quest0003.accept();
         assertThat(quests.getAllKnownQuests()).extracting("id").containsExactly("quest0001", "quest0003");
-        quests.getQuestById("quest0001").accept();
-        quests.getQuestById("quest0001").unclaim();
+        quest0001.accept();
+        quest0001.unclaim();
         assertThat(quests.getAllKnownQuests()).extracting("id").containsExactly("quest0003", "quest0001");
+        quest0003.handleFail(s -> { });
+        assertThat(quests.getAllKnownQuests()).extracting("id").containsExactly("quest0001", "quest0003");
     }
 
     @Test
@@ -224,21 +259,26 @@ class QuestTest extends GameTest {
         assertThat(quest0001).hasToString("o   Herbs for boy");
         quest0001.finish();
         assertThat(quest0001).hasToString("v  Herbs for boy");
+
+        assertThat(quest0001.isFailed()).isFalse();
+        quest0001.handleFail(s -> assertThat(s).isEqualTo("""
+                                                                  Quest failed:
+                                                                                                                                                                        
+                                                                  Herbs for boy"""));
+        assertThat(quest0001).hasToString("x  Herbs for boy");
+        assertThat(quest0001.isFailed()).isTrue();
     }
 
     @Test
     void whenQuestTaskIsCompleted_ShouldChangeToString() {
-        final GameData gameData = Utils.getGameData();
-        gameData.onNotifyCreateProfile(new ProfileManager());
-
         QuestGraph quest0001 = quests.getQuestById("quest0001");
         assertThat(quest0001.getTasks().get("1").isQuestFinished()).isFalse();
         assertThat(quest0001.getTasks().get("1")).hasToString("     Collect 3 herbs");
 
-        gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("herb", 3));
+        inventory.autoSetItem(InventoryDatabase.getInstance().createInventoryItem("herb", 3));
         assertThat(quest0001.getTasks().get("1")).hasToString("v  Collect 3 herbs");
 
-        gameData.getInventory().autoRemoveItem("herb", 3);
+        inventory.autoRemoveItem("herb", 3);
         assertThat(quest0001.getTasks().get("1")).hasToString("     Collect 3 herbs");
 
         quest0001.getTasks().get("1").forceFinished();
@@ -261,6 +301,20 @@ class QuestTest extends GameTest {
         assertThat(quest0003.isTaskComplete("1")).isFalse();
         quest0003.setTaskComplete("1");
         assertThat(quest0003.isTaskComplete("1")).isTrue();
+    }
+
+    @Test
+    void whenTwoQuestsAreLinked_ShouldChangeConversationIfLinkedQuestIsKnown() {
+        QuestGraph quest0006 = quests.getQuestById("quest0006");
+        QuestGraph quest0007 = quests.getQuestById("quest0007");
+        assertThat(quest0006.getLinkedWith()).isEqualTo("quest0007");
+        assertThat(quest0007.getLinkedWith()).isEqualTo("quest0006");
+
+        quest0006.handleCheckIfLinkedIsKnown("xxx",
+                                             s -> assertThat(s).isEqualTo("xxx"));
+        quest0007.know();
+        quest0006.handleCheckIfLinkedIsKnown("xxx",
+                                             s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_LINKED));
     }
 
 }

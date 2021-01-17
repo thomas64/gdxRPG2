@@ -7,6 +7,8 @@ public interface ConversationObserver {
 
     void onNotifyExitConversation();
 
+    void onNotifyShowMessageTooltip(String message);
+
     void onNotifyShowLevelUpDialog(String message);
 
     void onNotifyLoadShop();

@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.inventory.tooltip;
+package nl.t64.game.rpg.components.tooltip;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -10,14 +10,14 @@ import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Utils;
 
 
-abstract class BaseToolTip {
+abstract class BaseTooltip {
 
     private static final String SPRITE_SLOT = "sprites/tooltip.png";
     private static final float PADDING = 10f;
 
     final Window window;
 
-    BaseToolTip() {
+    BaseTooltip() {
         this.window = new Window("", createWindowStyle());
         this.window.defaults().align(Align.left);
         this.window.pad(PADDING);

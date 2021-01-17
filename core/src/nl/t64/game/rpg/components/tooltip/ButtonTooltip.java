@@ -1,11 +1,11 @@
-package nl.t64.game.rpg.screens.inventory.tooltip;
+package nl.t64.game.rpg.components.tooltip;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 
-public class ButtonToolTip extends BaseToolTip {
+public class ButtonTooltip extends BaseTooltip {
 
     void setVisible(boolean visible) {
         window.setVisible(visible);

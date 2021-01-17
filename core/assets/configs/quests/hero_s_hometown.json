@@ -2,7 +2,7 @@
   "quest0002": {
     "title"    : "Get through the gatekeeper",
     "character": "soldier01",
-    "summary"  : "Bob the gatekeeper of Hero's Hometown likes nothing more than to make a few extra bucks while on the job. It does not make him very likeable or trustworthy with the people.",
+    "summary"  : "Bob the gatekeeper of Hero's Hometown likes nothing more than to make a few extra bucks while on the job. It does not make him very likeable or trustworthy with the local townspeople.",
     "tasks"    : {
       "1": {
         "taskPhrase": "You need 1 gold",

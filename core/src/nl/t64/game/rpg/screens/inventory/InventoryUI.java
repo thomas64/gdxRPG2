@@ -6,8 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.PartyContainer;
-import nl.t64.game.rpg.screens.inventory.tooltip.ItemSlotTooltip;
-import nl.t64.game.rpg.screens.inventory.tooltip.PersonalityTooltip;
+import nl.t64.game.rpg.components.tooltip.ItemSlotTooltip;
+import nl.t64.game.rpg.components.tooltip.PersonalityTooltip;
 
 import java.util.HashMap;
 import java.util.Map;
