@@ -1,5 +1,6 @@
 package nl.t64.game.rpg.screens.loot;
 
+import com.badlogic.gdx.utils.Null;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.loot.Loot;
@@ -9,9 +10,10 @@ import nl.t64.game.rpg.screens.inventory.MessageDialog;
 
 public class RewardScreen extends LootScreen {
 
+    @Null
     private String levelUpMessage;
 
-    public static void load(Loot reward, String levelUpMessage) {
+    public static void load(Loot reward, @Null String levelUpMessage) {
         var rewardScreen = (RewardScreen) Utils.getScreenManager().getScreen(ScreenType.REWARD);
         rewardScreen.loot = reward;
         rewardScreen.lootTitle = "   Reward";

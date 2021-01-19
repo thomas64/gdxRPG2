@@ -142,7 +142,7 @@ class ConversationTest extends GameTest {
         Optional<String> questId = graph.getAssociatedChoices().get(1).getCondition().keySet().stream().findFirst();
         QuestGraph quest = gameData.getQuests().getQuestById(questId.orElseThrow());
         quest.know();
-        quest.accept();
+        quest.accept(s -> {});
         quest.unclaim();
         assertThat(graph.getAssociatedChoices().get(1).isMeetingCondition(null)).isTrue();
     }

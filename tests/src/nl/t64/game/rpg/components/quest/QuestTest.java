@@ -68,7 +68,7 @@ class QuestTest extends GameTest {
         assertThat(quest0001.isFinished()).isFalse();
         quest0001.handleAccept(s -> assertThat(s).isEqualTo("""
                                                                     New quest:
-                                                                    
+                                                                                                                                        
                                                                     Herbs for boy"""),
                                s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_ACCEPT));
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.ACCEPTED);
@@ -109,7 +109,7 @@ class QuestTest extends GameTest {
         assertThat(quest0002.getCurrentState()).isEqualTo(QuestState.UNKNOWN);
         quest0002.handleTolerate(s -> assertThat(s).isEqualTo("""
                                                                       New quest:
-                                                                      
+                                                                                                                                            
                                                                       Get through the gatekeeper"""));
         assertThat(quest0002.getCurrentState()).isEqualTo(QuestState.ACCEPTED);
     }
@@ -126,7 +126,7 @@ class QuestTest extends GameTest {
         quest0001.handleAccept(s -> {}, s -> {});
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.ACCEPTED);
         assertThatExceptionOfType(IllegalStateException.class).isThrownBy(quest0001::know);
-        assertThatExceptionOfType(IllegalStateException.class).isThrownBy(quest0001::accept);
+        assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() -> quest0001.accept(s -> {}));
         inventory.autoSetItem(InventoryDatabase.getInstance().createInventoryItem("gemstone", 5));
         inventory.autoSetItem(InventoryDatabase.getInstance().createInventoryItem("herb", 3));
         quest0001.handleReward(s -> {}, s -> {}, (l, s) -> {}, null);
@@ -156,7 +156,7 @@ class QuestTest extends GameTest {
                                                  s -> assertThat(s).isNull(),
                                                  s -> assertThat(s).isEqualTo("xxx"));
 
-        quest0005.accept();
+        quest0005.accept(s -> {});
 
         quest0005.handleCheckIfAcceptedInventory("1", "xxx",
                                                  s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_DELIVERY),
@@ -238,9 +238,9 @@ class QuestTest extends GameTest {
         quest0001.know();
         assertThat(quests.getAllKnownQuests()).extracting("id").containsExactly("quest0001");
         quest0003.know();
-        quest0003.accept();
+        quest0003.accept(s -> {});
         assertThat(quests.getAllKnownQuests()).extracting("id").containsExactly("quest0001", "quest0003");
-        quest0001.accept();
+        quest0001.accept(s -> {});
         quest0001.unclaim();
         assertThat(quests.getAllKnownQuests()).extracting("id").containsExactly("quest0003", "quest0001");
         quest0003.handleFail(s -> { });
@@ -253,7 +253,7 @@ class QuestTest extends GameTest {
         assertThat(quest0001).hasToString("     Herbs for boy");
         quest0001.know();
         assertThat(quest0001).hasToString("     Herbs for boy");
-        quest0001.accept();
+        quest0001.accept(s -> {});
         assertThat(quest0001).hasToString("     Herbs for boy");
         quest0001.unclaim();
         assertThat(quest0001).hasToString("o   Herbs for boy");

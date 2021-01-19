@@ -65,8 +65,7 @@ public class QuestGraph {
 
     public void handleAccept(Consumer<String> notifyShowMessageTooltip, Consumer<String> continueConversation) {
         know();
-        accept();
-        notifyShowMessageTooltip.accept("New quest:\n\n" + title);
+        accept(notifyShowMessageTooltip);
         if (doesReturnMeetDemand()) {
             continueConversation.accept(Constant.PHRASE_ID_QUEST_IMMEDIATE_SUCCESS);
         } else {
@@ -76,8 +75,7 @@ public class QuestGraph {
 
     public void handleTolerate(Consumer<String> notifyShowMessageTooltip) {
         know();
-        accept();
-        notifyShowMessageTooltip.accept("New quest:\n\n" + title);
+        accept(notifyShowMessageTooltip);
     }
 
     public void handleReceive(Consumer<Loot> notifyShowReceiveDialog) {
@@ -130,14 +128,15 @@ public class QuestGraph {
                              Consumer<String> notifyShowLevelUpDialog,
                              BiConsumer<Loot, String> notifyShowRewardDialog,
                              Consumer<String> endConversation) {
-        Loot reward = Utils.getGameData().getLoot().getLoot(id);
-        reward.removeBonus();
-        Optional<String> levelUpMessage = partyGainXp(reward, notifyShowMessageTooltip);
         if (currentState.equals(QuestState.ACCEPTED)) {
             takeDemands();
             unclaim();
             getAllQuestTasks().forEach(QuestTask::forceFinished);
+            notifyShowMessageTooltip.accept("Quest completed:\n\n" + title);
         }
+        Loot reward = Utils.getGameData().getLoot().getLoot(id);
+        reward.removeBonus();
+        Optional<String> levelUpMessage = partyGainXp(reward, notifyShowMessageTooltip);
         if (reward.isTaken()) {
             finish();
             endConversation.accept(Constant.PHRASE_ID_QUEST_FINISHED);
@@ -164,9 +163,10 @@ public class QuestGraph {
         }
     }
 
-    public void accept() {
+    public void accept(Consumer<String> notifyShowMessageTooltip) {
         if (currentState.equals(QuestState.KNOWN)) {
             currentState = QuestState.ACCEPTED;
+            notifyShowMessageTooltip.accept("New quest:\n\n" + title);
         } else {
             throw new IllegalStateException("Only quest KNOWN can be ACCEPTED.");
         }

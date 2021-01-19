@@ -214,7 +214,7 @@ public class WorldScreen implements Screen,
         String conversationId = currentNpcCharacter.getConversationId();
         QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
         ConversationGraph conversation = Utils.getGameData().getConversations().getConversationById(conversationId);
-        quest.accept();
+        quest.accept(this::onNotifyShowMessageTooltip);
         conversation.setCurrentPhraseId(Constant.PHRASE_ID_QUEST_ACCEPT);
     }
 
