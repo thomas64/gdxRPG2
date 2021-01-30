@@ -21,10 +21,10 @@ class NoteTest extends GameTest {
         graph.setCurrentPhraseId("2");
         assertThat(graph.getCurrentPhrase()).containsOnly("That's strange...");
         assertThat(graph.getAssociatedChoices()).hasSize(1);
-        assertThat(graph.getAssociatedChoices().get(0).getText()).isEqualTo("->");
-        assertThat(graph.getAssociatedChoices().get(0)).hasToString("->");
-        assertThat(graph.getAssociatedChoices().get(0).getDestinationId()).isEqualTo("1");
-        assertThat(graph.getAssociatedChoices().get(0).getConversationCommand()).isEqualTo(ConversationCommand.EXIT_CONVERSATION);
+        assertThat(graph.getAssociatedChoices()[0].getText()).isEqualTo("->");
+        assertThat(graph.getAssociatedChoices()[0]).hasToString("->");
+        assertThat(graph.getAssociatedChoices()[0].getDestinationId()).isEqualTo("1");
+        assertThat(graph.getAssociatedChoices()[0].getConversationCommand()).isEqualTo(ConversationCommand.EXIT_CONVERSATION);
     }
 
 }

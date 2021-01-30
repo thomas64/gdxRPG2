@@ -10,5 +10,6 @@ enum QuestType {
     ITEM_DELIVERY,
     GUARD,
     ESCORT,
-    RETURN;
+    RETURN,
+    NONE;
 }

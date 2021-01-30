@@ -90,16 +90,14 @@ public class PartyContainer {
                              .sum();
     }
 
-    public int getBestSkillLevel(String skillItemId) {
-        return SkillItemId.from(skillItemId)
-                          .map(this::getBestSkillLevel)
-                          .orElse(0);
-    }
-
     public HeroItem getHeroWithHighestSkill(SkillItemId skillItemId) {
         return getAllHeroes().stream()
                              .max(Comparator.comparing(heroItem -> heroItem.getCalculatedTotalSkillOf(skillItemId)))
                              .orElse(getFirstHero());
+    }
+
+    public boolean hasEnoughOfSkill(SkillItemId skillItemId, int rank) {
+        return getBestSkillLevel(skillItemId) >= rank;
     }
 
     HeroItem getHero(String heroId) {

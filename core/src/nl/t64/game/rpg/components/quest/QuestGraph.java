@@ -132,7 +132,8 @@ public class QuestGraph {
             takeDemands();
             unclaim();
             getAllQuestTasks().forEach(QuestTask::forceFinished);
-            notifyShowMessageTooltip.accept("Quest completed:\n\n" + title);
+            notifyShowMessageTooltip.accept("Quest completed:"
+                                            + System.lineSeparator() + System.lineSeparator() + title);
         }
         Loot reward = Utils.getGameData().getLoot().getLoot(id);
         reward.removeBonus();
@@ -148,7 +149,7 @@ public class QuestGraph {
 
     public void handleFail(Consumer<String> notifyShowMessageTooltip) {
         isFailed = true;
-        notifyShowMessageTooltip.accept("Quest failed:\n\n" + title);
+        notifyShowMessageTooltip.accept("Quest failed:" + System.lineSeparator() + System.lineSeparator() + title);
     }
 
     public void know() {
@@ -166,7 +167,7 @@ public class QuestGraph {
     public void accept(Consumer<String> notifyShowMessageTooltip) {
         if (currentState.equals(QuestState.KNOWN)) {
             currentState = QuestState.ACCEPTED;
-            notifyShowMessageTooltip.accept("New quest:\n\n" + title);
+            notifyShowMessageTooltip.accept("New quest:" + System.lineSeparator() + System.lineSeparator() + title);
         } else {
             throw new IllegalStateException("Only quest KNOWN can be ACCEPTED.");
         }

@@ -3,6 +3,7 @@ package nl.t64.game.rpg.components.conversation;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Getter
@@ -20,13 +21,19 @@ public class ConversationPhrase {
         if (choices.isEmpty()) {
             return createArrowChoiceThatPointsToNextPhraseId(currentPhraseId);
         } else {
-            return choices;
+            return getVisibleChoices();
         }
     }
 
     private List<ConversationChoice> createArrowChoiceThatPointsToNextPhraseId(String currentPhraseId) {
         String nextDestinationId = String.valueOf(Integer.parseInt(currentPhraseId) + 1);
         return List.of(new ConversationChoice(nextDestinationId));
+    }
+
+    private List<ConversationChoice> getVisibleChoices() {
+        return choices.stream()
+                      .filter(ConversationChoice::isVisible)
+                      .collect(Collectors.toUnmodifiableList());
     }
 
 }

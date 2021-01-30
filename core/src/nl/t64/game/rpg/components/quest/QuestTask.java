@@ -14,11 +14,17 @@ public class QuestTask {
     QuestType type;
     private String taskPhrase;
     private Map<String, Integer> target;
-    @JsonProperty(value = "isOptional")
+    @JsonProperty("isOptional")
     private boolean isOptional;
     private boolean isComplete;
     private boolean isFailed;
     private boolean isQuestFinished;
+
+    public QuestTask(String taskPhrase) {
+        this();
+        this.type = QuestType.NONE;
+        this.taskPhrase = taskPhrase;
+    }
 
     private QuestTask() {
         this.target = Map.of();
@@ -29,7 +35,9 @@ public class QuestTask {
     }
 
     public String toString() {
-        if (isFailed) {
+        if (type.equals(QuestType.NONE)) {
+            return System.lineSeparator() + System.lineSeparator() + System.lineSeparator() + taskPhrase;
+        } else if (isFailed) {
             return "x  " + taskPhrase;
         } else if (isQuestFinished) {
             return "v  " + taskPhrase;

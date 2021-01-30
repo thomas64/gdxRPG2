@@ -11,7 +11,7 @@ import nl.t64.game.rpg.profile.ProfileManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Optional;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -57,12 +57,12 @@ class ConversationTest extends GameTest {
         assertThat(graph.getPhrases().get("1").getText()).containsOnly("Hi Mozes!");
         assertThat(graph.getPhrases().get("1").getChoices()).isEmpty();
         assertThat(graph.getAssociatedChoices()).hasSize(1);
-        assertThat(graph.getAssociatedChoices().get(0).getText()).isEqualTo("->");
-        assertThat(graph.getAssociatedChoices().get(0)).hasToString("->");
-        assertThat(graph.getAssociatedChoices().get(0).getDestinationId()).isEqualTo("2");
-        assertThat(graph.getAssociatedChoices().get(0).getConversationCommand()).isEqualTo(ConversationCommand.NONE);
-        assertThat(graph.getAssociatedChoices().get(0).getCondition()).isEmpty();
-        assertThat(graph.getAssociatedChoices().get(0).isMeetingCondition(null)).isTrue();
+        assertThat(graph.getAssociatedChoices()[0].getText()).isEqualTo("->");
+        assertThat(graph.getAssociatedChoices()[0]).hasToString("->");
+        assertThat(graph.getAssociatedChoices()[0].getDestinationId()).isEqualTo("2");
+        assertThat(graph.getAssociatedChoices()[0].getConversationCommand()).isEqualTo(ConversationCommand.NONE);
+        assertThat(graph.getAssociatedChoices()[0].getConditionId()).isEmpty();
+        assertThat(graph.getAssociatedChoices()[0].isMeetingCondition()).isTrue();
     }
 
     @Test
@@ -74,13 +74,13 @@ class ConversationTest extends GameTest {
         assertThat(graph.getCurrentPhrase())
                 .containsOnly("Okay, here's the deal. You are taking me with you and MAYBE I'll forgive you.");
         assertThat(graph.getAssociatedChoices()).hasSize(2);
-        assertThat(graph.getAssociatedChoices().get(0).getText())
+        assertThat(graph.getAssociatedChoices()[0].getText())
                 .isEqualTo("Alright Luana, I will endure your presence.");
-        assertThat(graph.getAssociatedChoices().get(0).getDestinationId()).isEqualTo("9");
-        assertThat(graph.getAssociatedChoices().get(0).getConversationCommand()).isEqualTo(ConversationCommand.NONE);
-        assertThat(graph.getAssociatedChoices().get(1).getText()).isEqualTo("No, I don't WANT your protection.");
-        assertThat(graph.getAssociatedChoices().get(1).getDestinationId()).isEqualTo("10");
-        assertThat(graph.getAssociatedChoices().get(1).getConversationCommand()).isEqualTo(ConversationCommand.NONE);
+        assertThat(graph.getAssociatedChoices()[0].getDestinationId()).isEqualTo("9");
+        assertThat(graph.getAssociatedChoices()[0].getConversationCommand()).isEqualTo(ConversationCommand.NONE);
+        assertThat(graph.getAssociatedChoices()[1].getText()).isEqualTo("No, I don't WANT your protection.");
+        assertThat(graph.getAssociatedChoices()[1].getDestinationId()).isEqualTo("10");
+        assertThat(graph.getAssociatedChoices()[1].getConversationCommand()).isEqualTo(ConversationCommand.NONE);
     }
 
     @Test
@@ -92,9 +92,9 @@ class ConversationTest extends GameTest {
         assertThat(graph.getCurrentPhrase())
                 .containsOnly("Alright! Now were talking!", "You are so not gonna regret this.");
         assertThat(graph.getAssociatedChoices()).hasSize(1);
-        assertThat(graph.getAssociatedChoices().get(0).getText()).isEqualTo("->");
-        assertThat(graph.getAssociatedChoices().get(0).getDestinationId()).isEqualTo("301");
-        assertThat(graph.getAssociatedChoices().get(0).getConversationCommand())
+        assertThat(graph.getAssociatedChoices()[0].getText()).isEqualTo("->");
+        assertThat(graph.getAssociatedChoices()[0].getDestinationId()).isEqualTo("301");
+        assertThat(graph.getAssociatedChoices()[0].getConversationCommand())
                 .isEqualTo(ConversationCommand.HERO_JOIN);
     }
 
@@ -106,11 +106,11 @@ class ConversationTest extends GameTest {
         ConversationGraph graph = conversations.getConversationById("quest0006");
         assertThat(graph.getCurrentPhraseId()).isEqualTo("1");
         assertThat(graph.getAssociatedChoices()).hasSize(3);
-        assertThat(graph.getAssociatedChoices().get(1).getText()).startsWith("[Diplomat 2] W");
-        assertThat(graph.getAssociatedChoices().get(1).isMeetingCondition(null)).isFalse();
+        assertThat(graph.getAssociatedChoices()[1].getText()).startsWith("[Diplomat 2] W");
+        assertThat(graph.getAssociatedChoices()[1].isMeetingCondition()).isFalse();
 
         gameData.getParty().addHero(gameData.getHeroes().getHero("elias"));
-        assertThat(graph.getAssociatedChoices().get(1).isMeetingCondition(null)).isTrue();
+        assertThat(graph.getAssociatedChoices()[1].isMeetingCondition()).isTrue();
     }
 
     @Test
@@ -121,48 +121,69 @@ class ConversationTest extends GameTest {
         ConversationGraph graph = conversations.getConversationById("quest0006");
         graph.setCurrentPhraseId("11");
         assertThat(graph.getAssociatedChoices()).hasSize(3);
-        assertThat(graph.getAssociatedChoices().get(1).getText()).startsWith("[Mysterious Tunnel Key] Y");
-        assertThat(graph.getAssociatedChoices().get(1).isMeetingCondition(null)).isFalse();
+        assertThat(graph.getAssociatedChoices()[1].getText()).startsWith("[Mysterious Tunnel Key] Y");
+        assertThat(graph.getAssociatedChoices()[1].isMeetingCondition()).isFalse();
 
         gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("key_mysterious_tunnel"));
-        assertThat(graph.getAssociatedChoices().get(1).isMeetingCondition(null)).isTrue();
+        assertThat(graph.getAssociatedChoices()[1].isMeetingCondition()).isTrue();
     }
 
     @Test
-    void whenConversationHasQuestCondition_ShouldMeetConditionWhenMet() {
+    void whenConversationHasInvisibleQuestCondition_ShouldShowChoiceWhenMet() {
         final GameData gameData = Utils.getGameData();
         gameData.onNotifyCreateProfile(new ProfileManager());
-
         ConversationGraph graph = conversations.getConversationById("quest0006");
         graph.setCurrentPhraseId("37");
-        assertThat(graph.getAssociatedChoices()).hasSize(3);
-        assertThat(graph.getAssociatedChoices().get(1).getText()).startsWith("I gave it to someone else. (Fails ");
-        assertThat(graph.getAssociatedChoices().get(1).isMeetingCondition(null)).isFalse();
 
-        Optional<String> questId = graph.getAssociatedChoices().get(1).getCondition().keySet().stream().findFirst();
-        QuestGraph quest = gameData.getQuests().getQuestById(questId.orElseThrow());
-        quest.know();
-        quest.accept(s -> {});
-        quest.unclaim();
-        assertThat(graph.getAssociatedChoices().get(1).isMeetingCondition(null)).isTrue();
+        assertThat(graph.getAssociatedChoices()).hasSize(1);
+        assertThat(graph.getAssociatedChoices()[0].getText()).startsWith("I was just kidding.");
+        assertThat(graph.getAssociatedChoices()[0].getConditionId()).isEqualTo("");
+        assertThat(graph.getAssociatedChoices()[0].isMeetingCondition()).isTrue();
+
+        QuestGraph quest7 = gameData.getQuests().getQuestById("quest0007");
+        quest7.know();
+        quest7.accept(s -> {});
+        quest7.unclaim();
+
+        assertThat(graph.getAssociatedChoices()).hasSize(2);
+        assertThat(graph.getAssociatedChoices()[1].getText()).startsWith("I gave it to someone else. (Fails ");
+        assertThat(graph.getAssociatedChoices()[1].getConditionId()).isEqualTo("i_quest7_unclaimed");
+        assertThat(graph.getAssociatedChoices()[1].isMeetingCondition()).isTrue();
     }
 
     @Test
-    void whenConversationHasTaskCondition_ShouldMeetConditionWhenMet() {
+    void whenConversationHasInvisibleTaskCondition_ShouldShowChoiceWhenMet() {
         final GameData gameData = Utils.getGameData();
         gameData.onNotifyCreateProfile(new ProfileManager());
-
         ConversationGraph graph = conversations.getConversationById("quest0006");
         graph.setCurrentPhraseId("37");
-        assertThat(graph.getAssociatedChoices()).hasSize(3);
-        assertThat(graph.getAssociatedChoices().get(2).getText()).startsWith("I already used it myself. (Fails ");
-        assertThat(graph.getAssociatedChoices().get(2).isMeetingCondition("quest0006")).isFalse();
+        List<ConversationChoice> choices = graph.getPhrases().get("37").getChoices();
 
-        QuestGraph quest = gameData.getQuests().getQuestById("quest0006");
-        Optional<Integer> taskId = graph.getAssociatedChoices().get(2).getCondition().values().stream().findFirst();
+        assertThat(graph.getAssociatedChoices()).hasSize(1);
+        assertThat(graph.getAssociatedChoices()[0].getText()).startsWith("I was just kidding.");
+        assertThat(graph.getAssociatedChoices()[0].getConditionId()).isEqualTo("");
+        assertThat(graph.getAssociatedChoices()[0].isMeetingCondition()).isTrue();
+
+        assertThat(choices).hasSize(3);
+        assertThat(choices.get(2).getText()).startsWith("I already used it myself. (Fails ");
+        assertThat(choices.get(2).getConditionId()).isEqualTo("i_quest6_task3");
+        assertThat(choices.get(2).isMeetingCondition()).isFalse();
+        assertThat(choices.get(2).isVisible()).isFalse();
+
+        QuestGraph quest6 = gameData.getQuests().getQuestById("quest0006");
         gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("key_mysterious_tunnel"));
-        quest.setTaskComplete(taskId.orElseThrow().toString());
-        assertThat(graph.getAssociatedChoices().get(2).isMeetingCondition("quest0006")).isTrue();
+        quest6.setTaskComplete("3");
+
+        assertThat(graph.getAssociatedChoices()).hasSize(2);
+        assertThat(graph.getAssociatedChoices()[1].getText()).startsWith("I already used it myself. (Fails ");
+        assertThat(graph.getAssociatedChoices()[1].getConditionId()).isEqualTo("i_quest6_task3");
+        assertThat(graph.getAssociatedChoices()[1].isMeetingCondition()).isTrue();
+
+        assertThat(choices).hasSize(3);
+        assertThat(choices.get(2).getText()).startsWith("I already used it myself. (Fails ");
+        assertThat(choices.get(2).getConditionId()).isEqualTo("i_quest6_task3");
+        assertThat(choices.get(2).isMeetingCondition()).isTrue();
+        assertThat(choices.get(2).isVisible()).isTrue();
     }
 
 }

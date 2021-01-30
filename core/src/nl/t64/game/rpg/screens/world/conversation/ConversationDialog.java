@@ -216,7 +216,7 @@ public class ConversationDialog extends ConversationSubject {
     }
 
     private void populateChoices() {
-        ConversationChoice[] choices = graph.getAssociatedChoices().toArray(new ConversationChoice[0]);
+        ConversationChoice[] choices = graph.getAssociatedChoices();
         answers.setItems(choices);
         setDefaultSelectedChoice(choices);
         setScrollPaneHeight(choices);
@@ -242,7 +242,7 @@ public class ConversationDialog extends ConversationSubject {
 
     private void selectAnswer() {
         final ConversationChoice selectedAnswer = answers.getSelected();
-        if (!selectedAnswer.isMeetingCondition(conversationId)) {
+        if (!selectedAnswer.isMeetingCondition()) {
             Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_ERROR);
             return;
         }

@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.quest.QuestGraph;
 import nl.t64.game.rpg.components.quest.QuestState;
@@ -40,6 +41,8 @@ class TaskListTable {
             taskList.setItems(quest.getAllTasks().toArray(new QuestTask[0]));
         } else {
             taskList.clearItems();
+            taskList.setItems(new QuestTask("(No tasks visible until this quest is accepted)"));
+            taskList.setAlignment(Align.center);
         }
     }
 

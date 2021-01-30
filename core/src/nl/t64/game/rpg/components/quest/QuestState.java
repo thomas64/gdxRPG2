@@ -13,8 +13,8 @@ public enum QuestState {
 
     private final int index;
 
-    public boolean isStateAtLeastOfIndex(int number) {
-        return index >= number;
+    public boolean isAtLeast(QuestState questState) {
+        return index >= questState.index;
     }
 
 }
