@@ -1,0 +1,162 @@
+{
+  "basic_shortbow"     : {
+    "name"            : "Basic Shortbow",
+    "group"           : "WEAPON",
+    "sort"            : 1400,
+    "skill"           : "MISSILE",
+    "price"           : 20,
+    "min_intelligence": 15,
+    "base_hit"        : 30,
+    "damage"          : 4
+  },
+  "fine_shortbow"      : {
+    "name"            : "Fine Shortbow",
+    "group"           : "WEAPON",
+    "sort"            : 2400,
+    "skill"           : "MISSILE",
+    "price"           : 40,
+    "min_intelligence": 16,
+    "base_hit"        : 40,
+    "damage"          : 6
+  },
+  "specialist_shortbow": {
+    "name"            : "Specialist Shortbow",
+    "group"           : "WEAPON",
+    "sort"            : 3400,
+    "skill"           : "MISSILE",
+    "price"           : 60,
+    "min_intelligence": 17,
+    "base_hit"        : 50,
+    "damage"          : 8
+  },
+  "masterwork_shortbow": {
+    "name"            : "Masterwork Shortbow",
+    "group"           : "WEAPON",
+    "sort"            : 4400,
+    "skill"           : "MISSILE",
+    "price"           : 80,
+    "min_intelligence": 18,
+    "base_hit"        : 60,
+    "damage"          : 10
+  },
+  "basic_longbow"      : {
+    "name"            : "Basic Longbow",
+    "group"           : "WEAPON",
+    "sort"            : 1420,
+    "skill"           : "MISSILE",
+    "price"           : 30,
+    "min_intelligence": 19,
+    "base_hit"        : 30,
+    "damage"          : 6
+  },
+  "fine_longbow"       : {
+    "name"            : "Fine Longbow",
+    "group"           : "WEAPON",
+    "sort"            : 2420,
+    "skill"           : "MISSILE",
+    "price"           : 50,
+    "min_intelligence": 20,
+    "base_hit"        : 40,
+    "damage"          : 8
+  },
+  "specialist_longbow" : {
+    "name"            : "Specialist Longbow",
+    "group"           : "WEAPON",
+    "sort"            : 3420,
+    "skill"           : "MISSILE",
+    "price"           : 70,
+    "min_intelligence": 21,
+    "base_hit"        : 50,
+    "damage"          : 10
+  },
+  "masterwork_longbow" : {
+    "name"            : "Masterwork Longbow",
+    "group"           : "WEAPON",
+    "sort"            : 4420,
+    "skill"           : "MISSILE",
+    "price"           : 90,
+    "min_intelligence": 22,
+    "base_hit"        : 60,
+    "damage"          : 12
+  },
+  "basic_greatbow"     : {
+    "name"            : "Basic Greatbow",
+    "group"           : "WEAPON",
+    "sort"            : 1440,
+    "skill"           : "MISSILE",
+    "price"           : 40,
+    "min_intelligence": 23,
+    "base_hit"        : 30,
+    "damage"          : 8
+  },
+  "fine_greatbow"      : {
+    "name"            : "Fine Greatbow",
+    "group"           : "WEAPON",
+    "sort"            : 2440,
+    "skill"           : "MISSILE",
+    "price"           : 60,
+    "min_intelligence": 24,
+    "base_hit"        : 40,
+    "damage"          : 10
+  },
+  "specialist_greatbow": {
+    "name"            : "Specialist Greatbow",
+    "group"           : "WEAPON",
+    "sort"            : 3440,
+    "skill"           : "MISSILE",
+    "price"           : 80,
+    "min_intelligence": 25,
+    "base_hit"        : 50,
+    "damage"          : 12
+  },
+  "masterwork_greatbow": {
+    "name"            : "Masterwork Greatbow",
+    "group"           : "WEAPON",
+    "sort"            : 4440,
+    "skill"           : "MISSILE",
+    "price"           : 100,
+    "min_intelligence": 26,
+    "base_hit"        : 60,
+    "damage"          : 14
+  },
+  "basic_crossbow"     : {
+    "name"            : "Basic Crossbow",
+    "group"           : "WEAPON",
+    "sort"            : 1460,
+    "skill"           : "MISSILE",
+    "price"           : 50,
+    "min_intelligence": 27,
+    "base_hit"        : 30,
+    "damage"          : 10
+  },
+  "fine_crossbow"      : {
+    "name"            : "Fine Crossbow",
+    "group"           : "WEAPON",
+    "sort"            : 2460,
+    "skill"           : "MISSILE",
+    "price"           : 70,
+    "min_intelligence": 28,
+    "base_hit"        : 40,
+    "damage"          : 12
+  },
+  "specialist_crossbow": {
+    "name"            : "Specialist Crossbow",
+    "group"           : "WEAPON",
+    "sort"            : 3460,
+    "skill"           : "MISSILE",
+    "price"           : 90,
+    "min_intelligence": 29,
+    "base_hit"        : 50,
+    "damage"          : 14
+  },
+  "masterwork_crossbow": {
+    "name"            : "Masterwork Crossbow",
+    "group"           : "WEAPON",
+    "sort"            : 4460,
+    "skill"           : "MISSILE",
+    "price"           : 110,
+    "min_intelligence": 30,
+    "base_hit"        : 60,
+    "damage"          : 16
+  }
+}

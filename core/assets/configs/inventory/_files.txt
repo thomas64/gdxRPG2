@@ -1,6 +1,7 @@
 chest.json
 hafted.json
 item.json
+missile.json
 pole.json
 potion.json
 resource.json
