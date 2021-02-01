@@ -220,9 +220,9 @@
     "spells": {
     },
     "inventory": {
-      "weapon": "basic_greatsword",
+      "weapon": "basic_lance",
       "shield": "basic_heavy_shield",
-      "chest": "basic_heavy_chest"
+      "chest" : "basic_heavy_chest"
     }
   },
   "kiara": {

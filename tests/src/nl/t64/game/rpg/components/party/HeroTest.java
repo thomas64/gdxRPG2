@@ -1,7 +1,7 @@
 package nl.t64.game.rpg.components.party;
 
 import nl.t64.game.rpg.GameTest;
-import nl.t64.game.rpg.constants.*;
+import nl.t64.game.rpg.constants.Constant;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -152,21 +152,33 @@ class HeroTest extends GameTest {
         final InventoryItem masterworkLance = InventoryDatabase.getInstance().createInventoryItem("masterwork_lance");
         final InventoryItem basicDagger = InventoryDatabase.getInstance().createInventoryItem("basic_dagger");
         final InventoryItem chest = InventoryDatabase.getInstance().createInventoryItem("basic_light_chest");
+        final InventoryItem bow = InventoryDatabase.getInstance().createInventoryItem("basic_shortbow");
+        final InventoryItem shield = InventoryDatabase.getInstance().createInventoryItem("basic_light_shield");
 
-        final Optional<String> message1 = mozes.createMessageIfNotAbleToEquip(legendaryStaff);
-        assertThat(message1).contains("Mozes needs the Pole skill" + System.lineSeparator() + "to equip that Legendary Staff.");
+        Optional<String> message;
 
-        final Optional<String> message2 = ryiah.createMessageIfNotAbleToEquip(legendaryStaff);
-        assertThat(message2).contains("Ryiah needs 30 Intelligence" + System.lineSeparator() + "to equip that Legendary Staff.");
+        message = mozes.createMessageIfNotAbleToEquip(legendaryStaff);
+        assertThat(message).contains("Mozes needs the Pole skill" + System.lineSeparator() + "to equip that Legendary Staff.");
 
-        final Optional<String> message3 = ryiah.createMessageIfNotAbleToEquip(masterworkLance);
-        assertThat(message3).contains("Ryiah needs 20 Strength" + System.lineSeparator() + "to equip that Masterwork Lance.");
+        message = ryiah.createMessageIfNotAbleToEquip(legendaryStaff);
+        assertThat(message).contains("Ryiah needs 30 Intelligence" + System.lineSeparator() + "to equip that Legendary Staff.");
 
-        final Optional<String> message4 = mozes.createMessageIfNotAbleToEquip(basicDagger);
-        assertThat(message4).isEmpty();
+        message = ryiah.createMessageIfNotAbleToEquip(masterworkLance);
+        assertThat(message).contains("Ryiah needs 20 Strength" + System.lineSeparator() + "to equip that Masterwork Lance.");
 
-        final Optional<String> message5 = mozes.createMessageIfNotAbleToEquip(chest);
-        assertThat(message5).isEmpty();
+        message = mozes.createMessageIfNotAbleToEquip(basicDagger);
+        assertThat(message).isEmpty();
+
+        message = mozes.createMessageIfNotAbleToEquip(chest);
+        assertThat(message).isEmpty();
+
+        message = mozes.createMessageIfNotAbleToEquip(bow);
+        assertThat(message).contains("Mozes needs to unequip the Basic Light Shield" + System.lineSeparator() + "to equip that Basic Shortbow.");
+
+        mozes.clearInventoryItemFor(InventoryGroup.SHIELD);
+        mozes.forceSetInventoryItemFor(InventoryGroup.WEAPON, bow);
+        message = mozes.createMessageIfNotAbleToEquip(shield);
+        assertThat(message).contains("Mozes needs to unequip the Basic Shortbow" + System.lineSeparator() + "to equip that Basic Light Shield.");
     }
 
     @Test

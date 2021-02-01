@@ -42,7 +42,7 @@ public class ItemSlotTooltip extends BaseTooltip {
             final InventoryItem hoveredItem = hoveredImage.inventoryItem;
             final InventoryGroup inventoryGroup = hoveredItem.getGroup();
             final HeroItem selectedHero = InventoryUtils.getSelectedHero();
-            final Optional<String> errorMessage = selectedHero.createMessageIfNotAbleToEquip(hoveredItem);
+            final Optional<String> errorMessage = selectedHero.createMessageIfHeroHasNotEnoughFor(hoveredItem);
             final Optional<InventoryItem> equippedItem = selectedHero.getInventoryItem(inventoryGroup);
 
             if (itemSlot.isOnHero()) {

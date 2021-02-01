@@ -23,6 +23,8 @@ public class InventoryItem {
     int amount;
     @Getter
     InventoryGroup group;
+    @JsonProperty("is_two_handed")
+    boolean isTwoHanded;
     SkillItemId skill;
     private int price;
     private int weight;
@@ -46,6 +48,7 @@ public class InventoryItem {
         this.amount = amount;
         this.group = item.group;
         this.skill = item.skill;
+        this.isTwoHanded = item.isTwoHanded;
         this.price = item.price;
         this.weight = item.weight;
         this.minIntelligence = item.minIntelligence;

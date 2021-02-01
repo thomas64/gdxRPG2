@@ -31,12 +31,23 @@ public class DescriptionCreator {
 
     private List<InventoryDescription> createDescriptionList(BiFunction<Object, Object, InventoryDescription> createDescription) {
         descriptionList.add(createDescription.apply(inventoryItem.group, inventoryItem.name));
+        addHandiness(createDescription);
         addPrices(createDescription);
         addMinimals(createDescription);
         addCalcs(createDescription);
         addStats(createDescription);
         addSkills(createDescription);
         return createFilter();
+    }
+
+    private void addHandiness(BiFunction<Object, Object, InventoryDescription> createDescription) {
+        if (inventoryItem.group.equals(InventoryGroup.WEAPON)) {
+            if (inventoryItem.isTwoHanded) {
+                descriptionList.add(createDescription.apply("(Two-handed)", ""));
+            } else {
+                descriptionList.add(createDescription.apply("(One-handed)", ""));
+            }
+        }
     }
 
     private void addPrices(BiFunction<Object, Object, InventoryDescription> createDescription) {

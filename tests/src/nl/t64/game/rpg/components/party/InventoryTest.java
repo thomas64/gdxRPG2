@@ -328,19 +328,32 @@ class InventoryTest extends GameTest {
                 .createItemDescription();
         assertThat(description.get(0).getKey()).isEqualTo(InventoryGroup.WEAPON);
         assertThat(description.get(0).getValue()).isEqualTo("Basic Mace");
-        assertThat(description.get(1).getKey()).isEqualTo("Price");
-        assertThat(description.get(1).getValue()).isEqualTo(15);
-        assertThat(description.get(2).getKey()).isEqualTo("Value");
-        assertThat(description.get(2).getValue()).isEqualTo(5);
-        assertThat(description.get(3).getKey()).isEqualTo(InventoryMinimal.SKILL);
-        assertThat(description.get(3).getValue()).isEqualTo(SkillItemId.HAFTED);
-        assertThat(description.get(4).getKey()).isEqualTo(InventoryMinimal.MIN_STRENGTH);
-        assertThat(description.get(4).getValue()).isEqualTo(15);
-        assertThat(description.get(5).getKey()).isEqualTo(CalcAttributeId.BASE_HIT);
-        assertThat(description.get(5).getValue()).isEqualTo(30);
-        assertThat(description.get(6).getKey()).isEqualTo(CalcAttributeId.DAMAGE);
-        assertThat(description.get(6).getValue()).isEqualTo(18);
-        assertThatExceptionOfType(IndexOutOfBoundsException.class).isThrownBy(() -> description.get(7));
+        assertThat(description.get(1).getKey()).isEqualTo("(One-handed)");
+        assertThat(description.get(1).getValue()).isEqualTo("");
+        assertThat(description.get(2).getKey()).isEqualTo("Price");
+        assertThat(description.get(2).getValue()).isEqualTo(15);
+        assertThat(description.get(3).getKey()).isEqualTo("Value");
+        assertThat(description.get(3).getValue()).isEqualTo(5);
+        assertThat(description.get(4).getKey()).isEqualTo(InventoryMinimal.SKILL);
+        assertThat(description.get(4).getValue()).isEqualTo(SkillItemId.HAFTED);
+        assertThat(description.get(5).getKey()).isEqualTo(InventoryMinimal.MIN_STRENGTH);
+        assertThat(description.get(5).getValue()).isEqualTo(15);
+        assertThat(description.get(6).getKey()).isEqualTo(CalcAttributeId.BASE_HIT);
+        assertThat(description.get(6).getValue()).isEqualTo(30);
+        assertThat(description.get(7).getKey()).isEqualTo(CalcAttributeId.DAMAGE);
+        assertThat(description.get(7).getValue()).isEqualTo(18);
+        assertThatExceptionOfType(IndexOutOfBoundsException.class).isThrownBy(() -> description.get(8));
+    }
+
+    @Test
+    void whenInventoryItemWeaponTwoHanded_ShouldCreateDescription() {
+        InventoryItem weapon = inventoryDB.createInventoryItem("basic_shortbow");
+        List<InventoryDescription> description = new DescriptionCreator(weapon, 0)
+                .createItemDescription();
+        assertThat(description.get(0).getKey()).isEqualTo(InventoryGroup.WEAPON);
+        assertThat(description.get(0).getValue()).isEqualTo("Basic Shortbow");
+        assertThat(description.get(1).getKey()).isEqualTo("(Two-handed)");
+        assertThat(description.get(1).getValue()).isEqualTo("");
     }
 
     @Test
@@ -422,10 +435,10 @@ class InventoryTest extends GameTest {
         Mockito.when(heroMock.getStatById(StatItemId.STRENGTH)).thenReturn(new Strength(10));
         List<InventoryDescription> description = new DescriptionCreator(weapon, 0)
                 .createItemDescriptionComparingToHero(heroMock);
-        assertThat(description.get(3).getKey()).isEqualTo(InventoryMinimal.SKILL);
-        assertThat(description.get(3).getCompare()).isEqualTo(ThreeState.SAME);
-        assertThat(description.get(4).getKey()).isEqualTo(InventoryMinimal.MIN_STRENGTH);
-        assertThat(description.get(4).getCompare()).isEqualTo(ThreeState.LESS);
+        assertThat(description.get(4).getKey()).isEqualTo(InventoryMinimal.SKILL);
+        assertThat(description.get(4).getCompare()).isEqualTo(ThreeState.SAME);
+        assertThat(description.get(5).getKey()).isEqualTo(InventoryMinimal.MIN_STRENGTH);
+        assertThat(description.get(5).getCompare()).isEqualTo(ThreeState.LESS);
     }
 
     @Test
@@ -434,10 +447,10 @@ class InventoryTest extends GameTest {
         InventoryItem sword = inventoryDB.createInventoryItem("basic_shortsword");
         List<InventoryDescription> description = new DescriptionCreator(mace, 0)
                 .createItemDescriptionComparingToItem(sword);
-        assertThat(description.get(5).getKey()).isEqualTo(CalcAttributeId.BASE_HIT);
-        assertThat(description.get(5).getCompare()).isEqualTo(ThreeState.LESS);
-        assertThat(description.get(6).getKey()).isEqualTo(CalcAttributeId.DAMAGE);
-        assertThat(description.get(6).getCompare()).isEqualTo(ThreeState.MORE);
+        assertThat(description.get(6).getKey()).isEqualTo(CalcAttributeId.BASE_HIT);
+        assertThat(description.get(6).getCompare()).isEqualTo(ThreeState.LESS);
+        assertThat(description.get(7).getKey()).isEqualTo(CalcAttributeId.DAMAGE);
+        assertThat(description.get(7).getCompare()).isEqualTo(ThreeState.MORE);
     }
 
     @Test

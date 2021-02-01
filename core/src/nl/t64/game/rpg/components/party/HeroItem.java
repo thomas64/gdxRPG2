@@ -123,6 +123,30 @@ public class HeroItem {
     }
 
     public Optional<String> createMessageIfNotAbleToEquip(InventoryItem inventoryItem) {
+        return createMessageIfHeroHasNotEnoughFor(inventoryItem)
+                .or(() -> createMessageIfWeaponAndShieldAreNotCompatible(inventoryItem));
+    }
+
+    private Optional<String> createMessageIfWeaponAndShieldAreNotCompatible(InventoryItem inventoryItem) {
+        if (inventoryItem.isTwoHanded
+            && inventory.getInventoryItem(InventoryGroup.SHIELD).isPresent()) {
+            return Optional.of(String.format("%s needs to unequip the %s%nto equip that %s.",
+                                             name,
+                                             inventory.getInventoryItem(InventoryGroup.SHIELD).get().name,
+                                             inventoryItem.name));
+        } else if (inventoryItem.group.equals(InventoryGroup.SHIELD)
+                   && inventory.getInventoryItem(InventoryGroup.WEAPON).isPresent()
+                   && inventory.getInventoryItem(InventoryGroup.WEAPON).get().isTwoHanded) {
+            return Optional.of(String.format("%s needs to unequip the %s%nto equip that %s.",
+                                             name,
+                                             inventory.getInventoryItem(InventoryGroup.WEAPON).get().name,
+                                             inventoryItem.name));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<String> createMessageIfHeroHasNotEnoughFor(InventoryItem inventoryItem) {
         return Arrays.stream(InventoryMinimal.values())
                      .flatMap(minimal -> minimal.createMessageIfHeroHasNotEnoughFor(inventoryItem, this).stream())
                      .findFirst();
