@@ -56,8 +56,8 @@ class InventoryScreenListener extends InputListener {
             case Input.Keys.CONTROL_LEFT,
                     Input.Keys.CONTROL_RIGHT -> InventoryUtils.setCtrlPressed(true);
             case Input.Keys.H -> showHelpFunction.run();
-            case Input.Keys.PLUS -> cheatAddGoldFunction.run();
-            case Input.Keys.MINUS -> cheatRemoveGoldFunction.run();
+            case Input.Keys.NUMPAD_ADD -> cheatAddGoldFunction.run();
+            case Input.Keys.NUMPAD_SUBTRACT -> cheatRemoveGoldFunction.run();
         }
         return true;
     }

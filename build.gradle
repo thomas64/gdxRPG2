@@ -30,7 +30,7 @@ allprojects {
     version = "1.0"
     ext {
         appName = "gdx-rpg2"
-        gdxVersion = "1.9.12"
+        gdxVersion = "1.9.13"
         aiVersion = "1.8.2"
         lombokVersion = "1.18.16"
         jacksonVersion = "2.11.3"
