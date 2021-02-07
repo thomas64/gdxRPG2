@@ -84,7 +84,7 @@ class DialogQuestion {
     }
 
     private void processNoButton() {
-        Utils.getAudioManager().handle(AudioCommand.SE_STOP, AudioEvent.SE_MENU_CONFIRM);
+        Utils.getAudioManager().handle(AudioCommand.SE_STOP_ALL);
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_BACK);
         dialog.hide();
     }

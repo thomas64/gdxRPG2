@@ -22,5 +22,6 @@ public enum AudioCommand {
 
     SE_PLAY_ONCE,
     SE_PLAY_LOOP,
-    SE_STOP;
+    SE_STOP,
+    SE_STOP_ALL;
 }

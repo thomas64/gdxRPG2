@@ -32,7 +32,7 @@ public class AudioManager {
         if (isMusicOn && mustPlayBgmImmediately) {
             handle(AudioCommand.BGM_PLAY_LOOP, AudioEvent.BGM_TITLE);
         } else {
-            handle(AudioCommand.BGM_STOP_ALL, AudioEvent.NONE);
+            handle(AudioCommand.BGM_STOP_ALL);
         }
     }
 
@@ -59,7 +59,7 @@ public class AudioManager {
 
     public void possibleBgmSwitch(AudioEvent prevBgm, AudioEvent nextBgm) {
         if (prevBgm != nextBgm) {
-            handle(AudioCommand.BGM_STOP_ALL, AudioEvent.NONE);
+            handle(AudioCommand.BGM_STOP_ALL);
             handle(AudioCommand.BGM_PLAY_LOOP, nextBgm);
         }
     }
@@ -89,16 +89,12 @@ public class AudioManager {
             case BGM_PLAY_ONCE -> playBgm(event.filePath, false);
             case BGM_PLAY_LOOP -> playBgm(event.filePath, true);
             case BGM_STOP -> queuedBgm.get(event.filePath).stop();
-            case BGM_STOP_ALL -> queuedBgm.values().forEach(Music::stop);
             case BGM_PAUSE -> queuedBgm.get(event.filePath).pause();
-            case BGM_PAUSE_ALL -> queuedBgm.values().forEach(Music::pause);
 
             case BGS_PLAY_ONCE -> playBgs(event.filePath, false);
             case BGS_PLAY_LOOP -> playBgs(event.filePath, true);
             case BGS_STOP -> queuedBgs.get(event.filePath).stop();
-            case BGS_STOP_ALL -> queuedBgs.values().forEach(Music::stop);
             case BGS_PAUSE -> queuedBgs.get(event.filePath).pause();
-            case BGS_PAUSE_ALL -> queuedBgs.values().forEach(Music::pause);
 
             case ME_PLAY_ONCE -> playMe(event.filePath, false);
             case ME_PLAY_LOOP -> playMe(event.filePath, true);
@@ -107,6 +103,20 @@ public class AudioManager {
             case SE_PLAY_ONCE -> playSe(event, false);
             case SE_PLAY_LOOP -> playSe(event, true);
             case SE_STOP -> queuedSe.get(event.filePath).stop();
+            default -> throw new IllegalArgumentException("Call 'ALL' AudioCommands without second argument.");
+        }
+    }
+
+    public void handle(AudioCommand command) {
+        switch (command) {
+            case BGM_STOP_ALL -> queuedBgm.values().forEach(Music::stop);
+            case BGM_PAUSE_ALL -> queuedBgm.values().forEach(Music::pause);
+
+            case BGS_STOP_ALL -> queuedBgs.values().forEach(Music::stop);
+            case BGS_PAUSE_ALL -> queuedBgs.values().forEach(Music::pause);
+
+            case SE_STOP_ALL -> queuedSe.values().forEach(Sound::stop);
+            default -> throw new IllegalArgumentException("Call non-'ALL' AudioCommands with second argument.");
         }
     }
 

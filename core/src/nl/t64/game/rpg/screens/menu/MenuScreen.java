@@ -70,7 +70,7 @@ public abstract class MenuScreen implements Screen {
     }
 
     void processBackButton() {
-        Utils.getAudioManager().handle(AudioCommand.SE_STOP, AudioEvent.SE_MENU_CONFIRM);
+        Utils.getAudioManager().handle(AudioCommand.SE_STOP_ALL);
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_BACK);
         var screenManager = Utils.getScreenManager();
         var backScreen = screenManager.getMenuScreen(fromScreen);
