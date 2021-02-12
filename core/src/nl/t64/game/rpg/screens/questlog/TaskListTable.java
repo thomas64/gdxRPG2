@@ -37,10 +37,11 @@ class TaskListTable {
     }
 
     void populateTaskList(QuestGraph quest) {
+        taskList.clearItems();
         if (!quest.getCurrentState().equals(QuestState.KNOWN)) {
             taskList.setItems(quest.getAllTasks().toArray(new QuestTask[0]));
+            taskList.setAlignment(Align.left);
         } else {
-            taskList.clearItems();
             taskList.setItems(new QuestTask("(No tasks visible until this quest is accepted)"));
             taskList.setAlignment(Align.center);
         }
