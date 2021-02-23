@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.Null;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.audio.AudioEvent;
@@ -32,6 +33,7 @@ class MessageDialog {
     private final BitmapFont font;
     private final Dialog dialog;
     private Label label;
+    @Null
     private Runnable actionAfterHide;
 
     MessageDialog(InputMultiplexer multiplexer) {
@@ -117,8 +119,10 @@ class MessageDialog {
         } else {
             stage.addAction(Actions.sequence(Actions.run(dialog::hide),
                                              Actions.delay(Constant.DIALOG_FADE_OUT_DURATION),
-                                             Actions.run(() -> actionAfterHide.run()),
-                                             Actions.run(() -> actionAfterHide = null)));
+                                             Actions.run(() -> {
+                                                 actionAfterHide.run();
+                                                 actionAfterHide = null;
+                                             })));
         }
     }
 
