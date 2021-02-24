@@ -5,18 +5,22 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
+import nl.t64.game.rpg.Utils;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 
 public class MenuControls extends MenuScreen {
 
     private static final float COLUMN_0_WIDTH = 200f;
-    private static final float COLUMN_1_WIDTH = 160f;
-    private static final float COLUMN_2_WIDTH = 160f;
+    private static final float COLUMN_1_WIDTH = 120f;
+
+    private boolean isGamepadConnected;
 
     @Override
     void setupScreen() {
+        isGamepadConnected = Utils.isGamepadConnected();
         setFontColor();
         createTables();
         applyListeners();
@@ -29,58 +33,87 @@ public class MenuControls extends MenuScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(dt);
         stage.draw();
+        if (isGamepadConnected != Utils.isGamepadConnected()) {
+            refreshScreen();
+        }
     }
 
     private void createTables() {
-        // styles
         var textStyle = new Label.LabelStyle(menuFont, fontColor);
-
-        // actors
-        List<Label> labels = List.of(new Label("", textStyle),
-                                     new Label("Keyboard", textStyle),
-                                     new Label("Gamepad", textStyle),
-                                     new Label("Movement", textStyle),
-                                     new Label("Arrows", textStyle),
-                                     new Label("L3", textStyle),
-                                     new Label("Move fast", textStyle),
-                                     new Label("Shift", textStyle),
-                                     new Label("R1", textStyle),
-                                     new Label("Move slow", textStyle),
-                                     new Label("Ctrl", textStyle),
-                                     new Label("L1", textStyle),
-                                     new Label("Action", textStyle),
-                                     new Label("A", textStyle),
-                                     new Label("A", textStyle),
-                                     new Label("Inventory", textStyle),
-                                     new Label("I", textStyle),
-                                     new Label("Y", textStyle),
-                                     new Label("Quest log", textStyle),
-                                     new Label("L", textStyle),
-                                     new Label("X", textStyle),
-                                     new Label("Party", textStyle),
-                                     new Label("P", textStyle),
-                                     new Label("Select", textStyle),
-                                     new Label("Pause", textStyle),
-                                     new Label("Esc", textStyle),
-                                     new Label("Start", textStyle));
+        List<Label> labels = createInputLabels(textStyle);
         labels.forEach(label -> label.setAlignment(Align.right));
 
-        // tables
         table = new Table();
         table.setFillParent(true);
         table.top().padTop(PAD_TOP).right().padRight(PAD_RIGHT);
         table.columnDefaults(0).width(COLUMN_0_WIDTH);
         table.columnDefaults(1).width(COLUMN_1_WIDTH);
-        table.columnDefaults(2).width(COLUMN_2_WIDTH);
-        for (int i = 0; i < labels.size(); i++) {
-            if (i % 3 == 0) table.row();
-            table.add(labels.get(i));
+        IntStream.range(0, labels.size())
+                 .forEach(index -> addToTable(index, labels));
+    }
+
+    private void addToTable(int index, List<Label> labels) {
+        if (index % 2 == 0) {
+            table.row();
         }
+        table.add(labels.get(index));
     }
 
     private void applyListeners() {
         stage.addListener(new ListenerKeyConfirm(super::processBackButton));
         stage.addListener(new ListenerKeyCancel(super::processBackButton));
+    }
+
+    private void refreshScreen() {
+        stage.getRoot().clearListeners();
+        table.clear();
+        setupScreen();
+    }
+
+    private List<Label> createInputLabels(Label.LabelStyle textStyle) {
+        if (isGamepadConnected) {
+            return createGamepadLabels(textStyle);
+        } else {
+            return createKeyboardLabels(textStyle);
+        }
+    }
+
+    private List<Label> createKeyboardLabels(Label.LabelStyle textStyle) {
+        return List.of(new Label("Movement", textStyle),
+                       new Label("Arrows", textStyle),
+                       new Label("Move fast", textStyle),
+                       new Label("Shift", textStyle),
+                       new Label("Move slow", textStyle),
+                       new Label("Ctrl", textStyle),
+                       new Label("Action", textStyle),
+                       new Label("A", textStyle),
+                       new Label("Inventory", textStyle),
+                       new Label("I", textStyle),
+                       new Label("Quest log", textStyle),
+                       new Label("L", textStyle),
+                       new Label("Party", textStyle),
+                       new Label("P", textStyle),
+                       new Label("Pause", textStyle),
+                       new Label("Esc", textStyle));
+    }
+
+    private List<Label> createGamepadLabels(Label.LabelStyle textStyle) {
+        return List.of(new Label("Movement", textStyle),
+                       new Label("L3", textStyle),
+                       new Label("Move fast", textStyle),
+                       new Label("R1", textStyle),
+                       new Label("Move slow", textStyle),
+                       new Label("L1", textStyle),
+                       new Label("Action", textStyle),
+                       new Label("A", textStyle),
+                       new Label("Inventory", textStyle),
+                       new Label("Y", textStyle),
+                       new Label("Quest log", textStyle),
+                       new Label("X", textStyle),
+                       new Label("Party", textStyle),
+                       new Label("Select", textStyle),
+                       new Label("Pause", textStyle),
+                       new Label("Start", textStyle));
     }
 
 }

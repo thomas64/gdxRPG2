@@ -85,7 +85,7 @@ public abstract class MenuScreen implements Screen {
     }
 
     void setCurrentTextButtonToSelected() {
-        ((TextButton) table.getChildren().get(selectedMenuIndex)).getStyle().fontColor = Constant.DARK_RED;
+        ((TextButton) table.getChild(selectedMenuIndex)).getStyle().fontColor = Constant.DARK_RED;
     }
 
     void setFontColor() {
@@ -103,7 +103,7 @@ public abstract class MenuScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-        Utils.setControllerInputProcessor(stage);
+        Utils.setGamepadInputProcessor(stage);
         setupScreen();
     }
 
@@ -111,7 +111,7 @@ public abstract class MenuScreen implements Screen {
     public void hide() {
         stage.clear();
         Gdx.input.setInputProcessor(null);
-        Utils.setControllerInputProcessor(null);
+        Utils.setGamepadInputProcessor(null);
     }
 
     @Override

@@ -3,6 +3,8 @@ package nl.t64.game.rpg.components.tooltip;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
@@ -20,6 +22,8 @@ import java.util.Optional;
 
 public class ItemSlotTooltip extends BaseTooltip {
 
+    private static final float SLOT_SIZE = 64f;
+    private static final float THREE_QUARTERS = SLOT_SIZE * 0.75f;
     private static final String RIGHT_BORDER = "sprites/tooltip_right.png";
     private static final float COLUMN_SPACING = 20f;
     private static final float HALF_SPACING = 10f;
@@ -27,11 +31,43 @@ public class ItemSlotTooltip extends BaseTooltip {
     private static final String LEFT_TITLE = EMPTY_ROW;
     private static final String RIGHT_TITLE = "Currently Equipped";
     private static final Color ORANGE = new Color(0xFF9000FF);
+    private static final float DELAY = 0.5f;
+
+    public void toggle(ItemSlot itemSlot) {
+        boolean isEnabled = Utils.getGameData().isTooltipEnabled();
+        Utils.getGameData().setTooltipEnabled(!isEnabled);
+
+        if (itemSlot.hasItem()) {
+            setupTooltip(itemSlot);
+            window.setVisible(!isEnabled);
+        }
+    }
+
+    public void refresh(ItemSlot itemSlot) {
+        window.clearActions();
+        window.setVisible(false);
+
+        if (Utils.getGameData().isTooltipEnabled() && itemSlot.hasItem()) {
+            setupTooltip(itemSlot);
+            window.addAction(Actions.sequence(Actions.delay(DELAY),
+                                              Actions.show()));
+        }
+    }
+
+    private void setupTooltip(ItemSlot itemSlot) {
+        var localCoords = new Vector2(itemSlot.getOriginX(), itemSlot.getOriginY());
+        itemSlot.localToStageCoordinates(localCoords);
+        updateDescription(itemSlot);
+        window.setPosition(localCoords.x + THREE_QUARTERS, localCoords.y + THREE_QUARTERS);
+        window.toFront();
+    }
 
     void setVisible(ItemSlot itemSlot, boolean visible) {
-        window.setVisible(visible);
-        if (!itemSlot.hasItem()) {
-            window.setVisible(false);
+        window.clearActions();
+        window.setVisible(false);
+        if (Utils.getGameData().isTooltipEnabled() && itemSlot.hasItem()) {
+            window.addAction(Actions.sequence(Actions.delay(DELAY),
+                                              Actions.visible(visible)));
         }
     }
 

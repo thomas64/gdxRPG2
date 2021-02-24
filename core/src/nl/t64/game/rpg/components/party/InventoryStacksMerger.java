@@ -3,7 +3,7 @@ package nl.t64.game.rpg.components.party;
 import java.util.stream.IntStream;
 
 
-public class InventoryStacksMerger {
+class InventoryStacksMerger {
 
     private final InventoryContainer container;
     private InventoryItem inventoryItem1;

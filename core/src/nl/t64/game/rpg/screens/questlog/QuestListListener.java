@@ -9,6 +9,7 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.quest.QuestGraph;
+import nl.t64.game.rpg.constants.Constant;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -16,6 +17,8 @@ import java.util.function.Consumer;
 
 @AllArgsConstructor
 class QuestListListener extends InputListener {
+
+    private static final int TEN = 10;
 
     private final List<QuestGraph> questList;
     private final Consumer<QuestGraph> populateQuestSpecifics;
@@ -27,19 +30,25 @@ class QuestListListener extends InputListener {
                     Input.Keys.DOWN,
                     Input.Keys.HOME,
                     Input.Keys.END -> isSelected();
-            case Input.Keys.LEFT -> setSelectedUp();
-            case Input.Keys.RIGHT -> setSelectedDown();
+            case Constant.KEYCODE_L1,
+                    Input.Keys.LEFT -> setSelectedUp();
+            case Constant.KEYCODE_R1,
+                    Input.Keys.RIGHT -> setSelectedDown();
             default -> false;
         };
     }
 
     private boolean setSelectedUp() {
-        questList.setSelectedIndex(Math.max(questList.getSelectedIndex() - 10, 0));
+        if (questList.getItems().isEmpty()) {
+            questList.setSelectedIndex(Math.max(questList.getSelectedIndex() - TEN, -1));
+        } else {
+            questList.setSelectedIndex(Math.max(questList.getSelectedIndex() - TEN, 0));
+        }
         return isSelected();
     }
 
     private boolean setSelectedDown() {
-        questList.setSelectedIndex(Math.min(questList.getSelectedIndex() + 10, questList.getItems().size - 1));
+        questList.setSelectedIndex(Math.min(questList.getSelectedIndex() + TEN, questList.getItems().size - 1));
         return isSelected();
     }
 

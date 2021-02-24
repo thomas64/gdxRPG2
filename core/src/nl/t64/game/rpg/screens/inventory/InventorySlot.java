@@ -32,8 +32,13 @@ public class InventorySlot extends ItemSlot {
     }
 
     @Override
+    public int getIndex() {
+        return index;
+    }
+
+    @Override
     public InventoryImage getCertainInventoryImage() {
-        return (InventoryImage) super.getChildren().get(1);
+        return (InventoryImage) super.getChild(1);
     }
 
     @Override
@@ -63,7 +68,7 @@ public class InventorySlot extends ItemSlot {
     }
 
     @Override
-    void clearStack() {
+    public void clearStack() {
         if (hasItem()) {
             super.getChildren().removeIndex(1);
             inventory.clearItemAt(index);

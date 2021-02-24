@@ -42,7 +42,7 @@ public class MessageDialog {
     }
 
     public void setLeftAlignment() {
-        ((Label) dialog.getContentTable().getChildren().get(0)).setAlignment(Align.left);
+        ((Label) dialog.getContentTable().getChild(0)).setAlignment(Align.left);
     }
 
     private Dialog createDialog() {

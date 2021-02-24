@@ -2,12 +2,15 @@ package nl.t64.game.rpg;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -38,6 +41,8 @@ public final class Utils {
     private static final String DOOR_PATH = "sprites/objects/%s.png";
     private static final String CHEST_PATH = "sprites/objects/chest.png";
     private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
+    private static final float SMALL_PARCHMENT_WIDTH = 400f;
+    private static final float SMALL_PARCHMENT_HEIGHT = 280f;
     private static final String LIGHTMAP_PATH = "sprites/lightmaps/%s.png";
 
     private Utils() {
@@ -72,12 +77,18 @@ public final class Utils {
         return getEngine().mapManager;
     }
 
-    public static void setControllerInputProcessor(InputProcessor inputProcessor) {
-        getEngine().controllerMapping.setInputProcessor(inputProcessor);
+    public static void setGamepadInputProcessor(InputProcessor inputProcessor) {
+        getEngine().gamepadMapping.setInputProcessor(inputProcessor);
     }
 
     private static Engine getEngine() {
         return (Engine) Gdx.app.getApplicationListener();
+    }
+
+    public static boolean isGamepadConnected() {
+        return Optional.ofNullable(Controllers.getCurrent())
+                       .filter(Controller::isConnected)
+                       .isPresent();
     }
 
     public static Window createDefaultWindow(String title, Table table) {
@@ -85,6 +96,7 @@ public final class Utils {
         window.add(table);
         window.padTop(TITLE_PADDING);
         window.getTitleLabel().setAlignment(Align.left);
+        window.setMovable(false);
         window.pack();
         return window;
     }
@@ -95,6 +107,30 @@ public final class Utils {
         var drawable = new NinePatchDrawable(ninepatch);
         BitmapFont font = getResourceManager().getTrueTypeAsset(TITLE_FONT, TITLE_SIZE);
         return new Window.WindowStyle(font, Color.BLACK, drawable);
+    }
+
+    public static ImageButton createImageButton(String up, String over, String down) {
+        var buttonStyle = new ImageButton.ImageButtonStyle();
+        buttonStyle.up = createDrawable(up);
+        buttonStyle.down = createDrawable(down);
+        buttonStyle.over = createDrawable(over);
+        return new ImageButton(buttonStyle);
+    }
+
+    public static ImageButton createImageToggleButton(String disabled, String enabled,
+                                                      String overDisabled, String overEnabled) {
+        var buttonStyle = new ImageButton.ImageButtonStyle();
+        buttonStyle.up = createDrawable(disabled);
+        buttonStyle.checked = createDrawable(enabled);
+        buttonStyle.over = createDrawable(overDisabled);
+        buttonStyle.checkedOver = createDrawable(overEnabled);
+        return new ImageButton(buttonStyle);
+    }
+
+    private static NinePatchDrawable createDrawable(String atlasId) {
+        var textureRegion = Utils.getResourceManager().getAtlasTexture(atlasId);
+        var ninePatch = new NinePatch(textureRegion, 1, 1, 1, 1);
+        return new NinePatchDrawable(ninePatch);
     }
 
     public static Drawable createTopBorder() {
@@ -190,11 +226,9 @@ public final class Utils {
 
     public static Image createSmallParchment() {
         var parchment = new Image(getResourceManager().getTextureAsset(SPRITE_PARCHMENT));
-        float width = Gdx.graphics.getWidth() / 2.4f;
-        float height = Gdx.graphics.getHeight() / 3f;
-        parchment.setSize(width, height);
-        parchment.setPosition((Gdx.graphics.getWidth() / 2f) - (width / 2f),
-                              (Gdx.graphics.getHeight() / 2f) - (height / 2f));
+        parchment.setSize(SMALL_PARCHMENT_WIDTH, SMALL_PARCHMENT_HEIGHT);
+        parchment.setPosition((Gdx.graphics.getWidth() / 2f) - (SMALL_PARCHMENT_WIDTH / 2f),
+                              (Gdx.graphics.getHeight() / 2f) - (SMALL_PARCHMENT_HEIGHT / 2f));
         return parchment;
     }
 

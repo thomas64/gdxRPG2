@@ -22,15 +22,12 @@ class QuestLogUI {
     QuestLogUI() {
         this.questListTable = new QuestListTable();
         this.questListWindow = Utils.createDefaultWindow(TITLE_QUESTS, questListTable.container);
-        this.questListWindow.setMovable(false);
 
         this.summaryTable = new SummaryTable();
         this.summaryWindow = Utils.createDefaultWindow(TITLE_SUMMARY, summaryTable.container);
-        this.summaryWindow.setMovable(false);
 
         this.taskListTable = new TaskListTable();
         this.taskListWindow = Utils.createDefaultWindow(TITLE_TASKS, taskListTable.container);
-        this.taskListWindow.setMovable(false);
     }
 
     void addToStage(Stage stage) {
@@ -41,14 +38,6 @@ class QuestLogUI {
 
     void applyListeners() {
         questListWindow.addListener(new QuestListListener(questListTable.questList, this::populateQuestSpecifics));
-    }
-
-    void update() {
-        // empty
-    }
-
-    void unloadAssets() {
-        // empty
     }
 
     private void populateQuestSpecifics(QuestGraph quest) {

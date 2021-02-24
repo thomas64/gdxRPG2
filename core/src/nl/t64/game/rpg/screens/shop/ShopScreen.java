@@ -2,7 +2,6 @@ package nl.t64.game.rpg.screens.shop;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -10,11 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import lombok.Getter;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.audio.AudioEvent;
+import nl.t64.game.rpg.components.tooltip.ButtonTooltip;
+import nl.t64.game.rpg.components.tooltip.ButtonTooltipListener;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.screens.ScreenToLoad;
@@ -43,6 +43,7 @@ public class ShopScreen implements ScreenToLoad {
     private static final float TOP_SPACE = 50f;
 
     private final Stage stage;
+    private final ButtonTooltip buttonTooltip;
     @Getter
     private ShopUI shopUI;
     private String npcId;
@@ -50,6 +51,7 @@ public class ShopScreen implements ScreenToLoad {
 
     public ShopScreen() {
         this.stage = new Stage();
+        this.buttonTooltip = new ButtonTooltip();
     }
 
     public static void load(String npcId, String shopId) {
@@ -65,6 +67,7 @@ public class ShopScreen implements ScreenToLoad {
         Gdx.input.setCursorCatched(false);
         Gdx.input.setInputProcessor(stage);
         stage.addListener(new ShopScreenListener(this::closeScreen));
+        buttonTooltip.addToStage(stage);
         createButtonTable();
 
         shopUI = new ShopUI(npcId, shopId);
@@ -120,15 +123,19 @@ public class ShopScreen implements ScreenToLoad {
     }
 
     private void createButtonTable() {
-        var closeButton = createImageButton(BUTTON_CLOSE_UP, BUTTON_CLOSE_OVER, BUTTON_CLOSE_DOWN);
-        closeButton.addListener(new ListenerMouseImageButton(this::closeScreen));
-
         var buttonTable = new Table();
-        buttonTable.add(closeButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
+        addButton(buttonTable, BUTTON_CLOSE_UP, BUTTON_CLOSE_OVER, BUTTON_CLOSE_DOWN, this::closeScreen, "Close screen");
         buttonTable.pack();
         buttonTable.setPosition(Gdx.graphics.getWidth() - buttonTable.getWidth() - RIGHT_SPACE,
                                 Gdx.graphics.getHeight() - buttonTable.getHeight() - TOP_SPACE);
         stage.addActor(buttonTable);
+    }
+
+    private void addButton(Table buttonTable, String up, String over, String down, Runnable action, String title) {
+        ImageButton imageButton = Utils.createImageButton(up, over, down);
+        imageButton.addListener(new ListenerMouseImageButton(action));
+        imageButton.addListener(new ButtonTooltipListener(buttonTooltip, title));
+        buttonTable.add(imageButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
     }
 
     private void closeScreen() {
@@ -148,20 +155,6 @@ public class ShopScreen implements ScreenToLoad {
         setBackground(screenshot, parchment);
         parchment.addAction(Actions.sequence(Actions.fadeOut(Constant.FADE_DURATION),
                                              Actions.run(() -> Utils.getScreenManager().setScreen(ScreenType.WORLD))));
-    }
-
-    private ImageButton createImageButton(String up, String over, String down) {
-        var buttonStyle = new ImageButton.ImageButtonStyle();
-        buttonStyle.up = createDrawable(up);
-        buttonStyle.down = createDrawable(down);
-        buttonStyle.over = createDrawable(over);
-        return new ImageButton(buttonStyle);
-    }
-
-    private NinePatchDrawable createDrawable(String atlasId) {
-        var textureRegion = Utils.getResourceManager().getAtlasTexture(atlasId);
-        var ninePatch = new NinePatch(textureRegion, 1, 1, 1, 1);
-        return new NinePatchDrawable(ninePatch);
     }
 
     private boolean isDialogVisibleThenClose() {

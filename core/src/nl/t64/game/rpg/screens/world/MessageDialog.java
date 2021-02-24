@@ -63,7 +63,7 @@ class MessageDialog {
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, audioEvent);
         dialog.show(stage);
         Gdx.input.setInputProcessor(stage);
-        Utils.setControllerInputProcessor(stage);
+        Utils.setGamepadInputProcessor(stage);
     }
 
     void update(float dt) {
@@ -114,7 +114,7 @@ class MessageDialog {
 
     private void hide() {
         Gdx.input.setInputProcessor(multiplexer);
-        Utils.setControllerInputProcessor(multiplexer);
+        Utils.setGamepadInputProcessor(multiplexer);
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_CONVERSATION_NEXT);
         if (actionAfterHide == null) {
             dialog.hide();

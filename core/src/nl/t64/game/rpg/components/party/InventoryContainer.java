@@ -19,6 +19,12 @@ public class InventoryContainer {
         this.inventory = new ArrayList<>(Collections.nCopies(numberOfSlots, null));
     }
 
+    public Map<String, Integer> getAllContent() {
+        return inventory.stream()
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toMap(InventoryItem::getId, InventoryItem::getAmount));
+    }
+
     public List<InventoryItem> getAllFilledSlots() {
         return inventory.stream()
                         .filter(Objects::nonNull)
@@ -105,9 +111,38 @@ public class InventoryContainer {
         return getTotalOfItem(itemId) >= amount;
     }
 
+    public boolean hasEmptySlot() {
+        return findFirstEmptySlot().isPresent();
+    }
+
     public boolean hasRoomForResource(String itemId) {
         return findFirstSlotWithItem(itemId).isPresent()
                || findFirstEmptySlot().isPresent();
+    }
+
+    public Optional<Integer> findFirstSlotWithItem(String itemId) {
+        return IntStream.range(0, getSize())
+                        .boxed()
+                        .filter(index -> containsItemAt(index, itemId))
+                        .findFirst();
+    }
+
+    public Optional<Integer> findFirstFilledSlot() {
+        return findNextFilledSlotFrom(0);
+    }
+
+    public Optional<Integer> findNextFilledSlotFrom(int index) {
+        return IntStream.range(index, getSize())
+                        .boxed()
+                        .filter(this::isSlotFilled)
+                        .findFirst();
+    }
+
+    public Optional<Integer> findFirstEmptySlot() {
+        return IntStream.range(0, getSize())
+                        .boxed()
+                        .filter(this::isSlotEmpty)
+                        .findFirst();
     }
 
     int getLastIndex() {
@@ -166,24 +201,6 @@ public class InventoryContainer {
         Optional.ofNullable(inventory.get(index))
                 .filter(item -> item.id.equals(itemId))
                 .ifPresent(item -> resourceMap.put(index, item.amount));
-    }
-
-    public Optional<Integer> findFirstSlotWithItem(String itemId) {
-        return IntStream.range(0, getSize()).boxed()
-                        .filter(index -> containsItemAt(index, itemId))
-                        .findFirst();
-    }
-
-    public Optional<Integer> findFirstFilledSlot() {
-        return IntStream.range(0, getSize()).boxed()
-                        .filter(this::isSlotFilled)
-                        .findFirst();
-    }
-
-    public Optional<Integer> findFirstEmptySlot() {
-        return IntStream.range(0, getSize()).boxed()
-                        .filter(this::isSlotEmpty)
-                        .findFirst();
     }
 
     private boolean isSlotFilled(int index) {

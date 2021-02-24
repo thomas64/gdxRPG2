@@ -1,21 +1,18 @@
 package nl.t64.game.rpg.screens.loot;
 
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
-import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.components.party.InventoryContainer;
 import nl.t64.game.rpg.components.party.InventoryDatabase;
 import nl.t64.game.rpg.components.party.InventoryGroup;
 import nl.t64.game.rpg.components.party.InventoryItem;
-import nl.t64.game.rpg.components.tooltip.ItemSlotTooltip;
-import nl.t64.game.rpg.components.tooltip.ItemSlotTooltipListener;
-import nl.t64.game.rpg.screens.inventory.*;
+import nl.t64.game.rpg.components.tooltip.LootSlotTooltip;
+import nl.t64.game.rpg.screens.inventory.InventoryImage;
+import nl.t64.game.rpg.screens.inventory.InventorySlot;
+import nl.t64.game.rpg.screens.inventory.ItemSlotSelector;
 
 import java.util.Map;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 
@@ -24,52 +21,62 @@ public class LootSlotsTable {
     private static final float SLOT_SIZE = 64f;
     private static final int NUMBER_OF_SLOTS = 8;
     private static final int SLOTS_IN_ROW = 4;
-    private static final float CONTAINER_HEIGHT = 128f;
+    private static final float INPUT_DELAY = 0.2f;
 
-    final Table container;
-    final ScrollPane scrollPane;
-    private final Table lootSlotTable;
-    private final DragAndDrop dragAndDrop;
-    private final ItemSlotTooltip tooltip;
+    final Table lootSlots;
+
+    private final LootScreen lootScreen;
+    private final Loot loot;
     private final InventoryContainer inventory;
+    private final ItemSlotSelector selector;
+    private final LootSlotTaker taker;
 
-    LootSlotsTable(Loot loot, DragAndDrop dragAndDrop, ItemSlotTooltip tooltip) {
+    LootSlotsTable(LootScreen lootScreen, Loot loot, LootSlotTooltip tooltip) {
+        this.lootScreen = lootScreen;
+        this.loot = loot;
         this.inventory = new InventoryContainer(NUMBER_OF_SLOTS);
-        this.fillLootContainer(loot);
-        this.dragAndDrop = dragAndDrop;
-        this.tooltip = tooltip;
-        this.lootSlotTable = new Table();
-        this.fillLootSlots();
+        this.fillLootInventoryContainer();
+        this.lootSlots = new Table();
+        this.fillLootSlotsTable();
 
-        this.scrollPane = new ScrollPane(this.lootSlotTable);
-        this.container = new Table();
-        this.container.add(this.scrollPane).height(CONTAINER_HEIGHT);
-        container.setBackground(Utils.createTopBorder());
+        this.selector = new ItemSlotSelector(this.inventory, tooltip, this.lootSlots);
+        this.taker = new LootSlotTaker(this.selector);
+
+        this.lootSlots.addAction(Actions.sequence(Actions.delay(INPUT_DELAY),
+                                                  Actions.run(this::selectFirstSlot),
+                                                  Actions.addListener(this.createListener(), false)));
     }
 
-    boolean isEmpty() {
-        return inventory.isEmpty();
+    private void selectFirstSlot() {
+        selector.setSelected(0);
     }
 
-    Map<String, Integer> getContent() {
-        return inventory.getAllFilledSlots()
-                        .stream()
-                        .collect(Collectors.toMap(InventoryItem::getId, InventoryItem::getAmount));
+    private LootSlotsTableListener createListener() {
+        return new LootSlotsTableListener(this::closeScreen,
+                                          this::takeItem,
+                                          selector::selectNewSlot,
+                                          selector::toggleTooltip,
+                                          SLOTS_IN_ROW);
     }
 
-    boolean hasTakenItem() {
-        return inventory.findFirstFilledSlot()
-                        .map(this::hasHandledShop)
-                        .orElse(false);
+    private void takeItem() {
+        if (inventory.isEmpty()) {
+            closeScreen();
+        } else {
+            taker.take(selector.getSelectedSlot());
+        }
     }
 
-    private boolean hasHandledShop(Integer index) {
-        var lootSlot = (InventorySlot) lootSlotTable.getChildren().get(index);
-        DoubleClickHandler.handleShop(lootSlot, dragAndDrop);
-        return true;
+    private void closeScreen() {
+        if (inventory.isEmpty()) {
+            loot.clearContent();
+        } else {
+            loot.updateContent(inventory.getAllContent());
+        }
+        lootScreen.closeScreen(inventory.isEmpty());
     }
 
-    private void fillLootContainer(Loot loot) {
+    private void fillLootInventoryContainer() {
         loot.getContent()
             .entrySet()
             .stream()
@@ -81,35 +88,19 @@ public class LootSlotsTable {
         return InventoryDatabase.getInstance().createInventoryItem(loot.getKey(), loot.getValue());
     }
 
-    private void fillLootSlots() {
+    private void fillLootSlotsTable() {
         IntStream.range(0, inventory.getSize())
                  .forEach(this::createLootSlot);
     }
 
     private void createLootSlot(int index) {
-        InventorySlot lootSlot = new InventorySlot(index, InventoryGroup.LOOT_ITEM, inventory);
-        lootSlot.addListener(new ItemSlotTooltipListener(tooltip));
-        lootSlot.addListener(new ItemSlotClickListener(DoubleClickHandler::handleShop, dragAndDrop));
-        dragAndDrop.addTarget(new ItemSlotTarget(lootSlot));
-        dragAndDrop.addSource(new ItemSlotSource(lootSlot.amountLabel, dragAndDrop));
-        inventory.getItemAt(index).ifPresent(addToSlot(lootSlot));
-        lootSlotTable.add(lootSlot).size(SLOT_SIZE, SLOT_SIZE);
+        var lootSlot = new InventorySlot(index, InventoryGroup.LOOT_ITEM, inventory);
+        inventory.getItemAt(index)
+                 .ifPresent(item -> lootSlot.addToStack(new InventoryImage(item)));
+        lootSlots.add(lootSlot).size(SLOT_SIZE, SLOT_SIZE);
         if ((index + 1) % SLOTS_IN_ROW == 0) {
-            lootSlotTable.row();
+            lootSlots.row();
         }
-    }
-
-    private Consumer<InventoryItem> addToSlot(InventorySlot lootSlot) {
-        return inventoryItem -> {
-            var inventoryImage = new InventoryImage(inventoryItem);
-            makeDraggable(inventoryImage);
-            lootSlot.addToStack(inventoryImage);
-        };
-    }
-
-    private void makeDraggable(InventoryImage inventoryImage) {
-        var itemSlotSource = new ItemSlotSource(inventoryImage, dragAndDrop);
-        dragAndDrop.addSource(itemSlotSource);
     }
 
 }

@@ -94,8 +94,7 @@ class DialogQuestion {
     }
 
     private void setCurrentTextButtonToRed() {
-        ((TextButton) dialog.getButtonTable().getChildren().get(selectedIndex))
-                .getStyle().fontColor = Constant.DARK_RED;
+        ((TextButton) dialog.getButtonTable().getChild(selectedIndex)).getStyle().fontColor = Constant.DARK_RED;
     }
 
     private Dialog createDialog() {

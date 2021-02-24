@@ -280,7 +280,7 @@ public class WorldScreen implements Screen,
     public void show() {
         gameState = GameState.RUNNING;
         Gdx.input.setInputProcessor(multiplexer);
-        Utils.setControllerInputProcessor(multiplexer);
+        Utils.setGamepadInputProcessor(multiplexer);
         Utils.getMapManager().continueAudio();
     }
 
@@ -402,7 +402,7 @@ public class WorldScreen implements Screen,
     public void hide() {
         gameState = GameState.PAUSED;
         Gdx.input.setInputProcessor(null);
-        Utils.setControllerInputProcessor(null);
+        Utils.setGamepadInputProcessor(null);
     }
 
     @Override

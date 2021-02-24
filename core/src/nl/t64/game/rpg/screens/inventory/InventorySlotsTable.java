@@ -63,7 +63,7 @@ public class InventorySlotsTable {
     Optional<ItemSlot> getPossibleSameStackableItemSlotWith(InventoryItem candidateItem) {
         if (candidateItem.isStackable()) {
             return inventory.findFirstSlotWithItem(candidateItem.getId())
-                            .map(index -> (ItemSlot) inventorySlotTable.getChildren().get(index));
+                            .map(index -> (ItemSlot) inventorySlotTable.getChild(index));
         } else {
             return Optional.empty();
         }
@@ -71,7 +71,7 @@ public class InventorySlotsTable {
 
     Optional<ItemSlot> getPossibleEmptySlot() {
         return inventory.findFirstEmptySlot()
-                        .map(index -> (ItemSlot) inventorySlotTable.getChildren().get(index));
+                        .map(index -> (ItemSlot) inventorySlotTable.getChild(index));
     }
 
     private void fillInventorySlots() {

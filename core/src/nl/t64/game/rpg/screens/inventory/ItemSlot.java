@@ -13,6 +13,7 @@ import java.util.Optional;
 public abstract class ItemSlot extends Stack {
 
     private static final String SPRITE_BACKGROUND = "sprites/inventoryslot.png";
+    private static final String SPRITE_SELECTED = "sprites/selected.png";
     private static final String NOTHING = "nothing";
     private static final String BASIC = "basic";
     private static final String FINE = "fine";
@@ -40,12 +41,23 @@ public abstract class ItemSlot extends Stack {
         return stack;
     }
 
-    Optional<InventoryImage> getPossibleInventoryImage() {
+    public void setSelected() {
+        var texture = Utils.getResourceManager().getTextureAsset(SPRITE_SELECTED);
+        super.add(new Image(texture));
+    }
+
+    public void setDeselected() {
+        super.getChildren().pop();
+    }
+
+    public Optional<InventoryImage> getPossibleInventoryImage() {
         if (hasItem()) {
             return Optional.of(getCertainInventoryImage());
         }
         return Optional.empty();
     }
+
+    public abstract int getIndex();
 
     public abstract InventoryImage getCertainInventoryImage();
 
@@ -57,7 +69,7 @@ public abstract class ItemSlot extends Stack {
 
     public abstract boolean doesAcceptItem(InventoryImage draggedItem);
 
-    abstract void clearStack();
+    public abstract void clearStack();
 
     abstract void putInSlot(InventoryImage draggedItem);
 

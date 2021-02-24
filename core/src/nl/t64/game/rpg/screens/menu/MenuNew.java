@@ -118,7 +118,7 @@ public class MenuNew extends MenuScreen {
 
     @Override
     void setAllTextButtonsToDefault() {
-        Table lowerTable = (Table) table.getChildren().get(1); // two tables inside the table, get the second.
+        Table lowerTable = (Table) table.getChild(1); // two tables inside the table, get the second.
         for (Actor actor : lowerTable.getChildren()) {
             ((TextButton) actor).getStyle().fontColor = fontColor;
         }
@@ -126,8 +126,8 @@ public class MenuNew extends MenuScreen {
 
     @Override
     void setCurrentTextButtonToSelected() {
-        Table lowerTable = (Table) table.getChildren().get(1); // two tables inside the table, get the second.
-        ((TextButton) lowerTable.getChildren().get(selectedMenuIndex)).getStyle().fontColor = Constant.DARK_RED;
+        Table lowerTable = (Table) table.getChild(1); // two tables inside the table, get the second.
+        ((TextButton) lowerTable.getChild(selectedMenuIndex)).getStyle().fontColor = Constant.DARK_RED;
     }
 
     private Table createTable() {

@@ -22,7 +22,7 @@ public class Engine extends Game {
     final ScreenManager screenManager;
     final AudioManager audioManager;
     final MapManager mapManager;
-    final GameControllerMapping controllerMapping;
+    final GamepadMapping gamepadMapping;
 
     public Engine(Settings settings) {
         this.resourceManager = new ResourceManager();
@@ -32,7 +32,7 @@ public class Engine extends Game {
         this.screenManager = new ScreenManager();
         this.audioManager = new AudioManager();
         this.mapManager = new MapManager();
-        this.controllerMapping = new GameControllerMapping();
+        this.gamepadMapping = new GamepadMapping();
     }
 
     private static void updateRunTime() {
@@ -49,7 +49,7 @@ public class Engine extends Game {
         profileManager.addObserver(mapManager);
         profileManager.addObserver((ProfileObserver) screenManager.getScreen(ScreenType.INVENTORY));
 
-        Controllers.addListener(controllerMapping.controllerToInputAdapter);
+        Controllers.addListener(gamepadMapping.controllerToInputAdapter);
 
         screenManager.setScreen(ScreenType.MENU_MAIN);
     }

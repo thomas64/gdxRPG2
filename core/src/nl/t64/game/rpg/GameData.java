@@ -26,7 +26,7 @@ public class GameData implements ProfileObserver {
     private LootContainer loot;
     private DoorContainer doors;
     @Setter
-    private boolean isFirstTimeLootMessageShown;
+    private boolean isTooltipEnabled;
     @Setter
     private boolean isComparingEnabled;
 
@@ -40,7 +40,7 @@ public class GameData implements ProfileObserver {
         events = new EventContainer();
         loot = new LootContainer();
         doors = new DoorContainer();
-        isFirstTimeLootMessageShown = false;
+        isTooltipEnabled = true;
         isComparingEnabled = true;
         addFirstHeroToParty();
         addFirstItemsToInventory();
@@ -57,7 +57,7 @@ public class GameData implements ProfileObserver {
         profileManager.setProperty("events", events);
         profileManager.setProperty("loot", loot);
         profileManager.setProperty("doors", doors);
-        profileManager.setProperty("isFirstTimeLootMessageShown", isFirstTimeLootMessageShown);
+        profileManager.setProperty("isTooltipEnabled", isTooltipEnabled);
         profileManager.setProperty("isComparingEnabled", isComparingEnabled);
     }
 
@@ -73,7 +73,7 @@ public class GameData implements ProfileObserver {
         events = profileManager.getProperty("events", EventContainer.class);
         loot = profileManager.getProperty("loot", LootContainer.class);
         doors = profileManager.getProperty("doors", DoorContainer.class);
-        isFirstTimeLootMessageShown = profileManager.getProperty("isFirstTimeLootMessageShown", Boolean.class);
+        isTooltipEnabled = profileManager.getProperty("isTooltipEnabled", Boolean.class);
         isComparingEnabled = profileManager.getProperty("isComparingEnabled", Boolean.class);
     }
 

@@ -6,7 +6,6 @@ import lombok.Getter;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.PartyContainer;
-import nl.t64.game.rpg.screens.loot.LootScreen;
 import nl.t64.game.rpg.screens.shop.ShopScreen;
 
 
@@ -64,8 +63,6 @@ public final class InventoryUtils {
             return inventoryScreen.inventoryUI;
         } else if (currentScreen instanceof ShopScreen shopScreen) {
             return shopScreen.getShopUI();
-        } else if (currentScreen instanceof LootScreen lootScreen) {
-            return lootScreen.getLootUI();
         }
         throw new GdxRuntimeException("currentScreen is instanceof: " + currentScreen);
     }

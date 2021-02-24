@@ -3,9 +3,11 @@ package nl.t64.game.rpg.screens.inventory;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import lombok.AllArgsConstructor;
 import nl.t64.game.rpg.constants.Constant;
 
 
+@AllArgsConstructor
 class InventoryScreenListener extends InputListener {
 
     private final Runnable closeScreenFunction;
@@ -14,32 +16,11 @@ class InventoryScreenListener extends InputListener {
     private final Runnable nextHeroFunction;
     private final Runnable dismissHeroFunction;
     private final Runnable sortInventoryFunction;
+    private final Runnable toggleTooltipFunction;
     private final Runnable toggleCompareFunction;
     private final Runnable showHelpFunction;
     private final Runnable cheatAddGoldFunction;
     private final Runnable cheatRemoveGoldFunction;
-
-    InventoryScreenListener(Runnable closeScreenFunction,
-                            Runnable resetWindowsFunction,
-                            Runnable previousHeroFunction,
-                            Runnable nextHeroFunction,
-                            Runnable dismissHeroFunction,
-                            Runnable sortInventoryFunction,
-                            Runnable toggleCompareFunction,
-                            Runnable showHelpFunction,
-                            Runnable cheatAddGoldFunction,
-                            Runnable cheatRemoveGoldFunction) {
-        this.closeScreenFunction = closeScreenFunction;
-        this.resetWindowsFunction = resetWindowsFunction;
-        this.previousHeroFunction = previousHeroFunction;
-        this.nextHeroFunction = nextHeroFunction;
-        this.dismissHeroFunction = dismissHeroFunction;
-        this.sortInventoryFunction = sortInventoryFunction;
-        this.toggleCompareFunction = toggleCompareFunction;
-        this.showHelpFunction = showHelpFunction;
-        this.cheatAddGoldFunction = cheatAddGoldFunction;
-        this.cheatRemoveGoldFunction = cheatRemoveGoldFunction;
-    }
 
     @Override
     public boolean keyDown(InputEvent event, int keycode) {
@@ -55,6 +36,7 @@ class InventoryScreenListener extends InputListener {
                     Input.Keys.W -> nextHeroFunction.run();
             case Input.Keys.D -> dismissHeroFunction.run();
             case Input.Keys.S -> sortInventoryFunction.run();
+            case Input.Keys.T -> toggleTooltipFunction.run();
             case Input.Keys.C -> toggleCompareFunction.run();
             case Input.Keys.SHIFT_LEFT,
                     Input.Keys.SHIFT_RIGHT -> InventoryUtils.setShiftPressed(true);

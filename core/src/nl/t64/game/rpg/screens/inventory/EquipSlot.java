@@ -33,6 +33,11 @@ class EquipSlot extends ItemSlot {
     }
 
     @Override
+    public int getIndex() {
+        throw new IllegalCallerException("EquipSlot does not contain index.");
+    }
+
+    @Override
     public InventoryImage getCertainInventoryImage() {
         return (InventoryImage) super.getChildren().peek();
     }
@@ -65,7 +70,7 @@ class EquipSlot extends ItemSlot {
     }
 
     @Override
-    void clearStack() {
+    public void clearStack() {
         if (hasItem()) {
             super.getChildren().pop();
             heroItem.clearInventoryItemFor(filterGroup);
@@ -116,7 +121,7 @@ class EquipSlot extends ItemSlot {
     }
 
     private void setShadowVisible(boolean visible) {
-        imagesBackground.getChildren().get(1).setVisible(visible);  // 1 is index of actor named shadow
+        imagesBackground.getChild(1).setVisible(visible);  // 1 is index of actor named shadow
     }
 
 }

@@ -2,7 +2,6 @@ package nl.t64.game.rpg.screens.inventory;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.audio.AudioEvent;
@@ -39,9 +37,9 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
     private static final String BUTTON_RESET_UP = "reset_up";
     private static final String BUTTON_RESET_OVER = "reset_over";
     private static final String BUTTON_RESET_DOWN = "reset_down";
-    private static final String BUTTON_PREVIOUS_UP = "previous_up";
-    private static final String BUTTON_PREVIOUS_OVER = "previous_over";
-    private static final String BUTTON_PREVIOUS_DOWN = "previous_down";
+    private static final String BUTTON_PREV_UP = "previous_up";
+    private static final String BUTTON_PREV_OVER = "previous_over";
+    private static final String BUTTON_PREV_DOWN = "previous_down";
     private static final String BUTTON_NEXT_UP = "next_up";
     private static final String BUTTON_NEXT_OVER = "next_over";
     private static final String BUTTON_NEXT_DOWN = "next_down";
@@ -51,6 +49,10 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
     private static final String BUTTON_SORT_UP = "sort_up";
     private static final String BUTTON_SORT_OVER = "sort_over";
     private static final String BUTTON_SORT_DOWN = "sort_down";
+    private static final String BUTTON_TOOLTIP_DISABLED = "tooltip_disabled";
+    private static final String BUTTON_TOOLTIP_ENABLED = "tooltip_enabled";
+    private static final String BUTTON_TOOLTIP_OVER_DISABLED = "tooltip_over_disabled";
+    private static final String BUTTON_TOOLTIP_OVER_ENABLED = "tooltip_over_enabled";
     private static final String BUTTON_COMPARE_DISABLED = "compare_disabled";
     private static final String BUTTON_COMPARE_ENABLED = "compare_enabled";
     private static final String BUTTON_COMPARE_OVER_DISABLED = "compare_over_disabled";
@@ -92,6 +94,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
     private Vector2 heroesWindowPosition;
     private boolean isMessageShown;
 
+    private ImageButton tooltipButton;
     private ImageButton compareButton;
 
     public InventoryScreen() {
@@ -193,13 +196,14 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
     public void show() {
         Gdx.input.setCursorCatched(false);
         Gdx.input.setInputProcessor(stage);
-        Utils.setControllerInputProcessor(stage);
+        Utils.setGamepadInputProcessor(stage);
         stage.addListener(new InventoryScreenListener(this::closeScreen,
                                                       this::resetWindowsPositions,
                                                       this::selectPreviousHero,
                                                       this::selectNextHero,
                                                       this::tryToDismissHero,
                                                       this::sortInventory,
+                                                      this::toggleTooltip,
                                                       this::toggleCompare,
                                                       this::showHelpMessage,
                                                       this::cheatAddGold,
@@ -268,45 +272,47 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
     }
 
     private void createButtonTable() {
-        var closeButton = createImageButton(BUTTON_CLOSE_UP, BUTTON_CLOSE_OVER, BUTTON_CLOSE_DOWN);
-        var resetButton = createImageButton(BUTTON_RESET_UP, BUTTON_RESET_OVER, BUTTON_RESET_DOWN);
-        var previousButton = createImageButton(BUTTON_PREVIOUS_UP, BUTTON_PREVIOUS_OVER, BUTTON_PREVIOUS_DOWN);
-        var nextButton = createImageButton(BUTTON_NEXT_UP, BUTTON_NEXT_OVER, BUTTON_NEXT_DOWN);
-        var dismissButton = createImageButton(BUTTON_DISMISS_UP, BUTTON_DISMISS_OVER, BUTTON_DISMISS_DOWN);
-        var sortButton = createImageButton(BUTTON_SORT_UP, BUTTON_SORT_OVER, BUTTON_SORT_DOWN);
-        compareButton = createImageToggleButton(BUTTON_COMPARE_DISABLED, BUTTON_COMPARE_ENABLED, BUTTON_COMPARE_OVER_DISABLED, BUTTON_COMPARE_OVER_ENABLED);
-        var helpButton = createImageButton(BUTTON_HELP_UP, BUTTON_HELP_OVER, BUTTON_HELP_DOWN);
-        closeButton.addListener(new ListenerMouseImageButton(this::closeScreen));
-        closeButton.addListener(new ButtonTooltipListener(buttonTooltip, "Close screen"));
-        resetButton.addListener(new ListenerMouseImageButton(this::resetWindowsPositions));
-        resetButton.addListener(new ButtonTooltipListener(buttonTooltip, "Reset windows"));
-        previousButton.addListener(new ListenerMouseImageButton(this::selectPreviousHero));
-        previousButton.addListener(new ButtonTooltipListener(buttonTooltip, "Previous hero"));
-        nextButton.addListener(new ListenerMouseImageButton(this::selectNextHero));
-        nextButton.addListener(new ButtonTooltipListener(buttonTooltip, "Next hero"));
-        dismissButton.addListener(new ListenerMouseImageButton(this::tryToDismissHero));
-        dismissButton.addListener(new ButtonTooltipListener(buttonTooltip, "Dismiss hero"));
-        sortButton.addListener(new ListenerMouseImageButton(this::sortInventory));
-        sortButton.addListener(new ButtonTooltipListener(buttonTooltip, "Sort inventory"));
-        compareButton.addListener(new ListenerMouseImageButton(this::toggleCompare));
-        compareButton.addListener(new ButtonTooltipListener(buttonTooltip, "Toggle compare"));
-        compareButton.setChecked(Utils.getGameData().isComparingEnabled());
-        helpButton.addListener(new ListenerMouseImageButton(this::showHelpMessage));
-        helpButton.addListener(new ButtonTooltipListener(buttonTooltip, "Help dialog"));
-
         var buttonTable = new Table();
-        buttonTable.add(closeButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
-        buttonTable.add(resetButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
-        buttonTable.add(previousButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
-        buttonTable.add(nextButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
-        buttonTable.add(dismissButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
-        buttonTable.add(sortButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
-        buttonTable.add(compareButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
-        buttonTable.add(helpButton).size(BUTTON_SIZE);
+
+        addButton(buttonTable, BUTTON_CLOSE_UP, BUTTON_CLOSE_OVER, BUTTON_CLOSE_DOWN, this::closeScreen, "Close screen");
+        addButton(buttonTable, BUTTON_RESET_UP, BUTTON_RESET_OVER, BUTTON_RESET_DOWN, this::resetWindowsPositions, "Reset windows");
+        addButton(buttonTable, BUTTON_PREV_UP, BUTTON_PREV_OVER, BUTTON_PREV_DOWN, this::selectPreviousHero, "Previous hero");
+        addButton(buttonTable, BUTTON_NEXT_UP, BUTTON_NEXT_OVER, BUTTON_NEXT_DOWN, this::selectNextHero, "Next hero");
+        addButton(buttonTable, BUTTON_DISMISS_UP, BUTTON_DISMISS_OVER, BUTTON_DISMISS_DOWN, this::tryToDismissHero, "Dismiss hero");
+        addButton(buttonTable, BUTTON_SORT_UP, BUTTON_SORT_OVER, BUTTON_SORT_DOWN, this::sortInventory, "Sort inventory");
+        addToggleTooltipButton(buttonTable);
+        addToggleCompareButton(buttonTable);
+        addButton(buttonTable, BUTTON_HELP_UP, BUTTON_HELP_OVER, BUTTON_HELP_DOWN, this::showHelpMessage, "Help dialog");
+
         buttonTable.pack();
         buttonTable.setPosition(Gdx.graphics.getWidth() - buttonTable.getWidth() - RIGHT_SPACE,
                                 Gdx.graphics.getHeight() - buttonTable.getHeight() - TOP_SPACE);
         stage.addActor(buttonTable);
+    }
+
+    private void addButton(Table buttonTable, String up, String over, String down, Runnable action, String title) {
+        ImageButton imageButton = Utils.createImageButton(up, over, down);
+        imageButton.addListener(new ListenerMouseImageButton(action));
+        imageButton.addListener(new ButtonTooltipListener(buttonTooltip, title));
+        buttonTable.add(imageButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
+    }
+
+    private void addToggleTooltipButton(Table buttonTable) {
+        tooltipButton = Utils.createImageToggleButton(BUTTON_TOOLTIP_DISABLED, BUTTON_TOOLTIP_ENABLED,
+                                                      BUTTON_TOOLTIP_OVER_DISABLED, BUTTON_TOOLTIP_OVER_ENABLED);
+        tooltipButton.addListener(new ListenerMouseImageButton(this::toggleTooltip));
+        tooltipButton.addListener(new ButtonTooltipListener(buttonTooltip, "Toggle tooltip"));
+        tooltipButton.setChecked(Utils.getGameData().isTooltipEnabled());
+        buttonTable.add(tooltipButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
+    }
+
+    private void addToggleCompareButton(Table buttonTable) {
+        compareButton = Utils.createImageToggleButton(BUTTON_COMPARE_DISABLED, BUTTON_COMPARE_ENABLED,
+                                                      BUTTON_COMPARE_OVER_DISABLED, BUTTON_COMPARE_OVER_ENABLED);
+        compareButton.addListener(new ListenerMouseImageButton(this::toggleCompare));
+        compareButton.addListener(new ButtonTooltipListener(buttonTooltip, "Toggle compare"));
+        compareButton.setChecked(Utils.getGameData().isComparingEnabled());
+        buttonTable.add(compareButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
     }
 
     private void closeScreen() {
@@ -316,7 +322,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
         storeWindowPositions();
         Gdx.input.setCursorCatched(true);
         Gdx.input.setInputProcessor(null);
-        Utils.setControllerInputProcessor(null);
+        Utils.setGamepadInputProcessor(null);
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
         fadeParchment();
     }
@@ -360,13 +366,19 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
     private void hideConversationDialog() {
         conversationDialog.hideWithFade();
         Gdx.input.setInputProcessor(stage);
-        Utils.setControllerInputProcessor(stage);
+        Utils.setGamepadInputProcessor(stage);
     }
 
     private void sortInventory() {
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_CONFIRM);
         Utils.getGameData().getInventory().sort();
         inventoryUI.reloadInventory();
+    }
+
+    private void toggleTooltip() {
+        boolean isEnabled = Utils.getGameData().isTooltipEnabled();
+        Utils.getGameData().setTooltipEnabled(!isEnabled);
+        tooltipButton.setChecked(!isEnabled);
     }
 
     private void toggleCompare() {
@@ -414,6 +426,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
                 W = Next hero
                 D = Dismiss hero
                 S = Sort inventory
+                T = Toggle tooltip
                 C = Toggle compare
                 Shift = Drag full stack
                 Ctrl = Drag half stack
@@ -449,29 +462,6 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
         inventoryUI.statsWindow.setPosition(STATS_WINDOW_POSITION_X, STATS_WINDOW_POSITION_Y);
         inventoryUI.calcsWindow.setPosition(CALCS_WINDOW_POSITION_X, CALCS_WINDOW_POSITION_Y);
         inventoryUI.heroesWindow.setPosition(HEROES_WINDOW_POSITION_X, HEROES_WINDOW_POSITION_Y);
-    }
-
-    private ImageButton createImageButton(String up, String over, String down) {
-        var buttonStyle = new ImageButton.ImageButtonStyle();
-        buttonStyle.up = createDrawable(up);
-        buttonStyle.down = createDrawable(down);
-        buttonStyle.over = createDrawable(over);
-        return new ImageButton(buttonStyle);
-    }
-
-    private ImageButton createImageToggleButton(String disabled, String enabled, String overDisabled, String overEnabled) {
-        var buttonStyle = new ImageButton.ImageButtonStyle();
-        buttonStyle.up = createDrawable(disabled);
-        buttonStyle.checked = createDrawable(enabled);
-        buttonStyle.over = createDrawable(overDisabled);
-        buttonStyle.checkedOver = createDrawable(overEnabled);
-        return new ImageButton(buttonStyle);
-    }
-
-    private NinePatchDrawable createDrawable(String atlasId) {
-        var textureRegion = Utils.getResourceManager().getAtlasTexture(atlasId);
-        var ninePatch = new NinePatch(textureRegion, 1, 1, 1, 1);
-        return new NinePatchDrawable(ninePatch);
     }
 
     private boolean isDialogVisibleThenClose() {

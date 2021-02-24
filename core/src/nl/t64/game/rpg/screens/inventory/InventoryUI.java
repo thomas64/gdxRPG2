@@ -93,7 +93,7 @@ class InventoryUI implements ScreenUI {
         inventorySlotsTable.clearAndFill();
         equipSlotsTables.clear();
         fillEquipSlotsTables();
-        equipWindow.getChildren().get(1).remove();
+        equipWindow.getChild(1).remove();
         equipWindow.add(equipSlotsTables.get(InventoryUtils.getSelectedHeroId()).container);
     }
 

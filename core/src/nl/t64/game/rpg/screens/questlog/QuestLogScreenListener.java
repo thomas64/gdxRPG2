@@ -15,8 +15,7 @@ class QuestLogScreenListener extends InputListener {
     @Override
     public boolean keyDown(InputEvent event, int keycode) {
         switch (keycode) {
-            case Constant.KEYCODE_LEFT,
-                    Constant.KEYCODE_RIGHT,
+            case Constant.KEYCODE_RIGHT,
                     Input.Keys.L,
                     Input.Keys.ESCAPE -> closeScreenFunction.run();
         }

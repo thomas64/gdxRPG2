@@ -2,91 +2,45 @@ package nl.t64.game.rpg.screens.loot;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import lombok.Getter;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.loot.Loot;
-import nl.t64.game.rpg.components.tooltip.ButtonTooltip;
-import nl.t64.game.rpg.components.tooltip.ButtonTooltipListener;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.screens.ScreenToLoad;
-import nl.t64.game.rpg.screens.inventory.ListenerMouseImageButton;
-import nl.t64.game.rpg.screens.inventory.MessageDialog;
 
 
 public abstract class LootScreen extends LootSubject implements ScreenToLoad {
 
-    private static final String BUTTON_CLOSE_UP = "close_up";
-    private static final String BUTTON_CLOSE_OVER = "close_over";
-    private static final String BUTTON_CLOSE_DOWN = "close_down";
-    private static final String BUTTON_HELP_UP = "help_up";
-    private static final String BUTTON_HELP_OVER = "help_over";
-    private static final String BUTTON_HELP_DOWN = "help_down";
-
-    private static final float INVENTORY_WINDOW_POSITION_X = (Gdx.graphics.getWidth() / 2f) - 50f;
-    private static final float INVENTORY_WINDOW_POSITION_Y = (Gdx.graphics.getHeight() / 2f) - 135f;
-    private static final float LOOT_WINDOW_POSITION_X = (Gdx.graphics.getWidth() / 2f) - 330f;
-    private static final float LOOT_WINDOW_POSITION_Y = (Gdx.graphics.getHeight() / 2f) - 39f;
-
-    private static final float BUTTON_SIZE = 32f;
-    private static final float BUTTON_SPACE = 5f;
-    private static final float RIGHT_SPACE = 6f;
-    private static final float TOP_SPACE = 75f;
-
-    private static final float INPUT_DELAY = 0.2f;
-
     final Stage stage;
-    private final ButtonTooltip buttonTooltip;
-    @Getter
-    private LootUI lootUI;
     Loot loot;
     String lootTitle;
 
     public LootScreen() {
         this.stage = new Stage();
-        this.buttonTooltip = new ButtonTooltip();
     }
 
     @Override
     public void show() {
-        Gdx.input.setCursorCatched(false);
         Gdx.input.setInputProcessor(stage);
-        createButtonTable();
+        Utils.setGamepadInputProcessor(stage);
 
-        lootUI = new LootUI(loot, lootTitle);
-        lootUI.inventoryWindow.setPosition(INVENTORY_WINDOW_POSITION_X, INVENTORY_WINDOW_POSITION_Y);
-        lootUI.lootWindow.setPosition(LOOT_WINDOW_POSITION_X, LOOT_WINDOW_POSITION_Y);
-        lootUI.addToStage(stage);
-        lootUI.applyListeners(stage);
-        buttonTooltip.addToStage(stage);
-
-        var listener = new LootScreenListener(this::closeScreen, this::takeItem, this::showHelpMessage);
-        stage.addAction(Actions.sequence(Actions.delay(INPUT_DELAY),
-                                         Actions.addListener(listener, false)));
+        var lootUI = new LootUI(this, loot, lootTitle);
+        lootUI.show(stage);
     }
 
     @Override
     public void render(float dt) {
-        if (!Utils.getGameData().isFirstTimeLootMessageShown()) {
-            Utils.getGameData().setFirstTimeLootMessageShown(true);
-            showHelpMessage();
-        }
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(dt);
         stage.draw();
-        lootUI.update();
     }
 
     @Override
@@ -106,13 +60,11 @@ public abstract class LootScreen extends LootSubject implements ScreenToLoad {
 
     @Override
     public void hide() {
-        lootUI.unloadAssets();
         stage.clear();
     }
 
     @Override
     public void dispose() {
-        // todo, de buttons bewaren hun mouse-over state op de een of andere vage manier.
         stage.dispose();
     }
 
@@ -122,46 +74,16 @@ public abstract class LootScreen extends LootSubject implements ScreenToLoad {
         stage.addActor(parchment);
     }
 
-    private void createButtonTable() {
-        var closeButton = createImageButton(BUTTON_CLOSE_UP, BUTTON_CLOSE_OVER, BUTTON_CLOSE_DOWN);
-        var helpButton = createImageButton(BUTTON_HELP_UP, BUTTON_HELP_OVER, BUTTON_HELP_DOWN);
-        closeButton.addListener(new ListenerMouseImageButton(this::closeScreen));
-        closeButton.addListener(new ButtonTooltipListener(buttonTooltip, "Close screen"));
-        helpButton.addListener(new ListenerMouseImageButton(this::showHelpMessage));
-        helpButton.addListener(new ButtonTooltipListener(buttonTooltip, "Help dialog"));
-
-        var buttonTable = new Table();
-        buttonTable.add(closeButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
-        buttonTable.add(helpButton).size(BUTTON_SIZE);
-        buttonTable.pack();
-        buttonTable.setPosition((Gdx.graphics.getWidth() * 0.7f) - buttonTable.getWidth() - RIGHT_SPACE,
-                                (Gdx.graphics.getHeight() * 0.7f) - buttonTable.getHeight() - TOP_SPACE);
-        stage.addActor(buttonTable);
-    }
-
-    private void takeItem() {
+    void closeScreen(boolean isAllTheLootCleared) {
         if (isDialogVisibleThenClose()) {
             return;
         }
-        if (!lootUI.takeItem()) {
-            closeScreen();
-        }
-    }
-
-    private void closeScreen() {
-        if (isDialogVisibleThenClose()) {
-            return;
-        }
-        if (lootUI.isEmpty()) {
-            loot.clearContent();
+        if (isAllTheLootCleared) {
             resolveAfterClearingContent();
-        } else {
-            var newContent = lootUI.getContent();
-            loot.updateContent(newContent);
         }
 
-        Gdx.input.setCursorCatched(true);
         Gdx.input.setInputProcessor(null);
+        Utils.setGamepadInputProcessor(null);
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_CONVERSATION_NEXT);
         fadeParchment();
     }
@@ -176,36 +98,6 @@ public abstract class LootScreen extends LootSubject implements ScreenToLoad {
     }
 
     abstract void resolveAfterClearingContent();
-
-    private void showHelpMessage() {
-        if (isDialogVisibleThenClose()) {
-            return;
-        }
-        final String message = """
-                Esc = Close window
-                A = Take full stack
-                Enter = Take full stack
-                Shift = Drag full stack
-                Ctrl = Drag half stack
-                H = This dialog""";
-        final var messageDialog = new MessageDialog(message);
-        messageDialog.setLeftAlignment();
-        messageDialog.show(stage, AudioEvent.SE_CONVERSATION_NEXT);
-    }
-
-    private ImageButton createImageButton(String up, String over, String down) {
-        var buttonStyle = new ImageButton.ImageButtonStyle();
-        buttonStyle.up = createDrawable(up);
-        buttonStyle.down = createDrawable(down);
-        buttonStyle.over = createDrawable(over);
-        return new ImageButton(buttonStyle);
-    }
-
-    private NinePatchDrawable createDrawable(String atlasId) {
-        var textureRegion = Utils.getResourceManager().getAtlasTexture(atlasId);
-        var ninePatch = new NinePatch(textureRegion, 1, 1, 1, 1);
-        return new NinePatchDrawable(ninePatch);
-    }
 
     private boolean isDialogVisibleThenClose() {
         Actor possibleOldDialog = stage.getActors().peek();

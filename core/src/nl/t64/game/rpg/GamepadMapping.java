@@ -10,7 +10,7 @@ import de.golfgl.gdx.controllers.mapping.ControllerToInputAdapter;
 import nl.t64.game.rpg.constants.Constant;
 
 
-class GameControllerMapping extends ControllerMappings {
+class GamepadMapping extends ControllerMappings {
 
     private static final int AXIS_VERTICAL = 0;
     private static final int AXIS_HORIZONTAL = 1;
@@ -30,7 +30,7 @@ class GameControllerMapping extends ControllerMappings {
 
     final ControllerToInputAdapter controllerToInputAdapter;
 
-    GameControllerMapping() {
+    GamepadMapping() {
         this.setInput();
         super.commitConfig();
         this.controllerToInputAdapter = this.createControllerToInputAdapter();

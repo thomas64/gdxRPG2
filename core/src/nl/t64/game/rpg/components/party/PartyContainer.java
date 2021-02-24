@@ -93,7 +93,7 @@ public class PartyContainer {
     public HeroItem getHeroWithHighestSkill(SkillItemId skillItemId) {
         return getAllHeroes().stream()
                              .max(Comparator.comparing(heroItem -> heroItem.getCalculatedTotalSkillOf(skillItemId)))
-                             .orElse(getFirstHero());
+                             .orElseGet(this::getFirstHero);
     }
 
     public boolean hasEnoughOfSkill(SkillItemId skillItemId, int rank) {
