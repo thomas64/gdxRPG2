@@ -103,6 +103,7 @@ public abstract class MenuScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
+        Utils.setControllerInputProcessor(stage);
         setupScreen();
     }
 
@@ -110,6 +111,7 @@ public abstract class MenuScreen implements Screen {
     public void hide() {
         stage.clear();
         Gdx.input.setInputProcessor(null);
+        Utils.setControllerInputProcessor(null);
     }
 
     @Override

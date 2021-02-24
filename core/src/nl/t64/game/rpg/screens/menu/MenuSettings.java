@@ -28,8 +28,6 @@ public class MenuSettings extends MenuScreen {
     private TextButton musicButton;
     private TextButton soundButton;
     private TextButton debugModeButton;
-    private TextButton controlsButton;
-    private TextButton backButton;
 
     private ListenerKeyVertical listenerKeyVertical;
 
@@ -100,8 +98,8 @@ public class MenuSettings extends MenuScreen {
         musicButton = new TextButton(getMenuItemMusic(), new TextButton.TextButtonStyle(buttonStyle));
         soundButton = new TextButton(getMenuItemSound(), new TextButton.TextButtonStyle(buttonStyle));
         debugModeButton = new TextButton(getMenuItemDebugMode(), new TextButton.TextButtonStyle(buttonStyle));
-        controlsButton = new TextButton(MENU_ITEM_CONTROLS, new TextButton.TextButtonStyle(buttonStyle));
-        backButton = new TextButton(MENU_ITEM_BACK, new TextButton.TextButtonStyle(buttonStyle));
+        var controlsButton = new TextButton(MENU_ITEM_CONTROLS, new TextButton.TextButtonStyle(buttonStyle));
+        var backButton = new TextButton(MENU_ITEM_BACK, new TextButton.TextButtonStyle(buttonStyle));
 
         // table
         var newTable = new Table();
@@ -134,15 +132,12 @@ public class MenuSettings extends MenuScreen {
     }
 
     private void applyListeners() {
-        listenerKeyVertical = new ListenerKeyVertical(this::updateMenuIndex, NUMBER_OF_ITEMS);
+        listenerKeyVertical = new ListenerKeyVertical(super::updateMenuIndex, NUMBER_OF_ITEMS);
+        var listenerKeyConfirm = new ListenerKeyConfirm(this::selectMenuItem);
+        var listenerKeyCancel = new ListenerKeyCancel(super::updateMenuIndex, this::selectMenuItem, EXIT_INDEX);
         table.addListener(listenerKeyVertical);
-        table.addListener(new ListenerKeyConfirm(this::updateMenuIndex, this::selectMenuItem, EXIT_INDEX));
-        fullscreenButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 0));
-        musicButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 1));
-        soundButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 2));
-        debugModeButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 3));
-        controlsButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 4));
-        backButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 5));
+        table.addListener(listenerKeyConfirm);
+        table.addListener(listenerKeyCancel);
     }
 
 }

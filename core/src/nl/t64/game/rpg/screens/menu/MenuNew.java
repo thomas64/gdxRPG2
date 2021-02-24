@@ -37,8 +37,6 @@ public class MenuNew extends MenuScreen {
     private static final int EXIT_INDEX = 1;
 
     private TextField profileText;
-    private TextButton startButton;
-    private TextButton backButton;
     private DialogQuestion overwriteDialog;
 
     private ListenerKeyInputField listenerKeyInputField;
@@ -148,8 +146,8 @@ public class MenuNew extends MenuScreen {
         // actors
         var profileLabel = new Label(PROFILE_LABEL, menuStyle);
         profileText = createProfileText();
-        startButton = new TextButton(MENU_ITEM_START, new TextButton.TextButtonStyle(buttonStyle));
-        backButton = new TextButton(MENU_ITEM_BACK, new TextButton.TextButtonStyle(buttonStyle));
+        var startButton = new TextButton(MENU_ITEM_START, new TextButton.TextButtonStyle(buttonStyle));
+        var backButton = new TextButton(MENU_ITEM_BACK, new TextButton.TextButtonStyle(buttonStyle));
 
         // table
         var newTable = new Table();
@@ -188,12 +186,13 @@ public class MenuNew extends MenuScreen {
 
     private void applyListeners() {
         listenerKeyInputField = new ListenerKeyInputField(this::updateInput, PROFILE_INPUT_LENGTH);
-        listenerKeyHorizontal = new ListenerKeyHorizontal(this::updateMenuIndex, NUMBER_OF_ITEMS);
+        listenerKeyHorizontal = new ListenerKeyHorizontal(super::updateMenuIndex, NUMBER_OF_ITEMS);
+        var listenerKeyConfirm = new ListenerKeyConfirm(this::selectMenuItem);
+        var listenerKeyCancel = new ListenerKeyCancel(super::updateMenuIndex, this::selectMenuItem, EXIT_INDEX);
         table.addListener(listenerKeyInputField);
         table.addListener(listenerKeyHorizontal);
-        table.addListener(new ListenerKeyConfirm(this::updateMenuIndex, this::selectMenuItem, EXIT_INDEX));
-        startButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 0));
-        backButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 1));
+        table.addListener(listenerKeyConfirm);
+        table.addListener(listenerKeyCancel);
     }
 
 }

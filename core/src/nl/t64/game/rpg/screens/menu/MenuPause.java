@@ -23,10 +23,6 @@ public class MenuPause extends MenuScreen {
     private static final String DIALOG_MESSAGE = "All progress after the last save will be lost."
                                                  + System.lineSeparator() + "Are you sure you want to exit?";
 
-    private TextButton continueButton;
-    private TextButton loadGameButton;
-    private TextButton settingsButton;
-    private TextButton mainMenuButton;
     private DialogQuestion progressLostDialog;
 
     private ListenerKeyVertical listenerKeyVertical;
@@ -96,10 +92,10 @@ public class MenuPause extends MenuScreen {
         buttonStyle.fontColor = fontColor;
 
         // actors
-        continueButton = new TextButton(MENU_ITEM_CONTINUE, new TextButton.TextButtonStyle(buttonStyle));
-        loadGameButton = new TextButton(MENU_ITEM_LOAD_GAME, new TextButton.TextButtonStyle(buttonStyle));
-        settingsButton = new TextButton(MENU_ITEM_SETTINGS, new TextButton.TextButtonStyle(buttonStyle));
-        mainMenuButton = new TextButton(MENU_ITEM_MAIN_MENU, new TextButton.TextButtonStyle(buttonStyle));
+        var continueButton = new TextButton(MENU_ITEM_CONTINUE, new TextButton.TextButtonStyle(buttonStyle));
+        var loadGameButton = new TextButton(MENU_ITEM_LOAD_GAME, new TextButton.TextButtonStyle(buttonStyle));
+        var settingsButton = new TextButton(MENU_ITEM_SETTINGS, new TextButton.TextButtonStyle(buttonStyle));
+        var mainMenuButton = new TextButton(MENU_ITEM_MAIN_MENU, new TextButton.TextButtonStyle(buttonStyle));
 
         // table
         var newTable = new Table();
@@ -114,13 +110,14 @@ public class MenuPause extends MenuScreen {
     }
 
     private void applyListeners() {
-        listenerKeyVertical = new ListenerKeyVertical(this::updateMenuIndex, NUMBER_OF_ITEMS);
+        listenerKeyVertical = new ListenerKeyVertical(super::updateMenuIndex, NUMBER_OF_ITEMS);
+        var listenerKeyConfirm = new ListenerKeyConfirm(this::selectMenuItem);
+        var listenerKeyCancel = new ListenerKeyCancel(super::updateMenuIndex, this::selectMenuItem, EXIT_INDEX);
+        var listenerKeyStart = new ListenerKeyStart(super::updateMenuIndex, this::selectMenuItem, EXIT_INDEX);
         table.addListener(listenerKeyVertical);
-        table.addListener(new ListenerKeyConfirm(this::updateMenuIndex, this::selectMenuItem, EXIT_INDEX));
-        continueButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 0));
-        loadGameButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 1));
-        settingsButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 2));
-        mainMenuButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 3));
+        table.addListener(listenerKeyConfirm);
+        table.addListener(listenerKeyCancel);
+        table.addListener(listenerKeyStart);
     }
 
 }

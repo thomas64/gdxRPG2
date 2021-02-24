@@ -13,6 +13,8 @@ import nl.t64.game.rpg.events.character.*;
 public class InputPlayer extends InputComponent implements InputProcessor {
 
     private static final float TURN_DELAY_TIME = 8f / 60f; // of a second
+    private static final float TURN_DELAY_GRACE_PERIOD = 0.3f;
+    private static final float TURN_GRACE_MAX_VALUE = 5f;
 
     private Character player;
 
@@ -28,6 +30,7 @@ public class InputPlayer extends InputComponent implements InputProcessor {
     private int timeLeft;
     private int timeRight;
     private float turnDelay;
+    private float turnGrace;
 
     private boolean pressCtrl;
     private boolean pressShift;
@@ -52,14 +55,16 @@ public class InputPlayer extends InputComponent implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.CONTROL_LEFT || keycode == Input.Keys.CONTROL_RIGHT) {
+        if (keycode == Input.Keys.CONTROL_LEFT || keycode == Input.Keys.CONTROL_RIGHT
+            || keycode == Constant.KEYCODE_L1) {
             pressCtrl = true;
         }
-        if (keycode == Input.Keys.SHIFT_LEFT || keycode == Input.Keys.SHIFT_RIGHT) {
+        if (keycode == Input.Keys.SHIFT_LEFT || keycode == Input.Keys.SHIFT_RIGHT
+            || keycode == Constant.KEYCODE_R1) {
             pressShift = true;
         }
 
-        if (keycode == Input.Keys.A) {
+        if (keycode == Input.Keys.A || keycode == Constant.KEYCODE_BOTTOM) {
             pressAction = true;
         }
 
@@ -84,14 +89,16 @@ public class InputPlayer extends InputComponent implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
-        if (keycode == Input.Keys.CONTROL_LEFT || keycode == Input.Keys.CONTROL_RIGHT) {
+        if (keycode == Input.Keys.CONTROL_LEFT || keycode == Input.Keys.CONTROL_RIGHT
+            || keycode == Constant.KEYCODE_L1) {
             pressCtrl = false;
         }
-        if (keycode == Input.Keys.SHIFT_LEFT || keycode == Input.Keys.SHIFT_RIGHT) {
+        if (keycode == Input.Keys.SHIFT_LEFT || keycode == Input.Keys.SHIFT_RIGHT
+            || keycode == Constant.KEYCODE_R1) {
             pressShift = false;
         }
 
-        if (keycode == Input.Keys.A) {
+        if (keycode == Input.Keys.A || keycode == Constant.KEYCODE_BOTTOM) {
             pressAction = false;
         }
 
@@ -165,6 +172,7 @@ public class InputPlayer extends InputComponent implements InputProcessor {
         timeLeft = 0;
         timeRight = 0;
         turnDelay = 0f;
+        turnGrace = 0f;
 
         pressCtrl = false;
         pressShift = false;
@@ -174,6 +182,7 @@ public class InputPlayer extends InputComponent implements InputProcessor {
     private void processMoveInput(float dt) {
         processPlayerSpeedInput();
         countKeyDownTime();
+        ifNoMoveKeys_SetGracePeriod(dt);
         ifNoMoveKeys_SetPlayerIdle();
         setPossibleTurnDelay();
         setPlayerDirection();
@@ -228,6 +237,13 @@ public class InputPlayer extends InputComponent implements InputProcessor {
         }
     }
 
+    private void ifNoMoveKeys_SetGracePeriod(float dt) {
+        if (!areMoveKeysPressed()
+            && turnGrace < TURN_GRACE_MAX_VALUE) {
+            turnGrace += dt;
+        }
+    }
+
     private void ifNoMoveKeys_SetPlayerIdle() {
         if (!areMoveKeysPressed()) {
             turnDelay = 0f;
@@ -237,7 +253,8 @@ public class InputPlayer extends InputComponent implements InputProcessor {
 
     private void setPossibleTurnDelay() {
         if (turnDelay <= 0f
-                && (pressUpButDirectionisNotYetNorth() ||
+            && turnGrace > TURN_DELAY_GRACE_PERIOD
+            && (pressUpButDirectionisNotYetNorth() ||
                 pressDownButDirectionIsNotYetSouth() ||
                 pressLeftButDirectionIsNotYetWest() ||
                 pressRightButDirectionIsNotYetEast())
@@ -274,6 +291,7 @@ public class InputPlayer extends InputComponent implements InputProcessor {
             if (turnDelay > 0f) {
                 turnDelay -= dt;
             } else {
+                turnGrace = 0f;
                 player.send(new StateEvent(CharacterState.WALKING));
             }
         }

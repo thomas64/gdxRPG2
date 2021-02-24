@@ -3,6 +3,7 @@ package nl.t64.game.rpg.screens.inventory;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import nl.t64.game.rpg.constants.Constant;
 
 
 class InventoryScreenListener extends InputListener {
@@ -43,11 +44,15 @@ class InventoryScreenListener extends InputListener {
     @Override
     public boolean keyDown(InputEvent event, int keycode) {
         switch (keycode) {
-            case Input.Keys.I,
+            case Constant.KEYCODE_TOP,
+                    Constant.KEYCODE_RIGHT,
+                    Input.Keys.I,
                     Input.Keys.ESCAPE -> closeScreenFunction.run();
             case Input.Keys.R -> resetWindowsFunction.run();
-            case Input.Keys.Q -> previousHeroFunction.run();
-            case Input.Keys.W -> nextHeroFunction.run();
+            case Constant.KEYCODE_L1,
+                    Input.Keys.Q -> previousHeroFunction.run();
+            case Constant.KEYCODE_R1,
+                    Input.Keys.W -> nextHeroFunction.run();
             case Input.Keys.D -> dismissHeroFunction.run();
             case Input.Keys.S -> sortInventoryFunction.run();
             case Input.Keys.C -> toggleCompareFunction.run();

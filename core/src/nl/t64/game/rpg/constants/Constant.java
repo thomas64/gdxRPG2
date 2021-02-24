@@ -52,6 +52,15 @@ public final class Constant {
     public static final String PHRASE_ID_QUEST_LINKED = "2600";
     public static final String PHRASE_ID_PARTY_FULL = "9000";
 
+    public static final int KEYCODE_L1 = 1000;
+    public static final int KEYCODE_R1 = 1001;
+    public static final int KEYCODE_START = 1002;
+    public static final int KEYCODE_SELECT = 1003;
+    public static final int KEYCODE_TOP = 1004;
+    public static final int KEYCODE_LEFT = 1005;
+    public static final int KEYCODE_RIGHT = 1006;
+    public static final int KEYCODE_BOTTOM = 1007;
+
     private Constant() {
         throw new IllegalCallerException("Constant class");
     }

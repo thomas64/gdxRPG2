@@ -4,29 +4,28 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
+import lombok.AllArgsConstructor;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.conversation.ConversationChoice;
+import nl.t64.game.rpg.constants.Constant;
 
 
+@AllArgsConstructor
 class ConversationDialogListener extends InputListener {
 
     private final List<ConversationChoice> answers;
     private final Runnable selectAnswer;
-
-    ConversationDialogListener(List<ConversationChoice> answers, Runnable selectAnswer) {
-        this.answers = answers;
-        this.selectAnswer = selectAnswer;
-    }
 
     @Override
     public boolean keyDown(InputEvent event, int keycode) {
         switch (keycode) {
             case Input.Keys.UP -> inputUp();
             case Input.Keys.DOWN -> inputDown();
-            case Input.Keys.ENTER,
-                    Input.Keys.A -> inputEnter();
+            case Constant.KEYCODE_BOTTOM,
+                    Input.Keys.ENTER,
+                    Input.Keys.A -> inputConfirm();
         }
         return true;
     }
@@ -49,7 +48,7 @@ class ConversationDialogListener extends InputListener {
         }
     }
 
-    private void inputEnter() {
+    private void inputConfirm() {
         if (answers.getSelectedIndex() != -1) {
             selectAnswer.run();
         }

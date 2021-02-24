@@ -72,6 +72,7 @@ public class ConversationDialog extends ConversationSubject {
 
     public void show() {
         Gdx.input.setInputProcessor(stage);
+        Utils.setControllerInputProcessor(stage);
         dialog.show(stage, Actions.sequence(Actions.alpha(0f), Actions.fadeIn(0.4f, Interpolation.fade)));
         stage.setKeyboardFocus(scrollPane);
     }

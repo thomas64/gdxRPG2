@@ -4,7 +4,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.quest.QuestGraph;
-import nl.t64.game.rpg.screens.inventory.ListenerMouseScrollPane;
 
 
 class QuestLogUI {
@@ -40,10 +39,8 @@ class QuestLogUI {
         stage.addActor(taskListWindow);
     }
 
-    void applyListeners(Stage stage) {
+    void applyListeners() {
         questListWindow.addListener(new QuestListListener(questListTable.questList, this::populateQuestSpecifics));
-        questListWindow.addListener(new ListenerMouseScrollPane(stage, questListTable.scrollPane));
-        taskListWindow.addListener(new ListenerMouseScrollPane(stage, taskListTable.scrollPane));
     }
 
     void update() {

@@ -1,6 +1,7 @@
 package nl.t64.game.rpg;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -69,6 +70,10 @@ public final class Utils {
 
     public static MapManager getMapManager() {
         return getEngine().mapManager;
+    }
+
+    public static void setControllerInputProcessor(InputProcessor inputProcessor) {
+        getEngine().controllerMapping.setInputProcessor(inputProcessor);
     }
 
     private static Engine getEngine() {

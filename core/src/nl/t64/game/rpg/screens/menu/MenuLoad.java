@@ -41,9 +41,6 @@ public class MenuLoad extends MenuScreen {
     private Table topTable;
     private List<String> listItems;
     private ScrollPane scrollPane;
-    private TextButton loadButton;
-    private TextButton deleteButton;
-    private TextButton backButton;
     private DialogQuestion progressLostDialog;
     private DialogQuestion deleteFileDialog;
 
@@ -52,7 +49,6 @@ public class MenuLoad extends MenuScreen {
 
     private int selectedListIndex;
 
-    private boolean isMouseScrolled = false;
     private boolean isBgmFading = false;
 
     @Override
@@ -95,20 +91,13 @@ public class MenuLoad extends MenuScreen {
     }
 
     private void scrollScrollPane() {
-        if (!isMouseScrolled) {
-            float itemHeight = listItems.getItemHeight();
-            float listHeight = itemHeight * listItems.getItems().size;
-            float selectedY = listHeight - (itemHeight * (selectedListIndex + 1f));
-            scrollPane.scrollTo(0, selectedY, 0, 0, false, true);
-        }
-    }
-
-    private void busyScrolling() {
-        isMouseScrolled = true;
+        float itemHeight = listItems.getItemHeight();
+        float listHeight = itemHeight * listItems.getItems().size;
+        float selectedY = listHeight - (itemHeight * (selectedListIndex + 1f));
+        scrollPane.scrollTo(0, selectedY, 0, 0, false, true);
     }
 
     private void updateListIndex(Integer newIndex) {
-        isMouseScrolled = false;
         listItems.setSelectedIndex(newIndex);
     }
 
@@ -187,9 +176,9 @@ public class MenuLoad extends MenuScreen {
 
         // actors
         var titleLabel = new Label(TITLE_LABEL, titleStyle);
-        loadButton = new TextButton(MENU_ITEM_LOAD, new TextButton.TextButtonStyle(buttonStyle));
-        deleteButton = new TextButton(MENU_ITEM_DELETE, new TextButton.TextButtonStyle(buttonStyle));
-        backButton = new TextButton(MENU_ITEM_BACK, new TextButton.TextButtonStyle(buttonStyle));
+        var loadButton = new TextButton(MENU_ITEM_LOAD, new TextButton.TextButtonStyle(buttonStyle));
+        var deleteButton = new TextButton(MENU_ITEM_DELETE, new TextButton.TextButtonStyle(buttonStyle));
+        var backButton = new TextButton(MENU_ITEM_BACK, new TextButton.TextButtonStyle(buttonStyle));
 
         listItems = new List<>(listStyle);
         listItems.setItems(profiles);
@@ -219,15 +208,15 @@ public class MenuLoad extends MenuScreen {
 
     private void applyListeners() {
         listenerKeyVertical = new ListenerKeyVertical(this::updateListIndex, listItems.getItems().size);
-        listenerKeyHorizontal = new ListenerKeyHorizontal(this::updateMenuIndex, NUMBER_OF_ITEMS);
+        listenerKeyHorizontal = new ListenerKeyHorizontal(super::updateMenuIndex, NUMBER_OF_ITEMS);
+        var listenerKeyConfirm = new ListenerKeyConfirm(this::selectMenuItem);
+        var listenerKeyDelete = new ListenerKeyDelete(super::updateMenuIndex, this::selectMenuItem, DELETE_INDEX);
+        var listenerKeyCancel = new ListenerKeyCancel(super::updateMenuIndex, this::selectMenuItem, EXIT_INDEX);
         scrollPane.addListener(listenerKeyVertical);
         scrollPane.addListener(listenerKeyHorizontal);
-        scrollPane.addListener(new ListenerKeyConfirm(this::updateMenuIndex, this::selectMenuItem, EXIT_INDEX));
-        scrollPane.addListener(new ListenerKeyDelete(this::updateMenuIndex, this::selectMenuItem, DELETE_INDEX));
-        scrollPane.addListener(new ListenerMouseScrollPane(this::busyScrolling));
-        loadButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 0));
-        deleteButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 1));
-        backButton.addListener(new ListenerMouseTextButton(this::updateMenuIndex, this::selectMenuItem, 2));
+        scrollPane.addListener(listenerKeyConfirm);
+        scrollPane.addListener(listenerKeyDelete);
+        scrollPane.addListener(listenerKeyCancel);
     }
 
 }

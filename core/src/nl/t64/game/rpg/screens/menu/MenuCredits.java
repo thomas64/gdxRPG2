@@ -32,8 +32,7 @@ public class MenuCredits extends MenuScreen {
     void setupScreen() {
         scrollPane.setScrollY(0);
         scrollPane.updateVisualScroll();
-        stage.addListener(new ListenerKeyConfirm(i -> {
-        }, this::processBackButton, 0));
+        applyListeners();
         stage.addActor(table);
     }
 
@@ -52,6 +51,11 @@ public class MenuCredits extends MenuScreen {
         table.setFillParent(true);
         table.defaults().width(Gdx.graphics.getWidth());
         table.add(scrollPane);
+    }
+
+    private void applyListeners() {
+        stage.addListener(new ListenerKeyConfirm(super::processBackButton));
+        stage.addListener(new ListenerKeyCancel(super::processBackButton));
     }
 
 }

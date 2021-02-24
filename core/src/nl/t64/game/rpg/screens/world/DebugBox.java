@@ -67,8 +67,11 @@ class DebugBox {
 //        table.add("timeRight:");
 //        table.add(player.getInputComponent().getTimeRight());
 //        table.row();
-//        table.add("timeDelay:");
-//        table.add(player.getInputComponent().getTimeDelay());
+//        table.add("turnDelay:");
+//        table.add(String.valueOf(player.getPlayerInput().getTurnDelay()));
+//        table.row();
+//        table.add("turnGrace:");
+//        table.add(String.valueOf(player.getPlayerInput().getTurnGrace()));
 //        table.row();
 //        table.add("").row();
 //

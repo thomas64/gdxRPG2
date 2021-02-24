@@ -2,8 +2,9 @@ package nl.t64.game.rpg.screens.questlog;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import lombok.AllArgsConstructor;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.audio.AudioEvent;
@@ -13,20 +14,11 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 
-class QuestListListener extends ClickListener {
+@AllArgsConstructor
+class QuestListListener extends InputListener {
 
     private final List<QuestGraph> questList;
     private final Consumer<QuestGraph> populateQuestSpecifics;
-
-    QuestListListener(List<QuestGraph> questList, Consumer<QuestGraph> populateQuestSpecifics) {
-        this.questList = questList;
-        this.populateQuestSpecifics = populateQuestSpecifics;
-    }
-
-    @Override
-    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-        return isSelected();
-    }
 
     @Override
     public boolean keyDown(InputEvent event, int keycode) {
@@ -35,8 +27,20 @@ class QuestListListener extends ClickListener {
                     Input.Keys.DOWN,
                     Input.Keys.HOME,
                     Input.Keys.END -> isSelected();
+            case Input.Keys.LEFT -> setSelectedUp();
+            case Input.Keys.RIGHT -> setSelectedDown();
             default -> false;
         };
+    }
+
+    private boolean setSelectedUp() {
+        questList.setSelectedIndex(Math.max(questList.getSelectedIndex() - 10, 0));
+        return isSelected();
+    }
+
+    private boolean setSelectedDown() {
+        questList.setSelectedIndex(Math.min(questList.getSelectedIndex() + 10, questList.getItems().size - 1));
+        return isSelected();
     }
 
     private boolean isSelected() {

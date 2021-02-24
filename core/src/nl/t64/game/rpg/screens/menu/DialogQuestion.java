@@ -39,8 +39,6 @@ class DialogQuestion {
 
     private final BitmapFont dialogFont;
     private final Dialog dialog;
-    private TextButton yesButton;
-    private TextButton noButton;
 
     private ListenerKeyHorizontal listenerKeyHorizontal;
 
@@ -113,8 +111,8 @@ class DialogQuestion {
         // actors
         var label = new Label(message, labelStyle);
         label.setAlignment(Align.center);
-        yesButton = new TextButton(DIALOG_YES, new TextButton.TextButtonStyle(buttonStyle));
-        noButton = new TextButton(DIALOG_NO, new TextButton.TextButtonStyle(buttonStyle));
+        var yesButton = new TextButton(DIALOG_YES, new TextButton.TextButtonStyle(buttonStyle));
+        var noButton = new TextButton(DIALOG_NO, new TextButton.TextButtonStyle(buttonStyle));
 
         // table
         var newDialog = new Dialog("", windowStyle);
@@ -140,10 +138,11 @@ class DialogQuestion {
 
     private void applyListeners() {
         listenerKeyHorizontal = new ListenerKeyHorizontal(this::updateIndex, NUMBER_OF_ITEMS);
+        var listenerKeyConfirm = new ListenerKeyConfirm(this::selectDialogItem);
+        var listenerKeyCancel = new ListenerKeyCancel(this::updateIndex, this::selectDialogItem, EXIT_INDEX);
         dialog.addListener(listenerKeyHorizontal);
-        dialog.addListener(new ListenerKeyConfirm(this::updateIndex, this::selectDialogItem, EXIT_INDEX));
-        yesButton.addListener(new ListenerMouseTextButton(this::updateIndex, this::selectDialogItem, 0));
-        noButton.addListener(new ListenerMouseTextButton(this::updateIndex, this::selectDialogItem, 1));
+        dialog.addListener(listenerKeyConfirm);
+        dialog.addListener(listenerKeyCancel);
     }
 
 }

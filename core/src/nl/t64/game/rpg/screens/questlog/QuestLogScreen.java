@@ -51,6 +51,7 @@ public class QuestLogScreen implements ScreenToLoad {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
+        Utils.setControllerInputProcessor(stage);
         stage.addListener(new QuestLogScreenListener(this::closeScreen));
         createButtonTable();
 
@@ -61,7 +62,7 @@ public class QuestLogScreen implements ScreenToLoad {
         questLogUI.taskListWindow.setPosition((Gdx.graphics.getWidth() / 2f) + TASKS_WINDOW_POSITION_X,
                                               TASKS_WINDOW_POSITION_Y);
         questLogUI.addToStage(stage);
-        questLogUI.applyListeners(stage);
+        questLogUI.applyListeners();
         stage.setKeyboardFocus(questLogUI.questListTable.questList);
         stage.setScrollFocus(questLogUI.questListTable.scrollPane);
     }
@@ -122,6 +123,7 @@ public class QuestLogScreen implements ScreenToLoad {
 
     private void closeScreen() {
         Gdx.input.setInputProcessor(null);
+        Utils.setControllerInputProcessor(null);
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
         fadeParchment();
     }

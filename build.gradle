@@ -31,6 +31,8 @@ allprojects {
     ext {
         appName = "gdx-rpg2"
         gdxVersion = "1.9.13"
+        controllerVersion = "2.1.0"
+        mappingVersion = "2.3.0"
         aiVersion = "1.8.2"
         lombokVersion = "1.18.16"
         jacksonVersion = "2.11.3"
@@ -55,6 +57,7 @@ project(":desktop") {
         implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+        implementation "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$controllerVersion"
     }
 }
 
@@ -65,6 +68,8 @@ project(":core") {
 
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        implementation "com.badlogicgames.gdx-controllers:gdx-controllers-core:$controllerVersion"
+        implementation "de.golfgl.gdxcontrollerutils:gdx-controllerutils-mapping:$mappingVersion"
         implementation "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
     }

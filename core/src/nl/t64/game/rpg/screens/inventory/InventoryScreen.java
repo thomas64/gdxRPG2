@@ -193,6 +193,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
     public void show() {
         Gdx.input.setCursorCatched(false);
         Gdx.input.setInputProcessor(stage);
+        Utils.setControllerInputProcessor(stage);
         stage.addListener(new InventoryScreenListener(this::closeScreen,
                                                       this::resetWindowsPositions,
                                                       this::selectPreviousHero,
@@ -315,6 +316,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
         storeWindowPositions();
         Gdx.input.setCursorCatched(true);
         Gdx.input.setInputProcessor(null);
+        Utils.setControllerInputProcessor(null);
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
         fadeParchment();
     }
@@ -358,6 +360,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
     private void hideConversationDialog() {
         conversationDialog.hideWithFade();
         Gdx.input.setInputProcessor(stage);
+        Utils.setControllerInputProcessor(stage);
     }
 
     private void sortInventory() {

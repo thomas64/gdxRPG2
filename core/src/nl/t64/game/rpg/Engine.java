@@ -2,6 +2,7 @@ package nl.t64.game.rpg;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.controllers.Controllers;
 import nl.t64.game.rpg.audio.AudioManager;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.profile.ProfileManager;
@@ -21,6 +22,7 @@ public class Engine extends Game {
     final ScreenManager screenManager;
     final AudioManager audioManager;
     final MapManager mapManager;
+    final GameControllerMapping controllerMapping;
 
     public Engine(Settings settings) {
         this.resourceManager = new ResourceManager();
@@ -30,6 +32,7 @@ public class Engine extends Game {
         this.screenManager = new ScreenManager();
         this.audioManager = new AudioManager();
         this.mapManager = new MapManager();
+        this.controllerMapping = new GameControllerMapping();
     }
 
     private static void updateRunTime() {
@@ -45,6 +48,8 @@ public class Engine extends Game {
         profileManager.addObserver(gameData);
         profileManager.addObserver(mapManager);
         profileManager.addObserver((ProfileObserver) screenManager.getScreen(ScreenType.INVENTORY));
+
+        Controllers.addListener(controllerMapping.controllerToInputAdapter);
 
         screenManager.setScreen(ScreenType.MENU_MAIN);
     }
