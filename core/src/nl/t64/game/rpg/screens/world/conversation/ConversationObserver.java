@@ -5,20 +5,36 @@ import nl.t64.game.rpg.components.loot.Loot;
 
 public interface ConversationObserver {
 
-    void onNotifyExitConversation();
+    default void onNotifyExitConversation() {
+        throw new IllegalCallerException("Implement this method in child.");
+    }
 
-    void onNotifyShowMessageTooltip(String message);
+    default void onNotifyShowMessageTooltip(String message) {
+        throw new IllegalCallerException("Implement this method in child.");
+    }
 
-    void onNotifyShowLevelUpDialog(String message);
+    default void onNotifyShowLevelUpDialog(String message) {
+        throw new IllegalCallerException("Implement this method in child.");
+    }
 
-    void onNotifyLoadShop();
+    default void onNotifyLoadShop() {
+        throw new IllegalCallerException("Implement this method in child.");
+    }
 
-    void onNotifyShowRewardDialog(Loot reward, String levelUpMessage);
+    default void onNotifyShowRewardDialog(Loot reward, String levelUpMessage) {
+        throw new IllegalCallerException("Implement this method in child.");
+    }
 
-    void onNotifyShowReceiveDialog(Loot receive);
+    default void onNotifyShowReceiveDialog(Loot receive) {
+        throw new IllegalCallerException("Implement this method in child.");
+    }
 
-    void onNotifyHeroJoined();
+    default void onNotifyHeroJoined() {
+        throw new IllegalCallerException("Implement this method in child.");
+    }
 
-    void onNotifyHeroDismiss();
+    default void onNotifyHeroDismiss() {
+        throw new IllegalCallerException("Implement this method in child.");
+    }
 
 }

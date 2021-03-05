@@ -29,6 +29,7 @@ import nl.t64.game.rpg.screens.world.conversation.ConversationObserver;
 import nl.t64.game.rpg.screens.world.entity.*;
 import nl.t64.game.rpg.screens.world.entity.events.LoadEntityEvent;
 import nl.t64.game.rpg.screens.world.entity.events.PathUpdateEvent;
+import nl.t64.game.rpg.screens.world.messagedialog.MessageDialog;
 import nl.t64.game.rpg.screens.world.pathfinding.TiledNode;
 import nl.t64.game.rpg.sfx.TransitionImage;
 
@@ -265,11 +266,6 @@ public class WorldScreen implements Screen,
                                      .filter(npcCharacter -> !npcCharacter.equals(currentNpcCharacter))
                                      .collect(Collectors.toUnmodifiableList());
         partyMembers = new PartyMembersLoader(player).loadPartyMembers();
-    }
-
-    @Override
-    public void onNotifyHeroDismiss() {
-        throw new IllegalCallerException("Impossible to dismiss Hero from WorldScreen.");
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

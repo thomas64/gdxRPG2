@@ -153,36 +153,6 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
     }
 
     @Override
-    public void onNotifyShowMessageTooltip(String message) {
-        throw new IllegalCallerException("Impossible to show Message from Inventory.");
-    }
-
-    @Override
-    public void onNotifyShowLevelUpDialog(String message) {
-        throw new IllegalCallerException("Impossible to show Message from Inventory.");
-    }
-
-    @Override
-    public void onNotifyLoadShop() {
-        throw new IllegalCallerException("Impossible to load Shop from Inventory.");
-    }
-
-    @Override
-    public void onNotifyShowRewardDialog(Loot reward, String levelUpMessage) {
-        throw new IllegalCallerException("Impossible to show Reward from Inventory.");
-    }
-
-    @Override
-    public void onNotifyShowReceiveDialog(Loot receive) {
-        throw new IllegalCallerException("Impossible to show Receive from Inventory.");
-    }
-
-    @Override
-    public void onNotifyHeroJoined() {
-        throw new IllegalCallerException("Impossible to join Hero from Inventory.");
-    }
-
-    @Override
     public void onNotifyHeroDismiss() {
         HeroItem selectedHero = InventoryUtils.getSelectedHero();
         Utils.getGameData().getHeroes().addHero(selectedHero);

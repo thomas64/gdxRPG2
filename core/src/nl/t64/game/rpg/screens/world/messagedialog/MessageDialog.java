@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.world;
+package nl.t64.game.rpg.screens.world.messagedialog;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -19,7 +19,7 @@ import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.constants.Constant;
 
 
-class MessageDialog {
+public class MessageDialog {
 
     private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
     private static final String DIALOG_FONT = "fonts/fff_tusj.ttf";
@@ -36,7 +36,7 @@ class MessageDialog {
     @Null
     private Runnable actionAfterHide;
 
-    MessageDialog(InputMultiplexer multiplexer) {
+    public MessageDialog(InputMultiplexer multiplexer) {
         this.multiplexer = multiplexer;
         this.stage = new Stage();
         this.font = Utils.getResourceManager().getTrueTypeAsset(DIALOG_FONT, FONT_SIZE);
@@ -45,7 +45,7 @@ class MessageDialog {
         this.actionAfterHide = null;
     }
 
-    void dispose() {
+    public void dispose() {
         stage.dispose();
         try {
             font.dispose();
@@ -54,11 +54,11 @@ class MessageDialog {
         }
     }
 
-    void setScreenAfterHide(Runnable actionAfterHide) {
+    public void setScreenAfterHide(Runnable actionAfterHide) {
         this.actionAfterHide = actionAfterHide;
     }
 
-    void show(String message, AudioEvent audioEvent) {
+    public void show(String message, AudioEvent audioEvent) {
         fillDialog(message);
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, audioEvent);
         dialog.show(stage);
@@ -66,7 +66,7 @@ class MessageDialog {
         Utils.setGamepadInputProcessor(stage);
     }
 
-    void update(float dt) {
+    public void update(float dt) {
         stage.act(dt);
         stage.draw();
     }
