@@ -11,6 +11,7 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.ScreenUtils;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
 
@@ -40,7 +41,7 @@ class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
 
     private void renderWithPlayerLight(Vector2 playerPosition, Sprite sprite, Runnable renderCharacters) {
         frameBuffer.begin();
-        clear();
+        ScreenUtils.clear(Color.BLACK);
         renderLightmapPlayer(playerPosition, sprite);
         frameBuffer.end();
         renderMapLayers(renderCharacters);
@@ -48,17 +49,12 @@ class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
     }
 
     private void renderWithoutPlayerLight(Runnable renderCharacters) {
-        clear();
+        ScreenUtils.clear(Color.BLACK);
         renderMapLayers(renderCharacters);
     }
 
     void updateCamera() {
         setView(camera);
-    }
-
-    private void clear() {
-        Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
     private void renderFrameBuffer() {

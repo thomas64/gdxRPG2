@@ -66,8 +66,7 @@ public class ItemSlotTooltip extends BaseTooltip {
         window.clearActions();
         window.setVisible(false);
         if (Utils.getGameData().isTooltipEnabled() && itemSlot.hasItem()) {
-            window.addAction(Actions.sequence(Actions.delay(DELAY),
-                                              Actions.visible(visible)));
+            window.setVisible(visible);
         }
     }
 

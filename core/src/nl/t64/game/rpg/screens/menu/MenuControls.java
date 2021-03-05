@@ -1,10 +1,10 @@
 package nl.t64.game.rpg.screens.menu;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.ScreenUtils;
 import nl.t64.game.rpg.Utils;
 
 import java.util.List;
@@ -29,8 +29,7 @@ public class MenuControls extends MenuScreen {
 
     @Override
     public void render(float dt) {
-        Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        ScreenUtils.clear(Color.BLACK);
         stage.act(dt);
         stage.draw();
         if (isGamepadConnected != Utils.isGamepadConnected()) {
