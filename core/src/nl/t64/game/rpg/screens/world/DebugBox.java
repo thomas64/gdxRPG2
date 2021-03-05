@@ -14,8 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.Utils;
-import nl.t64.game.rpg.components.character.Character;
 import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.screens.world.entity.Entity;
 
 
 class DebugBox {
@@ -26,10 +26,10 @@ class DebugBox {
 
     private final Stage stage;
     private final Table table;
-    private final Character player;
+    private final Entity player;
 
 
-    DebugBox(Character player) {
+    DebugBox(Entity player) {
         this.stage = new Stage();
         this.table = createTable();
         this.player = player;

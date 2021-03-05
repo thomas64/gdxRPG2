@@ -3,8 +3,8 @@ package nl.t64.game.rpg.screens.world;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Vector2;
-import nl.t64.game.rpg.components.character.CharacterState;
-import nl.t64.game.rpg.components.character.Direction;
+import nl.t64.game.rpg.screens.world.entity.Direction;
+import nl.t64.game.rpg.screens.world.entity.EntityState;
 
 import java.util.Optional;
 
@@ -12,7 +12,7 @@ import java.util.Optional;
 class GameMapNpc extends GameMapObject {
 
     final String name;
-    final CharacterState state;
+    final EntityState state;
     final Direction direction;
     final String conversation;
 
@@ -30,18 +30,18 @@ class GameMapNpc extends GameMapObject {
         return new Vector2(rectangle.x, rectangle.y);
     }
 
-    private CharacterState createState(RectangleMapObject rectObject) {
-        String characterState = rectObject.getProperties().get("type", String.class);
-        if (characterState == null) {
-            return CharacterState.IMMOBILE;
-        } else if (characterState.equalsIgnoreCase("inv")) {
-            return CharacterState.INVISIBLE;
-        } else if (characterState.equalsIgnoreCase("w")) {
-            return CharacterState.getRandom();
-        } else if (characterState.equalsIgnoreCase("f")) {
-            return CharacterState.FLOATING;
+    private EntityState createState(RectangleMapObject rectObject) {
+        String entityState = rectObject.getProperties().get("type", String.class);
+        if (entityState == null) {
+            return EntityState.IMMOBILE;
+        } else if (entityState.equalsIgnoreCase("inv")) {
+            return EntityState.INVISIBLE;
+        } else if (entityState.equalsIgnoreCase("w")) {
+            return EntityState.getRandom();
+        } else if (entityState.equalsIgnoreCase("f")) {
+            return EntityState.FLOATING;
         } else {
-            throw new IllegalArgumentException(String.format("CharacterState '%s' unknown.", characterState));
+            throw new IllegalArgumentException(String.format("EntityState '%s' unknown.", entityState));
         }
     }
 

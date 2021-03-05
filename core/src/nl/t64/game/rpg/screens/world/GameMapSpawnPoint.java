@@ -2,7 +2,7 @@ package nl.t64.game.rpg.screens.world;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import nl.t64.game.rpg.components.character.Direction;
+import nl.t64.game.rpg.screens.world.entity.Direction;
 
 
 class GameMapSpawnPoint extends GameMapObject {

@@ -3,10 +3,9 @@ package nl.t64.game.rpg.screens.world;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.Utils;
-import nl.t64.game.rpg.components.character.Character;
-import nl.t64.game.rpg.components.character.*;
 import nl.t64.game.rpg.components.loot.Loot;
-import nl.t64.game.rpg.events.character.LoadCharacterEvent;
+import nl.t64.game.rpg.screens.world.entity.*;
+import nl.t64.game.rpg.screens.world.entity.events.LoadEntityEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.List;
 class LootLoader {
 
     private final GameMap currentMap;
-    private final List<Character> lootList;
+    private final List<Entity> lootList;
     private final boolean withBlockers;
 
     LootLoader(GameMap currentMap, boolean withBlockers) {
@@ -24,7 +23,7 @@ class LootLoader {
         this.withBlockers = withBlockers;
     }
 
-    List<Character> createLoot() {
+    List<Entity> createLoot() {
         loadSparkles();
         loadChests();
         return List.copyOf(lootList);
@@ -47,29 +46,29 @@ class LootLoader {
     }
 
     private void loadSparkle(RectangleMapObject gameMapSparkle, Loot sparkle) {
-        var character = new Character(gameMapSparkle.getName(),
-                                      new InputEmpty(),
-                                      new PhysicsSparkle(sparkle),
-                                      new GraphicsSparkle());
-        lootList.add(character);
+        var entity = new Entity(gameMapSparkle.getName(),
+                                new InputEmpty(),
+                                new PhysicsSparkle(sparkle),
+                                new GraphicsSparkle());
+        lootList.add(entity);
         var position = new Vector2(gameMapSparkle.getRectangle().x, gameMapSparkle.getRectangle().y);
-        character.send(new LoadCharacterEvent(position));
+        entity.send(new LoadEntityEvent(position));
     }
 
     private void loadChest(RectangleMapObject gameMapChest, Loot chest) {
-        var character = new Character(gameMapChest.getName(),
-                                      new InputEmpty(),
-                                      new PhysicsChest(chest),
-                                      new GraphicsChest());
-        lootList.add(character);
+        var entity = new Entity(gameMapChest.getName(),
+                                new InputEmpty(),
+                                new PhysicsChest(chest),
+                                new GraphicsChest());
+        lootList.add(entity);
         var position = new Vector2(gameMapChest.getRectangle().x, gameMapChest.getRectangle().y);
         if (chest.isTaken()) {
-            character.send(new LoadCharacterEvent(CharacterState.OPENED, position));
+            entity.send(new LoadEntityEvent(EntityState.OPENED, position));
         } else {
-            character.send(new LoadCharacterEvent(CharacterState.IMMOBILE, position));
+            entity.send(new LoadEntityEvent(EntityState.IMMOBILE, position));
         }
         if (withBlockers) {
-            currentMap.addToBlockers(character.getBoundingBox());
+            currentMap.addToBlockers(entity.getBoundingBox());
         }
     }
 

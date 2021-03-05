@@ -1,10 +1,9 @@
 package nl.t64.game.rpg.screens.world;
 
 import nl.t64.game.rpg.Utils;
-import nl.t64.game.rpg.components.character.Character;
-import nl.t64.game.rpg.components.character.*;
 import nl.t64.game.rpg.components.party.HeroItem;
-import nl.t64.game.rpg.events.character.LoadCharacterEvent;
+import nl.t64.game.rpg.screens.world.entity.*;
+import nl.t64.game.rpg.screens.world.entity.events.LoadEntityEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,14 +12,14 @@ import java.util.List;
 class NpcCharactersLoader {
 
     private final GameMap currentMap;
-    private final List<Character> npcCharacters;
+    private final List<Entity> npcCharacters;
 
     NpcCharactersLoader(GameMap currentMap) {
         this.currentMap = currentMap;
         this.npcCharacters = new ArrayList<>();
     }
 
-    List<Character> createNpcs() {
+    List<Entity> createNpcs() {
         loadNpcs();
         loadHeroes();
         return List.copyOf(npcCharacters);
@@ -43,14 +42,14 @@ class NpcCharactersLoader {
 
     private void loadNpcCharacter(GameMapNpc gameMapNpc) {
         String characterId = gameMapNpc.name;
-        var npcCharacter = new Character(characterId, new InputNpc(), new PhysicsNpc(), new GraphicsNpc(characterId));
+        var npcCharacter = new Entity(characterId, new InputNpc(), new PhysicsNpc(), new GraphicsNpc(characterId));
         npcCharacters.add(npcCharacter);
-        npcCharacter.send(new LoadCharacterEvent(gameMapNpc.state,
-                                                 gameMapNpc.direction,
-                                                 gameMapNpc.getPosition(),
-                                                 gameMapNpc.conversation));
-        if (gameMapNpc.state.equals(CharacterState.IMMOBILE)
-            || gameMapNpc.state.equals(CharacterState.FLOATING)) {
+        npcCharacter.send(new LoadEntityEvent(gameMapNpc.state,
+                                              gameMapNpc.direction,
+                                              gameMapNpc.getPosition(),
+                                              gameMapNpc.conversation));
+        if (gameMapNpc.state.equals(EntityState.IMMOBILE)
+            || gameMapNpc.state.equals(EntityState.FLOATING)) {
             currentMap.addToBlockers(npcCharacter.getBoundingBox());
         }
     }

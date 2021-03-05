@@ -13,8 +13,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioEvent;
-import nl.t64.game.rpg.components.character.Direction;
 import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.screens.world.entity.Direction;
 import nl.t64.game.rpg.screens.world.pathfinding.TiledGraph;
 
 import java.util.*;

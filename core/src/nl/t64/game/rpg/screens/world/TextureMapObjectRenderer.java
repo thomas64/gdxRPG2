@@ -33,24 +33,24 @@ class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
         this.camera = camera;
     }
 
-    void renderAll(Vector2 playerPosition, Runnable renderCharacters) {
+    void renderAll(Vector2 playerPosition, Runnable renderEntities) {
         Utils.getMapManager().getLightmapPlayer()
-             .ifPresentOrElse(sprite -> renderWithPlayerLight(playerPosition, sprite, renderCharacters),
-                              () -> renderWithoutPlayerLight(renderCharacters));
+             .ifPresentOrElse(sprite -> renderWithPlayerLight(playerPosition, sprite, renderEntities),
+                              () -> renderWithoutPlayerLight(renderEntities));
     }
 
-    private void renderWithPlayerLight(Vector2 playerPosition, Sprite sprite, Runnable renderCharacters) {
+    private void renderWithPlayerLight(Vector2 playerPosition, Sprite sprite, Runnable renderEntities) {
         frameBuffer.begin();
         ScreenUtils.clear(Color.BLACK);
         renderLightmapPlayer(playerPosition, sprite);
         frameBuffer.end();
-        renderMapLayers(renderCharacters);
+        renderMapLayers(renderEntities);
         renderFrameBuffer();
     }
 
-    private void renderWithoutPlayerLight(Runnable renderCharacters) {
+    private void renderWithoutPlayerLight(Runnable renderEntities) {
         ScreenUtils.clear(Color.BLACK);
-        renderMapLayers(renderCharacters);
+        renderMapLayers(renderEntities);
     }
 
     void updateCamera() {
@@ -91,13 +91,13 @@ class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
         }
     }
 
-    private void renderMapLayers(Runnable renderCharacters) {
+    private void renderMapLayers(Runnable renderEntities) {
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         render(UNDER_LAYERS);
         batch.begin();
         renderLowerTextures();
-        renderCharacters.run();
+        renderEntities.run();
         renderUpperTextures();
         batch.end();
         render(OVER_LAYERS);

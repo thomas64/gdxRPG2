@@ -3,7 +3,7 @@ package nl.t64.game.rpg.screens.world;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import nl.t64.game.rpg.components.character.Direction;
+import nl.t64.game.rpg.screens.world.entity.Direction;
 
 import java.util.Optional;
 
