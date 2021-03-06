@@ -64,7 +64,6 @@ public class HeroesTable {
 
     private void createFace(HeroItem hero) {
         Stack stack = new Stack();
-        stack.addListener(new HeroesTableSelectListener(InventoryUtils::updateSelectedHero, hero));
         addPossibleGreyBackgroundTo(stack, hero);
         addFaceImageTo(stack, hero);
         heroes.add(stack);
@@ -84,7 +83,6 @@ public class HeroesTable {
         addHpBarTo(statsTable, hero);
 
         Stack stack = new Stack();
-        stack.addListener(new HeroesTableSelectListener(InventoryUtils::updateSelectedHero, hero));
         addPossibleGreyBackgroundTo(stack, hero);
         stack.add(statsTable);
         heroes.add(stack);

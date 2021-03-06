@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.loot;
+package nl.t64.game.rpg.screens.inventory.inventoryslot;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -10,24 +10,17 @@ import java.util.function.Consumer;
 
 
 @AllArgsConstructor
-class LootSlotsTableListener extends InputListener {
+public class InventorySlotsTableListener extends InputListener {
 
-    private final Runnable closeScreenFunction;
-    private final Runnable toggleTooltip;
-    private final Runnable takeItemFunction;
+    private final Runnable equipItemFunction;
     private final Consumer<Integer> selectNewSlot;
     private final int slotsInRow;
 
     @Override
     public boolean keyDown(InputEvent event, int keycode) {
         switch (keycode) {
-            case Constant.KEYCODE_RIGHT,
-                    Input.Keys.ESCAPE -> closeScreenFunction.run();
-            case Constant.KEYCODE_SELECT,
-                    Input.Keys.T -> toggleTooltip.run();
             case Constant.KEYCODE_BOTTOM,
-                    Input.Keys.ENTER,
-                    Input.Keys.A -> takeItemFunction.run();
+                    Input.Keys.A -> equipItemFunction.run();
             case Input.Keys.UP -> selectNewSlot.accept(-slotsInRow);
             case Input.Keys.DOWN -> selectNewSlot.accept(slotsInRow);
             case Input.Keys.LEFT -> selectNewSlot.accept(-1);

@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -107,30 +106,6 @@ public final class Utils {
         var drawable = new NinePatchDrawable(ninepatch);
         BitmapFont font = getResourceManager().getTrueTypeAsset(TITLE_FONT, TITLE_SIZE);
         return new Window.WindowStyle(font, Color.BLACK, drawable);
-    }
-
-    public static ImageButton createImageButton(String up, String over, String down) {
-        var buttonStyle = new ImageButton.ImageButtonStyle();
-        buttonStyle.up = createDrawable(up);
-        buttonStyle.down = createDrawable(down);
-        buttonStyle.over = createDrawable(over);
-        return new ImageButton(buttonStyle);
-    }
-
-    public static ImageButton createImageToggleButton(String disabled, String enabled,
-                                                      String overDisabled, String overEnabled) {
-        var buttonStyle = new ImageButton.ImageButtonStyle();
-        buttonStyle.up = createDrawable(disabled);
-        buttonStyle.checked = createDrawable(enabled);
-        buttonStyle.over = createDrawable(overDisabled);
-        buttonStyle.checkedOver = createDrawable(overEnabled);
-        return new ImageButton(buttonStyle);
-    }
-
-    private static NinePatchDrawable createDrawable(String atlasId) {
-        var textureRegion = Utils.getResourceManager().getAtlasTexture(atlasId);
-        var ninePatch = new NinePatch(textureRegion, 1, 1, 1, 1);
-        return new NinePatchDrawable(ninePatch);
     }
 
     public static Drawable createTopBorder() {

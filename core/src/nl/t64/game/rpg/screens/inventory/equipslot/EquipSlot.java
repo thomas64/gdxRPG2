@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.inventory;
+package nl.t64.game.rpg.screens.inventory.equipslot;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -8,6 +8,10 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.InventoryGroup;
+import nl.t64.game.rpg.screens.inventory.itemslot.InventoryImage;
+import nl.t64.game.rpg.screens.inventory.itemslot.ItemSlot;
+import nl.t64.game.rpg.screens.inventory.messagedialog.MessageDialog;
+import nl.t64.game.rpg.screens.inventory.tooltip.ItemSlotTooltip;
 
 
 class EquipSlot extends ItemSlot {
@@ -16,8 +20,8 @@ class EquipSlot extends ItemSlot {
 
     private final HeroItem heroItem;
 
-    EquipSlot(InventoryGroup filterGroup, HeroItem heroItem) {
-        super(filterGroup);
+    EquipSlot(int index, InventoryGroup filterGroup, ItemSlotTooltip tooltip, HeroItem heroItem) {
+        super(index, filterGroup, tooltip);
         this.heroItem = heroItem;
         this.imagesBackground.addActorBefore(this.imagesBackground.getChildren().peek(),
                                              createShadowImage(this.filterGroup));
@@ -30,16 +34,6 @@ class EquipSlot extends ItemSlot {
         shadow.setColor(TRANSPARENT);
         shadow.setName("shadow");
         return shadow;
-    }
-
-    @Override
-    public int getIndex() {
-        throw new IllegalCallerException("EquipSlot does not contain index.");
-    }
-
-    @Override
-    public InventoryImage getCertainInventoryImage() {
-        return (InventoryImage) super.getChildren().peek();
     }
 
     @Override
@@ -79,22 +73,22 @@ class EquipSlot extends ItemSlot {
     }
 
     @Override
-    void putInSlot(InventoryImage draggedItem) {
+    public void putInSlot(InventoryImage draggedItem) {
         addToStack(draggedItem);
     }
 
     @Override
-    int getAmount() {
+    public int getAmount() {
         return hasItem() ? 1 : 0;
     }
 
     @Override
-    void incrementAmountBy(int amount) {
+    public void incrementAmountBy(int amount) {
         throw new IllegalCallerException("EquipSlot amount cannot be incremented.");
     }
 
     @Override
-    void decrementAmountBy(int amount) {
+    public void decrementAmountBy(int amount) {
         heroItem.clearInventoryItemFor(filterGroup);
         refreshSlot();
     }

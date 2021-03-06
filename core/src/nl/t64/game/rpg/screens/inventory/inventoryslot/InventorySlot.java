@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.inventory;
+package nl.t64.game.rpg.screens.inventory.inventoryslot;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -7,17 +7,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.components.party.InventoryContainer;
 import nl.t64.game.rpg.components.party.InventoryGroup;
+import nl.t64.game.rpg.screens.inventory.itemslot.InventoryImage;
+import nl.t64.game.rpg.screens.inventory.itemslot.ItemSlot;
+import nl.t64.game.rpg.screens.inventory.tooltip.ItemSlotTooltip;
 
 
 public class InventorySlot extends ItemSlot {
 
-    public final Label amountLabel;
-    private final int index;
+    private final Label amountLabel;
     private final InventoryContainer inventory;
 
-    public InventorySlot(int index, InventoryGroup filterGroup, InventoryContainer inventory) {
-        super(filterGroup);
-        this.index = index;
+    public InventorySlot(int index, InventoryGroup filterGroup, ItemSlotTooltip tooltip, InventoryContainer inventory) {
+        super(index, filterGroup, tooltip);
         this.inventory = inventory;
         this.amountLabel = createAmountLabel();
         addToStack(this.amountLabel);
@@ -29,16 +30,6 @@ public class InventorySlot extends ItemSlot {
         label.setAlignment(Align.bottomRight);
         label.setVisible(false);
         return label;
-    }
-
-    @Override
-    public int getIndex() {
-        return index;
-    }
-
-    @Override
-    public InventoryImage getCertainInventoryImage() {
-        return (InventoryImage) super.getChild(1);
     }
 
     @Override
@@ -77,7 +68,7 @@ public class InventorySlot extends ItemSlot {
     }
 
     @Override
-    void putInSlot(InventoryImage draggedItem) {
+    public void putInSlot(InventoryImage draggedItem) {
         if (hasItem()) {
             incrementAmountBy(draggedItem.getAmount());
         } else {
@@ -86,18 +77,18 @@ public class InventorySlot extends ItemSlot {
     }
 
     @Override
-    int getAmount() {
+    public int getAmount() {
         return inventory.getAmountOfItemAt(index);
     }
 
     @Override
-    void incrementAmountBy(int amount) {
+    public void incrementAmountBy(int amount) {
         inventory.incrementAmountAt(index, amount);
         refreshSlot();
     }
 
     @Override
-    void decrementAmountBy(int amount) {
+    public void decrementAmountBy(int amount) {
         if (amount == 0) {
             // Do nothing, because this only happens when decremented by half when there are only 2 items left.
             // 2 minus start decrement is 1. 1 divided by 2 is 0.

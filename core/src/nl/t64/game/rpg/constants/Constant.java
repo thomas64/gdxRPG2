@@ -60,6 +60,11 @@ public final class Constant {
     public static final int KEYCODE_LEFT = 1005;
     public static final int KEYCODE_RIGHT = 1006;
     public static final int KEYCODE_BOTTOM = 1007;
+    public static final int KEYCODE_L3 = 1008;
+    public static final int KEYCODE_R3 = 1009;
+    public static final int KEYCODE_R3_L = 1010;
+    public static final int KEYCODE_R3_R = 1011;
+
 
     private Constant() {
         throw new IllegalCallerException("Constant class");

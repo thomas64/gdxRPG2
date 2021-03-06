@@ -1,6 +1,5 @@
 package nl.t64.game.rpg.screens.inventory;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import lombok.Getter;
 import nl.t64.game.rpg.Utils;
@@ -13,10 +12,6 @@ public final class InventoryUtils {
 
     @Getter
     private static HeroItem selectedHero = null;
-    @Getter
-    private static boolean shiftPressed = false;
-    @Getter
-    private static boolean ctrlPressed = false;
 
     private InventoryUtils() {
         throw new IllegalCallerException("InventoryUtils class");
@@ -31,33 +26,14 @@ public final class InventoryUtils {
     }
 
     static void selectPreviousHero() {
-        final HeroItem newSelectedHero = Utils.getGameData().getParty().getPreviousHero(selectedHero);
-        updateSelectedHero(newSelectedHero);
+        selectedHero = Utils.getGameData().getParty().getPreviousHero(selectedHero);
     }
 
     static void selectNextHero() {
-        final HeroItem newSelectedHero = Utils.getGameData().getParty().getNextHero(selectedHero);
-        updateSelectedHero(newSelectedHero);
+        selectedHero = Utils.getGameData().getParty().getNextHero(selectedHero);
     }
 
-    static void updateSelectedHero(HeroItem newSelectedHero) {
-        final var screenUI = getScreenUI();
-        final Table oldEquipSlots = screenUI.getEquipSlotsTables().get(selectedHero.getId()).container;
-        screenUI.getEquipWindow().removeActor(oldEquipSlots);
-        selectedHero = newSelectedHero;
-        final Table newEquipSlots = screenUI.getEquipSlotsTables().get(selectedHero.getId()).container;
-        screenUI.getEquipWindow().add(newEquipSlots);
-    }
-
-    public static void setShiftPressed(boolean isPressed) {
-        shiftPressed = isPressed;
-    }
-
-    public static void setCtrlPressed(boolean isPressed) {
-        ctrlPressed = isPressed;
-    }
-
-    static ScreenUI getScreenUI() {
+    public static ScreenUI getScreenUI() {
         var currentScreen = Utils.getScreenManager().getCurrentScreen();
         if (currentScreen instanceof InventoryScreen inventoryScreen) {
             return inventoryScreen.inventoryUI;

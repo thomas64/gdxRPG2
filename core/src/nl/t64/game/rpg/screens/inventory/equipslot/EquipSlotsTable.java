@@ -1,19 +1,17 @@
-package nl.t64.game.rpg.screens.inventory;
+package nl.t64.game.rpg.screens.inventory.equipslot;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.InventoryGroup;
-import nl.t64.game.rpg.components.party.InventoryItem;
-import nl.t64.game.rpg.components.tooltip.ItemSlotTooltip;
-import nl.t64.game.rpg.components.tooltip.ItemSlotTooltipListener;
+import nl.t64.game.rpg.screens.inventory.itemslot.InventoryImage;
+import nl.t64.game.rpg.screens.inventory.itemslot.ItemSlot;
+import nl.t64.game.rpg.screens.inventory.tooltip.ItemSlotTooltip;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 
 public class EquipSlotsTable {
@@ -22,9 +20,8 @@ public class EquipSlotsTable {
     private static final float SLOT_SIZE = 64f;
     private static final float EQUIP_SPACING = 10f;
 
-    public final Table container;
+    final Table container;
     private final HeroItem heroItem;
-    private final DragAndDrop dragAndDrop;
     private final ItemSlotTooltip tooltip;
 
     private final ItemSlot helmetSlot;
@@ -43,57 +40,87 @@ public class EquipSlotsTable {
     private final ItemSlot bootsSlot;
     private final List<ItemSlot> equipSlotList;
 
-    public EquipSlotsTable(HeroItem heroItem, DragAndDrop dragAndDrop, ItemSlotTooltip tooltip) {
+    private final EquipSlotSelector selector;
+    private final EquipSlotTaker taker;
+
+    EquipSlotsTable(HeroItem heroItem, ItemSlotTooltip tooltip) {
         this.heroItem = heroItem;
-        this.dragAndDrop = dragAndDrop;
         this.tooltip = tooltip;
         this.container = new Table();
 
-        this.helmetSlot = createEquipSlot(InventoryGroup.HELMET);
-        this.necklaceSlot = createEquipSlot(InventoryGroup.NECKLACE);
-        this.shouldersSlot = createEquipSlot(InventoryGroup.SHOULDERS);
+        this.helmetSlot = createEquipSlot(0, InventoryGroup.HELMET);
+        this.necklaceSlot = createEquipSlot(1, InventoryGroup.NECKLACE);
+        this.shouldersSlot = createEquipSlot(21, InventoryGroup.SHOULDERS);
 
-        this.chestSlot = createEquipSlot(InventoryGroup.CHEST);
-        this.cloakSlot = createEquipSlot(InventoryGroup.CLOAK);
+        this.chestSlot = createEquipSlot(2, InventoryGroup.CHEST);
+        this.cloakSlot = createEquipSlot(22, InventoryGroup.CLOAK);
 
-        this.bracersSlot = createEquipSlot(InventoryGroup.BRACERS);
-        this.glovesSlot = createEquipSlot(InventoryGroup.GLOVES);
-        this.weaponSlot = createEquipSlot(InventoryGroup.WEAPON);
+        this.bracersSlot = createEquipSlot(3, InventoryGroup.BRACERS);
+        this.glovesSlot = createEquipSlot(4, InventoryGroup.GLOVES);
+        this.weaponSlot = createEquipSlot(5, InventoryGroup.WEAPON);
 
-        this.accessorySlot = createEquipSlot(InventoryGroup.ACCESSORY);
-        this.ringSlot = createEquipSlot(InventoryGroup.RING);
-        this.shieldSlot = createEquipSlot(InventoryGroup.SHIELD);
+        this.accessorySlot = createEquipSlot(23, InventoryGroup.ACCESSORY);
+        this.ringSlot = createEquipSlot(24, InventoryGroup.RING);
+        this.shieldSlot = createEquipSlot(25, InventoryGroup.SHIELD);
 
-        this.beltSlot = createEquipSlot(InventoryGroup.BELT);
-        this.pantsSlot = createEquipSlot(InventoryGroup.PANTS);
-        this.bootsSlot = createEquipSlot(InventoryGroup.BOOTS);
+        this.beltSlot = createEquipSlot(14, InventoryGroup.BELT);
+        this.pantsSlot = createEquipSlot(15, InventoryGroup.PANTS);
+        this.bootsSlot = createEquipSlot(16, InventoryGroup.BOOTS);
 
         this.equipSlotList = List.of(helmetSlot, necklaceSlot, shouldersSlot, chestSlot, cloakSlot,
                                      bracersSlot, glovesSlot, weaponSlot, accessorySlot, ringSlot,
                                      shieldSlot, beltSlot, pantsSlot, bootsSlot);
 
         this.createTable();
+
+        this.selector = new EquipSlotSelector(this.equipSlotList);
+        this.taker = new EquipSlotTaker(this.selector);
+        this.container.addListener(new EquipSlotsTableListener(this::dequipItem, selector::trySelectNewSlot));
     }
 
-    private EquipSlot createEquipSlot(InventoryGroup inventoryGroup) {
-        return new EquipSlot(inventoryGroup, heroItem);
+    private EquipSlot createEquipSlot(int index, InventoryGroup inventoryGroup) {
+        return new EquipSlot(index, inventoryGroup, tooltip, heroItem);
     }
 
-    Optional<ItemSlot> getPossibleSlotOfGroup(InventoryGroup inventoryGroup) {
+    private void dequipItem() {
+        taker.dequip(selector.getCurrentSlot());
+    }
+
+    int getIndexOfCurrentSlot() {
+        return selector.getIndex();
+    }
+
+    ItemSlot getCurrentSlot() {
+        return selector.getCurrentSlot();
+    }
+
+    void deselectCurrentSlot() {
+        selector.deselectCurrentSlot();
+    }
+
+    void selectCurrentSlot() {
+        selector.selectCurrentSlot();
+    }
+
+    void setCurrentByIndex(int index) {
+        selector.setNewCurrentByIndex(index);
+    }
+
+    public Optional<ItemSlot> getPossibleSlotOfGroup(InventoryGroup inventoryGroup) {
         return equipSlotList.stream()
-                            .filter(equipslot -> equipslot.filterGroup.equals(inventoryGroup))
+                            .filter(equipSlot -> equipSlot.filterGroup.equals(inventoryGroup))
                             .findAny();
     }
 
     private void createTable() {
-        equipSlotList.forEach(equipSlot -> {
-            equipSlot.addListener(new ItemSlotTooltipListener(tooltip));
-            equipSlot.addListener(new ItemSlotClickListener(DoubleClickHandler::handleEquip));
-            dragAndDrop.addTarget(new ItemSlotTarget(equipSlot));
-            heroItem.getInventoryItem(equipSlot.filterGroup).ifPresent(addToSlot(equipSlot));
-        });
+        equipSlotList.forEach(this::addPossibleEquippedItemToEquipSlot);
         setDefaults();
         fillTable();
+    }
+
+    private void addPossibleEquippedItemToEquipSlot(ItemSlot equipSlot) {
+        heroItem.getInventoryItem(equipSlot.filterGroup)
+                .ifPresent(inventoryItem -> equipSlot.addToStack(new InventoryImage(inventoryItem)));
     }
 
     private void setDefaults() {
@@ -147,19 +174,6 @@ public class EquipSlotsTable {
         container.row();
 
         container.add(bootsSlot).colspan(3);
-    }
-
-    private Consumer<InventoryItem> addToSlot(ItemSlot equipSlot) {
-        return inventoryItem -> {
-            var inventoryImage = new InventoryImage(inventoryItem);
-            makeDraggable(inventoryImage);
-            equipSlot.addToStack(inventoryImage);
-        };
-    }
-
-    private void makeDraggable(InventoryImage inventoryImage) {
-        var itemSlotSource = new ItemSlotSource(inventoryImage, dragAndDrop);
-        dragAndDrop.addSource(itemSlotSource);
     }
 
 }

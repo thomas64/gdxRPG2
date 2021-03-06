@@ -4,9 +4,9 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.party.InventoryItem;
-import nl.t64.game.rpg.screens.inventory.ItemSlot;
-import nl.t64.game.rpg.screens.inventory.ItemSlotSelector;
-import nl.t64.game.rpg.screens.inventory.MessageDialog;
+import nl.t64.game.rpg.screens.inventory.itemslot.ItemSlot;
+import nl.t64.game.rpg.screens.inventory.itemslot.ItemSlotSelector;
+import nl.t64.game.rpg.screens.inventory.messagedialog.MessageDialog;
 
 
 class LootSlotTaker {

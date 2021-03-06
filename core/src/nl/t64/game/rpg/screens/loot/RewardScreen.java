@@ -5,7 +5,7 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.constants.ScreenType;
-import nl.t64.game.rpg.screens.inventory.MessageDialog;
+import nl.t64.game.rpg.screens.inventory.messagedialog.MessageDialog;
 
 
 public class RewardScreen extends LootScreen {

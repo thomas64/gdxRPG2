@@ -7,7 +7,7 @@ import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.screens.inventory.BaseTable;
 
 
-class MarchantTable extends BaseTable {
+class MerchantTable extends BaseTable {
 
     private static final float TABLE_WIDTH = 594f;
     private static final float TABLE_HEIGHT = 501f;
@@ -26,7 +26,7 @@ class MarchantTable extends BaseTable {
             drag from the right box to the left box. Of course Shift and Ctrl also work for selling. Remember, payment \
             will happen immediately.""";
 
-    MarchantTable(String npcId) {
+    MerchantTable(String npcId) {
         this.table.defaults().reset();
         this.table.defaults().size(TABLE_WIDTH, TABLE_HEIGHT);
         this.table.pad(PADDING);

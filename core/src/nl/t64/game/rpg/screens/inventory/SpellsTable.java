@@ -6,8 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.SpellItem;
-import nl.t64.game.rpg.components.tooltip.PersonalityTooltip;
-import nl.t64.game.rpg.components.tooltip.PersonalityTooltipListener;
+import nl.t64.game.rpg.screens.inventory.tooltip.PersonalityTooltip;
+import nl.t64.game.rpg.screens.inventory.tooltip.PersonalityTooltipListener;
 
 
 class SpellsTable extends BaseTable {

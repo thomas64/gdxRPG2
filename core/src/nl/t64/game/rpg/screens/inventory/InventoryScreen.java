@@ -2,149 +2,40 @@ package nl.t64.game.rpg.screens.inventory;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.audio.AudioEvent;
-import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.InventoryContainer;
 import nl.t64.game.rpg.components.party.InventoryDatabase;
 import nl.t64.game.rpg.components.party.PartyContainer;
-import nl.t64.game.rpg.components.tooltip.ButtonTooltip;
-import nl.t64.game.rpg.components.tooltip.ButtonTooltipListener;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.ScreenType;
-import nl.t64.game.rpg.profile.ProfileManager;
-import nl.t64.game.rpg.profile.ProfileObserver;
 import nl.t64.game.rpg.screens.ScreenToLoad;
+import nl.t64.game.rpg.screens.inventory.messagedialog.MessageDialog;
 import nl.t64.game.rpg.screens.world.conversation.ConversationDialog;
 import nl.t64.game.rpg.screens.world.conversation.ConversationObserver;
 
 
-public class InventoryScreen extends PartySubject implements ScreenToLoad, ProfileObserver, ConversationObserver {
-
-    private static final String BUTTON_CLOSE_UP = "close_up";
-    private static final String BUTTON_CLOSE_OVER = "close_over";
-    private static final String BUTTON_CLOSE_DOWN = "close_down";
-    private static final String BUTTON_RESET_UP = "reset_up";
-    private static final String BUTTON_RESET_OVER = "reset_over";
-    private static final String BUTTON_RESET_DOWN = "reset_down";
-    private static final String BUTTON_PREV_UP = "previous_up";
-    private static final String BUTTON_PREV_OVER = "previous_over";
-    private static final String BUTTON_PREV_DOWN = "previous_down";
-    private static final String BUTTON_NEXT_UP = "next_up";
-    private static final String BUTTON_NEXT_OVER = "next_over";
-    private static final String BUTTON_NEXT_DOWN = "next_down";
-    private static final String BUTTON_DISMISS_UP = "dismiss_up";
-    private static final String BUTTON_DISMISS_OVER = "dismiss_over";
-    private static final String BUTTON_DISMISS_DOWN = "dismiss_down";
-    private static final String BUTTON_SORT_UP = "sort_up";
-    private static final String BUTTON_SORT_OVER = "sort_over";
-    private static final String BUTTON_SORT_DOWN = "sort_down";
-    private static final String BUTTON_TOOLTIP_DISABLED = "tooltip_disabled";
-    private static final String BUTTON_TOOLTIP_ENABLED = "tooltip_enabled";
-    private static final String BUTTON_TOOLTIP_OVER_DISABLED = "tooltip_over_disabled";
-    private static final String BUTTON_TOOLTIP_OVER_ENABLED = "tooltip_over_enabled";
-    private static final String BUTTON_COMPARE_DISABLED = "compare_disabled";
-    private static final String BUTTON_COMPARE_ENABLED = "compare_enabled";
-    private static final String BUTTON_COMPARE_OVER_DISABLED = "compare_over_disabled";
-    private static final String BUTTON_COMPARE_OVER_ENABLED = "compare_over_enabled";
-    private static final String BUTTON_HELP_UP = "help_up";
-    private static final String BUTTON_HELP_OVER = "help_over";
-    private static final String BUTTON_HELP_DOWN = "help_down";
-
-    private static final float SPELLS_WINDOW_POSITION_X = 1483f;
-    private static final float SPELLS_WINDOW_POSITION_Y = 50f;
-    private static final float INVENTORY_WINDOW_POSITION_X = 1062f;
-    private static final float INVENTORY_WINDOW_POSITION_Y = 50f;
-    private static final float EQUIP_WINDOW_POSITION_X = 736f;
-    private static final float EQUIP_WINDOW_POSITION_Y = 50f;
-    private static final float SKILLS_WINDOW_POSITION_X = 395f;
-    private static final float SKILLS_WINDOW_POSITION_Y = 50f;
-    private static final float STATS_WINDOW_POSITION_X = 63f;
-    private static final float STATS_WINDOW_POSITION_Y = 429f;
-    private static final float CALCS_WINDOW_POSITION_X = 63f;
-    private static final float CALCS_WINDOW_POSITION_Y = 50f;
-    private static final float HEROES_WINDOW_POSITION_X = 63f;
-    private static final float HEROES_WINDOW_POSITION_Y = 834f;
-    private static final float BUTTON_SIZE = 32f;
-    private static final float BUTTON_SPACE = 5f;
-    private static final float RIGHT_SPACE = 25f;
-    private static final float TOP_SPACE = 50f;
+public class InventoryScreen extends PartySubject implements ScreenToLoad, ConversationObserver {
 
     private final Stage stage;
     private final ConversationDialog conversationDialog;
-    private final ButtonTooltip buttonTooltip;
     InventoryUI inventoryUI;
-
-    private Vector2 spellsWindowPosition;
-    private Vector2 inventoryWindowPosition;
-    private Vector2 equipWindowPosition;
-    private Vector2 skillsWindowPosition;
-    private Vector2 statsWindowPosition;
-    private Vector2 calcsWindowPosition;
-    private Vector2 heroesWindowPosition;
-    private boolean isMessageShown;
-
-    private ImageButton tooltipButton;
-    private ImageButton compareButton;
 
     public InventoryScreen() {
         this.stage = new Stage();
         this.conversationDialog = new ConversationDialog();
-        this.buttonTooltip = new ButtonTooltip();
         this.conversationDialog.addObserver(this);
     }
 
     public static void load() {
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
         Utils.getScreenManager().openParchmentLoadScreen(ScreenType.INVENTORY);
-    }
-
-    @Override
-    public void onNotifyCreateProfile(ProfileManager profileManager) {
-        spellsWindowPosition = new Vector2(SPELLS_WINDOW_POSITION_X, SPELLS_WINDOW_POSITION_Y);
-        inventoryWindowPosition = new Vector2(INVENTORY_WINDOW_POSITION_X, INVENTORY_WINDOW_POSITION_Y);
-        equipWindowPosition = new Vector2(EQUIP_WINDOW_POSITION_X, EQUIP_WINDOW_POSITION_Y);
-        skillsWindowPosition = new Vector2(SKILLS_WINDOW_POSITION_X, SKILLS_WINDOW_POSITION_Y);
-        statsWindowPosition = new Vector2(STATS_WINDOW_POSITION_X, STATS_WINDOW_POSITION_Y);
-        calcsWindowPosition = new Vector2(CALCS_WINDOW_POSITION_X, CALCS_WINDOW_POSITION_Y);
-        heroesWindowPosition = new Vector2(HEROES_WINDOW_POSITION_X, HEROES_WINDOW_POSITION_Y);
-        isMessageShown = false;
-        onNotifySaveProfile(profileManager);
-    }
-
-    @Override
-    public void onNotifySaveProfile(ProfileManager profileManager) {
-        profileManager.setProperty("spellsWindowPosition", spellsWindowPosition);
-        profileManager.setProperty("inventoryWindowPosition", inventoryWindowPosition);
-        profileManager.setProperty("equipWindowPosition", equipWindowPosition);
-        profileManager.setProperty("skillsWindowPosition", skillsWindowPosition);
-        profileManager.setProperty("statsWindowPosition", statsWindowPosition);
-        profileManager.setProperty("calcsWindowPosition", calcsWindowPosition);
-        profileManager.setProperty("heroesWindowPosition", heroesWindowPosition);
-        profileManager.setProperty("isFirstTimeInventoryMessageShown", isMessageShown);
-    }
-
-    @Override
-    public void onNotifyLoadProfile(ProfileManager profileManager) {
-        spellsWindowPosition = profileManager.getProperty("spellsWindowPosition", Vector2.class);
-        inventoryWindowPosition = profileManager.getProperty("inventoryWindowPosition", Vector2.class);
-        equipWindowPosition = profileManager.getProperty("equipWindowPosition", Vector2.class);
-        skillsWindowPosition = profileManager.getProperty("skillsWindowPosition", Vector2.class);
-        statsWindowPosition = profileManager.getProperty("statsWindowPosition", Vector2.class);
-        calcsWindowPosition = profileManager.getProperty("calcsWindowPosition", Vector2.class);
-        heroesWindowPosition = profileManager.getProperty("heroesWindowPosition", Vector2.class);
-        isMessageShown = profileManager.getProperty("isFirstTimeInventoryMessageShown", Boolean.class);
     }
 
     @Override
@@ -157,7 +48,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
         HeroItem selectedHero = InventoryUtils.getSelectedHero();
         Utils.getGameData().getHeroes().addHero(selectedHero);
         String heroToDismiss = selectedHero.getId();
-        InventoryUtils.selectPreviousHero();
+        selectPreviousHero();
         Utils.getGameData().getParty().removeHero(heroToDismiss);
         hideConversationDialog();
         notifyHeroDismissed();
@@ -165,41 +56,25 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
 
     @Override
     public void show() {
-        Gdx.input.setCursorCatched(false);
         Gdx.input.setInputProcessor(stage);
         Utils.setGamepadInputProcessor(stage);
         stage.addListener(new InventoryScreenListener(this::closeScreen,
-                                                      this::resetWindowsPositions,
                                                       this::selectPreviousHero,
                                                       this::selectNextHero,
+                                                      this::selectPreviousTable,
+                                                      this::selectNextTable,
                                                       this::tryToDismissHero,
                                                       this::sortInventory,
                                                       this::toggleTooltip,
                                                       this::toggleCompare,
-                                                      this::showHelpMessage,
                                                       this::cheatAddGold,
                                                       this::cheatRemoveGold));
-        createButtonTable();
-
-        inventoryUI = new InventoryUI();
-        inventoryUI.spellsWindow.setPosition(spellsWindowPosition.x, spellsWindowPosition.y);
-        inventoryUI.inventoryWindow.setPosition(inventoryWindowPosition.x, inventoryWindowPosition.y);
-        inventoryUI.equipWindow.setPosition(equipWindowPosition.x, equipWindowPosition.y);
-        inventoryUI.skillsWindow.setPosition(skillsWindowPosition.x, skillsWindowPosition.y);
-        inventoryUI.statsWindow.setPosition(statsWindowPosition.x, statsWindowPosition.y);
-        inventoryUI.calcsWindow.setPosition(calcsWindowPosition.x, calcsWindowPosition.y);
-        inventoryUI.heroesWindow.setPosition(heroesWindowPosition.x, heroesWindowPosition.y);
-        inventoryUI.addToStage(stage);
-        inventoryUI.applyListeners(stage);
-        buttonTooltip.addToStage(stage);
+        inventoryUI = new InventoryUI(stage);
+        new ButtonLabels(stage).create();
     }
 
     @Override
     public void render(float dt) {
-        if (!isMessageShown) {
-            isMessageShown = true;
-            showHelpMessage();
-        }
         ScreenUtils.clear(Color.BLACK);
         stage.act(dt);
         stage.draw();
@@ -230,7 +105,6 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
 
     @Override
     public void dispose() {
-        // todo, de buttons bewaren hun mouse-over state op de een of andere vage manier.
         stage.dispose();
         conversationDialog.dispose();
     }
@@ -241,56 +115,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
         stage.addActor(parchment);
     }
 
-    private void createButtonTable() {
-        var buttonTable = new Table();
-
-        addButton(buttonTable, BUTTON_CLOSE_UP, BUTTON_CLOSE_OVER, BUTTON_CLOSE_DOWN, this::closeScreen, "Close screen");
-        addButton(buttonTable, BUTTON_RESET_UP, BUTTON_RESET_OVER, BUTTON_RESET_DOWN, this::resetWindowsPositions, "Reset windows");
-        addButton(buttonTable, BUTTON_PREV_UP, BUTTON_PREV_OVER, BUTTON_PREV_DOWN, this::selectPreviousHero, "Previous hero");
-        addButton(buttonTable, BUTTON_NEXT_UP, BUTTON_NEXT_OVER, BUTTON_NEXT_DOWN, this::selectNextHero, "Next hero");
-        addButton(buttonTable, BUTTON_DISMISS_UP, BUTTON_DISMISS_OVER, BUTTON_DISMISS_DOWN, this::tryToDismissHero, "Dismiss hero");
-        addButton(buttonTable, BUTTON_SORT_UP, BUTTON_SORT_OVER, BUTTON_SORT_DOWN, this::sortInventory, "Sort inventory");
-        addToggleTooltipButton(buttonTable);
-        addToggleCompareButton(buttonTable);
-        addButton(buttonTable, BUTTON_HELP_UP, BUTTON_HELP_OVER, BUTTON_HELP_DOWN, this::showHelpMessage, "Help dialog");
-
-        buttonTable.pack();
-        buttonTable.setPosition(Gdx.graphics.getWidth() - buttonTable.getWidth() - RIGHT_SPACE,
-                                Gdx.graphics.getHeight() - buttonTable.getHeight() - TOP_SPACE);
-        stage.addActor(buttonTable);
-    }
-
-    private void addButton(Table buttonTable, String up, String over, String down, Runnable action, String title) {
-        ImageButton imageButton = Utils.createImageButton(up, over, down);
-        imageButton.addListener(new ListenerMouseImageButton(action));
-        imageButton.addListener(new ButtonTooltipListener(buttonTooltip, title));
-        buttonTable.add(imageButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
-    }
-
-    private void addToggleTooltipButton(Table buttonTable) {
-        tooltipButton = Utils.createImageToggleButton(BUTTON_TOOLTIP_DISABLED, BUTTON_TOOLTIP_ENABLED,
-                                                      BUTTON_TOOLTIP_OVER_DISABLED, BUTTON_TOOLTIP_OVER_ENABLED);
-        tooltipButton.addListener(new ListenerMouseImageButton(this::toggleTooltip));
-        tooltipButton.addListener(new ButtonTooltipListener(buttonTooltip, "Toggle tooltip"));
-        tooltipButton.setChecked(Utils.getGameData().isTooltipEnabled());
-        buttonTable.add(tooltipButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
-    }
-
-    private void addToggleCompareButton(Table buttonTable) {
-        compareButton = Utils.createImageToggleButton(BUTTON_COMPARE_DISABLED, BUTTON_COMPARE_ENABLED,
-                                                      BUTTON_COMPARE_OVER_DISABLED, BUTTON_COMPARE_OVER_ENABLED);
-        compareButton.addListener(new ListenerMouseImageButton(this::toggleCompare));
-        compareButton.addListener(new ButtonTooltipListener(buttonTooltip, "Toggle compare"));
-        compareButton.setChecked(Utils.getGameData().isComparingEnabled());
-        buttonTable.add(compareButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
-    }
-
     private void closeScreen() {
-        if (isDialogVisibleThenClose()) {
-            return;
-        }
-        storeWindowPositions();
-        Gdx.input.setCursorCatched(true);
         Gdx.input.setInputProcessor(null);
         Utils.setGamepadInputProcessor(null);
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
@@ -308,18 +133,25 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
 
     private void selectPreviousHero() {
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_CURSOR);
-        InventoryUtils.selectPreviousHero();
+        inventoryUI.updateSelectedHero(InventoryUtils::selectPreviousHero);
     }
 
     private void selectNextHero() {
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_CURSOR);
-        InventoryUtils.selectNextHero();
+        inventoryUI.updateSelectedHero(InventoryUtils::selectNextHero);
+    }
+
+    private void selectPreviousTable() {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_CURSOR);
+        inventoryUI.selectPreviousTable();
+    }
+
+    private void selectNextTable() {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_CURSOR);
+        inventoryUI.selectNextTable();
     }
 
     private void tryToDismissHero() {
-        if (isDialogVisibleThenClose()) {
-            return;
-        }
         PartyContainer party = Utils.getGameData().getParty();
         HeroItem currentHero = InventoryUtils.getSelectedHero();
         String currentHeroId = currentHero.getId();
@@ -346,15 +178,13 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
     }
 
     private void toggleTooltip() {
-        boolean isEnabled = Utils.getGameData().isTooltipEnabled();
-        Utils.getGameData().setTooltipEnabled(!isEnabled);
-        tooltipButton.setChecked(!isEnabled);
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_CONFIRM);
+        inventoryUI.toggleTooltip();
     }
 
     private void toggleCompare() {
-        boolean isEnabled = Utils.getGameData().isComparingEnabled();
-        Utils.getGameData().setComparingEnabled(!isEnabled);
-        compareButton.setChecked(!isEnabled);
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_CONFIRM);
+        inventoryUI.toggleCompare();
     }
 
     private void cheatAddGold() {
@@ -364,11 +194,12 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
                 && inventory.hasRoomForResource("herb")
                 && inventory.hasRoomForResource("spice")
                 && inventory.hasRoomForResource("gemstone")) {
+                Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_ERROR);
                 InventoryDatabase idb = InventoryDatabase.getInstance();
-                inventory.autoSetItem(idb.createInventoryItem("gold", 10));
-                inventory.autoSetItem(idb.createInventoryItem("herb", 10));
-                inventory.autoSetItem(idb.createInventoryItem("spice", 10));
-                inventory.autoSetItem(idb.createInventoryItem("gemstone", 10));
+                inventory.autoSetItem(idb.createInventoryItem("gold", 100));
+                inventory.autoSetItem(idb.createInventoryItem("herb", 100));
+                inventory.autoSetItem(idb.createInventoryItem("spice", 100));
+                inventory.autoSetItem(idb.createInventoryItem("gemstone", 100));
                 inventoryUI.reloadInventory();
             }
         }
@@ -378,69 +209,11 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Profi
         if (Utils.getSettings().isInDebugMode()) {
             InventoryContainer inventory = Utils.getGameData().getInventory();
             if (inventory.hasEnoughOfItem("gold", 1)) {
+                Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_ERROR);
                 inventory.autoRemoveItem("gold", 1);
                 inventoryUI.reloadInventory();
             }
         }
-    }
-
-    private void showHelpMessage() {
-        if (isDialogVisibleThenClose()) {
-            return;
-        }
-        final String message = """
-                Esc = Close screen
-                I = Close screen
-                R = Reset windows
-                Q = Previous hero
-                W = Next hero
-                D = Dismiss hero
-                S = Sort inventory
-                T = Toggle tooltip
-                C = Toggle compare
-                Shift = Drag full stack
-                Ctrl = Drag half stack
-                H = This dialog""";
-        final var messageDialog = new MessageDialog(message);
-        messageDialog.setLeftAlignment();
-        messageDialog.show(stage, AudioEvent.SE_CONVERSATION_NEXT);
-    }
-
-    private void storeWindowPositions() {
-        spellsWindowPosition.x = inventoryUI.spellsWindow.getX();
-        spellsWindowPosition.y = inventoryUI.spellsWindow.getY();
-        inventoryWindowPosition.x = inventoryUI.inventoryWindow.getX();
-        inventoryWindowPosition.y = inventoryUI.inventoryWindow.getY();
-        equipWindowPosition.x = inventoryUI.equipWindow.getX();
-        equipWindowPosition.y = inventoryUI.equipWindow.getY();
-        skillsWindowPosition.x = inventoryUI.skillsWindow.getX();
-        skillsWindowPosition.y = inventoryUI.skillsWindow.getY();
-        statsWindowPosition.x = inventoryUI.statsWindow.getX();
-        statsWindowPosition.y = inventoryUI.statsWindow.getY();
-        calcsWindowPosition.x = inventoryUI.calcsWindow.getX();
-        calcsWindowPosition.y = inventoryUI.calcsWindow.getY();
-        heroesWindowPosition.x = inventoryUI.heroesWindow.getX();
-        heroesWindowPosition.y = inventoryUI.heroesWindow.getY();
-    }
-
-    private void resetWindowsPositions() {
-        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_CONFIRM);
-        inventoryUI.spellsWindow.setPosition(SPELLS_WINDOW_POSITION_X, SPELLS_WINDOW_POSITION_Y);
-        inventoryUI.inventoryWindow.setPosition(INVENTORY_WINDOW_POSITION_X, INVENTORY_WINDOW_POSITION_Y);
-        inventoryUI.equipWindow.setPosition(EQUIP_WINDOW_POSITION_X, EQUIP_WINDOW_POSITION_Y);
-        inventoryUI.skillsWindow.setPosition(SKILLS_WINDOW_POSITION_X, SKILLS_WINDOW_POSITION_Y);
-        inventoryUI.statsWindow.setPosition(STATS_WINDOW_POSITION_X, STATS_WINDOW_POSITION_Y);
-        inventoryUI.calcsWindow.setPosition(CALCS_WINDOW_POSITION_X, CALCS_WINDOW_POSITION_Y);
-        inventoryUI.heroesWindow.setPosition(HEROES_WINDOW_POSITION_X, HEROES_WINDOW_POSITION_Y);
-    }
-
-    private boolean isDialogVisibleThenClose() {
-        Actor possibleOldDialog = stage.getActors().peek();
-        if (possibleOldDialog instanceof Dialog dialog) {
-            dialog.hide();
-            return true;
-        }
-        return false;
     }
 
 }

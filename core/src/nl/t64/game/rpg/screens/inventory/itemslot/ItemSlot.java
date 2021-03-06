@@ -1,11 +1,13 @@
-package nl.t64.game.rpg.screens.inventory;
+package nl.t64.game.rpg.screens.inventory.itemslot;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Scaling;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.InventoryGroup;
+import nl.t64.game.rpg.screens.inventory.tooltip.ItemSlotTooltip;
 
 import java.util.Optional;
 
@@ -22,11 +24,15 @@ public abstract class ItemSlot extends Stack {
     private static final String EPIC = "epic";
     private static final String LEGENDARY = "legendary";
 
-    final InventoryGroup filterGroup;
-    final Stack imagesBackground;
+    public final int index;
+    public final InventoryGroup filterGroup;
+    public final ItemSlotTooltip tooltip;
+    public final Stack imagesBackground;
 
-    ItemSlot(InventoryGroup filterGroup) {
+    public ItemSlot(int index, InventoryGroup filterGroup, ItemSlotTooltip tooltip) {
+        this.index = index;
         this.filterGroup = filterGroup;
+        this.tooltip = tooltip;
         this.imagesBackground = createImageBackground();
         addToStack(this.imagesBackground);
     }
@@ -41,13 +47,25 @@ public abstract class ItemSlot extends Stack {
         return stack;
     }
 
-    public void setSelected() {
+    public void select() {
         var texture = Utils.getResourceManager().getTextureAsset(SPRITE_SELECTED);
-        super.add(new Image(texture));
+        var selector = new Image(texture);
+        selector.setName("selector");
+        super.add(selector);
+        tooltip.refresh(this);
     }
 
-    public void setDeselected() {
-        super.getChildren().pop();
+    public void deselect() {
+        if (isSelected()) {
+            super.getChildren().pop();
+        } else {
+            throw new GdxRuntimeException("Tried to deselect an unselected ItemSlot.");
+        }
+    }
+
+    public boolean isSelected() {
+        String name = super.getChildren().peek().getName();
+        return name != null && name.equals("selector");
     }
 
     public Optional<InventoryImage> getPossibleInventoryImage() {
@@ -57,9 +75,9 @@ public abstract class ItemSlot extends Stack {
         return Optional.empty();
     }
 
-    public abstract int getIndex();
-
-    public abstract InventoryImage getCertainInventoryImage();
+    public InventoryImage getCertainInventoryImage() {
+        return (InventoryImage) super.getChild(1);
+    }
 
     public abstract void addToStack(Actor actor);
 
@@ -71,13 +89,13 @@ public abstract class ItemSlot extends Stack {
 
     public abstract void clearStack();
 
-    abstract void putInSlot(InventoryImage draggedItem);
+    public abstract void putInSlot(InventoryImage draggedItem);
 
-    abstract int getAmount();
+    public abstract int getAmount();
 
-    abstract void incrementAmountBy(int amount);
+    public abstract void incrementAmountBy(int amount);
 
-    abstract void decrementAmountBy(int amount);
+    public abstract void decrementAmountBy(int amount);
 
     void putItemBack(InventoryImage draggedItem) {
         putInSlot(draggedItem);
@@ -87,7 +105,7 @@ public abstract class ItemSlot extends Stack {
         return (int) Math.floor(getAmount() / 2f);
     }
 
-    void setItemColor() {
+    public void setItemColor() {
         imagesBackground.getChildren().pop();
         if (hasItem()) {
             imagesBackground.add(createTierColor());

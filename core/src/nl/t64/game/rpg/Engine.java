@@ -6,7 +6,6 @@ import com.badlogic.gdx.controllers.Controllers;
 import nl.t64.game.rpg.audio.AudioManager;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.profile.ProfileManager;
-import nl.t64.game.rpg.profile.ProfileObserver;
 import nl.t64.game.rpg.screens.ScreenManager;
 import nl.t64.game.rpg.screens.world.MapManager;
 
@@ -47,7 +46,6 @@ public class Engine extends Game {
     public void create() {
         profileManager.addObserver(gameData);
         profileManager.addObserver(mapManager);
-        profileManager.addObserver((ProfileObserver) screenManager.getScreen(ScreenType.INVENTORY));
 
         Controllers.addListener(gamepadMapping.controllerToInputAdapter);
 

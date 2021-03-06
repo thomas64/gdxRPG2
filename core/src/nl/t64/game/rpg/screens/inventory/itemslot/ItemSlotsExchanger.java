@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.inventory;
+package nl.t64.game.rpg.screens.inventory.itemslot;
 
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioCommand;
@@ -7,25 +7,27 @@ import nl.t64.game.rpg.components.party.InventoryDatabase;
 import nl.t64.game.rpg.components.party.InventoryGroup;
 import nl.t64.game.rpg.components.party.InventoryItem;
 import nl.t64.game.rpg.components.party.SkillItemId;
+import nl.t64.game.rpg.screens.inventory.InventoryUtils;
+import nl.t64.game.rpg.screens.inventory.messagedialog.MessageDialog;
 
 import java.util.Optional;
 
 
-class ItemSlotsExchanger {
+public class ItemSlotsExchanger {
 
     private final InventoryImage draggedItem;
     private final ItemSlot sourceSlot;
     private final ItemSlot targetSlot;
     private boolean isSuccessfullyExchanged;
 
-    ItemSlotsExchanger(InventoryImage draggedItem, ItemSlot sourceSlot, ItemSlot targetSlot) {
-        this.draggedItem = draggedItem;
+    public ItemSlotsExchanger(InventoryImage draggedItem, ItemSlot sourceSlot, ItemSlot targetSlot) {
+        this.draggedItem = InventoryImage.copyOf(draggedItem);
         this.sourceSlot = sourceSlot;
         this.targetSlot = targetSlot;
         this.isSuccessfullyExchanged = false;
     }
 
-    void exchange() {
+    public void exchange() {
         if (targetSlot.doesAcceptItem(draggedItem)) {
             handleExchange();
         } else {

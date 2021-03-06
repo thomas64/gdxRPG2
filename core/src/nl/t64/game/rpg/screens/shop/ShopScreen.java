@@ -7,26 +7,17 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
 import lombok.Getter;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.audio.AudioEvent;
-import nl.t64.game.rpg.components.tooltip.ButtonTooltip;
-import nl.t64.game.rpg.components.tooltip.ButtonTooltipListener;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.screens.ScreenToLoad;
-import nl.t64.game.rpg.screens.inventory.ListenerMouseImageButton;
 
 
 public class ShopScreen implements ScreenToLoad {
-
-    private static final String BUTTON_CLOSE_UP = "close_up";
-    private static final String BUTTON_CLOSE_OVER = "close_over";
-    private static final String BUTTON_CLOSE_DOWN = "close_down";
 
     private static final float EQUIP_WINDOW_POSITION_X = 1566f;
     private static final float EQUIP_WINDOW_POSITION_Y = 50f;
@@ -38,13 +29,8 @@ public class ShopScreen implements ScreenToLoad {
     private static final float MERCHANT_WINDOW_POSITION_Y = 50f;
     private static final float HEROES_WINDOW_POSITION_X = 63f;
     private static final float HEROES_WINDOW_POSITION_Y = 834f;
-    private static final float BUTTON_SIZE = 32f;
-    private static final float BUTTON_SPACE = 5f;
-    private static final float RIGHT_SPACE = 25f;
-    private static final float TOP_SPACE = 50f;
 
     private final Stage stage;
-    private final ButtonTooltip buttonTooltip;
     @Getter
     private ShopUI shopUI;
     private String npcId;
@@ -52,7 +38,6 @@ public class ShopScreen implements ScreenToLoad {
 
     public ShopScreen() {
         this.stage = new Stage();
-        this.buttonTooltip = new ButtonTooltip();
     }
 
     public static void load(String npcId, String shopId) {
@@ -65,11 +50,8 @@ public class ShopScreen implements ScreenToLoad {
 
     @Override
     public void show() {
-        Gdx.input.setCursorCatched(false);
         Gdx.input.setInputProcessor(stage);
         stage.addListener(new ShopScreenListener(this::closeScreen));
-        buttonTooltip.addToStage(stage);
-        createButtonTable();
 
         shopUI = new ShopUI(npcId, shopId);
         shopUI.equipWindow.setPosition(EQUIP_WINDOW_POSITION_X, EQUIP_WINDOW_POSITION_Y);
@@ -112,7 +94,6 @@ public class ShopScreen implements ScreenToLoad {
 
     @Override
     public void dispose() {
-        // todo, de buttons bewaren hun mouse-over state op de een of andere vage manier.
         stage.dispose();
     }
 
@@ -122,27 +103,10 @@ public class ShopScreen implements ScreenToLoad {
         stage.addActor(parchment);
     }
 
-    private void createButtonTable() {
-        var buttonTable = new Table();
-        addButton(buttonTable, BUTTON_CLOSE_UP, BUTTON_CLOSE_OVER, BUTTON_CLOSE_DOWN, this::closeScreen, "Close screen");
-        buttonTable.pack();
-        buttonTable.setPosition(Gdx.graphics.getWidth() - buttonTable.getWidth() - RIGHT_SPACE,
-                                Gdx.graphics.getHeight() - buttonTable.getHeight() - TOP_SPACE);
-        stage.addActor(buttonTable);
-    }
-
-    private void addButton(Table buttonTable, String up, String over, String down, Runnable action, String title) {
-        ImageButton imageButton = Utils.createImageButton(up, over, down);
-        imageButton.addListener(new ListenerMouseImageButton(action));
-        imageButton.addListener(new ButtonTooltipListener(buttonTooltip, title));
-        buttonTable.add(imageButton).size(BUTTON_SIZE).spaceBottom(BUTTON_SPACE).row();
-    }
-
     private void closeScreen() {
         if (isDialogVisibleThenClose()) {
             return;
         }
-        Gdx.input.setCursorCatched(true);
         Gdx.input.setInputProcessor(null);
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
         fadeParchment();

@@ -10,6 +10,7 @@ public class InventoryContainer {
     private static final int NUMBER_OF_SLOTS = 66;
 
     private final List<InventoryItem> inventory;
+    private boolean isSortReverse = false;
 
     public InventoryContainer() {
         this(NUMBER_OF_SLOTS);
@@ -95,7 +96,8 @@ public class InventoryContainer {
         new InventoryStacksMerger(this).searchAll();
         Comparator<InventoryItem> comparing = Comparator.comparing(this::getInventoryGroup)
                                                         .thenComparing(this::getSort);
-        inventory.sort(comparing);
+        inventory.sort(isSortReverse ? comparing.reversed() : comparing);
+        isSortReverse = !isSortReverse;
     }
 
     public boolean contains(Map<String, Integer> items) {

@@ -2,17 +2,14 @@ package nl.t64.game.rpg.screens.shop;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import nl.t64.game.rpg.Utils;
-import nl.t64.game.rpg.components.party.HeroItem;
-import nl.t64.game.rpg.components.party.PartyContainer;
-import nl.t64.game.rpg.components.tooltip.ItemSlotTooltip;
-import nl.t64.game.rpg.components.tooltip.ShopSlotTooltipBuy;
-import nl.t64.game.rpg.components.tooltip.ShopSlotTooltipSell;
-import nl.t64.game.rpg.screens.inventory.*;
-
-import java.util.HashMap;
-import java.util.Map;
+import nl.t64.game.rpg.screens.inventory.HeroesTable;
+import nl.t64.game.rpg.screens.inventory.ScreenUI;
+import nl.t64.game.rpg.screens.inventory.equipslot.EquipSlotsTables;
+import nl.t64.game.rpg.screens.inventory.inventoryslot.InventorySlotsTable;
+import nl.t64.game.rpg.screens.inventory.tooltip.ItemSlotTooltip;
+import nl.t64.game.rpg.screens.inventory.tooltip.ShopSlotTooltipBuy;
+import nl.t64.game.rpg.screens.inventory.tooltip.ShopSlotTooltipSell;
 
 
 class ShopUI implements ScreenUI {
@@ -29,34 +26,29 @@ class ShopUI implements ScreenUI {
     final Window merchantWindow;
     final Window heroesWindow;
 
-    private final Map<String, EquipSlotsTable> equipSlotsTables;
+    private final EquipSlotsTables equipSlotsTables;
     private final InventorySlotsTable inventorySlotsTable;
     private final ShopSlotsTable shopSlotsTable;
-    private final MarchantTable merchantTable;
+    private final MerchantTable merchantTable;
     private final HeroesTable heroesTable;
-
-    private final DragAndDrop dragAndDrop;
 
     private final ItemSlotTooltip shopSlotTooltipSell;
     private final ItemSlotTooltip shopSlotTooltipBuy;
 
     ShopUI(String npcId, String shopId) {
-        this.dragAndDrop = new DragAndDrop();
         this.shopSlotTooltipSell = new ShopSlotTooltipSell();
         this.shopSlotTooltipBuy = new ShopSlotTooltipBuy();
 
-        this.equipSlotsTables = new HashMap<>(PartyContainer.MAXIMUM);
-        this.fillEquipSlotsTables();
-        final EquipSlotsTable equipTableOfSelectedHero = this.equipSlotsTables.get(InventoryUtils.getSelectedHeroId());
-        this.equipWindow = Utils.createDefaultWindow(TITLE_PERSONAL, equipTableOfSelectedHero.container);
+        this.equipSlotsTables = new EquipSlotsTables(this.shopSlotTooltipSell);
+        this.equipWindow = Utils.createDefaultWindow(TITLE_PERSONAL, this.equipSlotsTables.getCurrentEquipTable());
 
-        this.inventorySlotsTable = new InventorySlotsTable(this.dragAndDrop, this.shopSlotTooltipSell);
+        this.inventorySlotsTable = new InventorySlotsTable(this.shopSlotTooltipSell);
         this.inventoryWindow = Utils.createDefaultWindow(TITLE_GLOBAL, this.inventorySlotsTable.container);
 
-        this.shopSlotsTable = new ShopSlotsTable(shopId, this.dragAndDrop, this.shopSlotTooltipBuy);
+        this.shopSlotsTable = new ShopSlotsTable(shopId, this.shopSlotTooltipBuy);
         this.shopWindow = Utils.createDefaultWindow(TITLE_SHOP, this.shopSlotsTable.container);
 
-        this.merchantTable = new MarchantTable(npcId);
+        this.merchantTable = new MerchantTable(npcId);
         this.merchantWindow = Utils.createDefaultWindow(TITLE_MERCHANT, this.merchantTable.table);
 
         this.heroesTable = new HeroesTable();
@@ -64,12 +56,7 @@ class ShopUI implements ScreenUI {
     }
 
     @Override
-    public Window getEquipWindow() {
-        return equipWindow;
-    }
-
-    @Override
-    public Map<String, EquipSlotsTable> getEquipSlotsTables() {
+    public EquipSlotsTables getEquipSlotsTables() {
         return equipSlotsTables;
     }
 
@@ -89,8 +76,8 @@ class ShopUI implements ScreenUI {
     }
 
     void applyListeners(Stage stage) {
-        shopWindow.addListener(new ListenerMouseScrollPane(stage, shopSlotsTable.scrollPane));
-        inventoryWindow.addListener(new ListenerMouseScrollPane(stage, inventorySlotsTable.scrollPane));
+//        shopWindow.addListener(new ListenerMouseScrollPane(stage, shopSlotsTable.scrollPane));
+//        inventoryWindow.addListener(new ListenerMouseScrollPane(stage, inventorySlotsTable.scrollPane));
     }
 
     void update() {
@@ -103,12 +90,6 @@ class ShopUI implements ScreenUI {
 
     void unloadAssets() {
         heroesTable.disposePixmapTextures();
-    }
-
-    private void fillEquipSlotsTables() {
-        for (HeroItem hero : Utils.getGameData().getParty().getAllHeroes()) {
-            equipSlotsTables.put(hero.getId(), new EquipSlotsTable(hero, dragAndDrop, shopSlotTooltipSell));
-        }
     }
 
 }

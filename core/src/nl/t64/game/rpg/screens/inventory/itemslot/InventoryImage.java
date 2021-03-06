@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.inventory;
+package nl.t64.game.rpg.screens.inventory.itemslot;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -9,13 +9,14 @@ import nl.t64.game.rpg.components.party.DescriptionCreator;
 import nl.t64.game.rpg.components.party.InventoryDescription;
 import nl.t64.game.rpg.components.party.InventoryGroup;
 import nl.t64.game.rpg.components.party.InventoryItem;
+import nl.t64.game.rpg.screens.inventory.InventoryUtils;
 
 import java.util.List;
 
 
 public class InventoryImage extends Image {
 
-    final InventoryGroup inventoryGroup;
+    public final InventoryGroup inventoryGroup;
     public final InventoryItem inventoryItem;
 
     public InventoryImage(InventoryItem inventoryItem) {
@@ -44,7 +45,7 @@ public class InventoryImage extends Image {
         return inventoryItem.isStackable();
     }
 
-    int getAmount() {
+    public int getAmount() {
         return inventoryItem.getAmount();
     }
 

@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.components.tooltip;
+package nl.t64.game.rpg.screens.inventory.tooltip;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -12,9 +12,9 @@ import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.*;
 import nl.t64.game.rpg.constants.Constant;
-import nl.t64.game.rpg.screens.inventory.InventoryImage;
 import nl.t64.game.rpg.screens.inventory.InventoryUtils;
-import nl.t64.game.rpg.screens.inventory.ItemSlot;
+import nl.t64.game.rpg.screens.inventory.itemslot.InventoryImage;
+import nl.t64.game.rpg.screens.inventory.itemslot.ItemSlot;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,12 +34,19 @@ public class ItemSlotTooltip extends BaseTooltip {
     private static final float DELAY = 0.5f;
 
     public void toggle(ItemSlot itemSlot) {
-        boolean isEnabled = Utils.getGameData().isTooltipEnabled();
-        Utils.getGameData().setTooltipEnabled(!isEnabled);
-
         if (itemSlot.hasItem()) {
+            boolean isEnabled = Utils.getGameData().isTooltipEnabled();
+            Utils.getGameData().setTooltipEnabled(!isEnabled);
             setupTooltip(itemSlot);
             window.setVisible(!isEnabled);
+        }
+    }
+
+    public void toggleCompare(ItemSlot itemSlot) {
+        if (itemSlot.hasItem()) {
+            boolean isEnabled = Utils.getGameData().isComparingEnabled();
+            Utils.getGameData().setComparingEnabled(!isEnabled);
+            updateDescription(itemSlot);
         }
     }
 
@@ -60,14 +67,6 @@ public class ItemSlotTooltip extends BaseTooltip {
         updateDescription(itemSlot);
         window.setPosition(localCoords.x + THREE_QUARTERS, localCoords.y + THREE_QUARTERS);
         window.toFront();
-    }
-
-    void setVisible(ItemSlot itemSlot, boolean visible) {
-        window.clearActions();
-        window.setVisible(false);
-        if (Utils.getGameData().isTooltipEnabled() && itemSlot.hasItem()) {
-            window.setVisible(visible);
-        }
     }
 
     void updateDescription(ItemSlot itemSlot) {

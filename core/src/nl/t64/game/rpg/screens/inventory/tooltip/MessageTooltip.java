@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.components.tooltip;
+package nl.t64.game.rpg.screens.inventory.tooltip;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -46,8 +46,8 @@ public class MessageTooltip extends BaseTooltip {
     private void setupWindow(String message) {
         label.setText(message);
         window.pack();
-        setPosition(Gdx.graphics.getWidth() - window.getWidth() - PAD,
-                    Gdx.graphics.getHeight() - window.getHeight() - PAD);
+        window.setPosition(Gdx.graphics.getWidth() - window.getWidth() - PAD,
+                           Gdx.graphics.getHeight() - window.getHeight() - PAD);
     }
 
 }

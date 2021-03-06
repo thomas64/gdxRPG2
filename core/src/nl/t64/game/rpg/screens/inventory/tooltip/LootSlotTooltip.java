@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.components.tooltip;
+package nl.t64.game.rpg.screens.inventory.tooltip;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
@@ -6,8 +6,8 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.InventoryDescription;
 import nl.t64.game.rpg.components.party.InventoryGroup;
 import nl.t64.game.rpg.components.party.SkillItemId;
-import nl.t64.game.rpg.screens.inventory.InventoryImage;
-import nl.t64.game.rpg.screens.inventory.ItemSlot;
+import nl.t64.game.rpg.screens.inventory.itemslot.InventoryImage;
+import nl.t64.game.rpg.screens.inventory.itemslot.ItemSlot;
 
 import java.util.List;
 

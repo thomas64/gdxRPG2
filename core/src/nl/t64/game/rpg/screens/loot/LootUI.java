@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.loot.Loot;
-import nl.t64.game.rpg.components.tooltip.LootSlotTooltip;
+import nl.t64.game.rpg.screens.inventory.tooltip.LootSlotTooltip;
 
 
 class LootUI {
