@@ -37,7 +37,7 @@ public class PhysicsSparkle extends PhysicsComponent {
     public void update(Entity entity, float dt) {
         if (isSelected) {
             isSelected = false;
-            notifyShowFindDialog(sparkle, AudioEvent.SE_SPARKLE);
+            componentSubject.notifyShowFindDialog(sparkle, AudioEvent.SE_SPARKLE);
         }
     }
 

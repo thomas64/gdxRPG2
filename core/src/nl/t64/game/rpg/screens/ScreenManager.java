@@ -40,6 +40,10 @@ public class ScreenManager {
         return screenCache.get(screenType);
     }
 
+    public ScreenToLoad getCurrentScreenToLoad() {
+        return (ScreenToLoad) getCurrentScreen();
+    }
+
     public Screen getCurrentScreen() {
         return ((Engine) Gdx.app.getApplicationListener()).getScreen();
     }

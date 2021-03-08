@@ -36,15 +36,15 @@ public class Entity {
     }
 
     public void registerObserver(ComponentObserver observer) {
-        inputComponent.addObserver(observer);
-        physicsComponent.addObserver(observer);
-        graphicsComponent.addObserver(observer);
+        inputComponent.componentSubject.addObserver(observer);
+        physicsComponent.componentSubject.addObserver(observer);
+        graphicsComponent.componentSubject.addObserver(observer);
     }
 
     public void unregisterObserver() {
-        inputComponent.removeAllObservers();
-        physicsComponent.removeAllObservers();
-        graphicsComponent.removeAllObservers();
+        inputComponent.componentSubject.removeAllObservers();
+        physicsComponent.componentSubject.removeAllObservers();
+        graphicsComponent.componentSubject.removeAllObservers();
     }
 
     public void update(float dt) {

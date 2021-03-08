@@ -75,14 +75,14 @@ public class EquipSlotsTable {
 
         this.selector = new EquipSlotSelector(this.equipSlotList);
         this.taker = new EquipSlotTaker(this.selector);
-        this.container.addListener(new EquipSlotsTableListener(this::dequipItem, selector::trySelectNewSlot));
+        this.container.addListener(new EquipSlotsTableListener(selector::trySelectNewSlot));
     }
 
     private EquipSlot createEquipSlot(int index, InventoryGroup inventoryGroup) {
         return new EquipSlot(index, inventoryGroup, tooltip, heroItem);
     }
 
-    private void dequipItem() {
+    void dequipItem() {
         taker.dequip(selector.getCurrentSlot());
     }
 

@@ -5,12 +5,16 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import lombok.AllArgsConstructor;
 import nl.t64.game.rpg.Utils;
 
 
-record ButtonLabels(Stage stage) {
+@AllArgsConstructor
+public class ButtonLabels {
 
-    void create() {
+    private final Stage stage;
+
+    public void create() {
         var labelStyle = new Label.LabelStyle(new BitmapFont(), Color.BLACK);
 
         var buttonTopLeftLabel = new Label(createTopLeftText(), labelStyle);
@@ -70,7 +74,7 @@ record ButtonLabels(Stage stage) {
         }
     }
 
-    private String createBottomLeftText() {
+    public String createBottomLeftText() {
         if (Utils.isGamepadConnected()) {
             return "[A] De/Equip      [Y] Dismiss hero      [Start] Sort inventory";
         } else {
@@ -78,7 +82,7 @@ record ButtonLabels(Stage stage) {
         }
     }
 
-    private String createBottomRightText() {
+    public String createBottomRightText() {
         if (Utils.isGamepadConnected()) {
             return "[Select] Toggle tooltip      [L3] Toggle compare      [B] Back";
         } else {

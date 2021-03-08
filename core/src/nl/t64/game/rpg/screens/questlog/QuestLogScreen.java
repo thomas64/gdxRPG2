@@ -3,20 +3,16 @@ package nl.t64.game.rpg.screens.questlog;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.ScreenUtils;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.audio.AudioEvent;
-import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.screens.ScreenToLoad;
 
 
-public class QuestLogScreen implements ScreenToLoad {
+public class QuestLogScreen extends ScreenToLoad {
 
     private static final float QUESTS_WINDOW_POSITION_X = 63f;
     private static final float QUESTS_WINDOW_POSITION_Y = 50f;
@@ -25,12 +21,6 @@ public class QuestLogScreen implements ScreenToLoad {
     private static final float TASKS_WINDOW_POSITION_X = 18f;
     private static final float TASKS_WINDOW_POSITION_Y = 50f;
     private static final float LABEL_PADDING_BOTTOM = 26f;
-
-    private final Stage stage;
-
-    public QuestLogScreen() {
-        this.stage = new Stage();
-    }
 
     public static void load() {
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
@@ -69,21 +59,6 @@ public class QuestLogScreen implements ScreenToLoad {
     }
 
     @Override
-    public void resize(int width, int height) {
-        // empty
-    }
-
-    @Override
-    public void pause() {
-        // empty
-    }
-
-    @Override
-    public void resume() {
-        // empty
-    }
-
-    @Override
     public void hide() {
         stage.clear();
     }
@@ -93,26 +68,11 @@ public class QuestLogScreen implements ScreenToLoad {
         stage.dispose();
     }
 
-    @Override
-    public void setBackground(Image screenshot, Image parchment) {
-        stage.addActor(screenshot);
-        stage.addActor(parchment);
-    }
-
     private void closeScreen() {
         Gdx.input.setInputProcessor(null);
         Utils.setGamepadInputProcessor(null);
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL);
         fadeParchment();
-    }
-
-    private void fadeParchment() {
-        var screenshot = (Image) stage.getActors().get(0);
-        var parchment = (Image) stage.getActors().get(1);
-        stage.clear();
-        setBackground(screenshot, parchment);
-        parchment.addAction(Actions.sequence(Actions.fadeOut(Constant.FADE_DURATION),
-                                             Actions.run(() -> Utils.getScreenManager().setScreen(ScreenType.WORLD))));
     }
 
     private String createText() {

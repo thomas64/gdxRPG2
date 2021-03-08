@@ -43,7 +43,7 @@ public class ItemSlotTooltip extends BaseTooltip {
     }
 
     public void toggleCompare(ItemSlot itemSlot) {
-        if (itemSlot.hasItem()) {
+        if (itemSlot.hasItem() && !window.hasActions()) {
             boolean isEnabled = Utils.getGameData().isComparingEnabled();
             Utils.getGameData().setComparingEnabled(!isEnabled);
             updateDescription(itemSlot);
@@ -51,14 +51,17 @@ public class ItemSlotTooltip extends BaseTooltip {
     }
 
     public void refresh(ItemSlot itemSlot) {
-        window.clearActions();
-        window.setVisible(false);
-
+        hide();
         if (Utils.getGameData().isTooltipEnabled() && itemSlot.hasItem()) {
             setupTooltip(itemSlot);
             window.addAction(Actions.sequence(Actions.delay(DELAY),
                                               Actions.show()));
         }
+    }
+
+    public void hide() {
+        window.clearActions();
+        window.setVisible(false);
     }
 
     private void setupTooltip(ItemSlot itemSlot) {

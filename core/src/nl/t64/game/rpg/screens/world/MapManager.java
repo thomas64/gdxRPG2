@@ -19,17 +19,22 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 
-public class MapManager extends MapSubject implements ProfileObserver {
+public class MapManager implements ProfileObserver {
 
+    public final MapSubject mapSubject;
     GameMap currentMap;
     private GameMap newMap;
+
+    public MapManager() {
+        this.mapSubject = new MapSubject();
+    }
 
     @Override
     public void onNotifyCreateProfile(ProfileManager profileManager) {
         loadMap(Constant.STARTING_MAP);
         currentMap.setPlayerSpawnLocationForNewLoad(Constant.STARTING_MAP);
         onNotifySaveProfile(profileManager);
-        notifyMapChanged(currentMap);
+        mapSubject.notifyMapChanged(currentMap);
     }
 
     @Override
@@ -42,7 +47,7 @@ public class MapManager extends MapSubject implements ProfileObserver {
         String mapTitle = profileManager.getProperty("mapTitle", String.class);
         loadMap(mapTitle);
         currentMap.setPlayerSpawnLocationForNewLoad(mapTitle);
-        notifyMapChanged(currentMap);
+        mapSubject.notifyMapChanged(currentMap);
     }
 
     public List<Sprite> getLightmapCamera(Camera camera) {
@@ -112,7 +117,7 @@ public class MapManager extends MapSubject implements ProfileObserver {
                   .ifPresent(warpPoint -> {
                       Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_WARP);
                       newMap = new GameMap(warpPoint.toMapName);
-                      notifyMapWillChange(() -> changeMapWithCameraShake(warpPoint, direction), warpPoint.fadeColor);
+                      mapSubject.notifyMapWillChange(() -> changeMapWithCameraShake(warpPoint, direction), warpPoint.fadeColor);
                   });
     }
 
@@ -120,20 +125,20 @@ public class MapManager extends MapSubject implements ProfileObserver {
         currentMap.getPortalOnCollisionBy(playerRect)
                   .ifPresent(portal -> {
                       newMap = new GameMap(portal.toMapName);
-                      notifyMapWillChange(() -> changeMap(portal, direction), portal.fadeColor);
+                      mapSubject.notifyMapWillChange(() -> changeMap(portal, direction), portal.fadeColor);
                   });
     }
 
     private void changeMapWithCameraShake(GameMapPortal portal, Direction direction) {
         changeMap(portal, direction);
-        notifyShakeCamera();
+        mapSubject.notifyShakeCamera();
     }
 
     private void changeMap(GameMapPortal portal, Direction direction) {
         portal.setEnterDirection(direction);
         loadMap(portal.toMapName);
         currentMap.setPlayerSpawnLocation(portal);
-        notifyMapChanged(currentMap);
+        mapSubject.notifyMapChanged(currentMap);
     }
 
     public void collisionEvent(Rectangle playerRect, BiConsumer<String, String> notifyShowConversationDialog) {

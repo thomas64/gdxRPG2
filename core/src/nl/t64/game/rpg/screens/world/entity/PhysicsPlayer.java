@@ -103,7 +103,7 @@ public class PhysicsPlayer extends PhysicsComponent {
 
     private void checkNotes() {
         Utils.getMapManager().getNoteId(getCheckRect())
-             .ifPresent(this::notifyShowNoteDialog);
+             .ifPresent(componentSubject::notifyShowNoteDialog);
     }
 
     private void checkQuestTasks() {
@@ -253,7 +253,7 @@ public class PhysicsPlayer extends PhysicsComponent {
     // todo, een event zal niet altijd alleen een conversation zijn. oplossen wanneer dat moment daar is.
     // oplossen hier en in de hele keten aan methodes die hierop volgen. (MapManager, GameMapEvent, Event)
     private void collisionEvents() {
-        Utils.getMapManager().collisionEvent(boundingBox, super::notifyShowConversationDialog);
+        Utils.getMapManager().collisionEvent(boundingBox, componentSubject::notifyShowConversationDialog);
     }
 
     private void collisionQuestTasks() {

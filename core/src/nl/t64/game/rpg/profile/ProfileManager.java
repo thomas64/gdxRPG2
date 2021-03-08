@@ -13,13 +13,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class ProfileManager extends ProfileSubject {
+public class ProfileManager {
 
     private static final String SAVE_PATH = "saves/";
     private static final String DEFAULT_PROFILE =
             Constant.PLAYER_ID.substring(0, 1).toUpperCase() + Constant.PLAYER_ID.substring(1);
     private static final String SAVEGAME_SUFFIX = ".dat";
 
+    public final ProfileSubject profileSubject = new ProfileSubject();
     private final Json json = new Json();
     private final Map<String, FileHandle> profiles = new HashMap<>();
     private ObjectMap<String, Object> profileProperties = new ObjectMap<>();
@@ -46,7 +47,7 @@ public class ProfileManager extends ProfileSubject {
             newProfileName = DEFAULT_PROFILE;
         }
         profileName = newProfileName;
-        super.notifyCreateProfile(this);
+        profileSubject.notifyCreateProfile(this);
         writeProfileToDisk();
     }
 
@@ -65,7 +66,7 @@ public class ProfileManager extends ProfileSubject {
     }
 
     public void saveProfile() {
-        super.notifySaveProfile(this);
+        profileSubject.notifySaveProfile(this);
         writeProfileToDisk();
     }
 
@@ -78,7 +79,7 @@ public class ProfileManager extends ProfileSubject {
         }
         profileName = selectedProfileName;
         profileProperties = json.fromJson(ObjectMap.class, profiles.get(profileName));
-        super.notifyLoadProfile(this);
+        profileSubject.notifyLoadProfile(this);
     }
 
     public Array<String> removeProfile(String selectedProfileName) {

@@ -19,7 +19,7 @@ public class FindScreen extends LootScreen {
 
     @Override
     void resolveAfterClearingContent() {
-        notifyLootTaken();
+        lootSubject.notifyLootTaken();
     }
 
 }

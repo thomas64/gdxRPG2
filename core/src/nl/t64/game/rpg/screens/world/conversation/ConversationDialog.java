@@ -25,7 +25,7 @@ import nl.t64.game.rpg.components.quest.QuestGraph;
 import nl.t64.game.rpg.constants.Constant;
 
 
-public class ConversationDialog extends ConversationSubject {
+public class ConversationDialog {
 
     private static final String SPRITE_PARCHMENT = "sprites/parchment.png";
     private static final String SPRITE_TRANSPARENT = "sprites/transparent.png";
@@ -40,6 +40,7 @@ public class ConversationDialog extends ConversationSubject {
     private static final float PAD = 25f;
     private static final float ALL_PADS = (PAD * 2f) + Constant.FACE_SIZE + PAD + (PAD * 3f);
 
+    public final ConversationSubject conversationSubject;
     private final Stage stage;
     private final BitmapFont font;
     private final Dialog dialog;
@@ -54,6 +55,7 @@ public class ConversationDialog extends ConversationSubject {
     private ConversationGraph graph;
 
     public ConversationDialog() {
+        this.conversationSubject = new ConversationSubject();
         this.stage = new Stage();
         this.font = Utils.getResourceManager().getTrueTypeAsset(CONVERSATION_FONT, FONT_SIZE);
         this.font.getData().setLineHeight(LINE_HEIGHT);
@@ -202,7 +204,7 @@ public class ConversationDialog extends ConversationSubject {
 
     private void endConversationWithoutSound(String destinationId) {
         graph.setCurrentPhraseId(destinationId);
-        notifyExitConversation();
+        conversationSubject.notifyExitConversation();
     }
 
     private void populateConversationDialog(String phraseId) {
@@ -285,7 +287,7 @@ public class ConversationDialog extends ConversationSubject {
             Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_JOIN);
             heroes.removeHero(faceId);
             party.addHero(hero);
-            notifyHeroJoined();
+            conversationSubject.notifyHeroJoined();
             endConversationWithoutSound(destinationId);
         }
     }
@@ -293,12 +295,12 @@ public class ConversationDialog extends ConversationSubject {
     private void dismissHero(String destinationId) {
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_CONVERSATION_END);
         graph.setCurrentPhraseId(destinationId);
-        notifyHeroDismiss();                                        // ends conversation
+        conversationSubject.notifyHeroDismiss();                                        // ends conversation
     }
 
     private void loadShop(String destinationId) {
         graph.setCurrentPhraseId(destinationId);
-        notifyLoadShop();                                           // ends conversation
+        conversationSubject.notifyLoadShop();                                           // ends conversation
     }
 
     private void saveGame(String destinationId) {
@@ -308,7 +310,7 @@ public class ConversationDialog extends ConversationSubject {
 
     private void acceptQuest() {
         QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
-        quest.handleAccept(super::notifyShowMessageTooltip, this::continueConversation);    // sets new phraseId
+        quest.handleAccept(conversationSubject::notifyShowMessageTooltip, this::continueConversation);  // sets new phraseId
     }
 
     private void knowQuest(String destinationId) {
@@ -319,14 +321,14 @@ public class ConversationDialog extends ConversationSubject {
 
     private void tolerateQuest() {
         QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
-        quest.handleTolerate(super::notifyShowMessageTooltip);
+        quest.handleTolerate(conversationSubject::notifyShowMessageTooltip);
         continueConversation(Constant.PHRASE_ID_QUEST_TOLERATE);
     }
 
     private void receiveItem(String destinationId) {
         graph.setCurrentPhraseId(destinationId);
         QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
-        quest.handleReceive(super::notifyShowReceiveDialog);        // ends conversation, sets possible new phraseId
+        quest.handleReceive(conversationSubject::notifyShowReceiveDialog);  // ends conversation, sets possible new phraseId
     }
 
     private void checkIfLinkedQuestKnown(String destinationId) {
@@ -370,16 +372,16 @@ public class ConversationDialog extends ConversationSubject {
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_REWARD);
         graph.setCurrentPhraseId(Constant.PHRASE_ID_QUEST_UNCLAIMED);
         QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
-        quest.handleReward(super::notifyShowMessageTooltip,
-                           super::notifyShowLevelUpDialog,
-                           super::notifyShowRewardDialog,           // ends conversation, sets possible new phraseId
-                           this::endConversationWithoutSound);      // sets new phraseId
+        quest.handleReward(conversationSubject::notifyShowMessageTooltip,
+                           conversationSubject::notifyShowLevelUpDialog,
+                           conversationSubject::notifyShowRewardDialog, // ends conversation, sets possible new phraseId
+                           this::endConversationWithoutSound);          // sets new phraseId
     }
 
     private void failQuest(String destinationId) {
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_QUEST_FAIL);
         QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
-        quest.handleFail(super::notifyShowMessageTooltip);
+        quest.handleFail(conversationSubject::notifyShowMessageTooltip);
         continueConversation(destinationId);
     }
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-class ProfileSubject {
+public class ProfileSubject {
 
     private final List<ProfileObserver> observers = new ArrayList<>();
 

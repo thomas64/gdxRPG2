@@ -10,8 +10,9 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
 
 
-abstract class GraphicsComponent extends ComponentSubject implements Component {
+abstract class GraphicsComponent implements Component {
 
+    public final ComponentSubject componentSubject = new ComponentSubject();
     float frameTime = 0f;
     float frameDuration;
     TextureRegion currentFrame = null;

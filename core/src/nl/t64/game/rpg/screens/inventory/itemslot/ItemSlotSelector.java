@@ -11,12 +11,14 @@ public class ItemSlotSelector {
 
     private final InventoryContainer itemContainer;
     private final Table itemSlotsTable;
+    private final int slotsInRow;
 
     private ItemSlot itemSlot;
 
-    public ItemSlotSelector(InventoryContainer itemContainer, Table itemSlotsTable) {
+    public ItemSlotSelector(InventoryContainer itemContainer, Table itemSlotsTable, int slotsInRow) {
         this.itemContainer = itemContainer;
         this.itemSlotsTable = itemSlotsTable;
+        this.slotsInRow = slotsInRow;
     }
 
     public ItemSlot getCurrentSlot() {
@@ -38,14 +40,11 @@ public class ItemSlotSelector {
         selectNewSlot(nextIndex - itemSlot.index);
     }
 
-    public void selectNewSlot(int newIndex) {
-        int newSelected = itemSlot.index + newIndex;
-        if (newSelected < 0 || newSelected >= itemContainer.getSize()) {
-            return;
-        }
+    public void selectNewSlot(int deltaIndex) {
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_CURSOR);
         itemSlot.deselect();
-        setNewSelectedByIndex(newSelected);
+        int newSelectedIndex = calculateNewSelectedIndex(deltaIndex);
+        setNewSelectedByIndex(newSelectedIndex);
     }
 
     public void setNewSelectedByIndex(int index) {
@@ -55,6 +54,22 @@ public class ItemSlotSelector {
 
     public void setNewCurrentByIndex(int index) {
         itemSlot = (ItemSlot) itemSlotsTable.getChild(index);
+    }
+
+    private int calculateNewSelectedIndex(int deltaIndex) {
+        int newIndex = itemSlot.index + deltaIndex;
+        if (deltaIndex == 1 && newIndex % slotsInRow == 0) {
+            newIndex -= slotsInRow;
+        } else if (deltaIndex == -1 && (newIndex == -1 || newIndex % slotsInRow == slotsInRow - 1)) {
+            newIndex += slotsInRow;
+        }
+
+        if (newIndex < 0) {
+            newIndex = itemContainer.getSize() + newIndex;
+        } else if (newIndex >= itemContainer.getSize()) {
+            newIndex = newIndex - itemContainer.getSize();
+        }
+        return newIndex;
     }
 
 }

@@ -44,7 +44,7 @@ public class LootSlotsTable {
         this.lootSlots = new Table();
         this.fillLootSlotsTable();
 
-        this.selector = new ItemSlotSelector(this.inventory, this.lootSlots);
+        this.selector = new ItemSlotSelector(this.inventory, this.lootSlots, SLOTS_IN_ROW);
         this.taker = new LootSlotTaker(this.selector);
 
         this.lootSlots.addAction(Actions.sequence(Actions.delay(INPUT_DELAY),

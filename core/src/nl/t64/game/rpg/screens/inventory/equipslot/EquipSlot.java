@@ -89,8 +89,7 @@ class EquipSlot extends ItemSlot {
 
     @Override
     public void decrementAmountBy(int amount) {
-        heroItem.clearInventoryItemFor(filterGroup);
-        refreshSlot();
+        throw new IllegalCallerException("EquipSlot amount cannot be decremented.");
     }
 
     private boolean doesHeroAcceptItem(InventoryImage draggedItem) {

@@ -27,6 +27,13 @@ public class ItemSlotsExchanger {
         this.isSuccessfullyExchanged = false;
     }
 
+    public ItemSlotsExchanger(InventoryImage draggedItem, int amount, ItemSlot sourceSlot, ItemSlot targetSlot) {
+        this.draggedItem = InventoryImage.copyOf(draggedItem, amount);
+        this.sourceSlot = sourceSlot;
+        this.targetSlot = targetSlot;
+        this.isSuccessfullyExchanged = false;
+    }
+
     public void exchange() {
         if (targetSlot.doesAcceptItem(draggedItem)) {
             handleExchange();

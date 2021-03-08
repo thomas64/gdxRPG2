@@ -101,7 +101,7 @@ public abstract class ItemSlot extends Stack {
         putInSlot(draggedItem);
     }
 
-    int getHalfOfAmount() {
+    public int getHalfOfAmount() {
         return (int) Math.floor(getAmount() / 2f);
     }
 

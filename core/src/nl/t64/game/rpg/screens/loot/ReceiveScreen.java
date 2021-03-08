@@ -19,7 +19,7 @@ public class ReceiveScreen extends LootScreen {
 
     @Override
     void resolveAfterClearingContent() {
-        notifyReceiveTaken();
+        lootSubject.notifyReceiveTaken();
     }
 
 }

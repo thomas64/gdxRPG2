@@ -90,7 +90,7 @@ public class PhysicsChest extends PhysicsComponent {
         stringBuilder.append("There's a dangerous trap on this treasure chest.")
                      .append(System.lineSeparator())
                      .append(String.format("You need a level %s Mechanic to disarm the trap.", chest.getTrapLevel()));
-        notifyShowMessageDialog(stringBuilder.toString());
+        componentSubject.notifyShowMessageDialog(stringBuilder.toString());
     }
 
     private void doHandleTrapWith(HeroItem bestMechanic) {
@@ -132,7 +132,7 @@ public class PhysicsChest extends PhysicsComponent {
                          .append(System.lineSeparator());
         }
         stringBuilder.append(String.format("You need a level %s Thief to pick the lock.", chest.getLockLevel()));
-        notifyShowMessageDialog(stringBuilder.toString());
+        componentSubject.notifyShowMessageDialog(stringBuilder.toString());
     }
 
     private void doHandleLockWith(HeroItem bestThief) {
@@ -151,9 +151,9 @@ public class PhysicsChest extends PhysicsComponent {
     private void showFindDialog() {
         final String message = finishStringBuilder();
         if (message.isBlank()) {
-            notifyShowFindDialog(chest, AudioEvent.SE_CHEST);
+            componentSubject.notifyShowFindDialog(chest, AudioEvent.SE_CHEST);
         } else {
-            notifyShowFindDialog(chest, AudioEvent.SE_CHEST, message);
+            componentSubject.notifyShowFindDialog(chest, AudioEvent.SE_CHEST, message);
         }
     }
 

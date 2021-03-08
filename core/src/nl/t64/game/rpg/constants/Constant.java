@@ -37,9 +37,9 @@ public final class Constant {
     public static final String DESCRIPTION_KEY_BUY = "Price";
     public static final String DESCRIPTION_KEY_BUY_PIECE = "Price per piece";
     public static final String DESCRIPTION_KEY_BUY_TOTAL = "Total price";
-    public static final String DESCRIPTION_KEY_SELL = "Value";
-    public static final String DESCRIPTION_KEY_SELL_PIECE = "Value per piece";
-    public static final String DESCRIPTION_KEY_SELL_TOTAL = "Total value";
+    public static final String DESCRIPTION_KEY_SELL = "Sell value";
+    public static final String DESCRIPTION_KEY_SELL_PIECE = "Sell value per piece";
+    public static final String DESCRIPTION_KEY_SELL_TOTAL = "Total sell value";
 
     public static final String PHRASE_ID_QUEST_ACCEPT = "1000";
     public static final String PHRASE_ID_QUEST_TOLERATE = "1500";

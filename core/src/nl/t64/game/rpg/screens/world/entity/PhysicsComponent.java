@@ -6,8 +6,9 @@ import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.constants.Constant;
 
 
-abstract class PhysicsComponent extends ComponentSubject implements Component {
+abstract class PhysicsComponent implements Component {
 
+    public final ComponentSubject componentSubject;
     EntityState state;
     Direction direction;
     float velocity;
@@ -18,6 +19,7 @@ abstract class PhysicsComponent extends ComponentSubject implements Component {
     float boundingBoxHeightPercentage;
 
     PhysicsComponent() {
+        this.componentSubject = new ComponentSubject();
         this.direction = null;
         this.boundingBox = new Rectangle();
         this.oldPosition = new Vector2();

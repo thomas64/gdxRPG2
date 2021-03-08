@@ -89,15 +89,7 @@ public class InventorySlot extends ItemSlot {
 
     @Override
     public void decrementAmountBy(int amount) {
-        if (amount == 0) {
-            // Do nothing, because this only happens when decremented by half when there are only 2 items left.
-            // 2 minus start decrement is 1. 1 divided by 2 is 0.
-            // So it is already halved and doesn't need be decremented again.
-        } else if (getAmount() > 1) {
-            inventory.decrementAmountAt(index, amount);
-        } else {
-            inventory.clearItemAt(index);
-        }
+        inventory.decrementAmountAt(index, amount);
         refreshSlot();
     }
 

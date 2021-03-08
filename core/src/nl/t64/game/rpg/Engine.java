@@ -44,8 +44,8 @@ public class Engine extends Game {
 
     @Override
     public void create() {
-        profileManager.addObserver(gameData);
-        profileManager.addObserver(mapManager);
+        profileManager.profileSubject.addObserver(gameData);
+        profileManager.profileSubject.addObserver(mapManager);
 
         Controllers.addListener(gamepadMapping.controllerToInputAdapter);
 

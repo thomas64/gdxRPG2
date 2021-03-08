@@ -9,22 +9,17 @@ import nl.t64.game.rpg.screens.inventory.BaseTable;
 
 class MerchantTable extends BaseTable {
 
-    private static final float TABLE_WIDTH = 594f;
+    private static final float TABLE_WIDTH = 390f;
     private static final float TABLE_HEIGHT = 501f;
     private static final float PADDING = 20f;
     private static final String TEXT = """
-            Good day sir, and welcome to my shop. On the left you will find my wares, and on the right is your own \
-            current inventory.
-
-            To buy something, simply drag an item from the left box to the right box. Payment will happen immediately.
-            Press Shift while dragging, and you will purchase the whole stack. Press Ctrl while dragging, and you will \
-            purchase only half of the stack. When you press nothing, you will purchase only 1 item from the stack.
-            You can also double-click on an item in the left box. That way you'll also purchase 1 item. Combine a \
-            double-click with Shift or Ctrl, and the same will happen as with dragging.
-
-            But perhaps you are here to sell some of your items. That is also possible at my shop. You'll just have to \
-            drag from the right box to the left box. Of course Shift and Ctrl also work for selling. Remember, payment \
-            will happen immediately.""";
+            Good day sir, and welcome to my shop. 
+            
+            On the left you will find my wares, and on the right is your inventory.
+            
+            You can buy or sell 1 item, half a stack, or the full stack at once. 
+            
+            Payment will happen immediately.""";
 
     MerchantTable(String npcId) {
         this.table.defaults().reset();

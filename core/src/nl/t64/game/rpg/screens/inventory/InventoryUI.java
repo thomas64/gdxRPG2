@@ -3,16 +3,16 @@ package nl.t64.game.rpg.screens.inventory;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.screens.ScreenUI;
 import nl.t64.game.rpg.screens.inventory.equipslot.EquipSlotsTables;
 import nl.t64.game.rpg.screens.inventory.inventoryslot.InventorySlotsTable;
-import nl.t64.game.rpg.screens.inventory.itemslot.ItemSlot;
 import nl.t64.game.rpg.screens.inventory.tooltip.ItemSlotTooltip;
 import nl.t64.game.rpg.screens.inventory.tooltip.PersonalityTooltip;
 
 import java.util.List;
 
 
-class InventoryUI implements ScreenUI {
+class InventoryUI extends ScreenUI {
 
     private static final float SPELLS_WINDOW_POSITION_X = 1483f;
     private static final float SPELLS_WINDOW_POSITION_Y = 50f;
@@ -39,116 +39,88 @@ class InventoryUI implements ScreenUI {
 
     private final Window spellsWindow;
     private final Window inventoryWindow;
-    private final Window equipWindow;
     private final Window skillsWindow;
     private final Window statsWindow;
     private final Window calcsWindow;
     private final Window heroesWindow;
 
     private final SpellsTable spellsTable;
-    private final InventorySlotsTable inventorySlotsTable;
-    private final EquipSlotsTables equipSlotsTables;
     private final SkillsTable skillsTable;
     private final StatsTable statsTable;
     private final CalcsTable calcsTable;
-    private final HeroesTable heroesTable;
-
-    private final List<WindowSelector> tableList;
 
     private final ItemSlotTooltip itemSlotTooltip;
     private final PersonalityTooltip personalityTooltip;
 
-    private int selectedTableIndex;
-
-
-    InventoryUI(Stage stage) {
-        this.itemSlotTooltip = new ItemSlotTooltip();
-        this.personalityTooltip = new PersonalityTooltip();
-
-        this.spellsTable = new SpellsTable(this.personalityTooltip);
-        this.spellsWindow = Utils.createDefaultWindow(TITLE_SPELLS, this.spellsTable.container);
-
-        this.inventorySlotsTable = new InventorySlotsTable(this.itemSlotTooltip);
-        this.inventoryWindow = Utils.createDefaultWindow(TITLE_GLOBAL, this.inventorySlotsTable.container);
-
-        this.equipSlotsTables = new EquipSlotsTables(this.itemSlotTooltip);
-        this.equipWindow = Utils.createDefaultWindow(TITLE_PERSONAL, this.equipSlotsTables.getCurrentEquipTable());
-
-        this.skillsTable = new SkillsTable(this.personalityTooltip);
-        this.skillsWindow = Utils.createDefaultWindow(TITLE_SKILLS, this.skillsTable.container);
-
-        this.statsTable = new StatsTable(this.personalityTooltip);
-        this.statsWindow = Utils.createDefaultWindow(TITLE_STATS, this.statsTable.table);
-
-        this.calcsTable = new CalcsTable();
-        this.calcsWindow = Utils.createDefaultWindow(TITLE_CALCS, this.calcsTable.table);
-
-        this.heroesTable = new HeroesTable();
-        this.heroesWindow = Utils.createDefaultWindow(TITLE_HEROES, this.heroesTable.heroes);
+    private InventoryUI(Stage stage, ItemSlotTooltip itemSlotTooltip, PersonalityTooltip personalityTooltip,
+                        Window spellsWindow, Window inventoryWindow, Window equipWindow, Window skillsWindow,
+                        Window statsWindow, Window calcsWindow, Window heroesWindow,
+                        SpellsTable spellsTable, InventorySlotsTable inventorySlotsTable, EquipSlotsTables equipSlotsTables,
+                        SkillsTable skillsTable, StatsTable statsTable, CalcsTable calcsTable, HeroesTable heroesTable,
+                        List<WindowSelector> tableList, int selectedTableIndex) {
+        super(equipWindow, equipSlotsTables, inventorySlotsTable, heroesTable, tableList, selectedTableIndex);
+        this.itemSlotTooltip = itemSlotTooltip;
+        this.personalityTooltip = personalityTooltip;
+        this.spellsWindow = spellsWindow;
+        this.inventoryWindow = inventoryWindow;
+        this.skillsWindow = skillsWindow;
+        this.statsWindow = statsWindow;
+        this.calcsWindow = calcsWindow;
+        this.heroesWindow = heroesWindow;
+        this.spellsTable = spellsTable;
+        this.skillsTable = skillsTable;
+        this.statsTable = statsTable;
+        this.calcsTable = calcsTable;
 
         this.setWindowPositions();
         this.addToStage(stage);
-
-        this.tableList = List.of(this.equipSlotsTables, this.inventorySlotsTable);
-        this.selectedTableIndex = 1;
         this.setFocusOnSelectedTable();
+        this.getSelectedTable().selectCurrentSlot();
     }
 
-    @Override
-    public EquipSlotsTables getEquipSlotsTables() {
-        return equipSlotsTables;
+    static InventoryUI create(Stage stage) {
+
+        var itemSlotTooltip = new ItemSlotTooltip();
+        var personalityTooltip = new PersonalityTooltip();
+
+        var spellsTable = new SpellsTable(personalityTooltip);
+        var spellsWindow = Utils.createDefaultWindow(TITLE_SPELLS, spellsTable.container);
+
+        var inventorySlotsTable = new InventorySlotsTable(itemSlotTooltip);
+        var inventoryWindow = Utils.createDefaultWindow(TITLE_GLOBAL, inventorySlotsTable.container);
+
+        var equipSlotsTables = new EquipSlotsTables(itemSlotTooltip);
+        var equipWindow = Utils.createDefaultWindow(TITLE_PERSONAL, equipSlotsTables.getCurrentEquipTable());
+
+        var skillsTable = new SkillsTable(personalityTooltip);
+        var skillsWindow = Utils.createDefaultWindow(TITLE_SKILLS, skillsTable.container);
+
+        var statsTable = new StatsTable(personalityTooltip);
+        var statsWindow = Utils.createDefaultWindow(TITLE_STATS, statsTable.table);
+
+        var calcsTable = new CalcsTable();
+        var calcsWindow = Utils.createDefaultWindow(TITLE_CALCS, calcsTable.table);
+
+        var heroesTable = new HeroesTable();
+        var heroesWindow = Utils.createDefaultWindow(TITLE_HEROES, heroesTable.heroes);
+
+        List<WindowSelector> tableList = List.of(equipSlotsTables, inventorySlotsTable);
+        int selectedTableIndex = 1;
+
+        return new InventoryUI(stage, itemSlotTooltip, personalityTooltip,
+                               spellsWindow, inventoryWindow, equipWindow, skillsWindow,
+                               statsWindow, calcsWindow, heroesWindow,
+                               spellsTable, inventorySlotsTable, equipSlotsTables, skillsTable,
+                               statsTable, calcsTable, heroesTable,
+                               tableList, selectedTableIndex);
     }
 
-    @Override
-    public InventorySlotsTable getInventorySlotsTable() {
-        return inventorySlotsTable;
-    }
-
-    void updateSelectedHero(Runnable updateHero) {
-        getSelectedTable().deselectCurrentSlot();
-
-        int oldCurrentIndex = equipSlotsTables.getIndexOfCurrentSlot();
-        equipWindow.getChild(1).remove();
-        updateHero.run();
-        equipWindow.add(equipSlotsTables.getCurrentEquipTable());
-        equipSlotsTables.setCurrentByIndex(oldCurrentIndex);
-
-        setFocusOnSelectedTable();
-        getSelectedTable().selectCurrentSlot();
-    }
-
-    void selectPreviousTable() {
-        getSelectedTable().deselectCurrentSlot();
-        selectedTableIndex--;
-        if (selectedTableIndex < 0) {
-            selectedTableIndex = tableList.size() - 1;
-        }
-        setFocusOnSelectedTable();
-        getSelectedTable().selectCurrentSlot();
-    }
-
-    void selectNextTable() {
-        getSelectedTable().deselectCurrentSlot();
-        selectedTableIndex++;
-        if (selectedTableIndex >= tableList.size()) {
-            selectedTableIndex = 0;
-        }
-        setFocusOnSelectedTable();
-        getSelectedTable().selectCurrentSlot();
+    void doAction() {
+        getSelectedTable().doAction();
     }
 
     void reloadInventory() {
         inventorySlotsTable.clearAndFill();
-    }
-
-    void toggleTooltip() {
-        ItemSlot currentSlot = getSelectedTable().getCurrentSlot();
-        itemSlotTooltip.toggle(currentSlot);
-    }
-
-    void toggleCompare() {
-        ItemSlot currentSlot = getSelectedTable().getCurrentSlot();
-        itemSlotTooltip.toggleCompare(currentSlot);
     }
 
     void update() {
@@ -163,23 +135,6 @@ class InventoryUI implements ScreenUI {
         statsWindow.pack();
         calcsWindow.pack();
         heroesWindow.pack();
-    }
-
-    void unloadAssets() {
-        heroesTable.disposePixmapTextures();
-    }
-
-    private void setFocusOnSelectedTable() {
-        getSelectedTable().setKeyboardFocus(getStage());
-        getStage().draw();
-    }
-
-    private WindowSelector getSelectedTable() {
-        return tableList.get(selectedTableIndex);
-    }
-
-    private Stage getStage() {
-        return equipWindow.getStage();
     }
 
     private void setWindowPositions() {

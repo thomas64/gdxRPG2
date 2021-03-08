@@ -63,7 +63,7 @@ public class PhysicsNpc extends PhysicsComponent {
         npcCharacter.send(new PositionEvent(currentPosition));
         if (isSelected) {
             isSelected = false;
-            notifyShowConversationDialog(conversationId, npcCharacter);
+            componentSubject.notifyShowConversationDialog(conversationId, npcCharacter);
         }
     }
 

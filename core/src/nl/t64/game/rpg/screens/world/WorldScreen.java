@@ -19,8 +19,8 @@ import nl.t64.game.rpg.components.quest.QuestGraph;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.GameState;
 import nl.t64.game.rpg.constants.ScreenType;
+import nl.t64.game.rpg.screens.inventory.InventoryScreen;
 import nl.t64.game.rpg.screens.inventory.PartyObserver;
-import nl.t64.game.rpg.screens.inventory.PartySubject;
 import nl.t64.game.rpg.screens.inventory.tooltip.MessageTooltip;
 import nl.t64.game.rpg.screens.loot.*;
 import nl.t64.game.rpg.screens.shop.ShopScreen;
@@ -93,17 +93,17 @@ public class WorldScreen implements Screen,
     }
 
     private void setObservers() {
-        conversationDialog.addObserver(this);
-        Utils.getMapManager().addObserver(this);
+        conversationDialog.conversationSubject.addObserver(this);
+        Utils.getMapManager().mapSubject.addObserver(this);
 
-        final var inventoryScreen = (PartySubject) Utils.getScreenManager().getScreen(ScreenType.INVENTORY);
-        inventoryScreen.addObserver(this);
-        final var findScreen = (LootSubject) Utils.getScreenManager().getScreen(ScreenType.FIND);
-        findScreen.addObserver(this);
-        final var rewardScreen = (LootSubject) Utils.getScreenManager().getScreen(ScreenType.REWARD);
-        rewardScreen.addObserver(this);
-        final var receiveScreen = (LootSubject) Utils.getScreenManager().getScreen(ScreenType.RECEIVE);
-        receiveScreen.addObserver(this);
+        var inventoryScreen = (InventoryScreen) Utils.getScreenManager().getScreen(ScreenType.INVENTORY);
+        inventoryScreen.partySubject.addObserver(this);
+        var findScreen = (FindScreen) Utils.getScreenManager().getScreen(ScreenType.FIND);
+        findScreen.lootSubject.addObserver(this);
+        var rewardScreen = (RewardScreen) Utils.getScreenManager().getScreen(ScreenType.REWARD);
+        rewardScreen.lootSubject.addObserver(this);
+        var receiveScreen = (ReceiveScreen) Utils.getScreenManager().getScreen(ScreenType.RECEIVE);
+        receiveScreen.lootSubject.addObserver(this);
     }
 
     // MapObserver /////////////////////////////////////////////////////////////////////////////////////////////////////

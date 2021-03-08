@@ -7,11 +7,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import lombok.AllArgsConstructor;
 import nl.t64.game.rpg.constants.Constant;
 
+import java.util.Arrays;
+
 
 @AllArgsConstructor
 class InventoryScreenListener extends InputListener {
 
     private final Runnable closeScreenFunction;
+    private final Runnable actionFunction;
     private final Runnable previousHeroFunction;
     private final Runnable nextHeroFunction;
     private final Runnable previousTableFunction;
@@ -25,13 +28,15 @@ class InventoryScreenListener extends InputListener {
 
     @Override
     public boolean keyDown(InputEvent event, int keycode) {
-        if (event.getStage().getKeyboardFocus() instanceof Dialog) {
+        if (Arrays.stream(event.getStage().getActors().items).anyMatch(Dialog.class::isInstance)) {
             return true;
         }
         switch (keycode) {
             case Constant.KEYCODE_RIGHT,
                     Input.Keys.I,
                     Input.Keys.ESCAPE -> closeScreenFunction.run();
+            case Constant.KEYCODE_BOTTOM,
+                    Input.Keys.A -> actionFunction.run();
             case Constant.KEYCODE_L1,
                     Input.Keys.Q -> previousHeroFunction.run();
             case Constant.KEYCODE_R1,

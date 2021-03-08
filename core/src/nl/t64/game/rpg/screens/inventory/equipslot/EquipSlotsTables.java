@@ -36,6 +36,11 @@ public class EquipSlotsTables implements WindowSelector {
     }
 
     @Override
+    public ItemSlotTooltip getCurrentTooltip() {
+        return tooltip;
+    }
+
+    @Override
     public void deselectCurrentSlot() {
         getCurrentEquipSlots().deselectCurrentSlot();
     }
@@ -43,6 +48,16 @@ public class EquipSlotsTables implements WindowSelector {
     @Override
     public void selectCurrentSlot() {
         getCurrentEquipSlots().selectCurrentSlot();
+    }
+
+    @Override
+    public void doAction() {
+        getCurrentEquipSlots().dequipItem();
+    }
+
+    @Override
+    public void hideTooltip() {
+        tooltip.hide();
     }
 
     public int getIndexOfCurrentSlot() {

@@ -2,9 +2,6 @@ package nl.t64.game.rpg.screens.inventory;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.ScreenUtils;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioCommand;
@@ -13,24 +10,24 @@ import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.components.party.InventoryContainer;
 import nl.t64.game.rpg.components.party.InventoryDatabase;
 import nl.t64.game.rpg.components.party.PartyContainer;
-import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.screens.ScreenToLoad;
+import nl.t64.game.rpg.screens.ScreenUI;
 import nl.t64.game.rpg.screens.inventory.messagedialog.MessageDialog;
 import nl.t64.game.rpg.screens.world.conversation.ConversationDialog;
 import nl.t64.game.rpg.screens.world.conversation.ConversationObserver;
 
 
-public class InventoryScreen extends PartySubject implements ScreenToLoad, ConversationObserver {
+public class InventoryScreen extends ScreenToLoad implements ConversationObserver {
 
-    private final Stage stage;
+    public final PartySubject partySubject;
     private final ConversationDialog conversationDialog;
-    InventoryUI inventoryUI;
+    private InventoryUI inventoryUI;
 
     public InventoryScreen() {
-        this.stage = new Stage();
+        this.partySubject = new PartySubject();
         this.conversationDialog = new ConversationDialog();
-        this.conversationDialog.addObserver(this);
+        this.conversationDialog.conversationSubject.addObserver(this);
     }
 
     public static void load() {
@@ -51,7 +48,12 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Conve
         selectPreviousHero();
         Utils.getGameData().getParty().removeHero(heroToDismiss);
         hideConversationDialog();
-        notifyHeroDismissed();
+        partySubject.notifyHeroDismissed();
+    }
+
+    @Override
+    public ScreenUI getScreenUI() {
+        return inventoryUI;
     }
 
     @Override
@@ -59,6 +61,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Conve
         Gdx.input.setInputProcessor(stage);
         Utils.setGamepadInputProcessor(stage);
         stage.addListener(new InventoryScreenListener(this::closeScreen,
+                                                      this::doAction,
                                                       this::selectPreviousHero,
                                                       this::selectNextHero,
                                                       this::selectPreviousTable,
@@ -69,7 +72,7 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Conve
                                                       this::toggleCompare,
                                                       this::cheatAddGold,
                                                       this::cheatRemoveGold));
-        inventoryUI = new InventoryUI(stage);
+        inventoryUI = InventoryUI.create(stage);
         new ButtonLabels(stage).create();
     }
 
@@ -80,21 +83,6 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Conve
         stage.draw();
         inventoryUI.update();
         conversationDialog.update(dt);
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        // empty
-    }
-
-    @Override
-    public void pause() {
-        // empty
-    }
-
-    @Override
-    public void resume() {
-        // empty
     }
 
     @Override
@@ -109,12 +97,6 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Conve
         conversationDialog.dispose();
     }
 
-    @Override
-    public void setBackground(Image screenshot, Image parchment) {
-        stage.addActor(screenshot);
-        stage.addActor(parchment);
-    }
-
     private void closeScreen() {
         Gdx.input.setInputProcessor(null);
         Utils.setGamepadInputProcessor(null);
@@ -122,13 +104,8 @@ public class InventoryScreen extends PartySubject implements ScreenToLoad, Conve
         fadeParchment();
     }
 
-    private void fadeParchment() {
-        var screenshot = (Image) stage.getActors().get(0);
-        var parchment = (Image) stage.getActors().get(1);
-        stage.clear();
-        setBackground(screenshot, parchment);
-        parchment.addAction(Actions.sequence(Actions.fadeOut(Constant.FADE_DURATION),
-                                             Actions.run(() -> Utils.getScreenManager().setScreen(ScreenType.WORLD))));
+    private void doAction() {
+        inventoryUI.doAction();
     }
 
     private void selectPreviousHero() {

@@ -81,7 +81,7 @@ public class PhysicsDoor extends PhysicsComponent {
             stringBuilder.append("This door is locked.");
             stringBuilder.append(System.lineSeparator());
             stringBuilder.append("You need a key to open the door.");
-            notifyShowMessageDialog(stringBuilder.toString());
+            componentSubject.notifyShowMessageDialog(stringBuilder.toString());
             return true;
         }
     }
