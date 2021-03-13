@@ -49,10 +49,6 @@ public class InventoryImage extends Image {
         return inventoryItem.getAmount();
     }
 
-    void setAmount(int amount) {
-        inventoryItem.setAmount(amount);
-    }
-
     public List<InventoryDescription> getComparelessDescription(int totalMerchant) {
         final var descriptionCreator = new DescriptionCreator(inventoryItem, totalMerchant);
         return descriptionCreator.createItemDescription();

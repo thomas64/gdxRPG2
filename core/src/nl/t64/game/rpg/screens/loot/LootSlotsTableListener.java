@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import lombok.AllArgsConstructor;
 import nl.t64.game.rpg.constants.Constant;
 
-import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 
 @AllArgsConstructor
@@ -15,7 +15,7 @@ class LootSlotsTableListener extends InputListener {
     private final Runnable closeScreenFunction;
     private final Runnable toggleTooltip;
     private final Runnable takeItemFunction;
-    private final Consumer<Integer> selectNewSlot;
+    private final IntConsumer selectNewSlot;
     private final int slotsInRow;
 
     @Override

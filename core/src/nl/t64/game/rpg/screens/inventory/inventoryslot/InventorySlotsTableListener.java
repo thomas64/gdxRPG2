@@ -5,13 +5,13 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import lombok.AllArgsConstructor;
 
-import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 
 @AllArgsConstructor
 public class InventorySlotsTableListener extends InputListener {
 
-    private final Consumer<Integer> selectNewSlot;
+    private final IntConsumer selectNewSlot;
     private final int slotsInRow;
 
     @Override

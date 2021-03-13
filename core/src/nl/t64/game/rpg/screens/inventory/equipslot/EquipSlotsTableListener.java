@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import lombok.AllArgsConstructor;
 
-import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 
 @AllArgsConstructor
@@ -13,7 +13,7 @@ public class EquipSlotsTableListener extends InputListener {
 
     static final int SIDE_STEP = 10;
 
-    private final Consumer<Integer> trySelectNewSlot;
+    private final IntConsumer trySelectNewSlot;
 
     @Override
     public boolean keyDown(InputEvent event, int keycode) {

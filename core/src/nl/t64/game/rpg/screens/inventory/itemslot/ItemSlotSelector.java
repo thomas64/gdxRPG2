@@ -37,7 +37,8 @@ public class ItemSlotSelector {
         int nextIndex = itemContainer.findNextFilledSlotFrom(itemSlot.index)
                                      .orElseGet(() -> itemContainer.findFirstFilledSlot()
                                                                    .orElse(itemSlot.index));
-        selectNewSlot(nextIndex - itemSlot.index);
+        itemSlot.deselect();
+        setNewSelectedByIndex(nextIndex);
     }
 
     public void selectNewSlot(int deltaIndex) {
