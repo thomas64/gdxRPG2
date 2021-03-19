@@ -66,8 +66,8 @@ public class WorldScreen implements Screen,
     private final Entity player;
     @Getter
     private List<Entity> partyMembers;
-    private List<Entity> npcCharacters;
-    private Entity currentNpcCharacter;
+    private List<Entity> npcEntities;
+    private Entity currentNpcEntity;
     private List<Entity> lootList;
     private List<Entity> doorList;
 
@@ -79,7 +79,7 @@ public class WorldScreen implements Screen,
         this.multiplexer.addProcessor(new WorldScreenListener(this::doBeforeLoadScreen, this::showHidePartyWindow));
         this.player = new Entity(Constant.PLAYER_ID,
                                  new InputPlayer(this.multiplexer), new PhysicsPlayer(), new GraphicsPlayer());
-        this.npcCharacters = new ArrayList<>(0);
+        this.npcEntities = new ArrayList<>(0);
         this.lootList = new ArrayList<>(0);
         this.doorList = new ArrayList<>(0);
         this.shapeRenderer = new ShapeRenderer();
@@ -118,7 +118,7 @@ public class WorldScreen implements Screen,
         mapRenderer.setMap(currentMap.tiledMap);
         camera.setNewMapSize(currentMap.getPixelWidth(), currentMap.getPixelHeight());
         player.send(new LoadEntityEvent(currentMap.playerSpawnDirection, currentMap.playerSpawnLocation));
-        npcCharacters = new NpcCharactersLoader(currentMap).createNpcs();
+        npcEntities = new NpcEntitiesLoader(currentMap).createNpcs();
         lootList = new LootLoader(currentMap).createLoot();
         doorList = new DoorLoader(currentMap).createDoors();
         partyMembers = new PartyMembersLoader(player).loadPartyMembers();
@@ -133,17 +133,17 @@ public class WorldScreen implements Screen,
     // ComponentObserver ///////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public void onNotifyShowConversationDialog(String conversationId, Entity npcCharacter) {
-        this.currentNpcCharacter = npcCharacter;
+    public void onNotifyShowConversationDialog(String conversationId, Entity npcEntity) {
+        this.currentNpcEntity = npcEntity;
         player.resetInput();
-        conversationDialog.loadConversation(conversationId, npcCharacter.getId());
+        conversationDialog.loadConversation(conversationId, npcEntity.getId());
         conversationDialog.show();
     }
 
     @Override
-    public void onNotifyShowConversationDialog(String conversationId, String characterId) {
+    public void onNotifyShowConversationDialog(String conversationId, String entityId) {
         player.resetInput();
-        conversationDialog.loadConversation(conversationId, characterId);
+        conversationDialog.loadConversation(conversationId, entityId);
         conversationDialog.show();
     }
 
@@ -190,7 +190,7 @@ public class WorldScreen implements Screen,
 
     @Override
     public void onNotifyRewardTaken() {
-        String conversationId = currentNpcCharacter.getConversationId();
+        String conversationId = currentNpcEntity.getConversationId();
         QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
         ConversationGraph conversation = Utils.getGameData().getConversations().getConversationById(conversationId);
         quest.finish();
@@ -199,7 +199,7 @@ public class WorldScreen implements Screen,
 
     @Override
     public void onNotifyReceiveTaken() {
-        String conversationId = currentNpcCharacter.getConversationId();
+        String conversationId = currentNpcEntity.getConversationId();
         QuestGraph quest = Utils.getGameData().getQuests().getQuestById(conversationId);
         ConversationGraph conversation = Utils.getGameData().getConversations().getConversationById(conversationId);
         quest.accept(conversationDialog.conversationObservers);
@@ -230,7 +230,7 @@ public class WorldScreen implements Screen,
         conversationDialog.hide();
         show();
         doBeforeLoadScreen();
-        ShopScreen.load(currentNpcCharacter.getId(), currentNpcCharacter.getConversationId());
+        ShopScreen.load(currentNpcEntity.getId(), currentNpcEntity.getConversationId());
     }
 
     @Override
@@ -249,10 +249,10 @@ public class WorldScreen implements Screen,
 
     @Override
     public void onNotifyHeroJoined() {
-        Utils.getBrokerManager().blockObservers.removeObserver(currentNpcCharacter);
-        npcCharacters = npcCharacters.stream()
-                                     .filter(npcCharacter -> !npcCharacter.equals(currentNpcCharacter))
-                                     .collect(Collectors.toUnmodifiableList());
+        Utils.getBrokerManager().blockObservers.removeObserver(currentNpcEntity);
+        npcEntities = npcEntities.stream()
+                                 .filter(npcEntity -> !npcEntity.equals(currentNpcEntity))
+                                 .collect(Collectors.toUnmodifiableList());
         partyMembers = new PartyMembersLoader(player).loadPartyMembers();
     }
 
@@ -273,7 +273,7 @@ public class WorldScreen implements Screen,
         }
 
         Utils.getMapManager().updateQuestLayers();
-        updateCharacters(dt);
+        updateEntities(dt);
         updateCameraPosition();
         mapRenderer.renderAll(player.getPosition(), this::renderEntities);
         renderGrid();
@@ -290,13 +290,13 @@ public class WorldScreen implements Screen,
         stage.draw();
     }
 
-    private void updateCharacters(float dt) {
+    private void updateEntities(float dt) {
         if (!isInTransition()) {
             player.update(dt);
         }
         doorList.forEach(door -> door.update(dt));
         lootList.forEach(loot -> loot.update(dt));
-        npcCharacters.forEach(npcCharacter -> npcCharacter.update(dt));
+        npcEntities.forEach(npcEntity -> npcEntity.update(dt));
         partyMembers.forEach(partyMember -> partyMember.send(new PathUpdateEvent(getPathOf(partyMember))));
         partyMembers.forEach(partyMember -> partyMember.update(dt));
     }
@@ -313,12 +313,12 @@ public class WorldScreen implements Screen,
                 .filter(door -> door.getPosition().y >= player.getPosition().y)
                 .forEach(door -> door.render(mapRenderer.getBatch(), shapeRenderer));
 
-        List<Entity> allCharacters = new ArrayList<>();
-        allCharacters.addAll(Utils.reverseList(partyMembers));
-        allCharacters.addAll(npcCharacters);
-        allCharacters.add(player);
-        allCharacters.sort(Comparator.comparingDouble((Entity character) -> character.getPosition().y).reversed());
-        allCharacters.forEach(character -> character.render(mapRenderer.getBatch(), shapeRenderer));
+        List<Entity> allEntities = new ArrayList<>();
+        allEntities.addAll(Utils.reverseList(partyMembers));
+        allEntities.addAll(npcEntities);
+        allEntities.add(player);
+        allEntities.sort(Comparator.comparingDouble((Entity entity) -> entity.getPosition().y).reversed());
+        allEntities.forEach(entity -> entity.render(mapRenderer.getBatch(), shapeRenderer));
 
         doorList.stream()
                 .filter(door -> door.getPosition().y < player.getPosition().y)
@@ -425,7 +425,7 @@ public class WorldScreen implements Screen,
             player.debug(shapeRenderer);
             doorList.forEach(door -> door.debug(shapeRenderer));
             lootList.forEach(loot -> loot.debug(shapeRenderer));
-            npcCharacters.forEach(npcCharacter -> npcCharacter.debug(shapeRenderer));
+            npcEntities.forEach(npcEntity -> npcEntity.debug(shapeRenderer));
             partyMembers.forEach(partyMember -> partyMember.debug(shapeRenderer));
             Utils.getMapManager().currentMap.debug(shapeRenderer);
             shapeRenderer.end();

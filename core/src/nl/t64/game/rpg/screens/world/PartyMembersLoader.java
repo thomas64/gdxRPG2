@@ -24,7 +24,7 @@ class PartyMembersLoader {
         Utils.getGameData().getParty().getAllHeroes()
              .stream()
              .filter(this::isHeroNotPlayer)
-             .map(this::createCharacter)
+             .map(this::createEntity)
              .forEach(this::addToPartyMembers);
 
         return List.copyOf(partyMembers);
@@ -34,7 +34,7 @@ class PartyMembersLoader {
         return !hero.isPlayer();
     }
 
-    private Entity createCharacter(HeroItem hero) {
+    private Entity createEntity(HeroItem hero) {
         String heroId = hero.getId();
         return new Entity(heroId, new InputPartyMember(), new PhysicsPartyMember(), new GraphicsPartyMember(heroId));
     }

@@ -92,9 +92,9 @@ public class ConversationDialog {
         stage.draw();
     }
 
-    public void loadConversation(String conversationId, String characterId) {
+    public void loadConversation(String conversationId, String entityId) {
         this.conversationId = conversationId;
-        this.faceId = characterId;
+        this.faceId = entityId;
         this.graph = Utils.getGameData().getConversations().getConversationById(conversationId);
         fillDialogForConversation();
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_CONVERSATION_START);

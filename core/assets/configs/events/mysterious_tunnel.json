@@ -5,6 +5,6 @@
       "quest0007": "UNKNOWN"
     },
     "conversationId": "event0001",
-    "characterId"   : "man02"
+    "entityId": "man02"
   }
 }

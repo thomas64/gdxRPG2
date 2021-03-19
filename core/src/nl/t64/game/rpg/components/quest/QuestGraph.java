@@ -22,7 +22,7 @@ public class QuestGraph {
     QuestState currentState;
     boolean isFailed;
     private String title;
-    private String character;
+    private String entityId;
     private String summary;
     private String linkedWith;
     private Map<String, QuestTask> tasks;

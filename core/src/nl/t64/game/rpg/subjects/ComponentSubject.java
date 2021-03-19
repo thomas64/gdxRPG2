@@ -24,12 +24,12 @@ public class ComponentSubject {
         observers.clear();
     }
 
-    public void notifyShowConversationDialog(String conversationId, Entity npcCharacter) {
-        observers.forEach(observer -> observer.onNotifyShowConversationDialog(conversationId, npcCharacter));
+    public void notifyShowConversationDialog(String conversationId, Entity npcEntity) {
+        observers.forEach(observer -> observer.onNotifyShowConversationDialog(conversationId, npcEntity));
     }
 
-    public void notifyShowConversationDialog(String conversationId, String characterId) {
-        observers.forEach(observer -> observer.onNotifyShowConversationDialog(conversationId, characterId));
+    public void notifyShowConversationDialog(String conversationId, String entityId) {
+        observers.forEach(observer -> observer.onNotifyShowConversationDialog(conversationId, entityId));
     }
 
     public void notifyShowNoteDialog(String noteId) {

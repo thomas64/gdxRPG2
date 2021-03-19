@@ -1,9 +1,9 @@
 {
   "quest0001": {
-    "title"    : "Herbs for boy",
-    "character": "boy01",
-    "summary"  : "Johnny's mother is ill and he need to find 3 herbs in the woods for his mother to get better.",
-    "tasks"    : {
+    "title"   : "Herbs for boy",
+    "entityId": "boy01",
+    "summary" : "Johnny's mother is ill and he need to find 3 herbs in the woods for his mother to get better.",
+    "tasks"   : {
       "1": {
         "taskPhrase": "Collect 3 herbs",
         "type"      : "FETCH",
@@ -21,10 +21,10 @@
     }
   },
   "quest0003": {
-    "title"    : "Secret Gypsy chamber",
-    "character": "youngwoman02",
-    "summary"  : "Angela heard about a special chamber and want to know if the rumors are true.",
-    "tasks"    : {
+    "title"   : "Secret Gypsy chamber",
+    "entityId": "youngwoman02",
+    "summary" : "Angela heard about a special chamber and want to know if the rumors are true.",
+    "tasks"   : {
       "1": {
         "taskPhrase": "Find the secret chamber",
         "type"      : "DISCOVER"

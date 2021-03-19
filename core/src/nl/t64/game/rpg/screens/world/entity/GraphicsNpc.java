@@ -36,7 +36,7 @@ public class GraphicsNpc extends GraphicsComponent {
     }
 
     @Override
-    public void render(Entity npcCharacter, Batch batch, ShapeRenderer shapeRenderer) {
+    public void render(Entity npcEntity, Batch batch, ShapeRenderer shapeRenderer) {
         if (state.equals(EntityState.INVISIBLE)) {
             return;
         }

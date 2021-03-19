@@ -50,7 +50,7 @@ class QuestTest extends GameTest {
         assertThat(quest0001.getId()).isEqualTo("quest0001");
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.UNKNOWN);
         assertThat(quest0001.getTitle()).isEqualTo("Herbs for boy");
-        assertThat(quest0001.getCharacter()).isEqualTo("boy01");
+        assertThat(quest0001.getEntityId()).isEqualTo("boy01");
         assertThat(quest0001.getSummary()).contains("Johnny's mother is ill and ");
         assertThat(quest0001).hasToString("     Herbs for boy");
         Map<String, QuestTask> tasks = quest0001.getTasks();

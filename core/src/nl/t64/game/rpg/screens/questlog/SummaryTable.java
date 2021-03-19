@@ -27,7 +27,7 @@ class SummaryTable {
 
     void populateSummary(QuestGraph quest) {
         summary.setText(quest.getSummary());
-        container.getCells().peek().setActor(Utils.getFaceImage(quest.getCharacter()));
+        container.getCells().peek().setActor(Utils.getFaceImage(quest.getEntityId()));
     }
 
     private Label createLabel() {

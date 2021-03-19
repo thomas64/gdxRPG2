@@ -27,7 +27,7 @@ class EventTest extends GameTest {
     void whenEventMeetsConditions_ShouldBeAbleToPlay() {
         Event event = eventContainer.getEventById("event0001");
         assertThat(event.getConversationId()).isEqualTo("event0001");
-        assertThat(event.getCharacterId()).isEqualTo("man02");
+        assertThat(event.getEntityId()).isEqualTo("man02");
 
         assertThat(event.getCondition()).isEqualTo(Map.of("quest0006", "!UNKNOWN",
                                                           "quest0007", "UNKNOWN"));

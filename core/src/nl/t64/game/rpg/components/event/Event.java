@@ -14,7 +14,7 @@ public class Event {
     private boolean hasPlayed;
     private Map<String, String> condition;
     private String conversationId;
-    private String characterId;
+    private String entityId;
 
     private Event() {
         this.hasPlayed = false;
@@ -23,7 +23,7 @@ public class Event {
     public void startConversation() {
         if (!hasPlayed && isMeetingCondition()) {
             hasPlayed = true;
-            Utils.getBrokerManager().componentObservers.notifyShowConversationDialog(conversationId, characterId);
+            Utils.getBrokerManager().componentObservers.notifyShowConversationDialog(conversationId, entityId);
         }
     }
 

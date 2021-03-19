@@ -7,9 +7,9 @@ import nl.t64.game.rpg.screens.world.entity.Entity;
 
 public interface ComponentObserver {
 
-    void onNotifyShowConversationDialog(String conversationId, Entity npcCharacter);
+    void onNotifyShowConversationDialog(String conversationId, Entity npcEntity);
 
-    void onNotifyShowConversationDialog(String conversationId, String characterId);
+    void onNotifyShowConversationDialog(String conversationId, String entityId);
 
     void onNotifyShowNoteDialog(String noteId);
 

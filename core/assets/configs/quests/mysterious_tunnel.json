@@ -1,7 +1,7 @@
 {
   "quest0006": {
     "title"     : "Key in the shadows",
-    "character" : "duke01",
+    "entityId"  : "duke01",
     "summary"   : "In the Mysterious Tunnel is a man named Herington who wants a key to get through the gate. He strikes you as a very demanding person.",
     "linkedWith": "quest0007",
     "tasks"     : {
@@ -29,7 +29,7 @@
   },
   "quest0007": {
     "title"     : "Another key in the shadows",
-    "character" : "man02",
+    "entityId"  : "man02",
     "summary"   : "Solomon heard your conversation with Herington and implores you to reconsider giving the key to him. He says Herington is not trustworthy, but he himself will use the key for good.",
     "linkedWith": "quest0006",
     "tasks"     : {

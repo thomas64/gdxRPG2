@@ -13,7 +13,7 @@ public class PhysicsNpc extends PhysicsComponent {
     private static final float WANDER_BOX_SIZE = 240f;
     private static final float WANDER_BOX_POSITION = -96f;
 
-    private Entity npcCharacter;
+    private Entity npcEntity;
     private Rectangle wanderBox;
 
     String conversationId;
@@ -40,12 +40,12 @@ public class PhysicsNpc extends PhysicsComponent {
         if (event instanceof OnActionEvent onActionEvent) {
             if (onActionEvent.checkRect.overlaps(boundingBox)) {
                 isSelected = true;
-                npcCharacter.send(new WaitEvent(currentPosition, onActionEvent.playerPosition));
+                npcEntity.send(new WaitEvent(currentPosition, onActionEvent.playerPosition));
             }
         }
         if (event instanceof OnBumpEvent onBumpEvent) {
             if (onBumpEvent.biggerBoundingBox.overlaps(boundingBox) || onBumpEvent.checkRect.overlaps(boundingBox)) {
-                npcCharacter.send(new WaitEvent(currentPosition, onBumpEvent.playerPosition));
+                npcEntity.send(new WaitEvent(currentPosition, onBumpEvent.playerPosition));
             }
         }
     }
@@ -56,14 +56,14 @@ public class PhysicsNpc extends PhysicsComponent {
     }
 
     @Override
-    public void update(Entity thisNpcCharacter, float dt) {
-        this.npcCharacter = thisNpcCharacter;
+    public void update(Entity thisNpcEntity, float dt) {
+        this.npcEntity = thisNpcEntity;
         relocate(dt);
         checkObstacles();
-        npcCharacter.send(new PositionEvent(currentPosition));
+        npcEntity.send(new PositionEvent(currentPosition));
         if (isSelected) {
             isSelected = false;
-            Utils.getBrokerManager().componentObservers.notifyShowConversationDialog(conversationId, npcCharacter);
+            Utils.getBrokerManager().componentObservers.notifyShowConversationDialog(conversationId, npcEntity);
         }
     }
 
@@ -90,7 +90,7 @@ public class PhysicsNpc extends PhysicsComponent {
             boolean moveBack1 = checkWanderBox();
             boolean moveBack2 = checkBlockers();
             if (moveBack1 || moveBack2) {
-                npcCharacter.send(new CollisionEvent());
+                npcEntity.send(new CollisionEvent());
             }
         }
     }

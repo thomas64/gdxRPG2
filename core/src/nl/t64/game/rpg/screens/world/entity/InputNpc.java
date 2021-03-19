@@ -35,13 +35,13 @@ public class InputNpc extends InputComponent {
     }
 
     @Override
-    public void update(Entity npcCharacter, float dt) {
+    public void update(Entity npcEntity, float dt) {
         stateTime -= dt;
         if (stateTime < 0) {
             setRandom();
         }
-        npcCharacter.send(new StateEvent(state));
-        npcCharacter.send(new DirectionEvent(direction));
+        npcEntity.send(new StateEvent(state));
+        npcEntity.send(new DirectionEvent(direction));
     }
 
     private void setRandom() {
