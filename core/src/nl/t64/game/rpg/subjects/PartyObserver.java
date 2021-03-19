@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.inventory;
+package nl.t64.game.rpg.subjects;
 
 
 public interface PartyObserver {

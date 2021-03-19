@@ -3,41 +3,42 @@ package nl.t64.game.rpg.screens.world;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.math.Rectangle;
+import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.screens.world.entity.Direction;
+import nl.t64.game.rpg.subjects.CollisionObserver;
 
-import java.util.Optional;
 
+class GameMapPortal extends GameMapRelocator implements CollisionObserver {
 
-class GameMapPortal extends GameMapObject {
+    private GameMapPortal(Rectangle rectangle,
+                          String fromMapName,
+                          String toMapName,
+                          String toMapLocation,
+                          Color fadeColor) {
+        super(rectangle,
+              fromMapName,
+              toMapName,
+              toMapLocation,
+              fadeColor);
 
-    final String fromMapName;
-    final String toMapName;
-    final String toMapLocation;
-    final Color fadeColor;
-    Direction enterDirection;
-
-    GameMapPortal(MapObject mapObject, String fromMapName) {
-        this(mapObject, fromMapName, Color.BLACK);
+        Utils.getBrokerManager().collisionObservers.addObserver(this);
     }
 
-    GameMapPortal(MapObject mapObject, String fromMapName, Color fadeColor) {
+    static GameMapPortal create(MapObject mapObject, String fromMapName) {
         RectangleMapObject rectObject = (RectangleMapObject) mapObject;
-
-        this.rectangle = rectObject.getRectangle();
-        this.fromMapName = fromMapName;
-        this.toMapName = rectObject.getName();
-        this.toMapLocation = createToMapLocation(rectObject);
-        this.fadeColor = fadeColor;
+        return new GameMapPortal(rectObject.getRectangle(),
+                                 fromMapName,
+                                 rectObject.getName(),
+                                 createToMapLocation(rectObject),
+                                 Color.BLACK);
     }
 
-    void setEnterDirection(Direction enterDirection) {
-        this.enterDirection = enterDirection;
-    }
-
-    private String createToMapLocation(RectangleMapObject rectObject) {
-        Optional<String> newToMapLocation = Optional.ofNullable(
-                rectObject.getProperties().get("type", String.class));
-        return newToMapLocation.orElse("");
+    @Override
+    public void onNotifyCollision(Rectangle playerBoundingBox, Direction playerDirection) {
+        if (playerBoundingBox.overlaps(rectangle)) {
+            Utils.getMapManager().collisionPortal(this, playerDirection);
+        }
     }
 
 }

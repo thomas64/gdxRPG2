@@ -8,7 +8,7 @@ import nl.t64.game.rpg.components.party.InventoryContainer;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.screens.world.entity.events.Event;
 import nl.t64.game.rpg.screens.world.entity.events.LoadEntityEvent;
-import nl.t64.game.rpg.screens.world.entity.events.SelectEvent;
+import nl.t64.game.rpg.screens.world.entity.events.OnActionEvent;
 import nl.t64.game.rpg.screens.world.entity.events.StateEvent;
 
 
@@ -30,8 +30,12 @@ public class PhysicsDoor extends PhysicsComponent {
             currentPosition = loadEvent.position;
             setBoundingBox();
         }
-        if (event instanceof SelectEvent) {
-            isSelected = true;
+        if (event instanceof OnActionEvent onActionEvent) {
+            if ((onActionEvent.playerDirection.equals(Direction.NORTH)
+                 || onActionEvent.playerDirection.equals(Direction.SOUTH))
+                && onActionEvent.checkRect.overlaps(boundingBox)) {
+                isSelected = true;
+            }
         }
     }
 
@@ -81,7 +85,7 @@ public class PhysicsDoor extends PhysicsComponent {
             stringBuilder.append("This door is locked.");
             stringBuilder.append(System.lineSeparator());
             stringBuilder.append("You need a key to open the door.");
-            componentSubject.notifyShowMessageDialog(stringBuilder.toString());
+            Utils.getBrokerManager().componentObservers.notifyShowMessageDialog(stringBuilder.toString());
             return true;
         }
     }
@@ -90,7 +94,8 @@ public class PhysicsDoor extends PhysicsComponent {
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, door.getAudio());
         door.open();
         entity.send(new StateEvent(EntityState.OPENED));
-        Utils.getMapManager().removeFromBlockers(boundingBox);
+        Utils.getBrokerManager().blockObservers.removeObserver(entity);
+        Utils.getMapManager().setTiledGraph();
     }
 
     @Override

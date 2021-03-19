@@ -9,7 +9,7 @@ import nl.t64.game.rpg.components.party.SkillItemId;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.screens.world.entity.events.Event;
 import nl.t64.game.rpg.screens.world.entity.events.LoadEntityEvent;
-import nl.t64.game.rpg.screens.world.entity.events.SelectEvent;
+import nl.t64.game.rpg.screens.world.entity.events.OnActionEvent;
 import nl.t64.game.rpg.screens.world.entity.events.StateEvent;
 
 
@@ -31,8 +31,11 @@ public class PhysicsChest extends PhysicsComponent {
             currentPosition = loadEvent.position;
             setBoundingBox();
         }
-        if (event instanceof SelectEvent) {
-            isSelected = true;
+        if (event instanceof OnActionEvent onActionEvent) {
+            if (onActionEvent.playerDirection.equals(Direction.NORTH)
+                && onActionEvent.checkRect.overlaps(boundingBox)) {
+                isSelected = true;
+            }
         }
     }
 
@@ -90,7 +93,7 @@ public class PhysicsChest extends PhysicsComponent {
         stringBuilder.append("There's a dangerous trap on this treasure chest.")
                      .append(System.lineSeparator())
                      .append(String.format("You need a level %s Mechanic to disarm the trap.", chest.getTrapLevel()));
-        componentSubject.notifyShowMessageDialog(stringBuilder.toString());
+        Utils.getBrokerManager().componentObservers.notifyShowMessageDialog(stringBuilder.toString());
     }
 
     private void doHandleTrapWith(HeroItem bestMechanic) {
@@ -132,7 +135,7 @@ public class PhysicsChest extends PhysicsComponent {
                          .append(System.lineSeparator());
         }
         stringBuilder.append(String.format("You need a level %s Thief to pick the lock.", chest.getLockLevel()));
-        componentSubject.notifyShowMessageDialog(stringBuilder.toString());
+        Utils.getBrokerManager().componentObservers.notifyShowMessageDialog(stringBuilder.toString());
     }
 
     private void doHandleLockWith(HeroItem bestThief) {
@@ -151,9 +154,9 @@ public class PhysicsChest extends PhysicsComponent {
     private void showFindDialog() {
         final String message = finishStringBuilder();
         if (message.isBlank()) {
-            componentSubject.notifyShowFindDialog(chest, AudioEvent.SE_CHEST);
+            Utils.getBrokerManager().componentObservers.notifyShowFindDialog(chest, AudioEvent.SE_CHEST);
         } else {
-            componentSubject.notifyShowFindDialog(chest, AudioEvent.SE_CHEST, message);
+            Utils.getBrokerManager().componentObservers.notifyShowFindDialog(chest, AudioEvent.SE_CHEST, message);
         }
     }
 

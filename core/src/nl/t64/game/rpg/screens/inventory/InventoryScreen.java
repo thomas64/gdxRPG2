@@ -20,14 +20,12 @@ import nl.t64.game.rpg.screens.world.conversation.ConversationObserver;
 
 public class InventoryScreen extends ScreenToLoad implements ConversationObserver {
 
-    public final PartySubject partySubject;
     private final ConversationDialog conversationDialog;
     private InventoryUI inventoryUI;
 
     public InventoryScreen() {
-        this.partySubject = new PartySubject();
         this.conversationDialog = new ConversationDialog();
-        this.conversationDialog.conversationSubject.addObserver(this);
+        this.conversationDialog.conversationObservers.addObserver(this);
     }
 
     public static void load() {
@@ -48,7 +46,7 @@ public class InventoryScreen extends ScreenToLoad implements ConversationObserve
         selectPreviousHero();
         Utils.getGameData().getParty().removeHero(heroToDismiss);
         hideConversationDialog();
-        partySubject.notifyHeroDismissed();
+        Utils.getBrokerManager().partyObservers.notifyHeroDismissed();
     }
 
     @Override

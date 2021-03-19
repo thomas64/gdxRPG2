@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.inventory;
+package nl.t64.game.rpg.subjects;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class PartySubject {
         observers.clear();
     }
 
-    void notifyHeroDismissed() {
+    public void notifyHeroDismissed() {
         observers.forEach(PartyObserver::onNotifyHeroDismissed);
     }
 

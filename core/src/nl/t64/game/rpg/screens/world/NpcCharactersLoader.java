@@ -2,7 +2,10 @@ package nl.t64.game.rpg.screens.world;
 
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.HeroItem;
-import nl.t64.game.rpg.screens.world.entity.*;
+import nl.t64.game.rpg.screens.world.entity.Entity;
+import nl.t64.game.rpg.screens.world.entity.GraphicsNpc;
+import nl.t64.game.rpg.screens.world.entity.InputNpc;
+import nl.t64.game.rpg.screens.world.entity.PhysicsNpc;
 import nl.t64.game.rpg.screens.world.entity.events.LoadEntityEvent;
 
 import java.util.ArrayList;
@@ -44,14 +47,13 @@ class NpcCharactersLoader {
         String characterId = gameMapNpc.name;
         var npcCharacter = new Entity(characterId, new InputNpc(), new PhysicsNpc(), new GraphicsNpc(characterId));
         npcCharacters.add(npcCharacter);
+        Utils.getBrokerManager().actionObservers.addObserver(npcCharacter);
+        Utils.getBrokerManager().blockObservers.addObserver(npcCharacter);
+        Utils.getBrokerManager().bumpObservers.addObserver(npcCharacter);
         npcCharacter.send(new LoadEntityEvent(gameMapNpc.state,
                                               gameMapNpc.direction,
                                               gameMapNpc.getPosition(),
                                               gameMapNpc.conversation));
-        if (gameMapNpc.state.equals(EntityState.IMMOBILE)
-            || gameMapNpc.state.equals(EntityState.FLOATING)) {
-            currentMap.addToBlockers(npcCharacter.getBoundingBox());
-        }
     }
 
 }

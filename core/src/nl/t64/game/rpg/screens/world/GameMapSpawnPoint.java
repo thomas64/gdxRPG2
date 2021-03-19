@@ -20,7 +20,7 @@ class GameMapSpawnPoint extends GameMapObject {
         this.direction = createDirection(rectObject);
     }
 
-    boolean isInConnectionWith(GameMapPortal portal) {
+    boolean isInConnectionWith(GameMapRelocator portal) {
         return (fromMapName.equals(portal.fromMapName) &&
                 fromMapLocation.equalsIgnoreCase(portal.toMapLocation));
     }

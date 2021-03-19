@@ -1,4 +1,6 @@
-package nl.t64.game.rpg.profile;
+package nl.t64.game.rpg.subjects;
+
+import nl.t64.game.rpg.ProfileManager;
 
 
 public interface ProfileObserver {

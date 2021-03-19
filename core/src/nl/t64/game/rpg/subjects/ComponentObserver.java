@@ -1,7 +1,8 @@
-package nl.t64.game.rpg.screens.world.entity;
+package nl.t64.game.rpg.subjects;
 
 import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.loot.Loot;
+import nl.t64.game.rpg.screens.world.entity.Entity;
 
 
 public interface ComponentObserver {

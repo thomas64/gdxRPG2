@@ -294,6 +294,7 @@ class InventoryTest extends GameTest {
         inventory.forceSetItemAt(36, chest);
 
         inventory.sort();
+        inventory.sort();
 
         assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(1);
         assertThat(inventory.getItemAt(0)).containsSame(chest);
@@ -332,7 +333,7 @@ class InventoryTest extends GameTest {
         assertThat(description.get(1).getValue()).isEqualTo("");
         assertThat(description.get(2).getKey()).isEqualTo("Price");
         assertThat(description.get(2).getValue()).isEqualTo(15);
-        assertThat(description.get(3).getKey()).isEqualTo("Value");
+        assertThat(description.get(3).getKey()).isEqualTo("Sell value");
         assertThat(description.get(3).getValue()).isEqualTo(5);
         assertThat(description.get(4).getKey()).isEqualTo(InventoryMinimal.SKILL);
         assertThat(description.get(4).getValue()).isEqualTo(SkillItemId.HAFTED);
@@ -365,7 +366,7 @@ class InventoryTest extends GameTest {
         assertThat(description.get(0).getValue()).isEqualTo("Basic Light Shield");
         assertThat(description.get(1).getKey()).isEqualTo("Price");
         assertThat(description.get(1).getValue()).isEqualTo(8);
-        assertThat(description.get(2).getKey()).isEqualTo("Value");
+        assertThat(description.get(2).getKey()).isEqualTo("Sell value");
         assertThat(description.get(2).getValue()).isEqualTo(2);
         assertThat(description.get(3).getKey()).isEqualTo(InventoryMinimal.SKILL);
         assertThat(description.get(3).getValue()).isEqualTo(SkillItemId.SHIELD);
@@ -391,7 +392,7 @@ class InventoryTest extends GameTest {
         assertThat(description.get(0).getValue()).isEqualTo("Basic Light Chest");
         assertThat(description.get(1).getKey()).isEqualTo("Price");
         assertThat(description.get(1).getValue()).isEqualTo(10);
-        assertThat(description.get(2).getKey()).isEqualTo("Value");
+        assertThat(description.get(2).getKey()).isEqualTo("Sell value");
         assertThat(description.get(2).getValue()).isEqualTo(3);
         assertThat(description.get(3).getKey()).isEqualTo(CalcAttributeId.WEIGHT);
         assertThat(description.get(3).getValue()).isEqualTo(1);
@@ -413,9 +414,9 @@ class InventoryTest extends GameTest {
         assertThat(description.get(1).getValue()).isEqualTo(4);
         assertThat(description.get(2).getKey()).isEqualTo("Total price");
         assertThat(description.get(2).getValue()).isEqualTo(40);
-        assertThat(description.get(3).getKey()).isEqualTo("Value per piece");
+        assertThat(description.get(3).getKey()).isEqualTo("Sell value per piece");
         assertThat(description.get(3).getValue()).isEqualTo(1);
-        assertThat(description.get(4).getKey()).isEqualTo("Total value");
+        assertThat(description.get(4).getKey()).isEqualTo("Total sell value");
         assertThat(description.get(4).getValue()).isEqualTo(10);
         assertThatExceptionOfType(IndexOutOfBoundsException.class).isThrownBy(() -> description.get(5));
     }

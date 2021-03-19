@@ -31,7 +31,7 @@ public class RewardScreen extends LootScreen {
 
     @Override
     void resolveAfterClearingContent() {
-        lootSubject.notifyRewardTaken();
+        Utils.getBrokerManager().lootObservers.notifyRewardTaken();
     }
 
     private void showLevelUpMessage() {

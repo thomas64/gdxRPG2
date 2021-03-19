@@ -1,4 +1,6 @@
-package nl.t64.game.rpg.profile;
+package nl.t64.game.rpg.subjects;
+
+import nl.t64.game.rpg.ProfileManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +18,15 @@ public class ProfileSubject {
         observers.remove(observer);
     }
 
-    void notifyCreateProfile(ProfileManager profileManager) {
+    public void notifyCreateProfile(ProfileManager profileManager) {
         observers.forEach(observer -> observer.onNotifyCreateProfile(profileManager));
     }
 
-    void notifySaveProfile(ProfileManager profileManager) {
+    public void notifySaveProfile(ProfileManager profileManager) {
         observers.forEach(observer -> observer.onNotifySaveProfile(profileManager));
     }
 
-    void notifyLoadProfile(ProfileManager profileManager) {
+    public void notifyLoadProfile(ProfileManager profileManager) {
         observers.forEach(observer -> observer.onNotifyLoadProfile(profileManager));
     }
 

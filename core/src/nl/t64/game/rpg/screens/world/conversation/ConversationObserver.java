@@ -5,9 +5,7 @@ import nl.t64.game.rpg.components.loot.Loot;
 
 public interface ConversationObserver {
 
-    default void onNotifyExitConversation() {
-        throw new IllegalCallerException("Implement this method in child.");
-    }
+    void onNotifyExitConversation();
 
     default void onNotifyShowMessageTooltip(String message) {
         throw new IllegalCallerException("Implement this method in child.");

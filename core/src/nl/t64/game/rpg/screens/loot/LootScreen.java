@@ -12,13 +12,8 @@ import nl.t64.game.rpg.screens.ScreenToLoad;
 
 abstract class LootScreen extends ScreenToLoad {
 
-    public final LootSubject lootSubject;
     Loot loot;
     String lootTitle;
-
-    LootScreen() {
-        this.lootSubject = new LootSubject();
-    }
 
     @Override
     public void show() {

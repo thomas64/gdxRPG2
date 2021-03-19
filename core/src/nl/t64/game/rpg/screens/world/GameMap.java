@@ -9,7 +9,6 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioEvent;
@@ -22,12 +21,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
-class GameMap {
+public class GameMap {
 
     public static final int LIGHTMAP_REGION_MULTIPLIER = 10;
-
-    private static final String MAP_PATH = "maps/";
-    private static final String MAPFILE_SUFFIX = ".tmx";
 
     private static final String SOUND_LAYER = "sound";
     private static final String EVENT_LAYER = "event";
@@ -46,14 +42,11 @@ class GameMap {
 
     private static final String WIDTH_PROPERTY = "width";
     private static final String HEIGHT_PROPERTY = "height";
-    private static final String BGM_PROPERTY = "bgm";
-    private static final String BGS_PROPERTY = "bgs";
     private static final String LIGHTMAP_CAMERA_PROPERTY = "lightmap_camera";
     private static final String LIGHTMAP_MAP_PROPERTY = "lightmap_map";
     private static final String LIGHTMAP_PLAYER_PROPERTY = "lightmap_player";
     private static final String STEP_SOUND_PROPERTY = "step_sound";
 
-    private static final String DEFAULT_BG = "NONE";
     private static final String DEFAULT_LIGHTMAP = "default";
     private static final String DEFAULT_STEP_SOUND = "grass";
 
@@ -68,25 +61,25 @@ class GameMap {
     Vector2 playerSpawnLocation;
     Direction playerSpawnDirection;
 
-    final List<RectangleMapObject> sounds = new ArrayList<>();
+    private final List<RectangleMapObject> sounds = new ArrayList<>();
     final List<GameMapNpc> npcs = new ArrayList<>();
     final List<GameMapHero> heroes = new ArrayList<>();
-    final List<Rectangle> blockers = new ArrayList<>();
+    private final List<GameMapBlocker> blockers = new ArrayList<>();
     final List<GameMapLight> lights = new ArrayList<>();
-    final List<GameMapEvent> eventDiscovers = new ArrayList<>();
+    private final List<GameMapEvent> eventDiscovers = new ArrayList<>();
     final List<GameMapQuestBlocker> questBlockers = new ArrayList<>();
     final List<GameMapQuestTexture> upperTextures = new ArrayList<>();
     final List<GameMapQuestTexture> lowerTextures = new ArrayList<>();
-    final List<GameMapQuestObject> questDiscovers = new ArrayList<>();
-    final List<GameMapQuestObject> questCheckers = new ArrayList<>();
+    private final List<GameMapQuestDiscoverObject> questDiscovers = new ArrayList<>();
+    private final List<GameMapQuestCheckObject> questCheckers = new ArrayList<>();
     final List<RectangleMapObject> sparkles = new ArrayList<>();
     final List<RectangleMapObject> chests = new ArrayList<>();
     final List<RectangleMapObject> doors = new ArrayList<>();
-    private final List<Rectangle> savePoints = new ArrayList<>();
+    private final List<GameMapSavePoint> savePoints = new ArrayList<>();
     private final List<GameMapSpawnPoint> spawnPoints = new ArrayList<>();
     private final List<GameMapPortal> portals = new ArrayList<>();
     private final List<GameMapWarpPoint> warpPoints = new ArrayList<>();
-    private final List<RectangleMapObject> notes = new ArrayList<>();
+    private final List<GameMapNote> notes = new ArrayList<>();
 
     private final String defaultStepSound;
 
@@ -94,9 +87,9 @@ class GameMap {
 
     GameMap(String mapTitle) {
         this.mapTitle = mapTitle;
-        this.tiledMap = Utils.getResourceManager().getMapAsset(MAP_PATH + mapTitle + MAPFILE_SUFFIX);
-        this.bgm = this.loadBgm();
-        this.bgs = this.loadBgs();
+        this.tiledMap = MapManager.getTiledMap(this.mapTitle);
+        this.bgm = MapManager.getBgmOfMap(this.tiledMap);
+        this.bgs = MapManager.getBgsOfMap(this.tiledMap);
         this.lightmapCamera = this.loadLightmapCamera();
         this.lightmapMap = this.loadLightmapMap();
         this.lightmapPlayer = this.loadLightmapPlayer();
@@ -120,32 +113,7 @@ class GameMap {
     }
 
     void setTiledGraph() {
-        this.tiledGraph = new TiledGraph(this.getWidth(), this.getHeight(), this::areBlockersCurrentlyBlocking);
-    }
-
-    void addToBlockers(Rectangle immobileNpc) {
-        blockers.add(immobileNpc);
-    }
-
-    void removeFromBlockers(Rectangle immobileNpc) {
-        blockers.remove(immobileNpc);
-    }
-
-    Stream<Rectangle> getAllBlockers() {
-        return Stream.concat(blockers.stream(),
-                             questBlockers.stream()
-                                          .filter(blocker -> blocker.isActive)
-                                          .map(blocker -> blocker.rectangle));
-    }
-
-    boolean areBlockersCurrentlyBlocking(Rectangle characterRect) {
-        return blockers.stream().anyMatch(characterRect::overlaps);
-    }
-
-    boolean areBlockersCurrentlyBlocking(Vector2 point) {
-        return blockers.stream()
-                       .anyMatch(blocker -> blocker.contains(point.x * (Constant.TILE_SIZE / 2f) + 1f,
-                                                             point.y * (Constant.TILE_SIZE / 2f) + 1f));
+        this.tiledGraph = new TiledGraph(this.getWidth(), this.getHeight());
     }
 
     String getUnderground(Vector2 point) {
@@ -156,55 +124,14 @@ class GameMap {
                      .orElse(defaultStepSound);
     }
 
-    boolean areSavePointsBeingCheckedBy(Rectangle checkRect) {
-        return savePoints.stream().anyMatch(checkRect::overlaps);
-    }
-
-    Optional<GameMapPortal> getPortalOnCollisionBy(Rectangle playerRect) {
-        return portals.stream()
-                      .filter(portal -> playerRect.overlaps(portal.rectangle))
-                      .findFirst();
-    }
-
-    Optional<GameMapEvent> getEventCollisionBy(Rectangle playerRect) {
-        return eventDiscovers.stream()
-                             .filter(discover -> playerRect.overlaps(discover.rectangle))
-                             .findFirst();
-    }
-
-    Optional<GameMapQuestObject> getQuestTaskCollisionBy(Rectangle playerRect) {
-        return questDiscovers.stream()
-                             .filter(discover -> playerRect.overlaps(discover.rectangle))
-                             .findFirst();
-    }
-
-    List<GameMapQuestObject> getQuestTaskBeingCheckedBy(Rectangle checkRect) {
-        return questCheckers.stream()
-                            .filter(checker -> checkRect.overlaps(checker.rectangle))
-                            .collect(Collectors.toList());
-    }
-
-    Optional<GameMapWarpPoint> getWarpPointBeingCheckedBy(Rectangle checkRect) {
-        return warpPoints.stream()
-                         .filter(warpPoint -> checkRect.overlaps(warpPoint.rectangle))
-                         .findFirst();
-    }
-
-    Optional<String> getNoteIdBeingCheckedBy(Rectangle checkRect) {
-        return notes.stream()
-                    .filter(note -> checkRect.overlaps(note.getRectangle()))
-                    .findFirst()
-                    .map(MapObject::getName);
-    }
-
     void setPlayerSpawnLocationForNewLoad(String mapTitle) {
         MapObject dummyObject = new RectangleMapObject();
         dummyObject.setName(mapTitle);
-        GameMapPortal spawnForNewLoadPortal = new GameMapPortal(dummyObject, mapTitle);
+        GameMapPortal spawnForNewLoadPortal = GameMapPortal.create(dummyObject, mapTitle);
         setPlayerSpawnLocation(spawnForNewLoadPortal);
     }
 
-    void setPlayerSpawnLocation(GameMapPortal portal) {
+    void setPlayerSpawnLocation(GameMapRelocator portal) {
         for (GameMapSpawnPoint spawnPoint : spawnPoints) {
             if (spawnPoint.isInConnectionWith(portal)) {
                 playerSpawnLocation.set(spawnPoint.getX(), spawnPoint.getY());
@@ -214,7 +141,7 @@ class GameMap {
         }
     }
 
-    private void setPlayerSpawnDirection(GameMapPortal portal, GameMapSpawnPoint spawnPoint) {
+    private void setPlayerSpawnDirection(GameMapRelocator portal, GameMapSpawnPoint spawnPoint) {
         if (spawnPoint.direction.equals(Direction.NONE)) {
             playerSpawnDirection = portal.enterDirection;
         } else {
@@ -241,17 +168,6 @@ class GameMap {
 
     private int getHeight() {
         return (int) tiledMap.getProperties().get(HEIGHT_PROPERTY);
-    }
-
-    private AudioEvent loadBgm() {
-        return AudioEvent.valueOf(tiledMap.getProperties().get(BGM_PROPERTY, DEFAULT_BG, String.class).toUpperCase());
-    }
-
-    private List<AudioEvent> loadBgs() {
-        String audioEventStrings = tiledMap.getProperties().get(BGS_PROPERTY, DEFAULT_BG, String.class);
-        return Arrays.stream(audioEventStrings.toUpperCase().split("\\s*,\\s*"))
-                     .map(AudioEvent::valueOf)
-                     .collect(Collectors.toUnmodifiableList());
     }
 
     private List<Texture> loadLightmapCamera() {
@@ -311,7 +227,7 @@ class GameMap {
         getMapLayer(COLLISION_LAYER).ifPresent(mapLayer -> {
             for (MapObject mapObject : mapLayer.getObjects()) {
                 RectangleMapObject rectObject = (RectangleMapObject) mapObject;
-                blockers.add(rectObject.getRectangle());
+                blockers.add(new GameMapBlocker(rectObject.getRectangle()));
             }
         });
     }
@@ -340,9 +256,9 @@ class GameMap {
                 if (mapObject.getName().equalsIgnoreCase("blocker")) {
                     questBlockers.add(new GameMapQuestBlocker(mapObject));
                 } else if (mapObject.getName().equalsIgnoreCase("discover")) {
-                    questDiscovers.add(new GameMapQuestObject(mapObject));
+                    questDiscovers.add(new GameMapQuestDiscoverObject(mapObject));
                 } else if (mapObject.getName().equalsIgnoreCase("check")) {
-                    questCheckers.add(new GameMapQuestObject(mapObject));
+                    questCheckers.add(new GameMapQuestCheckObject(mapObject));
                 }
             }
         });
@@ -372,7 +288,7 @@ class GameMap {
                 } else if (mapObject.getName().startsWith("door")) {
                     doors.add(rectObject);
                 } else if (mapObject.getName().startsWith("note")) {
-                    notes.add(rectObject);
+                    notes.add(new GameMapNote(rectObject));
                 }
             }
         });
@@ -381,8 +297,7 @@ class GameMap {
     private void loadSavePoints() {
         getMapLayer(SAVE_LAYER).ifPresent(mapLayer -> {
             for (MapObject mapObject : mapLayer.getObjects()) {
-                RectangleMapObject rectObject = (RectangleMapObject) mapObject;
-                savePoints.add(rectObject.getRectangle());
+                savePoints.add(new GameMapSavePoint(mapObject));
             }
         });
     }
@@ -398,7 +313,7 @@ class GameMap {
     private void loadPortals() {
         getMapLayer(PORTAL_LAYER).ifPresent(mapLayer -> {
             for (MapObject mapObject : mapLayer.getObjects()) {
-                portals.add(new GameMapPortal(mapObject, mapTitle));
+                portals.add(GameMapPortal.create(mapObject, mapTitle));
             }
         });
     }
@@ -406,7 +321,7 @@ class GameMap {
     private void loadWarpPoints() {
         getMapLayer(WARP_LAYER).ifPresent(mapLayer -> {
             for (MapObject mapObject : mapLayer.getObjects()) {
-                warpPoints.add(new GameMapWarpPoint(mapObject, mapTitle));
+                warpPoints.add(GameMapWarpPoint.create(mapObject, mapTitle));
             }
         });
     }
@@ -423,19 +338,19 @@ class GameMap {
 
         shapeRenderer.setColor(Color.YELLOW);
 
-        blockers.forEach(rect -> shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height));
-        questBlockers.stream()
-                     .map(GameMapObject::getRectangle)
-                     .forEach(rect -> shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height));
-
-        shapeRenderer.setColor(Color.BLUE);
-
-        Stream.of(portals, spawnPoints, npcs, heroes, eventDiscovers, questDiscovers, questCheckers)
+        Stream.of(blockers, questBlockers)
               .flatMap(Collection::stream)
               .map(GameMapObject::getRectangle)
               .forEach(rect -> shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height));
 
-        Stream.of(notes, sparkles, chests, doors)
+        shapeRenderer.setColor(Color.BLUE);
+
+        Stream.of(portals, spawnPoints, npcs, heroes, eventDiscovers, questDiscovers, questCheckers, notes)
+              .flatMap(Collection::stream)
+              .map(GameMapObject::getRectangle)
+              .forEach(rect -> shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height));
+
+        Stream.of(sparkles, chests, doors)
               .flatMap(Collection::stream)
               .map(RectangleMapObject::getRectangle)
               .forEach(rect -> shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height));

@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.loot;
+package nl.t64.game.rpg.subjects;
 
 
 public interface LootObserver {

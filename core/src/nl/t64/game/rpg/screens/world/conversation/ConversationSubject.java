@@ -22,36 +22,35 @@ public class ConversationSubject {
         observers.clear();
     }
 
-    void notifyExitConversation() {
+    public void notifyExitConversation() {
         observers.forEach(ConversationObserver::onNotifyExitConversation);
     }
 
-    void notifyShowMessageTooltip(String message) {
-        observers.forEach(conversationObserver -> conversationObserver.onNotifyShowMessageTooltip(message));
+    public void notifyShowMessageTooltip(String message) {
+        observers.forEach(observer -> observer.onNotifyShowMessageTooltip(message));
     }
 
-    void notifyShowLevelUpDialog(String message) {
-        observers.forEach(conversationObserver -> conversationObserver.onNotifyShowLevelUpDialog(message));
+    public void notifyShowLevelUpDialog(String message) {
+        observers.forEach(observer -> observer.onNotifyShowLevelUpDialog(message));
     }
 
-    void notifyLoadShop() {
+    public void notifyLoadShop() {
         observers.forEach(ConversationObserver::onNotifyLoadShop);
     }
 
-    void notifyShowRewardDialog(Loot reward, String levelUpMessage) {
-        observers.forEach(conversationObserver -> conversationObserver.onNotifyShowRewardDialog(reward,
-                                                                                                levelUpMessage));
+    public void notifyShowRewardDialog(Loot reward, String levelUpMessage) {
+        observers.forEach(observer -> observer.onNotifyShowRewardDialog(reward, levelUpMessage));
     }
 
-    void notifyShowReceiveDialog(Loot receive) {
-        observers.forEach(conversationObserver -> conversationObserver.onNotifyShowReceiveDialog(receive));
+    public void notifyShowReceiveDialog(Loot receive) {
+        observers.forEach(observer -> observer.onNotifyShowReceiveDialog(receive));
     }
 
-    void notifyHeroJoined() {
+    public void notifyHeroJoined() {
         observers.forEach(ConversationObserver::onNotifyHeroJoined);
     }
 
-    void notifyHeroDismiss() {
+    public void notifyHeroDismiss() {
         observers.forEach(ConversationObserver::onNotifyHeroDismiss);
     }
 

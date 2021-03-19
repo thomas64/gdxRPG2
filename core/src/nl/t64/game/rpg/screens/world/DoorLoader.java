@@ -37,9 +37,10 @@ public class DoorLoader {
         door.close();
         var entity = new Entity(gameMapDoor.getName(), new InputEmpty(), new PhysicsDoor(door), new GraphicsDoor(door));
         doorList.add(entity);
+        Utils.getBrokerManager().actionObservers.addObserver(entity);
+        Utils.getBrokerManager().blockObservers.addObserver(entity);
         var position = new Vector2(gameMapDoor.getRectangle().x, gameMapDoor.getRectangle().y);
         entity.send(new LoadEntityEvent(EntityState.IMMOBILE, position));
-        currentMap.addToBlockers(entity.getBoundingBox());
     }
 
 }

@@ -6,7 +6,6 @@ import nl.t64.game.rpg.components.quest.QuestGraph;
 import nl.t64.game.rpg.components.quest.QuestState;
 
 import java.util.Map;
-import java.util.function.BiConsumer;
 
 
 @Getter
@@ -21,10 +20,10 @@ public class Event {
         this.hasPlayed = false;
     }
 
-    public void startConversation(BiConsumer<String, String> notifyShowConversationDialog) {
+    public void startConversation() {
         if (!hasPlayed && isMeetingCondition()) {
             hasPlayed = true;
-            notifyShowConversationDialog.accept(conversationId, characterId);
+            Utils.getBrokerManager().componentObservers.notifyShowConversationDialog(conversationId, characterId);
         }
     }
 

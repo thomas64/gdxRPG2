@@ -10,8 +10,7 @@ import nl.t64.game.rpg.components.loot.LootContainer;
 import nl.t64.game.rpg.components.party.*;
 import nl.t64.game.rpg.components.quest.QuestContainer;
 import nl.t64.game.rpg.constants.Constant;
-import nl.t64.game.rpg.profile.ProfileManager;
-import nl.t64.game.rpg.profile.ProfileObserver;
+import nl.t64.game.rpg.subjects.ProfileObserver;
 
 
 @Getter

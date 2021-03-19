@@ -19,7 +19,7 @@ public class ReceiveScreen extends LootScreen {
 
     @Override
     void resolveAfterClearingContent() {
-        lootSubject.notifyReceiveTaken();
+        Utils.getBrokerManager().lootObservers.notifyReceiveTaken();
     }
 
 }

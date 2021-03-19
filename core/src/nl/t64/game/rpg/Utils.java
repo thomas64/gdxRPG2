@@ -19,7 +19,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.t64.game.rpg.audio.AudioManager;
 import nl.t64.game.rpg.constants.Constant;
-import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.screens.ScreenManager;
 import nl.t64.game.rpg.screens.world.MapManager;
 
@@ -74,6 +73,10 @@ public final class Utils {
 
     public static MapManager getMapManager() {
         return getEngine().mapManager;
+    }
+
+    public static BrokerManager getBrokerManager() {
+        return getEngine().brokerManager;
     }
 
     public static void setGamepadInputProcessor(InputProcessor inputProcessor) {

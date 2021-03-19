@@ -1,9 +1,10 @@
-package nl.t64.game.rpg.screens.world;
+package nl.t64.game.rpg.subjects;
 
 import com.badlogic.gdx.graphics.Color;
+import nl.t64.game.rpg.screens.world.GameMap;
 
 
-interface MapObserver {
+public interface MapObserver {
 
     void onNotifyMapWillChange(Runnable changeMap, Color transitionColor);
 

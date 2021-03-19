@@ -4,11 +4,11 @@ import lombok.Getter;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.screens.world.conversation.ConversationSubject;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -63,9 +63,8 @@ public class QuestGraph {
         return currentState.equals(QuestState.FINISHED);
     }
 
-    public void handleAccept(Consumer<String> notifyShowMessageTooltip, Consumer<String> continueConversation) {
-        know();
-        accept(notifyShowMessageTooltip);
+    public void handleAccept(Consumer<String> continueConversation, ConversationSubject observers) {
+        handleTolerate(observers);
         if (doesReturnMeetDemand()) {
             continueConversation.accept(Constant.PHRASE_ID_QUEST_IMMEDIATE_SUCCESS);
         } else {
@@ -73,19 +72,19 @@ public class QuestGraph {
         }
     }
 
-    public void handleTolerate(Consumer<String> notifyShowMessageTooltip) {
+    public void handleTolerate(ConversationSubject observers) {
         know();
-        accept(notifyShowMessageTooltip);
+        accept(observers);
     }
 
-    public void handleReceive(Consumer<Loot> notifyShowReceiveDialog) {
+    public void handleReceive(ConversationSubject observers) {
         know();
         Loot receive = getAllQuestTasks().stream()
                                          .filter(questTask -> questTask.type.equals(QuestType.ITEM_DELIVERY))
                                          .findFirst()
                                          .map(questTask -> new Loot(questTask.getTarget()))
                                          .orElseThrow();
-        notifyShowReceiveDialog.accept(receive);
+        observers.notifyShowReceiveDialog(receive);
     }
 
     public void handleCheckIfLinkedIsKnown(String phraseId, Consumer<String> continueConversation) {
@@ -98,7 +97,8 @@ public class QuestGraph {
     }
 
     public void handleCheckIfAccepted(String phraseId,
-                                      Consumer<String> continueConversation, Consumer<String> endConversation) {
+                                      Consumer<String> continueConversation,
+                                      Consumer<String> endConversation) {
         if (currentState.equals(QuestState.ACCEPTED)) {
             continueConversation.accept(Constant.PHRASE_ID_QUEST_DELIVERY);
         } else {
@@ -107,7 +107,8 @@ public class QuestGraph {
     }
 
     public void handleCheckIfAcceptedInventory(String taskId, String phraseId,
-                                               Consumer<String> continueConversation, Consumer<String> endConversation) {
+                                               Consumer<String> continueConversation,
+                                               Consumer<String> endConversation) {
         if (currentState.equals(QuestState.ACCEPTED)
             && tasks.get(taskId).hasTargetInInventory()) {
             continueConversation.accept(Constant.PHRASE_ID_QUEST_DELIVERY);
@@ -124,32 +125,29 @@ public class QuestGraph {
         }
     }
 
-    public void handleReward(Consumer<String> notifyShowMessageTooltip,
-                             Consumer<String> notifyShowLevelUpDialog,
-                             BiConsumer<Loot, String> notifyShowRewardDialog,
-                             Consumer<String> endConversation) {
+    public void handleReward(Consumer<String> endConversation, ConversationSubject observers) {
         if (currentState.equals(QuestState.ACCEPTED)) {
             takeDemands();
             unclaim();
             getAllQuestTasks().forEach(QuestTask::forceFinished);
-            notifyShowMessageTooltip.accept("Quest completed:"
-                                            + System.lineSeparator() + System.lineSeparator() + title);
+            observers.notifyShowMessageTooltip(
+                    "Quest completed:" + System.lineSeparator() + System.lineSeparator() + title);
         }
         Loot reward = Utils.getGameData().getLoot().getLoot(id);
         reward.removeBonus();
-        Optional<String> levelUpMessage = partyGainXp(reward, notifyShowMessageTooltip);
+        Optional<String> levelUpMessage = partyGainXp(reward, observers);
         if (reward.isTaken()) {
             finish();
             endConversation.accept(Constant.PHRASE_ID_QUEST_FINISHED);
-            levelUpMessage.ifPresent(notifyShowLevelUpDialog);
+            levelUpMessage.ifPresent(observers::notifyShowLevelUpDialog);
         } else {
-            notifyShowRewardDialog.accept(reward, levelUpMessage.orElse(null));
+            observers.notifyShowRewardDialog(reward, levelUpMessage.orElse(null));
         }
     }
 
-    public void handleFail(Consumer<String> notifyShowMessageTooltip) {
+    public void handleFail(ConversationSubject observers) {
         isFailed = true;
-        notifyShowMessageTooltip.accept("Quest failed:" + System.lineSeparator() + System.lineSeparator() + title);
+        observers.notifyShowMessageTooltip("Quest failed:" + System.lineSeparator() + System.lineSeparator() + title);
     }
 
     public void know() {
@@ -164,10 +162,10 @@ public class QuestGraph {
         }
     }
 
-    public void accept(Consumer<String> notifyShowMessageTooltip) {
+    public void accept(ConversationSubject observers) {
         if (currentState.equals(QuestState.KNOWN)) {
             currentState = QuestState.ACCEPTED;
-            notifyShowMessageTooltip.accept("New quest:" + System.lineSeparator() + System.lineSeparator() + title);
+            observers.notifyShowMessageTooltip("New quest:" + System.lineSeparator() + System.lineSeparator() + title);
         } else {
             throw new IllegalStateException("Only quest KNOWN can be ACCEPTED.");
         }
@@ -195,13 +193,13 @@ public class QuestGraph {
                           .forEach(QuestTask::removeTargetFromInventory);
     }
 
-    private Optional<String> partyGainXp(Loot reward, Consumer<String> notifyShowMessageTooltip) {
+    private Optional<String> partyGainXp(Loot reward, ConversationSubject observers) {
         if (reward.isXpGained()) {
             return Optional.empty();
         }
         StringBuilder levelUpMessage = new StringBuilder();
         Utils.getGameData().getParty().getAllHeroes().forEach(hero -> hero.gainXp(reward.getXp(), levelUpMessage));
-        notifyShowMessageTooltip.accept(String.format("+ %s XP", reward.getXp()));
+        observers.notifyShowMessageTooltip(String.format("+ %s XP", reward.getXp()));
         reward.clearXp();
         String finalMessage = levelUpMessage.toString().strip();
         if (finalMessage.isEmpty()) {

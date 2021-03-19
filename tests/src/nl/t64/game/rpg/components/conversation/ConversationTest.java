@@ -4,10 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import nl.t64.game.rpg.GameData;
 import nl.t64.game.rpg.GameTest;
+import nl.t64.game.rpg.ProfileManager;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.InventoryDatabase;
 import nl.t64.game.rpg.components.quest.QuestGraph;
-import nl.t64.game.rpg.profile.ProfileManager;
+import nl.t64.game.rpg.screens.world.conversation.ConversationSubject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -142,7 +143,7 @@ class ConversationTest extends GameTest {
 
         QuestGraph quest7 = gameData.getQuests().getQuestById("quest0007");
         quest7.know();
-        quest7.accept(s -> {});
+        quest7.accept(new ConversationSubject());
         quest7.unclaim();
 
         assertThat(graph.getAssociatedChoices()).hasSize(2);

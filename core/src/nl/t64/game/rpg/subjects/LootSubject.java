@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.loot;
+package nl.t64.game.rpg.subjects;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +20,15 @@ public class LootSubject {
         observers.clear();
     }
 
-    void notifyLootTaken() {
+    public void notifyLootTaken() {
         observers.forEach(LootObserver::onNotifyLootTaken);
     }
 
-    void notifyRewardTaken() {
+    public void notifyRewardTaken() {
         observers.forEach(LootObserver::onNotifyRewardTaken);
     }
 
-    void notifyReceiveTaken() {
+    public void notifyReceiveTaken() {
         observers.forEach(LootObserver::onNotifyReceiveTaken);
     }
 

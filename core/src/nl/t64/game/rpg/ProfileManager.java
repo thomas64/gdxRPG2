@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.profile;
+package nl.t64.game.rpg;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -20,7 +20,6 @@ public class ProfileManager {
             Constant.PLAYER_ID.substring(0, 1).toUpperCase() + Constant.PLAYER_ID.substring(1);
     private static final String SAVEGAME_SUFFIX = ".dat";
 
-    public final ProfileSubject profileSubject = new ProfileSubject();
     private final Json json = new Json();
     private final Map<String, FileHandle> profiles = new HashMap<>();
     private ObjectMap<String, Object> profileProperties = new ObjectMap<>();
@@ -47,7 +46,7 @@ public class ProfileManager {
             newProfileName = DEFAULT_PROFILE;
         }
         profileName = newProfileName;
-        profileSubject.notifyCreateProfile(this);
+        Utils.getBrokerManager().profileObservers.notifyCreateProfile(this);
         writeProfileToDisk();
     }
 
@@ -66,7 +65,7 @@ public class ProfileManager {
     }
 
     public void saveProfile() {
-        profileSubject.notifySaveProfile(this);
+        Utils.getBrokerManager().profileObservers.notifySaveProfile(this);
         writeProfileToDisk();
     }
 
@@ -79,7 +78,7 @@ public class ProfileManager {
         }
         profileName = selectedProfileName;
         profileProperties = json.fromJson(ObjectMap.class, profiles.get(profileName));
-        profileSubject.notifyLoadProfile(this);
+        Utils.getBrokerManager().profileObservers.notifyLoadProfile(this);
     }
 
     public Array<String> removeProfile(String selectedProfileName) {

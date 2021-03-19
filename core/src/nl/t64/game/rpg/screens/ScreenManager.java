@@ -44,7 +44,7 @@ public class ScreenManager {
         return (ScreenToLoad) getCurrentScreen();
     }
 
-    public Screen getCurrentScreen() {
+    private Screen getCurrentScreen() {
         return ((Engine) Gdx.app.getApplicationListener()).getScreen();
     }
 

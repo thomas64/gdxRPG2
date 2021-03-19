@@ -8,7 +8,6 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
-import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
 
@@ -16,13 +15,11 @@ public class TiledGraph implements IndexedGraph<TiledNode> {
 
     private final int width;
     private final int height;
-    private final Predicate<Vector2> isInCollision;
     private final Array<TiledNode> nodes;
 
-    public TiledGraph(int width, int height, Predicate<Vector2> isInCollision) {
+    public TiledGraph(int width, int height) {
         this.width = width;
         this.height = height;
-        this.isInCollision = isInCollision;
         this.nodes = new Array<>(width * height);
         this.fillNodes();
         this.addConnections();
@@ -39,7 +36,7 @@ public class TiledGraph implements IndexedGraph<TiledNode> {
     private void fillNodes() {
         IntStream.range(0, width).forEach(
                 x -> IntStream.range(0, height).forEach(
-                        y -> nodes.add(new TiledNode(x, y, isInCollision.test(new Vector2(x, y))))));
+                        y -> nodes.add(new TiledNode(x, y))));
     }
 
     private void addConnections() {

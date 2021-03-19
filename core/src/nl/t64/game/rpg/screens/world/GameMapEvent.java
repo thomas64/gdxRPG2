@@ -2,13 +2,14 @@ package nl.t64.game.rpg.screens.world;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.math.Rectangle;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.event.Event;
+import nl.t64.game.rpg.screens.world.entity.Direction;
+import nl.t64.game.rpg.subjects.CollisionObserver;
 
-import java.util.function.BiConsumer;
 
-
-class GameMapEvent extends GameMapObject {
+class GameMapEvent extends GameMapObject implements CollisionObserver {
 
     private final String eventId;
 
@@ -17,11 +18,21 @@ class GameMapEvent extends GameMapObject {
 
         this.rectangle = rectObject.getRectangle();
         this.eventId = rectObject.getProperties().get("type", String.class);
+
+        Utils.getBrokerManager().collisionObservers.addObserver(this);
     }
 
-    void startConversation(BiConsumer<String, String> notifyShowConversationDialog) {
+    @Override
+    public void onNotifyCollision(Rectangle playerBoundingBox, Direction playerDirection) {
+        if (playerBoundingBox.overlaps(rectangle)) {
+            startConversation();
+        }
+    }
+
+    // todo, een event zal niet altijd alleen een conversation zijn. oplossen wanneer dat moment daar is.
+    private void startConversation() {
         Event event = Utils.getGameData().getEvents().getEventById(eventId);
-        event.startConversation(notifyShowConversationDialog);
+        event.startConversation();
     }
 
 }

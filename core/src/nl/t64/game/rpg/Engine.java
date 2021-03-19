@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controllers;
 import nl.t64.game.rpg.audio.AudioManager;
 import nl.t64.game.rpg.constants.ScreenType;
-import nl.t64.game.rpg.profile.ProfileManager;
 import nl.t64.game.rpg.screens.ScreenManager;
 import nl.t64.game.rpg.screens.world.MapManager;
 
@@ -21,6 +20,7 @@ public class Engine extends Game {
     final ScreenManager screenManager;
     final AudioManager audioManager;
     final MapManager mapManager;
+    final BrokerManager brokerManager;
     final GamepadMapping gamepadMapping;
 
     public Engine(Settings settings) {
@@ -31,6 +31,7 @@ public class Engine extends Game {
         this.screenManager = new ScreenManager();
         this.audioManager = new AudioManager();
         this.mapManager = new MapManager();
+        this.brokerManager = new BrokerManager();
         this.gamepadMapping = new GamepadMapping();
     }
 
@@ -44,8 +45,8 @@ public class Engine extends Game {
 
     @Override
     public void create() {
-        profileManager.profileSubject.addObserver(gameData);
-        profileManager.profileSubject.addObserver(mapManager);
+        brokerManager.profileObservers.addObserver(gameData);
+        brokerManager.profileObservers.addObserver(mapManager);
 
         Controllers.addListener(gamepadMapping.controllerToInputAdapter);
 

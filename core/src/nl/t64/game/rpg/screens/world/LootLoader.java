@@ -15,12 +15,10 @@ class LootLoader {
 
     private final GameMap currentMap;
     private final List<Entity> lootList;
-    private final boolean withBlockers;
 
-    LootLoader(GameMap currentMap, boolean withBlockers) {
+    LootLoader(GameMap currentMap) {
         this.currentMap = currentMap;
         this.lootList = new ArrayList<>();
-        this.withBlockers = withBlockers;
     }
 
     List<Entity> createLoot() {
@@ -51,6 +49,7 @@ class LootLoader {
                                 new PhysicsSparkle(sparkle),
                                 new GraphicsSparkle());
         lootList.add(entity);
+        Utils.getBrokerManager().actionObservers.addObserver(entity);
         var position = new Vector2(gameMapSparkle.getRectangle().x, gameMapSparkle.getRectangle().y);
         entity.send(new LoadEntityEvent(position));
     }
@@ -61,14 +60,13 @@ class LootLoader {
                                 new PhysicsChest(chest),
                                 new GraphicsChest());
         lootList.add(entity);
+        Utils.getBrokerManager().actionObservers.addObserver(entity);
+        Utils.getBrokerManager().blockObservers.addObserver(entity);
         var position = new Vector2(gameMapChest.getRectangle().x, gameMapChest.getRectangle().y);
         if (chest.isTaken()) {
             entity.send(new LoadEntityEvent(EntityState.OPENED, position));
         } else {
             entity.send(new LoadEntityEvent(EntityState.IMMOBILE, position));
-        }
-        if (withBlockers) {
-            currentMap.addToBlockers(entity.getBoundingBox());
         }
     }
 

@@ -7,8 +7,6 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.screens.world.entity.events.*;
 
-import java.util.List;
-
 
 public class PhysicsNpc extends PhysicsComponent {
 
@@ -39,13 +37,15 @@ public class PhysicsNpc extends PhysicsComponent {
         if (event instanceof DirectionEvent directionEvent) {
             direction = directionEvent.direction;
         }
-        if (event instanceof SelectEvent) {
-            if (state.equals(EntityState.INVISIBLE)) {
-                Utils.getScreenManager().getWorldScreen()
-                     .getVisibleNpcOfInvisibleNpcBy(conversationId)
-                     .send(new SelectEvent());
-            } else {
+        if (event instanceof OnActionEvent onActionEvent) {
+            if (onActionEvent.checkRect.overlaps(boundingBox)) {
                 isSelected = true;
+                npcCharacter.send(new WaitEvent(currentPosition, onActionEvent.playerPosition));
+            }
+        }
+        if (event instanceof OnBumpEvent onBumpEvent) {
+            if (onBumpEvent.biggerBoundingBox.overlaps(boundingBox) || onBumpEvent.checkRect.overlaps(boundingBox)) {
+                npcCharacter.send(new WaitEvent(currentPosition, onBumpEvent.playerPosition));
             }
         }
     }
@@ -63,7 +63,7 @@ public class PhysicsNpc extends PhysicsComponent {
         npcCharacter.send(new PositionEvent(currentPosition));
         if (isSelected) {
             isSelected = false;
-            componentSubject.notifyShowConversationDialog(conversationId, npcCharacter);
+            Utils.getBrokerManager().componentObservers.notifyShowConversationDialog(conversationId, npcCharacter);
         }
     }
 
@@ -88,9 +88,8 @@ public class PhysicsNpc extends PhysicsComponent {
     private void checkObstacles() {
         if (state.equals(EntityState.WALKING)) {
             boolean moveBack1 = checkWanderBox();
-            boolean moveBack2 = checkBlocker();
-            boolean moveBack3 = checkOtherCharacters();
-            if (moveBack1 || moveBack2 || moveBack3) {
+            boolean moveBack2 = checkBlockers();
+            if (moveBack1 || moveBack2) {
                 npcCharacter.send(new CollisionEvent());
             }
         }
@@ -105,24 +104,11 @@ public class PhysicsNpc extends PhysicsComponent {
         return moveBack;
     }
 
-    private boolean checkBlocker() {
+    private boolean checkBlockers() {
         boolean moveBack = false;
-        while (Utils.getMapManager().areBlockersCurrentlyBlocking(boundingBox)) {
+        while (doesBoundingBoxOverlapsBlockers()) {
             moveBack();
             moveBack = true;
-        }
-        return moveBack;
-    }
-
-    private boolean checkOtherCharacters() {
-        boolean moveBack = false;
-        List<Entity> theOtherCharacters = Utils.getScreenManager().getWorldScreen()
-                                               .createCopyOfCharactersWithPlayerButWithoutThisNpc(npcCharacter);
-        for (Entity otherCharacter : theOtherCharacters) {
-            while (boundingBox.overlaps(otherCharacter.getBoundingBox())) {
-                moveBack();
-                moveBack = true;
-            }
         }
         return moveBack;
     }

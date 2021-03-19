@@ -1,11 +1,12 @@
 package nl.t64.game.rpg.screens.world.entity;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.screens.world.entity.events.Event;
 import nl.t64.game.rpg.screens.world.entity.events.LoadEntityEvent;
-import nl.t64.game.rpg.screens.world.entity.events.SelectEvent;
+import nl.t64.game.rpg.screens.world.entity.events.OnActionEvent;
 
 
 public class PhysicsSparkle extends PhysicsComponent {
@@ -23,8 +24,10 @@ public class PhysicsSparkle extends PhysicsComponent {
         if (event instanceof LoadEntityEvent loadEvent) {
             currentPosition = loadEvent.position;
         }
-        if (event instanceof SelectEvent) {
-            isSelected = true;
+        if (event instanceof OnActionEvent onActionEvent) {
+            if (onActionEvent.checkRect.overlaps(getRectangle())) {
+                isSelected = true;
+            }
         }
     }
 
@@ -37,7 +40,7 @@ public class PhysicsSparkle extends PhysicsComponent {
     public void update(Entity entity, float dt) {
         if (isSelected) {
             isSelected = false;
-            componentSubject.notifyShowFindDialog(sparkle, AudioEvent.SE_SPARKLE);
+            Utils.getBrokerManager().componentObservers.notifyShowFindDialog(sparkle, AudioEvent.SE_SPARKLE);
         }
     }
 

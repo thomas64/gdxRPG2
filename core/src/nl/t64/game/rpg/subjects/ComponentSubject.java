@@ -1,13 +1,14 @@
-package nl.t64.game.rpg.screens.world.entity;
+package nl.t64.game.rpg.subjects;
 
 import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.loot.Loot;
+import nl.t64.game.rpg.screens.world.entity.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-class ComponentSubject {
+public class ComponentSubject {
 
     private final List<ComponentObserver> observers = new ArrayList<>();
 
@@ -23,27 +24,27 @@ class ComponentSubject {
         observers.clear();
     }
 
-    void notifyShowConversationDialog(String conversationId, Entity npcCharacter) {
+    public void notifyShowConversationDialog(String conversationId, Entity npcCharacter) {
         observers.forEach(observer -> observer.onNotifyShowConversationDialog(conversationId, npcCharacter));
     }
 
-    void notifyShowConversationDialog(String conversationId, String characterId) {
+    public void notifyShowConversationDialog(String conversationId, String characterId) {
         observers.forEach(observer -> observer.onNotifyShowConversationDialog(conversationId, characterId));
     }
 
-    void notifyShowNoteDialog(String noteId) {
+    public void notifyShowNoteDialog(String noteId) {
         observers.forEach(observer -> observer.onNotifyShowNoteDialog(noteId));
     }
 
-    void notifyShowFindDialog(Loot loot, AudioEvent event, String message) {
+    public void notifyShowFindDialog(Loot loot, AudioEvent event, String message) {
         observers.forEach(observer -> observer.onNotifyShowFindDialog(loot, event, message));
     }
 
-    void notifyShowFindDialog(Loot loot, AudioEvent event) {
+    public void notifyShowFindDialog(Loot loot, AudioEvent event) {
         observers.forEach(observer -> observer.onNotifyShowFindDialog(loot, event));
     }
 
-    void notifyShowMessageDialog(String message) {
+    public void notifyShowMessageDialog(String message) {
         observers.forEach(observer -> observer.onNotifyShowMessageDialog(message));
     }
 

@@ -3,12 +3,12 @@ package nl.t64.game.rpg.screens.world.entity;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
 
 
 abstract class PhysicsComponent implements Component {
 
-    public final ComponentSubject componentSubject;
     EntityState state;
     Direction direction;
     float velocity;
@@ -19,7 +19,6 @@ abstract class PhysicsComponent implements Component {
     float boundingBoxHeightPercentage;
 
     PhysicsComponent() {
-        this.componentSubject = new ComponentSubject();
         this.direction = null;
         this.boundingBox = new Rectangle();
         this.oldPosition = new Vector2();
@@ -29,6 +28,13 @@ abstract class PhysicsComponent implements Component {
     public abstract void update(Entity entity, float dt);
 
     public abstract void debug(ShapeRenderer shapeRenderer);
+
+    boolean doesBoundingBoxOverlapsBlockers() {
+        return Utils.getBrokerManager().blockObservers.getCurrentBlockersFor(boundingBox)
+                                                      .stream()
+                                                      .filter(blocker -> !boundingBox.equals(blocker))
+                                                      .anyMatch(blocker -> boundingBox.overlaps(blocker));
+    }
 
     void setBoundingBox() {
         float width = Constant.TILE_SIZE * boundingBoxWidthPercentage;
@@ -66,6 +72,10 @@ abstract class PhysicsComponent implements Component {
     void setRoundPosition() {
         currentPosition.set(Math.round(currentPosition.x), Math.round(currentPosition.y));
         setBoundingBox();
+    }
+
+    Rectangle getRectangle() {
+        return new Rectangle(currentPosition.x, currentPosition.y, Constant.TILE_SIZE, Constant.TILE_SIZE);
     }
 
 }

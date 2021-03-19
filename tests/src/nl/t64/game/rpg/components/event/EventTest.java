@@ -2,8 +2,8 @@ package nl.t64.game.rpg.components.event;
 
 import nl.t64.game.rpg.GameData;
 import nl.t64.game.rpg.GameTest;
+import nl.t64.game.rpg.ProfileManager;
 import nl.t64.game.rpg.Utils;
-import nl.t64.game.rpg.profile.ProfileManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -33,11 +33,11 @@ class EventTest extends GameTest {
                                                           "quest0007", "UNKNOWN"));
         assertThat(event.isHasPlayed()).isFalse();
 
-        event.startConversation((s1, s2) -> { });
+        event.startConversation();
         assertThat(event.isHasPlayed()).isFalse();
 
         Utils.getGameData().getQuests().getQuestById("quest0006").know();
-        event.startConversation((s1, s2) -> { });
+        event.startConversation();
         assertThat(event.isHasPlayed()).isTrue();
     }
 

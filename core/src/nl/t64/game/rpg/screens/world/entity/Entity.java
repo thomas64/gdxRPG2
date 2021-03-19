@@ -7,15 +7,19 @@ import com.badlogic.gdx.math.Vector2;
 import lombok.Getter;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.screens.world.entity.events.Event;
+import nl.t64.game.rpg.screens.world.entity.events.OnActionEvent;
+import nl.t64.game.rpg.screens.world.entity.events.OnBumpEvent;
+import nl.t64.game.rpg.subjects.ActionObserver;
+import nl.t64.game.rpg.subjects.BlockObserver;
+import nl.t64.game.rpg.subjects.BumpObserver;
 
-import java.util.List;
+import java.util.Optional;
 
 
-public class Entity {
+public class Entity implements ActionObserver, BlockObserver, BumpObserver {
 
     @Getter
     private final String id;
-    private final List<Component> components;
     private final InputComponent inputComponent;
     private final PhysicsComponent physicsComponent;
     private final GraphicsComponent graphicsComponent;
@@ -25,26 +29,36 @@ public class Entity {
         this.inputComponent = input;
         this.physicsComponent = physics;
         this.graphicsComponent = graphics;
+    }
 
-        this.components = List.of(this.inputComponent,
-                                  this.physicsComponent,
-                                  this.graphicsComponent);
+    @Override
+    public void onNotifyActionPressed(Rectangle checkRect, Direction playerDirection, Vector2 playerPosition) {
+        send(new OnActionEvent(checkRect, playerDirection, playerPosition));
+    }
+
+    @Override
+    public Optional<Rectangle> getBlockerFor(Rectangle boundingBox) {
+        if (boundingBox.overlaps(physicsComponent.boundingBox)) {
+            return Optional.of(physicsComponent.boundingBox);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public boolean isBlocking(Vector2 point) {
+        return physicsComponent.boundingBox.contains(point);
+    }
+
+    @Override
+    public void onNotifyBump(Rectangle biggerBoundingBox, Rectangle checkRect, Vector2 playerPosition) {
+        send(new OnBumpEvent(biggerBoundingBox, checkRect, playerPosition));
     }
 
     public void send(Event event) {
-        components.forEach(component -> component.receive(event));
-    }
-
-    public void registerObserver(ComponentObserver observer) {
-        inputComponent.componentSubject.addObserver(observer);
-        physicsComponent.componentSubject.addObserver(observer);
-        graphicsComponent.componentSubject.addObserver(observer);
-    }
-
-    public void unregisterObserver() {
-        inputComponent.componentSubject.removeAllObservers();
-        physicsComponent.componentSubject.removeAllObservers();
-        graphicsComponent.componentSubject.removeAllObservers();
+        inputComponent.receive(event);
+        physicsComponent.receive(event);
+        graphicsComponent.receive(event);
     }
 
     public void update(float dt) {
@@ -62,15 +76,13 @@ public class Entity {
     }
 
     public void dispose() {
-        components.forEach(Component::dispose);
+        inputComponent.dispose();
+        physicsComponent.dispose();
+        graphicsComponent.dispose();
     }
 
     public void resetInput() {
         inputComponent.reset();
-    }
-
-    public Rectangle getBoundingBox() {
-        return physicsComponent.boundingBox;
     }
 
     public Vector2 getPositionInGrid() {
@@ -80,11 +92,6 @@ public class Entity {
 
     public Vector2 getPosition() {
         return physicsComponent.currentPosition;
-    }
-
-    public Rectangle getRectangle() {
-        Vector2 position = physicsComponent.currentPosition;
-        return new Rectangle(position.x, position.y, Constant.TILE_SIZE, Constant.TILE_SIZE);
     }
 
     public Direction getDirection() {

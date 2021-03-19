@@ -7,17 +7,11 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.screens.world.entity.events.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 
 public class PhysicsPlayer extends PhysicsComponent {
 
-    private List<Entity> npcCharacters;
     private boolean isActionPressed;
 
     public PhysicsPlayer() {
@@ -54,7 +48,6 @@ public class PhysicsPlayer extends PhysicsComponent {
 
     @Override
     public void update(Entity player, float dt) {
-        npcCharacters = Utils.getScreenManager().getWorldScreen().getNpcCharacters();
         checkActionPressed();
         relocate(dt);
         collisionObstacles(dt);
@@ -63,59 +56,9 @@ public class PhysicsPlayer extends PhysicsComponent {
 
     private void checkActionPressed() {
         if (isActionPressed) {
-            selectNpcCharacterCandidate();
-            checkLoot();
-            checkDoors();
-            checkNotes();
-            checkQuestTasks();
-            checkSavePoints();
-            checkWarpPoints();
+            Utils.getBrokerManager().actionObservers.notifyActionPressed(getCheckRect(), direction, currentPosition);
             isActionPressed = false;
         }
-    }
-
-    private void selectNpcCharacterCandidate() {
-        npcCharacters.forEach(npc -> npc.send(new DeselectEvent()));
-        npcCharacters.stream()
-                     .filter(checkRectOverlapsNpc())
-                     .findFirst()
-                     .ifPresent(npc -> {
-                         npc.send(new SelectEvent());
-                         npc.send(new WaitEvent(npc.getPosition(), currentPosition));
-                     });
-    }
-
-    private void checkLoot() {
-        Utils.getScreenManager().getWorldScreen().getLootList()
-             .stream()
-             .filter(this::isLootChecked)
-             .findFirst()
-             .ifPresent(loot -> loot.send(new SelectEvent()));
-    }
-
-    private void checkDoors() {
-        Utils.getScreenManager().getWorldScreen().getDoorList()
-             .stream()
-             .filter(this::isDoorChecked)
-             .findFirst()
-             .ifPresent(door -> door.send(new SelectEvent()));
-    }
-
-    private void checkNotes() {
-        Utils.getMapManager().getNoteId(getCheckRect())
-             .ifPresent(componentSubject::notifyShowNoteDialog);
-    }
-
-    private void checkQuestTasks() {
-        Utils.getMapManager().checkQuestTasks(getCheckRect());
-    }
-
-    private void checkSavePoints() {
-        Utils.getMapManager().checkSavePoints(getCheckRect());
-    }
-
-    private void checkWarpPoints() {
-        Utils.getMapManager().checkWarpPoints(getCheckRect(), direction);
     }
 
     private void relocate(float dt) {
@@ -128,136 +71,44 @@ public class PhysicsPlayer extends PhysicsComponent {
     }
 
     private void collisionObstacles(float dt) {
-        if (state.equals(EntityState.WALKING)) {
-            if (velocity != Constant.MOVE_SPEED_4) {
-                turnCharacters();
+        if (velocity != Constant.MOVE_SPEED_4) {
+            Utils.getBrokerManager().bumpObservers.notifyBump(getALittleBitBiggerBoundingBox(),
+                                                              getCheckRect(), currentPosition);
+            if (state.equals(EntityState.WALKING)) {
                 collisionBlockers(dt);
+                Utils.getBrokerManager().collisionObservers.notifyCollision(boundingBox, direction);
             }
-            collisionPortals();
-            collisionEvents();
-            collisionQuestTasks();
-        } else if (state.equals(EntityState.IDLE)) {
-            turnCharacters();
         }
-    }
-
-    private void turnCharacters() {
-        npcCharacters.stream()
-                     .filter(littleBitBiggerBoxOverlapsNpc().or(checkRectOverlapsNpc()))
-                     .forEach(sendWaitEvent());
-    }
-
-    private Predicate<Entity> checkRectOverlapsNpc() {
-        return npcCharacter -> getCheckRect().overlaps(npcCharacter.getBoundingBox());
-    }
-
-    private boolean isLootChecked(Entity loot) {
-        if (loot.getId().startsWith("chest")) {
-            return direction.equals(Direction.NORTH)
-                   && getCheckRect().overlaps(loot.getBoundingBox());
-        } else {
-            return getCheckRect().overlaps(loot.getRectangle());
-        }
-    }
-
-    private boolean isDoorChecked(Entity door) {
-        return (direction.equals(Direction.NORTH) || direction.equals(Direction.SOUTH))
-               && getCheckRect().overlaps(door.getBoundingBox());
-    }
-
-    private Predicate<Entity> littleBitBiggerBoxOverlapsNpc() {
-        return npcCharacter -> getALittleBitBiggerBoundingBox().overlaps(npcCharacter.getBoundingBox());
-    }
-
-    private Consumer<Entity> sendWaitEvent() {
-        return npcCharacter -> npcCharacter.send(new WaitEvent(npcCharacter.getPosition(), currentPosition));
     }
 
     private void collisionBlockers(float dt) {
-        List<Rectangle> blockers = Utils.getMapManager().getAllBlockers();
-        List<Rectangle> walkingBlockers = npcCharacters.stream()
-                                                       .filter(stateIsNotImmobileAndFloating())
-                                                       .map(Entity::getBoundingBox)
-                                                       .collect(Collectors.toUnmodifiableList());
+        List<Rectangle> blockers = Utils.getBrokerManager().blockObservers.getCurrentBlockersFor(boundingBox);
+        if (!blockers.isEmpty()) {
+            handleBlockers(blockers, dt);
+        }
+    }
 
-        List<Rectangle> copyBlockers = new ArrayList<>(blockers);
-        List<Rectangle> copyWalkingBlockers = new ArrayList<>(walkingBlockers);
-
-        possibleMoveSide(copyBlockers, copyWalkingBlockers, dt);
+    private void handleBlockers(List<Rectangle> blockers, float dt) {
+        if (blockers.size() == 1) {
+            moveSide(blockers.get(0), dt);
+        }
         setRoundPosition();
-        if (setPossibleOldPosition(copyBlockers, copyWalkingBlockers)) {
+        if (hasHitAnotherBlockWhileSideStepping()) {
             return;
         }
-        possibleMoveBack(blockers, walkingBlockers);
-    }
-
-    private Predicate<Entity> stateIsNotImmobileAndFloating() {
-        return npcCharacter -> !npcCharacter.getState().equals(EntityState.IMMOBILE)
-                               && !npcCharacter.getState().equals(EntityState.FLOATING);
-    }
-
-    private void possibleMoveSide(List<Rectangle> copyBlockers, List<Rectangle> copyWalkingBlockers, float dt) {
-        Optional<Rectangle> blocker1 = getOnlySingleCollisionBlocker(copyBlockers);
-        Optional<Rectangle> blocker2 = getOnlySingleCollisionBlocker(copyWalkingBlockers);
-
-        blocker1.ifPresent(blocker -> {
-            moveSide(blocker, dt);
-            copyBlockers.remove(blocker);
-        });
-
-        blocker2.ifPresent(blocker -> {
-            moveSide(blocker, dt);
-            copyWalkingBlockers.remove(blocker);
-        });
-    }
-
-    private Optional<Rectangle> getOnlySingleCollisionBlocker(List<Rectangle> blockerList) {
-        int count = 0;
-        Rectangle blocker = null;
-        for (Rectangle blockerRect : blockerList) {
-            if (boundingBox.overlaps(blockerRect)) {
-                count++;
-                blocker = blockerRect;
-            }
-        }
-        if (count == 1) {
-            return Optional.of(blocker);
-        } else {
-            return Optional.empty();
+        while (doesBoundingBoxOverlapsBlockers()) {
+            moveBack();
         }
     }
 
-    private boolean setPossibleOldPosition(List<Rectangle> copyBlockers, List<Rectangle> copyWalkingBlockers) {
-        if (doesPlayerOverlap(copyBlockers) || doesPlayerOverlap(copyWalkingBlockers)) {
+    private boolean hasHitAnotherBlockWhileSideStepping() {
+        List<Rectangle> blockers = Utils.getBrokerManager().blockObservers.getCurrentBlockersFor(boundingBox);
+        if (blockers.size() > 1) {
             currentPosition.set(oldPosition);
             setBoundingBox();
             return true;
         }
         return false;
-    }
-
-    private void possibleMoveBack(List<Rectangle> blockers, List<Rectangle> walkingBlockers) {
-        while (doesPlayerOverlap(blockers) || doesPlayerOverlap(walkingBlockers)) {
-            moveBack();
-        }
-    }
-
-    private boolean doesPlayerOverlap(List<Rectangle> blockers) {
-        return blockers.stream().anyMatch(boundingBox::overlaps);
-    }
-
-    private void collisionPortals() {
-        Utils.getMapManager().collisionPortals(boundingBox, direction);
-    }
-
-    // todo, een event zal niet altijd alleen een conversation zijn. oplossen wanneer dat moment daar is.
-    // oplossen hier en in de hele keten aan methodes die hierop volgen. (MapManager, GameMapEvent, Event)
-    private void collisionEvents() {
-        Utils.getMapManager().collisionEvent(boundingBox, componentSubject::notifyShowConversationDialog);
-    }
-
-    private void collisionQuestTasks() {
-        Utils.getMapManager().collisionQuestTasks(boundingBox);
     }
 
     private void moveSide(Rectangle blocker, float dt) {
