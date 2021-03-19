@@ -1,6 +1,5 @@
 package nl.t64.game.rpg.screens.world;
 
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.screens.world.entity.Direction;
@@ -16,10 +15,8 @@ class GameMapNpc extends GameMapObject {
     final Direction direction;
     final String conversation;
 
-    GameMapNpc(MapObject mapObject) {
-        RectangleMapObject rectObject = (RectangleMapObject) mapObject;
-
-        this.rectangle = rectObject.getRectangle();
+    GameMapNpc(RectangleMapObject rectObject) {
+        super.rectangle = rectObject.getRectangle();
         this.name = rectObject.getName();
         this.state = createState(rectObject);
         this.direction = createDirection(rectObject);

@@ -7,13 +7,14 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
+
+import java.util.List;
 
 
 class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
@@ -96,28 +97,25 @@ class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
 
         render(UNDER_LAYERS);
         batch.begin();
-        renderLowerTextures();
+        renderTextures(Utils.getMapManager().getLowerMapTextures());
         renderEntities.run();
-        renderUpperTextures();
+        renderTextures(Utils.getMapManager().getUpperMapTextures());
         batch.end();
         render(OVER_LAYERS);
         renderLightmap();
     }
 
-    private void renderLowerTextures() {
-        Utils.getMapManager().getLowerMapTextures()
-             .stream()
-             .filter(GameMapQuestTexture::isVisible)
-             .map(GameMapQuestTexture::getTexture)
-             .forEach(this::renderObject);
+    private void renderTextures(List<GameMapQuestTexture> gameMapQuestTextures) {
+        gameMapQuestTextures.stream()
+                            .filter(GameMapQuestTexture::isVisible)
+                            .map(GameMapQuestTexture::getTexture)
+                            .forEach(this::renderObject);
     }
 
-    private void renderUpperTextures() {
-        Utils.getMapManager().getUpperMapTextures()
-             .stream()
-             .filter(GameMapQuestTexture::isVisible)
-             .map(GameMapQuestTexture::getTexture)
-             .forEach(this::renderObject);
+    private void renderObject(TextureMapObject object) {
+        batch.draw(object.getTextureRegion(),
+                   object.getX(),
+                   object.getY());
     }
 
     private void renderLightmap() {
@@ -145,15 +143,6 @@ class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
         }
         lightmap.setY(-scroller);
         lightmap.draw(batch);
-    }
-
-    @Override
-    public void renderObject(MapObject object) {
-        if (object instanceof TextureMapObject textureObject) {
-            batch.draw(textureObject.getTextureRegion(),
-                       textureObject.getX(),
-                       textureObject.getY());
-        }
     }
 
 }

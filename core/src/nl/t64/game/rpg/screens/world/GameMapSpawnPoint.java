@@ -1,6 +1,5 @@
 package nl.t64.game.rpg.screens.world;
 
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import nl.t64.game.rpg.screens.world.entity.Direction;
 
@@ -11,10 +10,8 @@ class GameMapSpawnPoint extends GameMapObject {
     private final String fromMapLocation;
     final Direction direction;
 
-    GameMapSpawnPoint(MapObject mapObject) {
-        RectangleMapObject rectObject = (RectangleMapObject) mapObject;
-
-        this.rectangle = rectObject.getRectangle();
+    GameMapSpawnPoint(RectangleMapObject rectObject) {
+        super.rectangle = rectObject.getRectangle();
         this.fromMapName = rectObject.getName();
         this.fromMapLocation = createFromMapLocation(rectObject);
         this.direction = createDirection(rectObject);

@@ -3,9 +3,7 @@ package nl.t64.game.rpg.screens.world;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -16,8 +14,8 @@ import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.screens.world.entity.Direction;
 import nl.t64.game.rpg.screens.world.pathfinding.TiledGraph;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.List;
 import java.util.stream.Stream;
 
 
@@ -42,12 +40,8 @@ public class GameMap {
 
     private static final String WIDTH_PROPERTY = "width";
     private static final String HEIGHT_PROPERTY = "height";
-    private static final String LIGHTMAP_CAMERA_PROPERTY = "lightmap_camera";
-    private static final String LIGHTMAP_MAP_PROPERTY = "lightmap_map";
-    private static final String LIGHTMAP_PLAYER_PROPERTY = "lightmap_player";
     private static final String STEP_SOUND_PROPERTY = "step_sound";
 
-    private static final String DEFAULT_LIGHTMAP = "default";
     private static final String DEFAULT_STEP_SOUND = "grass";
 
     final String mapTitle;
@@ -61,25 +55,25 @@ public class GameMap {
     Vector2 playerSpawnLocation;
     Direction playerSpawnDirection;
 
-    private final List<RectangleMapObject> sounds = new ArrayList<>();
-    final List<GameMapNpc> npcs = new ArrayList<>();
-    final List<GameMapHero> heroes = new ArrayList<>();
-    private final List<GameMapBlocker> blockers = new ArrayList<>();
-    final List<GameMapLight> lights = new ArrayList<>();
-    private final List<GameMapEvent> eventDiscovers = new ArrayList<>();
-    final List<GameMapQuestBlocker> questBlockers = new ArrayList<>();
-    final List<GameMapQuestTexture> upperTextures = new ArrayList<>();
-    final List<GameMapQuestTexture> lowerTextures = new ArrayList<>();
-    private final List<GameMapQuestDiscoverObject> questDiscovers = new ArrayList<>();
-    private final List<GameMapQuestCheckObject> questCheckers = new ArrayList<>();
-    final List<RectangleMapObject> sparkles = new ArrayList<>();
-    final List<RectangleMapObject> chests = new ArrayList<>();
-    final List<RectangleMapObject> doors = new ArrayList<>();
-    private final List<GameMapSavePoint> savePoints = new ArrayList<>();
-    private final List<GameMapSpawnPoint> spawnPoints = new ArrayList<>();
-    private final List<GameMapPortal> portals = new ArrayList<>();
-    private final List<GameMapWarpPoint> warpPoints = new ArrayList<>();
-    private final List<GameMapNote> notes = new ArrayList<>();
+    final List<GameMapNpc> npcs;
+    final List<GameMapHero> heroes;
+    final List<GameMapLight> lights;
+    final List<GameMapQuestBlocker> questBlockers;
+    final List<GameMapQuestTexture> upperTextures;
+    final List<GameMapQuestTexture> lowerTextures;
+    final List<RectangleMapObject> sparkles;
+    final List<RectangleMapObject> chests;
+    final List<RectangleMapObject> doors;
+    private final List<RectangleMapObject> sounds;
+    private final List<GameMapBlocker> blockers;
+    private final List<GameMapEvent> eventDiscovers;
+    private final List<GameMapQuestDiscoverObject> questDiscovers;
+    private final List<GameMapQuestCheckObject> questCheckers;
+    private final List<GameMapNote> notes;
+    private final List<GameMapSavePoint> savePoints;
+    private final List<GameMapSpawnPoint> spawnPoints;
+    private final List<GameMapPortal> portals;
+    private final List<GameMapWarpPoint> warpPoints;
 
     private final String defaultStepSound;
 
@@ -90,30 +84,44 @@ public class GameMap {
         this.tiledMap = MapManager.getTiledMap(this.mapTitle);
         this.bgm = MapManager.getBgmOfMap(this.tiledMap);
         this.bgs = MapManager.getBgsOfMap(this.tiledMap);
-        this.lightmapCamera = this.loadLightmapCamera();
-        this.lightmapMap = this.loadLightmapMap();
-        this.lightmapPlayer = this.loadLightmapPlayer();
+
+        var loader = new GameMapLayerLoader(tiledMap);
+
+        this.lightmapCamera = loader.loadLightmapCamera();
+        this.lightmapMap = loader.loadLightmapMap();
+        this.lightmapPlayer = loader.loadLightmapPlayer();
         this.defaultStepSound = this.tiledMap.getProperties().get(STEP_SOUND_PROPERTY, DEFAULT_STEP_SOUND, String.class);
 
         this.playerSpawnLocation = new Vector2();
 
-        this.loadSounds();
-        this.loadNpcs();
-        this.loadHeroes();
-        this.loadBlockers();
-        this.loadLights();
-        this.loadEventLayer();
-        this.loadQuestLayer();
-        this.loadTextureLayers();
-        this.loadRestLayer();
-        this.loadSavePoints();
-        this.loadSpawnPoints();
-        this.loadPortals();
-        this.loadWarpPoints();
+
+        this.sounds = loader.loadLayer(SOUND_LAYER);
+        this.npcs = loader.loadLayer(NPC_LAYER, GameMapNpc::new);
+        this.heroes = loader.loadLayer(HERO_LAYER, rectObject -> Utils.getGameData().getHeroes().contains(rectObject.getName()), GameMapHero::new);
+        this.blockers = loader.loadLayer(COLLISION_LAYER, GameMapBlocker::new);
+        this.lights = loader.loadLayer(LIGHTS_LAYER, GameMapLight::new);
+        this.eventDiscovers = loader.equalsIgnoreCase(EVENT_LAYER, "discover", GameMapEvent::new);
+
+        this.questBlockers = loader.equalsIgnoreCase(QUEST_LAYER, "blocker", GameMapQuestBlocker::new);
+        this.questDiscovers = loader.equalsIgnoreCase(QUEST_LAYER, "discover", GameMapQuestDiscoverObject::new);
+        this.questCheckers = loader.equalsIgnoreCase(QUEST_LAYER, "check", GameMapQuestCheckObject::new);
+
+        this.upperTextures = loader.loadTextureLayer(UPPER_TEXTURE_LAYER, GameMapQuestTexture::new);
+        this.lowerTextures = loader.loadTextureLayer(LOWER_TEXTURE_LAYER, GameMapQuestTexture::new);
+
+        this.sparkles = loader.startsWith(REST_LAYER, "sparkle");
+        this.chests = loader.startsWith(REST_LAYER, "chest");
+        this.doors = loader.startsWith(REST_LAYER, "door");
+        this.notes = loader.startsWith(REST_LAYER, "note", GameMapNote::new);
+
+        this.savePoints = loader.loadLayer(SAVE_LAYER, GameMapSavePoint::new);
+        this.spawnPoints = loader.loadLayer(SPAWN_LAYER, GameMapSpawnPoint::new);
+        this.portals = loader.loadLayer(PORTAL_LAYER, rectObject -> new GameMapPortal(rectObject, mapTitle));
+        this.warpPoints = loader.loadLayer(WARP_LAYER, rectObject -> new GameMapWarpPoint(rectObject, mapTitle));
     }
 
     void setTiledGraph() {
-        this.tiledGraph = new TiledGraph(this.getWidth(), this.getHeight());
+        this.tiledGraph = new TiledGraph(getWidth(), getHeight());
     }
 
     String getUnderground(Vector2 point) {
@@ -125,9 +133,9 @@ public class GameMap {
     }
 
     void setPlayerSpawnLocationForNewLoad(String mapTitle) {
-        MapObject dummyObject = new RectangleMapObject();
+        var dummyObject = new RectangleMapObject();
         dummyObject.setName(mapTitle);
-        GameMapPortal spawnForNewLoadPortal = GameMapPortal.create(dummyObject, mapTitle);
+        GameMapPortal spawnForNewLoadPortal = new GameMapPortal(dummyObject, mapTitle);
         setPlayerSpawnLocation(spawnForNewLoadPortal);
     }
 
@@ -168,166 +176,6 @@ public class GameMap {
 
     private int getHeight() {
         return (int) tiledMap.getProperties().get(HEIGHT_PROPERTY);
-    }
-
-    private List<Texture> loadLightmapCamera() {
-        String lightmapStrings = tiledMap.getProperties().get(LIGHTMAP_CAMERA_PROPERTY, DEFAULT_LIGHTMAP, String.class);
-        return Arrays.stream(lightmapStrings.split("\\s*,\\s*"))
-                     .map(Utils::createLightmap)
-                     .collect(Collectors.toUnmodifiableList());
-    }
-
-    private Sprite loadLightmapMap() {
-        String id = tiledMap.getProperties().get(LIGHTMAP_MAP_PROPERTY, DEFAULT_LIGHTMAP, String.class);
-        Texture texture = Utils.createLightmap(id);
-        texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        var region = new TextureRegion(texture);
-        region.setRegionWidth(texture.getWidth() * LIGHTMAP_REGION_MULTIPLIER);
-        region.setRegionHeight(texture.getHeight() * LIGHTMAP_REGION_MULTIPLIER);
-        return new Sprite(region);
-    }
-
-    private Sprite loadLightmapPlayer() {
-        return Optional.ofNullable(tiledMap.getProperties().get(LIGHTMAP_PLAYER_PROPERTY, String.class))
-                       .map(Utils::createLightmap)
-                       .map(Sprite::new)
-                       .orElse(null);
-    }
-
-    private void loadSounds() {
-        getMapLayer(SOUND_LAYER).ifPresent(mapLayer -> {
-            for (MapObject mapObject : mapLayer.getObjects()) {
-                RectangleMapObject rectObject = (RectangleMapObject) mapObject;
-                sounds.add(rectObject);
-            }
-        });
-    }
-
-    private void loadNpcs() {
-        getMapLayer(NPC_LAYER).ifPresent(mapLayer -> {
-            for (MapObject mapObject : mapLayer.getObjects()) {
-                npcs.add(new GameMapNpc(mapObject));
-            }
-        });
-    }
-
-    private void loadHeroes() {
-        var gameData = Utils.getGameData();
-        getMapLayer(HERO_LAYER).ifPresent(mapLayer -> {
-            for (MapObject mapObject : mapLayer.getObjects()) {
-                String heroId = mapObject.getName();
-                if (gameData.getHeroes().contains(heroId)) {
-                    heroes.add(new GameMapHero(mapObject));
-                }
-            }
-        });
-    }
-
-    private void loadBlockers() {
-        getMapLayer(COLLISION_LAYER).ifPresent(mapLayer -> {
-            for (MapObject mapObject : mapLayer.getObjects()) {
-                RectangleMapObject rectObject = (RectangleMapObject) mapObject;
-                blockers.add(new GameMapBlocker(rectObject.getRectangle()));
-            }
-        });
-    }
-
-    private void loadLights() {
-        getMapLayer(LIGHTS_LAYER).ifPresent(mapLayer -> {
-            for (MapObject mapObject : mapLayer.getObjects()) {
-                lights.add(new GameMapLight(mapObject));
-            }
-        });
-    }
-
-    private void loadEventLayer() {
-        getMapLayer(EVENT_LAYER).ifPresent(mapLayer -> {
-            for (MapObject mapObject : mapLayer.getObjects()) {
-                if (mapObject.getName().equalsIgnoreCase("discover")) {
-                    eventDiscovers.add(new GameMapEvent(mapObject));
-                }
-            }
-        });
-    }
-
-    private void loadQuestLayer() {
-        getMapLayer(QUEST_LAYER).ifPresent(mapLayer -> {
-            for (MapObject mapObject : mapLayer.getObjects()) {
-                if (mapObject.getName().equalsIgnoreCase("blocker")) {
-                    questBlockers.add(new GameMapQuestBlocker(mapObject));
-                } else if (mapObject.getName().equalsIgnoreCase("discover")) {
-                    questDiscovers.add(new GameMapQuestDiscoverObject(mapObject));
-                } else if (mapObject.getName().equalsIgnoreCase("check")) {
-                    questCheckers.add(new GameMapQuestCheckObject(mapObject));
-                }
-            }
-        });
-    }
-
-    private void loadTextureLayers() {
-        getMapLayer(UPPER_TEXTURE_LAYER).ifPresent(mapLayer -> {
-            for (MapObject mapObject : mapLayer.getObjects()) {
-                upperTextures.add(new GameMapQuestTexture(mapObject));
-            }
-        });
-        getMapLayer(LOWER_TEXTURE_LAYER).ifPresent(mapLayer -> {
-            for (MapObject mapObject : mapLayer.getObjects()) {
-                lowerTextures.add(new GameMapQuestTexture(mapObject));
-            }
-        });
-    }
-
-    private void loadRestLayer() {
-        getMapLayer(REST_LAYER).ifPresent(mapLayer -> {
-            for (MapObject mapObject : mapLayer.getObjects()) {
-                RectangleMapObject rectObject = (RectangleMapObject) mapObject;
-                if (mapObject.getName().startsWith("sparkle")) {
-                    sparkles.add(rectObject);
-                } else if (mapObject.getName().startsWith("chest")) {
-                    chests.add(rectObject);
-                } else if (mapObject.getName().startsWith("door")) {
-                    doors.add(rectObject);
-                } else if (mapObject.getName().startsWith("note")) {
-                    notes.add(new GameMapNote(rectObject));
-                }
-            }
-        });
-    }
-
-    private void loadSavePoints() {
-        getMapLayer(SAVE_LAYER).ifPresent(mapLayer -> {
-            for (MapObject mapObject : mapLayer.getObjects()) {
-                savePoints.add(new GameMapSavePoint(mapObject));
-            }
-        });
-    }
-
-    private void loadSpawnPoints() {
-        getMapLayer(SPAWN_LAYER).ifPresent(mapLayer -> {
-            for (MapObject mapObject : mapLayer.getObjects()) {
-                spawnPoints.add(new GameMapSpawnPoint(mapObject));
-            }
-        });
-    }
-
-    private void loadPortals() {
-        getMapLayer(PORTAL_LAYER).ifPresent(mapLayer -> {
-            for (MapObject mapObject : mapLayer.getObjects()) {
-                portals.add(GameMapPortal.create(mapObject, mapTitle));
-            }
-        });
-    }
-
-    private void loadWarpPoints() {
-        getMapLayer(WARP_LAYER).ifPresent(mapLayer -> {
-            for (MapObject mapObject : mapLayer.getObjects()) {
-                warpPoints.add(GameMapWarpPoint.create(mapObject, mapTitle));
-            }
-        });
-    }
-
-    private Optional<MapLayer> getMapLayer(String layerName) {
-        return Optional.ofNullable(tiledMap.getLayers().get(layerName));
     }
 
     void dispose() {

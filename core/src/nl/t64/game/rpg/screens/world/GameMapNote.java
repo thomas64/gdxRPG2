@@ -13,8 +13,9 @@ class GameMapNote extends GameMapObject implements ActionObserver {
     private final String noteId;
 
     GameMapNote(RectangleMapObject rectObject) {
-        this.rectangle = rectObject.getRectangle();
+        super.rectangle = rectObject.getRectangle();
         this.noteId = rectObject.getName();
+
         Utils.getBrokerManager().actionObservers.addObserver(this);
     }
 

@@ -1,6 +1,5 @@
 package nl.t64.game.rpg.screens.world;
 
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import nl.t64.game.rpg.Utils;
@@ -14,10 +13,8 @@ class GameMapQuestDiscoverObject extends GameMapObject implements CollisionObser
     private final String questId;
     private final String taskId;
 
-    GameMapQuestDiscoverObject(MapObject mapObject) {
-        RectangleMapObject rectObject = (RectangleMapObject) mapObject;
-
-        this.rectangle = rectObject.getRectangle();
+    GameMapQuestDiscoverObject(RectangleMapObject rectObject) {
+        super.rectangle = rectObject.getRectangle();
         this.questId = rectObject.getProperties().get("type", String.class);
         this.taskId = rectObject.getProperties().get("task", String.class);
 

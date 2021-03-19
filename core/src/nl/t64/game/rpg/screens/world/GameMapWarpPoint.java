@@ -1,7 +1,6 @@
 package nl.t64.game.rpg.screens.world;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -12,26 +11,14 @@ import nl.t64.game.rpg.subjects.ActionObserver;
 
 class GameMapWarpPoint extends GameMapRelocator implements ActionObserver {
 
-    private GameMapWarpPoint(Rectangle rectangle,
-                             String fromMapName,
-                             String toMapName,
-                             String toMapLocation,
-                             Color fadeColor) {
-        super(rectangle,
+    GameMapWarpPoint(RectangleMapObject rectObject, String fromMapName) {
+        super(rectObject.getRectangle(),
               fromMapName,
-              toMapName,
-              toMapLocation,
-              fadeColor);
-        Utils.getBrokerManager().actionObservers.addObserver(this);
-    }
+              rectObject.getName(),
+              createToMapLocation(rectObject),
+              Color.WHITE);
 
-    static GameMapWarpPoint create(MapObject mapObject, String fromMapName) {
-        RectangleMapObject rectObject = (RectangleMapObject) mapObject;
-        return new GameMapWarpPoint(rectObject.getRectangle(),
-                                    fromMapName,
-                                    rectObject.getName(),
-                                    createToMapLocation(rectObject),
-                                    Color.WHITE);
+        Utils.getBrokerManager().actionObservers.addObserver(this);
     }
 
     @Override
