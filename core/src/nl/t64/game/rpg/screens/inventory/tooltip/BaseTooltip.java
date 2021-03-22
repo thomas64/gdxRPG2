@@ -8,9 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.screens.inventory.itemslot.ItemSlot;
 
 
-abstract class BaseTooltip {
+public abstract class BaseTooltip {
 
     private static final String SPRITE_SLOT = "sprites/tooltip.png";
     private static final float PADDING = 10f;
@@ -32,16 +33,21 @@ abstract class BaseTooltip {
         return new Window.WindowStyle(new BitmapFont(), Color.GREEN, drawable);
     }
 
+    public void toggle(ItemSlot itemSlot) {
+        throw new IllegalCallerException("Implement this method in child.");
+    }
+
+    public void toggleCompare(ItemSlot itemSlot) {
+        // do nothing. some tooltips don't need compare.
+    }
+
     public void addToStage(Stage stage) {
         stage.addActor(window);
     }
 
-    void setPosition(float x, float y) {
-        window.setPosition(x, y);
-    }
-
-    void toFront() {
-        window.toFront();
+    public void hide() {
+        window.clearActions();
+        window.setVisible(false);
     }
 
 }

@@ -8,6 +8,7 @@ import nl.t64.game.rpg.components.party.InventoryContainer;
 import nl.t64.game.rpg.components.party.InventoryDatabase;
 import nl.t64.game.rpg.components.party.InventoryGroup;
 import nl.t64.game.rpg.components.party.InventoryItem;
+import nl.t64.game.rpg.screens.inventory.InventoryUtils;
 import nl.t64.game.rpg.screens.inventory.WindowSelector;
 import nl.t64.game.rpg.screens.inventory.inventoryslot.InventorySlot;
 import nl.t64.game.rpg.screens.inventory.inventoryslot.InventorySlotsTableListener;
@@ -55,6 +56,7 @@ public class ShopSlotsTable implements WindowSelector {
     @Override
     public void setKeyboardFocus(Stage stage) {
         stage.setKeyboardFocus(shopSlotTable);
+        InventoryUtils.setWindowSelected(container);
     }
 
     @Override
@@ -70,11 +72,17 @@ public class ShopSlotsTable implements WindowSelector {
     @Override
     public void deselectCurrentSlot() {
         selector.deselectCurrentSlot();
+        InventoryUtils.setWindowDeselected(container);
     }
 
     @Override
     public void selectCurrentSlot() {
         selector.selectCurrentSlot();
+    }
+
+    @Override
+    public void hideTooltip() {
+        tooltip.hide();
     }
 
     @Override
@@ -90,11 +98,6 @@ public class ShopSlotsTable implements WindowSelector {
     @Override
     public void takeFull() {
         taker.buyFull(selector.getCurrentSlot());
-    }
-
-    @Override
-    public void hideTooltip() {
-        tooltip.hide();
     }
 
     public Optional<ItemSlot> getPossibleSameStackableItemSlotWith(InventoryItem candidateItem) {

@@ -96,16 +96,17 @@ class InventoryUI extends ScreenUI {
         var skillsWindow = Utils.createDefaultWindow(TITLE_SKILLS, skillsTable.container);
 
         var statsTable = new StatsTable(personalityTooltip);
-        var statsWindow = Utils.createDefaultWindow(TITLE_STATS, statsTable.table);
+        var statsWindow = Utils.createDefaultWindow(TITLE_STATS, statsTable.container);
 
-        var calcsTable = new CalcsTable();
-        var calcsWindow = Utils.createDefaultWindow(TITLE_CALCS, calcsTable.table);
+        var calcsTable = new CalcsTable(personalityTooltip);
+        var calcsWindow = Utils.createDefaultWindow(TITLE_CALCS, calcsTable.container);
 
         var heroesTable = new HeroesTable();
         var heroesWindow = Utils.createDefaultWindow(TITLE_HEROES, heroesTable.heroes);
 
-        List<WindowSelector> tableList = List.of(equipSlotsTables, inventorySlotsTable);
-        int selectedTableIndex = 1;
+        List<WindowSelector> tableList = List.of(statsTable, calcsTable, skillsTable,
+                                                 equipSlotsTables, inventorySlotsTable, spellsTable);
+        int selectedTableIndex = 4;
 
         return new InventoryUI(stage, itemSlotTooltip, personalityTooltip,
                                spellsWindow, inventoryWindow, equipWindow, skillsWindow,

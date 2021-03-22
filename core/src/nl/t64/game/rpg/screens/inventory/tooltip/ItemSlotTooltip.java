@@ -33,6 +33,7 @@ public class ItemSlotTooltip extends BaseTooltip {
     private static final Color ORANGE = new Color(0xFF9000FF);
     private static final float DELAY = 0.5f;
 
+    @Override
     public void toggle(ItemSlot itemSlot) {
         if (itemSlot.hasItem()) {
             boolean isEnabled = Utils.getGameData().isTooltipEnabled();
@@ -42,6 +43,7 @@ public class ItemSlotTooltip extends BaseTooltip {
         }
     }
 
+    @Override
     public void toggleCompare(ItemSlot itemSlot) {
         if (itemSlot.hasItem() && !window.hasActions()) {
             boolean isEnabled = Utils.getGameData().isComparingEnabled();
@@ -57,11 +59,6 @@ public class ItemSlotTooltip extends BaseTooltip {
             window.addAction(Actions.sequence(Actions.delay(DELAY),
                                               Actions.show()));
         }
-    }
-
-    public void hide() {
-        window.clearActions();
-        window.setVisible(false);
     }
 
     private void setupTooltip(ItemSlot itemSlot) {

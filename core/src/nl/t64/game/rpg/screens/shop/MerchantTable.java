@@ -22,6 +22,7 @@ class MerchantTable extends BaseTable {
             Payment will happen immediately.""";
 
     MerchantTable(String npcId) {
+        super(null);
         this.table.defaults().reset();
         this.table.defaults().size(TABLE_WIDTH, TABLE_HEIGHT);
         this.table.pad(PADDING);
@@ -35,7 +36,7 @@ class MerchantTable extends BaseTable {
     }
 
     @Override
-    protected void update() {
+    protected void fillRows() {
         // empty
     }
 

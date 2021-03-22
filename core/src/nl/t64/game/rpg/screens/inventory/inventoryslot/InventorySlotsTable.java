@@ -8,6 +8,7 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.InventoryContainer;
 import nl.t64.game.rpg.components.party.InventoryGroup;
 import nl.t64.game.rpg.components.party.InventoryItem;
+import nl.t64.game.rpg.screens.inventory.InventoryUtils;
 import nl.t64.game.rpg.screens.inventory.WindowSelector;
 import nl.t64.game.rpg.screens.inventory.itemslot.InventoryImage;
 import nl.t64.game.rpg.screens.inventory.itemslot.ItemSlot;
@@ -51,6 +52,7 @@ public class InventorySlotsTable implements WindowSelector {
     @Override
     public void setKeyboardFocus(Stage stage) {
         stage.setKeyboardFocus(inventorySlotTable);
+        InventoryUtils.setWindowSelected(container);
     }
 
     @Override
@@ -66,11 +68,17 @@ public class InventorySlotsTable implements WindowSelector {
     @Override
     public void deselectCurrentSlot() {
         selector.deselectCurrentSlot();
+        InventoryUtils.setWindowDeselected(container);
     }
 
     @Override
     public void selectCurrentSlot() {
         selector.selectCurrentSlot();
+    }
+
+    @Override
+    public void hideTooltip() {
+        tooltip.hide();
     }
 
     @Override
@@ -91,11 +99,6 @@ public class InventorySlotsTable implements WindowSelector {
     @Override
     public void doAction() {
         taker.equip(selector.getCurrentSlot());
-    }
-
-    @Override
-    public void hideTooltip() {
-        tooltip.hide();
     }
 
     public void addResource(InventoryItem inventoryItem) {

@@ -8,7 +8,7 @@ import nl.t64.game.rpg.screens.inventory.WindowSelector;
 import nl.t64.game.rpg.screens.inventory.equipslot.EquipSlotsTables;
 import nl.t64.game.rpg.screens.inventory.inventoryslot.InventorySlotsTable;
 import nl.t64.game.rpg.screens.inventory.itemslot.ItemSlot;
-import nl.t64.game.rpg.screens.inventory.tooltip.ItemSlotTooltip;
+import nl.t64.game.rpg.screens.inventory.tooltip.BaseTooltip;
 import nl.t64.game.rpg.screens.shop.ShopSlotsTable;
 
 import java.util.List;
@@ -75,13 +75,13 @@ public abstract class ScreenUI {
 
     public void toggleTooltip() {
         ItemSlot currentSlot = getSelectedTable().getCurrentSlot();
-        ItemSlotTooltip currentTooltip = getSelectedTable().getCurrentTooltip();
+        BaseTooltip currentTooltip = getSelectedTable().getCurrentTooltip();
         currentTooltip.toggle(currentSlot);
     }
 
     public void toggleCompare() {
         ItemSlot currentSlot = getSelectedTable().getCurrentSlot();
-        ItemSlotTooltip currentTooltip = getSelectedTable().getCurrentTooltip();
+        BaseTooltip currentTooltip = getSelectedTable().getCurrentTooltip();
         currentTooltip.toggleCompare(currentSlot);
     }
 

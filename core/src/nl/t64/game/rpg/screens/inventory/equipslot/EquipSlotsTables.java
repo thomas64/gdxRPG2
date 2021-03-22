@@ -27,7 +27,9 @@ public class EquipSlotsTables implements WindowSelector {
 
     @Override
     public void setKeyboardFocus(Stage stage) {
-        stage.setKeyboardFocus(getCurrentEquipTable());
+        Table container = getCurrentEquipTable();
+        stage.setKeyboardFocus(container);
+        InventoryUtils.setWindowSelected(container);
     }
 
     @Override
@@ -43,6 +45,7 @@ public class EquipSlotsTables implements WindowSelector {
     @Override
     public void deselectCurrentSlot() {
         getCurrentEquipSlots().deselectCurrentSlot();
+        InventoryUtils.setWindowDeselected(getCurrentEquipTable());
     }
 
     @Override
@@ -51,13 +54,13 @@ public class EquipSlotsTables implements WindowSelector {
     }
 
     @Override
-    public void doAction() {
-        getCurrentEquipSlots().dequipItem();
+    public void hideTooltip() {
+        tooltip.hide();
     }
 
     @Override
-    public void hideTooltip() {
-        tooltip.hide();
+    public void doAction() {
+        getCurrentEquipSlots().dequipItem();
     }
 
     public int getIndexOfCurrentSlot() {
