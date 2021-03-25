@@ -2,6 +2,7 @@ package nl.t64.game.rpg.screens.world;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.ProfileManager;
@@ -29,9 +30,12 @@ public class MapManager implements ProfileObserver {
 
     GameMap currentMap;
     private String nextMapTitle;
+    private FogOfWar fogOfWar;
+    private float timer = 0;
 
     @Override
     public void onNotifyCreateProfile(ProfileManager profileManager) {
+        fogOfWar = new FogOfWar();
         loadMap(Constant.STARTING_MAP);
         currentMap.setPlayerSpawnLocationForNewLoad(Constant.STARTING_MAP);
         onNotifySaveProfile(profileManager);
@@ -41,11 +45,13 @@ public class MapManager implements ProfileObserver {
     @Override
     public void onNotifySaveProfile(ProfileManager profileManager) {
         profileManager.setProperty("mapTitle", currentMap.mapTitle);
+        profileManager.setProperty("fogOfWar", fogOfWar);
     }
 
     @Override
     public void onNotifyLoadProfile(ProfileManager profileManager) {
         String mapTitle = profileManager.getProperty("mapTitle", String.class);
+        fogOfWar = profileManager.getProperty("fogOfWar", FogOfWar.class);
         loadMap(mapTitle);
         currentMap.setPlayerSpawnLocationForNewLoad(mapTitle);
         Utils.getBrokerManager().mapObservers.notifyMapChanged(currentMap);
@@ -58,10 +64,10 @@ public class MapManager implements ProfileObserver {
         final float mapHeight = currentMap.getPixelHeight() / camera.zoom;
         final float minWidth = Math.min(cameraWidth, mapWidth);
         final float minHeight = Math.min(cameraHeight, mapHeight);
-        final float halfWidth = minWidth / 2f;
-        final float halfHeight = minHeight / 2f;
-        final float quarterWidth = minWidth / 4f;
-        final float quarterHeight = minHeight / 4f;
+        final float halfWidth = minWidth * camera.zoom;
+        final float halfHeight = minHeight * camera.zoom;
+        final float quarterWidth = minWidth * (camera.zoom / 2f);
+        final float quarterHeight = minHeight * (camera.zoom / 2f);
 
         List<Sprite> lightmap = new ArrayList<>();
         for (Texture texture : currentMap.lightmapCamera) {
@@ -87,6 +93,18 @@ public class MapManager implements ProfileObserver {
 
     public List<GameMapQuestTexture> getUpperMapTextures() {
         return currentMap.upperTextures;
+    }
+
+    public void updateFogOfWar(Vector2 playerPosition, float dt) {
+        timer += dt;
+        if (timer > 1f) {
+            timer -= 1f;
+            fogOfWar.update(playerPosition, currentMap.mapTitle);
+        }
+    }
+
+    public void drawFogOfWar(ShapeRenderer shapeRenderer) {
+        fogOfWar.draw(shapeRenderer, currentMap.mapTitle);
     }
 
     public void updateQuestLayers() {
@@ -145,6 +163,7 @@ public class MapManager implements ProfileObserver {
         List<AudioEvent> prevBgs = Optional.ofNullable(currentMap).map(map -> map.bgs).orElse(List.of(AudioEvent.NONE));
         disposeOldMaps();
         currentMap = new GameMap(mapTitle);
+        fogOfWar.putIfAbsent(currentMap);
         AudioEvent nextBgm = currentMap.bgm;
         List<AudioEvent> nextBgs = currentMap.bgs;
         Utils.getAudioManager().possibleBgmSwitch(prevBgm, nextBgm);

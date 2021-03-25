@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import lombok.Getter;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.conversation.ConversationGraph;
 import nl.t64.game.rpg.components.loot.Loot;
@@ -76,7 +77,7 @@ public class WorldScreen implements Screen,
         this.camera = new Camera();
         this.mapRenderer = new TextureMapObjectRenderer(this.camera);
         this.multiplexer = new InputMultiplexer();
-        this.multiplexer.addProcessor(new WorldScreenListener(this::doBeforeLoadScreen, this::showHidePartyWindow));
+        this.multiplexer.addProcessor(createListener());
         this.player = new Entity(Constant.PLAYER_ID,
                                  new InputPlayer(this.multiplexer), new PhysicsPlayer(), new GraphicsPlayer());
         this.npcEntities = new ArrayList<>(0);
@@ -268,10 +269,27 @@ public class WorldScreen implements Screen,
 
     @Override
     public void render(float dt) {
-        if (gameState.equals(GameState.PAUSED)) {
-            return;
+        switch (gameState) {
+            case PAUSED -> { /* do nothing here*/ }
+            case MINIMAP -> renderMiniMap();
+            case RUNNING -> renderAll(dt);
         }
+    }
 
+    private void renderMiniMap() {
+        updateCameraPosition();
+        mapRenderer.renderMap();
+        // todo, eventually remove shaperenderer and use sprite icons for minimap.
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        player.renderOnMiniMap(mapRenderer.getBatch(), shapeRenderer);
+        npcEntities.forEach(npc -> npc.renderOnMiniMap(mapRenderer.getBatch(), shapeRenderer));
+        Utils.getMapManager().drawFogOfWar(shapeRenderer);
+        shapeRenderer.end();
+    }
+
+    private void renderAll(float dt) {
+        Utils.getMapManager().updateFogOfWar(player.getPosition(), dt);
         Utils.getMapManager().updateQuestLayers();
         updateEntities(dt);
         updateCameraPosition();
@@ -307,22 +325,21 @@ public class WorldScreen implements Screen,
     }
 
     private void renderEntities() {
-        shapeRenderer.setProjectionMatrix(camera.combined);
-        lootList.forEach(loot -> loot.render(mapRenderer.getBatch(), shapeRenderer));
+        lootList.forEach(loot -> loot.render(mapRenderer.getBatch()));
         doorList.stream()
                 .filter(door -> door.getPosition().y >= player.getPosition().y)
-                .forEach(door -> door.render(mapRenderer.getBatch(), shapeRenderer));
+                .forEach(door -> door.render(mapRenderer.getBatch()));
 
         List<Entity> allEntities = new ArrayList<>();
         allEntities.addAll(Utils.reverseList(partyMembers));
         allEntities.addAll(npcEntities);
         allEntities.add(player);
         allEntities.sort(Comparator.comparingDouble((Entity entity) -> entity.getPosition().y).reversed());
-        allEntities.forEach(entity -> entity.render(mapRenderer.getBatch(), shapeRenderer));
+        allEntities.forEach(entity -> entity.render(mapRenderer.getBatch()));
 
         doorList.stream()
                 .filter(door -> door.getPosition().y < player.getPosition().y)
-                .forEach(door -> door.render(mapRenderer.getBatch(), shapeRenderer));
+                .forEach(door -> door.render(mapRenderer.getBatch()));
     }
 
     private DefaultGraphPath<TiledNode> getPathOf(Entity partyMember) {
@@ -344,6 +361,26 @@ public class WorldScreen implements Screen,
 
     private void showHidePartyWindow() {
         partyWindow.showHide();
+    }
+
+    private void openMiniMap() {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MINIMAP);
+        gameState = GameState.MINIMAP;
+        multiplexer.removeProcessor(0);
+        multiplexer.addProcessor(0, new MiniMapListener(this::closeMiniMap));
+        camera.zoom();
+    }
+
+    private void closeMiniMap() {
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MINIMAP);
+        gameState = GameState.RUNNING;
+        multiplexer.removeProcessor(0);
+        multiplexer.addProcessor(0, createListener());
+        camera.reset();
+    }
+
+    private WorldScreenListener createListener() {
+        return new WorldScreenListener(this::doBeforeLoadScreen, this::showHidePartyWindow, this::openMiniMap);
     }
 
     private boolean isInTransition() {
@@ -404,6 +441,7 @@ public class WorldScreen implements Screen,
 
     private void renderGrid() {
         if (showGrid) {
+            shapeRenderer.setProjectionMatrix(camera.combined);
             shapeRenderer.setColor(Color.DARK_GRAY);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
@@ -421,6 +459,7 @@ public class WorldScreen implements Screen,
 
     private void renderObjects() {
         if (showObjects) {
+            shapeRenderer.setProjectionMatrix(camera.combined);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             player.debug(shapeRenderer);
             doorList.forEach(door -> door.debug(shapeRenderer));

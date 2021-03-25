@@ -33,6 +33,7 @@ public enum AudioEvent {
     SE_CONVERSATION_NEXT("audio/se/botw_conversation_next.wav", 0.4f),
     SE_CONVERSATION_END("audio/se/botw_conversation_end.wav"),
     SE_CONVERSATION_CURSOR("audio/se/botw_conversation_cursor.wav", 0.2f),
+    SE_MINIMAP("audio/se/botw_minimap.wav"),
 
     SE_SCROLL("audio/se/scroll.ogg"),
     SE_CHEST("audio/se/chest.ogg"),

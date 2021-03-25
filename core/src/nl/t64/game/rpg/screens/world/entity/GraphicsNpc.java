@@ -1,5 +1,6 @@
 package nl.t64.game.rpg.screens.world.entity;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import nl.t64.game.rpg.constants.Constant;
@@ -36,12 +37,21 @@ public class GraphicsNpc extends GraphicsComponent {
     }
 
     @Override
-    public void render(Entity npcEntity, Batch batch, ShapeRenderer shapeRenderer) {
+    public void render(Batch batch) {
         if (state.equals(EntityState.INVISIBLE)) {
             return;
         }
         batch.draw(currentFrame, position.x, position.y, Constant.TILE_SIZE, Constant.TILE_SIZE);
+    }
 
+    @Override
+    public void renderOnMiniMap(Entity entity, Batch batch, ShapeRenderer shapeRenderer) {
+        if (entity.getConversationId().contains("shop") && !state.equals(EntityState.INVISIBLE)) {
+            shapeRenderer.setColor(Color.YELLOW);
+            shapeRenderer.circle(position.x + Constant.HALF_TILE_SIZE,
+                                 position.y + Constant.HALF_TILE_SIZE,
+                                 Constant.HALF_TILE_SIZE);
+        }
     }
 
 }

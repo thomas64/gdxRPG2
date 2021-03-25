@@ -132,9 +132,9 @@ public class PhysicsPartyMember extends PhysicsComponent {
         shapeRenderer.rect(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
         shapeRenderer.setColor(Color.MAGENTA);
         for (TiledNode tiledNode : path) {
-            final int x = (int) (tiledNode.x * (Constant.TILE_SIZE / 2f));
-            final int y = (int) (tiledNode.y * (Constant.TILE_SIZE / 2f));
-            shapeRenderer.rect(x, y, Constant.TILE_SIZE / 2f, Constant.TILE_SIZE / 2f);
+            final int x = (int) (tiledNode.x * Constant.HALF_TILE_SIZE);
+            final int y = (int) (tiledNode.y * Constant.HALF_TILE_SIZE);
+            shapeRenderer.rect(x, y, Constant.HALF_TILE_SIZE, Constant.HALF_TILE_SIZE);
         }
     }
 

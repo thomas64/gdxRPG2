@@ -12,6 +12,7 @@ public final class Constant {
 //    public static final int SCREEN_HEIGHT = 720;
 
     public static final float TILE_SIZE = 48f;
+    public static final float HALF_TILE_SIZE = 24f;
     public static final float FACE_SIZE = 144f;
     public static final int SPRITE_GROUP_WIDTH = 144;
     public static final int SPRITE_GROUP_HEIGHT = 192;

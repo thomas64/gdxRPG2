@@ -1,5 +1,6 @@
 package nl.t64.game.rpg.screens.world.entity;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -50,8 +51,40 @@ public class GraphicsPlayer extends GraphicsComponent {
     }
 
     @Override
-    public void render(Entity player, Batch batch, ShapeRenderer shapeRenderer) {
+    public void render(Batch batch) {
         batch.draw(currentFrame, position.x, position.y, Constant.TILE_SIZE, Constant.TILE_SIZE);
+    }
+
+    @Override
+    public void renderOnMiniMap(Entity entity, Batch batch, ShapeRenderer shapeRenderer) {
+        shapeRenderer.setColor(Color.BLUE);
+        switch (direction) {
+            case NORTH -> shapeRenderer.triangle(position.x,
+                                                 position.y,
+                                                 position.x + Constant.HALF_TILE_SIZE,
+                                                 position.y + Constant.TILE_SIZE,
+                                                 position.x + Constant.TILE_SIZE,
+                                                 position.y);
+            case SOUTH -> shapeRenderer.triangle(position.x,
+                                                 position.y + Constant.TILE_SIZE,
+                                                 position.x + Constant.TILE_SIZE,
+                                                 position.y + Constant.TILE_SIZE,
+                                                 position.x + Constant.HALF_TILE_SIZE,
+                                                 position.y);
+            case WEST -> shapeRenderer.triangle(position.x,
+                                                position.y + Constant.HALF_TILE_SIZE,
+                                                position.x + Constant.TILE_SIZE,
+                                                position.y + Constant.TILE_SIZE,
+                                                position.x + Constant.TILE_SIZE,
+                                                position.y);
+            case EAST -> shapeRenderer.triangle(position.x,
+                                                position.y,
+                                                position.x,
+                                                position.y + Constant.TILE_SIZE,
+                                                position.x + Constant.TILE_SIZE,
+                                                position.y + Constant.HALF_TILE_SIZE);
+            case NONE -> throw new IllegalArgumentException("Direction 'NONE' is not usable.");
+        }
     }
 
     private void playStepSoundWhenWalking(float dt) {
@@ -69,8 +102,8 @@ public class GraphicsPlayer extends GraphicsComponent {
 
     private Vector2 getFeetPosition() {
         return switch (direction) {
-            case NORTH -> new Vector2(position.x + (Constant.TILE_SIZE / 2f), position.y + (Constant.TILE_SIZE * 0.2f));
-            case SOUTH -> new Vector2(position.x + (Constant.TILE_SIZE / 2f), position.y - (Constant.TILE_SIZE * 0.2f));
+            case NORTH -> new Vector2(position.x + Constant.HALF_TILE_SIZE, position.y + (Constant.TILE_SIZE * 0.2f));
+            case SOUTH -> new Vector2(position.x + Constant.HALF_TILE_SIZE, position.y - (Constant.TILE_SIZE * 0.2f));
             case WEST -> new Vector2(position.x + (Constant.TILE_SIZE * 0.2f), position.y);
             case EAST -> new Vector2(position.x + (Constant.TILE_SIZE * 0.7f), position.y);
             case NONE -> throw new IllegalArgumentException("Direction 'NONE' is not usable.");

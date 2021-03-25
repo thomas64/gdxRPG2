@@ -14,9 +14,18 @@ class WorldScreenListener extends InputAdapter {
 
     private final Runnable doBeforeLoadScreen;
     private final Runnable showHidePartyWindowFunction;
+    private final Runnable openMiniMap;
 
     @Override
     public boolean keyDown(int keycode) {
+        switch (keycode) {
+            case Constant.KEYCODE_SELECT,
+                    Input.Keys.M -> {
+                openMiniMap.run();
+                return false;
+            }
+        }
+
         switch (keycode) {
             case Constant.KEYCODE_START,
                     Constant.KEYCODE_TOP,
@@ -33,7 +42,7 @@ class WorldScreenListener extends InputAdapter {
                     Input.Keys.I -> InventoryScreen.load();
             case Constant.KEYCODE_LEFT,
                     Input.Keys.L -> QuestLogScreen.load();
-            case Constant.KEYCODE_SELECT,
+            case Constant.KEYCODE_R3,
                     Input.Keys.P -> showHidePartyWindowFunction.run();
         }
         return false;

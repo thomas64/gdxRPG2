@@ -37,8 +37,13 @@ public class GraphicsChest extends GraphicsComponent {
     }
 
     @Override
-    public void render(Entity chest, Batch batch, ShapeRenderer shapeRenderer) {
+    public void render(Batch batch) {
         batch.draw(currentFrame, position.x, position.y, Constant.TILE_SIZE, Constant.TILE_SIZE);
+    }
+
+    @Override
+    public void renderOnMiniMap(Entity entity, Batch batch, ShapeRenderer shapeRenderer) {
+        // empty
     }
 
     @Override

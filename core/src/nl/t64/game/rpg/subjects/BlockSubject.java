@@ -39,8 +39,8 @@ public class BlockSubject {
     }
 
     private Vector2 getFormattedPoint(float x, float y) {
-        return new Vector2(x * (Constant.TILE_SIZE / 2f) + 1f,
-                           y * (Constant.TILE_SIZE / 2f) + 1f);
+        return new Vector2(x * Constant.HALF_TILE_SIZE + 1f,
+                           y * Constant.HALF_TILE_SIZE + 1f);
     }
 
 }

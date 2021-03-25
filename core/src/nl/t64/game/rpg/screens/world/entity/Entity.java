@@ -67,8 +67,12 @@ public class Entity implements ActionObserver, BlockObserver, BumpObserver {
         graphicsComponent.update(dt);
     }
 
-    public void render(Batch batch, ShapeRenderer shapeRenderer) {
-        graphicsComponent.render(this, batch, shapeRenderer);
+    public void render(Batch batch) {
+        graphicsComponent.render(batch);
+    }
+
+    public void renderOnMiniMap(Batch batch, ShapeRenderer shapeRenderer) {
+        graphicsComponent.renderOnMiniMap(this, batch, shapeRenderer);
     }
 
     public void debug(ShapeRenderer shapeRenderer) {
@@ -86,8 +90,8 @@ public class Entity implements ActionObserver, BlockObserver, BumpObserver {
     }
 
     public Vector2 getPositionInGrid() {
-        return new Vector2((int) ((getPosition().x + (Constant.TILE_SIZE / 2f)) / (Constant.TILE_SIZE / 2f)),
-                           (int) ((getPosition().y + (Constant.TILE_SIZE / 8f)) / (Constant.TILE_SIZE / 2f)));
+        return new Vector2((int) ((getPosition().x + Constant.HALF_TILE_SIZE) / Constant.HALF_TILE_SIZE),
+                           (int) ((getPosition().y + (Constant.TILE_SIZE / 8f)) / Constant.HALF_TILE_SIZE));
     }
 
     public Vector2 getPosition() {

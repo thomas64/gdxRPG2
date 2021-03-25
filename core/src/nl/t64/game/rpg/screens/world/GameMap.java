@@ -163,18 +163,18 @@ public class GameMap {
     }
 
     float getPixelWidth() {
-        return getWidth() * (Constant.TILE_SIZE / 2f);
+        return getWidth() * Constant.HALF_TILE_SIZE;
     }
 
     float getPixelHeight() {
-        return getHeight() * (Constant.TILE_SIZE / 2f);
+        return getHeight() * Constant.HALF_TILE_SIZE;
     }
 
-    private int getWidth() {
+    int getWidth() {
         return (int) tiledMap.getProperties().get(WIDTH_PROPERTY);
     }
 
-    private int getHeight() {
+    int getHeight() {
         return (int) tiledMap.getProperties().get(HEIGHT_PROPERTY);
     }
 

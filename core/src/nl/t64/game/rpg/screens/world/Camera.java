@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import nl.t64.game.rpg.sfx.ShakeCamera;
 
 
@@ -17,9 +16,21 @@ class Camera extends OrthographicCamera {
 
     Camera() {
         this.shakeCam = new ShakeCamera();
-        Viewport viewport = new ScreenViewport(this);
+        var viewport = new ScreenViewport(this);
         viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        super.zoom = 0.5f;
+        this.reset();
+    }
+
+    void zoom() {
+        if (mapWidth > Gdx.graphics.getWidth() || mapHeight > Gdx.graphics.getHeight()) {
+            float zoomNumberWidth = mapWidth / Gdx.graphics.getWidth();
+            float zoomNumberHeight = mapHeight / Gdx.graphics.getHeight();
+            zoom = Math.max(zoomNumberWidth, zoomNumberHeight);
+        }
+    }
+
+    void reset() {
+        zoom = 0.5f;
     }
 
     void startShaking() {
@@ -51,7 +62,7 @@ class Camera extends OrthographicCamera {
                            MathUtils.clamp(playerPosition.y, halfCameraHeight, mapHeight - halfCameraHeight));
     }
 
-    private float getHorizontalSpaceBetweenCameraAndMapEdge() {
+    float getHorizontalSpaceBetweenCameraAndMapEdge() {
         float hSpace = 0f;
         if (mapWidth < getZoomedCameraWidth()) {
             hSpace = (getZoomedCameraWidth() - mapWidth) / 2f;

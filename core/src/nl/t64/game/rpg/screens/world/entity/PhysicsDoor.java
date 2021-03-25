@@ -54,7 +54,7 @@ public class PhysicsDoor extends PhysicsComponent {
 
     @Override
     void setBoundingBox() {
-        boundingBox.set(currentPosition.x, currentPosition.y, door.getWidth(), Constant.TILE_SIZE / 2f);
+        boundingBox.set(currentPosition.x, currentPosition.y, door.getWidth(), Constant.HALF_TILE_SIZE);
     }
 
     private void tryToOpenDoor(Entity entity) {

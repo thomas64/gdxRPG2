@@ -34,6 +34,10 @@ class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
         this.camera = camera;
     }
 
+    void renderMap() {
+        renderWithoutPlayerLight(() -> {});
+    }
+
     void renderAll(Vector2 playerPosition, Runnable renderEntities) {
         Utils.getMapManager().getLightmapPlayer()
              .ifPresentOrElse(sprite -> renderWithPlayerLight(playerPosition, sprite, renderEntities),
@@ -71,8 +75,8 @@ class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
         batch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE);
 
         batch.begin();
-        float x = playerPosition.x + (Constant.TILE_SIZE / 2f) - (lightmapPlayer.getWidth() / 2f);
-        float y = playerPosition.y + (Constant.TILE_SIZE / 2f) - (lightmapPlayer.getHeight() / 2f);
+        float x = playerPosition.x + Constant.HALF_TILE_SIZE - (lightmapPlayer.getWidth() / 2f);
+        float y = playerPosition.y + Constant.HALF_TILE_SIZE - (lightmapPlayer.getHeight() / 2f);
         lightmapPlayer.setPosition(x, y);
         lightmapPlayer.draw(batch);
         renderOtherMapLights();
@@ -141,6 +145,7 @@ class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
         if (scroller > lightmap.getHeight() / GameMap.LIGHTMAP_REGION_MULTIPLIER) {
             scroller = 0f;
         }
+        lightmap.setX(-camera.getHorizontalSpaceBetweenCameraAndMapEdge());
         lightmap.setY(-scroller);
         lightmap.draw(batch);
     }

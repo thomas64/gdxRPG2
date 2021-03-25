@@ -186,27 +186,27 @@ public class PhysicsPlayer extends PhysicsComponent {
 
     private void setNorth(Rectangle checkRect) {
         checkRect.setWidth(boundingBox.width / 4f);
-        checkRect.setHeight((Constant.TILE_SIZE / 2f) + 1);
+        checkRect.setHeight(Constant.HALF_TILE_SIZE + 1);
         checkRect.setX(boundingBox.x + (boundingBox.width / 2f) - (boundingBox.width / 8f));
         checkRect.setY(boundingBox.y + boundingBox.height);
     }
 
     private void setSouth(Rectangle checkRect) {
         checkRect.setWidth(boundingBox.width / 4f);
-        checkRect.setHeight(Constant.TILE_SIZE / 2f);
+        checkRect.setHeight(Constant.HALF_TILE_SIZE);
         checkRect.setX(boundingBox.x + (boundingBox.width / 2f) - (boundingBox.width / 8f));
-        checkRect.setY(boundingBox.y - (Constant.TILE_SIZE / 2f));
+        checkRect.setY(boundingBox.y - Constant.HALF_TILE_SIZE);
     }
 
     private void setWest(Rectangle checkRect) {
-        checkRect.setWidth(Constant.TILE_SIZE / 2f);
+        checkRect.setWidth(Constant.HALF_TILE_SIZE);
         checkRect.setHeight(boundingBox.height + 6f);
-        checkRect.setX(boundingBox.x - (Constant.TILE_SIZE / 2f));
+        checkRect.setX(boundingBox.x - Constant.HALF_TILE_SIZE);
         checkRect.setY(boundingBox.y - 3f);
     }
 
     private void setEast(Rectangle checkRect) {
-        checkRect.setWidth(Constant.TILE_SIZE / 2f);
+        checkRect.setWidth(Constant.HALF_TILE_SIZE);
         checkRect.setHeight(boundingBox.height + 6f);
         checkRect.setX(boundingBox.x + boundingBox.width);
         checkRect.setY(boundingBox.y - 3f);

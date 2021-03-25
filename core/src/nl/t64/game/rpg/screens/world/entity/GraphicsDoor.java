@@ -40,8 +40,13 @@ public class GraphicsDoor extends GraphicsComponent {
     }
 
     @Override
-    public void render(Entity entity, Batch batch, ShapeRenderer shapeRenderer) {
+    public void render(Batch batch) {
         batch.draw(currentFrame, position.x, position.y, door.getWidth(), door.getHeight());
+    }
+
+    @Override
+    public void renderOnMiniMap(Entity entity, Batch batch, ShapeRenderer shapeRenderer) {
+        // empty
     }
 
     @Override

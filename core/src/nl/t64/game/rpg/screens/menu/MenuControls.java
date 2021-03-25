@@ -90,6 +90,8 @@ public class MenuControls extends MenuScreen {
                        new Label("I", textStyle),
                        new Label("Quest log", textStyle),
                        new Label("L", textStyle),
+                       new Label("Map", textStyle),
+                       new Label("M", textStyle),
                        new Label("Party", textStyle),
                        new Label("P", textStyle),
                        new Label("Pause", textStyle),
@@ -109,8 +111,10 @@ public class MenuControls extends MenuScreen {
                        new Label("Y", textStyle),
                        new Label("Quest log", textStyle),
                        new Label("X", textStyle),
-                       new Label("Party", textStyle),
+                       new Label("Map", textStyle),
                        new Label("Select", textStyle),
+                       new Label("Party", textStyle),
+                       new Label("R3", textStyle),
                        new Label("Pause", textStyle),
                        new Label("Start", textStyle));
     }

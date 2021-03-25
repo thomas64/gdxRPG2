@@ -25,7 +25,9 @@ abstract class GraphicsComponent implements Component {
 
     public abstract void update(float dt);
 
-    public abstract void render(Entity entity, Batch batch, ShapeRenderer shapeRenderer);
+    public abstract void render(Batch batch);
+
+    public abstract void renderOnMiniMap(Entity entity, Batch batch, ShapeRenderer shapeRenderer);
 
     @Override
     public void dispose() {
