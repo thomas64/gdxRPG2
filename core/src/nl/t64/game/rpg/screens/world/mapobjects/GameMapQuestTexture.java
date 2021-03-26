@@ -1,11 +1,11 @@
-package nl.t64.game.rpg.screens.world;
+package nl.t64.game.rpg.screens.world.mapobjects;
 
 import com.badlogic.gdx.maps.objects.TextureMapObject;
 import lombok.Getter;
 import nl.t64.game.rpg.Utils;
 
 
-class GameMapQuestTexture {
+public class GameMapQuestTexture {
 
     @Getter
     private final TextureMapObject texture;
@@ -15,7 +15,7 @@ class GameMapQuestTexture {
     @Getter
     private boolean isVisible;
 
-    GameMapQuestTexture(TextureMapObject textObject) {
+    public GameMapQuestTexture(TextureMapObject textObject) {
         this.texture = textObject;
         this.questId = textObject.getProperties().get("type", String.class);
         this.isVisibleIfComplete = textObject.getProperties().get("visibleIfComplete", Boolean.class);
@@ -23,7 +23,7 @@ class GameMapQuestTexture {
         this.isVisible = textObject.getProperties().get("isVisible", Boolean.class);
     }
 
-    void update() {
+    public void update() {
         boolean isFinished = Utils.getGameData().getQuests().getQuestById(questId).isFinished();
         boolean isComplete = Utils.getGameData().getQuests().getQuestById(questId).isTaskComplete(taskId);
         isVisible = (isFinished || isComplete) == isVisibleIfComplete;

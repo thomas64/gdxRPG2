@@ -1,21 +1,23 @@
-package nl.t64.game.rpg.screens.world;
+package nl.t64.game.rpg.screens.world.mapobjects;
 
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Vector2;
+import lombok.Getter;
 import nl.t64.game.rpg.screens.world.entity.Direction;
 import nl.t64.game.rpg.screens.world.entity.EntityState;
 
 import java.util.Optional;
 
 
-class GameMapNpc extends GameMapObject {
+@Getter
+public class GameMapNpc extends GameMapObject {
 
-    final String name;
-    final EntityState state;
-    final Direction direction;
-    final String conversation;
+    private final String name;
+    private final EntityState state;
+    private final Direction direction;
+    private final String conversation;
 
-    GameMapNpc(RectangleMapObject rectObject) {
+    public GameMapNpc(RectangleMapObject rectObject) {
         super.rectangle = rectObject.getRectangle();
         this.name = rectObject.getName();
         this.state = createState(rectObject);
@@ -23,7 +25,7 @@ class GameMapNpc extends GameMapObject {
         this.conversation = createConversation(rectObject);
     }
 
-    Vector2 getPosition() {
+    public Vector2 getPosition() {
         return new Vector2(rectangle.x, rectangle.y);
     }
 

@@ -1,32 +1,34 @@
-package nl.t64.game.rpg.screens.world;
+package nl.t64.game.rpg.screens.world.mapobjects;
 
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import lombok.Getter;
 import nl.t64.game.rpg.screens.world.entity.Direction;
 
 
-class GameMapSpawnPoint extends GameMapObject {
+public class GameMapSpawnPoint extends GameMapObject {
 
     private final String fromMapName;
     private final String fromMapLocation;
-    final Direction direction;
+    @Getter
+    private final Direction direction;
 
-    GameMapSpawnPoint(RectangleMapObject rectObject) {
+    public GameMapSpawnPoint(RectangleMapObject rectObject) {
         super.rectangle = rectObject.getRectangle();
         this.fromMapName = rectObject.getName();
         this.fromMapLocation = createFromMapLocation(rectObject);
         this.direction = createDirection(rectObject);
     }
 
-    boolean isInConnectionWith(GameMapRelocator portal) {
-        return (fromMapName.equals(portal.fromMapName) &&
-                fromMapLocation.equalsIgnoreCase(portal.toMapLocation));
+    public boolean isInConnectionWith(GameMapRelocator portal) {
+        return (fromMapName.equals(portal.getFromMapName()) &&
+                fromMapLocation.equalsIgnoreCase(portal.getToMapLocation()));
     }
 
-    float getX() {
+    public float getX() {
         return rectangle.getX();
     }
 
-    float getY() {
+    public float getY() {
         return rectangle.getY();
     }
 

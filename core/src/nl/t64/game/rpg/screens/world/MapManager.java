@@ -11,6 +11,7 @@ import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.screens.world.entity.Direction;
+import nl.t64.game.rpg.screens.world.mapobjects.*;
 import nl.t64.game.rpg.subjects.ProfileObserver;
 
 import java.util.ArrayList;
@@ -117,17 +118,17 @@ public class MapManager implements ProfileObserver {
         return AudioEvent.from(currentMap.getUnderground(playerFeetPosition));
     }
 
-    void checkWarpPoint(GameMapWarpPoint warpPoint, Direction playerDirection) {
+    public void checkWarpPoint(GameMapWarpPoint warpPoint, Direction playerDirection) {
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_WARP);
-        nextMapTitle = warpPoint.toMapName;
+        nextMapTitle = warpPoint.getToMapName();
         Utils.getBrokerManager().mapObservers.notifyMapWillChange(
-                () -> changeMapWithCameraShake(warpPoint, playerDirection), warpPoint.fadeColor);
+                () -> changeMapWithCameraShake(warpPoint, playerDirection), warpPoint.getFadeColor());
     }
 
-    void collisionPortal(GameMapPortal portal, Direction playerDirection) {
-        nextMapTitle = portal.toMapName;
+    public void collisionPortal(GameMapPortal portal, Direction playerDirection) {
+        nextMapTitle = portal.getToMapName();
         Utils.getBrokerManager().mapObservers.notifyMapWillChange(
-                () -> changeMap(portal, playerDirection), portal.fadeColor);
+                () -> changeMap(portal, playerDirection), portal.getFadeColor());
     }
 
     private void changeMapWithCameraShake(GameMapRelocator warpPoint, Direction direction) {
@@ -137,7 +138,7 @@ public class MapManager implements ProfileObserver {
 
     private void changeMap(GameMapRelocator portal, Direction direction) {
         portal.setEnterDirection(direction);
-        loadMap(portal.toMapName);
+        loadMap(portal.getToMapName());
         currentMap.setPlayerSpawnLocation(portal);
         Utils.getBrokerManager().mapObservers.notifyMapChanged(currentMap);
     }

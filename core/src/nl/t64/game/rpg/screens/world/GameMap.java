@@ -12,6 +12,7 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.screens.world.entity.Direction;
+import nl.t64.game.rpg.screens.world.mapobjects.*;
 import nl.t64.game.rpg.screens.world.pathfinding.TiledGraph;
 
 import java.util.Collection;
@@ -150,10 +151,10 @@ public class GameMap {
     }
 
     private void setPlayerSpawnDirection(GameMapRelocator portal, GameMapSpawnPoint spawnPoint) {
-        if (spawnPoint.direction.equals(Direction.NONE)) {
-            playerSpawnDirection = portal.enterDirection;
+        if (spawnPoint.getDirection().equals(Direction.NONE)) {
+            playerSpawnDirection = portal.getEnterDirection();
         } else {
-            playerSpawnDirection = spawnPoint.direction;
+            playerSpawnDirection = spawnPoint.getDirection();
         }
     }
 

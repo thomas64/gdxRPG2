@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.world;
+package nl.t64.game.rpg.screens.world.mapobjects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -8,9 +8,9 @@ import nl.t64.game.rpg.screens.world.entity.Direction;
 import nl.t64.game.rpg.subjects.CollisionObserver;
 
 
-class GameMapPortal extends GameMapRelocator implements CollisionObserver {
+public class GameMapPortal extends GameMapRelocator implements CollisionObserver {
 
-    GameMapPortal(RectangleMapObject rectObject, String fromMapName) {
+    public GameMapPortal(RectangleMapObject rectObject, String fromMapName) {
         super(rectObject.getRectangle(),
               fromMapName,
               rectObject.getName(),

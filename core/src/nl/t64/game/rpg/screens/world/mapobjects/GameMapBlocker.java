@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.world;
+package nl.t64.game.rpg.screens.world.mapobjects;
 
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
@@ -9,9 +9,9 @@ import nl.t64.game.rpg.subjects.BlockObserver;
 import java.util.Optional;
 
 
-class GameMapBlocker extends GameMapObject implements BlockObserver {
+public class GameMapBlocker extends GameMapObject implements BlockObserver {
 
-    GameMapBlocker(RectangleMapObject rectObject) {
+    public GameMapBlocker(RectangleMapObject rectObject) {
         super.rectangle = rectObject.getRectangle();
 
         Utils.getBrokerManager().blockObservers.addObserver(this);

@@ -13,6 +13,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.screens.world.mapobjects.GameMapLight;
+import nl.t64.game.rpg.screens.world.mapobjects.GameMapQuestTexture;
 
 import java.util.List;
 
@@ -86,11 +88,11 @@ class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
     private void renderOtherMapLights() {
         Texture darkness = Utils.createLightmap(LIGHTMAP_ID);
         for (GameMapLight light : Utils.getMapManager().currentMap.lights) {
-            if (light.id.equals("blue")) {
+            if (light.getId().equals("blue")) {
                 batch.setColor(Color.ROYAL);
             }
-            float x = light.center.x - (darkness.getWidth() / 2f);
-            float y = light.center.y - (darkness.getHeight() / 2f);
+            float x = light.getCenter().x - (darkness.getWidth() / 2f);
+            float y = light.getCenter().y - (darkness.getHeight() / 2f);
             batch.draw(darkness, x, y);
             batch.setColor(Color.WHITE);
         }

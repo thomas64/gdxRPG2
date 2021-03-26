@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.world;
+package nl.t64.game.rpg.screens.world.mapobjects;
 
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
@@ -8,11 +8,11 @@ import nl.t64.game.rpg.screens.world.entity.Direction;
 import nl.t64.game.rpg.subjects.CollisionObserver;
 
 
-class GameMapEvent extends GameMapObject implements CollisionObserver {
+public class GameMapEvent extends GameMapObject implements CollisionObserver {
 
     private final String eventId;
 
-    GameMapEvent(RectangleMapObject rectObject) {
+    public GameMapEvent(RectangleMapObject rectObject) {
         super.rectangle = rectObject.getRectangle();
         this.eventId = rectObject.getProperties().get("type", String.class);
 

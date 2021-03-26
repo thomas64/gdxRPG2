@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.world;
+package nl.t64.game.rpg.screens.world.mapobjects;
 
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
@@ -9,14 +9,14 @@ import nl.t64.game.rpg.subjects.BlockObserver;
 import java.util.Optional;
 
 
-class GameMapQuestBlocker extends GameMapObject implements BlockObserver {
+public class GameMapQuestBlocker extends GameMapObject implements BlockObserver {
 
     private final String questId;
     private final boolean isActiveIfComplete;
     private final String taskId;
     private boolean isActive;
 
-    GameMapQuestBlocker(RectangleMapObject rectObject) {
+    public GameMapQuestBlocker(RectangleMapObject rectObject) {
         super.rectangle = rectObject.getRectangle();
         this.questId = rectObject.getProperties().get("type", String.class);
         this.isActiveIfComplete = rectObject.getProperties().get("activeIfComplete", Boolean.class);
@@ -42,7 +42,7 @@ class GameMapQuestBlocker extends GameMapObject implements BlockObserver {
         return isActive && rectangle.contains(point);
     }
 
-    void update() {
+    public void update() {
         final boolean isFinished = Utils.getGameData().getQuests().getQuestById(questId).isFinished();
         final boolean isComplete = Utils.getGameData().getQuests().getQuestById(questId).isTaskComplete(taskId);
 

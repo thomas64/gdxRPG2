@@ -1,13 +1,15 @@
-package nl.t64.game.rpg.screens.world;
+package nl.t64.game.rpg.screens.world.mapobjects;
 
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import lombok.Getter;
 
 
-class GameMapHero extends GameMapNpc {
+@Getter
+public class GameMapHero extends GameMapNpc {
 
-    final boolean hasBeenRecruited;
+    private final boolean hasBeenRecruited;
 
-    GameMapHero(RectangleMapObject rectObject) {
+    public GameMapHero(RectangleMapObject rectObject) {
         super(rectObject);
         this.hasBeenRecruited = createHasBeenRecruited(rectObject);
     }

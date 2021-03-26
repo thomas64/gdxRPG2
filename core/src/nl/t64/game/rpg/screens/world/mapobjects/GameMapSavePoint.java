@@ -1,6 +1,5 @@
-package nl.t64.game.rpg.screens.world;
+package nl.t64.game.rpg.screens.world.mapobjects;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -9,14 +8,10 @@ import nl.t64.game.rpg.screens.world.entity.Direction;
 import nl.t64.game.rpg.subjects.ActionObserver;
 
 
-class GameMapWarpPoint extends GameMapRelocator implements ActionObserver {
+public class GameMapSavePoint extends GameMapObject implements ActionObserver {
 
-    GameMapWarpPoint(RectangleMapObject rectObject, String fromMapName) {
-        super(rectObject.getRectangle(),
-              fromMapName,
-              rectObject.getName(),
-              createToMapLocation(rectObject),
-              Color.WHITE);
+    public GameMapSavePoint(RectangleMapObject rectObject) {
+        super.rectangle = rectObject.getRectangle();
 
         Utils.getBrokerManager().actionObservers.addObserver(this);
     }
@@ -24,7 +19,7 @@ class GameMapWarpPoint extends GameMapRelocator implements ActionObserver {
     @Override
     public void onNotifyActionPressed(Rectangle checkRect, Direction playerDirection, Vector2 playerPosition) {
         if (checkRect.overlaps(rectangle)) {
-            Utils.getMapManager().checkWarpPoint(this, playerDirection);
+            Utils.getProfileManager().saveProfile();
         }
     }
 

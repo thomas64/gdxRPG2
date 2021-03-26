@@ -1,30 +1,29 @@
-package nl.t64.game.rpg.screens.world;
+package nl.t64.game.rpg.screens.world.mapobjects;
 
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.quest.QuestGraph;
 import nl.t64.game.rpg.screens.world.entity.Direction;
-import nl.t64.game.rpg.subjects.ActionObserver;
+import nl.t64.game.rpg.subjects.CollisionObserver;
 
 
-class GameMapQuestCheckObject extends GameMapObject implements ActionObserver {
+public class GameMapQuestDiscoverObject extends GameMapObject implements CollisionObserver {
 
     private final String questId;
     private final String taskId;
 
-    GameMapQuestCheckObject(RectangleMapObject rectObject) {
+    public GameMapQuestDiscoverObject(RectangleMapObject rectObject) {
         super.rectangle = rectObject.getRectangle();
         this.questId = rectObject.getProperties().get("type", String.class);
         this.taskId = rectObject.getProperties().get("task", String.class);
 
-        Utils.getBrokerManager().actionObservers.addObserver(this);
+        Utils.getBrokerManager().collisionObservers.addObserver(this);
     }
 
     @Override
-    public void onNotifyActionPressed(Rectangle checkRect, Direction playerDirection, Vector2 playerPosition) {
-        if (checkRect.overlaps(rectangle)) {
+    public void onNotifyCollision(Rectangle playerBoundingBox, Direction playerDirection) {
+        if (playerBoundingBox.overlaps(rectangle)) {
             setQuestTaskComplete();
         }
     }

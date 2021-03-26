@@ -7,6 +7,8 @@ import nl.t64.game.rpg.screens.world.entity.GraphicsNpc;
 import nl.t64.game.rpg.screens.world.entity.InputNpc;
 import nl.t64.game.rpg.screens.world.entity.PhysicsNpc;
 import nl.t64.game.rpg.screens.world.entity.events.LoadEntityEvent;
+import nl.t64.game.rpg.screens.world.mapobjects.GameMapHero;
+import nl.t64.game.rpg.screens.world.mapobjects.GameMapNpc;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,23 +39,23 @@ class NpcEntitiesLoader {
     }
 
     private void loadHero(GameMapHero gameMapHero) {
-        HeroItem hero = Utils.getGameData().getHeroes().getHero(gameMapHero.name);
-        if (gameMapHero.hasBeenRecruited == hero.isHasBeenRecruited()) {
+        HeroItem hero = Utils.getGameData().getHeroes().getHero(gameMapHero.getName());
+        if (gameMapHero.isHasBeenRecruited() == hero.isHasBeenRecruited()) {
             loadNpcEntity(gameMapHero);
         }
     }
 
     private void loadNpcEntity(GameMapNpc gameMapNpc) {
-        String entityId = gameMapNpc.name;
+        String entityId = gameMapNpc.getName();
         var npcEntity = new Entity(entityId, new InputNpc(), new PhysicsNpc(), new GraphicsNpc(entityId));
         npcEntities.add(npcEntity);
         Utils.getBrokerManager().actionObservers.addObserver(npcEntity);
         Utils.getBrokerManager().blockObservers.addObserver(npcEntity);
         Utils.getBrokerManager().bumpObservers.addObserver(npcEntity);
-        npcEntity.send(new LoadEntityEvent(gameMapNpc.state,
-                                           gameMapNpc.direction,
+        npcEntity.send(new LoadEntityEvent(gameMapNpc.getState(),
+                                           gameMapNpc.getDirection(),
                                            gameMapNpc.getPosition(),
-                                           gameMapNpc.conversation));
+                                           gameMapNpc.getConversation()));
     }
 
 }

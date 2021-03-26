@@ -1,10 +1,10 @@
-package nl.t64.game.rpg.screens.world;
+package nl.t64.game.rpg.screens.world.mapobjects;
 
 import com.badlogic.gdx.math.Rectangle;
 import lombok.Getter;
 
 
-abstract class GameMapObject {
+public abstract class GameMapObject {
 
     @Getter
     Rectangle rectangle;
