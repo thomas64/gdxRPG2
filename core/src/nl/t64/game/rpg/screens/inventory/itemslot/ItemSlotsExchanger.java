@@ -65,6 +65,7 @@ public class ItemSlotsExchanger {
             new MessageDialog(errorMessage).show(sourceSlot.getStage(), AudioEvent.SE_MENU_ERROR);
             sourceSlot.putItemBack(draggedItem);
         }
+        InventoryUtils.getScreenUI().getShopSlotsTable().refreshPurchaseColor();
     }
 
     private void handleBarter() {
@@ -88,6 +89,7 @@ public class ItemSlotsExchanger {
             new MessageDialog(errorMessage).show(sourceSlot.getStage(), AudioEvent.SE_MENU_ERROR);
             sourceSlot.putItemBack(draggedItem);
         }
+        InventoryUtils.getScreenUI().getShopSlotsTable().refreshPurchaseColor();
     }
 
     private void handlePossibleExchange() {

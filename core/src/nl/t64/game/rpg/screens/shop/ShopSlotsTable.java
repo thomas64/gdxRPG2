@@ -6,11 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.InventoryContainer;
 import nl.t64.game.rpg.components.party.InventoryDatabase;
-import nl.t64.game.rpg.components.party.InventoryGroup;
 import nl.t64.game.rpg.components.party.InventoryItem;
 import nl.t64.game.rpg.screens.inventory.InventoryUtils;
 import nl.t64.game.rpg.screens.inventory.WindowSelector;
-import nl.t64.game.rpg.screens.inventory.inventoryslot.InventorySlot;
 import nl.t64.game.rpg.screens.inventory.inventoryslot.InventorySlotsTableListener;
 import nl.t64.game.rpg.screens.inventory.itemslot.InventoryImage;
 import nl.t64.game.rpg.screens.inventory.itemslot.ItemSlot;
@@ -42,6 +40,7 @@ public class ShopSlotsTable implements WindowSelector {
         this.tooltip = tooltip;
         this.shopSlotTable = new Table();
         this.fillShopSlots();
+        this.refreshPurchaseColor();
 
         this.container = new Table();
         this.container.add(new ScrollPane(this.shopSlotTable)).height(CONTAINER_HEIGHT);
@@ -100,6 +99,11 @@ public class ShopSlotsTable implements WindowSelector {
         taker.buyFull(selector.getCurrentSlot());
     }
 
+    public void refreshPurchaseColor() {
+        shopSlotTable.getChildren()
+                     .forEach(actor -> ((ShopSlot) actor).refreshPurchaseColor());
+    }
+
     public Optional<ItemSlot> getPossibleSameStackableItemSlotWith(InventoryItem candidateItem) {
         if (candidateItem.isStackable()) {
             return inventory.findFirstSlotWithItem(candidateItem.getId())
@@ -127,7 +131,7 @@ public class ShopSlotsTable implements WindowSelector {
     }
 
     private void createShopSlot(int index) {
-        var shopSlot = new InventorySlot(index, InventoryGroup.SHOP_ITEM, tooltip, inventory);
+        var shopSlot = new ShopSlot(index, tooltip, inventory);
         inventory.getItemAt(index)
                  .ifPresent(item -> shopSlot.addToStack(new InventoryImage(item)));
         shopSlotTable.add(shopSlot).size(SLOT_SIZE, SLOT_SIZE);

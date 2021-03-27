@@ -26,7 +26,7 @@ public class HeroesTable {
 
     private static final String SPRITE_BORDER = "sprites/border.png";
     private static final String SPRITE_RIGHT_BORDER = "sprites/right_border.png";
-    private static final String SPRITE_GREY = "sprites/grey.png";
+    private static final String SPRITE_GRAY = "sprites/gray.png";
     private static final String FONT_PATH = "fonts/spectral_extra_bold_20.ttf";
     private static final String FONT_BIG_PATH = "fonts/spectral_extra_bold_28.ttf";
     private static final int FONT_BIG_SIZE = 28;
@@ -64,7 +64,7 @@ public class HeroesTable {
 
     private void createFace(HeroItem hero) {
         Stack stack = new Stack();
-        addPossibleGreyBackgroundTo(stack, hero);
+        addPossibleGrayBackgroundTo(stack, hero);
         addFaceImageTo(stack, hero);
         heroes.add(stack);
     }
@@ -83,7 +83,7 @@ public class HeroesTable {
         addHpBarTo(statsTable, hero);
 
         Stack stack = new Stack();
-        addPossibleGreyBackgroundTo(stack, hero);
+        addPossibleGrayBackgroundTo(stack, hero);
         stack.add(statsTable);
         heroes.add(stack);
     }
@@ -100,11 +100,11 @@ public class HeroesTable {
         return statsTable;
     }
 
-    private void addPossibleGreyBackgroundTo(Stack stack, HeroItem hero) {
+    private void addPossibleGrayBackgroundTo(Stack stack, HeroItem hero) {
         if (hero.hasSameIdAs(InventoryUtils.getSelectedHero())) {
-            Texture textureGrey = Utils.getResourceManager().getTextureAsset(SPRITE_GREY);
-            Image imageGrey = new Image(textureGrey);
-            stack.add(imageGrey);
+            Texture textureGray = Utils.getResourceManager().getTextureAsset(SPRITE_GRAY);
+            Image imageGray = new Image(textureGray);
+            stack.add(imageGray);
         }
     }
 
