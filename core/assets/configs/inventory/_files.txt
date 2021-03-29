@@ -7,3 +7,4 @@ potion.json
 resource.json
 shield.json
 sword.json
+thrown.json

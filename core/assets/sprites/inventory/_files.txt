@@ -8,3 +8,4 @@ potion.atlas
 resource.atlas
 shield.atlas
 sword.atlas
+thrown.atlas
