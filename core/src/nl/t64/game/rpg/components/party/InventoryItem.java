@@ -5,8 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 @NoArgsConstructor
@@ -97,6 +99,14 @@ public class InventoryItem {
             case PROTECTION -> protection;
             case DEFENSE -> defense;
         };
+    }
+
+    public List<InventoryMinimal> getMinimalsOtherItemHasAndYouDont(InventoryItem otherItem) {
+        return Arrays.stream(InventoryMinimal.values())
+                     .filter(minimal -> getAttributeOfMinimal(minimal) instanceof Integer)
+                     .filter(minimal -> (int) getAttributeOfMinimal(minimal) == 0)
+                     .filter(minimal -> (int) otherItem.getAttributeOfMinimal(minimal) > 0)
+                     .collect(Collectors.toList());
     }
 
     public boolean hasSameIdAs(InventoryItem candidateItem) {

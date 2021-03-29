@@ -18,22 +18,24 @@ public class DescriptionCreator {
     private final int partySumOfMerchantSkill;
 
     public List<InventoryDescription> createItemDescription() {
-        return createDescriptionList(InventoryDescription::new);
+        return createDescriptionList(InventoryDescription::new, List.of());
     }
 
     public List<InventoryDescription> createItemDescriptionComparingToHero(HeroItem hero) {
-        return createDescriptionList((key, value) -> new InventoryDescription(key, value, inventoryItem, hero));
+        return createDescriptionList((key, value) -> new InventoryDescription(key, value, inventoryItem, hero), List.of());
     }
 
     public List<InventoryDescription> createItemDescriptionComparingToItem(InventoryItem otherItem) {
-        return createDescriptionList((key, value) -> new InventoryDescription(key, value, inventoryItem, otherItem));
+        return createDescriptionList((key, value) -> new InventoryDescription(key, value, inventoryItem, otherItem),
+                                     inventoryItem.getMinimalsOtherItemHasAndYouDont(otherItem));
     }
 
-    private List<InventoryDescription> createDescriptionList(BiFunction<Object, Object, InventoryDescription> createDescription) {
+    private List<InventoryDescription> createDescriptionList(BiFunction<Object, Object, InventoryDescription> createDescription,
+                                                             List<InventoryMinimal> minimalsYouDontHave) {
         descriptionList.add(createDescription.apply(inventoryItem.group, inventoryItem.name));
         addHandiness(createDescription);
         addPrices(createDescription);
-        addMinimals(createDescription);
+        addMinimals(createDescription, minimalsYouDontHave);
         addCalcs(createDescription);
         addStats(createDescription);
         addSkills(createDescription);
@@ -64,10 +66,14 @@ public class DescriptionCreator {
         }
     }
 
-    private void addMinimals(BiFunction<Object, Object, InventoryDescription> createDescription) {
-        Arrays.stream(InventoryMinimal.values())
-              .map(minimal -> createDescription.apply(minimal, inventoryItem.getAttributeOfMinimal(minimal)))
-              .forEach(descriptionList::add);
+    private void addMinimals(BiFunction<Object, Object, InventoryDescription> createDescription,
+                             List<InventoryMinimal> minimalsYouDontHave) {
+        for (InventoryMinimal minimal : InventoryMinimal.values()) {
+            if (minimalsYouDontHave.contains(minimal)) {
+                descriptionList.add(createDescription.apply("", ""));
+            }
+            descriptionList.add(createDescription.apply(minimal, inventoryItem.getAttributeOfMinimal(minimal)));
+        }
     }
 
     private void addCalcs(BiFunction<Object, Object, InventoryDescription> createDescription) {

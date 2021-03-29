@@ -59,7 +59,7 @@ public class InventoryImage extends Image {
         return descriptionCreator.createItemDescriptionComparingToHero(InventoryUtils.getSelectedHero());
     }
 
-    public List<InventoryDescription> getLeftDescription(InventoryImage otherItem, int totalMerchant) {
+    public List<InventoryDescription> getDualDescription(InventoryImage otherItem, int totalMerchant) {
         final var descriptionCreator = new DescriptionCreator(inventoryItem, totalMerchant);
         return descriptionCreator.createItemDescriptionComparingToItem(otherItem.inventoryItem);
     }

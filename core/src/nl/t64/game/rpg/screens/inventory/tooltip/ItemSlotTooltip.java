@@ -117,7 +117,7 @@ public class ItemSlotTooltip extends BaseTooltip {
 
     private void createDualTooltip(InventoryImage hoveredImage, InventoryImage equippedImage) {
         final Table hoveredTable = createLeftTooltip(hoveredImage, equippedImage);
-        final Table equippedTable = createRightTooltip(equippedImage);
+        final Table equippedTable = createRightTooltip(equippedImage, hoveredImage);
         window.add(hoveredTable);
         window.add().spaceRight(HALF_SPACING);
         window.add(equippedTable);
@@ -131,27 +131,27 @@ public class ItemSlotTooltip extends BaseTooltip {
         hoveredTable.add(createLabel(LEFT_TITLE, Color.WHITE)).row();
 
         final int totalMerchant = Utils.getGameData().getParty().getSumOfSkill(SkillItemId.MERCHANT);
-        List<InventoryDescription> descriptionList = hoveredImage.getLeftDescription(equippedImage, totalMerchant);
+        List<InventoryDescription> descriptionList = hoveredImage.getDualDescription(equippedImage, totalMerchant);
         descriptionList = removeLeftUnnecessaryAttributes(descriptionList);
         addAttributesForLeftDescription(descriptionList, hoveredTable);
         return hoveredTable;
     }
 
-    private Table createRightTooltip(InventoryImage equippedImage) {
+    private Table createRightTooltip(InventoryImage equippedImage, InventoryImage hoveredImage) {
         final var equippedTable = new Table();
         equippedTable.defaults().align(Align.left);
         equippedTable.add(createLabel(RIGHT_TITLE, Color.LIGHT_GRAY)).row();
 
         final int totalMerchant = Utils.getGameData().getParty().getSumOfSkill(SkillItemId.MERCHANT);
-        List<InventoryDescription> descriptionList = equippedImage.getSingleDescription(totalMerchant);
+        List<InventoryDescription> descriptionList = equippedImage.getDualDescription(hoveredImage, totalMerchant);
         descriptionList = removeRightUnnecessaryAttributes(descriptionList);
-        addAttributesForSingleDescription(descriptionList, equippedTable);
+        addAttributesForRightDescription(descriptionList, equippedTable);
         return equippedTable;
     }
 
     void addAttributesForSingleDescription(List<InventoryDescription> descriptionList, Table hoveredTable) {
         descriptionList.forEach(attribute -> {
-            final var labelStyle = createLabelStyle(attribute);
+            final var labelStyle = createSingleLabelStyle(attribute);
             hoveredTable.add(new Label(getKey(attribute), labelStyle)).spaceRight(COLUMN_SPACING);
             hoveredTable.add(new Label(getValue(attribute), labelStyle)).row();
         });
@@ -159,7 +159,15 @@ public class ItemSlotTooltip extends BaseTooltip {
 
     private void addAttributesForLeftDescription(List<InventoryDescription> descriptionList, Table hoveredTable) {
         descriptionList.forEach(attribute -> {
-            final var labelStyle = createDualLabelStyle(attribute);
+            final var labelStyle = createLeftLabelStyle(attribute);
+            hoveredTable.add(new Label(getKey(attribute), labelStyle)).spaceRight(COLUMN_SPACING);
+            hoveredTable.add(new Label(getValue(attribute), labelStyle)).row();
+        });
+    }
+
+    private void addAttributesForRightDescription(List<InventoryDescription> descriptionList, Table hoveredTable) {
+        descriptionList.forEach(attribute -> {
+            final var labelStyle = createRightLabelStyle(attribute);
             hoveredTable.add(new Label(getKey(attribute), labelStyle)).spaceRight(COLUMN_SPACING);
             hoveredTable.add(new Label(getValue(attribute), labelStyle)).row();
         });
@@ -189,7 +197,7 @@ public class ItemSlotTooltip extends BaseTooltip {
         return descriptionList;
     }
 
-    private Label.LabelStyle createLabelStyle(InventoryDescription attribute) {
+    private Label.LabelStyle createSingleLabelStyle(InventoryDescription attribute) {
         if (isBuyOrSellValue(attribute)) {
             return createLabelStyle(Color.GOLD);
         }
@@ -199,7 +207,7 @@ public class ItemSlotTooltip extends BaseTooltip {
         };
     }
 
-    private Label.LabelStyle createDualLabelStyle(InventoryDescription attribute) {
+    private Label.LabelStyle createLeftLabelStyle(InventoryDescription attribute) {
         if (isBuyOrSellValue(attribute)) {
             return createLabelStyle(Color.GOLD);
         }
@@ -208,6 +216,13 @@ public class ItemSlotTooltip extends BaseTooltip {
             case LESS -> createLabelStyle(ORANGE);
             case MORE -> createLabelStyle(Color.LIME);
         };
+    }
+
+    private Label.LabelStyle createRightLabelStyle(InventoryDescription attribute) {
+        if (isBuyOrSellValue(attribute)) {
+            return createLabelStyle(Color.GOLD);
+        }
+        return createLabelStyle(Color.WHITE);
     }
 
     private String getKey(InventoryDescription attribute) {
