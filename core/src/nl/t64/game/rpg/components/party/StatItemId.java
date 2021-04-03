@@ -8,10 +8,10 @@ public enum StatItemId implements SuperEnum {
 
     INTELLIGENCE("Intelligence"),
     WILLPOWER("Willpower"),
+    STRENGTH("Strength"),
     DEXTERITY("Dexterity"),
     AGILITY("Agility"),
     ENDURANCE("Endurance"),
-    STRENGTH("Strength"),
     STAMINA("Stamina");
 
     private final String title;

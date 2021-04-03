@@ -24,9 +24,9 @@ class OnarrTest extends GameTest {
         assertThat(onarr.getStatById(StatItemId.WILLPOWER).rank).isEqualTo(25);
         assertThat(onarr.getCalculatedTotalStatOf(StatItemId.WILLPOWER)).isEqualTo(25);
         assertThat(onarr.getStatById(StatItemId.DEXTERITY).rank).isEqualTo(23);
-        assertThat(onarr.getCalculatedTotalStatOf(StatItemId.DEXTERITY)).isEqualTo(17);
+        assertThat(onarr.getCalculatedTotalStatOf(StatItemId.DEXTERITY)).isEqualTo(23);
         assertThat(onarr.getStatById(StatItemId.AGILITY).rank).isEqualTo(15);
-        assertThat(onarr.getCalculatedTotalStatOf(StatItemId.AGILITY)).isEqualTo(15);
+        assertThat(onarr.getCalculatedTotalStatOf(StatItemId.AGILITY)).isEqualTo(11);
         assertThat(onarr.getStatById(StatItemId.ENDURANCE).rank).isEqualTo(30);
         assertThat(onarr.getCalculatedTotalStatOf(StatItemId.ENDURANCE)).isEqualTo(30);
         assertThat(onarr.getStatById(StatItemId.STRENGTH).rank).isEqualTo(25);

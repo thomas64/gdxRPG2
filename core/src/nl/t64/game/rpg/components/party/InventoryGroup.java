@@ -39,6 +39,13 @@ public enum InventoryGroup implements SuperEnum {
         return title;
     }
 
+    public boolean hasNegativeImpactOnAgilityAndStealth() {
+        return switch (this) {
+            case SHIELD, HELMET, SHOULDERS, CHEST, BRACERS, GLOVES, PANTS, BOOTS -> true;
+            default -> false;
+        };
+    }
+
     public boolean isStackable() {
         return switch (this) {
             case POTION, RESOURCE -> true;

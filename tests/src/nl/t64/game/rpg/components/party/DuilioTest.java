@@ -24,9 +24,9 @@ class DuilioTest extends GameTest {
         assertThat(duilio.getStatById(StatItemId.WILLPOWER).rank).isEqualTo(25);
         assertThat(duilio.getCalculatedTotalStatOf(StatItemId.WILLPOWER)).isEqualTo(25);
         assertThat(duilio.getStatById(StatItemId.DEXTERITY).rank).isEqualTo(30);
-        assertThat(duilio.getCalculatedTotalStatOf(StatItemId.DEXTERITY)).isEqualTo(28);
+        assertThat(duilio.getCalculatedTotalStatOf(StatItemId.DEXTERITY)).isEqualTo(30);
         assertThat(duilio.getStatById(StatItemId.AGILITY).rank).isEqualTo(20);
-        assertThat(duilio.getCalculatedTotalStatOf(StatItemId.AGILITY)).isEqualTo(20);
+        assertThat(duilio.getCalculatedTotalStatOf(StatItemId.AGILITY)).isEqualTo(19);
         assertThat(duilio.getStatById(StatItemId.ENDURANCE).rank).isEqualTo(25);
         assertThat(duilio.getCalculatedTotalStatOf(StatItemId.ENDURANCE)).isEqualTo(25);
         assertThat(duilio.getStatById(StatItemId.STRENGTH).rank).isEqualTo(25);

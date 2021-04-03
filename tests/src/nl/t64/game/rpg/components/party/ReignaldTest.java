@@ -24,9 +24,9 @@ class ReignaldTest extends GameTest {
         assertThat(reignald.getStatById(StatItemId.WILLPOWER).rank).isEqualTo(8);
         assertThat(reignald.getCalculatedTotalStatOf(StatItemId.WILLPOWER)).isEqualTo(8);
         assertThat(reignald.getStatById(StatItemId.DEXTERITY).rank).isEqualTo(25);
-        assertThat(reignald.getCalculatedTotalStatOf(StatItemId.DEXTERITY)).isEqualTo(23);
+        assertThat(reignald.getCalculatedTotalStatOf(StatItemId.DEXTERITY)).isEqualTo(25);
         assertThat(reignald.getStatById(StatItemId.AGILITY).rank).isEqualTo(10);
-        assertThat(reignald.getCalculatedTotalStatOf(StatItemId.AGILITY)).isEqualTo(10);
+        assertThat(reignald.getCalculatedTotalStatOf(StatItemId.AGILITY)).isEqualTo(9);
         assertThat(reignald.getStatById(StatItemId.ENDURANCE).rank).isEqualTo(20);
         assertThat(reignald.getCalculatedTotalStatOf(StatItemId.ENDURANCE)).isEqualTo(20);
         assertThat(reignald.getStatById(StatItemId.STRENGTH).rank).isEqualTo(20);

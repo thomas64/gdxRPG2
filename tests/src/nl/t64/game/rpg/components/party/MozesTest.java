@@ -24,9 +24,9 @@ class MozesTest extends GameTest {
         assertThat(mozes.getStatById(StatItemId.WILLPOWER).rank).isEqualTo(12);
         assertThat(mozes.getCalculatedTotalStatOf(StatItemId.WILLPOWER)).isEqualTo(12);
         assertThat(mozes.getStatById(StatItemId.DEXTERITY).rank).isEqualTo(15);
-        assertThat(mozes.getCalculatedTotalStatOf(StatItemId.DEXTERITY)).isEqualTo(13);
+        assertThat(mozes.getCalculatedTotalStatOf(StatItemId.DEXTERITY)).isEqualTo(15);
         assertThat(mozes.getStatById(StatItemId.AGILITY).rank).isEqualTo(15);
-        assertThat(mozes.getCalculatedTotalStatOf(StatItemId.AGILITY)).isEqualTo(15);
+        assertThat(mozes.getCalculatedTotalStatOf(StatItemId.AGILITY)).isEqualTo(14);
         assertThat(mozes.getStatById(StatItemId.ENDURANCE).rank).isEqualTo(15);
         assertThat(mozes.getCalculatedTotalStatOf(StatItemId.ENDURANCE)).isEqualTo(15);
         assertThat(mozes.getStatById(StatItemId.STRENGTH).rank).isEqualTo(15);

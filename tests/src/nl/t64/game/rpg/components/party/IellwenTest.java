@@ -26,7 +26,7 @@ class IellwenTest extends GameTest {
         assertThat(iellwen.getStatById(StatItemId.DEXTERITY).rank).isEqualTo(30);
         assertThat(iellwen.getCalculatedTotalStatOf(StatItemId.DEXTERITY)).isEqualTo(30);
         assertThat(iellwen.getStatById(StatItemId.AGILITY).rank).isEqualTo(25);
-        assertThat(iellwen.getCalculatedTotalStatOf(StatItemId.AGILITY)).isEqualTo(25);
+        assertThat(iellwen.getCalculatedTotalStatOf(StatItemId.AGILITY)).isEqualTo(24);
         assertThat(iellwen.getStatById(StatItemId.ENDURANCE).rank).isEqualTo(30);
         assertThat(iellwen.getCalculatedTotalStatOf(StatItemId.ENDURANCE)).isEqualTo(30);
         assertThat(iellwen.getStatById(StatItemId.STRENGTH).rank).isEqualTo(20);

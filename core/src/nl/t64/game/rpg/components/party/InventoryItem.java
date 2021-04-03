@@ -32,6 +32,8 @@ public class InventoryItem {
     private int weight;
     @JsonProperty("min_intelligence")
     int minIntelligence;
+    @JsonProperty("min_dexterity")
+    int minDexterity;
     @JsonProperty("min_strength")
     int minStrength;
     @JsonProperty("base_hit")
@@ -40,6 +42,7 @@ public class InventoryItem {
     private int protection;
     private int defense;
     private int dexterity;
+    private int agility;
     private int stealth;
 
     InventoryItem(InventoryItem item, int amount) {
@@ -54,12 +57,14 @@ public class InventoryItem {
         this.price = item.price;
         this.weight = item.weight;
         this.minIntelligence = item.minIntelligence;
+        this.minDexterity = item.minDexterity;
         this.minStrength = item.minStrength;
         this.baseHit = item.baseHit;
         this.damage = item.damage;
         this.protection = item.protection;
         this.defense = item.defense;
         this.dexterity = item.dexterity;
+        this.agility = item.agility;
         this.stealth = item.stealth;
     }
 
@@ -71,14 +76,25 @@ public class InventoryItem {
         return switch (minimal) {
             case SKILL -> Objects.requireNonNullElse(skill, 0);
             case MIN_INTELLIGENCE -> minIntelligence;
+            case MIN_DEXTERITY -> minDexterity;
             case MIN_STRENGTH -> minStrength;
+        };
+    }
+
+    int getMinimalAttributeOfStatItemId(StatItemId statItemId) {
+        return switch (statItemId) {
+            case INTELLIGENCE -> minIntelligence;
+            case DEXTERITY -> minDexterity;
+            case STRENGTH -> minStrength;
+            case WILLPOWER, AGILITY, ENDURANCE, STAMINA -> 0;
         };
     }
 
     int getAttributeOfStatItemId(StatItemId statItemId) {
         return switch (statItemId) {
             case DEXTERITY -> dexterity;
-            case INTELLIGENCE, WILLPOWER, AGILITY, ENDURANCE, STRENGTH, STAMINA -> 0;
+            case AGILITY -> agility;
+            case INTELLIGENCE, WILLPOWER, ENDURANCE, STRENGTH, STAMINA -> 0;
         };
     }
 
@@ -102,11 +118,22 @@ public class InventoryItem {
     }
 
     public List<InventoryMinimal> getMinimalsOtherItemHasAndYouDont(InventoryItem otherItem) {
+        if (hasOnlyOneMinimal() && otherItem.hasOnlyOneMinimal()) {
+            return List.of();
+        } else {
+            return Arrays.stream(InventoryMinimal.values())
+                         .filter(minimal -> getAttributeOfMinimal(minimal) instanceof Integer)
+                         .filter(minimal -> (int) getAttributeOfMinimal(minimal) == 0)
+                         .filter(minimal -> (int) otherItem.getAttributeOfMinimal(minimal) > 0)
+                         .collect(Collectors.toList());
+        }
+    }
+
+    private boolean hasOnlyOneMinimal() {
         return Arrays.stream(InventoryMinimal.values())
                      .filter(minimal -> getAttributeOfMinimal(minimal) instanceof Integer)
-                     .filter(minimal -> (int) getAttributeOfMinimal(minimal) == 0)
-                     .filter(minimal -> (int) otherItem.getAttributeOfMinimal(minimal) > 0)
-                     .collect(Collectors.toList());
+                     .filter(minimal -> (int) getAttributeOfMinimal(minimal) > 0)
+                     .count() == 1;
     }
 
     public boolean hasSameIdAs(InventoryItem candidateItem) {

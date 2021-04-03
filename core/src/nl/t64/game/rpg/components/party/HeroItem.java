@@ -130,20 +130,20 @@ public class HeroItem {
     private Optional<String> createMessageIfWeaponAndShieldAreNotCompatible(InventoryItem inventoryItem) {
         if (inventoryItem.isTwoHanded
             && inventory.getInventoryItem(InventoryGroup.SHIELD).isPresent()) {
-            return Optional.of(String.format("%s needs to unequip the %s%nto equip that %s.",
-                                             name,
-                                             inventory.getInventoryItem(InventoryGroup.SHIELD).get().name,
-                                             inventoryItem.name));
+            return createMessage(inventory.getInventoryItem(InventoryGroup.SHIELD).get().name, inventoryItem.name);
         } else if (inventoryItem.group.equals(InventoryGroup.SHIELD)
                    && inventory.getInventoryItem(InventoryGroup.WEAPON).isPresent()
                    && inventory.getInventoryItem(InventoryGroup.WEAPON).get().isTwoHanded) {
-            return Optional.of(String.format("%s needs to unequip the %s%nto equip that %s.",
-                                             name,
-                                             inventory.getInventoryItem(InventoryGroup.WEAPON).get().name,
-                                             inventoryItem.name));
+            return createMessage(inventory.getInventoryItem(InventoryGroup.WEAPON).get().name, inventoryItem.name);
         } else {
             return Optional.empty();
         }
+    }
+
+    private Optional<String> createMessage(String itemName1, String itemName2) {
+        return Optional.of(String.format("""
+                                                 %s needs to unequip the %s
+                                                 to equip that %s.""", name, itemName1, itemName2));
     }
 
     public Optional<String> createMessageIfHeroHasNotEnoughFor(InventoryItem inventoryItem) {

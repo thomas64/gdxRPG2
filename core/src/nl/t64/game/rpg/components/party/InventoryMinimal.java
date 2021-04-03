@@ -13,7 +13,9 @@ enum InventoryMinimal implements SuperEnum {
         Optional<String> createMessageIfHeroHasNotEnoughFor(InventoryItem item, HeroItem hero) {
             return Optional.ofNullable(item.skill)
                            .filter(skillItemId -> hero.getSkillById(skillItemId).rank <= 0)
-                           .map(skillItemId -> String.format("%s needs the %s skill%nto equip that %s.",
+                           .map(skillItemId -> String.format("""
+                                                                     %s needs the %s skill
+                                                                     to equip that %s.""",
                                                              hero.name, skillItemId.getTitle(), item.name));
         }
     },
@@ -21,23 +23,21 @@ enum InventoryMinimal implements SuperEnum {
     MIN_INTELLIGENCE("Min. Intelligence") {
         @Override
         Optional<String> createMessageIfHeroHasNotEnoughFor(InventoryItem item, HeroItem hero) {
-            if (hero.getStatById(StatItemId.INTELLIGENCE).rank < item.minIntelligence) {
-                return Optional.of(
-                        String.format("%s needs %s %s%nto equip that %s.",
-                                      hero.name, item.minIntelligence, StatItemId.INTELLIGENCE.getTitle(), item.name));
-            }
-            return Optional.empty();
+            return InventoryMinimal.createMessage(item, StatItemId.INTELLIGENCE, hero);
+        }
+    },
+
+    MIN_DEXTERITY("Min. Dexterity") {
+        @Override
+        Optional<String> createMessageIfHeroHasNotEnoughFor(InventoryItem item, HeroItem hero) {
+            return InventoryMinimal.createMessage(item, StatItemId.DEXTERITY, hero);
         }
     },
 
     MIN_STRENGTH("Min. Strength") {
         @Override
         Optional<String> createMessageIfHeroHasNotEnoughFor(InventoryItem item, HeroItem hero) {
-            if (hero.getStatById(StatItemId.STRENGTH).rank < item.minStrength) {
-                return Optional.of(String.format("%s needs %s %s%nto equip that %s.",
-                                                 hero.name, item.minStrength, StatItemId.STRENGTH.getTitle(), item.name));
-            }
-            return Optional.empty();
+            return InventoryMinimal.createMessage(item, StatItemId.STRENGTH, hero);
         }
     };
 
@@ -48,6 +48,18 @@ enum InventoryMinimal implements SuperEnum {
     @Override
     public String getTitle() {
         return title;
+    }
+
+    private static Optional<String> createMessage(InventoryItem item, StatItemId statItemId, HeroItem hero) {
+        int minimalAttribute = item.getMinimalAttributeOfStatItemId(statItemId);
+        if (hero.getStatById(statItemId).rank < minimalAttribute) {
+            return Optional.of(String.format("""
+                                                     %s needs %s %s
+                                                     to equip that %s.""",
+                                             hero.name, minimalAttribute, statItemId.getTitle(), item.name));
+        } else {
+            return Optional.empty();
+        }
     }
 
 }

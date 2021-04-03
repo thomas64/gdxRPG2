@@ -26,7 +26,7 @@ class EliasTest extends GameTest {
         assertThat(elias.getStatById(StatItemId.DEXTERITY).rank).isEqualTo(25);
         assertThat(elias.getCalculatedTotalStatOf(StatItemId.DEXTERITY)).isEqualTo(25);
         assertThat(elias.getStatById(StatItemId.AGILITY).rank).isEqualTo(18);
-        assertThat(elias.getCalculatedTotalStatOf(StatItemId.AGILITY)).isEqualTo(18);
+        assertThat(elias.getCalculatedTotalStatOf(StatItemId.AGILITY)).isEqualTo(17);
         assertThat(elias.getStatById(StatItemId.ENDURANCE).rank).isEqualTo(30);
         assertThat(elias.getCalculatedTotalStatOf(StatItemId.ENDURANCE)).isEqualTo(30);
         assertThat(elias.getStatById(StatItemId.STRENGTH).rank).isEqualTo(20);

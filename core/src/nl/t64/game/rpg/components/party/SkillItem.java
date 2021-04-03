@@ -198,7 +198,10 @@ class Thief extends SkillItem {
 
     @Override
     String getDescription() {
-        return "Tekst en uitleg over " + name + ".";
+        return """
+                Allows the possibility to pick locks on treasure chests.
+                Also increases chance to hit and damage inflicted with
+                physical weapons FROM BEHIND in hand to hand combat.""";
     }
 }
 
@@ -213,7 +216,9 @@ class Troubadour extends SkillItem {
 
     @Override
     String getDescription() {
-        return "Tekst en uitleg over " + name + ".";
+        return """
+                Allows the possibility to play and sing inspirationally in combat,
+                increasing your party's and decreasing the enemy's chance to hit.""";
     }
 }
 
@@ -228,7 +233,10 @@ class Warrior extends SkillItem {
 
     @Override
     String getDescription() {
-        return "Tekst en uitleg over " + name + ".";
+        return """
+                Allows the possibility of scoring critical hits in combat.
+                Also increases chance to hit and damage inflicted with
+                physical weapons and improves shield defenses in combat.""";
     }
 }
 
@@ -258,7 +266,10 @@ class Hafted extends SkillItem {
 
     @Override
     String getDescription() {
-        return "Tekst en uitleg over " + name + ".";
+        return """
+                Allows the possibility of equipping hafted weapons,
+                and increases their chance to hit and damage
+                inflicted in combat.""";
     }
 }
 
@@ -273,7 +284,10 @@ class Missile extends SkillItem {
 
     @Override
     String getDescription() {
-        return "Tekst en uitleg over " + name + ".";
+        return """
+                Allows the possibility of equipping missile weapons,
+                and increases their chance to hit and damage
+                inflicted in combat.""";
     }
 }
 
@@ -288,7 +302,10 @@ class Pole extends SkillItem {
 
     @Override
     String getDescription() {
-        return "Tekst en uitleg over " + name + ".";
+        return """
+                Allows the possibility of equipping pole weapons,
+                and increases their chance to hit and damage
+                inflicted in combat.""";
     }
 }
 
@@ -303,7 +320,10 @@ class Shield extends SkillItem {
 
     @Override
     String getDescription() {
-        return "Tekst en uitleg over " + name + ".";
+        return """
+                Allows the possibility of equipping shields,
+                and increases their defenses while blocking
+                in combat.""";
     }
 }
 
@@ -318,7 +338,10 @@ class Sword extends SkillItem {
 
     @Override
     String getDescription() {
-        return "Tekst en uitleg over " + name + ".";
+        return """
+                Allows the possibility of equipping swords and daggers,
+                and increases their chance to hit and damage
+                inflicted in combat.""";
     }
 }
 
@@ -333,6 +356,9 @@ class Thrown extends SkillItem {
 
     @Override
     String getDescription() {
-        return "Tekst en uitleg over " + name + ".";
+        return """
+                Allows the possibility of equipping thrown weapons,
+                and increases their chance to hit and damage
+                inflicted in combat.""";
     }
 }

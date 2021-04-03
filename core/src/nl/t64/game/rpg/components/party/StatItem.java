@@ -143,7 +143,9 @@ class Dexterity extends StatItem {
 
     @Override
     String getDescription() {
-        return "Tekst en uitleg over " + name + ".";
+        return """
+                Increases chance to hit and damage inflicted
+                with ranged weapons in combat.""";
     }
 }
 
@@ -160,7 +162,9 @@ class Agility extends StatItem {
 
     @Override
     String getDescription() {
-        return "Tekst en uitleg over " + name + ".";
+        return """
+                Improves the enemy's chance to fail
+                a physical attack in combat.""";
     }
 }
 
@@ -177,7 +181,9 @@ class Strength extends StatItem {
 
     @Override
     String getDescription() {
-        return "Tekst en uitleg over " + name + ".";
+        return """
+                Increases chance to hit and damage inflicted
+                with weapons in hand-to-hand combat.""";
     }
 }
 

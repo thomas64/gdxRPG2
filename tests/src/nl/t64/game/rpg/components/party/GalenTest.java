@@ -24,9 +24,9 @@ class GalenTest extends GameTest {
         assertThat(galen.getStatById(StatItemId.WILLPOWER).rank).isEqualTo(15);
         assertThat(galen.getCalculatedTotalStatOf(StatItemId.WILLPOWER)).isEqualTo(15);
         assertThat(galen.getStatById(StatItemId.DEXTERITY).rank).isEqualTo(18);
-        assertThat(galen.getCalculatedTotalStatOf(StatItemId.DEXTERITY)).isEqualTo(12);
+        assertThat(galen.getCalculatedTotalStatOf(StatItemId.DEXTERITY)).isEqualTo(18);
         assertThat(galen.getStatById(StatItemId.AGILITY).rank).isEqualTo(10);
-        assertThat(galen.getCalculatedTotalStatOf(StatItemId.AGILITY)).isEqualTo(10);
+        assertThat(galen.getCalculatedTotalStatOf(StatItemId.AGILITY)).isEqualTo(8);
         assertThat(galen.getStatById(StatItemId.ENDURANCE).rank).isEqualTo(20);
         assertThat(galen.getCalculatedTotalStatOf(StatItemId.ENDURANCE)).isEqualTo(20);
         assertThat(galen.getStatById(StatItemId.STRENGTH).rank).isEqualTo(25);

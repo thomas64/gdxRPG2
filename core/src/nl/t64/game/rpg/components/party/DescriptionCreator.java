@@ -115,10 +115,10 @@ public class DescriptionCreator {
         if (description.value instanceof SkillItemId) {
             return true;
         }
-        if (description.key.equals(StatItemId.DEXTERITY) && inventoryItem.group.equals(InventoryGroup.SHIELD)) {
+        if (description.key.equals(StatItemId.AGILITY) && inventoryItem.group.hasNegativeImpactOnAgilityAndStealth()) {
             return true;
         }
-        if (description.key.equals(SkillItemId.STEALTH) && inventoryItem.group.equals(InventoryGroup.CHEST)) {
+        if (description.key.equals(SkillItemId.STEALTH) && inventoryItem.group.hasNegativeImpactOnAgilityAndStealth()) {
             return true;
         }
         if (description.key.equals(CalcAttributeId.WEIGHT)

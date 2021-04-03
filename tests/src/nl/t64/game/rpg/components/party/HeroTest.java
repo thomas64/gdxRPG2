@@ -158,13 +158,19 @@ class HeroTest extends GameTest {
         Optional<String> message;
 
         message = mozes.createMessageIfNotAbleToEquip(legendaryStaff);
-        assertThat(message).contains("Mozes needs the Pole skill" + System.lineSeparator() + "to equip that Legendary Staff.");
+        assertThat(message).contains("""
+                                             Mozes needs the Pole skill
+                                             to equip that Legendary Staff.""");
 
         message = ryiah.createMessageIfNotAbleToEquip(legendaryStaff);
-        assertThat(message).contains("Ryiah needs 30 Intelligence" + System.lineSeparator() + "to equip that Legendary Staff.");
+        assertThat(message).contains("""
+                                             Ryiah needs 30 Intelligence
+                                             to equip that Legendary Staff.""");
 
         message = ryiah.createMessageIfNotAbleToEquip(masterworkLance);
-        assertThat(message).contains("Ryiah needs 20 Strength" + System.lineSeparator() + "to equip that Masterwork Lance.");
+        assertThat(message).contains("""
+                                             Ryiah needs 20 Strength
+                                             to equip that Masterwork Lance.""");
 
         message = mozes.createMessageIfNotAbleToEquip(basicDagger);
         assertThat(message).isEmpty();
@@ -173,12 +179,16 @@ class HeroTest extends GameTest {
         assertThat(message).isEmpty();
 
         message = mozes.createMessageIfNotAbleToEquip(bow);
-        assertThat(message).contains("Mozes needs to unequip the Basic Light Shield" + System.lineSeparator() + "to equip that Basic Shortbow.");
+        assertThat(message).contains("""
+                                             Mozes needs to unequip the Basic Light Shield
+                                             to equip that Basic Shortbow.""");
 
         mozes.clearInventoryItemFor(InventoryGroup.SHIELD);
         mozes.forceSetInventoryItemFor(InventoryGroup.WEAPON, bow);
         message = mozes.createMessageIfNotAbleToEquip(shield);
-        assertThat(message).contains("Mozes needs to unequip the Basic Shortbow" + System.lineSeparator() + "to equip that Basic Light Shield.");
+        assertThat(message).contains("""
+                                             Mozes needs to unequip the Basic Shortbow
+                                             to equip that Basic Light Shield.""");
     }
 
     @Test
@@ -192,7 +202,7 @@ class HeroTest extends GameTest {
         assertThat(party.getHero(0)).isEqualTo(mozes);
 
         assertThat(mozes.getSkillValueOf(InventoryGroup.SHIELD, SkillItemId.STEALTH)).isEqualTo(-5);
-        assertThat(mozes.getStatValueOf(InventoryGroup.SHIELD, StatItemId.DEXTERITY)).isEqualTo(-2);
+        assertThat(mozes.getStatValueOf(InventoryGroup.SHIELD, StatItemId.AGILITY)).isEqualTo(0);
         assertThat(mozes.getId()).isEqualTo("mozes");
         assertThat(mozes.getName()).isEqualTo("Mozes");
         assertThat(mozes.getSchool()).isEqualTo(SchoolType.UNKNOWN);
@@ -202,16 +212,16 @@ class HeroTest extends GameTest {
         assertThat(mozes.getAllStats()).extracting("id")
                                        .containsExactly(StatItemId.INTELLIGENCE,
                                                         StatItemId.WILLPOWER,
+                                                        StatItemId.STRENGTH,
                                                         StatItemId.DEXTERITY,
                                                         StatItemId.AGILITY,
                                                         StatItemId.ENDURANCE,
-                                                        StatItemId.STRENGTH,
                                                         StatItemId.STAMINA);
         assertThat(mozes.getStatById(StatItemId.INTELLIGENCE).getXpCostForNextLevel()).isEqualTo(43);
         assertThat(mozes.getSkillById(SkillItemId.STEALTH).getXpCostForNextLevel(0)).isEqualTo(16);
         assertThat(mozes.getSkillById(SkillItemId.STEALTH).getGoldCostForNextLevel()).isEqualTo(8);
 
-        assertThat(mozes.getExtraStatForVisualOf(mozes.getStatById(StatItemId.DEXTERITY))).isEqualTo(-2);
+        assertThat(mozes.getExtraStatForVisualOf(mozes.getStatById(StatItemId.AGILITY))).isEqualTo(-1);
         assertThat(iellwen.getExtraSkillForVisualOf(iellwen.getSkillById(SkillItemId.STEALTH))).isEqualTo(-1);
 
         assertThat(mozes.getInventoryItem(InventoryGroup.WEAPON)).get().hasFieldOrPropertyWithValue("id", "basic_shortsword");
@@ -219,7 +229,7 @@ class HeroTest extends GameTest {
         assertThat(mozes.getInventoryItem(InventoryGroup.HELMET)).isEmpty();
         assertThat(mozes.getInventoryItem(InventoryGroup.CHEST)).get().hasFieldOrPropertyWithValue("id", "basic_medium_chest");
 
-        assertThat(luana.getInventoryItem(InventoryGroup.WEAPON)).get().hasFieldOrPropertyWithValue("id", "basic_dagger");
+        assertThat(luana.getInventoryItem(InventoryGroup.WEAPON)).get().hasFieldOrPropertyWithValue("id", "basic_dart");
         assertThat(luana.getInventoryItem(InventoryGroup.SHIELD)).isEmpty();
         assertThat(luana.getInventoryItem(InventoryGroup.HELMET)).isEmpty();
         assertThat(luana.getInventoryItem(InventoryGroup.CHEST)).get().hasFieldOrPropertyWithValue("id", "basic_light_chest");

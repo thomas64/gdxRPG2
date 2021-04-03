@@ -24,9 +24,9 @@ class JasparTest extends GameTest {
         assertThat(jaspar.getStatById(StatItemId.WILLPOWER).rank).isEqualTo(11);
         assertThat(jaspar.getCalculatedTotalStatOf(StatItemId.WILLPOWER)).isEqualTo(11);
         assertThat(jaspar.getStatById(StatItemId.DEXTERITY).rank).isEqualTo(14);
-        assertThat(jaspar.getCalculatedTotalStatOf(StatItemId.DEXTERITY)).isEqualTo(4);
+        assertThat(jaspar.getCalculatedTotalStatOf(StatItemId.DEXTERITY)).isEqualTo(14);
         assertThat(jaspar.getStatById(StatItemId.AGILITY).rank).isEqualTo(8);
-        assertThat(jaspar.getCalculatedTotalStatOf(StatItemId.AGILITY)).isEqualTo(8);
+        assertThat(jaspar.getCalculatedTotalStatOf(StatItemId.AGILITY)).isEqualTo(2);
         assertThat(jaspar.getStatById(StatItemId.ENDURANCE).rank).isEqualTo(30);
         assertThat(jaspar.getCalculatedTotalStatOf(StatItemId.ENDURANCE)).isEqualTo(30);
         assertThat(jaspar.getStatById(StatItemId.STRENGTH).rank).isEqualTo(30);
