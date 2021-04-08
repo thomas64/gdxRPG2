@@ -1,7 +1,7 @@
 {
-  "basic_light_chest"      : {
-    "name"      : "Basic Light Chest",
-    "group"     : "CHEST",
+  "basic_light_boots"      : {
+    "name"      : "Basic Light Boots",
+    "group"     : "BOOTS",
     "sort"      : 60100,
     "price"     : 10,
     "weight"    : 1,
@@ -9,9 +9,9 @@
     "agility"   : 0,
     "stealth"   : 0
   },
-  "fine_light_chest"       : {
-    "name"      : "Fine Light Chest",
-    "group"     : "CHEST",
+  "fine_light_boots"       : {
+    "name"      : "Fine Light Boots",
+    "group"     : "BOOTS",
     "sort"      : 60200,
     "price"     : 20,
     "weight"    : 1,
@@ -19,9 +19,9 @@
     "agility"   : 0,
     "stealth"   : 0
   },
-  "specialist_light_chest" : {
-    "name"      : "Specialist Light Chest",
-    "group"     : "CHEST",
+  "specialist_light_boots" : {
+    "name"      : "Specialist Light Boots",
+    "group"     : "BOOTS",
     "sort"      : 60300,
     "price"     : 30,
     "weight"    : 1,
@@ -29,9 +29,9 @@
     "agility"   : 0,
     "stealth"   : 0
   },
-  "masterwork_light_chest" : {
-    "name"      : "Masterwork Light Chest",
-    "group"     : "CHEST",
+  "masterwork_light_boots" : {
+    "name"      : "Masterwork Light Boots",
+    "group"     : "BOOTS",
     "sort"      : 60400,
     "price"     : 40,
     "weight"    : 1,
@@ -39,9 +39,9 @@
     "agility"   : 0,
     "stealth"   : 0
   },
-  "basic_medium_chest"     : {
-    "name"      : "Basic Medium Chest",
-    "group"     : "CHEST",
+  "basic_medium_boots"     : {
+    "name"      : "Basic Medium Boots",
+    "group"     : "BOOTS",
     "sort"      : 60120,
     "price"     : 40,
     "weight"    : 2,
@@ -49,9 +49,9 @@
     "agility"   : -1,
     "stealth"   : -1
   },
-  "fine_medium_chest"      : {
-    "name"      : "Fine Medium Chest",
-    "group"     : "CHEST",
+  "fine_medium_boots"      : {
+    "name"      : "Fine Medium Boots",
+    "group"     : "BOOTS",
     "sort"      : 60220,
     "price"     : 50,
     "weight"    : 2,
@@ -59,9 +59,9 @@
     "agility"   : -1,
     "stealth"   : -1
   },
-  "specialist_medium_chest": {
-    "name"      : "Specialist Medium Chest",
-    "group"     : "CHEST",
+  "specialist_medium_boots": {
+    "name"      : "Specialist Medium Boots",
+    "group"     : "BOOTS",
     "sort"      : 60320,
     "price"     : 60,
     "weight"    : 2,
@@ -69,9 +69,9 @@
     "agility"   : -1,
     "stealth"   : -1
   },
-  "masterwork_medium_chest": {
-    "name"      : "Masterwork Medium Chest",
-    "group"     : "CHEST",
+  "masterwork_medium_boots": {
+    "name"      : "Masterwork Medium Boots",
+    "group"     : "BOOTS",
     "sort"      : 60420,
     "price"     : 70,
     "weight"    : 2,
@@ -79,9 +79,9 @@
     "agility"   : -1,
     "stealth"   : -1
   },
-  "basic_heavy_chest"      : {
-    "name"      : "Basic Heavy Chest",
-    "group"     : "CHEST",
+  "basic_heavy_boots"      : {
+    "name"      : "Basic Heavy Boots",
+    "group"     : "BOOTS",
     "sort"      : 60140,
     "price"     : 70,
     "weight"    : 3,
@@ -89,9 +89,9 @@
     "agility"   : -3,
     "stealth"   : -2
   },
-  "fine_heavy_chest"       : {
-    "name"      : "Fine Heavy Chest",
-    "group"     : "CHEST",
+  "fine_heavy_boots"       : {
+    "name"      : "Fine Heavy Boots",
+    "group"     : "BOOTS",
     "sort"      : 60240,
     "price"     : 80,
     "weight"    : 3,
@@ -99,9 +99,9 @@
     "agility"   : -3,
     "stealth"   : -2
   },
-  "specialist_heavy_chest" : {
-    "name"      : "Specialist Heavy Chest",
-    "group"     : "CHEST",
+  "specialist_heavy_boots" : {
+    "name"      : "Specialist Heavy Boots",
+    "group"     : "BOOTS",
     "sort"      : 60340,
     "price"     : 90,
     "weight"    : 3,
@@ -109,9 +109,9 @@
     "agility"   : -3,
     "stealth"   : -2
   },
-  "masterwork_heavy_chest" : {
-    "name"      : "Masterwork Heavy Chest",
-    "group"     : "CHEST",
+  "masterwork_heavy_boots" : {
+    "name"      : "Masterwork Heavy Boots",
+    "group"     : "BOOTS",
     "sort"      : 60440,
     "price"     : 100,
     "weight"    : 3,

@@ -1,4 +1,5 @@
 armor.atlas
+armor2.atlas
 group.atlas
 hafted.atlas
 item.atlas

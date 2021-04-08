@@ -8,9 +8,9 @@ import java.util.stream.IntStream;
 public class InventoryContainer {
 
     private static final int NUMBER_OF_SLOTS = 66;
+    private static final int SORTING_SPLIT = 70000;     // atm, item.json starts with this number.
 
     private final List<InventoryItem> inventory;
-    private boolean isSortReverse = false;
 
     public InventoryContainer() {
         this(NUMBER_OF_SLOTS);
@@ -94,10 +94,9 @@ public class InventoryContainer {
 
     public void sort() {
         new InventoryStacksMerger(this).searchAll();
-        Comparator<InventoryItem> comparing = Comparator.comparing(this::getInventoryGroup)
-                                                        .thenComparing(this::getSort);
-        inventory.sort(isSortReverse ? comparing.reversed() : comparing);
-        isSortReverse = !isSortReverse;
+        Comparator<InventoryItem> comparing = Comparator.comparing(this::getSort)
+                                                        .thenComparing(this::getInventoryGroup);
+        inventory.sort(comparing);
     }
 
     public boolean contains(Map<String, Integer> items) {
@@ -227,7 +226,7 @@ public class InventoryContainer {
     private int getSort(InventoryItem inventoryItem) {
         return Optional.ofNullable(inventoryItem)
                        .map(item -> item.sort)
-                       .orElse(0);
+                       .orElse(SORTING_SPLIT);
     }
 
     private Runnable throwException(String exceptionMessage) {

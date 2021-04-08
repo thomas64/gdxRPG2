@@ -2,7 +2,7 @@
   "key_mysterious_tunnel": {
     "name"       : "Mysterious Tunnel Key",
     "group"      : "ITEM",
-    "sort"       : 10,
+    "sort"       : 70010,
     "price"      : 1,
     "description": [
       "An old key for inside the Mysterious Tunnel."

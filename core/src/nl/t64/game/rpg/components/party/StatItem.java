@@ -220,4 +220,9 @@ class Stamina extends StatItem {
     String getDescription() {
         return "Tekst en uitleg over " + name + ".";
     }
+
+    int getInflictDamagePenalty() {
+        return variable <= 0 ? 5 : 1;
+    }
+
 }

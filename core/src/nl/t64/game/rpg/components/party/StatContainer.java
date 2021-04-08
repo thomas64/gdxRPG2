@@ -96,4 +96,8 @@ class StatContainer {
                      .collect(Collectors.toUnmodifiableList());
     }
 
+    int getInflictDamageStaminaPenalty() {
+        return ((Stamina) stats.get(StatItemId.STAMINA.name())).getInflictDamagePenalty();
+    }
+
 }

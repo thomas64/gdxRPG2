@@ -30,7 +30,7 @@ public class BlockSubject {
         return List.copyOf(observers).stream()
                    .map(observer -> observer.getBlockerFor(boundingBox))
                    .flatMap(Optional::stream)
-                   .collect(Collectors.toList());
+                   .collect(Collectors.toUnmodifiableList());
     }
 
     public boolean isCurrentlyBlocking(float x, float y) {

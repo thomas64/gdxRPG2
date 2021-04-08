@@ -83,7 +83,7 @@ public abstract class BaseTable implements WindowSelector {
 
     protected abstract void fillRows();
 
-    void addToTable(int totalExtra) {
+    void addExtraToTable(int totalExtra) {
         if (totalExtra > 0) {
             var label = new Label(String.format("+%s", totalExtra), new Label.LabelStyle(font, Color.FOREST));
             table.add(label).row();

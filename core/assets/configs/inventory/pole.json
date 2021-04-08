@@ -44,8 +44,8 @@
     "group"           : "WEAPON",
     "sort"            : 5200,
     "skill"           : "POLE",
-    "min_intelligence": 26,
     "price"           : 45,
+    "min_intelligence": 26,
     "min_strength"    : 8,
     "base_hit"        : 80,
     "damage"          : 10
@@ -55,8 +55,8 @@
     "group"           : "WEAPON",
     "sort"            : 6200,
     "skill"           : "POLE",
-    "min_intelligence": 30,
     "price"           : 55,
+    "min_intelligence": 30,
     "min_strength"    : 12,
     "base_hit"        : 90,
     "damage"          : 12

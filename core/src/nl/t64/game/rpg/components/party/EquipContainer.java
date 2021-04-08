@@ -93,4 +93,29 @@ class EquipContainer {
                         .sum();
     }
 
+    Optional<SkillItemId> getWeaponSkill() {
+        return getInventoryItem(InventoryGroup.WEAPON)
+                .map(item -> item.getAttributeOfMinimal(InventoryMinimal.SKILL))
+                .map(SkillItemId.class::cast);
+    }
+
+    int getBonusProtectionWhenArmorSetIsComplete() {
+        return getInventoryItem(InventoryGroup.HELMET)
+                .map(inventoryItem -> inventoryItem.id.split("_"))
+                .map(parts -> parts[0] + "_" + parts[1])
+                .map(this::doesEquippedArmorAllHaveSamePrefix)
+                .filter(isCompleteSet -> isCompleteSet)
+                .map(isCompleteSet -> getInventoryItem(InventoryGroup.HELMET).get().protection)
+                .orElse(0);
+    }
+
+    private boolean doesEquippedArmorAllHaveSamePrefix(String prefix) {
+        return equipment.values()
+                        .stream()
+                        .filter(Objects::nonNull)
+                        .filter(inventoryItem -> inventoryItem.group.isPartArmorOfSet())
+                        .filter(inventoryItem -> inventoryItem.id.startsWith(prefix))
+                        .count() == 9L;
+    }
+
 }

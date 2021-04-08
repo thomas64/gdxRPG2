@@ -73,7 +73,7 @@ class SkillsTable extends BaseTable {
         }
         table.add(String.valueOf(skillItem.getRank()));
         final int totalExtra = selectedHero.getExtraSkillForVisualOf(skillItem);
-        addToTable(totalExtra);
+        addExtraToTable(totalExtra);
     }
 
     private void setSelected(Label skillName, SkillItem skillItem) {

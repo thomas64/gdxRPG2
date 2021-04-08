@@ -48,6 +48,8 @@ public class InventoryDescription {
             } else if (key instanceof CalcAttributeId) {
                 return compareCalcs(item1, item2);
             }
+        } else if (value.equals("0")) {
+            return ThreeState.LESS;
         }
         return ThreeState.SAME;
     }

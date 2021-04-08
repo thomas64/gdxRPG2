@@ -18,13 +18,13 @@ public enum InventoryGroup implements SuperEnum {
     NECKLACE("Necklace"),
     SHOULDERS("Shoulders"),         // 12 prt
     CHEST("Chest"),                 // 12 prt
-    CLOAK("Cloak"),                 // 2 prt
+    CLOAK("Cloak"),                 // 2 prt    extra stealth
     BRACERS("Bracers"),             // 12 prt
     GLOVES("Gloves"),               // 12 prt
     RING("Ring"),
-    BELT("Belt"),                   // 1 prt
-    PANTS("Pants"),                 // 12 prt   sum of totaal: prt / 3 ?
-    BOOTS("Boots"),                 // 12 prt   bij complete set agi omhoog.
+    BELT("Belt"),                   // 2 prt    extra agility
+    PANTS("Pants"),                 // 12 prt
+    BOOTS("Boots"),                 // 12 prt   bij complete set prt omhoog
 
     EMPTY(""),
 
@@ -39,14 +39,21 @@ public enum InventoryGroup implements SuperEnum {
         return title;
     }
 
-    public boolean hasNegativeImpactOnAgilityAndStealth() {
+    boolean hasImpactOnPrtAgiStl() {
         return switch (this) {
-            case SHIELD, HELMET, SHOULDERS, CHEST, BRACERS, GLOVES, PANTS, BOOTS -> true;
+            case SHIELD, HELMET, SHOULDERS, CHEST, CLOAK, BRACERS, GLOVES, BELT, PANTS, BOOTS -> true;
             default -> false;
         };
     }
 
-    public boolean isStackable() {
+    boolean isPartArmorOfSet() {
+        return switch (this) {
+            case HELMET, SHOULDERS, CHEST, CLOAK, BRACERS, GLOVES, BELT, PANTS, BOOTS -> true;
+            default -> false;
+        };
+    }
+
+    boolean isStackable() {
         return switch (this) {
             case POTION, RESOURCE -> true;
             default -> false;

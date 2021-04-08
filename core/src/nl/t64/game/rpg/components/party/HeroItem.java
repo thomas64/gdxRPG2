@@ -203,7 +203,41 @@ public class HeroItem {
 
     public int getTotalCalcOf(CalcAttributeId calcAttributeId) {
         // todo, er moet nog wel een bonus komen voor protection en etc. bijv met een protection spell.
+        // of hieronder
         return inventory.getSumOfCalc(calcAttributeId);
+    }
+
+    public int getPossibleExtraProtection() {
+        // todo, er moet nog wel een bonus komen voor protection en etc. bijv met een protection spell.
+        // of hierboven
+        return inventory.getBonusProtectionWhenArmorSetIsComplete();
+    }
+
+    public int getCalculatedMovepoints() {
+        float movepoints = 10f
+                           + (stats.getById(StatItemId.STAMINA).variable / 10f)
+                           - (getTotalCalcOf(CalcAttributeId.WEIGHT) / 3f);
+        // todo,           + bonus movepoints van equipment
+        if (movepoints <= 0f) {
+            return 1;
+        }
+        return Math.round(movepoints);
+    }
+
+    public int getCalculatedTotalDamage() {
+        // todo, is nu alleen nog maar voor hand to hand wapens.
+        return inventory.getWeaponSkill()
+                        .filter(SkillItemId::isHandToHandWeaponSkill)
+                        .map(this::getCalculatedTotalDamage)
+                        .orElse(0);
+    }
+
+    private int getCalculatedTotalDamage(SkillItemId weaponSkill) {
+        return getTotalCalcOf(CalcAttributeId.DAMAGE)
+               // + getLevel() todo, this one shouldn't be shown in calculation but should be calculated in battle.
+               + (getCalculatedTotalStatOf(StatItemId.STRENGTH) / stats.getInflictDamageStaminaPenalty())
+               + getCalculatedTotalSkillOf(SkillItemId.WARRIOR)
+               + (getCalculatedTotalSkillOf(weaponSkill) * 2);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -67,7 +67,7 @@ class StatsTable extends BaseTable {
         }
         table.add(String.valueOf(statItem.getRank()));
         final int totalExtra = selectedHero.getExtraStatForVisualOf(statItem);
-        addToTable(totalExtra);
+        addExtraToTable(totalExtra);
     }
 
     private void setSelected(Label statTitle, StatItem statItem) {

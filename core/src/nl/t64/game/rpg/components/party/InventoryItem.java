@@ -8,6 +8,7 @@ import lombok.Setter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -31,19 +32,28 @@ public class InventoryItem {
     private int price;
     private int weight;
     @JsonProperty("min_intelligence")
-    int minIntelligence;
+    private int minIntelligence;
     @JsonProperty("min_dexterity")
-    int minDexterity;
+    private int minDexterity;
     @JsonProperty("min_strength")
-    int minStrength;
+    private int minStrength;
     @JsonProperty("base_hit")
     private int baseHit;
     private int damage;
-    private int protection;
+    int protection;
     private int defense;
+    @JsonProperty("spell_battery")
+    private int spellBattery;
+    private int intelligence;
+    private int willpower;
     private int dexterity;
     private int agility;
+    private int diplomat;
+    private int loremaster;
     private int stealth;
+    private int thief;
+    private int warrior;
+    private int wizard;
 
     InventoryItem(InventoryItem item, int amount) {
         this.id = item.id;
@@ -63,9 +73,17 @@ public class InventoryItem {
         this.damage = item.damage;
         this.protection = item.protection;
         this.defense = item.defense;
+        this.spellBattery = item.spellBattery;
+        this.intelligence = item.intelligence;
+        this.willpower = item.willpower;
         this.dexterity = item.dexterity;
         this.agility = item.agility;
+        this.diplomat = item.diplomat;
+        this.loremaster = item.loremaster;
         this.stealth = item.stealth;
+        this.thief = item.thief;
+        this.warrior = item.warrior;
+        this.wizard = item.wizard;
     }
 
     public static InventoryItem copyOf(InventoryItem inventoryItem, int amount) {
@@ -92,17 +110,23 @@ public class InventoryItem {
 
     int getAttributeOfStatItemId(StatItemId statItemId) {
         return switch (statItemId) {
+            case INTELLIGENCE -> intelligence;
+            case WILLPOWER -> willpower;
             case DEXTERITY -> dexterity;
             case AGILITY -> agility;
-            case INTELLIGENCE, WILLPOWER, ENDURANCE, STRENGTH, STAMINA -> 0;
+            case ENDURANCE, STRENGTH, STAMINA -> 0;
         };
     }
 
     int getAttributeOfSkillItemId(SkillItemId skillItemId) {
         return switch (skillItemId) {
+            case DIPLOMAT -> diplomat;
+            case LOREMASTER -> loremaster;
             case STEALTH -> stealth;
-            case ALCHEMIST, DIPLOMAT, HEALER, LOREMASTER, MECHANIC, MERCHANT, RANGER,
-                    THIEF, TROUBADOUR, WARRIOR, WIZARD,
+            case THIEF -> thief;
+            case WARRIOR -> warrior;
+            case WIZARD -> wizard;
+            case ALCHEMIST, HEALER, MECHANIC, MERCHANT, RANGER, TROUBADOUR,
                     HAFTED, MISSILE, POLE, SHIELD, SWORD, THROWN -> 0;
         };
     }
@@ -110,22 +134,24 @@ public class InventoryItem {
     int getAttributeOfCalcAttributeId(CalcAttributeId calcAttributeId) {
         return switch (calcAttributeId) {
             case WEIGHT -> weight;
+            case MOVEPOINTS -> 0;
             case BASE_HIT -> baseHit;
             case DAMAGE -> damage;
             case PROTECTION -> protection;
             case DEFENSE -> defense;
+            case SPELL_BATTERY -> spellBattery;
         };
     }
 
-    public List<InventoryMinimal> getMinimalsOtherItemHasAndYouDont(InventoryItem otherItem) {
+    public Set<InventoryMinimal> getMinimalsOtherItemHasAndYouDont(InventoryItem otherItem) {
         if (hasOnlyOneMinimal() && otherItem.hasOnlyOneMinimal()) {
-            return List.of();
+            return Set.of();
         } else {
             return Arrays.stream(InventoryMinimal.values())
                          .filter(minimal -> getAttributeOfMinimal(minimal) instanceof Integer)
                          .filter(minimal -> (int) getAttributeOfMinimal(minimal) == 0)
                          .filter(minimal -> (int) otherItem.getAttributeOfMinimal(minimal) > 0)
-                         .collect(Collectors.toList());
+                         .collect(Collectors.toUnmodifiableSet());
         }
     }
 
@@ -133,7 +159,28 @@ public class InventoryItem {
         return Arrays.stream(InventoryMinimal.values())
                      .filter(minimal -> getAttributeOfMinimal(minimal) instanceof Integer)
                      .filter(minimal -> (int) getAttributeOfMinimal(minimal) > 0)
-                     .count() == 1;
+                     .count() == 1L;
+    }
+
+    public Set<CalcAttributeId> getCalcsOtherItemHasAndYouDont(InventoryItem otherItem) {
+        return Arrays.stream(CalcAttributeId.values())
+                     .filter(calcAttributeId -> getAttributeOfCalcAttributeId(calcAttributeId) == 0)
+                     .filter(calcAttributeId -> otherItem.getAttributeOfCalcAttributeId(calcAttributeId) > 0)
+                     .collect(Collectors.toUnmodifiableSet());
+    }
+
+    public Set<StatItemId> getStatsOtherItemHasAndYouDont(InventoryItem otherItem) {
+        return Arrays.stream(StatItemId.values())
+                     .filter(statItemId -> getAttributeOfStatItemId(statItemId) == 0)
+                     .filter(statItemId -> otherItem.getAttributeOfStatItemId(statItemId) > 0)
+                     .collect(Collectors.toUnmodifiableSet());
+    }
+
+    public Set<SkillItemId> getSkillsOtherItemHasAndYouDont(InventoryItem otherItem) {
+        return Arrays.stream(SkillItemId.values())
+                     .filter(skillItemId -> getAttributeOfSkillItemId(skillItemId) == 0)
+                     .filter(skillItemId -> otherItem.getAttributeOfSkillItemId(skillItemId) > 0)
+                     .collect(Collectors.toUnmodifiableSet());
     }
 
     public boolean hasSameIdAs(InventoryItem candidateItem) {

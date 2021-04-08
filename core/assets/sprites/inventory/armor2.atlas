@@ -1,0 +1,69 @@
+
+armor2.png
+size: 248, 186
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+epic_dark_cloak
+  rotate: false
+  xy: 0, 0
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+epic_hat_of_insight
+  rotate: false
+  xy: 62, 0
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+epic_hat_of_wisdom
+  rotate: false
+  xy: 124, 0
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+epic_helm_of_charisma
+  rotate: false
+  xy: 186, 0
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+epic_helm_of_knowledge
+  rotate: false
+  xy: 0, 62
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+epic_helm_of_tempests
+  rotate: false
+  xy: 62, 62
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+epic_light_cloak
+  rotate: false
+  xy: 124, 62
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+epic_wizard_hat
+  rotate: false
+  xy: 186, 62
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+legendary_light_cloak
+  rotate: false
+  xy: 0, 124
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1

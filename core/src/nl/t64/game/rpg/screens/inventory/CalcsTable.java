@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.party.CalcAttributeId;
 import nl.t64.game.rpg.components.party.InventoryGroup;
+import nl.t64.game.rpg.components.party.PersonalityItem;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.screens.inventory.tooltip.PersonalityTooltip;
 
@@ -40,36 +41,45 @@ class CalcsTable extends BaseTable {
 
     @Override
     protected void fillRows() {
-        table.add(new Label("Weight", createLabelStyle()));
-        table.add("?");
+        table.add(new Label(CalcAttributeId.WEIGHT.getTitle(), createLabelStyle()));
+        table.add(String.valueOf(selectedHero.getTotalCalcOf(CalcAttributeId.WEIGHT)));
         table.add("").row();
 
-        table.add(new Label("Movepoints", createLabelStyle()));
-        table.add("?");
+        table.add(new Label(CalcAttributeId.MOVEPOINTS.getTitle(), createLabelStyle()));
+        table.add(String.valueOf(selectedHero.getCalculatedMovepoints()));
         table.add("").row();
 
         table.add(new Label(CalcAttributeId.BASE_HIT.getTitle(), createLabelStyle()));
-        table.add(String.format("%s%%", selectedHero.getCalcValueOf(InventoryGroup.WEAPON, CalcAttributeId.BASE_HIT)));
+        table.add(selectedHero.getCalcValueOf(InventoryGroup.WEAPON, CalcAttributeId.BASE_HIT) + "%");
         table.add("").row();
 
-        table.add(new Label(CalcAttributeId.DAMAGE.getTitle(), createLabelStyle()));
+        table.add(new Label("Total Hit", createLabelStyle()));
+        table.add("?");
+        table.add("").row();
+
+        table.add(new Label("Weapon " + CalcAttributeId.DAMAGE.getTitle(), createLabelStyle()));
         table.add(String.valueOf(selectedHero.getCalcValueOf(InventoryGroup.WEAPON, CalcAttributeId.DAMAGE)));
         table.add("").row();
 
-        table.add(new Label(String.format("Total %s", CalcAttributeId.PROTECTION.getTitle()), createLabelStyle()));
-        table.add(String.valueOf(selectedHero.getTotalCalcOf(CalcAttributeId.PROTECTION)));
+        table.add(new Label("Total " + CalcAttributeId.DAMAGE.getTitle(), createLabelStyle()));
+        table.add(String.valueOf(selectedHero.getCalculatedTotalDamage()));
         table.add("").row();
 
-        table.add(new Label(String.format("Shield %s", CalcAttributeId.PROTECTION.getTitle()), createLabelStyle()));
-        table.add(String.valueOf(selectedHero.getCalcValueOf(InventoryGroup.SHIELD, CalcAttributeId.PROTECTION)));
-        table.add("").row();
-
-        table.add(new Label(CalcAttributeId.DEFENSE.getTitle(), createLabelStyle()));
+        table.add(new Label("Shield " + CalcAttributeId.DEFENSE.getTitle(), createLabelStyle()));
         table.add(String.valueOf(selectedHero.getCalcValueOf(InventoryGroup.SHIELD, CalcAttributeId.DEFENSE)));
         table.add("").row();
 
-        table.add(new Label("Spell Battery", createLabelStyle()));
-        table.add("?");
+        table.add(new Label("Shield " + CalcAttributeId.PROTECTION.getTitle(), createLabelStyle()));
+        table.add(String.valueOf(selectedHero.getCalcValueOf(InventoryGroup.SHIELD, CalcAttributeId.PROTECTION)));
+        table.add("").row();
+
+        table.add(new Label("Total " + CalcAttributeId.PROTECTION.getTitle(), createLabelStyle()));
+        table.add(String.valueOf(selectedHero.getTotalCalcOf(CalcAttributeId.PROTECTION)));
+        final int totalExtra = selectedHero.getPossibleExtraProtection();
+        addExtraToTable(totalExtra);
+
+        table.add(new Label(CalcAttributeId.SPELL_BATTERY.getTitle(), createLabelStyle()));
+        table.add(String.valueOf(selectedHero.getTotalCalcOf(CalcAttributeId.SPELL_BATTERY)));
         table.add("").row();
 
         if (table.hasKeyboardFocus()) {
@@ -83,8 +93,14 @@ class CalcsTable extends BaseTable {
         if (hasJustUpdated) {
             hasJustUpdated = false;
             tooltip.setPosition(FIRST_COLUMN_WIDTH / 1.5f, this::getTooltipY);
-            tooltip.refresh(child, x -> "ToDo");
+            tooltip.refresh(child, getPersonalityItemForDescriptionOnly(child));
         }
+    }
+
+    private PersonalityItem getPersonalityItemForDescriptionOnly(Label child) {
+        return totalLoremaster -> CalcAttributeId.from(child.getText().toString())
+                                                 .map(CalcAttributeId::getDescription)
+                                                 .orElse("ToDo");
     }
 
     private Label.LabelStyle createLabelStyle() {

@@ -27,17 +27,17 @@ enum InventoryMinimal implements SuperEnum {
         }
     },
 
-    MIN_DEXTERITY("Min. Dexterity") {
-        @Override
-        Optional<String> createMessageIfHeroHasNotEnoughFor(InventoryItem item, HeroItem hero) {
-            return InventoryMinimal.createMessage(item, StatItemId.DEXTERITY, hero);
-        }
-    },
-
     MIN_STRENGTH("Min. Strength") {
         @Override
         Optional<String> createMessageIfHeroHasNotEnoughFor(InventoryItem item, HeroItem hero) {
             return InventoryMinimal.createMessage(item, StatItemId.STRENGTH, hero);
+        }
+    },
+
+    MIN_DEXTERITY("Min. Dexterity") {
+        @Override
+        Optional<String> createMessageIfHeroHasNotEnoughFor(InventoryItem item, HeroItem hero) {
+            return InventoryMinimal.createMessage(item, StatItemId.DEXTERITY, hero);
         }
     };
 

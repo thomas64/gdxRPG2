@@ -36,6 +36,14 @@ public enum SkillItemId implements SuperEnum {
         return title;
     }
 
+    boolean isHandToHandWeaponSkill() {
+        return switch (this) {
+            case SWORD, HAFTED, POLE -> true;
+            case MISSILE, THROWN -> false;
+            default -> throw new IllegalCallerException("Only possible to ask a Weapon Skill.");
+        };
+    }
+
     public static Optional<SkillItemId> from(String possibleSkillItemId) {
         return Arrays.stream(SkillItemId.values())
                      .filter(skillItemId -> possibleSkillItemId.equalsIgnoreCase(skillItemId.name()))
