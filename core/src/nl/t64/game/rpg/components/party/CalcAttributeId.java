@@ -12,7 +12,9 @@ public enum CalcAttributeId implements SuperEnum {
     WEIGHT("Weight") {
         @Override
         public String getDescription() {
-            return "Decreases amount of movepoints in combat.";
+            return """
+                    Decreases amount of movepoints in combat.
+                    Allows the possibility of shoving a less weighted character in combat.""";
         }
     },
 
@@ -21,7 +23,8 @@ public enum CalcAttributeId implements SuperEnum {
         public String getDescription() {
             return """
                     Defines how many steps this character is able to take in combat.
-                    Movepoints are calculated from Stamina minus Weight.""";
+                    Movepoints are calculated from Stamina and Weight.
+                    More stamina, more movepoints. More weight, less movepoints.""";
         }
     },
 
@@ -36,7 +39,7 @@ public enum CalcAttributeId implements SuperEnum {
         @Override
         public String getDescription() {
             return """
-                    Defines the amount of damage inflicted to an enemy with weapons in combat.
+                    Defines the amount of damage-to-inflict to an enemy with physical weapons in combat.
                     Damage is the counterpart of Protection.
                     An enemy's protection decreases the damage you inflict.""";
         }
@@ -46,7 +49,7 @@ public enum CalcAttributeId implements SuperEnum {
         @Override
         public String getDescription() {
             return """
-                    Decreases the enemy's damage inflicted with weapons in combat.
+                    Decreases the enemy's damage-to-inflict with physical weapons in combat.
                     Protection is the counterpart of Damage.
                     A complete armor set from the same type results into bonus protection.""";
         }

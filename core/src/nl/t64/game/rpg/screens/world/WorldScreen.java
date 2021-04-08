@@ -364,11 +364,14 @@ public class WorldScreen implements Screen,
     }
 
     private void openMiniMap() {
-        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MINIMAP);
-        gameState = GameState.MINIMAP;
-        multiplexer.removeProcessor(0);
-        multiplexer.addProcessor(0, new MiniMapListener(this::closeMiniMap));
-        camera.zoom();
+        if (camera.zoom()) {
+            Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MINIMAP);
+            gameState = GameState.MINIMAP;
+            multiplexer.removeProcessor(0);
+            multiplexer.addProcessor(0, new MiniMapListener(this::closeMiniMap));
+        } else {
+            Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_ERROR);
+        }
     }
 
     private void closeMiniMap() {

@@ -21,11 +21,14 @@ class Camera extends OrthographicCamera {
         this.reset();
     }
 
-    void zoom() {
-        if (mapWidth > Gdx.graphics.getWidth() || mapHeight > Gdx.graphics.getHeight()) {
+    boolean zoom() {
+        if (mapWidth / zoom > Gdx.graphics.getWidth() && mapHeight / zoom > Gdx.graphics.getHeight()) {
             float zoomNumberWidth = mapWidth / Gdx.graphics.getWidth();
             float zoomNumberHeight = mapHeight / Gdx.graphics.getHeight();
             zoom = Math.max(zoomNumberWidth, zoomNumberHeight);
+            return true;
+        } else {
+            return false;
         }
     }
 

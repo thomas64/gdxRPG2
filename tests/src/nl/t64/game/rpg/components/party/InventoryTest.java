@@ -39,7 +39,7 @@ class InventoryTest extends GameTest {
     void whenResourceItemIsCreated_ShouldHaveVariables() {
         InventoryItem gold = inventoryDB.createInventoryItem(GOLD);
         assertThat(gold.name).isEqualTo("Gold");
-        assertThat(gold.sort).isEqualTo(999);
+        assertThat(gold.sort).isEqualTo(90090);
         assertThat(gold.getGroup()).isEqualTo(InventoryGroup.RESOURCE);
         assertThat(gold.getDescription()).isEqualTo(
                 List.of("Gold can be used to pay for goods or services."));
@@ -49,7 +49,7 @@ class InventoryTest extends GameTest {
     void whenPotionItemIsCreated_ShouldHaveVariables() {
         InventoryItem potion = inventoryDB.createInventoryItem(POTION);
         assertThat(potion.name).isEqualTo("Healing Potion");
-        assertThat(potion.sort).isEqualTo(5);
+        assertThat(potion.sort).isEqualTo(80005);
         assertThat(potion.getGroup()).isEqualTo(InventoryGroup.POTION);
         assertThat(potion.getDescription()).isEqualTo(
                 List.of("Restores a fifth of the drinker's lost Endurance and Stamina.",
@@ -463,8 +463,9 @@ class InventoryTest extends GameTest {
         List<InventoryDescription> description = new DescriptionCreator(mace, 0)
                 .createItemDescriptionComparingToItem(javelin);
         assertThat(description.get(4).getKey()).isEqualTo(InventoryMinimal.SKILL);
-        assertThat(description.get(5).getKey()).isEqualTo("");
-        assertThat(description.get(6).getKey()).isEqualTo(InventoryMinimal.MIN_STRENGTH);
+        assertThat(description.get(5).getKey()).isEqualTo(InventoryMinimal.MIN_STRENGTH);
+        assertThat(description.get(6).getKey()).isEqualTo("");
+        assertThat(description.get(7).getKey()).isEqualTo(CalcAttributeId.BASE_HIT);
     }
 
     @Test

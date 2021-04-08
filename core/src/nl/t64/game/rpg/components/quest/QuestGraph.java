@@ -12,6 +12,8 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import static java.util.function.Predicate.not;
+
 
 @Getter
 public class QuestGraph {
@@ -211,7 +213,7 @@ public class QuestGraph {
 
     private boolean doesReturnMeetDemand() {
         return getAllQuestTasks().stream()
-                                 .filter(task -> !task.isOptional())
+                                 .filter(not(QuestTask::isOptional))
                                  .allMatch(QuestTask::isCompleteForReturn);
     }
 

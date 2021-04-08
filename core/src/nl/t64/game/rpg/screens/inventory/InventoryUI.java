@@ -104,7 +104,7 @@ class InventoryUI extends ScreenUI {
         var heroesTable = new HeroesTable();
         var heroesWindow = Utils.createDefaultWindow(TITLE_HEROES, heroesTable.heroes);
 
-        List<WindowSelector> tableList = List.of(statsTable, calcsTable, skillsTable,
+        List<WindowSelector> tableList = List.of(calcsTable, statsTable, skillsTable,
                                                  equipSlotsTables, inventorySlotsTable, spellsTable);
         int selectedTableIndex = 4;
 

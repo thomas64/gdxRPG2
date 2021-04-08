@@ -26,6 +26,7 @@ public abstract class SkillItem implements PersonalityItem {
     @Override
     public String getDescription(int totalLoremaster) {
         return getDescription() + System.lineSeparator() + System.lineSeparator()
+               + "A trainer is needed to upgrade a skill." + System.lineSeparator()
                + getNeededXpForNextLevel(totalLoremaster) + System.lineSeparator()
                + getNeededGoldForNextLevel();
     }
@@ -200,8 +201,8 @@ class Thief extends SkillItem {
     String getDescription() {
         return """
                 Allows the possibility to pick locks on treasure chests.
-                Also increases chance to hit and damage inflicted with
-                physical weapons FROM BEHIND in hand to hand combat.""";
+                Increases chance-to-hit with weapons FROM BEHIND in hand-to-hand combat.
+                Increases damage-to-inflict with weapons FROM BEHIND in hand-to-hand combat.""";
     }
 }
 
@@ -218,7 +219,8 @@ class Troubadour extends SkillItem {
     String getDescription() {
         return """
                 Allows the possibility to play and sing inspirationally in combat,
-                increasing your party's and decreasing the enemy's chance to hit.""";
+                increasing your party's chance-to-hit
+                and decreasing the enemy's chance-to-hit.""";
     }
 }
 
@@ -235,8 +237,9 @@ class Warrior extends SkillItem {
     String getDescription() {
         return """
                 Allows the possibility of scoring critical hits in combat.
-                Also increases chance to hit and damage inflicted with
-                physical weapons and improves shield defenses in combat.""";
+                Increases chance-to-hit with physical weapons in combat.
+                Increases damage-to-inflict with physical weapons in combat.
+                Improves shield defenses while blocking in combat.""";
     }
 }
 
@@ -267,9 +270,9 @@ class Hafted extends SkillItem {
     @Override
     String getDescription() {
         return """
-                Allows the possibility of equipping hafted weapons,
-                and increases their chance to hit and damage
-                inflicted in combat.""";
+                Allows the possibility of equipping hafted weapons.
+                Increases chance-to-hit with hafted weapons in combat.
+                Increases damage-to-inflict with hafted weapons in combat.""";
     }
 }
 
@@ -285,9 +288,9 @@ class Missile extends SkillItem {
     @Override
     String getDescription() {
         return """
-                Allows the possibility of equipping missile weapons,
-                and increases their chance to hit and damage
-                inflicted in combat.""";
+                Allows the possibility of equipping missile weapons.
+                Increases chance-to-hit with missile weapons in combat.
+                Increases damage-to-inflict with missile weapons in combat.""";
     }
 }
 
@@ -303,9 +306,9 @@ class Pole extends SkillItem {
     @Override
     String getDescription() {
         return """
-                Allows the possibility of equipping pole weapons,
-                and increases their chance to hit and damage
-                inflicted in combat.""";
+                Allows the possibility of equipping pole weapons.
+                Increases chance-to-hit with pole weapons in combat.
+                Increases damage-to-inflict with pole weapons in combat.""";
     }
 }
 
@@ -321,9 +324,8 @@ class Shield extends SkillItem {
     @Override
     String getDescription() {
         return """
-                Allows the possibility of equipping shields,
-                and increases their defenses while blocking
-                in combat.""";
+                Allows the possibility of equipping shields.
+                Improves shield defenses while blocking in combat.""";
     }
 }
 
@@ -339,9 +341,9 @@ class Sword extends SkillItem {
     @Override
     String getDescription() {
         return """
-                Allows the possibility of equipping swords and daggers,
-                and increases their chance to hit and damage
-                inflicted in combat.""";
+                Allows the possibility of equipping swords and daggers.
+                Increases chance-to-hit with swords and daggers in combat.
+                Increases damage-to-inflict with swords and daggers in combat.""";
     }
 }
 
@@ -357,8 +359,8 @@ class Thrown extends SkillItem {
     @Override
     String getDescription() {
         return """
-                Allows the possibility of equipping thrown weapons,
-                and increases their chance to hit and damage
-                inflicted in combat.""";
+                Allows the possibility of equipping thrown weapons.
+                Increases chance-to-hit with thrown weapons in combat.
+                Increases damage-to-inflict with thrown weapons in combat.""";
     }
 }

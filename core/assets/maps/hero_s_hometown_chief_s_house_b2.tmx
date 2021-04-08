@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="14" height="20" tilewidth="24" tileheight="24" infinite="0" nextlayerid="25" nextobjectid="26">
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="14" height="20" tilewidth="24" tileheight="24" infinite="0" nextlayerid="25" nextobjectid="26">
  <properties>
   <property name="bgm" value="bgm_cellar"/>
   <property name="lightmap_player" value="light_player"/>
@@ -18,7 +18,7 @@
  </layer>
  <layer id="15" name="under1_ground" width="14" height="20">
   <data encoding="base64" compression="zlib">
-   eJy902kKwjAQhuH0jwtux3BBcG/xGm5V9CTuHqWKyzF9f6QQx2hDEQcehiZMPxKIp5TyUqqihrpDbxhzY2ywdugrY26ELTIOfSnyiigYfYesZV3mlXA1+h45y7rMm+CMCCEOyKOFG8p6X+ZNcYGPAEec0MYdC72flDdHHx08EvJm6KKn/y+/P+WF4jxm7uBLXmCcpyJyfMc8eY+RY568R1teU71XnCdrqF7fhKw4T5Z8S671q7l/eQLbKTZj
+   eJzV01kKwjAQxvH0xQW3Y7gguLd4DbcqehJ3j1LF5Zj+H1oYx2iDbw78GJow/UggnjHG+1EVNdQdekPMjbHB2qGvxNwIW2Qc+lLlFVEQfYesZV3nlXAVfY+cZV3nTXBGhBAH5NHCDeV4X+dNcYGPAEec0MYdi3g/LW+OPjp4pOTN0EUv/r/+/pQXqvPI3MGXvECcp6JyfMc8fY+RY56+R1te07xXkqdraF7fhK4kT5d+S671b3NP1qE2Tw==
   </data>
  </layer>
  <layer id="16" name="under2_objects" width="14" height="20">
@@ -43,7 +43,7 @@
  </layer>
  <layer id="20" name="over6_objects" width="14" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUoANdILaA0npI4lFI4hZY9DEi4SAk8Wg0OXz6dJDMtyRBHz48UAAAbfEDRQ==
+   eJxjYBgFo2AUoANdILaA0npI4lFI4hZY9DEi4SAk8Wg0OXz6dJDMtyRBHz48UPoAcnkDWQ==
   </data>
  </layer>
  <layer id="21" name="over7_none" width="14" height="20">

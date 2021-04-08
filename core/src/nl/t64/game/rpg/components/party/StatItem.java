@@ -74,6 +74,7 @@ public abstract class StatItem implements PersonalityItem {
     @Override
     public String getDescription(int totalLoremaster) {
         return getDescription() + System.lineSeparator() + System.lineSeparator()
+               + "No trainer is needed to upgrade a stat." + System.lineSeparator()
                + getNeededXpForNextLevel();
     }
 
@@ -137,15 +138,15 @@ class Dexterity extends StatItem {
         this.id = StatItemId.DEXTERITY;
         this.name = getClass().getSimpleName();
         this.maximum = 30;
-        this.upgrade = 0.24f;
+        this.upgrade = 0.12f;
         this.bonus = 0;
     }
 
     @Override
     String getDescription() {
         return """
-                Increases chance to hit and damage inflicted
-                with ranged weapons in combat.""";
+                Increases chance-to-hit with ranged weapons in combat.
+                Increases damage-to-inflict with ranged weapons in combat.""";
     }
 }
 
@@ -163,8 +164,7 @@ class Agility extends StatItem {
     @Override
     String getDescription() {
         return """
-                Improves the enemy's chance to fail
-                a physical attack in combat.""";
+                Decreases the enemy's chance-to-hit a physical attack in combat.""";
     }
 }
 
@@ -182,8 +182,8 @@ class Strength extends StatItem {
     @Override
     String getDescription() {
         return """
-                Increases chance to hit and damage inflicted
-                with weapons in hand-to-hand combat.""";
+                Increases chance-to-hit with weapons in hand-to-hand combat.
+                Increases damage-to-inflict with weapons in hand-to-hand combat.""";
     }
 }
 
