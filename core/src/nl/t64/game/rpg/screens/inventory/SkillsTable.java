@@ -74,6 +74,7 @@ class SkillsTable extends BaseTable {
         table.add(String.valueOf(skillItem.getRank()));
         final int totalExtra = selectedHero.getExtraSkillForVisualOf(skillItem);
         addExtraToTable(totalExtra);
+        scrollScrollPane();
     }
 
     private void setSelected(Label skillName, SkillItem skillItem) {
@@ -87,6 +88,11 @@ class SkillsTable extends BaseTable {
 
     private float getTooltipY() {
         return CONTAINER_HEIGHT - (ROW_HEIGHT * selectedIndex) - (ROW_HEIGHT * 0.5f);
+    }
+
+    private void scrollScrollPane() {
+        float selectedY = CONTAINER_HEIGHT - (ROW_HEIGHT * selectedIndex);
+        scrollPane.scrollTo(0, selectedY, 0, 0, false, true);
     }
 
 }

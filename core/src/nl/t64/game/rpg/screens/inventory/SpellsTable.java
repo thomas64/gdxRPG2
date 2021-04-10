@@ -88,6 +88,7 @@ class SpellsTable extends BaseTable {
         }
         table.add(String.valueOf(spellItem.getRank()));
         table.add("").row();
+        scrollScrollPane();
     }
 
     private void setSelected(Label spellName, SpellItem spellItem) {
@@ -101,6 +102,11 @@ class SpellsTable extends BaseTable {
 
     private float getTooltipY() {
         return CONTAINER_HEIGHT - (ROW_HEIGHT * selectedIndex) - (ROW_HEIGHT * 2f) - (ROW_HEIGHT * 0.4f);
+    }
+
+    private void scrollScrollPane() {
+        float selectedY = CONTAINER_HEIGHT - (ROW_HEIGHT * selectedIndex);
+        scrollPane.scrollTo(0, selectedY, 0, 0, false, true);
     }
 
 }
