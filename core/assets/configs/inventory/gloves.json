@@ -99,7 +99,7 @@
     "agility"   : -3,
     "stealth"   : -2
   },
-  "specialist_heavy_gloves" : {
+  "specialist_heavy_gloves": {
     "name"      : "Specialist Heavy Gloves",
     "group"     : "GLOVES",
     "sort"      : 60340,
@@ -109,7 +109,7 @@
     "agility"   : -3,
     "stealth"   : -2
   },
-  "masterwork_heavy_gloves" : {
+  "masterwork_heavy_gloves": {
     "name"      : "Masterwork Heavy Gloves",
     "group"     : "GLOVES",
     "sort"      : 60440,
@@ -118,5 +118,83 @@
     "protection": 12,
     "agility"   : -3,
     "stealth"   : -2
+  },
+  "epic_gauntlets_of_might": {
+    "name"      : "Gauntlets of Might",
+    "group"     : "GLOVES",
+    "sort"      : 61000,
+    "price"     : 50,
+    "weight"    : 1,
+    "protection": 1,
+    "agility"   : 0,
+    "stealth"   : 0,
+    "strength"  : 3
+  },
+  "epic_laboratory_gloves" : {
+    "name"      : "Laboratory Gloves",
+    "group"     : "GLOVES",
+    "sort"      : 61000,
+    "price"     : 50,
+    "weight"    : 1,
+    "protection": 0,
+    "agility"   : 0,
+    "stealth"   : 0,
+    "alchemist" : 2
+  },
+  "epic_tinkers_gloves"    : {
+    "name"      : "Tinker's Gloves",
+    "group"     : "GLOVES",
+    "sort"      : 61000,
+    "price"     : 50,
+    "weight"    : 1,
+    "protection": 0,
+    "agility"   : 0,
+    "stealth"   : 0,
+    "dexterity" : 1,
+    "mechanic"  : 2
+  },
+  "epic_hands_of_healing"  : {
+    "name"      : "Hands of Healing",
+    "group"     : "GLOVES",
+    "sort"      : 61000,
+    "price"     : 50,
+    "weight"    : 1,
+    "protection": 0,
+    "agility"   : 0,
+    "stealth"   : 0,
+    "healer"    : 2
+  },
+  "epic_sticky_gloves"     : {
+    "name"      : "Sticky Gloves",
+    "group"     : "GLOVES",
+    "sort"      : 61000,
+    "price"     : 50,
+    "weight"    : 1,
+    "protection": 0,
+    "agility"   : 0,
+    "stealth"   : 0,
+    "thief"     : 2
+  },
+  "epic_bardic_gloves"     : {
+    "name"      : "Bardic Gloves",
+    "group"     : "GLOVES",
+    "sort"      : 61000,
+    "price"     : 50,
+    "weight"    : 1,
+    "protection": 0,
+    "agility"   : 0,
+    "stealth"   : 0,
+    "troubadour": 2
+  },
+  "epic_heros_gauntlets"   : {
+    "name"      : "Hero's Gauntlets",
+    "group"     : "GLOVES",
+    "sort"      : 61000,
+    "price"     : 50,
+    "weight"    : 1,
+    "protection": 1,
+    "agility"   : 0,
+    "stealth"   : 0,
+    "warrior"   : 2
   }
 }

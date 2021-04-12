@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 
 class EquipContainer {
@@ -55,18 +56,28 @@ class EquipContainer {
     }
 
     int getStatValueOf(InventoryGroup inventoryGroup, StatItemId statItemId) {
-        return getInventoryItem(inventoryGroup).map(inventoryItem -> inventoryItem.getAttributeOfStatItemId(statItemId))
-                                               .orElse(0);
+        return getInventoryItem(inventoryGroup)
+                .map(inventoryItem -> inventoryItem.getAttributeOfStatItemId(statItemId))
+                .orElse(0);
     }
 
     int getSkillValueOf(InventoryGroup inventoryGroup, SkillItemId skillItemId) {
-        return getInventoryItem(inventoryGroup).map(inventoryItem -> inventoryItem.getAttributeOfSkillItemId(skillItemId))
-                                               .orElse(0);
+        return getInventoryItem(inventoryGroup)
+                .map(inventoryItem -> inventoryItem.getAttributeOfSkillItemId(skillItemId))
+                .orElse(0);
     }
 
     int getCalcValueOf(InventoryGroup inventoryGroup, CalcAttributeId calcAttributeId) {
-        return getInventoryItem(inventoryGroup).map(inventoryItem -> inventoryItem.getAttributeOfCalcAttributeId(calcAttributeId))
-                                               .orElse(0);
+        return getInventoryItem(inventoryGroup)
+                .map(inventoryItem -> inventoryItem.getAttributeOfCalcAttributeId(calcAttributeId))
+                .orElse(0);
+    }
+
+    Stream<InventoryItem> getItemsWithMinimalOf(StatItemId statItemId) {
+        return equipment.values()
+                        .stream()
+                        .filter(Objects::nonNull)
+                        .filter(inventoryItem -> inventoryItem.getMinimalAttributeOfStatItemId(statItemId) > 0);
     }
 
     int getSumOfStat(StatItemId statItemId) {
@@ -105,7 +116,7 @@ class EquipContainer {
                 .map(parts -> parts[0] + "_" + parts[1])
                 .map(this::doesEquippedArmorAllHaveSamePrefix)
                 .filter(isCompleteSet -> isCompleteSet)
-                .map(isCompleteSet -> getInventoryItem(InventoryGroup.HELMET).get().protection)
+                .flatMap(isCompleteSet -> getProtectionBonus())
                 .orElse(0);
     }
 
@@ -116,6 +127,11 @@ class EquipContainer {
                         .filter(inventoryItem -> inventoryItem.group.isPartArmorOfSet())
                         .filter(inventoryItem -> inventoryItem.id.startsWith(prefix))
                         .count() == 9L;
+    }
+
+    private Optional<Integer> getProtectionBonus() {
+        return getInventoryItem(InventoryGroup.HELMET)
+                .map(inventoryItem -> inventoryItem.getAttributeOfCalcAttributeId(CalcAttributeId.PROTECTION));
     }
 
 }

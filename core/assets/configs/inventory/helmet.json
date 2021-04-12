@@ -122,7 +122,7 @@
   "epic_helm_of_knowledge"  : {
     "name"        : "Helm of Knowledge",
     "group"       : "HELMET",
-    "sort"        : 60500,
+    "sort"        : 61000,
     "price"       : 50,
     "weight"      : 1,
     "protection"  : 1,
@@ -133,7 +133,7 @@
   "epic_hat_of_wisdom"      : {
     "name"      : "Hat of Wisdom",
     "group"     : "HELMET",
-    "sort"      : 60520,
+    "sort"      : 61000,
     "price"     : 50,
     "weight"    : 1,
     "protection": 0,
@@ -144,7 +144,7 @@
   "epic_helm_of_charisma"   : {
     "name"      : "Helm of Charisma",
     "group"     : "HELMET",
-    "sort"      : 60540,
+    "sort"      : 61000,
     "price"     : 50,
     "weight"    : 1,
     "protection": 1,
@@ -155,7 +155,7 @@
   "epic_hat_of_insight"     : {
     "name"      : "Hat of Insight",
     "group"     : "HELMET",
-    "sort"      : 60560,
+    "sort"      : 61000,
     "price"     : 50,
     "weight"    : 1,
     "protection": 0,
@@ -166,7 +166,7 @@
   "epic_helm_of_tempests"   : {
     "name"      : "Helm of Tempests",
     "group"     : "HELMET",
-    "sort"      : 60580,
+    "sort"      : 61000,
     "price"     : 50,
     "weight"    : 1,
     "protection": 1,
@@ -177,7 +177,7 @@
   "epic_wizard_hat"         : {
     "name"         : "Wizard Hat",
     "group"        : "HELMET",
-    "sort"         : 60600,
+    "sort"         : 61000,
     "price"        : 50,
     "weight"       : 1,
     "protection"   : 0,

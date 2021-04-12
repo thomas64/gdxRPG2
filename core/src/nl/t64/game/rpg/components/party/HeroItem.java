@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 
 @Setter
@@ -122,28 +123,46 @@ public class HeroItem {
         inventory.forceSetInventoryItem(inventoryGroup, inventoryItem);
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     public Optional<String> createMessageIfNotAbleToEquip(InventoryItem inventoryItem) {
         return createMessageIfHeroHasNotEnoughFor(inventoryItem)
-                .or(() -> createMessageIfWeaponAndShieldAreNotCompatible(inventoryItem));
+                .or(() -> createMessageIfWeaponAndShieldAreNotCompatible(inventoryItem))
+                .or(() -> createMessageIfNotAbleToDequip(getInventoryItem(inventoryItem.group)
+                                                                 .orElseGet(InventoryItem::new)));  // does nothing
+    }
+
+    public Optional<String> createMessageIfNotAbleToDequip(InventoryItem enhancerItem) {
+        return Arrays.stream(StatItemId.values())
+                     .filter(statItemId -> enhancerItem.getAttributeOfStatItemId(statItemId) > 0)
+                     .flatMap(statItemId -> createMessageIfNotAbleToDequip(enhancerItem, statItemId))
+                     .findAny();
+    }
+
+    private Stream<String> createMessageIfNotAbleToDequip(InventoryItem enhancerItem, StatItemId statItemId) {
+        return inventory.getItemsWithMinimalOf(statItemId)
+                        .filter(dependantItem -> isMinimalToHigh(statItemId, dependantItem, enhancerItem))
+                        .map(enhancerItem::createMessageFailToDequip);
+    }
+
+    private boolean isMinimalToHigh(StatItemId statItemId, InventoryItem dependantItem, InventoryItem enhancerItem) {
+        return dependantItem.getMinimalAttributeOfStatItemId(statItemId) >
+               getCalculatedTotalStatOf(statItemId) - enhancerItem.getAttributeOfStatItemId(statItemId);
     }
 
     private Optional<String> createMessageIfWeaponAndShieldAreNotCompatible(InventoryItem inventoryItem) {
-        if (inventoryItem.isTwoHanded
-            && inventory.getInventoryItem(InventoryGroup.SHIELD).isPresent()) {
-            return createMessage(inventory.getInventoryItem(InventoryGroup.SHIELD).get().name, inventoryItem.name);
-        } else if (inventoryItem.group.equals(InventoryGroup.SHIELD)
-                   && inventory.getInventoryItem(InventoryGroup.WEAPON).isPresent()
-                   && inventory.getInventoryItem(InventoryGroup.WEAPON).get().isTwoHanded) {
-            return createMessage(inventory.getInventoryItem(InventoryGroup.WEAPON).get().name, inventoryItem.name);
+        if (inventoryItem.isTwoHanded) {
+            return inventory.getInventoryItem(InventoryGroup.SHIELD)
+                            .map(inventoryItem::createMessageFailToEquipTwoHanded);
+
+        } else if (inventoryItem.group.equals(InventoryGroup.SHIELD)) {
+            return inventory.getInventoryItem(InventoryGroup.WEAPON)
+                            .filter(otherItem -> otherItem.isTwoHanded)
+                            .map(inventoryItem::createMessageFailToEquipTwoHanded);
+
         } else {
             return Optional.empty();
         }
-    }
-
-    private Optional<String> createMessage(String itemName1, String itemName2) {
-        return Optional.of(String.format("""
-                                                 %s needs to unequip the %s
-                                                 to equip that %s.""", name, itemName1, itemName2));
     }
 
     public Optional<String> createMessageIfHeroHasNotEnoughFor(InventoryItem inventoryItem) {

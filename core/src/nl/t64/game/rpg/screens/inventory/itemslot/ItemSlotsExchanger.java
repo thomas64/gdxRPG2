@@ -100,8 +100,7 @@ public class ItemSlotsExchanger {
 
     private void putItemInFilledSlot(InventoryImage itemAtTarget) {
         if (targetSlot.equals(sourceSlot)
-            || (draggedItem.isSameItemAs(itemAtTarget)
-                && draggedItem.isStackable())) {
+            || (draggedItem.isSameItemAs(itemAtTarget) && draggedItem.isStackable())) {
             doAudio();
             targetSlot.incrementAmountBy(draggedItem.getAmount());
             isSuccessfullyExchanged = true;
@@ -111,8 +110,7 @@ public class ItemSlotsExchanger {
     }
 
     private void swapStacks() {
-        if (doTargetAndSourceAcceptEachOther()
-            && !sourceSlot.hasItem()) {
+        if (doTargetAndSourceAcceptEachOther() && !sourceSlot.hasItem()) {
             doAudio();
             sourceSlot.addToStack(targetSlot.getCertainInventoryImage());
             targetSlot.addToStack(draggedItem);

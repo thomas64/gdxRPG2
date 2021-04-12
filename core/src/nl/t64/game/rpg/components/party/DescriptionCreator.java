@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 @AllArgsConstructor
@@ -18,12 +19,12 @@ public class DescriptionCreator {
     private final int partySumOfMerchantSkill;
 
     public List<InventoryDescription> createItemDescription() {
-        return createDescriptionList(InventoryDescription::new, Set.of(), Set.of(), Set.of(), Set.of());
+        return createDescriptionList(InventoryDescription::new, Set.of(), Set.of(), Set.of(), Set.of(), null);
     }
 
     public List<InventoryDescription> createItemDescriptionComparingToHero(HeroItem hero) {
         return createDescriptionList((key, value) -> new InventoryDescription(key, value, inventoryItem, hero),
-                                     Set.of(), Set.of(), Set.of(), Set.of());
+                                     Set.of(), Set.of(), Set.of(), Set.of(), null);
     }
 
     public List<InventoryDescription> createItemDescriptionComparingToItem(InventoryItem otherItem) {
@@ -31,14 +32,16 @@ public class DescriptionCreator {
                                      inventoryItem.getMinimalsOtherItemHasAndYouDont(otherItem),
                                      inventoryItem.getCalcsOtherItemHasAndYouDont(otherItem),
                                      inventoryItem.getStatsOtherItemHasAndYouDont(otherItem),
-                                     inventoryItem.getSkillsOtherItemHasAndYouDont(otherItem));
+                                     inventoryItem.getSkillsOtherItemHasAndYouDont(otherItem),
+                                     otherItem);
     }
 
     private List<InventoryDescription> createDescriptionList(BiFunction<Object, Object, InventoryDescription> createDescription,
                                                              Set<InventoryMinimal> minimalsYouDontHave,
                                                              Set<CalcAttributeId> calcsYouDontHave,
                                                              Set<StatItemId> statsYouDontHave,
-                                                             Set<SkillItemId> skillsYouDontHave) {
+                                                             Set<SkillItemId> skillsYouDontHave,
+                                                             InventoryItem otherItem) {
         descriptionList.add(createDescription.apply(inventoryItem.group, inventoryItem.name));
         addHandiness(createDescription);
         addPrices(createDescription);
@@ -46,6 +49,7 @@ public class DescriptionCreator {
         addCalcs(createDescription, calcsYouDontHave);
         addStats(createDescription, statsYouDontHave);
         addSkills(createDescription, skillsYouDontHave);
+        addPossibleEmptyLines(createDescription, otherItem);
         return createFilter();
     }
 
@@ -114,6 +118,15 @@ public class DescriptionCreator {
             } else {
                 descriptionList.add(createDescription.apply(skillId, inventoryItem.getAttributeOfSkillItemId(skillId)));
             }
+        }
+    }
+
+    private void addPossibleEmptyLines(BiFunction<Object, Object, InventoryDescription> createDescription,
+                                       InventoryItem otherItem) {
+        if (otherItem != null && otherItem.description != null) {
+            IntStream.range(0, otherItem.description.size())
+                     .mapToObj(i -> createDescription.apply("", ""))
+                     .forEach(descriptionList::add);
         }
     }
 

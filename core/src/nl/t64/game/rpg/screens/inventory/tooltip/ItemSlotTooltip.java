@@ -97,22 +97,30 @@ public class ItemSlotTooltip extends BaseTooltip {
     }
 
     void createResourceTooltip(InventoryImage inventoryImage) {
-        createSingleTooltip(inventoryImage);
+        Table hoveredTable = createDefaultTooltip(inventoryImage);
+        window.add(hoveredTable);
+
         window.add().row();
         window.add(createLabel(EMPTY_ROW, Color.WHITE)).row();
-        final String description = String.join(System.lineSeparator(), inventoryImage.inventoryItem.getDescription());
+        String description = String.join(System.lineSeparator(), inventoryImage.inventoryItem.getDescription());
         window.add(createLabel(description, Color.WHITE));
     }
 
     void createSingleTooltip(InventoryImage inventoryImage) {
+        Table hoveredTable = createDefaultTooltip(inventoryImage);
+        addPossibleDescription(inventoryImage, hoveredTable);
+        window.add(hoveredTable);
+    }
+
+    private Table createDefaultTooltip(InventoryImage inventoryImage) {
         final var hoveredTable = new Table();
         hoveredTable.defaults().align(Align.left);
 
         final int totalMerchant = Utils.getGameData().getParty().getSumOfSkill(SkillItemId.MERCHANT);
         List<InventoryDescription> descriptionList = inventoryImage.getSingleDescription(totalMerchant);
-        descriptionList = removeLeftUnnecessaryAttributes(descriptionList);
-        addAttributesForSingleDescription(descriptionList, hoveredTable);
-        window.add(hoveredTable);
+        removeLeftUnnecessaryAttributes(descriptionList);
+        descriptionList.forEach(attribute -> addToTable(hoveredTable, attribute, createSingleLabelStyle(attribute)));
+        return hoveredTable;
     }
 
     private void createDualTooltip(InventoryImage hoveredImage, InventoryImage equippedImage) {
@@ -132,8 +140,9 @@ public class ItemSlotTooltip extends BaseTooltip {
 
         final int totalMerchant = Utils.getGameData().getParty().getSumOfSkill(SkillItemId.MERCHANT);
         List<InventoryDescription> descriptionList = hoveredImage.getDualDescription(equippedImage, totalMerchant);
-        descriptionList = removeLeftUnnecessaryAttributes(descriptionList);
-        addAttributesForLeftDescription(descriptionList, hoveredTable);
+        removeLeftUnnecessaryAttributes(descriptionList);
+        descriptionList.forEach(attribute -> addToTable(hoveredTable, attribute, createLeftLabelStyle(attribute)));
+        addPossibleDescription(hoveredImage, hoveredTable);
         return hoveredTable;
     }
 
@@ -144,60 +153,47 @@ public class ItemSlotTooltip extends BaseTooltip {
 
         final int totalMerchant = Utils.getGameData().getParty().getSumOfSkill(SkillItemId.MERCHANT);
         List<InventoryDescription> descriptionList = equippedImage.getDualDescription(hoveredImage, totalMerchant);
-        descriptionList = removeRightUnnecessaryAttributes(descriptionList);
-        addAttributesForRightDescription(descriptionList, equippedTable);
+        removeRightUnnecessaryAttributes(descriptionList);
+        descriptionList.forEach(attribute -> addToTable(equippedTable, attribute, createRightLabelStyle(attribute)));
+        addPossibleDescription(equippedImage, equippedTable);
         return equippedTable;
     }
 
-    void addAttributesForSingleDescription(List<InventoryDescription> descriptionList, Table hoveredTable) {
-        descriptionList.forEach(attribute -> {
-            final var labelStyle = createSingleLabelStyle(attribute);
-            hoveredTable.add(new Label(getKey(attribute), labelStyle)).spaceRight(COLUMN_SPACING);
-            hoveredTable.add(new Label(getValue(attribute), labelStyle)).row();
-        });
+    void addPossibleDescription(InventoryImage inventoryImage, Table table) {
+        if (inventoryImage.inventoryItem.getDescription() != null) {
+            String description = String.join(System.lineSeparator(), inventoryImage.inventoryItem.getDescription());
+            table.add(createLabel(description, Color.VIOLET)).colspan(2);
+        }
     }
 
-    private void addAttributesForLeftDescription(List<InventoryDescription> descriptionList, Table hoveredTable) {
-        descriptionList.forEach(attribute -> {
-            final var labelStyle = createLeftLabelStyle(attribute);
-            hoveredTable.add(new Label(getKey(attribute), labelStyle)).spaceRight(COLUMN_SPACING);
-            hoveredTable.add(new Label(getValue(attribute), labelStyle)).row();
-        });
+    void addToTable(Table hoveredTable, InventoryDescription attribute, Label.LabelStyle labelStyle) {
+        hoveredTable.add(new Label(getKey(attribute), labelStyle)).spaceRight(COLUMN_SPACING);
+        hoveredTable.add(new Label(getValue(attribute), labelStyle)).row();
     }
 
-    private void addAttributesForRightDescription(List<InventoryDescription> descriptionList, Table hoveredTable) {
-        descriptionList.forEach(attribute -> {
-            final var labelStyle = createRightLabelStyle(attribute);
-            hoveredTable.add(new Label(getKey(attribute), labelStyle)).spaceRight(COLUMN_SPACING);
-            hoveredTable.add(new Label(getValue(attribute), labelStyle)).row();
-        });
+    void removeLeftUnnecessaryAttributes(List<InventoryDescription> descriptionList) {
+        removeBuy(descriptionList);
+        removeSell(descriptionList);
     }
 
-    List<InventoryDescription> removeLeftUnnecessaryAttributes(List<InventoryDescription> descriptionList) {
-        descriptionList = removeBuy(descriptionList);
-        descriptionList = removeSell(descriptionList);
-        return descriptionList;
+    void removeRightUnnecessaryAttributes(List<InventoryDescription> descriptionList) {
+        removeBuy(descriptionList);
+        removeSell(descriptionList);
     }
 
-    List<InventoryDescription> removeRightUnnecessaryAttributes(List<InventoryDescription> descriptionList) {
-        return removeLeftUnnecessaryAttributes(descriptionList);
-    }
-
-    List<InventoryDescription> removeBuy(List<InventoryDescription> descriptionList) {
+    void removeBuy(List<InventoryDescription> descriptionList) {
         descriptionList.removeIf(attribute -> attribute.getKey().equals(Constant.DESCRIPTION_KEY_BUY));
         descriptionList.removeIf(attribute -> attribute.getKey().equals(Constant.DESCRIPTION_KEY_BUY_PIECE));
         descriptionList.removeIf(attribute -> attribute.getKey().equals(Constant.DESCRIPTION_KEY_BUY_TOTAL));
-        return descriptionList;
     }
 
-    List<InventoryDescription> removeSell(List<InventoryDescription> descriptionList) {
+    void removeSell(List<InventoryDescription> descriptionList) {
         descriptionList.removeIf(attribute -> attribute.getKey().equals(Constant.DESCRIPTION_KEY_SELL));
         descriptionList.removeIf(attribute -> attribute.getKey().equals(Constant.DESCRIPTION_KEY_SELL_PIECE));
         descriptionList.removeIf(attribute -> attribute.getKey().equals(Constant.DESCRIPTION_KEY_SELL_TOTAL));
-        return descriptionList;
     }
 
-    private Label.LabelStyle createSingleLabelStyle(InventoryDescription attribute) {
+    Label.LabelStyle createSingleLabelStyle(InventoryDescription attribute) {
         if (isBuyOrSellValue(attribute)) {
             return createLabelStyle(Color.GOLD);
         }

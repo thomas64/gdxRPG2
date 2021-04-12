@@ -42,7 +42,7 @@
   "epic_light_cloak"      : {
     "name"      : "Epic Light Cloak",
     "group"     : "CLOAK",
-    "sort"      : 60500,
+    "sort"      : 61000,
     "price"     : 50,
     "weight"    : 1,
     "protection": 0,
@@ -52,7 +52,7 @@
   "legendary_light_cloak" : {
     "name"      : "Legendary Light Cloak",
     "group"     : "CLOAK",
-    "sort"      : 60600,
+    "sort"      : 62000,
     "price"     : 60,
     "weight"    : 1,
     "protection": 0,
@@ -142,7 +142,7 @@
   "epic_dark_cloak"        : {
     "name"      : "Dark Cloak",
     "group"     : "CLOAK",
-    "sort"      : 60700,
+    "sort"      : 61000,
     "price"     : 50,
     "weight"    : 1,
     "protection": 0,

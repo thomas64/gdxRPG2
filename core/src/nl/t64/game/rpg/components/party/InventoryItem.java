@@ -33,27 +33,43 @@ public class InventoryItem {
     private int weight;
     @JsonProperty("min_intelligence")
     private int minIntelligence;
+    @JsonProperty("min_willpower")
+    private int minWillpower;
     @JsonProperty("min_dexterity")
     private int minDexterity;
     @JsonProperty("min_strength")
     private int minStrength;
+    private int movepoints;
     @JsonProperty("base_hit")
     private int baseHit;
     private int damage;
-    int protection;
+    private int protection;
     private int defense;
     @JsonProperty("spell_battery")
     private int spellBattery;
     private int intelligence;
     private int willpower;
     private int dexterity;
+    private int strength;
     private int agility;
+    private int endurance;
+    private int alchemist;
     private int diplomat;
+    private int healer;
     private int loremaster;
+    private int mechanic;
+    private int ranger;
     private int stealth;
     private int thief;
+    private int troubadour;
     private int warrior;
     private int wizard;
+    @JsonProperty("cheat_death")
+    private boolean cheatDeath;
+    @JsonProperty("quick_switch")
+    private boolean quickSwitch;
+    @JsonProperty("spell_boost")
+    private boolean spellBoost;
 
     InventoryItem(InventoryItem item, int amount) {
         this.id = item.id;
@@ -67,8 +83,10 @@ public class InventoryItem {
         this.price = item.price;
         this.weight = item.weight;
         this.minIntelligence = item.minIntelligence;
+        this.minWillpower = item.minWillpower;
         this.minDexterity = item.minDexterity;
         this.minStrength = item.minStrength;
+        this.movepoints = item.movepoints;
         this.baseHit = item.baseHit;
         this.damage = item.damage;
         this.protection = item.protection;
@@ -77,13 +95,23 @@ public class InventoryItem {
         this.intelligence = item.intelligence;
         this.willpower = item.willpower;
         this.dexterity = item.dexterity;
+        this.strength = item.strength;
         this.agility = item.agility;
+        this.endurance = item.endurance;
+        this.alchemist = item.alchemist;
         this.diplomat = item.diplomat;
+        this.healer = item.healer;
         this.loremaster = item.loremaster;
+        this.mechanic = item.mechanic;
+        this.ranger = item.ranger;
         this.stealth = item.stealth;
         this.thief = item.thief;
+        this.troubadour = item.troubadour;
         this.warrior = item.warrior;
         this.wizard = item.wizard;
+        this.cheatDeath = item.cheatDeath;
+        this.quickSwitch = item.quickSwitch;
+        this.spellBoost = item.spellBoost;
     }
 
     public static InventoryItem copyOf(InventoryItem inventoryItem, int amount) {
@@ -94,6 +122,7 @@ public class InventoryItem {
         return switch (minimal) {
             case SKILL -> Objects.requireNonNullElse(skill, 0);
             case MIN_INTELLIGENCE -> minIntelligence;
+            case MIN_WILLPOWER -> minWillpower;
             case MIN_DEXTERITY -> minDexterity;
             case MIN_STRENGTH -> minStrength;
         };
@@ -102,9 +131,10 @@ public class InventoryItem {
     int getMinimalAttributeOfStatItemId(StatItemId statItemId) {
         return switch (statItemId) {
             case INTELLIGENCE -> minIntelligence;
+            case WILLPOWER -> minWillpower;
             case DEXTERITY -> minDexterity;
             case STRENGTH -> minStrength;
-            case WILLPOWER, AGILITY, ENDURANCE, STAMINA -> 0;
+            case AGILITY, ENDURANCE, STAMINA -> 0;
         };
     }
 
@@ -113,28 +143,34 @@ public class InventoryItem {
             case INTELLIGENCE -> intelligence;
             case WILLPOWER -> willpower;
             case DEXTERITY -> dexterity;
+            case STRENGTH -> strength;
             case AGILITY -> agility;
-            case ENDURANCE, STRENGTH, STAMINA -> 0;
+            case ENDURANCE -> endurance;
+            case STAMINA -> 0;
         };
     }
 
     int getAttributeOfSkillItemId(SkillItemId skillItemId) {
         return switch (skillItemId) {
+            case ALCHEMIST -> alchemist;
             case DIPLOMAT -> diplomat;
+            case HEALER -> healer;
             case LOREMASTER -> loremaster;
+            case MECHANIC -> mechanic;
             case STEALTH -> stealth;
+            case RANGER -> ranger;
             case THIEF -> thief;
+            case TROUBADOUR -> troubadour;
             case WARRIOR -> warrior;
             case WIZARD -> wizard;
-            case ALCHEMIST, HEALER, MECHANIC, MERCHANT, RANGER, TROUBADOUR,
-                    HAFTED, MISSILE, POLE, SHIELD, SWORD, THROWN -> 0;
+            case MERCHANT, HAFTED, MISSILE, POLE, SHIELD, SWORD, THROWN -> 0;
         };
     }
 
     int getAttributeOfCalcAttributeId(CalcAttributeId calcAttributeId) {
         return switch (calcAttributeId) {
             case WEIGHT -> weight;
-            case MOVEPOINTS -> 0;
+            case MOVEPOINTS -> movepoints;
             case BASE_HIT -> baseHit;
             case DAMAGE -> damage;
             case PROTECTION -> protection;
@@ -229,6 +265,18 @@ public class InventoryItem {
         if (this.amount < 1) {
             throw new IllegalStateException("Amount cannot be below 1.");
         }
+    }
+
+    String createMessageFailToDequip(InventoryItem dependantItem) {
+        return String.format("""
+                                     Cannot unequip the %s.
+                                     The %s depends on it.""", name, dependantItem.name);
+    }
+
+    String createMessageFailToEquipTwoHanded(InventoryItem otherItem) {
+        return String.format("""
+                                     Cannot equip the %s.
+                                     First unequip the %s.""", name, otherItem.name);
     }
 
 }

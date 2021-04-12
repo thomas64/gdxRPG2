@@ -27,6 +27,13 @@ enum InventoryMinimal implements SuperEnum {
         }
     },
 
+    MIN_WILLPOWER("Min. Willpower") {
+        @Override
+        Optional<String> createMessageIfHeroHasNotEnoughFor(InventoryItem item, HeroItem hero) {
+            return InventoryMinimal.createMessage(item, StatItemId.WILLPOWER, hero);
+        }
+    },
+
     MIN_STRENGTH("Min. Strength") {
         @Override
         Optional<String> createMessageIfHeroHasNotEnoughFor(InventoryItem item, HeroItem hero) {
@@ -52,7 +59,7 @@ enum InventoryMinimal implements SuperEnum {
 
     private static Optional<String> createMessage(InventoryItem item, StatItemId statItemId, HeroItem hero) {
         int minimalAttribute = item.getMinimalAttributeOfStatItemId(statItemId);
-        if (hero.getStatById(statItemId).rank < minimalAttribute) {
+        if (hero.getCalculatedTotalStatOf(statItemId) < minimalAttribute) {
             return Optional.of(String.format("""
                                                      %s needs %s %s
                                                      to equip that %s.""",

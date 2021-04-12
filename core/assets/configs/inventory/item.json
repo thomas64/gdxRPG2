@@ -4,8 +4,6 @@
     "group"      : "ITEM",
     "sort"       : 70010,
     "price"      : 1,
-    "description": [
-      "An old key for inside the Mysterious Tunnel."
-    ]
+    "description": ["An old key for inside the Mysterious Tunnel."]
   }
 }

@@ -8,9 +8,8 @@ import java.util.List;
 public class ShopSlotTooltipSell extends ItemSlotTooltip {
 
     @Override
-    List<InventoryDescription> removeLeftUnnecessaryAttributes(List<InventoryDescription> descriptionList) {
-        descriptionList = removeBuy(descriptionList);
-        return descriptionList;
+    void removeLeftUnnecessaryAttributes(List<InventoryDescription> descriptionList) {
+        removeBuy(descriptionList);
     }
 
 }

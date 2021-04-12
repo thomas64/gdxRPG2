@@ -1,5 +1,5 @@
 {
-  "basic_light_boots"      : {
+  "basic_light_boots"       : {
     "name"      : "Basic Light Boots",
     "group"     : "BOOTS",
     "sort"      : 60100,
@@ -9,7 +9,7 @@
     "agility"   : 0,
     "stealth"   : 0
   },
-  "fine_light_boots"       : {
+  "fine_light_boots"        : {
     "name"      : "Fine Light Boots",
     "group"     : "BOOTS",
     "sort"      : 60200,
@@ -19,7 +19,7 @@
     "agility"   : 0,
     "stealth"   : 0
   },
-  "specialist_light_boots" : {
+  "specialist_light_boots"  : {
     "name"      : "Specialist Light Boots",
     "group"     : "BOOTS",
     "sort"      : 60300,
@@ -29,7 +29,7 @@
     "agility"   : 0,
     "stealth"   : 0
   },
-  "masterwork_light_boots" : {
+  "masterwork_light_boots"  : {
     "name"      : "Masterwork Light Boots",
     "group"     : "BOOTS",
     "sort"      : 60400,
@@ -39,7 +39,7 @@
     "agility"   : 0,
     "stealth"   : 0
   },
-  "basic_medium_boots"     : {
+  "basic_medium_boots"      : {
     "name"      : "Basic Medium Boots",
     "group"     : "BOOTS",
     "sort"      : 60120,
@@ -49,7 +49,7 @@
     "agility"   : -1,
     "stealth"   : -1
   },
-  "fine_medium_boots"      : {
+  "fine_medium_boots"       : {
     "name"      : "Fine Medium Boots",
     "group"     : "BOOTS",
     "sort"      : 60220,
@@ -59,7 +59,7 @@
     "agility"   : -1,
     "stealth"   : -1
   },
-  "specialist_medium_boots": {
+  "specialist_medium_boots" : {
     "name"      : "Specialist Medium Boots",
     "group"     : "BOOTS",
     "sort"      : 60320,
@@ -69,7 +69,7 @@
     "agility"   : -1,
     "stealth"   : -1
   },
-  "masterwork_medium_boots": {
+  "masterwork_medium_boots" : {
     "name"      : "Masterwork Medium Boots",
     "group"     : "BOOTS",
     "sort"      : 60420,
@@ -79,7 +79,7 @@
     "agility"   : -1,
     "stealth"   : -1
   },
-  "basic_heavy_boots"      : {
+  "basic_heavy_boots"       : {
     "name"      : "Basic Heavy Boots",
     "group"     : "BOOTS",
     "sort"      : 60140,
@@ -89,7 +89,7 @@
     "agility"   : -3,
     "stealth"   : -2
   },
-  "fine_heavy_boots"       : {
+  "fine_heavy_boots"        : {
     "name"      : "Fine Heavy Boots",
     "group"     : "BOOTS",
     "sort"      : 60240,
@@ -99,7 +99,7 @@
     "agility"   : -3,
     "stealth"   : -2
   },
-  "specialist_heavy_boots" : {
+  "specialist_heavy_boots"  : {
     "name"      : "Specialist Heavy Boots",
     "group"     : "BOOTS",
     "sort"      : 60340,
@@ -109,7 +109,7 @@
     "agility"   : -3,
     "stealth"   : -2
   },
-  "masterwork_heavy_boots" : {
+  "masterwork_heavy_boots"  : {
     "name"      : "Masterwork Heavy Boots",
     "group"     : "BOOTS",
     "sort"      : 60440,
@@ -118,5 +118,48 @@
     "protection": 12,
     "agility"   : -3,
     "stealth"   : -2
+  },
+  "epic_boots_of_motion"    : {
+    "name"      : "Boots of Motion",
+    "group"     : "BOOTS",
+    "sort"      : 61000,
+    "price"     : 50,
+    "weight"    : 1,
+    "protection": 0,
+    "agility"   : 0,
+    "stealth"   : 0,
+    "movepoints": 1
+  },
+  "legendary_boots_of_speed": {
+    "name"      : "Boots of Speed",
+    "group"     : "BOOTS",
+    "sort"      : 62000,
+    "price"     : 50,
+    "weight"    : 1,
+    "protection": 0,
+    "agility"   : 0,
+    "stealth"   : 0,
+    "movepoints": 2
+  },
+  "epic_woodsmans_boots"    : {
+    "name"      : "Woodsman's Boots",
+    "group"     : "BOOTS",
+    "sort"      : 61000,
+    "price"     : 50,
+    "weight"    : 1,
+    "protection": 1,
+    "agility"   : 0,
+    "stealth"   : 0,
+    "ranger"    : 2
+  },
+  "epic_silence_boots"      : {
+    "name"      : "Silence Boots",
+    "group"     : "BOOTS",
+    "sort"      : 61000,
+    "price"     : 50,
+    "weight"    : 1,
+    "protection": 0,
+    "agility"   : 0,
+    "stealth"   : 2
   }
 }

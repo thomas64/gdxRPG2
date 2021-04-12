@@ -47,7 +47,7 @@ class CalcsTable extends BaseTable {
 
         table.add(new Label(CalcAttributeId.MOVEPOINTS.getTitle(), createLabelStyle()));
         table.add(String.valueOf(selectedHero.getCalculatedMovepoints()));
-        table.add("").row();
+        addExtraToTable(selectedHero.getTotalCalcOf(CalcAttributeId.MOVEPOINTS));
 
         table.add(new Label(CalcAttributeId.BASE_HIT.getTitle(), createLabelStyle()));
         table.add(selectedHero.getCalcValueOf(InventoryGroup.WEAPON, CalcAttributeId.BASE_HIT) + "%");
@@ -75,8 +75,7 @@ class CalcsTable extends BaseTable {
 
         table.add(new Label("Total " + CalcAttributeId.PROTECTION.getTitle(), createLabelStyle()));
         table.add(String.valueOf(selectedHero.getTotalCalcOf(CalcAttributeId.PROTECTION)));
-        final int totalExtra = selectedHero.getPossibleExtraProtection();
-        addExtraToTable(totalExtra);
+        addExtraToTable(selectedHero.getPossibleExtraProtection());
 
         table.add(new Label(CalcAttributeId.SPELL_BATTERY.getTitle(), createLabelStyle()));
         table.add(String.valueOf(selectedHero.getTotalCalcOf(CalcAttributeId.SPELL_BATTERY)));

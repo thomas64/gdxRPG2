@@ -1,3 +1,4 @@
+accessory.json
 belt.json
 boots.json
 bracers.json
@@ -8,10 +9,12 @@ hafted.json
 helmet.json
 item.json
 missile.json
+necklace.json
 pants.json
 pole.json
 potion.json
 resource.json
+ring.json
 shield.json
 shoulders.json
 sword.json

@@ -118,5 +118,17 @@
     "protection": 12,
     "agility"   : -3,
     "stealth"   : -2
+  },
+  "epic_power_bracelet"      : {
+    "name"         : "Power Bracelet",
+    "group"        : "BRACERS",
+    "sort"         : 61000,
+    "price"        : 50,
+    "weight"       : 0,
+    "min_willpower": 20,
+    "protection"   : 0,
+    "agility"      : 0,
+    "stealth"      : 0,
+    "strength"     : 5
   }
 }

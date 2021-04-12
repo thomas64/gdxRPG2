@@ -19,7 +19,7 @@
     "agility"   : 2,
     "stealth"   : 0
   },
-  "specialist_light_belt" : {
+  "specialist_light_belt": {
     "name"      : "Specialist Light Belt",
     "group"     : "BELT",
     "sort"      : 60300,
@@ -29,7 +29,7 @@
     "agility"   : 3,
     "stealth"   : 0
   },
-  "masterwork_light_belt" : {
+  "masterwork_light_belt": {
     "name"      : "Masterwork Light Belt",
     "group"     : "BELT",
     "sort"      : 60400,
@@ -39,7 +39,17 @@
     "agility"   : 4,
     "stealth"   : 0
   },
-  "basic_medium_belt"     : {
+  "epic_light_belt"      : {
+    "name"      : "Epic Light Belt",
+    "group"     : "BELT",
+    "sort"      : 61000,
+    "price"     : 50,
+    "weight"    : 1,
+    "protection": 0,
+    "agility"   : 5,
+    "stealth"   : 0
+  },
+  "basic_medium_belt"    : {
     "name"      : "Basic Medium Belt",
     "group"     : "BELT",
     "sort"      : 60120,
@@ -49,7 +59,7 @@
     "agility"   : 1,
     "stealth"   : -1
   },
-  "fine_medium_belt"      : {
+  "fine_medium_belt"     : {
     "name"      : "Fine Medium Belt",
     "group"     : "BELT",
     "sort"      : 60220,
@@ -89,7 +99,7 @@
     "agility"   : 1,
     "stealth"   : -2
   },
-  "fine_heavy_belt"       : {
+  "fine_heavy_belt"      : {
     "name"      : "Fine Heavy Belt",
     "group"     : "BELT",
     "sort"      : 60240,
@@ -99,7 +109,7 @@
     "agility"   : 2,
     "stealth"   : -2
   },
-  "specialist_heavy_belt" : {
+  "specialist_heavy_belt": {
     "name"      : "Specialist Heavy Belt",
     "group"     : "BELT",
     "sort"      : 60340,
@@ -109,7 +119,7 @@
     "agility"   : 3,
     "stealth"   : -2
   },
-  "masterwork_heavy_belt" : {
+  "masterwork_heavy_belt": {
     "name"      : "Masterwork Heavy Belt",
     "group"     : "BELT",
     "sort"      : 60440,
@@ -118,5 +128,28 @@
     "protection": 2,
     "agility"   : 4,
     "stealth"   : -2
+  },
+  "epic_utility_belt"    : {
+    "name"        : "Utility Belt",
+    "group"       : "BELT",
+    "sort"        : 61000,
+    "price"       : 50,
+    "weight"      : 1,
+    "protection"  : 0,
+    "agility"     : -3,
+    "stealth"     : 0,
+    "quick_switch": true,
+    "description" : ["Change equipment in combat", "without skipping a turn."]
+  },
+  "epic_woodsman_belt"   : {
+    "name"      : "Woodsman Belt",
+    "group"     : "BELT",
+    "sort"      : 61000,
+    "price"     : 50,
+    "weight"    : 1,
+    "protection": 0,
+    "agility"   : 0,
+    "stealth"   : 0,
+    "ranger"    : 1
   }
 }

@@ -180,15 +180,15 @@ class HeroTest extends GameTest {
 
         message = mozes.createMessageIfNotAbleToEquip(bow);
         assertThat(message).contains("""
-                                             Mozes needs to unequip the Basic Light Shield
-                                             to equip that Basic Shortbow.""");
+                                             Cannot equip the Basic Shortbow.
+                                             First unequip the Basic Light Shield.""");
 
         mozes.clearInventoryItemFor(InventoryGroup.SHIELD);
         mozes.forceSetInventoryItemFor(InventoryGroup.WEAPON, bow);
         message = mozes.createMessageIfNotAbleToEquip(shield);
         assertThat(message).contains("""
-                                             Mozes needs to unequip the Basic Shortbow
-                                             to equip that Basic Light Shield.""");
+                                             Cannot equip the Basic Light Shield.
+                                             First unequip the Basic Shortbow.""");
     }
 
     @Test
