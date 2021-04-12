@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import nl.t64.game.rpg.Utils;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 public class QuestContainer {
@@ -25,7 +24,7 @@ public class QuestContainer {
                      .sorted(Comparator.comparing((QuestGraph questGraph) -> questGraph.isFailed)
                                        .thenComparing((QuestGraph questGraph) -> questGraph.currentState)
                                        .thenComparing((QuestGraph questGraph) -> questGraph.id))
-                     .collect(Collectors.toUnmodifiableList());
+                     .toList();
     }
 
     public QuestGraph getQuestById(String questId) {

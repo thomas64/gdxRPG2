@@ -3,7 +3,6 @@ package nl.t64.game.rpg.components.conversation;
 import lombok.Getter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Getter
@@ -33,7 +32,7 @@ public class ConversationPhrase {
     private List<ConversationChoice> getVisibleChoices() {
         return choices.stream()
                       .filter(ConversationChoice::isVisible)
-                      .collect(Collectors.toUnmodifiableList());
+                      .toList();
     }
 
 }

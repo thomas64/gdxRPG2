@@ -7,7 +7,6 @@ import nl.t64.game.rpg.constants.Constant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 public class BlockSubject {
@@ -30,7 +29,7 @@ public class BlockSubject {
         return List.copyOf(observers).stream()
                    .map(observer -> observer.getBlockerFor(boundingBox))
                    .flatMap(Optional::stream)
-                   .collect(Collectors.toUnmodifiableList());
+                   .toList();
     }
 
     public boolean isCurrentlyBlocking(float x, float y) {

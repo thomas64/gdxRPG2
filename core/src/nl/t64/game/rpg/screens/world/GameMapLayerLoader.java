@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -64,7 +63,7 @@ record GameMapLayerLoader(TiledMap tiledMap) {
         String lightmapStrings = tiledMap.getProperties().get(LIGHTMAP_CAMERA_PROPERTY, DEFAULT_LIGHTMAP, String.class);
         return Arrays.stream(lightmapStrings.split("\\s*,\\s*"))
                      .map(Utils::createLightmap)
-                     .collect(Collectors.toUnmodifiableList());
+                     .toList();
     }
 
     Sprite loadLightmapMap() {
@@ -89,14 +88,14 @@ record GameMapLayerLoader(TiledMap tiledMap) {
                 .map(RectangleMapObject.class::cast)
                 .filter(filter)
                 .map(mapper)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     private <T> List<T> createTextureObjectsList(MapLayer mapLayer, Function<TextureMapObject, T> mapper) {
         return getMapObjects(mapLayer)
                 .map(TextureMapObject.class::cast)
                 .map(mapper)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     private Stream<MapObject> getMapObjects(MapLayer mapLayer) {

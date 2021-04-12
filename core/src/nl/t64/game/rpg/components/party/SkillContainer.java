@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 class SkillContainer {
@@ -57,7 +56,7 @@ class SkillContainer {
         return Arrays.stream(SkillItemId.values())
                      .map(skillItemId -> skills.get(skillItemId.name()))
                      .filter(this::hasPositiveQuantity)
-                     .collect(Collectors.toUnmodifiableList());
+                     .toList();
     }
 
     private boolean hasPositiveQuantity(SkillItem skillItem) {

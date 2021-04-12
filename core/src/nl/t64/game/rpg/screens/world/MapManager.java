@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 public class MapManager implements ProfileObserver {
@@ -191,7 +190,7 @@ public class MapManager implements ProfileObserver {
         String audioEventStrings = tiledMap.getProperties().get(BGS_PROPERTY, DEFAULT_BG, String.class);
         return Arrays.stream(audioEventStrings.toUpperCase().split("\\s*,\\s*"))
                      .map(AudioEvent::valueOf)
-                     .collect(Collectors.toUnmodifiableList());
+                     .toList();
     }
 
     static TiledMap getTiledMap(String mapTitle) {

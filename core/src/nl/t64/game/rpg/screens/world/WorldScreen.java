@@ -42,7 +42,6 @@ import nl.t64.game.rpg.subjects.PartyObserver;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 public class WorldScreen implements Screen,
@@ -253,7 +252,7 @@ public class WorldScreen implements Screen,
         Utils.getBrokerManager().blockObservers.removeObserver(currentNpcEntity);
         npcEntities = npcEntities.stream()
                                  .filter(npcEntity -> !npcEntity.equals(currentNpcEntity))
-                                 .collect(Collectors.toUnmodifiableList());
+                                 .toList();
         partyMembers = new PartyMembersLoader(player).loadPartyMembers();
     }
 

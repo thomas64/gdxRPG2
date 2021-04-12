@@ -15,17 +15,17 @@ allprojects {
     apply plugin: "java"
     apply plugin: "idea"
 
-    sourceCompatibility = 15
+    sourceCompatibility = 16
 
-    tasks.withType(JavaCompile) {
-        options.compilerArgs += "--enable-preview"
-    }
-    tasks.withType(Test) {
-        jvmArgs += "--enable-preview"
-    }
-    tasks.withType(JavaExec) {
-        jvmArgs += "--enable-preview"
-    }
+//    tasks.withType(JavaCompile) {
+//        options.compilerArgs += "--enable-preview"
+//    }
+//    tasks.withType(Test) {
+//        jvmArgs += "--enable-preview"
+//    }
+//    tasks.withType(JavaExec) {
+//        jvmArgs += "--enable-preview"
+//    }
 
     version = "1.0"
     ext {
@@ -34,10 +34,10 @@ allprojects {
         controllerVersion = "2.2.0"
         mappingVersion = "2.3.0"
         aiVersion = "1.8.2"
-        lombokVersion = "1.18.18"
+        lombokVersion = "1.18.20"
         jacksonVersion = "2.12.2"
         assertjVersion = "3.19.0"
-        mockitoVersion = "3.8.0"
+        mockitoVersion = "3.9.0"
         junitVersion = "5.7.1"
     }
 

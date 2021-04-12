@@ -29,7 +29,7 @@ public class InventoryContainer {
     public List<InventoryItem> getAllFilledSlots() {
         return inventory.stream()
                         .filter(Objects::nonNull)
-                        .collect(Collectors.toUnmodifiableList());
+                        .toList();
     }
 
     public int getAmountOfItemAt(int index) {
