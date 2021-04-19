@@ -7,14 +7,12 @@ buildscript {
         google()
     }
     dependencies {
+        classpath "com.android.tools.build:gradle:4.1.3"
     }
 }
 
 allprojects {
-    apply plugin: "java-library"
     apply plugin: "idea"
-
-    sourceCompatibility = 16
 
 //    tasks.withType(JavaCompile) {
 //        options.compilerArgs += "--enable-preview"
@@ -51,30 +49,60 @@ allprojects {
 }
 
 project(":desktop") {
+    apply plugin: "java-library"
+    sourceCompatibility = 16
+
     dependencies {
         implementation project(":core")
-        implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-        implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-        implementation "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$controllerVersion"
+        api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+        api "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$controllerVersion"
+    }
+}
+
+project(":android") {
+    apply plugin: "com.android.application"
+    configurations { natives }
+
+    dependencies {
+        implementation project(":core")
+        api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
+        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
+        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
+        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
+//        api "com.badlogicgames.gdx-controllers:gdx-controllers-android:$controllerVersion"
+//        api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+        api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi-v7a"
+        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a"
+        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86"
+        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64"
     }
 }
 
 project(":core") {
+    apply plugin: "java-library"
+    sourceCompatibility = 16
+
     dependencies {
         compileOnly "org.projectlombok:lombok:$lombokVersion"
         annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 
-        implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
-        implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        implementation "com.badlogicgames.gdx-controllers:gdx-controllers-core:$controllerVersion"
-        implementation "de.golfgl.gdxcontrollerutils:gdx-controllerutils-mapping:$mappingVersion"
-        implementation "com.badlogicgames.gdx:gdx-ai:$aiVersion"
-        implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+        api "com.badlogicgames.gdx:gdx:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$controllerVersion"
+        api "de.golfgl.gdxcontrollerutils:gdx-controllerutils-mapping:$mappingVersion"
+        api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+        api "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
     }
 }
 
 project(":tests") {
+    apply plugin: "java-library"
+    sourceCompatibility = 16
+
     dependencies {
         implementation project(":core")
         testImplementation "com.badlogicgames.gdx:gdx:$gdxVersion"
