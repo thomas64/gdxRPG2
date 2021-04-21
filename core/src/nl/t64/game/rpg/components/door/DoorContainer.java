@@ -25,9 +25,9 @@ public class DoorContainer {
     }
 
     private void loadDoors() {
-        String[] configFiles = Gdx.files.local(FILE_LIST).readString().split(System.lineSeparator());
+        String[] configFiles = Gdx.files.internal(FILE_LIST).readString().split(System.lineSeparator());
         Arrays.stream(configFiles)
-              .map(filePath -> Gdx.files.local(DOOR_CONFIGS + filePath).readString())
+              .map(filePath -> Gdx.files.internal(DOOR_CONFIGS + filePath).readString())
               .map(json -> Utils.readValue(json, Door.class))
               .peek(this::setDependentVariables)
               .forEach(doors::putAll);

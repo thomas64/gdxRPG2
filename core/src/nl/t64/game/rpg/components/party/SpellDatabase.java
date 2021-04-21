@@ -37,9 +37,9 @@ public final class SpellDatabase {
     }
 
     private void loadSpellItems() {
-        String[] configFiles = Gdx.files.local(FILE_LIST).readString().split(System.lineSeparator());
+        String[] configFiles = Gdx.files.internal(FILE_LIST).readString().split(System.lineSeparator());
         Arrays.stream(configFiles)
-              .map(filePath -> Gdx.files.local(SPELL_CONFIGS + filePath).readString())
+              .map(filePath -> Gdx.files.internal(SPELL_CONFIGS + filePath).readString())
               .map(json -> Utils.readValue(json, SpellItem.class))
               .forEach(spellItems::putAll);
         spellItems.forEach((spellItemId, spellItem) -> spellItem.id = spellItemId);

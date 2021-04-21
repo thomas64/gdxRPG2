@@ -134,9 +134,9 @@ public class ResourceManager {
     }
 
     private void loadSpriteConfigs() {
-        String[] configFiles = Gdx.files.local(FILE_LIST_SPRITE_CONFIGS).readString().split(System.lineSeparator());
+        String[] configFiles = Gdx.files.internal(FILE_LIST_SPRITE_CONFIGS).readString().split(System.lineSeparator());
         Arrays.stream(configFiles)
-              .map(filePath -> Gdx.files.local(SPRITE_CONFIGS + filePath))
+              .map(filePath -> Gdx.files.internal(SPRITE_CONFIGS + filePath))
               .map(file -> json.fromJson(ObjectMap.class, SpriteConfig.class, file))
               .forEach(spriteConfigs::putAll);
     }
@@ -158,16 +158,16 @@ public class ResourceManager {
     }
 
     private void loadAtlasTexture(String fileName, String directory) {
-        String[] atlasFiles = Gdx.files.local(fileName).readString().split(System.lineSeparator());
+        String[] atlasFiles = Gdx.files.internal(fileName).readString().split(System.lineSeparator());
         Arrays.stream(atlasFiles)
-              .map(filePath -> Gdx.files.local(directory + filePath))
+              .map(filePath -> Gdx.files.internal(directory + filePath))
               .map(TextureAtlas::new)
               .forEach(atlasList::add);
     }
 
     public List<String> getShopInventory(String shopId) {
         String fullFilenamePath = SHOP_CONFIGS + shopId + CONFIG_SUFFIX;
-        return json.fromJson(List.class, String.class, Gdx.files.local(fullFilenamePath));
+        return json.fromJson(List.class, String.class, Gdx.files.internal(fullFilenamePath));
     }
 
 }

@@ -13,8 +13,8 @@ public class Engine extends Game {
 
     private static float runTime = 0f;
 
+    PreferenceManager preferenceManager;
     final ResourceManager resourceManager;
-    final Settings settings;
     final ProfileManager profileManager;
     final GameData gameData;
     final ScreenManager screenManager;
@@ -23,9 +23,8 @@ public class Engine extends Game {
     final BrokerManager brokerManager;
     final GamepadMapping gamepadMapping;
 
-    public Engine(Settings settings) {
+    public Engine() {
         this.resourceManager = new ResourceManager();
-        this.settings = settings;
         this.profileManager = new ProfileManager();
         this.gameData = new GameData();
         this.screenManager = new ScreenManager();
@@ -41,6 +40,13 @@ public class Engine extends Game {
 
     public static float getRunTime() {
         return runTime;
+    }
+
+    PreferenceManager getPreferenceManager() {
+        if (preferenceManager == null) {
+            preferenceManager = new PreferenceManager();
+        }
+        return preferenceManager;
     }
 
     @Override

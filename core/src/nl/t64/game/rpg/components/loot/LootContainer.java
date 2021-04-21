@@ -40,11 +40,11 @@ public class LootContainer {
     }
 
     private String[] getFileList(String fileList) {
-        return Gdx.files.local(fileList).readString().split(System.lineSeparator());
+        return Gdx.files.internal(fileList).readString().split(System.lineSeparator());
     }
 
     private void putInContainer(String filePath) {
-        String json = Gdx.files.local(LOOT_CONFIGS + filePath).readString();
+        String json = Gdx.files.internal(LOOT_CONFIGS + filePath).readString();
         loot.putAll(Utils.readValue(json, Loot.class));
     }
 

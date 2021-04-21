@@ -138,7 +138,7 @@ public class AudioManager {
             bgm = Utils.getResourceManager().getMusicAsset(filePath);
             queuedBgm.put(filePath, bgm);
         }
-        if (Utils.getSettings().isMusicOn()) {
+        if (Utils.getPreferenceManager().isMusicOn()) {
             bgm.setLooping(isLooping);
             bgm.play();
             bgm.setVolume(BGM_VOLUME);
@@ -158,7 +158,7 @@ public class AudioManager {
             bgs = Utils.getResourceManager().getMusicAsset(filePath);
             queuedBgs.put(filePath, bgs);
         }
-        if (Utils.getSettings().isSoundOn()) {
+        if (Utils.getPreferenceManager().isSoundOn()) {
             bgs.setLooping(isLooping);
             bgs.play();
             bgs.setVolume(BGS_VOLUME);
@@ -175,7 +175,7 @@ public class AudioManager {
             me = Utils.getResourceManager().getSoundAsset(filePath);
             queuedMe.put(filePath, me);
         }
-        if (Utils.getSettings().isMusicOn()) {
+        if (Utils.getPreferenceManager().isMusicOn()) {
             long meId = me.play();
             me.setLooping(meId, isLooping);
         } else {
@@ -193,7 +193,7 @@ public class AudioManager {
             se = Utils.getResourceManager().getSoundAsset(filePath);
             queuedSe.put(filePath, se);
         }
-        if (Utils.getSettings().isSoundOn()) {
+        if (Utils.getPreferenceManager().isSoundOn()) {
             long seId = se.play();
             se.setVolume(seId, volume);
             se.setLooping(seId, isLooping);

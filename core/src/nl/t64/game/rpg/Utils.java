@@ -51,8 +51,8 @@ public final class Utils {
         return getEngine().resourceManager;
     }
 
-    public static Settings getSettings() {
-        return getEngine().settings;
+    public static PreferenceManager getPreferenceManager() {
+        return getEngine().getPreferenceManager();
     }
 
     public static ProfileManager getProfileManager() {

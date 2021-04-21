@@ -32,9 +32,9 @@ public class QuestContainer {
     }
 
     private void loadQuests() {
-        String[] configFiles = Gdx.files.local(FILE_LIST).readString().split(System.lineSeparator());
+        String[] configFiles = Gdx.files.internal(FILE_LIST).readString().split(System.lineSeparator());
         Arrays.stream(configFiles)
-              .map(filePath -> Gdx.files.local(QUEST_CONFIGS + filePath).readString())
+              .map(filePath -> Gdx.files.internal(QUEST_CONFIGS + filePath).readString())
               .map(json -> Utils.readValue(json, QuestGraph.class))
               .forEach(quests::putAll);
         quests.forEach((questId, quest) -> quest.id = questId);

@@ -36,9 +36,9 @@ public final class NoteDatabase {
     }
 
     private void loadNotes() {
-        String[] configFiles = Gdx.files.local(FILE_LIST).readString().split(System.lineSeparator());
+        String[] configFiles = Gdx.files.internal(FILE_LIST).readString().split(System.lineSeparator());
         Arrays.stream(configFiles)
-              .map(filePath -> Gdx.files.local(NOTES_CONFIGS + filePath).readString())
+              .map(filePath -> Gdx.files.internal(NOTES_CONFIGS + filePath).readString())
               .map(json -> Utils.readValue(json, ConversationGraph.class))
               .forEach(notes::putAll);
     }

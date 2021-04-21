@@ -53,9 +53,9 @@ public final class InventoryDatabase {
     }
 
     private void loadInventoryItems() {
-        String[] configFiles = Gdx.files.local(FILE_LIST).readString().split(System.lineSeparator());
+        String[] configFiles = Gdx.files.internal(FILE_LIST).readString().split(System.lineSeparator());
         Arrays.stream(configFiles)
-              .map(filePath -> Gdx.files.local(INVENTORY_CONFIGS + filePath).readString())
+              .map(filePath -> Gdx.files.internal(INVENTORY_CONFIGS + filePath).readString())
               .map(json -> Utils.readValue(json, InventoryItem.class))
               .forEach(inventoryItems::putAll);
         inventoryItems.forEach((inventoryItemId, inventoryItem) -> inventoryItem.id = inventoryItemId);

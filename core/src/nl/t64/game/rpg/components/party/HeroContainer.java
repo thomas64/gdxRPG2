@@ -12,7 +12,7 @@ public class HeroContainer {
     private final Map<String, HeroItem> heroes;
 
     public HeroContainer() {
-        String json = Gdx.files.local(HERO_CONFIGS).readString();
+        String json = Gdx.files.internal(HERO_CONFIGS).readString();
         this.heroes = Utils.readValue(json, HeroItem.class);
         this.heroes.forEach((heroId, hero) -> hero.setId(heroId));
     }

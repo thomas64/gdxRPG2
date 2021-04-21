@@ -15,7 +15,7 @@ public class GameTest {
 
     @BeforeAll
     public static void init() {
-        application = new HeadlessApplication(new Engine(null) {
+        application = new HeadlessApplication(new Engine() {
             //@formatter:off
             @Override public void create() {}
             @Override public void resize(int width, int height) {}

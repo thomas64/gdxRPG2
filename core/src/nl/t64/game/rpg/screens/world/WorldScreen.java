@@ -424,19 +424,19 @@ public class WorldScreen implements Screen,
     }
 
     static void setShowGrid() {
-        if (Utils.getSettings().isInDebugMode()) {
+        if (Utils.getPreferenceManager().isInDebugMode()) {
             showGrid = !showGrid;
         }
     }
 
     static void setShowObjects() {
-        if (Utils.getSettings().isInDebugMode()) {
+        if (Utils.getPreferenceManager().isInDebugMode()) {
             showObjects = !showObjects;
         }
     }
 
     static void setShowDebug() {
-        if (Utils.getSettings().isInDebugMode()) {
+        if (Utils.getPreferenceManager().isInDebugMode()) {
             showDebug = !showDebug;
         }
     }

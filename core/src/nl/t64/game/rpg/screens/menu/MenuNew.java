@@ -133,7 +133,7 @@ public class MenuNew extends MenuScreen {
 //        uiskin.add("default-font", menuFont, BitmapFont.class);
 //        TextureAtlas atlas = new TextureAtlas(UISKIN_ATLAS);
 //        uiskin.addRegions(atlas);
-//        uiskin.load(Gdx.files.local(UISKIN_JSON));
+//        uiskin.load(Gdx.files.internal(UISKIN_JSON));
 
         // styles
         var menuStyle = new Label.LabelStyle(menuFont, fontColor);

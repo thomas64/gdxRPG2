@@ -35,9 +35,9 @@ public class ConversationContainer {
     }
 
     private void loadConversations() {
-        String[] configFiles = Gdx.files.local(FILE_LIST).readString().split(System.lineSeparator());
+        String[] configFiles = Gdx.files.internal(FILE_LIST).readString().split(System.lineSeparator());
         Arrays.stream(configFiles)
-              .map(filePath -> Gdx.files.local(CONVERSATION_CONFIGS + filePath).readString())
+              .map(filePath -> Gdx.files.internal(CONVERSATION_CONFIGS + filePath).readString())
               .map(json -> Utils.readValue(json, ConversationGraph.class))
               .forEach(conversations::putAll);
     }

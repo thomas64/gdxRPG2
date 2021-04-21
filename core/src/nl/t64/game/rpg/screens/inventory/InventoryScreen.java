@@ -163,7 +163,7 @@ public class InventoryScreen extends ScreenToLoad implements ConversationObserve
     }
 
     private void cheatAddGold() {
-        if (Utils.getSettings().isInDebugMode()) {
+        if (Utils.getPreferenceManager().isInDebugMode()) {
             InventoryContainer inventory = Utils.getGameData().getInventory();
             if (inventory.hasRoomForResource("gold")
                 && inventory.hasRoomForResource("herb")
@@ -181,7 +181,7 @@ public class InventoryScreen extends ScreenToLoad implements ConversationObserve
     }
 
     private void cheatRemoveGold() {
-        if (Utils.getSettings().isInDebugMode()) {
+        if (Utils.getPreferenceManager().isInDebugMode()) {
             InventoryContainer inventory = Utils.getGameData().getInventory();
             if (inventory.hasEnoughOfItem("gold", 1)) {
                 Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_ERROR);

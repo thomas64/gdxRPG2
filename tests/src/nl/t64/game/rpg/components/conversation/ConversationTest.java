@@ -35,7 +35,7 @@ class ConversationTest extends GameTest {
     @Test
     void whenGameIsSaved_ShouldStoreAllCurrentPhraseIdsInContainer() {
         PhraseIdContainer phraseIdContainer = conversations.createPhraseIdContainer();
-        FileHandle[] configDirList = Gdx.files.local("configs/conversations/").list(".json");
+        FileHandle[] configDirList = Gdx.files.internal("configs/conversations/").list(".json");
         int containerSize = phraseIdContainer.getSize();
         assertThat(configDirList).hasSizeLessThan(containerSize);
     }

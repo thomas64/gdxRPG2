@@ -1,6 +1,6 @@
 android {
     buildToolsVersion "29.0.3"
-    compileSdkVersion 29
+    compileSdkVersion 30
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -18,8 +18,8 @@ android {
     }
     defaultConfig {
         applicationId "nl.t64.game.rpg"
-        minSdkVersion 16
-        targetSdkVersion 29
+        minSdkVersion 26
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
     }

@@ -189,7 +189,7 @@ public class InputPlayer extends InputComponent implements InputProcessor {
     }
 
     private void processOtherInput() {
-        if (pressAlign && Utils.getSettings().isInDebugMode()) {
+        if (pressAlign && Utils.getPreferenceManager().isInDebugMode()) {
             player.send(new StateEvent(EntityState.ALIGNING));
         }
         if (pressAction) {
@@ -200,7 +200,7 @@ public class InputPlayer extends InputComponent implements InputProcessor {
 
     private void processPlayerSpeedInput() {
         float moveSpeed = Constant.MOVE_SPEED_2;
-        if (pressCtrl && pressShift && Utils.getSettings().isInDebugMode()) {
+        if (pressCtrl && pressShift && Utils.getPreferenceManager().isInDebugMode()) {
             moveSpeed = Constant.MOVE_SPEED_4;
         } else if (pressShift) {
             moveSpeed = Constant.MOVE_SPEED_3;

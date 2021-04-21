@@ -66,23 +66,23 @@ public class MenuSettings extends MenuScreen {
     }
 
     private void processFullscreenButton() {
-        Utils.getSettings().toggleFullscreen();
+        Utils.getPreferenceManager().toggleFullscreen();
         fullscreenButton.setText(getMenuItemFullScreen());
     }
 
     private void processMusicButton() {
         boolean mustPlayBgmImmediately = startScreen.equals(ScreenType.MENU_MAIN);
-        Utils.getSettings().toggleMusic(mustPlayBgmImmediately);
+        Utils.getPreferenceManager().toggleMusic(mustPlayBgmImmediately);
         musicButton.setText(getMenuItemMusic());
     }
 
     private void processSoundButton() {
-        Utils.getSettings().toggleSound();
+        Utils.getPreferenceManager().toggleSound();
         soundButton.setText(getMenuItemSound());
     }
 
     private void processDebugModeButton() {
-        Utils.getSettings().toggleDebugMode();
+        Utils.getPreferenceManager().toggleDebugMode();
         debugModeButton.setText(getMenuItemDebugMode());
     }
 
@@ -115,19 +115,19 @@ public class MenuSettings extends MenuScreen {
     }
 
     private String getMenuItemFullScreen() {
-        return Utils.getSettings().isFullscreen() ? MENU_ITEM_FULL_SCREEN_ON : MENU_ITEM_FULL_SCREEN_OFF;
+        return Utils.getPreferenceManager().isFullscreen() ? MENU_ITEM_FULL_SCREEN_ON : MENU_ITEM_FULL_SCREEN_OFF;
     }
 
     private String getMenuItemMusic() {
-        return Utils.getSettings().isMusicOn() ? MENU_ITEM_MUSIC_ON : MENU_ITEM_MUSIC_OFF;
+        return Utils.getPreferenceManager().isMusicOn() ? MENU_ITEM_MUSIC_ON : MENU_ITEM_MUSIC_OFF;
     }
 
     private String getMenuItemSound() {
-        return Utils.getSettings().isSoundOn() ? MENU_ITEM_SOUND_ON : MENU_ITEM_SOUND_OFF;
+        return Utils.getPreferenceManager().isSoundOn() ? MENU_ITEM_SOUND_ON : MENU_ITEM_SOUND_OFF;
     }
 
     private String getMenuItemDebugMode() {
-        return Utils.getSettings().isInDebugMode() ? MENU_ITEM_DEBUG_MODE_ON : MENU_ITEM_DEBUG_MODE_OFF;
+        return Utils.getPreferenceManager().isInDebugMode() ? MENU_ITEM_DEBUG_MODE_ON : MENU_ITEM_DEBUG_MODE_OFF;
     }
 
     private void applyListeners() {

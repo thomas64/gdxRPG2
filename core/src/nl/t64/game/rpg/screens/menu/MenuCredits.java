@@ -19,7 +19,7 @@ public class MenuCredits extends MenuScreen {
 
     public MenuCredits() {
         String emptyLines = System.lineSeparator().repeat(EMPTY_LINES);
-        String creditsText = emptyLines + Gdx.files.local(CREDITS_PATH).readString() + emptyLines;
+        String creditsText = emptyLines + Gdx.files.internal(CREDITS_PATH).readString() + emptyLines;
         var textStyle = new Label.LabelStyle(menuFont, Color.BLACK);
         var credits = new Label(creditsText, textStyle);
         credits.setAlignment(Align.top | Align.center);
