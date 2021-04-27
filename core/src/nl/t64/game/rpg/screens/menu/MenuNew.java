@@ -22,7 +22,6 @@ public class MenuNew extends MenuScreen {
 
     private static final String PROFILE_LABEL = "Enter profile name:";
     private static final int PROFILE_INPUT_LENGTH = 8 + 1;
-    private static final String DIALOG_MESSAGE = "Overwrite existing profile name?";
 
     private static final String MENU_ITEM_START = "Start";
     private static final String MENU_ITEM_BACK = "Back";
@@ -36,7 +35,6 @@ public class MenuNew extends MenuScreen {
     private static final int EXIT_INDEX = 1;
 
     private TextField profileText;
-    private DialogQuestion overwriteDialog;
 
     private ListenerKeyInputField listenerKeyInputField;
     private ListenerKeyHorizontal listenerKeyHorizontal;
@@ -47,11 +45,8 @@ public class MenuNew extends MenuScreen {
 
     @Override
     void setupScreen() {
-        Utils.getProfileManager().loadAllProfiles();
-
         setFontColor();
         table = createTable();
-        overwriteDialog = new DialogQuestion(this::fadeBeforeCreateNewGame, DIALOG_MESSAGE);
 
         applyListeners();
         stage.addActor(table);
@@ -72,7 +67,6 @@ public class MenuNew extends MenuScreen {
         stage.act(dt);
         listenerKeyInputField.updateInputField(profileName);
         listenerKeyHorizontal.updateSelectedIndex(selectedMenuIndex);
-        overwriteDialog.update(); // for updating the index in de listener.
         if (isBgmFading) {
             Utils.getAudioManager().fadeBgmBgs();
         }
@@ -94,12 +88,7 @@ public class MenuNew extends MenuScreen {
 
     private void processStartButton() {
         finalProfileName = profileName.substring(0, profileName.length() - 1);
-        boolean profileExists = Utils.getProfileManager().doesProfileExist(finalProfileName);
-        if (profileExists) {
-            overwriteDialog.show(stage);
-        } else {
-            fadeBeforeCreateNewGame();
-        }
+        fadeBeforeCreateNewGame();
     }
 
     private void fadeBeforeCreateNewGame() {

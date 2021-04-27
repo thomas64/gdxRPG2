@@ -25,7 +25,7 @@ public class ConversationGraph {
     }
 
     public ConversationChoice[] getAssociatedChoices() {
-        return phrases.get(currentPhraseId).getChoices(currentPhraseId).toArray(new ConversationChoice[0]);
+        return phrases.get(currentPhraseId).getChoices(currentPhraseId).toArray(ConversationChoice[]::new);
     }
 
 }

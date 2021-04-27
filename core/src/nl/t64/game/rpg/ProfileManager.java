@@ -1,67 +1,62 @@
 package nl.t64.game.rpg;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ObjectMap;
+import lombok.Setter;
 import nl.t64.game.rpg.constants.Constant;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.IntStream;
 
 
 public class ProfileManager {
 
-    private static final String SAVE_PATH = "saves/";
-    private static final String DEFAULT_PROFILE =
+    private static final String DEFAULT_ID =
             Constant.PLAYER_ID.substring(0, 1).toUpperCase() + Constant.PLAYER_ID.substring(1);
-    private static final String SAVEGAME_SUFFIX = ".dat";
+    private static final String SAVE1 = "save1.dat";
+    private static final String SAVE2 = "save2.dat";
+    private static final String SAVE3 = "save3.dat";
+    private static final String SAVE4 = "save4.dat";
+    private static final String SAVE5 = "save5.dat";
+    private static final List<String> SAVE_FILES = List.of(SAVE1, SAVE2, SAVE3, SAVE4, SAVE5);
+    private static final String SAVE_STATE_KEY = "saveState";
+    private static final String PROFILE_ID = "id";
+    private static final String PROFILE_SAVE_DATE = "saveDate";
+    private static final String DATE_PATTERN = "yyyy-MM-dd HH:mm";
 
     private final Json json = new Json();
-    private final Map<String, FileHandle> profiles = new HashMap<>();
-    private ObjectMap<String, Object> profileProperties = new ObjectMap<>();
-    private String profileName = null;
+    private ObjectMap<String, Object> saveStateProperties = new ObjectMap<>();
+    private String currentSaveFileName = null;
+    @Setter
+    private int selectedIndex = -1;
 
-    public void loadAllProfiles() {
-        profiles.clear();
-        FileHandle[] files = Gdx.files.local(SAVE_PATH).list(SAVEGAME_SUFFIX);
-        Arrays.stream(files).forEach(file -> profiles.put(file.nameWithoutExtension(), file));
+    public boolean doesProfileExist(int profileIndex) {
+        Preferences saveFile = getSaveFileBy(profileIndex);
+        return saveFile.contains(SAVE_STATE_KEY);
     }
 
-    public boolean doesProfileExist(String newProfileName) {
-        if (newProfileName.isEmpty()) {
-            newProfileName = DEFAULT_PROFILE;
+    public void createNewProfile(String profileId) {
+        if (profileId.isEmpty()) {
+            profileId = DEFAULT_ID;
         }
-        for (String key : profiles.keySet()) {
-            if (newProfileName.equalsIgnoreCase(key)) return true;
-        }
-        return false;
-    }
-
-    public void createNewProfile(String newProfileName) {
-        if (newProfileName.isEmpty()) {
-            newProfileName = DEFAULT_PROFILE;
-        }
-        profileName = newProfileName;
+        currentSaveFileName = SAVE_FILES.get(selectedIndex);
+        saveStateProperties.clear();
+        setProperty(PROFILE_ID, profileId);
         Utils.getBrokerManager().profileObservers.notifyCreateProfile(this);
         writeProfileToDisk();
     }
 
-    public Array<String> getProfileList() {
-        Array<String> profilesArray = new Array<>();
-        profiles.keySet().forEach(profilesArray::add);
-        return profilesArray;
-    }
-
     public <T> T getProperty(String key, Class<T> clazz) {
-        return clazz.cast(profileProperties.get(key));
+        return clazz.cast(saveStateProperties.get(key));
     }
 
     public void setProperty(String key, Object object) {
-        profileProperties.put(key, object);
+        saveStateProperties.put(key, object);
     }
 
     public void saveProfile() {
@@ -69,42 +64,53 @@ public class ProfileManager {
         writeProfileToDisk();
     }
 
-    @SuppressWarnings("unchecked")
-    public void loadProfile(String selectedProfileName) {
-        String fullFilename = selectedProfileName + SAVEGAME_SUFFIX;
-        boolean doesProfileExist = Gdx.files.local(SAVE_PATH + fullFilename).exists();
-        if (!doesProfileExist) {
-            throw new GdxRuntimeException("Profile does not exist.");
-        }
-        profileName = selectedProfileName;
-        profileProperties = json.fromJson(ObjectMap.class, profiles.get(profileName));
+    public void loadProfile(int profileIndex) {
+        currentSaveFileName = SAVE_FILES.get(profileIndex);
+        Preferences saveFile = Gdx.app.getPreferences(currentSaveFileName);
+        saveStateProperties = getSaveStateProperties(saveFile);
         Utils.getBrokerManager().profileObservers.notifyLoadProfile(this);
     }
 
-    public Array<String> removeProfile(String selectedProfileName) {
-        String fullFilename = selectedProfileName + SAVEGAME_SUFFIX;
-        boolean doesProfileExist = Gdx.files.local(SAVE_PATH + fullFilename).exists();
-        if (doesProfileExist) {
-            Gdx.files.local(SAVE_PATH + fullFilename).delete();
-            loadAllProfiles();
-        }
-        return getProfileList();
+    public void removeProfile(int profileIndex) {
+        Preferences saveFile = getSaveFileBy(profileIndex);
+        saveFile.clear();
+        saveFile.flush();
+    }
+
+    public Array<String> getVisualProfileArray() {
+        String[] visualListOfProfiles = IntStream.range(0, SAVE_FILES.size())
+                                                 .mapToObj(this::getVisualOf)
+                                                 .toArray(String[]::new);
+        return new Array<>(visualListOfProfiles);
     }
 
     private void writeProfileToDisk() {
-        deleteProfileFromDisk();
-        String fileData = json.prettyPrint(json.toJson(profileProperties));
-        String fullFilename = profileName + SAVEGAME_SUFFIX;
-        FileHandle file = Gdx.files.local(SAVE_PATH + fullFilename);
-        file.writeString(fileData, false);
-        profiles.put(profileName, file);
+        var formatter = DateTimeFormatter.ofPattern(DATE_PATTERN);
+        setProperty(PROFILE_SAVE_DATE, formatter.format(LocalDateTime.now()));
+        String saveStateJsonString = json.prettyPrint(json.toJson(saveStateProperties));
+        Preferences saveFile = Gdx.app.getPreferences(currentSaveFileName);
+        saveFile.putString(SAVE_STATE_KEY, saveStateJsonString);
+        saveFile.flush();
     }
 
-    private void deleteProfileFromDisk() {
-        Arrays.stream(Gdx.files.local(SAVE_PATH).list(SAVEGAME_SUFFIX))
-              .filter(fileHandle -> fileHandle.nameWithoutExtension().equalsIgnoreCase(profileName))
-              .findFirst()
-              .ifPresent(FileHandle::delete);
+    private String getVisualOf(int profileIndex) {
+        Preferences saveFile = getSaveFileBy(profileIndex);
+        if (saveFile.contains(SAVE_STATE_KEY)) {
+            ObjectMap<String, Object> objectMap = getSaveStateProperties(saveFile);
+            return objectMap.get(PROFILE_ID) + " [" + objectMap.get(PROFILE_SAVE_DATE) + "]";
+        } else {
+            return (profileIndex + 1) + " [...]";
+        }
+    }
+
+    private Preferences getSaveFileBy(int profileIndex) {
+        String saveFileName = SAVE_FILES.get(profileIndex);
+        return Gdx.app.getPreferences(saveFileName);
+    }
+
+    private ObjectMap<String, Object> getSaveStateProperties(Preferences saveFile) {
+        String saveStateJsonString = saveFile.getString(SAVE_STATE_KEY);
+        return json.fromJson(ObjectMap.class, saveStateJsonString);
     }
 
 }

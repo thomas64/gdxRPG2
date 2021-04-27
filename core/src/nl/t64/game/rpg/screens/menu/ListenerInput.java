@@ -37,10 +37,6 @@ class ListenerInput {
         this.definedIndex = definedIndex;
     }
 
-    void updateNumberOfItems(int listItemsSize) {
-        numberOfItems = listItemsSize;
-    }
-
     void updateSelectedIndex(int newSelectedIndex) {
         selectedIndex = newSelectedIndex;
     }

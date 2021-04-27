@@ -20,7 +20,8 @@ public class MenuLoad extends MenuScreen {
 
     private static final String SPRITE_TRANSPARENT = "sprites/transparent.png";
 
-    private static final String TITLE_LABEL = "Select your profile:";
+    private static final String TITLE_LABEL = "Select profile";
+    private static final String MENU_ITEM_START = "Start";
     private static final String MENU_ITEM_LOAD = "Load";
     private static final String MENU_ITEM_DELETE = "Delete";
     private static final String MENU_ITEM_BACK = "Back";
@@ -30,7 +31,6 @@ public class MenuLoad extends MenuScreen {
                                                  + System.lineSeparator() + "Are you sure?";
 
     private static final float TITLE_SPACE_BOTTOM = 10f;
-    private static final float SCROLL_PANE_HEIGHT = 220f;
     private static final float BUTTON_SPACE_RIGHT = 20f;
 
     private static final int NUMBER_OF_ITEMS = 3;
@@ -48,14 +48,13 @@ public class MenuLoad extends MenuScreen {
     private ListenerKeyVertical listenerKeyVertical;
     private ListenerKeyHorizontal listenerKeyHorizontal;
 
-    private int selectedListIndex;
+    private int selectedListIndex = 0;
 
     private boolean isBgmFading = false;
 
     @Override
     void setupScreen() {
-        Utils.getProfileManager().loadAllProfiles();
-        profiles = Utils.getProfileManager().getProfileList();
+        profiles = Utils.getProfileManager().getVisualProfileArray();
 
         setFontColor();
         createTables();
@@ -69,7 +68,6 @@ public class MenuLoad extends MenuScreen {
         stage.setScrollFocus(scrollPane);
         stage.addAction(Actions.alpha(1f));
 
-        selectedListIndex = 0;
         selectedMenuIndex = 0;
         setCurrentTextButtonToSelected();
     }
@@ -97,10 +95,6 @@ public class MenuLoad extends MenuScreen {
         scrollPane.scrollTo(0, selectedY, 0, 0, false, true);
     }
 
-    private void updateListIndex(Integer newIndex) {
-        listItems.setSelectedIndex(newIndex);
-    }
-
     private void selectMenuItem() {
         switch (selectedMenuIndex) {
             case 0 -> processLoadButton();
@@ -111,24 +105,39 @@ public class MenuLoad extends MenuScreen {
     }
 
     private void processLoadButton() {
-        Object profileName = listItems.getSelected();
-        if (profileName != null) {
-            if (startScreen.equals(ScreenType.MENU_PAUSE)) {
-                progressLostDialog.show(stage);
-            } else {
-                fadeBeforeOpenWorldScreen();
-            }
+        if (Utils.getProfileManager().doesProfileExist(selectedListIndex)) {
+            loadGame();
+        } else if (startScreen.equals(ScreenType.MENU_MAIN)) {
+            newGame();
+        } else {
+            errorSound();
         }
     }
 
     private void processDeleteButton() {
-        Object profileName = listItems.getSelected();
-        if (profileName != null) {
+        if (Utils.getProfileManager().doesProfileExist(selectedListIndex)) {
             deleteFileDialog.show(stage);
         } else {
-            Utils.getAudioManager().handle(AudioCommand.SE_STOP, AudioEvent.SE_MENU_CONFIRM);
-            Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_ERROR);
+            errorSound();
         }
+    }
+
+    private void loadGame() {
+        if (startScreen.equals(ScreenType.MENU_PAUSE)) {
+            progressLostDialog.show(stage);
+        } else {
+            fadeBeforeOpenWorldScreen();
+        }
+    }
+
+    private void newGame() {
+        Utils.getProfileManager().setSelectedIndex(selectedListIndex);
+        processButton(ScreenType.MENU_LOAD, ScreenType.MENU_NEW);
+    }
+
+    private void errorSound() {
+        Utils.getAudioManager().handle(AudioCommand.SE_STOP, AudioEvent.SE_MENU_CONFIRM);
+        Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_ERROR);
     }
 
     private void fadeBeforeOpenWorldScreen() {
@@ -140,24 +149,18 @@ public class MenuLoad extends MenuScreen {
     }
 
     private void openWorldScreen() {
-        Object profileName = listItems.getSelected();
         Utils.getMapManager().disposeOldMaps();
         Utils.getScreenManager().setScreen(ScreenType.WORLD);
-        Utils.getProfileManager().loadProfile(profileName.toString());
+        Utils.getProfileManager().loadProfile(selectedListIndex);
     }
 
     private void deleteSaveFile() {
-        int selectedIndex = listItems.getSelectedIndex();
-        if (selectedIndex == profiles.size - 1) {
-            selectedIndex -= 1;
-        }
-        Object profileName = listItems.getSelected();
-        profiles = Utils.getProfileManager().removeProfile(profileName.toString());
+        Utils.getProfileManager().removeProfile(selectedListIndex);
+        profiles = Utils.getProfileManager().getVisualProfileArray();
         listItems.setItems(profiles);
         scrollPane.clearChildren();
         scrollPane.setActor(listItems);
-        updateListIndex(selectedIndex);
-        listenerKeyVertical.updateNumberOfItems(listItems.getItems().size);
+        listItems.setSelectedIndex(selectedListIndex);
     }
 
     private void createTables() {
@@ -176,13 +179,15 @@ public class MenuLoad extends MenuScreen {
 
         // actors
         var titleLabel = new Label(TITLE_LABEL, titleStyle);
-        var loadButton = new TextButton(MENU_ITEM_LOAD, new TextButton.TextButtonStyle(buttonStyle));
+        var loadButton = new TextButton(startScreen.equals(ScreenType.MENU_PAUSE) ? MENU_ITEM_LOAD : MENU_ITEM_START,
+                                        new TextButton.TextButtonStyle(buttonStyle));
         var deleteButton = new TextButton(MENU_ITEM_DELETE, new TextButton.TextButtonStyle(buttonStyle));
         var backButton = new TextButton(MENU_ITEM_BACK, new TextButton.TextButtonStyle(buttonStyle));
 
         listItems = new List<>(listStyle);
         listItems.setItems(profiles);
-        listItems.setAlignment(Align.center);
+        listItems.setAlignment(Align.right);
+        listItems.setSelectedIndex(selectedListIndex);
         scrollPane = new ScrollPane(listItems);
         scrollPane.setOverscroll(false, false);
         scrollPane.setFadeScrollBars(false);
@@ -193,9 +198,8 @@ public class MenuLoad extends MenuScreen {
         topTable = new Table();
         topTable.setFillParent(true);
         topTable.top().padTop(PAD_TOP).right().padRight(PAD_RIGHT);
-        topTable.add(titleLabel).spaceBottom(TITLE_SPACE_BOTTOM).row();
-        topTable.add(scrollPane);
-        topTable.getCell(scrollPane).height(SCROLL_PANE_HEIGHT);
+        topTable.add(titleLabel).right().spaceBottom(TITLE_SPACE_BOTTOM).row();
+        topTable.add(scrollPane).right();
 
         // bottom table
         table = new Table();
@@ -207,7 +211,7 @@ public class MenuLoad extends MenuScreen {
     }
 
     private void applyListeners() {
-        listenerKeyVertical = new ListenerKeyVertical(this::updateListIndex, listItems.getItems().size);
+        listenerKeyVertical = new ListenerKeyVertical(newIndex -> listItems.setSelectedIndex(newIndex), listItems.getItems().size);
         listenerKeyHorizontal = new ListenerKeyHorizontal(super::updateMenuIndex, NUMBER_OF_ITEMS);
         var listenerKeyConfirm = new ListenerKeyConfirm(this::selectMenuItem);
         var listenerKeyDelete = new ListenerKeyDelete(super::updateMenuIndex, this::selectMenuItem, DELETE_INDEX);

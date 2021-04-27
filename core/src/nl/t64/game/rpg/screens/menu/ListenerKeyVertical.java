@@ -15,10 +15,6 @@ class ListenerKeyVertical extends InputListener {
         this.listenerInput = new ListenerInput(updateIndexFunction, numberOfItems);
     }
 
-    void updateNumberOfItems(int listItemsSize) {
-        listenerInput.updateNumberOfItems(listItemsSize);
-    }
-
     void updateSelectedIndex(int newSelectedIndex) {
         listenerInput.updateSelectedIndex(newSelectedIndex);
     }

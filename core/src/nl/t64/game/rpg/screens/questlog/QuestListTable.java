@@ -44,7 +44,7 @@ class QuestListTable {
         listStyle.selection = new SpriteDrawable(spriteTransparent);
 
         List<QuestGraph> newList = new List<>(listStyle);
-        newList.setItems(Utils.getGameData().getQuests().getAllKnownQuests().toArray(new QuestGraph[0]));
+        newList.setItems(Utils.getGameData().getQuests().getAllKnownQuests().toArray(QuestGraph[]::new));
         newList.setSelectedIndex(-1);
         return newList;
     }

@@ -13,9 +13,9 @@ public class Engine extends Game {
 
     private static float runTime = 0f;
 
-    PreferenceManager preferenceManager;
+    ProfileManager profileManager;
+    private PreferenceManager preferenceManager;
     final ResourceManager resourceManager;
-    final ProfileManager profileManager;
     final GameData gameData;
     final ScreenManager screenManager;
     final AudioManager audioManager;
@@ -25,7 +25,6 @@ public class Engine extends Game {
 
     public Engine() {
         this.resourceManager = new ResourceManager();
-        this.profileManager = new ProfileManager();
         this.gameData = new GameData();
         this.screenManager = new ScreenManager();
         this.audioManager = new AudioManager();
@@ -51,6 +50,8 @@ public class Engine extends Game {
 
     @Override
     public void create() {
+        profileManager = new ProfileManager();
+
         brokerManager.profileObservers.addObserver(gameData);
         brokerManager.profileObservers.addObserver(mapManager);
 

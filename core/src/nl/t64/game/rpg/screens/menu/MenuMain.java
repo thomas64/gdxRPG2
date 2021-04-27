@@ -17,13 +17,12 @@ public class MenuMain extends MenuScreen {
 
     private static final String BACKGROUND = "sprites/titlescreen.jpg";
 
-    private static final String MENU_ITEM_NEW_GAME = "New Game";
-    private static final String MENU_ITEM_LOAD_GAME = "Load Game";
+    private static final String MENU_ITEM_START = "Start";
     private static final String MENU_ITEM_SETTINGS = "Settings";
     private static final String MENU_ITEM_CREDITS = "Credits";
     private static final String MENU_ITEM_EXIT = "Exit";
 
-    private static final int NUMBER_OF_ITEMS = 5;
+    private static final int NUMBER_OF_ITEMS = 4;
 
     private ListenerKeyVertical listenerKeyVertical;
 
@@ -55,11 +54,10 @@ public class MenuMain extends MenuScreen {
 
     private void selectMenuItem() {
         switch (selectedMenuIndex) {
-            case 0 -> processButton(ScreenType.MENU_MAIN, ScreenType.MENU_NEW);
-            case 1 -> processButton(ScreenType.MENU_MAIN, ScreenType.MENU_LOAD);
-            case 2 -> processButton(ScreenType.MENU_MAIN, ScreenType.MENU_SETTINGS);
-            case 3 -> processButton(ScreenType.MENU_MAIN, ScreenType.MENU_CREDITS);
-            case 4 -> processExitButton();
+            case 0 -> processButton(ScreenType.MENU_MAIN, ScreenType.MENU_LOAD);
+            case 1 -> processButton(ScreenType.MENU_MAIN, ScreenType.MENU_SETTINGS);
+            case 2 -> processButton(ScreenType.MENU_MAIN, ScreenType.MENU_CREDITS);
+            case 3 -> processExitButton();
             default -> throw new IllegalArgumentException("SelectedIndex not found.");
         }
     }
@@ -75,8 +73,7 @@ public class MenuMain extends MenuScreen {
         buttonStyle.fontColor = fontColor;
 
         // actors
-        var newGameButton = new TextButton(MENU_ITEM_NEW_GAME, new TextButton.TextButtonStyle(buttonStyle));
-        var loadGameButton = new TextButton(MENU_ITEM_LOAD_GAME, new TextButton.TextButtonStyle(buttonStyle));
+        var startButton = new TextButton(MENU_ITEM_START, new TextButton.TextButtonStyle(buttonStyle));
         var settingsButton = new TextButton(MENU_ITEM_SETTINGS, new TextButton.TextButtonStyle(buttonStyle));
         var creditsButton = new TextButton(MENU_ITEM_CREDITS, new TextButton.TextButtonStyle(buttonStyle));
         var exitButton = new TextButton(MENU_ITEM_EXIT, new TextButton.TextButtonStyle(buttonStyle));
@@ -86,8 +83,7 @@ public class MenuMain extends MenuScreen {
         newTable.setFillParent(true);
         newTable.top().padTop(PAD_TOP).right().padRight(PAD_RIGHT);
         newTable.defaults().right();
-        newTable.add(newGameButton).row();
-        newTable.add(loadGameButton).row();
+        newTable.add(startButton).row();
         newTable.add(settingsButton).row();
         newTable.add(creditsButton).row();
         newTable.add(exitButton);
