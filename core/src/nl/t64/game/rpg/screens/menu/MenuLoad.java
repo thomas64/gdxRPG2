@@ -41,9 +41,7 @@ public class MenuLoad extends MenuScreen {
 
     private Table topTable;
     private List<String> listItems;
-    private ScrollPane scrollPane;
-    private DialogQuestion progressLostDialog;
-    private DialogQuestion deleteFileDialog;
+    private VerticalGroup group;
 
     private ListenerKeyVertical listenerKeyVertical;
     private ListenerKeyHorizontal listenerKeyHorizontal;
@@ -51,48 +49,49 @@ public class MenuLoad extends MenuScreen {
     private int selectedListIndex = 0;
 
     private boolean isBgmFading = false;
+    private boolean isLoaded;
 
     @Override
     void setupScreen() {
-        profiles = Utils.getProfileManager().getVisualProfileArray();
+        isLoaded = false;
+        profiles = Utils.getProfileManager().getVisualLoadingArray();
 
         setFontColor();
         createTables();
-        progressLostDialog = new DialogQuestion(this::fadeBeforeOpenWorldScreen, LOAD_MESSAGE);
-        deleteFileDialog = new DialogQuestion(this::deleteSaveFile, DELETE_MESSAGE);
-        applyListeners();
+        createSomeListeners();
 
         stage.addActor(topTable);
         stage.addActor(table);
-        stage.setKeyboardFocus(scrollPane);
-        stage.setScrollFocus(scrollPane);
+        stage.setKeyboardFocus(group);
         stage.addAction(Actions.alpha(1f));
 
-        selectedMenuIndex = 0;
+        super.selectedMenuIndex = 0;
         setCurrentTextButtonToSelected();
+
+        new Thread(this::loadProfiles).start();
     }
 
     @Override
     public void render(float dt) {
         ScreenUtils.clear(Color.BLACK);
         stage.act(dt);
-        selectedListIndex = listItems.getSelectedIndex();
-        scrollScrollPane();
+        if (isLoaded) {
+            selectedListIndex = listItems.getSelectedIndex();
+        }
         listenerKeyVertical.updateSelectedIndex(selectedListIndex);
         listenerKeyHorizontal.updateSelectedIndex(selectedMenuIndex);
-        progressLostDialog.update(); // for updating the index in de listener.
-        deleteFileDialog.update();
         if (isBgmFading) {
             Utils.getAudioManager().fadeBgmBgs();
         }
         stage.draw();
     }
 
-    private void scrollScrollPane() {
-        float itemHeight = listItems.getItemHeight();
-        float listHeight = itemHeight * listItems.getItems().size;
-        float selectedY = listHeight - (itemHeight * (selectedListIndex + 1f));
-        scrollPane.scrollTo(0, selectedY, 0, 0, false, true);
+    private void loadProfiles() {
+        profiles = Utils.getProfileManager().getVisualProfileArray();
+        listItems.setItems(profiles);
+        listItems.setSelectedIndex(selectedListIndex);
+        applyAllListeners();
+        isLoaded = true;
     }
 
     private void selectMenuItem() {
@@ -116,7 +115,7 @@ public class MenuLoad extends MenuScreen {
 
     private void processDeleteButton() {
         if (Utils.getProfileManager().doesProfileExist(selectedListIndex)) {
-            deleteFileDialog.show(stage);
+            new DialogQuestion(this::deleteSaveFile, DELETE_MESSAGE).show(stage);
         } else {
             errorSound();
         }
@@ -124,7 +123,7 @@ public class MenuLoad extends MenuScreen {
 
     private void loadGame() {
         if (startScreen.equals(ScreenType.MENU_PAUSE)) {
-            progressLostDialog.show(stage);
+            new DialogQuestion(this::fadeBeforeOpenWorldScreen, LOAD_MESSAGE).show(stage);
         } else {
             fadeBeforeOpenWorldScreen();
         }
@@ -158,8 +157,6 @@ public class MenuLoad extends MenuScreen {
         Utils.getProfileManager().removeProfile(selectedListIndex);
         profiles = Utils.getProfileManager().getVisualProfileArray();
         listItems.setItems(profiles);
-        scrollPane.clearChildren();
-        scrollPane.setActor(listItems);
         listItems.setSelectedIndex(selectedListIndex);
     }
 
@@ -187,19 +184,15 @@ public class MenuLoad extends MenuScreen {
         listItems = new List<>(listStyle);
         listItems.setItems(profiles);
         listItems.setAlignment(Align.right);
-        listItems.setSelectedIndex(selectedListIndex);
-        scrollPane = new ScrollPane(listItems);
-        scrollPane.setOverscroll(false, false);
-        scrollPane.setFadeScrollBars(false);
-        scrollPane.setScrollingDisabled(true, false);
-        scrollPane.setScrollbarsOnTop(true);
+        group = new VerticalGroup();
+        group.addActor(listItems);
 
         // tables
         topTable = new Table();
         topTable.setFillParent(true);
         topTable.top().padTop(PAD_TOP).right().padRight(PAD_RIGHT);
         topTable.add(titleLabel).right().spaceBottom(TITLE_SPACE_BOTTOM).row();
-        topTable.add(scrollPane).right();
+        topTable.add(group).right();
 
         // bottom table
         table = new Table();
@@ -210,17 +203,20 @@ public class MenuLoad extends MenuScreen {
         table.add(backButton);
     }
 
-    private void applyListeners() {
+    private void createSomeListeners() {
         listenerKeyVertical = new ListenerKeyVertical(newIndex -> listItems.setSelectedIndex(newIndex), listItems.getItems().size);
         listenerKeyHorizontal = new ListenerKeyHorizontal(super::updateMenuIndex, NUMBER_OF_ITEMS);
+    }
+
+    private void applyAllListeners() {
         var listenerKeyConfirm = new ListenerKeyConfirm(this::selectMenuItem);
         var listenerKeyDelete = new ListenerKeyDelete(super::updateMenuIndex, this::selectMenuItem, DELETE_INDEX);
         var listenerKeyCancel = new ListenerKeyCancel(super::updateMenuIndex, this::selectMenuItem, EXIT_INDEX);
-        scrollPane.addListener(listenerKeyVertical);
-        scrollPane.addListener(listenerKeyHorizontal);
-        scrollPane.addListener(listenerKeyConfirm);
-        scrollPane.addListener(listenerKeyDelete);
-        scrollPane.addListener(listenerKeyCancel);
+        group.addListener(listenerKeyVertical);
+        group.addListener(listenerKeyHorizontal);
+        group.addListener(listenerKeyConfirm);
+        group.addListener(listenerKeyDelete);
+        group.addListener(listenerKeyCancel);
     }
 
 }

@@ -23,8 +23,6 @@ public class MenuPause extends MenuScreen {
     private static final String DIALOG_MESSAGE = "All progress after the last save will be lost."
                                                  + System.lineSeparator() + "Are you sure you want to exit?";
 
-    private DialogQuestion progressLostDialog;
-
     private ListenerKeyVertical listenerKeyVertical;
 
     public MenuPause() {
@@ -37,14 +35,13 @@ public class MenuPause extends MenuScreen {
         var menuPause = Utils.getScreenManager().getMenuScreen(ScreenType.MENU_PAUSE);
         menuPause.setBackground(Utils.createScreenshot(true));
         Utils.getScreenManager().setScreen(ScreenType.MENU_PAUSE);
-        menuPause.updateMenuIndex(0);
+        menuPause.updateMenuIndex(EXIT_INDEX);
     }
 
     @Override
     void setupScreen() {
         setFontColor();
         table = createTable();
-        progressLostDialog = new DialogQuestion(this::openMenuMain, DIALOG_MESSAGE);
         applyListeners();
         stage.addActor(table);
         stage.setKeyboardFocus(table);
@@ -57,7 +54,6 @@ public class MenuPause extends MenuScreen {
         stage.act(dt);
         Utils.getAudioManager().fadeBgmBgs();
         listenerKeyVertical.updateSelectedIndex(selectedMenuIndex);
-        progressLostDialog.update(); // for updating the index in de listener.
         stage.draw();
     }
 
@@ -76,7 +72,7 @@ public class MenuPause extends MenuScreen {
     }
 
     private void processMainMenuButton() {
-        progressLostDialog.show(stage);
+        new DialogQuestion(this::openMenuMain, DIALOG_MESSAGE).show(stage);
     }
 
     private void openMenuMain() {

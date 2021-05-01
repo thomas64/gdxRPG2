@@ -23,7 +23,10 @@ public class ProfileManager {
     private static final String SAVE3 = "save3.dat";
     private static final String SAVE4 = "save4.dat";
     private static final String SAVE5 = "save5.dat";
-    private static final List<String> SAVE_FILES = List.of(SAVE1, SAVE2, SAVE3, SAVE4, SAVE5);
+    private static final String SAVE6 = "save6.dat";
+    private static final String SAVE7 = "save7.dat";
+    private static final List<String> SAVE_FILES = List.of(SAVE1, SAVE2, SAVE3, SAVE4, SAVE5, SAVE6, SAVE7);
+    private static final String[] LOADING = new String[]{"", "", "Loading...", "", "", "", ""};
     private static final String SAVE_STATE_KEY = "saveState";
     private static final String PROFILE_ID = "id";
     private static final String PROFILE_SAVE_DATE = "saveDate";
@@ -75,6 +78,10 @@ public class ProfileManager {
         Preferences saveFile = getSaveFileBy(profileIndex);
         saveFile.clear();
         saveFile.flush();
+    }
+
+    public Array<String> getVisualLoadingArray() {
+        return new Array<>(LOADING);
     }
 
     public Array<String> getVisualProfileArray() {

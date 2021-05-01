@@ -40,8 +40,6 @@ class DialogQuestion {
     private final BitmapFont dialogFont;
     private final Dialog dialog;
 
-    private ListenerKeyHorizontal listenerKeyHorizontal;
-
     private int selectedIndex;
 
     DialogQuestion(Runnable yesFunction, String message) {
@@ -56,10 +54,6 @@ class DialogQuestion {
     void show(Stage stage) {
         dialog.show(stage);
         updateIndex(EXIT_INDEX);
-    }
-
-    void update() {
-        listenerKeyHorizontal.updateSelectedIndex(selectedIndex);
     }
 
     private void updateIndex(Integer newIndex) {
@@ -136,7 +130,7 @@ class DialogQuestion {
     }
 
     private void applyListeners() {
-        listenerKeyHorizontal = new ListenerKeyHorizontal(this::updateIndex, NUMBER_OF_ITEMS);
+        var listenerKeyHorizontal = new ListenerKeyHorizontal(this::updateIndex, NUMBER_OF_ITEMS);
         var listenerKeyConfirm = new ListenerKeyConfirm(this::selectDialogItem);
         var listenerKeyCancel = new ListenerKeyCancel(this::updateIndex, this::selectDialogItem, EXIT_INDEX);
         dialog.addListener(listenerKeyHorizontal);
