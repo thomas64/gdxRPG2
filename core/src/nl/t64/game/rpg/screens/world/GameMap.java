@@ -26,6 +26,7 @@ public class GameMap {
 
     private static final String SOUND_LAYER = "sound";
     private static final String EVENT_LAYER = "event";
+    private static final String CUTSCENE_LAYER = "cutscene";
     private static final String QUEST_LAYER = "quest";
     private static final String UPPER_TEXTURE_LAYER = "upper_texture";
     private static final String LOWER_TEXTURE_LAYER = "lower_texture";
@@ -68,6 +69,7 @@ public class GameMap {
     private final List<RectangleMapObject> sounds;
     private final List<GameMapBlocker> blockers;
     private final List<GameMapEvent> eventDiscovers;
+    private final List<GameMapCutscene> cutsceneDiscovers;
     private final List<GameMapQuestDiscoverObject> questDiscovers;
     private final List<GameMapQuestCheckObject> questCheckers;
     private final List<GameMapNote> notes;
@@ -102,6 +104,7 @@ public class GameMap {
         this.blockers = loader.loadLayer(COLLISION_LAYER, GameMapBlocker::new);
         this.lights = loader.loadLayer(LIGHTS_LAYER, GameMapLight::new);
         this.eventDiscovers = loader.equalsIgnoreCase(EVENT_LAYER, "discover", GameMapEvent::new);
+        this.cutsceneDiscovers = loader.equalsIgnoreCase(CUTSCENE_LAYER, "discover", GameMapCutscene::new);
 
         this.questBlockers = loader.equalsIgnoreCase(QUEST_LAYER, "blocker", GameMapQuestBlocker::new);
         this.questDiscovers = loader.equalsIgnoreCase(QUEST_LAYER, "discover", GameMapQuestDiscoverObject::new);
@@ -163,11 +166,11 @@ public class GameMap {
                || point.y < 0 || point.y >= getHeight();
     }
 
-    float getPixelWidth() {
+    public float getPixelWidth() {
         return getWidth() * Constant.HALF_TILE_SIZE;
     }
 
-    float getPixelHeight() {
+    public float getPixelHeight() {
         return getHeight() * Constant.HALF_TILE_SIZE;
     }
 
@@ -194,7 +197,8 @@ public class GameMap {
 
         shapeRenderer.setColor(Color.BLUE);
 
-        Stream.of(portals, spawnPoints, npcs, heroes, eventDiscovers, questDiscovers, questCheckers, notes)
+        Stream.of(portals, spawnPoints, npcs, heroes, eventDiscovers, cutsceneDiscovers, questDiscovers, questCheckers,
+                  notes)
               .flatMap(Collection::stream)
               .map(GameMapObject::getRectangle)
               .forEach(rect -> shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height));

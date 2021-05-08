@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class TransitionImage extends Image {
 
+    private static final float TEN_TIMES_FULL_HD = 10f;
+
     public TransitionImage() {
         this(Color.BLACK);
     }
@@ -26,6 +28,7 @@ public class TransitionImage extends Image {
         pixmap.dispose();
         super.clearListeners();
         super.setTouchable(Touchable.disabled);
+        super.scaleBy(TEN_TIMES_FULL_HD);
     }
 
 }

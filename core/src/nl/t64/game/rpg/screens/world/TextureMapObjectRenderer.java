@@ -19,7 +19,7 @@ import nl.t64.game.rpg.screens.world.mapobjects.GameMapQuestTexture;
 import java.util.List;
 
 
-class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
+public class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
 
     private static final int[] UNDER_LAYERS = new int[]{0, 1, 2, 3, 4, 5};
     private static final int[] OVER_LAYERS = new int[]{6, 7, 8};
@@ -30,7 +30,7 @@ class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
     private final Camera camera;
     private float scroller = 0f;
 
-    TextureMapObjectRenderer(Camera camera) {
+    public TextureMapObjectRenderer(Camera camera) {
         super(null);
         this.frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         this.camera = camera;
@@ -40,7 +40,7 @@ class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
         renderWithoutPlayerLight(() -> {});
     }
 
-    void renderAll(Vector2 playerPosition, Runnable renderEntities) {
+    public void renderAll(Vector2 playerPosition, Runnable renderEntities) {
         Utils.getMapManager().getLightmapPlayer()
              .ifPresentOrElse(sprite -> renderWithPlayerLight(playerPosition, sprite, renderEntities),
                               () -> renderWithoutPlayerLight(renderEntities));
@@ -60,7 +60,7 @@ class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
         renderMapLayers(renderEntities);
     }
 
-    void updateCamera() {
+    public void updateCamera() {
         setView(camera);
     }
 
@@ -87,7 +87,7 @@ class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
 
     private void renderOtherMapLights() {
         Texture darkness = Utils.createLightmap(LIGHTMAP_ID);
-        for (GameMapLight light : Utils.getMapManager().currentMap.lights) {
+        for (GameMapLight light : Utils.getMapManager().getCurrentMap().lights) {
             if (light.getId().equals("blue")) {
                 batch.setColor(Color.ROYAL);
             }

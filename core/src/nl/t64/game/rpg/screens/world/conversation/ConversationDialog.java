@@ -24,6 +24,8 @@ import nl.t64.game.rpg.components.party.PartyContainer;
 import nl.t64.game.rpg.components.quest.QuestGraph;
 import nl.t64.game.rpg.constants.Constant;
 
+import java.util.Optional;
+
 
 public class ConversationDialog {
 
@@ -52,6 +54,7 @@ public class ConversationDialog {
 
     private String conversationId;
     private String faceId;
+    private Image faceImage;
     private ConversationGraph graph;
 
     public ConversationDialog() {
@@ -90,6 +93,10 @@ public class ConversationDialog {
     public void update(float dt) {
         stage.act(dt);
         stage.draw();
+    }
+
+    public void loadConversation(String conversationId) {
+        loadConversation(conversationId, null);
     }
 
     public void loadConversation(String conversationId, String entityId) {
@@ -156,7 +163,7 @@ public class ConversationDialog {
         label.setAlignment(Align.left);
         var mainTable = new Table();
         mainTable.left();
-        Image faceImage = Utils.getFaceImage(faceId);
+        faceImage = getFaceImage();
         mainTable.add(faceImage).width(Constant.FACE_SIZE).padLeft(PAD * 2f);
 
         var textTable = new Table();
@@ -169,6 +176,12 @@ public class ConversationDialog {
         mainTable.add(textTable);
         dialog.getContentTable().clear();
         dialog.getContentTable().add(mainTable);
+    }
+
+    private Image getFaceImage() {
+        return Optional.ofNullable(faceId)
+                       .map(Utils::getFaceImage)
+                       .orElseGet(Image::new);
     }
 
     private void fillDialogForNote() {
@@ -209,8 +222,18 @@ public class ConversationDialog {
 
     private void populateConversationDialog(String phraseId) {
         graph.setCurrentPhraseId(phraseId);
+        populateFace();
         populatePhrase();
         populateChoices();
+    }
+
+    private void populateFace() {
+        if (!graph.getCurrentFace().isBlank()) {
+            Table mainTable = (Table) dialog.getContentTable().getChild(0);
+            Cell<Image> faceCell = mainTable.getCell(faceImage);
+            faceImage = Utils.getFaceImage(graph.getCurrentFace());
+            faceCell.setActor(faceImage);
+        }
     }
 
     private void populatePhrase() {

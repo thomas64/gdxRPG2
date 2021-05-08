@@ -149,8 +149,14 @@ public class MenuLoad extends MenuScreen {
 
     private void openWorldScreen() {
         Utils.getMapManager().disposeOldMaps();
-        Utils.getScreenManager().setScreen(ScreenType.WORLD);
+        Utils.getScreenManager().getWorldScreen();  // just load the constructor.
         Utils.getProfileManager().loadProfile(selectedListIndex);
+        if (Utils.getGameData().getCutscenes().isPlayed("scene001")) {
+            Utils.getScreenManager().setScreen(ScreenType.WORLD);
+        } else {
+            Utils.getGameData().getCutscenes().setPlayed("scene001");
+            Utils.getScreenManager().setScreen(ScreenType.SCENE001);
+        }
     }
 
     private void deleteSaveFile() {

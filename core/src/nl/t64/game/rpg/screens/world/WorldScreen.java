@@ -51,6 +51,7 @@ public class WorldScreen implements Screen,
     private static boolean showObjects = false;
     private static boolean showDebug = false;
 
+    private GameState previousGameState;
     private GameState gameState;
     private final Stage stage;
     private final Camera camera;
@@ -185,7 +186,7 @@ public class WorldScreen implements Screen,
     public void onNotifyLootTaken() {
         lootList.forEach(observer -> Utils.getBrokerManager().actionObservers.removeObserver(observer));
         lootList.forEach(observer -> Utils.getBrokerManager().blockObservers.removeObserver(observer));
-        lootList = new LootLoader(Utils.getMapManager().currentMap).createLoot();
+        lootList = new LootLoader(Utils.getMapManager().getCurrentMap()).createLoot();
     }
 
     @Override
@@ -350,10 +351,10 @@ public class WorldScreen implements Screen,
         } else {
             endPoint = partyMembers.get(index - 1).getPositionInGrid();
         }
-        return Utils.getMapManager().currentMap.tiledGraph.findPath(startPoint, endPoint);
+        return Utils.getMapManager().getCurrentMap().tiledGraph.findPath(startPoint, endPoint);
     }
 
-    private void doBeforeLoadScreen() {
+    public void doBeforeLoadScreen() {
         player.resetInput();
         render(0f);
     }
@@ -396,16 +397,18 @@ public class WorldScreen implements Screen,
 
     @Override
     public void pause() {
+        previousGameState = gameState;
         gameState = GameState.PAUSED;
     }
 
     @Override
     public void resume() {
-        gameState = GameState.RUNNING;
+        gameState = previousGameState;
     }
 
     @Override
     public void hide() {
+        previousGameState = gameState;
         gameState = GameState.PAUSED;
         Gdx.input.setInputProcessor(null);
         Utils.setGamepadInputProcessor(null);
@@ -447,8 +450,8 @@ public class WorldScreen implements Screen,
             shapeRenderer.setColor(Color.DARK_GRAY);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
-            float mapPixelWidth = Utils.getMapManager().currentMap.getPixelWidth();
-            float mapPixelHeight = Utils.getMapManager().currentMap.getPixelHeight();
+            float mapPixelWidth = Utils.getMapManager().getCurrentMap().getPixelWidth();
+            float mapPixelHeight = Utils.getMapManager().getCurrentMap().getPixelHeight();
             for (float x = 0; x < mapPixelWidth; x = x + Constant.TILE_SIZE) {
                 shapeRenderer.line(x, 0, x, mapPixelHeight);
             }
@@ -468,7 +471,7 @@ public class WorldScreen implements Screen,
             lootList.forEach(loot -> loot.debug(shapeRenderer));
             npcEntities.forEach(npcEntity -> npcEntity.debug(shapeRenderer));
             partyMembers.forEach(partyMember -> partyMember.debug(shapeRenderer));
-            Utils.getMapManager().currentMap.debug(shapeRenderer);
+            Utils.getMapManager().getCurrentMap().debug(shapeRenderer);
             shapeRenderer.end();
         }
     }

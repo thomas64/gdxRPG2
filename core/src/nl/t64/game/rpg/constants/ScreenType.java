@@ -12,6 +12,7 @@ import nl.t64.game.rpg.screens.menu.*;
 import nl.t64.game.rpg.screens.questlog.QuestLogScreen;
 import nl.t64.game.rpg.screens.shop.ShopScreen;
 import nl.t64.game.rpg.screens.world.WorldScreen;
+import nl.t64.game.rpg.screens.world.cutscene.Scene001;
 
 
 @AllArgsConstructor
@@ -31,7 +32,9 @@ public enum ScreenType {
     SHOP(ShopScreen.class),
     FIND(FindScreen.class),
     REWARD(RewardScreen.class),
-    RECEIVE(ReceiveScreen.class);
+    RECEIVE(ReceiveScreen.class),
+
+    SCENE001(Scene001.class);
 
     @Getter
     private final Class<? extends Screen> screenClass;

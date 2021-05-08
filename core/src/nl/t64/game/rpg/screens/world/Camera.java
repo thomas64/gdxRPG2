@@ -5,19 +5,23 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import lombok.Getter;
 import nl.t64.game.rpg.sfx.ShakeCamera;
 
 
-class Camera extends OrthographicCamera {
+public class Camera extends OrthographicCamera {
 
     private final ShakeCamera shakeCam;
+    @Getter
+    private final Viewport viewport;
     private float mapWidth;
     private float mapHeight;
 
-    Camera() {
+    public Camera() {
         this.shakeCam = new ShakeCamera();
-        var viewport = new ScreenViewport(this);
-        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        this.viewport = new ScreenViewport(this);
+        this.viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.reset();
     }
 
@@ -40,6 +44,10 @@ class Camera extends OrthographicCamera {
         shakeCam.startShaking();
     }
 
+    public void setPosition(float x, float y) {
+        setPosition(new Vector2(x, y));
+    }
+
     void setPosition(Vector2 playerPosition) {
         playerPosition = getPositionOnMapEdges(playerPosition);
         if (shakeCam.isShaking()) {
@@ -49,7 +57,7 @@ class Camera extends OrthographicCamera {
         update();
     }
 
-    void setNewMapSize(float mapWidth, float mapHeight) {
+    public void setNewMapSize(float mapWidth, float mapHeight) {
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
     }

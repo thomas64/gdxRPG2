@@ -1,0 +1,17 @@
+{
+  "cutscene01_1": {
+    "phrases": {
+      "1": {"text": ["Hi there!"]},
+      "2": {"text": ["Welcome to this game."]},
+      "3": {"text": ["Now I have to go very quickly!"], "choices": [{"conversationCommand": "EXIT_CONVERSATION"}]}
+    }
+  },
+  "cutscene01_2": {
+    "phrases": {
+      "1": {"face": "luana", "text": ["Hi there!"]},
+      "2": {"face": "luana", "text": ["Please let me through! I'm in such a hurry!"]},
+      "3": {"face": "soldier01", "text": ["No."]},
+      "4": {"face": "luana", "text": ["Aw man!"], "choices": [{"conversationCommand": "EXIT_CONVERSATION"}]}
+    }
+  }
+}

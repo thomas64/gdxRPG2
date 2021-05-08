@@ -8,10 +8,12 @@ import java.util.List;
 @Getter
 public class ConversationPhrase {
 
+    private String face;
     private List<String> text;
     private List<ConversationChoice> choices;
 
     private ConversationPhrase() {
+        this.face = "";
         this.text = null;   // mandatory in Json file
         this.choices = List.of();
     }

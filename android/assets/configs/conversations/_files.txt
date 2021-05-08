@@ -1,3 +1,4 @@
+cutscene01.json
 default.json
 duilio01.json
 elias01.json

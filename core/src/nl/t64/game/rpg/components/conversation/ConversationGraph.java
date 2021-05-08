@@ -20,6 +20,10 @@ public class ConversationGraph {
         this.currentPhraseId = DEFAULT_STARTING_PHRASE_ID;
     }
 
+    public String getCurrentFace() {
+        return phrases.get(currentPhraseId).getFace();
+    }
+
     public List<String> getCurrentPhrase() {
         return phrases.get(currentPhraseId).getText();
     }

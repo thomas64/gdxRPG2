@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
 
@@ -107,6 +108,16 @@ abstract class GraphicsComponent implements Component {
         walkWestAnimation = new Animation<>(frameDuration, walkWestFrames, Animation.PlayMode.LOOP);
         walkEastAnimation = new Animation<>(frameDuration, walkEastFrames, Animation.PlayMode.LOOP);
         walkNorthAnimation = new Animation<>(frameDuration, walkNorthFrames, Animation.PlayMode.LOOP);
+    }
+
+    Animation<TextureRegion> getAnimation() {
+        return switch (direction) {
+            case NORTH -> walkNorthAnimation;
+            case SOUTH -> walkSouthAnimation;
+            case WEST -> walkWestAnimation;
+            case EAST -> walkEastAnimation;
+            case NONE -> throw new GdxRuntimeException("No animation for direction NONE.");
+        };
     }
 
 }

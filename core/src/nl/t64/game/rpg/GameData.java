@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import nl.t64.game.rpg.components.conversation.ConversationContainer;
 import nl.t64.game.rpg.components.conversation.PhraseIdContainer;
+import nl.t64.game.rpg.components.cutscene.CutsceneContainer;
 import nl.t64.game.rpg.components.door.DoorContainer;
 import nl.t64.game.rpg.components.event.EventContainer;
 import nl.t64.game.rpg.components.loot.LootContainer;
@@ -24,6 +25,7 @@ public class GameData implements ProfileObserver {
     private EventContainer events;
     private LootContainer loot;
     private DoorContainer doors;
+    private CutsceneContainer cutscenes;
     @Setter
     private boolean isTooltipEnabled;
     @Setter
@@ -39,6 +41,7 @@ public class GameData implements ProfileObserver {
         events = new EventContainer();
         loot = new LootContainer();
         doors = new DoorContainer();
+        cutscenes = new CutsceneContainer();
         isTooltipEnabled = true;
         isComparingEnabled = true;
         addFirstHeroToParty();
@@ -56,6 +59,7 @@ public class GameData implements ProfileObserver {
         profileManager.setProperty("events", events);
         profileManager.setProperty("loot", loot);
         profileManager.setProperty("doors", doors);
+        profileManager.setProperty("cutscenes", cutscenes);
         profileManager.setProperty("isTooltipEnabled", isTooltipEnabled);
         profileManager.setProperty("isComparingEnabled", isComparingEnabled);
     }
@@ -72,6 +76,7 @@ public class GameData implements ProfileObserver {
         events = profileManager.getProperty("events", EventContainer.class);
         loot = profileManager.getProperty("loot", LootContainer.class);
         doors = profileManager.getProperty("doors", DoorContainer.class);
+        cutscenes = profileManager.getProperty("cutscenes", CutsceneContainer.class);
         isTooltipEnabled = profileManager.getProperty("isTooltipEnabled", Boolean.class);
         isComparingEnabled = profileManager.getProperty("isComparingEnabled", Boolean.class);
     }

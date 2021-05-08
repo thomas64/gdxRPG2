@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="96" height="78" tilewidth="24" tileheight="24" infinite="0" nextlayerid="53" nextobjectid="344">
+<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="96" height="78" tilewidth="24" tileheight="24" infinite="0" nextlayerid="54" nextobjectid="345">
  <properties>
   <property name="bgm" value="bgm_town"/>
   <property name="lightmap_camera" value="sunlight"/>
@@ -573,5 +573,8 @@
     <property name="task" value="2"/>
    </properties>
   </object>
+ </objectgroup>
+ <objectgroup color="#ff00ff" id="53" name="cutscene">
+  <object id="344" name="discover" type="scene001" x="1968" y="264" width="48" height="24"/>
  </objectgroup>
 </map>

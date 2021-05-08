@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
+import lombok.Getter;
 import nl.t64.game.rpg.ProfileManager;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioCommand;
@@ -28,7 +29,8 @@ public class MapManager implements ProfileObserver {
     private static final String BGS_PROPERTY = "bgs";
     private static final String DEFAULT_BG = "NONE";
 
-    GameMap currentMap;
+    @Getter
+    private GameMap currentMap;
     private String nextMapTitle;
     private FogOfWar fogOfWar;
     private float timer = 0;
@@ -57,6 +59,12 @@ public class MapManager implements ProfileObserver {
         Utils.getBrokerManager().mapObservers.notifyMapChanged(currentMap);
     }
 
+    public void loadMapAfterCutscene(String mapTitle, String cutsceneId) {
+        loadMap(mapTitle);
+        currentMap.setPlayerSpawnLocationForNewLoad(cutsceneId);
+        Utils.getBrokerManager().mapObservers.notifyMapChanged(currentMap);
+    }
+
     public List<Sprite> getLightmapCamera(Camera camera) {
         final float cameraWidth = camera.viewportWidth;
         final float cameraHeight = camera.viewportHeight;
@@ -77,6 +85,10 @@ public class MapManager implements ProfileObserver {
             lightmap.add(sprite);
         }
         return lightmap;
+    }
+
+    public TiledMap getTiledMap() {
+        return currentMap.tiledMap;
     }
 
     public Sprite getLightmapMap() {
@@ -111,6 +123,10 @@ public class MapManager implements ProfileObserver {
         currentMap.questBlockers.forEach(GameMapQuestBlocker::update);
         currentMap.upperTextures.forEach(GameMapQuestTexture::update);
         currentMap.lowerTextures.forEach(GameMapQuestTexture::update);
+    }
+
+    public AudioEvent getGroundSound(float x, float y) {
+        return getGroundSound(new Vector2(x, y));
     }
 
     public AudioEvent getGroundSound(Vector2 playerFeetPosition) {
@@ -158,7 +174,7 @@ public class MapManager implements ProfileObserver {
         Utils.getAudioManager().possibleBgsFade(currentMap.bgs, getBgsOfMap(getTiledMap(nextMapTitle)));
     }
 
-    private void loadMap(String mapTitle) {
+    public void loadMap(String mapTitle) {
         AudioEvent prevBgm = Optional.ofNullable(currentMap).map(map -> map.bgm).orElse(AudioEvent.NONE);
         List<AudioEvent> prevBgs = Optional.ofNullable(currentMap).map(map -> map.bgs).orElse(List.of(AudioEvent.NONE));
         disposeOldMaps();
