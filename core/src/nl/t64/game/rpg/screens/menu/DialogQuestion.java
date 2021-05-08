@@ -131,6 +131,7 @@ class DialogQuestion {
 
     private void applyListeners() {
         var listenerKeyHorizontal = new ListenerKeyHorizontal(this::updateIndex, NUMBER_OF_ITEMS);
+        listenerKeyHorizontal.updateSelectedIndex(EXIT_INDEX);
         var listenerKeyConfirm = new ListenerKeyConfirm(this::selectDialogItem);
         var listenerKeyCancel = new ListenerKeyCancel(this::updateIndex, this::selectDialogItem, EXIT_INDEX);
         dialog.addListener(listenerKeyHorizontal);
