@@ -89,11 +89,11 @@ public class Camera extends OrthographicCamera {
         return vSpace;
     }
 
-    private float getZoomedCameraHeight() {
+    public float getZoomedCameraHeight() {
         return viewportHeight * zoom;
     }
 
-    private float getZoomedCameraWidth() {
+    public float getZoomedCameraWidth() {
         return viewportWidth * zoom;
     }
 

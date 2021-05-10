@@ -21,6 +21,8 @@ import java.util.stream.StreamSupport;
 
 record GameMapLayerLoader(TiledMap tiledMap) {
 
+    private static final int BACKGROUND_REGION_MULTIPLIER = 2;
+    private static final String PARALLAX_BACKGROUND = "parallax_background";
     private static final String LIGHTMAP_CAMERA_PROPERTY = "lightmap_camera";
     private static final String LIGHTMAP_MAP_PROPERTY = "lightmap_map";
     private static final String LIGHTMAP_PLAYER_PROPERTY = "lightmap_player";
@@ -57,6 +59,15 @@ record GameMapLayerLoader(TiledMap tiledMap) {
         return getMapLayer(layerName)
                 .map(mapLayer -> createTextureObjectsList(mapLayer, mapper))
                 .orElseGet(List::of);
+    }
+
+    TextureRegion loadParallaxBackground() {
+        String id = tiledMap.getProperties().get(PARALLAX_BACKGROUND, DEFAULT_LIGHTMAP, String.class);
+        Texture texture = Utils.createLightmap(id);
+        texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+        var region = new TextureRegion(texture);
+        region.setRegionWidth(texture.getWidth() * BACKGROUND_REGION_MULTIPLIER);
+        return region;
     }
 
     List<Texture> loadLightmapCamera() {

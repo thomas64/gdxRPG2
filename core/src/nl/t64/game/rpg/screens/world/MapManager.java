@@ -1,6 +1,5 @@
 package nl.t64.game.rpg.screens.world;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -15,7 +14,6 @@ import nl.t64.game.rpg.screens.world.entity.Direction;
 import nl.t64.game.rpg.screens.world.mapobjects.*;
 import nl.t64.game.rpg.subjects.ProfileObserver;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -38,10 +36,8 @@ public class MapManager implements ProfileObserver {
     @Override
     public void onNotifyCreateProfile(ProfileManager profileManager) {
         fogOfWar = new FogOfWar();
-        loadMap(Constant.STARTING_MAP);
-        currentMap.setPlayerSpawnLocationForNewLoad(Constant.STARTING_MAP);
+        currentMap = new GameMap(Constant.STARTING_MAP);
         onNotifySaveProfile(profileManager);
-        Utils.getBrokerManager().mapObservers.notifyMapChanged(currentMap);
     }
 
     @Override
@@ -65,6 +61,18 @@ public class MapManager implements ProfileObserver {
         Utils.getBrokerManager().mapObservers.notifyMapChanged(currentMap);
     }
 
+    public Sprite getParallaxBackground(Camera camera) {
+        final float cameraWidth = camera.getZoomedCameraWidth();
+        final float cameraHeight = camera.getZoomedCameraHeight();
+        final float halfWidth = cameraWidth / 2f;
+        final float halfHeight = cameraHeight / 2f;
+
+        var sprite = new Sprite(currentMap.parallaxBackground);
+        sprite.setSize(cameraWidth, cameraHeight);
+        sprite.setPosition(-halfWidth, -halfHeight);
+        return sprite;
+    }
+
     public List<Sprite> getLightmapCamera(Camera camera) {
         final float cameraWidth = camera.viewportWidth;
         final float cameraHeight = camera.viewportHeight;
@@ -77,14 +85,11 @@ public class MapManager implements ProfileObserver {
         final float quarterWidth = minWidth * (camera.zoom / 2f);
         final float quarterHeight = minHeight * (camera.zoom / 2f);
 
-        List<Sprite> lightmap = new ArrayList<>();
-        for (Texture texture : currentMap.lightmapCamera) {
-            var sprite = new Sprite(texture);
-            sprite.setSize(halfWidth, halfHeight);
-            sprite.setPosition(-quarterWidth, -quarterHeight);
-            lightmap.add(sprite);
-        }
-        return lightmap;
+        return currentMap.lightmapCamera.stream()
+                                        .map(Sprite::new)
+                                        .peek(sprite -> sprite.setSize(halfWidth, halfHeight))
+                                        .peek(sprite -> sprite.setPosition(-quarterWidth, -quarterHeight))
+                                        .toList();
     }
 
     public TiledMap getTiledMap() {

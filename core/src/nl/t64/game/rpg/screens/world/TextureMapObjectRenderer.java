@@ -28,7 +28,8 @@ public class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
 
     private final FrameBuffer frameBuffer;
     private final Camera camera;
-    private float scroller = 0f;
+    private float scrollerX = 0f;
+    private float scrollerY = 0f;
 
     public TextureMapObjectRenderer(Camera camera) {
         super(null);
@@ -101,6 +102,8 @@ public class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
     private void renderMapLayers(Runnable renderEntities) {
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
+        renderBackground();
+        batch.setProjectionMatrix(camera.combined);
         render(UNDER_LAYERS);
         batch.begin();
         renderTextures(Utils.getMapManager().getLowerMapTextures());
@@ -124,6 +127,13 @@ public class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
                    object.getY());
     }
 
+    private void renderBackground() {
+        batch.begin();
+        batch.setProjectionMatrix(camera.projection);
+        Utils.getMapManager().getParallaxBackground(camera).draw(batch);
+        batch.end();
+    }
+
     private void renderLightmap() {
         batch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE);
 
@@ -143,13 +153,27 @@ public class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
     private void renderLightmapMap() {
         batch.setProjectionMatrix(camera.combined);
         Sprite lightmap = Utils.getMapManager().getLightmapMap();
-        scroller += Gdx.graphics.getDeltaTime() * SCROLL_SPEED;
-        if (scroller > lightmap.getHeight() / GameMap.LIGHTMAP_REGION_MULTIPLIER) {
-            scroller = 0f;
+        scrollerX += Gdx.graphics.getDeltaTime() * SCROLL_SPEED;
+        scrollerY += Gdx.graphics.getDeltaTime() * SCROLL_SPEED;
+        if (scrollerX > lightmap.getWidth() / GameMap.LIGHTMAP_REGION_MULTIPLIER) {
+            scrollerX = 0f;
         }
-        lightmap.setX(-camera.getHorizontalSpaceBetweenCameraAndMapEdge());
-        lightmap.setY(-scroller);
+        if (scrollerY > lightmap.getHeight() / GameMap.LIGHTMAP_REGION_MULTIPLIER) {
+            scrollerY = 0f;
+        }
+        scrollDefinedLightmaps(lightmap);
         lightmap.draw(batch);
+    }
+
+    private void scrollDefinedLightmaps(Sprite lightmap) {
+        String textureName = lightmap.getTexture().toString();
+        if (textureName.contains("forest")) {
+            lightmap.setX(-scrollerX);
+            lightmap.setY(-scrollerY);
+        } else if (textureName.contains("bubbles")) {
+            lightmap.setX(-camera.getHorizontalSpaceBetweenCameraAndMapEdge());
+            lightmap.setY(-scrollerY);
+        }
     }
 
 }

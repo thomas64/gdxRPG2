@@ -3,6 +3,7 @@ package nl.t64.game.rpg.screens.world;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -50,6 +51,7 @@ public class GameMap {
     final TiledMap tiledMap;
     final AudioEvent bgm;
     final List<AudioEvent> bgs;
+    final TextureRegion parallaxBackground;
     final List<Texture> lightmapCamera;
     final Sprite lightmapMap;
     final Sprite lightmapPlayer;
@@ -90,6 +92,7 @@ public class GameMap {
 
         var loader = new GameMapLayerLoader(tiledMap);
 
+        this.parallaxBackground = loader.loadParallaxBackground();
         this.lightmapCamera = loader.loadLightmapCamera();
         this.lightmapMap = loader.loadLightmapMap();
         this.lightmapPlayer = loader.loadLightmapPlayer();
