@@ -111,6 +111,11 @@ abstract class GraphicsComponent implements Component {
     }
 
     Animation<TextureRegion> getAnimation() {
+        if (state.equals(EntityState.RUNNING)) {
+            setFrameDuration(Constant.MOVE_SPEED_3);
+        } else {
+            setFrameDuration(Constant.MOVE_SPEED_2);
+        }
         return switch (direction) {
             case NORTH -> walkNorthAnimation;
             case SOUTH -> walkSouthAnimation;

@@ -36,8 +36,10 @@ public class MapManager implements ProfileObserver {
     @Override
     public void onNotifyCreateProfile(ProfileManager profileManager) {
         fogOfWar = new FogOfWar();
-        currentMap = new GameMap(Constant.STARTING_MAP);
+        loadMap(Constant.STARTING_MAP);
+        currentMap.setPlayerSpawnLocationForNewLoad(Constant.STARTING_MAP);
         onNotifySaveProfile(profileManager);
+        Utils.getBrokerManager().mapObservers.notifyMapChanged(currentMap);
     }
 
     @Override

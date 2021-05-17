@@ -33,7 +33,7 @@ public final class Constant {
     public static final Color DARK_RED = new Color(0.5f, 0f, 0f, 1f);
 
     public static final String PLAYER_ID = "mozes";
-    public static final String STARTING_MAP = "starter_area";
+    public static final String STARTING_MAP = "honeywood";
 
     public static final String DESCRIPTION_KEY_BUY = "Price";
     public static final String DESCRIPTION_KEY_BUY_PIECE = "Price per piece";

@@ -1,3 +1,4 @@
+honeywood_forest_path.json
 starter_path.json
 hero_s_hometown.json
 mysterious_tunnel.json

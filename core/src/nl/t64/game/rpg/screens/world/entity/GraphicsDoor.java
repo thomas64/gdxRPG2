@@ -61,6 +61,11 @@ public class GraphicsDoor extends GraphicsComponent {
         currentFrame = openAnimation.getKeyFrame(frameTime);
     }
 
+    @Override
+    Animation<TextureRegion> getAnimation() {
+        return openAnimation;
+    }
+
     private Animation<TextureRegion> loadOpenAnimation() {
         TextureRegion[][] textureFrames = Utils.getDoorImage(door.getSpriteId(), (int) door.getWidth());
         Array<TextureRegion> frames = new Array<>(new TextureRegion[]{

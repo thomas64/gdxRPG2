@@ -3,7 +3,6 @@ package nl.t64.game.rpg.sfx;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import lombok.Setter;
 import nl.t64.game.rpg.constants.Constant;
 
@@ -23,29 +22,12 @@ public class TransitionAction extends Action {
 
     @Override
     public boolean act(float dt) {
+        Actor actor = super.getTarget();
         switch (type) {
-            case FADE_IN -> fadeIn();
-            case FADE_OUT -> fadeOut();
+            case FADE_IN -> actor.addAction(Actions.fadeOut(duration));
+            case FADE_OUT -> actor.addAction(Actions.fadeIn(duration));
         }
         return true;
-    }
-
-    private void fadeIn() {
-        Actor actor = super.getTarget();
-        SequenceAction fadeIn = Actions.sequence(
-                Actions.alpha(1f),
-                Actions.fadeOut(duration)
-        );
-        actor.addAction(fadeIn);
-    }
-
-    private void fadeOut() {
-        Actor actor = super.getTarget();
-        SequenceAction fadeOut = Actions.sequence(
-                Actions.alpha(0f),
-                Actions.fadeIn(duration)
-        );
-        actor.addAction(fadeOut);
     }
 
 }

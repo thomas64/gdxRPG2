@@ -40,7 +40,7 @@ public class Camera extends OrthographicCamera {
         zoom = 0.5f;
     }
 
-    void startShaking() {
+    public void startShaking() {
         shakeCam.startShaking();
     }
 

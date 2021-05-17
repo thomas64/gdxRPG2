@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.components.cutscene.CutsceneId;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.ScreenType;
 
@@ -101,8 +102,8 @@ public class MenuNew extends MenuScreen {
     private void createNewGame() {
         Utils.getScreenManager().getWorldScreen();  // just load the constructor.
         Utils.getProfileManager().createNewProfile(finalProfileName);
-        Utils.getGameData().getCutscenes().setPlayed("scene001");
-        Utils.getScreenManager().setScreen(ScreenType.SCENE001);
+        Utils.getGameData().getCutscenes().setPlayed(CutsceneId.SCENE_INTRO);
+        Utils.getScreenManager().setScreen(ScreenType.SCENE_INTRO);
     }
 
     @Override

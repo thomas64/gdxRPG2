@@ -22,7 +22,7 @@ public class CutsceneContainer {
     }
 
     private void loadCutscenes() {
-        cutscenes.put("scene001", false);
+        cutscenes.put(CutsceneId.SCENE_INTRO, false);
     }
 
 }

@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.audio.AudioEvent;
+import nl.t64.game.rpg.components.cutscene.CutsceneId;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.ScreenType;
 
@@ -151,11 +152,11 @@ public class MenuLoad extends MenuScreen {
         Utils.getMapManager().disposeOldMaps();
         Utils.getScreenManager().getWorldScreen();  // just load the constructor.
         Utils.getProfileManager().loadProfile(selectedListIndex);
-        if (Utils.getGameData().getCutscenes().isPlayed("scene001")) {
+        if (Utils.getGameData().getCutscenes().isPlayed(CutsceneId.SCENE_INTRO)) {
             Utils.getScreenManager().setScreen(ScreenType.WORLD);
         } else {
-            Utils.getGameData().getCutscenes().setPlayed("scene001");
-            Utils.getScreenManager().setScreen(ScreenType.SCENE001);
+            Utils.getGameData().getCutscenes().setPlayed(CutsceneId.SCENE_INTRO);
+            Utils.getScreenManager().setScreen(ScreenType.SCENE_INTRO);
         }
     }
 

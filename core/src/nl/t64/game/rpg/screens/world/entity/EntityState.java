@@ -11,7 +11,8 @@ public enum EntityState {
     FLOATING,
     ALIGNING,
     INVISIBLE,
-    OPENED;
+    OPENED,
+    RUNNING;    // only for cutscenes
 
     public static EntityState getRandom() {
         int randomNumber = MathUtils.random(getOnlyIDLEandWALKING());
@@ -19,7 +20,7 @@ public enum EntityState {
     }
 
     private static int getOnlyIDLEandWALKING() {
-        return EntityState.values().length - 6;
+        return EntityState.values().length - (EntityState.values().length - 1);
     }
 
 }

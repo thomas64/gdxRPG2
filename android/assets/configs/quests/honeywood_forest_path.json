@@ -1,0 +1,13 @@
+{
+  "quest_intro": {
+    "title"   : "Remove the fallen tree",
+    "entityId": "girl01",
+    "summary" : "It will be removed once Grace is 'found'.",
+    "tasks"   : {
+      "1": {
+        "taskPhrase": "Find Grace",
+        "type"      : "DISCOVER"
+      }
+    }
+  }
+}

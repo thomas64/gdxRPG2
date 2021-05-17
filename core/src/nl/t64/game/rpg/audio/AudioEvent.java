@@ -50,6 +50,7 @@ public enum AudioEvent {
     SE_GATE("audio/se/fsm_gate.ogg", 0.2f),
     SE_SMALL_DOOR("audio/se/fsm_small_door.ogg", 0.2f),
     SE_LARGE_DOOR("audio/se/fsm_large_door.ogg", 0.2f),
+    SE_BANG("audio/se/whooshes_impacts2_whooshes_032.ogg", 0.4f),
 
     SE_STEP_CARPET1("audio/se/footsteps/oot_step_carpet1.ogg"),
     SE_STEP_CARPET2("audio/se/footsteps/oot_step_carpet2.ogg"),

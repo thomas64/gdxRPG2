@@ -8,17 +8,18 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.constants.Constant;
+import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.screens.world.Camera;
 import nl.t64.game.rpg.screens.world.GameMap;
 import nl.t64.game.rpg.screens.world.TextureMapObjectRenderer;
 import nl.t64.game.rpg.screens.world.conversation.ConversationDialog;
 import nl.t64.game.rpg.screens.world.conversation.ConversationObserver;
-import nl.t64.game.rpg.screens.world.entity.*;
 import nl.t64.game.rpg.sfx.TransitionAction;
 import nl.t64.game.rpg.sfx.TransitionImage;
 import nl.t64.game.rpg.sfx.TransitionType;
@@ -28,12 +29,20 @@ import java.util.List;
 
 abstract class CutsceneScreen implements Screen, ConversationObserver {
 
-    private final Camera camera;
+    private static final String TITLE_FONT = "fonts/spectral_regular_24.ttf";
+    private static final int FONT_SIZE = 24;
+
+    static final float NORMAL_STEP = 0.5f;
+    static final float FAST_STEP = 0.25f;
+
     private final TextureMapObjectRenderer mapRenderer;
+    final Camera camera;
     final Stage actorsStage;
     final Stage transitionStage;
     final Actor transition;
+    final Label title;
     List<Action> actions;
+    boolean isBgmFading;
     private ConversationDialog conversationDialog;
     private int actionId;
     private Actor followingActor;
@@ -45,8 +54,19 @@ abstract class CutsceneScreen implements Screen, ConversationObserver {
         this.actorsStage = new Stage(this.camera.getViewport());
         this.transitionStage = new Stage(this.camera.getViewport());
         this.transition = new TransitionImage();
+        this.title = this.createTitle();
         this.followingActor = new Actor();
         this.isCameraFixed = true;
+        this.isBgmFading = false;
+    }
+
+    private Label createTitle() {
+        var font = Utils.getResourceManager().getTrueTypeAsset(TITLE_FONT, FONT_SIZE);
+        var style = new Label.LabelStyle(font, Color.WHITE);
+        var label = new Label("", style);
+        label.setAlignment(Align.center);
+        label.setVisible(false);
+        return label;
     }
 
     @Override
@@ -57,6 +77,7 @@ abstract class CutsceneScreen implements Screen, ConversationObserver {
 
         transitionStage.clear();
         transitionStage.addActor(transition);
+        transitionStage.addActor(title);
 
         actorsStage.clear();
         Gdx.input.setInputProcessor(actorsStage);
@@ -84,6 +105,9 @@ abstract class CutsceneScreen implements Screen, ConversationObserver {
         conversationDialog.update(dt);
 
         transitionStage.act(dt);
+        if (isBgmFading) {
+            Utils.getAudioManager().fadeBgmBgs();
+        }
         transitionStage.draw();
     }
 
@@ -128,7 +152,7 @@ abstract class CutsceneScreen implements Screen, ConversationObserver {
 
     abstract void exitScreen();
 
-    Action getLastAction() {
+    Action getLastAction(String mapTitle, String cutsceneId) {
         conversationDialog.conversationObservers.removeObserver(this);
         Gdx.input.setInputProcessor(null);
         Utils.setGamepadInputProcessor(null);
@@ -136,41 +160,11 @@ abstract class CutsceneScreen implements Screen, ConversationObserver {
                 Actions.addAction(TransitionAction.transition(TransitionType.FADE_OUT), transition),
                 Actions.delay(Constant.FADE_DURATION),
                 Actions.delay(1f),
-                Actions.addAction(Actions.alpha(1f), transition)
-        );
-    }
-
-    Action actionMoveBy(CutsceneActor actor, Direction direction, float distance, float duration, float stepSpeed) {
-        float x = 0f;
-        float y = 0f;
-        switch (direction) {
-            case NORTH -> {
-                x = 0f;
-                y = distance;
-            }
-            case SOUTH -> {
-                x = 0f;
-                y = -distance;
-            }
-            case WEST -> {
-            }
-            case EAST -> {
-            }
-            case NONE -> throw new GdxRuntimeException("No action for direction NONE.");
-        }
-
-        return Actions.sequence(
-                actionWalk(actor, direction),
-                Actions.addAction(Actions.moveBy(x, y, duration), actor),
-                actionRepeatWalkSound(actor, duration, stepSpeed)
-        );
-    }
-
-    Action actionMoveTo(CutsceneActor actor, Direction direction, float x, float y, float duration, float stepSpeed) {
-        return Actions.sequence(
-                actionWalk(actor, direction),
-                Actions.addAction(Actions.moveTo(x, y, duration), actor),
-                actionRepeatWalkSound(actor, duration, stepSpeed)
+                Actions.addAction(Actions.alpha(1f), transition),
+                Actions.run(() -> {
+                    Utils.getMapManager().loadMapAfterCutscene(mapTitle, cutsceneId);
+                    Utils.getScreenManager().setScreen(ScreenType.WORLD);
+                })
         );
     }
 
@@ -180,11 +174,6 @@ abstract class CutsceneScreen implements Screen, ConversationObserver {
         GameMap currentMap = manager.getCurrentMap();
         mapRenderer.setMap(manager.getTiledMap());
         camera.setNewMapSize(currentMap.getPixelWidth(), currentMap.getPixelHeight());
-    }
-
-    CutsceneActor createActor(String actorId) {
-        var entity = new Entity(actorId, new InputEmpty(), new PhysicsNpc(), new GraphicsNpc(actorId));
-        return new CutsceneActor(entity, EntityState.IDLE, Direction.SOUTH);
     }
 
     void showConversationDialog(String conversationId) {
@@ -207,14 +196,37 @@ abstract class CutsceneScreen implements Screen, ConversationObserver {
         isCameraFixed = true;
     }
 
-    private Action actionWalk(CutsceneActor actor, Direction direction) {
-        return Actions.run(() -> {
-            actor.setEntityState(EntityState.WALKING);
-            actor.setDirection(direction);
-        });
+    Action actionFadeIn() {
+        return Actions.sequence(
+                Actions.addAction(TransitionAction.transition(TransitionType.FADE_IN), transition),
+                Actions.delay(Constant.FADE_DURATION)
+        );
     }
 
-    private Action actionRepeatWalkSound(Actor actor, float duration, float stepSpeed) {
+    Action actionFadeOut() {
+        return Actions.sequence(
+                Actions.run(() -> isBgmFading = true),
+                Actions.addAction(TransitionAction.transition(TransitionType.FADE_OUT), transition),
+                Actions.delay(Constant.FADE_DURATION),
+                Actions.run(() -> isBgmFading = false)
+        );
+    }
+
+    Action actionMoveTo(CutsceneActor actor, float x, float y, float duration, float stepSpeed) {
+        return Actions.parallel(
+                Actions.moveTo(x, y, duration),
+                actionWalkSound(actor, duration, stepSpeed)
+        );
+    }
+
+    Action actionMoveBy(CutsceneActor actor, float amountX, float amountY, float duration, float stepSpeed) {
+        return Actions.parallel(
+                Actions.moveBy(amountX, amountY, duration),
+                actionWalkSound(actor, duration, stepSpeed)
+        );
+    }
+
+    Action actionWalkSound(CutsceneActor actor, float duration, float stepSpeed) {
         return Actions.repeat(
                 (int) (duration / stepSpeed), Actions.sequence(
                         Actions.run(() -> Utils.getAudioManager().handle(
