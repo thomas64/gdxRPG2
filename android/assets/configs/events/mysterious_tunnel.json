@@ -1,10 +1,8 @@
 {
   "event0001": {
-    "condition"     : {
-      "quest0006": "!UNKNOWN",
-      "quest0007": "UNKNOWN"
-    },
+    "type"          : "conversation",
+    "condition"     : ["quest6_known", "quest7_unknown"],
     "conversationId": "event0001",
-    "entityId": "man02"
+    "entityId"      : "man02"
   }
 }

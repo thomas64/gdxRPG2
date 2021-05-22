@@ -70,10 +70,11 @@ public class GameMap {
     final List<RectangleMapObject> doors;
     private final List<RectangleMapObject> sounds;
     private final List<GameMapBlocker> blockers;
-    private final List<GameMapEvent> eventDiscovers;
+    private final List<GameMapEventDiscover> eventDiscovers;
+    private final List<GameMapEventChecker> eventCheckers;
     private final List<GameMapCutscene> cutsceneDiscovers;
-    private final List<GameMapQuestDiscoverObject> questDiscovers;
-    private final List<GameMapQuestCheckObject> questCheckers;
+    private final List<GameMapQuestDiscover> questDiscovers;
+    private final List<GameMapQuestChecker> questCheckers;
     private final List<GameMapNote> notes;
     private final List<GameMapSavePoint> savePoints;
     private final List<GameMapSpawnPoint> spawnPoints;
@@ -106,12 +107,15 @@ public class GameMap {
         this.heroes = loader.loadLayer(HERO_LAYER, rectObject -> Utils.getGameData().getHeroes().contains(rectObject.getName()), GameMapHero::new);
         this.blockers = loader.loadLayer(COLLISION_LAYER, GameMapBlocker::new);
         this.lights = loader.loadLayer(LIGHTS_LAYER, GameMapLight::new);
-        this.eventDiscovers = loader.equalsIgnoreCase(EVENT_LAYER, "discover", GameMapEvent::new);
+
+        this.eventDiscovers = loader.equalsIgnoreCase(EVENT_LAYER, "discover", GameMapEventDiscover::new);
+        this.eventCheckers = loader.equalsIgnoreCase(EVENT_LAYER, "check", GameMapEventChecker::new);
+
         this.cutsceneDiscovers = loader.equalsIgnoreCase(CUTSCENE_LAYER, "discover", GameMapCutscene::new);
 
         this.questBlockers = loader.equalsIgnoreCase(QUEST_LAYER, "blocker", GameMapQuestBlocker::new);
-        this.questDiscovers = loader.equalsIgnoreCase(QUEST_LAYER, "discover", GameMapQuestDiscoverObject::new);
-        this.questCheckers = loader.equalsIgnoreCase(QUEST_LAYER, "check", GameMapQuestCheckObject::new);
+        this.questDiscovers = loader.equalsIgnoreCase(QUEST_LAYER, "discover", GameMapQuestDiscover::new);
+        this.questCheckers = loader.equalsIgnoreCase(QUEST_LAYER, "check", GameMapQuestChecker::new);
 
         this.upperTextures = loader.loadTextureLayer(UPPER_TEXTURE_LAYER, GameMapQuestTexture::new);
         this.lowerTextures = loader.loadTextureLayer(LOWER_TEXTURE_LAYER, GameMapQuestTexture::new);

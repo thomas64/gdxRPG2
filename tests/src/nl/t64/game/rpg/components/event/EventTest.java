@@ -7,8 +7,6 @@ import nl.t64.game.rpg.Utils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -29,15 +27,14 @@ class EventTest extends GameTest {
         assertThat(event.getConversationId()).isEqualTo("event0001");
         assertThat(event.getEntityId()).isEqualTo("man02");
 
-        assertThat(event.getCondition()).isEqualTo(Map.of("quest0006", "!UNKNOWN",
-                                                          "quest0007", "UNKNOWN"));
+        assertThat(event.getConditionIds()).containsExactly("quest6_known", "quest7_unknown");
         assertThat(event.isHasPlayed()).isFalse();
 
-        event.startConversation();
+        event.possibleStart();
         assertThat(event.isHasPlayed()).isFalse();
 
         Utils.getGameData().getQuests().getQuestById("quest0006").know();
-        event.startConversation();
+        event.possibleStart();
         assertThat(event.isHasPlayed()).isTrue();
     }
 

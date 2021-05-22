@@ -138,7 +138,7 @@ class ConversationTest extends GameTest {
 
         assertThat(graph.getAssociatedChoices()).hasSize(1);
         assertThat(graph.getAssociatedChoices()[0].getText()).startsWith("I was just kidding.");
-        assertThat(graph.getAssociatedChoices()[0].getConditionId()).isEqualTo("");
+        assertThat(graph.getAssociatedChoices()[0].getConditionId()).isEmpty();
         assertThat(graph.getAssociatedChoices()[0].isMeetingCondition()).isTrue();
 
         QuestGraph quest7 = gameData.getQuests().getQuestById("quest0007");
@@ -148,7 +148,7 @@ class ConversationTest extends GameTest {
 
         assertThat(graph.getAssociatedChoices()).hasSize(2);
         assertThat(graph.getAssociatedChoices()[1].getText()).startsWith("I gave it to someone else. (Fails ");
-        assertThat(graph.getAssociatedChoices()[1].getConditionId()).isEqualTo("i_quest7_unclaimed");
+        assertThat(graph.getAssociatedChoices()[1].getConditionId()).containsExactly("i_quest7_unclaimed");
         assertThat(graph.getAssociatedChoices()[1].isMeetingCondition()).isTrue();
     }
 
@@ -162,12 +162,12 @@ class ConversationTest extends GameTest {
 
         assertThat(graph.getAssociatedChoices()).hasSize(1);
         assertThat(graph.getAssociatedChoices()[0].getText()).startsWith("I was just kidding.");
-        assertThat(graph.getAssociatedChoices()[0].getConditionId()).isEqualTo("");
+        assertThat(graph.getAssociatedChoices()[0].getConditionId()).isEmpty();
         assertThat(graph.getAssociatedChoices()[0].isMeetingCondition()).isTrue();
 
         assertThat(choices).hasSize(3);
         assertThat(choices.get(2).getText()).startsWith("I already used it myself. (Fails ");
-        assertThat(choices.get(2).getConditionId()).isEqualTo("i_quest6_task3");
+        assertThat(choices.get(2).getConditionId()).containsExactly("i_quest6_task3");
         assertThat(choices.get(2).isMeetingCondition()).isFalse();
         assertThat(choices.get(2).isVisible()).isFalse();
 
@@ -177,12 +177,12 @@ class ConversationTest extends GameTest {
 
         assertThat(graph.getAssociatedChoices()).hasSize(2);
         assertThat(graph.getAssociatedChoices()[1].getText()).startsWith("I already used it myself. (Fails ");
-        assertThat(graph.getAssociatedChoices()[1].getConditionId()).isEqualTo("i_quest6_task3");
+        assertThat(graph.getAssociatedChoices()[1].getConditionId()).containsExactly("i_quest6_task3");
         assertThat(graph.getAssociatedChoices()[1].isMeetingCondition()).isTrue();
 
         assertThat(choices).hasSize(3);
         assertThat(choices.get(2).getText()).startsWith("I already used it myself. (Fails ");
-        assertThat(choices.get(2).getConditionId()).isEqualTo("i_quest6_task3");
+        assertThat(choices.get(2).getConditionId()).containsExactly("i_quest6_task3");
         assertThat(choices.get(2).isMeetingCondition()).isTrue();
         assertThat(choices.get(2).isVisible()).isTrue();
     }

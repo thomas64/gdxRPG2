@@ -388,6 +388,7 @@
   </object>
   <object id="227" name="youngwoman01" type="w" x="648" y="936" width="48" height="24">
    <properties>
+    <property name="condition" value="quest4_known"/>
     <property name="conversation" value="quest0004-1"/>
    </properties>
   </object>

@@ -129,6 +129,6 @@
   <object id="33" x="456" y="192" width="48" height="48"/>
  </objectgroup>
  <objectgroup color="#ff00ff" id="19" name="cutscene">
-  <object id="66" name="discover" type="scene001" x="456" y="432" width="48" height="24"/>
+  <object id="66" name="scene001" type="discover" x="456" y="432" width="48" height="24"/>
  </objectgroup>
 </map>

@@ -17,7 +17,7 @@ public class GameMapQuestTexture {
 
     public GameMapQuestTexture(TextureMapObject textObject) {
         this.texture = textObject;
-        this.questId = textObject.getProperties().get("type", String.class);
+        this.questId = textObject.getName();
         this.isVisibleIfComplete = textObject.getProperties().get("visibleIfComplete", Boolean.class);
         this.taskId = textObject.getProperties().get("task", String.class);
         this.isVisible = textObject.getProperties().get("isVisible", Boolean.class);

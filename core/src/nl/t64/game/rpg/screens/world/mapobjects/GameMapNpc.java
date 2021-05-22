@@ -6,6 +6,8 @@ import lombok.Getter;
 import nl.t64.game.rpg.screens.world.entity.Direction;
 import nl.t64.game.rpg.screens.world.entity.EntityState;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -16,6 +18,7 @@ public class GameMapNpc extends GameMapObject {
     private final EntityState state;
     private final Direction direction;
     private final String conversation;
+    private final List<String> conditionIds;
 
     public GameMapNpc(RectangleMapObject rectObject) {
         super.rectangle = rectObject.getRectangle();
@@ -23,6 +26,7 @@ public class GameMapNpc extends GameMapObject {
         this.state = createState(rectObject);
         this.direction = createDirection(rectObject);
         this.conversation = createConversation(rectObject);
+        this.conditionIds = createConditions(rectObject);
     }
 
     public Vector2 getPosition() {
@@ -52,6 +56,13 @@ public class GameMapNpc extends GameMapObject {
 
     private String createConversation(RectangleMapObject rectObject) {
         return rectObject.getProperties().get("conversation", "default", String.class);
+    }
+
+    private List<String> createConditions(RectangleMapObject rectObject) {
+        return Optional.ofNullable(rectObject.getProperties().get("condition", String.class))
+                       .map(condition -> condition.split("\\s*,\\s*"))
+                       .map(Arrays::asList)
+                       .orElseGet(List::of);
     }
 
 }

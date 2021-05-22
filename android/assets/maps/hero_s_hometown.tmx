@@ -559,14 +559,14 @@
   </object>
  </objectgroup>
  <objectgroup color="#ffff00" id="44" name="quest">
-  <object id="169" name="blocker" type="quest0002" x="1920" y="216" width="48" height="36">
+  <object id="169" name="quest0002" type="blocker" x="1920" y="216" width="48" height="36">
    <properties>
     <property name="activeIfComplete" type="bool" value="false"/>
     <property name="isActive" type="bool" value="true"/>
     <property name="task" value="2"/>
    </properties>
   </object>
-  <object id="222" name="blocker" type="quest0002" x="1872" y="216" width="48" height="36">
+  <object id="222" name="quest0002" type="blocker" x="1872" y="216" width="48" height="36">
    <properties>
     <property name="activeIfComplete" type="bool" value="true"/>
     <property name="isActive" type="bool" value="false"/>
@@ -575,6 +575,6 @@
   </object>
  </objectgroup>
  <objectgroup color="#ff00ff" id="53" name="cutscene">
-  <object id="344" name="discover" type="scene001" x="1968" y="264" width="48" height="24"/>
+  <object id="344" name="scene001" type="discover" x="1968" y="264" width="48" height="24"/>
  </objectgroup>
 </map>

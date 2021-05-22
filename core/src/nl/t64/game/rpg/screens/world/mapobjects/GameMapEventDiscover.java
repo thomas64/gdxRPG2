@@ -8,13 +8,13 @@ import nl.t64.game.rpg.screens.world.entity.Direction;
 import nl.t64.game.rpg.subjects.CollisionObserver;
 
 
-public class GameMapEvent extends GameMapObject implements CollisionObserver {
+public class GameMapEventDiscover extends GameMapObject implements CollisionObserver {
 
     private final String eventId;
 
-    public GameMapEvent(RectangleMapObject rectObject) {
+    public GameMapEventDiscover(RectangleMapObject rectObject) {
         super.rectangle = rectObject.getRectangle();
-        this.eventId = rectObject.getProperties().get("type", String.class);
+        this.eventId = rectObject.getName();
 
         Utils.getBrokerManager().collisionObservers.addObserver(this);
     }
@@ -22,14 +22,13 @@ public class GameMapEvent extends GameMapObject implements CollisionObserver {
     @Override
     public void onNotifyCollision(Rectangle playerBoundingBox, Direction playerDirection) {
         if (playerBoundingBox.overlaps(rectangle)) {
-            startConversation();
+            possibleStartEvent();
         }
     }
 
-    // todo, een event zal niet altijd alleen een conversation zijn. oplossen wanneer dat moment daar is.
-    private void startConversation() {
+    private void possibleStartEvent() {
         Event event = Utils.getGameData().getEvents().getEventById(eventId);
-        event.startConversation();
+        event.possibleStart();
     }
 
 }

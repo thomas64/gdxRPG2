@@ -84,12 +84,12 @@
  <objectgroup id="9" name="lower_texture"/>
  <objectgroup id="10" name="upper_texture"/>
  <objectgroup color="#ffff00" id="8" name="quest">
-  <object id="21" name="check" type="quest0007" x="144" y="96" width="48" height="48">
+  <object id="21" name="quest0007" type="check" x="144" y="96" width="48" height="48">
    <properties>
     <property name="task" value="1"/>
    </properties>
   </object>
-  <object id="22" name="check" type="quest0006" x="144" y="96" width="48" height="48">
+  <object id="22" name="quest0006" type="check" x="144" y="96" width="48" height="48">
    <properties>
     <property name="task" value="1"/>
    </properties>

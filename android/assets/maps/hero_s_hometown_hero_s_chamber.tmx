@@ -112,12 +112,12 @@
   <object id="17" name="hero_s_hometown_chief_s_house_b2" x="456" y="1128" width="48" height="48"/>
  </objectgroup>
  <objectgroup color="#ffff00" id="16" name="quest">
-  <object id="25" name="discover" type="quest0003" x="408" y="1032" width="144" height="48">
+  <object id="25" name="quest0003" type="discover" x="408" y="1032" width="144" height="48">
    <properties>
     <property name="task" value="1"/>
    </properties>
   </object>
-  <object id="26" name="check" type="quest0003" x="456" y="384" width="48" height="24">
+  <object id="26" name="quest0003" type="check" x="456" y="384" width="48" height="24">
    <properties>
     <property name="task" value="2"/>
    </properties>

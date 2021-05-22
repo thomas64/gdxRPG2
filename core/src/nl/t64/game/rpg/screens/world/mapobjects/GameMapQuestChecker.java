@@ -9,14 +9,14 @@ import nl.t64.game.rpg.screens.world.entity.Direction;
 import nl.t64.game.rpg.subjects.ActionObserver;
 
 
-public class GameMapQuestCheckObject extends GameMapObject implements ActionObserver {
+public class GameMapQuestChecker extends GameMapObject implements ActionObserver {
 
     private final String questId;
     private final String taskId;
 
-    public GameMapQuestCheckObject(RectangleMapObject rectObject) {
+    public GameMapQuestChecker(RectangleMapObject rectObject) {
         super.rectangle = rectObject.getRectangle();
-        this.questId = rectObject.getProperties().get("type", String.class);
+        this.questId = rectObject.getName();
         this.taskId = rectObject.getProperties().get("task", String.class);
 
         Utils.getBrokerManager().actionObservers.addObserver(this);

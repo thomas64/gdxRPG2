@@ -21,8 +21,8 @@
       "100" : {
         "text"   : ["You didn't gave the key to Herington I hope?"],
         "choices": [
-          {"condition": "i_quest6_unclaimed", "text": "Yes I did. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "250"},
-          {"condition": "i_quest7_task3", "text": "No I didn't, but I don't have it for you either. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "251"},
+          {"condition": ["i_quest6_unclaimed"], "text": "Yes I did. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "250"},
+          {"condition": ["i_quest7_task3"], "text": "No I didn't, but I don't have it for you either. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "251"},
           {"text": "Don't worry. My allegiance is to you.", "conversationCommand": "ACCEPT_QUEST"},
           {"text": "I have to go. Bye. (Leave conversation)", "conversationCommand": "EXIT_CONVERSATION", "destinationId": "100"}
         ]
@@ -45,8 +45,8 @@
       "202" : {
         "text"   : ["No! No! No! You gave it to Herington?"],
         "choices": [
-          {"condition": "i_quest6_unclaimed", "text": "That I did. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "250"},
-          {"condition": "i_quest7_task3", "text": "Hold your horses! No, I used it myself. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "251"},
+          {"condition": ["i_quest6_unclaimed"], "text": "That I did. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "250"},
+          {"condition": ["i_quest7_task3"], "text": "Hold your horses! No, I used it myself. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "251"},
           {"text": "Woah, you're awfully tense about this matter.", "destinationId": "203"}
         ]
       },
@@ -148,8 +148,8 @@
       "2608": {
         "text"   : ["You sound like there is a problem?"],
         "choices": [
-          {"condition": "i_quest6_unclaimed", "text": "I already gave it to Herington. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "250"},
-          {"condition": "i_quest7_task3", "text": "Don't worry. I used it myself. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "251"},
+          {"condition": ["i_quest6_unclaimed"], "text": "I already gave it to Herington. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "250"},
+          {"condition": ["i_quest7_task3"], "text": "Don't worry. I used it myself. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "251"},
           {"text": "No, it's nothing. What did you want to say about that key?", "destinationId": "2602"}
         ]
       }
@@ -161,7 +161,7 @@
         "text"   : ["Who are you? What are you doing here?"],
         "choices": [
           {"text": "I'm Mozes and I just discovered this mysterious tunnel.", "destinationId": "10"},
-          {"condition": "diplomat2", "text": "[Diplomat 2] Who are you? This tunnel is mine.", "destinationId": "20"},
+          {"condition": ["diplomat2"], "text": "[Diplomat 2] Who are you? This tunnel is mine.", "destinationId": "20"},
           {"text": "Sir, I don't like the way you talk to me. (Leave conversation)", "conversationCommand": "EXIT_CONVERSATION"}
         ]
       },
@@ -172,7 +172,7 @@
         "text"   : ["My name is Herington. I... erm... lost the key of this gate here and I like to get through it. Do you by accident happen to be in possession of said key?"],
         "choices": [
           {"text": "What is your business behind this gate?", "destinationId": "30"},
-          {"condition": "key_mysterious_tunnel", "text": "[Mysterious Tunnel Key] Yes, I've got it right here in my pocket.", "conversationCommand": "TOLERATE_QUEST"},
+          {"condition": ["key_mysterious_tunnel"], "text": "[Mysterious Tunnel Key] Yes, I've got it right here in my pocket.", "conversationCommand": "TOLERATE_QUEST"},
           {"text": "I'm sorry, I don't have it.", "destinationId": "32"}
         ]
       },
@@ -182,8 +182,8 @@
       "21"  : {
         "text"   : ["Well, let's be blunt then.", "My name is Herington and would like to get through this gate here, but it's locked. Of course I don't have the necessary key, but you probably do. May I borrow your key? I will pay you for it."],
         "choices": [
-          {"condition": "diplomat2", "text": "[Diplomat 2] What is your business behind this gate?", "destinationId": "100"},
-          {"condition": "key_mysterious_tunnel", "text": "[Mysterious Tunnel Key] Yes, I've got it right here in my pocket.", "conversationCommand": "TOLERATE_QUEST"},
+          {"condition": ["diplomat2"], "text": "[Diplomat 2] What is your business behind this gate?", "destinationId": "100"},
+          {"condition": ["key_mysterious_tunnel"], "text": "[Mysterious Tunnel Key] Yes, I've got it right here in my pocket.", "conversationCommand": "TOLERATE_QUEST"},
           {"text": "I'm sorry, I don't have it.", "destinationId": "102"}
         ]
       },
@@ -226,8 +226,8 @@
         "text"   : ["What do you mean you can't give me the key?"],
         "choices": [
           {"text": "I was just kidding.", "destinationId": "32"},
-          {"condition": "i_quest7_unclaimed", "text": "I gave it to someone else. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "250"},
-          {"condition": "i_quest6_task3", "text": "I already used it myself. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "250"}
+          {"condition": ["i_quest7_unclaimed"], "text": "I gave it to someone else. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "250"},
+          {"condition": ["i_quest6_task3"], "text": "I already used it myself. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "250"}
         ]
       },
       "40"  : {
@@ -235,7 +235,7 @@
         "choices": [
           {"text": "What is your business behind this gate?", "destinationId": "30"},
           {"text": "What can you tell me about this mysterious tunnel?", "destinationId": "33"},
-          {"condition": "key_mysterious_tunnel", "text": "[Mysterious Tunnel Key] Yes, I've got it right here in my pocket.", "conversationCommand": "TOLERATE_QUEST"},
+          {"condition": ["key_mysterious_tunnel"], "text": "[Mysterious Tunnel Key] Yes, I've got it right here in my pocket.", "conversationCommand": "TOLERATE_QUEST"},
           {"text": "I'm sorry, I don't have it.", "destinationId": "32"},
           {"text": "I have to go. Bye. (Leave conversation)", "conversationCommand": "EXIT_CONVERSATION", "destinationId": "40"}
         ]
@@ -275,15 +275,15 @@
         "text"   : ["What do you mean you can't give me the key?"],
         "choices": [
           {"text": "I can, but I don't have it.", "destinationId": "102"},
-          {"condition": "i_quest7_unclaimed", "text": "I gave it to someone else. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "250"},
-          {"condition": "i_quest6_task3", "text": "I already used it myself. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "250"}
+          {"condition": ["i_quest7_unclaimed"], "text": "I gave it to someone else. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "250"},
+          {"condition": ["i_quest6_task3"], "text": "I already used it myself. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "250"}
         ]
       },
       "110" : {
         "text"   : ["You have come back to me with the key right?"],
         "choices": [
           {"text": "What do you know about my mysterious tunnel?", "destinationId": "103"},
-          {"condition": "key_mysterious_tunnel", "text": "[Mysterious Tunnel Key] Yes, I've got it right here in my pocket.", "conversationCommand": "TOLERATE_QUEST"},
+          {"condition": ["key_mysterious_tunnel"], "text": "[Mysterious Tunnel Key] Yes, I've got it right here in my pocket.", "conversationCommand": "TOLERATE_QUEST"},
           {"text": "I'm sorry, I don't have it.", "destinationId": "102"},
           {"text": "I have to go. Bye. (Leave conversation)", "conversationCommand": "EXIT_CONVERSATION", "destinationId": "110"}
         ]
@@ -315,8 +315,8 @@
         "text"   : ["What do you mean you can't give me the key?"],
         "choices": [
           {"text": "I can, but I don't have it.", "destinationId": "201"},
-          {"condition": "i_quest7_unclaimed", "text": "I gave it to someone else. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "250"},
-          {"condition": "i_quest6_task3", "text": "I already used it myself. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "250"}
+          {"condition": ["i_quest7_unclaimed"], "text": "I gave it to someone else. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "250"},
+          {"condition": ["i_quest6_task3"], "text": "I already used it myself. (Fails quest)", "conversationCommand": "FAIL_QUEST", "destinationId": "250"}
         ]
       },
       "250" : {"text": ["You did what?!"]},
@@ -356,7 +356,7 @@
         "text"   : ["That's good... Everything will be mine!", "Ahem... Here is your reward."],
         "choices": [
           {"text": "Thank you very much.", "destinationId": "2101"},
-          {"condition": "diplomat3", "text": "[Diplomat 3] Hey wait, I went through a lot of trouble for this.", "destinationId": "2102"}
+          {"condition": ["diplomat3"], "text": "[Diplomat 3] Hey wait, I went through a lot of trouble for this.", "destinationId": "2102"}
         ]
       },
       "2101": {

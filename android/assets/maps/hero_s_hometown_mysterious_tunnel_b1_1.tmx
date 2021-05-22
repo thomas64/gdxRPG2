@@ -163,19 +163,19 @@
  <objectgroup id="9" name="lower_texture"/>
  <objectgroup id="10" name="upper_texture"/>
  <objectgroup color="#ffff00" id="8" name="quest">
-  <object id="142" name="check" type="quest0007" x="792" y="1104" width="48" height="96">
+  <object id="142" name="quest0007" type="check" x="792" y="1104" width="48" height="96">
    <properties>
     <property name="task" value="3"/>
    </properties>
   </object>
-  <object id="141" name="check" type="quest0006" x="792" y="1104" width="48" height="96">
+  <object id="141" name="quest0006" type="check" x="792" y="1104" width="48" height="96">
    <properties>
     <property name="task" value="3"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup color="#ff55ff" id="23" name="event">
-  <object id="139" name="discover" type="event0001" x="1116" y="1248" width="48" height="144"/>
+  <object id="139" name="event0001" type="discover" x="1116" y="1248" width="48" height="144"/>
  </objectgroup>
  <objectgroup color="#ffffff" id="6" name="lights">
   <object id="3" x="744" y="1614" width="12" height="12"/>

@@ -8,14 +8,14 @@ import nl.t64.game.rpg.screens.world.entity.Direction;
 import nl.t64.game.rpg.subjects.CollisionObserver;
 
 
-public class GameMapQuestDiscoverObject extends GameMapObject implements CollisionObserver {
+public class GameMapQuestDiscover extends GameMapObject implements CollisionObserver {
 
     private final String questId;
     private final String taskId;
 
-    public GameMapQuestDiscoverObject(RectangleMapObject rectObject) {
+    public GameMapQuestDiscover(RectangleMapObject rectObject) {
         super.rectangle = rectObject.getRectangle();
-        this.questId = rectObject.getProperties().get("type", String.class);
+        this.questId = rectObject.getName();
         this.taskId = rectObject.getProperties().get("task", String.class);
 
         Utils.getBrokerManager().collisionObservers.addObserver(this);

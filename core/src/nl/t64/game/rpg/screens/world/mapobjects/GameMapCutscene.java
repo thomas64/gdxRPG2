@@ -16,7 +16,7 @@ public class GameMapCutscene extends GameMapObject implements CollisionObserver 
 
     public GameMapCutscene(RectangleMapObject rectObject) {
         super.rectangle = rectObject.getRectangle();
-        this.cutsceneId = rectObject.getProperties().get("type", String.class);
+        this.cutsceneId = rectObject.getName();
 
         Utils.getBrokerManager().collisionObservers.addObserver(this);
     }

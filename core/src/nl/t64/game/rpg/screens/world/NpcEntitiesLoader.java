@@ -1,6 +1,7 @@
 package nl.t64.game.rpg.screens.world;
 
 import nl.t64.game.rpg.Utils;
+import nl.t64.game.rpg.components.condition.ConditionDatabase;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.screens.world.entity.Entity;
 import nl.t64.game.rpg.screens.world.entity.GraphicsNpc;
@@ -46,6 +47,9 @@ class NpcEntitiesLoader {
     }
 
     private void loadNpcEntity(GameMapNpc gameMapNpc) {
+        if (!ConditionDatabase.getInstance().isMeetingConditions(gameMapNpc.getConditionIds())) {
+            return;
+        }
         String entityId = gameMapNpc.getName();
         var npcEntity = new Entity(entityId, new InputNpc(), new PhysicsNpc(), new GraphicsNpc(entityId));
         npcEntities.add(npcEntity);

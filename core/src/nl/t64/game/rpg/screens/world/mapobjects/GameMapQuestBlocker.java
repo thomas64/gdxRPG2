@@ -18,7 +18,7 @@ public class GameMapQuestBlocker extends GameMapObject implements BlockObserver 
 
     public GameMapQuestBlocker(RectangleMapObject rectObject) {
         super.rectangle = rectObject.getRectangle();
-        this.questId = rectObject.getProperties().get("type", String.class);
+        this.questId = rectObject.getName();
         this.isActiveIfComplete = rectObject.getProperties().get("activeIfComplete", Boolean.class);
         this.taskId = rectObject.getProperties().get("task", String.class);
         this.isActive = rectObject.getProperties().get("isActive", Boolean.class);

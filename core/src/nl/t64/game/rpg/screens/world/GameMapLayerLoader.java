@@ -46,7 +46,9 @@ record GameMapLayerLoader(TiledMap tiledMap) {
     }
 
     <T> List<T> equalsIgnoreCase(String layerName, String match, Function<RectangleMapObject, T> mapper) {
-        return loadLayer(layerName, rectObject -> rectObject.getName().equalsIgnoreCase(match), mapper);
+        return loadLayer(layerName,
+                         rectObject -> rectObject.getProperties().get("type", String.class).equalsIgnoreCase(match),
+                         mapper);
     }
 
     <T> List<T> loadLayer(String layerName, Predicate<RectangleMapObject> filter, Function<RectangleMapObject, T> mapper) {
