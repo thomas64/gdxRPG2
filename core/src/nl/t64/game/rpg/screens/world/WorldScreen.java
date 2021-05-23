@@ -314,6 +314,7 @@ public class WorldScreen implements Screen,
         }
         doorList.forEach(door -> door.update(dt));
         lootList.forEach(loot -> loot.update(dt));
+        npcEntities.forEach(enemyNpc -> enemyNpc.send(new PathUpdateEvent(getPathOf(enemyNpc))));
         npcEntities.forEach(npcEntity -> npcEntity.update(dt));
         partyMembers.forEach(partyMember -> partyMember.send(new PathUpdateEvent(getPathOf(partyMember))));
         partyMembers.forEach(partyMember -> partyMember.update(dt));
@@ -342,16 +343,19 @@ public class WorldScreen implements Screen,
                 .forEach(door -> door.render(mapRenderer.getBatch()));
     }
 
-    private DefaultGraphPath<TiledNode> getPathOf(Entity partyMember) {
-        final Vector2 startPoint = partyMember.getPositionInGrid();
-        final Vector2 endPoint;
-        final int index = partyMembers.indexOf(partyMember);
-        if (index == 0) {
-            endPoint = player.getPositionInGrid();
-        } else {
-            endPoint = partyMembers.get(index - 1).getPositionInGrid();
-        }
+    private DefaultGraphPath<TiledNode> getPathOf(Entity npc) {
+        final Vector2 startPoint = npc.getPositionInGrid();
+        final Vector2 endPoint = getEndPoint(npc);
         return Utils.getMapManager().getCurrentMap().tiledGraph.findPath(startPoint, endPoint);
+    }
+
+    private Vector2 getEndPoint(Entity npc) {
+        int index = partyMembers.indexOf(npc);
+        if (index <= 0) {
+            return player.getPositionInGrid();
+        } else {
+            return partyMembers.get(index - 1).getPositionInGrid();
+        }
     }
 
     public void doBeforeLoadScreen() {

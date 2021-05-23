@@ -3,10 +3,7 @@ package nl.t64.game.rpg.screens.world;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.components.condition.ConditionDatabase;
 import nl.t64.game.rpg.components.party.HeroItem;
-import nl.t64.game.rpg.screens.world.entity.Entity;
-import nl.t64.game.rpg.screens.world.entity.GraphicsNpc;
-import nl.t64.game.rpg.screens.world.entity.InputNpc;
-import nl.t64.game.rpg.screens.world.entity.PhysicsNpc;
+import nl.t64.game.rpg.screens.world.entity.*;
 import nl.t64.game.rpg.screens.world.entity.events.LoadEntityEvent;
 import nl.t64.game.rpg.screens.world.mapobjects.GameMapHero;
 import nl.t64.game.rpg.screens.world.mapobjects.GameMapNpc;
@@ -28,6 +25,7 @@ class NpcEntitiesLoader {
     List<Entity> createNpcs() {
         loadNpcs();
         loadHeroes();
+        loadEnemies();
         return List.copyOf(npcEntities);
     }
 
@@ -39,11 +37,26 @@ class NpcEntitiesLoader {
         currentMap.heroes.forEach(this::loadHero);
     }
 
+    private void loadEnemies() {
+        currentMap.enemies.forEach(this::loadEnemy);
+    }
+
     private void loadHero(GameMapHero gameMapHero) {
         HeroItem hero = Utils.getGameData().getHeroes().getHero(gameMapHero.getName());
         if (gameMapHero.isHasBeenRecruited() == hero.isHasBeenRecruited()) {
             loadNpcEntity(gameMapHero);
         }
+    }
+
+    private void loadEnemy(GameMapNpc gameMapNpc) {
+        String entityId = gameMapNpc.getName();
+        var enemyEntity = new Entity(entityId, new InputEnemy(), new PhysicsEnemy(), new GraphicsEnemy(entityId));
+        npcEntities.add(enemyEntity);
+        Utils.getBrokerManager().detectionObservers.addObserver(enemyEntity);
+        Utils.getBrokerManager().bumpObservers.addObserver(enemyEntity);
+        enemyEntity.send(new LoadEntityEvent(gameMapNpc.getState(),
+                                             gameMapNpc.getDirection(),
+                                             gameMapNpc.getPosition()));
     }
 
     private void loadNpcEntity(GameMapNpc gameMapNpc) {

@@ -40,9 +40,11 @@ public class GameMapNpc extends GameMapObject {
         } else if (entityState.equalsIgnoreCase("inv")) {
             return EntityState.INVISIBLE;
         } else if (entityState.equalsIgnoreCase("w")) {
-            return EntityState.getRandom();
+            return EntityState.getRandomIdleOrWalking();
+        } else if (entityState.equalsIgnoreCase("ia")) {
+            return EntityState.IDLE_ANIMATING;
         } else if (entityState.equalsIgnoreCase("f")) {
-            return EntityState.FLOATING;
+            return EntityState.FLYING;
         } else {
             throw new IllegalArgumentException(String.format("EntityState '%s' unknown.", entityState));
         }

@@ -36,7 +36,7 @@ public class GraphicsPlayer extends GraphicsComponent {
         }
         if (event instanceof PositionEvent positionEvent) {
             position = positionEvent.position;
-            feetPosition = getFeetPosition();
+            feetPosition = new Vector2(position.x + Constant.HALF_TILE_SIZE, position.y);
         }
         if (event instanceof SpeedEvent speedEvent) {
             setFrameDuration(speedEvent.moveSpeed);
@@ -98,16 +98,6 @@ public class GraphicsPlayer extends GraphicsComponent {
         } else {
             stepCount = 0f;
         }
-    }
-
-    private Vector2 getFeetPosition() {
-        return switch (direction) {
-            case NORTH -> new Vector2(position.x + Constant.HALF_TILE_SIZE, position.y + (Constant.TILE_SIZE * 0.2f));
-            case SOUTH -> new Vector2(position.x + Constant.HALF_TILE_SIZE, position.y - (Constant.TILE_SIZE * 0.2f));
-            case WEST -> new Vector2(position.x + (Constant.TILE_SIZE * 0.2f), position.y);
-            case EAST -> new Vector2(position.x + (Constant.TILE_SIZE * 0.7f), position.y);
-            case NONE -> throw new IllegalArgumentException("Direction 'NONE' is not usable.");
-        };
     }
 
 }

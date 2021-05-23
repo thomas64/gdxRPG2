@@ -17,7 +17,7 @@ public class TiledNode {
     TiledNode(int x, int y) {
         this.x = x;
         this.y = y;
-        this.isCollision = Utils.getBrokerManager().blockObservers.isCurrentlyBlocking(x, y);
+        this.isCollision = Utils.getBrokerManager().blockObservers.isBlockerBlockingGridPoint(x, y);
         this.connections = new Array<>(MAX_CONNECTIONS);
     }
 

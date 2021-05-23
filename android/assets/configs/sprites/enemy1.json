@@ -1,0 +1,4 @@
+{
+  "green_slime": {"source": "slimes", "col": 3, "row": 1},
+  "blue_bat"   : {"source": "bats", "col": 2, "row": 2}
+}

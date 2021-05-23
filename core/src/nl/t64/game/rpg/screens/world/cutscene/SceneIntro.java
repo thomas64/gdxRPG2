@@ -378,7 +378,7 @@ public class SceneIntro extends CutsceneScreen {
                 Actions.addAction(Actions.sequence(
                         Actions.delay(1f),
                         Actions.run(() -> mozes.setEntityState(EntityState.WALKING)),
-                        actionMoveTo(mozes, 480f, 48f, 5f, NORMAL_STEP),
+                        actionMoveTo(mozes, 480f, 60f, 5f, NORMAL_STEP),
                         Actions.run(() -> mozes.setEntityState(EntityState.IDLE)),
                         Actions.delay(1f),
                         Actions.run(() -> showConversationDialog("cutscene_intro_6", "mozes"))

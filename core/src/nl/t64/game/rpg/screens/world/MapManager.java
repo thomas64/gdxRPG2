@@ -197,6 +197,7 @@ public class MapManager implements ProfileObserver {
         Utils.getBrokerManager().actionObservers.removeAllObservers();
         Utils.getBrokerManager().blockObservers.removeAllObservers();
         Utils.getBrokerManager().bumpObservers.removeAllObservers();
+        Utils.getBrokerManager().detectionObservers.removeAllObservers();
         Utils.getBrokerManager().collisionObservers.removeAllObservers();
         if (currentMap != null) {
             currentMap.dispose();

@@ -58,7 +58,7 @@ public class InputNpc extends InputComponent {
                 direction = Direction.getRandom();
                 break;
             case IMMOBILE:
-            case FLOATING:
+            case IDLE_ANIMATING:
                 direction = originalDirection;
                 break;
             default:

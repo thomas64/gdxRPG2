@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import lombok.Getter;
@@ -11,14 +12,16 @@ import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.screens.world.entity.events.Event;
 import nl.t64.game.rpg.screens.world.entity.events.OnActionEvent;
 import nl.t64.game.rpg.screens.world.entity.events.OnBumpEvent;
+import nl.t64.game.rpg.screens.world.entity.events.OnDetectionEvent;
 import nl.t64.game.rpg.subjects.ActionObserver;
 import nl.t64.game.rpg.subjects.BlockObserver;
 import nl.t64.game.rpg.subjects.BumpObserver;
+import nl.t64.game.rpg.subjects.DetectionObserver;
 
 import java.util.Optional;
 
 
-public class Entity implements ActionObserver, BlockObserver, BumpObserver {
+public class Entity implements ActionObserver, BlockObserver, BumpObserver, DetectionObserver {
 
     @Getter
     private final String id;
@@ -55,6 +58,11 @@ public class Entity implements ActionObserver, BlockObserver, BumpObserver {
     @Override
     public void onNotifyBump(Rectangle biggerBoundingBox, Rectangle checkRect, Vector2 playerPosition) {
         send(new OnBumpEvent(biggerBoundingBox, checkRect, playerPosition));
+    }
+
+    @Override
+    public void onNotifyDetection(Circle detectionRange) {
+        send(new OnDetectionEvent(detectionRange, getPosition()));
     }
 
     public void send(Event event) {

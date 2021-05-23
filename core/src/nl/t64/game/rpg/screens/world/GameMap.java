@@ -34,6 +34,7 @@ public class GameMap {
     private static final String SAVE_LAYER = "save";
     private static final String NPC_LAYER = "npc";
     private static final String HERO_LAYER = "hero";
+    private static final String ENEMY_LAYER = "enemy";
     private static final String COLLISION_LAYER = "collision";
     private static final String SPAWN_LAYER = "spawn";
     private static final String PORTAL_LAYER = "portal";
@@ -61,6 +62,7 @@ public class GameMap {
 
     final List<GameMapNpc> npcs;
     final List<GameMapHero> heroes;
+    final List<GameMapNpc> enemies;
     final List<GameMapLight> lights;
     final List<GameMapQuestBlocker> questBlockers;
     final List<GameMapQuestTexture> upperTextures;
@@ -105,6 +107,7 @@ public class GameMap {
         this.sounds = loader.loadLayer(SOUND_LAYER);
         this.npcs = loader.loadLayer(NPC_LAYER, GameMapNpc::new);
         this.heroes = loader.loadLayer(HERO_LAYER, rectObject -> Utils.getGameData().getHeroes().contains(rectObject.getName()), GameMapHero::new);
+        this.enemies = loader.loadLayer(ENEMY_LAYER, GameMapNpc::new);
         this.blockers = loader.loadLayer(COLLISION_LAYER, GameMapBlocker::new);
         this.lights = loader.loadLayer(LIGHTS_LAYER, GameMapLight::new);
 
@@ -204,8 +207,8 @@ public class GameMap {
 
         shapeRenderer.setColor(Color.BLUE);
 
-        Stream.of(portals, spawnPoints, npcs, heroes, eventDiscovers, cutsceneDiscovers, questDiscovers, questCheckers,
-                  notes)
+        Stream.of(portals, spawnPoints, npcs, heroes, enemies, eventDiscovers, eventCheckers, cutsceneDiscovers,
+                  questDiscovers, questCheckers, notes)
               .flatMap(Collection::stream)
               .map(GameMapObject::getRectangle)
               .forEach(rect -> shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height));

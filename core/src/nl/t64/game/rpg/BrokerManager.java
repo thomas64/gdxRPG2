@@ -8,6 +8,7 @@ public class BrokerManager {
     public final ActionSubject actionObservers;
     public final BlockSubject blockObservers;
     public final BumpSubject bumpObservers;
+    public final DetectionSubject detectionObservers;
     public final CollisionSubject collisionObservers;
 
     public final ComponentSubject componentObservers;
@@ -21,6 +22,7 @@ public class BrokerManager {
         this.actionObservers = new ActionSubject();
         this.blockObservers = new BlockSubject();
         this.bumpObservers = new BumpSubject();
+        this.detectionObservers = new DetectionSubject();
         this.collisionObservers = new CollisionSubject();
 
         this.componentObservers = new ComponentSubject();

@@ -32,12 +32,12 @@ public class BlockSubject {
                    .toList();
     }
 
-    public boolean isCurrentlyBlocking(float x, float y) {
+    public boolean isBlockerBlockingGridPoint(float x, float y) {
         return List.copyOf(observers).stream()
-                   .anyMatch(observer -> observer.isBlocking(getFormattedPoint(x, y)));
+                   .anyMatch(observer -> observer.isBlocking(getGridPoint(x, y)));
     }
 
-    private Vector2 getFormattedPoint(float x, float y) {
+    private Vector2 getGridPoint(float x, float y) {
         return new Vector2(x * Constant.HALF_TILE_SIZE + 1f,
                            y * Constant.HALF_TILE_SIZE + 1f);
     }

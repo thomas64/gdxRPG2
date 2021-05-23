@@ -1,29 +1,32 @@
 package nl.t64.game.rpg.screens.world.entity;
 
+import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.screens.world.entity.events.*;
+import nl.t64.game.rpg.screens.world.pathfinding.PathfindingObstacleChecker;
+import nl.t64.game.rpg.screens.world.pathfinding.TiledNode;
 
 
-public class PhysicsNpc extends PhysicsComponent {
+public class PhysicsEnemy extends PhysicsComponent {
 
     private static final float WANDER_BOX_SIZE = 240f;
     private static final float WANDER_BOX_POSITION = -96f;
 
-    private Entity npcEntity;
+    private Entity enemyEntity;
     private Rectangle wanderBox;
+    private DefaultGraphPath<TiledNode> path;
+    private boolean isDetectingPlayer;
 
-    String conversationId;
-    private boolean isSelected;
-
-    public PhysicsNpc() {
-        this.isSelected = false;
+    public PhysicsEnemy() {
         this.velocity = Constant.MOVE_SPEED_1;
-        this.boundingBoxWidthPercentage = 0.50f;
+        this.boundingBoxWidthPercentage = 0.80f;
         this.boundingBoxHeightPercentage = 0.30f;
+        this.isDetectingPlayer = false;
     }
 
     @Override
@@ -37,15 +40,12 @@ public class PhysicsNpc extends PhysicsComponent {
         if (event instanceof DirectionEvent directionEvent) {
             direction = directionEvent.direction;
         }
-        if (event instanceof OnActionEvent onActionEvent) {
-            if (onActionEvent.checkRect.overlaps(boundingBox)) {
-                isSelected = true;
-                npcEntity.send(new WaitEvent(currentPosition, onActionEvent.playerPosition));
-            }
+        if (event instanceof PathUpdateEvent pathUpdateEvent) {
+            path = pathUpdateEvent.path;
         }
-        if (event instanceof OnBumpEvent onBumpEvent) {
-            if (onBumpEvent.biggerBoundingBox.overlaps(boundingBox) || onBumpEvent.checkRect.overlaps(boundingBox)) {
-                npcEntity.send(new WaitEvent(currentPosition, onBumpEvent.playerPosition));
+        if (event instanceof OnDetectionEvent onDetectionEvent) {
+            if (onDetectionEvent.detectionRange().contains(onDetectionEvent.ownPosition())) {
+                isDetectingPlayer = true;
             }
         }
     }
@@ -56,22 +56,21 @@ public class PhysicsNpc extends PhysicsComponent {
     }
 
     @Override
-    public void update(Entity thisNpcEntity, float dt) {
-        this.npcEntity = thisNpcEntity;
+    public void update(Entity thisEnemyEntity, float dt) {
+        this.enemyEntity = thisEnemyEntity;
         relocate(dt);
-        checkObstacles();
-        npcEntity.send(new PositionEvent(currentPosition));
-        if (isSelected) {
-            isSelected = false;
-            Utils.getBrokerManager().componentObservers.notifyShowConversationDialog(conversationId, npcEntity);
+        if (isDetectingPlayer) {
+            checkObstaclesWhileDetecting(dt);
+        } else {
+            checkObstaclesWhileWandering();
         }
+        enemyEntity.send(new PositionEvent(currentPosition));
     }
 
     private void initNpc(LoadEntityEvent loadEvent) {
         state = loadEvent.state;
         currentPosition = loadEvent.position;
         direction = loadEvent.direction;
-        conversationId = loadEvent.conversationId;
         setWanderBox();
         setBoundingBox();
     }
@@ -82,13 +81,24 @@ public class PhysicsNpc extends PhysicsComponent {
         }
     }
 
-    private void checkObstacles() {
+    private void checkObstaclesWhileDetecting(float dt) {
+        isDetectingPlayer = false;
+        setWanderBox();
+        if (!Utils.getBrokerManager().blockObservers.getCurrentBlockersFor(boundingBox).isEmpty()) {
+            Vector2 positionInGrid = enemyEntity.getPositionInGrid();
+            direction = new PathfindingObstacleChecker(positionInGrid, direction).getNewDirection();
+            currentPosition.set(oldPosition);
+            move(dt);
+        }
+    }
+
+    private void checkObstaclesWhileWandering() {
         switch (state) {
             case WALKING, FLYING -> {
                 boolean moveBack1 = checkWanderBox();
                 boolean moveBack2 = checkBlockers();
                 if (moveBack1 || moveBack2) {
-                    npcEntity.send(new CollisionEvent());
+                    enemyEntity.send(new CollisionEvent());
                 }
             }
         }
@@ -127,6 +137,13 @@ public class PhysicsNpc extends PhysicsComponent {
         }
         shapeRenderer.setColor(Color.YELLOW);
         shapeRenderer.rect(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
+
+        shapeRenderer.setColor(Color.MAGENTA);
+        for (TiledNode tiledNode : path) {
+            final int x = (int) (tiledNode.x * Constant.HALF_TILE_SIZE);
+            final int y = (int) (tiledNode.y * Constant.HALF_TILE_SIZE);
+            shapeRenderer.rect(x, y, Constant.HALF_TILE_SIZE, Constant.HALF_TILE_SIZE);
+        }
     }
 
 }

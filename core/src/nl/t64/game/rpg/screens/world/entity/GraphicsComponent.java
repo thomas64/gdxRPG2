@@ -47,7 +47,8 @@ abstract class GraphicsComponent implements Component {
                 frameTime = frameDuration - dt;
                 break;
             case WALKING:
-            case FLOATING:
+            case FLYING:
+            case IDLE_ANIMATING:
                 frameTime = (frameTime + dt) % 12; // dividable by 0.15, 0.25 and 0.5, these are player speed frames.
                 if (frameDuration == Constant.NO_FRAMES) { // no player animation when high speed moving.
                     setCurrentFrame(Constant.NO_FRAMES);

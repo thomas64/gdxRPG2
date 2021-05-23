@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.screens.world.entity.events.*;
+import nl.t64.game.rpg.screens.world.pathfinding.PathfindingObstacleChecker;
 import nl.t64.game.rpg.screens.world.pathfinding.TiledNode;
 
 
@@ -62,67 +63,10 @@ public class PhysicsPartyMember extends PhysicsComponent {
 
     private void checkObstacles(float dt) {
         if (!Utils.getBrokerManager().blockObservers.getCurrentBlockersFor(boundingBox).isEmpty()) {
-            switch (direction) {
-                case SOUTH -> setDirectionWhenBlockersAreSouth();
-                case NORTH -> setDirectionWhenBlockersAreNorth();
-                case WEST -> setDirectionWhenBlockersAreWest();
-                case EAST -> setDirectionWhenBlockersAreEast();
-                case NONE -> throw new IllegalArgumentException("Direction 'NONE' is not usable.");
-            }
+            Vector2 positionInGrid = partyMember.getPositionInGrid();
+            direction = new PathfindingObstacleChecker(positionInGrid, direction).getNewDirection();
             currentPosition.set(oldPosition);
             move(dt);
-        }
-    }
-
-    private void setDirectionWhenBlockersAreSouth() {
-        final var observers = Utils.getBrokerManager().blockObservers;
-        final Vector2 positionInGrid = partyMember.getPositionInGrid();
-        final float x = positionInGrid.x;
-        final float y = positionInGrid.y;
-
-        if (observers.isCurrentlyBlocking(x + 1, y - 1)) {
-            direction = Direction.WEST;
-        } else if (observers.isCurrentlyBlocking(x - 1, y - 1)) {
-            direction = Direction.EAST;
-        }
-    }
-
-    private void setDirectionWhenBlockersAreNorth() {
-        final var observers = Utils.getBrokerManager().blockObservers;
-        final Vector2 positionInGrid = partyMember.getPositionInGrid();
-        final float x = positionInGrid.x;
-        final float y = positionInGrid.y;
-
-        if (observers.isCurrentlyBlocking(x + 1, y + 1)) {
-            direction = Direction.WEST;
-        } else if (observers.isCurrentlyBlocking(x - 1, y + 1)) {
-            direction = Direction.EAST;
-        }
-    }
-
-    private void setDirectionWhenBlockersAreWest() {
-        final var observers = Utils.getBrokerManager().blockObservers;
-        final Vector2 positionInGrid = partyMember.getPositionInGrid();
-        final float x = positionInGrid.x;
-        final float y = positionInGrid.y;
-
-        if (observers.isCurrentlyBlocking(x - 1, y + 1)) {
-            direction = Direction.SOUTH;
-        } else if (observers.isCurrentlyBlocking(x - 1, y - 1)) {
-            direction = Direction.NORTH;
-        }
-    }
-
-    private void setDirectionWhenBlockersAreEast() {
-        final var observers = Utils.getBrokerManager().blockObservers;
-        final Vector2 positionInGrid = partyMember.getPositionInGrid();
-        final float x = positionInGrid.x;
-        final float y = positionInGrid.y;
-
-        if (observers.isCurrentlyBlocking(x + 1, y + 1)) {
-            direction = Direction.SOUTH;
-        } else if (observers.isCurrentlyBlocking(x + 1, y - 1)) {
-            direction = Direction.NORTH;
         }
     }
 

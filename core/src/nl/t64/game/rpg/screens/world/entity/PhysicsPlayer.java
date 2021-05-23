@@ -2,7 +2,9 @@ package nl.t64.game.rpg.screens.world.entity;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.screens.world.entity.events.*;
@@ -13,9 +15,11 @@ import java.util.List;
 public class PhysicsPlayer extends PhysicsComponent {
 
     private boolean isActionPressed;
+    private float detectionRadius;
 
     public PhysicsPlayer() {
         this.isActionPressed = false;
+        this.detectionRadius = 0f;
         this.boundingBoxWidthPercentage = 0.80f;
         this.boundingBoxHeightPercentage = 0.30f;
     }
@@ -35,6 +39,7 @@ public class PhysicsPlayer extends PhysicsComponent {
         }
         if (event instanceof SpeedEvent speedEvent) {
             velocity = speedEvent.moveSpeed;
+            detectionRadius = speedEvent.moveSpeed;
         }
         if (event instanceof ActionEvent) {
             isActionPressed = true;
@@ -72,6 +77,7 @@ public class PhysicsPlayer extends PhysicsComponent {
 
     private void collisionObstacles(float dt) {
         if (velocity != Constant.MOVE_SPEED_4) {
+            Utils.getBrokerManager().detectionObservers.notifyDetection(new Circle(getFeetPosition(), detectionRadius));
             Utils.getBrokerManager().bumpObservers.notifyBump(getALittleBitBiggerBoundingBox(),
                                                               getCheckRect(), currentPosition);
             if (state.equals(EntityState.WALKING)) {
@@ -212,6 +218,10 @@ public class PhysicsPlayer extends PhysicsComponent {
         checkRect.setY(boundingBox.y - 3f);
     }
 
+    private Vector2 getFeetPosition() {
+        return new Vector2(currentPosition.x + Constant.HALF_TILE_SIZE, currentPosition.y);
+    }
+
     @Override
     public void debug(ShapeRenderer shapeRenderer) {
         shapeRenderer.setColor(Color.YELLOW);
@@ -226,6 +236,8 @@ public class PhysicsPlayer extends PhysicsComponent {
                            getCheckRect().y,
                            getCheckRect().width,
                            getCheckRect().height);
+        shapeRenderer.setColor(Color.LIGHT_GRAY);
+        shapeRenderer.circle(getFeetPosition().x, getFeetPosition().y, detectionRadius);
     }
 
 }
