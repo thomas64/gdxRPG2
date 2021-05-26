@@ -1,7 +1,5 @@
 package nl.t64.game.rpg.subjects;
 
-import com.badlogic.gdx.math.Circle;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +20,8 @@ public class DetectionSubject {
         observers.clear();
     }
 
-    public void notifyDetection(Circle detectionRange) {
-        List.copyOf(observers).forEach(observer -> observer.onNotifyDetection(detectionRange));
+    public void notifyDetection(float playerMoveSpeed) {
+        List.copyOf(observers).forEach(observer -> observer.onNotifyDetection(playerMoveSpeed));
     }
 
 }

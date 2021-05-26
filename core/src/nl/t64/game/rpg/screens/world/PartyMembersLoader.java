@@ -41,6 +41,7 @@ class PartyMembersLoader {
 
     private void addToPartyMembers(Entity partyMember) {
         partyMembers.add(partyMember);
+        Utils.getBrokerManager().detectionObservers.addObserver(partyMember);
         partyMember.send(new LoadEntityEvent(EntityState.IDLE, player.getDirection(), player.getPosition().cpy()));
     }
 

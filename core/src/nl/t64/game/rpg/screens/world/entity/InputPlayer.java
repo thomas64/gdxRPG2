@@ -208,9 +208,6 @@ public class InputPlayer extends InputComponent implements InputProcessor {
             moveSpeed = Constant.MOVE_SPEED_1;
         }
         player.send(new SpeedEvent(moveSpeed));
-        for (Entity partyMember : Utils.getScreenManager().getWorldScreen().getPartyMembers()) {
-            partyMember.send(new SpeedEvent(moveSpeed));
-        }
     }
 
     private void countKeyDownTime() {

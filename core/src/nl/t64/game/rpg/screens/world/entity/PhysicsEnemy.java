@@ -3,7 +3,6 @@ package nl.t64.game.rpg.screens.world.entity;
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.constants.Constant;
@@ -14,11 +13,6 @@ import nl.t64.game.rpg.screens.world.pathfinding.TiledNode;
 
 public class PhysicsEnemy extends PhysicsComponent {
 
-    private static final float WANDER_BOX_SIZE = 240f;
-    private static final float WANDER_BOX_POSITION = -96f;
-
-    private Entity enemyEntity;
-    private Rectangle wanderBox;
     private DefaultGraphPath<TiledNode> path;
     private boolean isDetectingPlayer;
 
@@ -43,28 +37,9 @@ public class PhysicsEnemy extends PhysicsComponent {
         if (event instanceof PathUpdateEvent pathUpdateEvent) {
             path = pathUpdateEvent.path;
         }
-        if (event instanceof OnDetectionEvent onDetectionEvent) {
-            if (onDetectionEvent.detectionRange().contains(onDetectionEvent.ownPosition())) {
-                isDetectingPlayer = true;
-            }
+        if (event instanceof DetectionEvent detectionEvent) {
+            isDetectingPlayer = detectionEvent.isDetectingPlayer();
         }
-    }
-
-    @Override
-    public void dispose() {
-        // empty
-    }
-
-    @Override
-    public void update(Entity thisEnemyEntity, float dt) {
-        this.enemyEntity = thisEnemyEntity;
-        relocate(dt);
-        if (isDetectingPlayer) {
-            checkObstaclesWhileDetecting(dt);
-        } else {
-            checkObstaclesWhileWandering();
-        }
-        enemyEntity.send(new PositionEvent(currentPosition));
     }
 
     private void initNpc(LoadEntityEvent loadEvent) {
@@ -75,57 +50,26 @@ public class PhysicsEnemy extends PhysicsComponent {
         setBoundingBox();
     }
 
-    private void relocate(float dt) {
-        switch (state) {
-            case WALKING, FLYING -> move(dt);
+    @Override
+    public void update(Entity thisEnemyEntity, float dt) {
+        entity = thisEnemyEntity;
+        relocate(dt);
+        if (isDetectingPlayer) {
+            checkObstaclesWhileDetecting(dt);
+        } else {
+            checkObstacles();
         }
+        entity.send(new PositionEvent(currentPosition));
     }
 
     private void checkObstaclesWhileDetecting(float dt) {
-        isDetectingPlayer = false;
         setWanderBox();
         if (!Utils.getBrokerManager().blockObservers.getCurrentBlockersFor(boundingBox).isEmpty()) {
-            Vector2 positionInGrid = enemyEntity.getPositionInGrid();
+            Vector2 positionInGrid = entity.getPositionInGrid();
             direction = new PathfindingObstacleChecker(positionInGrid, direction).getNewDirection();
             currentPosition.set(oldPosition);
             move(dt);
         }
-    }
-
-    private void checkObstaclesWhileWandering() {
-        switch (state) {
-            case WALKING, FLYING -> {
-                boolean moveBack1 = checkWanderBox();
-                boolean moveBack2 = checkBlockers();
-                if (moveBack1 || moveBack2) {
-                    enemyEntity.send(new CollisionEvent());
-                }
-            }
-        }
-    }
-
-    private boolean checkWanderBox() {
-        boolean moveBack = false;
-        while (!wanderBox.contains(boundingBox)) {
-            moveBack();
-            moveBack = true;
-        }
-        return moveBack;
-    }
-
-    private boolean checkBlockers() {
-        boolean moveBack = false;
-        while (doesBoundingBoxOverlapsBlockers()) {
-            moveBack();
-            moveBack = true;
-        }
-        return moveBack;
-    }
-
-    private void setWanderBox() {
-        wanderBox = new Rectangle(currentPosition.x + WANDER_BOX_POSITION,
-                                  currentPosition.y + WANDER_BOX_POSITION,
-                                  WANDER_BOX_SIZE, WANDER_BOX_SIZE);
     }
 
     @Override

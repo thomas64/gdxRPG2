@@ -10,6 +10,6 @@
   },
   "guide_event_slow"     : {
     "type": "messagebox",
-    "text": "Press %slow% to walk slowly.\nEnemies will detect you less easy."
+    "text": "Keep %slow% pressed to move stealthily.\nEnemies will detect you less easy.\nComing to close will start a battle anyway."
   }
 }

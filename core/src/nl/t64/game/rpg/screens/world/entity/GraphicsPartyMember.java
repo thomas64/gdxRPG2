@@ -27,8 +27,8 @@ public class GraphicsPartyMember extends GraphicsComponent {
         if (event instanceof PositionEvent positionEvent) {
             position = positionEvent.position;
         }
-        if (event instanceof SpeedEvent speedEvent) {
-            setFrameDuration(speedEvent.moveSpeed);
+        if (event instanceof OnDetectionEvent onDetectionEvent) {
+            setFrameDuration(onDetectionEvent.moveSpeed());
         }
     }
 

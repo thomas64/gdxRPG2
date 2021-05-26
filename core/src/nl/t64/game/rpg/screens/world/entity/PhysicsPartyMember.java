@@ -13,7 +13,6 @@ import nl.t64.game.rpg.screens.world.pathfinding.TiledNode;
 
 public class PhysicsPartyMember extends PhysicsComponent {
 
-    private Entity partyMember;
     private DefaultGraphPath<TiledNode> path;
 
     public PhysicsPartyMember() {
@@ -34,8 +33,8 @@ public class PhysicsPartyMember extends PhysicsComponent {
         if (event instanceof DirectionEvent directionEvent) {
             direction = directionEvent.direction;
         }
-        if (event instanceof SpeedEvent speedEvent) {
-            velocity = speedEvent.moveSpeed;
+        if (event instanceof OnDetectionEvent onDetectionEvent) {
+            velocity = onDetectionEvent.moveSpeed();
         }
         if (event instanceof PathUpdateEvent pathUpdateEvent) {
             path = pathUpdateEvent.path;
@@ -43,27 +42,16 @@ public class PhysicsPartyMember extends PhysicsComponent {
     }
 
     @Override
-    public void dispose() {
-        // empty
-    }
-
-    @Override
     public void update(Entity partyMember, float dt) {
-        this.partyMember = partyMember;
+        entity = partyMember;
         relocate(dt);
         checkObstacles(dt);
         partyMember.send(new PositionEvent(currentPosition));
     }
 
-    private void relocate(float dt) {
-        if (state.equals(EntityState.WALKING)) {
-            move(dt);
-        }
-    }
-
     private void checkObstacles(float dt) {
         if (!Utils.getBrokerManager().blockObservers.getCurrentBlockersFor(boundingBox).isEmpty()) {
-            Vector2 positionInGrid = partyMember.getPositionInGrid();
+            Vector2 positionInGrid = entity.getPositionInGrid();
             direction = new PathfindingObstacleChecker(positionInGrid, direction).getNewDirection();
             currentPosition.set(oldPosition);
             move(dt);

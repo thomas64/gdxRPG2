@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import lombok.Getter;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.audio.AudioEvent;
@@ -65,7 +64,6 @@ public class WorldScreen implements Screen,
     private final DebugBox debugBox;
 
     private final Entity player;
-    @Getter
     private List<Entity> partyMembers;
     private List<Entity> npcEntities;
     private Entity currentNpcEntity;

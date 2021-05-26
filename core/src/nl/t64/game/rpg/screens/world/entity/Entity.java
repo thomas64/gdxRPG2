@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import lombok.Getter;
@@ -61,8 +60,8 @@ public class Entity implements ActionObserver, BlockObserver, BumpObserver, Dete
     }
 
     @Override
-    public void onNotifyDetection(Circle detectionRange) {
-        send(new OnDetectionEvent(detectionRange, getPosition()));
+    public void onNotifyDetection(float playerMoveSpeed) {
+        send(new OnDetectionEvent(playerMoveSpeed));
     }
 
     public void send(Event event) {

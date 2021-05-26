@@ -32,11 +32,6 @@ public class PhysicsSparkle extends PhysicsComponent {
     }
 
     @Override
-    public void dispose() {
-        // empty
-    }
-
-    @Override
     public void update(Entity entity, float dt) {
         if (isSelected) {
             isSelected = false;
