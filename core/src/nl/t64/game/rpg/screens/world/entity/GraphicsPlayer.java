@@ -29,18 +29,18 @@ public class GraphicsPlayer extends GraphicsComponent {
             direction = loadEvent.direction;
         }
         if (event instanceof StateEvent stateEvent) {
-            state = stateEvent.state;
+            state = stateEvent.state();
         }
         if (event instanceof DirectionEvent directionEvent) {
-            direction = directionEvent.direction;
+            direction = directionEvent.direction();
         }
         if (event instanceof PositionEvent positionEvent) {
-            position = positionEvent.position;
+            position = positionEvent.position();
             feetPosition = new Vector2(position.x + Constant.HALF_TILE_SIZE, position.y);
         }
         if (event instanceof SpeedEvent speedEvent) {
-            setFrameDuration(speedEvent.moveSpeed);
-            moveSpeed = speedEvent.moveSpeed;
+            setFrameDuration(speedEvent.moveSpeed());
+            moveSpeed = speedEvent.moveSpeed();
         }
     }
 

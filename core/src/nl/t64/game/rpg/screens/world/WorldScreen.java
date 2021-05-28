@@ -155,7 +155,7 @@ public class WorldScreen implements Screen,
 
     @Override
     public void onNotifyShowFindDialog(Loot loot, AudioEvent event, String message) {
-        messageDialog.setScreenAfterHide(() -> onNotifyShowFindDialog(loot, event));
+        messageDialog.setActionAfterHide(() -> onNotifyShowFindDialog(loot, event));
         onNotifyShowMessageDialog(message);
     }
 

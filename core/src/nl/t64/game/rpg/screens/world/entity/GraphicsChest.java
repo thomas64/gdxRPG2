@@ -27,7 +27,7 @@ public class GraphicsChest extends GraphicsComponent {
             state = loadEvent.state;
         }
         if (event instanceof StateEvent stateEvent) {
-            state = stateEvent.state;
+            state = stateEvent.state();
         }
     }
 

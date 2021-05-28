@@ -28,13 +28,13 @@ public class PhysicsPlayer extends PhysicsComponent {
             setBoundingBox();
         }
         if (event instanceof StateEvent stateEvent) {
-            state = stateEvent.state;
+            state = stateEvent.state();
         }
         if (event instanceof DirectionEvent directionEvent) {
-            direction = directionEvent.direction;
+            direction = directionEvent.direction();
         }
         if (event instanceof SpeedEvent speedEvent) {
-            velocity = speedEvent.moveSpeed;
+            velocity = speedEvent.moveSpeed();
         }
         if (event instanceof ActionEvent) {
             isActionPressed = true;

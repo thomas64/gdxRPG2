@@ -25,7 +25,7 @@ public class PhysicsSparkle extends PhysicsComponent {
             currentPosition = loadEvent.position;
         }
         if (event instanceof OnActionEvent onActionEvent) {
-            if (onActionEvent.checkRect.overlaps(getRectangle())) {
+            if (onActionEvent.checkRect().overlaps(getRectangle())) {
                 isSelected = true;
             }
         }

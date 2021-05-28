@@ -20,13 +20,13 @@ public class GraphicsEnemy extends GraphicsComponent {
             direction = loadEvent.direction;
         }
         if (event instanceof StateEvent stateEvent) {
-            state = stateEvent.state;
+            state = stateEvent.state();
         }
         if (event instanceof DirectionEvent directionEvent) {
-            direction = directionEvent.direction;
+            direction = directionEvent.direction();
         }
         if (event instanceof PositionEvent positionEvent) {
-            position = positionEvent.position;
+            position = positionEvent.position();
         }
     }
 

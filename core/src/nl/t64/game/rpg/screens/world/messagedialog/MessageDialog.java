@@ -54,7 +54,7 @@ public class MessageDialog {
         }
     }
 
-    public void setScreenAfterHide(Runnable actionAfterHide) {
+    public void setActionAfterHide(Runnable actionAfterHide) {
         this.actionAfterHide = actionAfterHide;
     }
 

@@ -31,9 +31,9 @@ public class PhysicsDoor extends PhysicsComponent {
             setBoundingBox();
         }
         if (event instanceof OnActionEvent onActionEvent) {
-            if ((onActionEvent.playerDirection.equals(Direction.NORTH)
-                 || onActionEvent.playerDirection.equals(Direction.SOUTH))
-                && onActionEvent.checkRect.overlaps(boundingBox)) {
+            if ((onActionEvent.playerDirection().equals(Direction.NORTH)
+                 || onActionEvent.playerDirection().equals(Direction.SOUTH))
+                && onActionEvent.checkRect().overlaps(boundingBox)) {
                 isSelected = true;
             }
         }

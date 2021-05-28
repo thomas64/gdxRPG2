@@ -32,7 +32,7 @@ public class InputEnemy extends InputComponent {
             stateTime = 0f;
         }
         if (event instanceof PathUpdateEvent pathUpdateEvent) {
-            path = pathUpdateEvent.path;
+            path = pathUpdateEvent.path();
         }
         if (event instanceof OnDetectionEvent onDetectionEvent) {
             setIsDetectingPlayer(onDetectionEvent);

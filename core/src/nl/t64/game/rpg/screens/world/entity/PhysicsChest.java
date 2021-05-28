@@ -32,8 +32,8 @@ public class PhysicsChest extends PhysicsComponent {
             setBoundingBox();
         }
         if (event instanceof OnActionEvent onActionEvent) {
-            if (onActionEvent.playerDirection.equals(Direction.NORTH)
-                && onActionEvent.checkRect.overlaps(boundingBox)) {
+            if (onActionEvent.playerDirection().equals(Direction.NORTH)
+                && onActionEvent.checkRect().overlaps(boundingBox)) {
                 isSelected = true;
             }
         }

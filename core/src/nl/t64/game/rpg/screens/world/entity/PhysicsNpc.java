@@ -25,20 +25,20 @@ public class PhysicsNpc extends PhysicsComponent {
             initNpc(loadEvent);
         }
         if (event instanceof StateEvent stateEvent) {
-            state = stateEvent.state;
+            state = stateEvent.state();
         }
         if (event instanceof DirectionEvent directionEvent) {
-            direction = directionEvent.direction;
+            direction = directionEvent.direction();
         }
         if (event instanceof OnActionEvent onActionEvent) {
-            if (onActionEvent.checkRect.overlaps(boundingBox)) {
+            if (onActionEvent.checkRect().overlaps(boundingBox)) {
                 isSelected = true;
-                entity.send(new WaitEvent(currentPosition, onActionEvent.playerPosition));
+                entity.send(new WaitEvent(currentPosition, onActionEvent.playerPosition()));
             }
         }
         if (event instanceof OnBumpEvent onBumpEvent) {
-            if (onBumpEvent.biggerBoundingBox.overlaps(boundingBox) || onBumpEvent.checkRect.overlaps(boundingBox)) {
-                entity.send(new WaitEvent(currentPosition, onBumpEvent.playerPosition));
+            if (onBumpEvent.biggerBoundingBox().overlaps(boundingBox) || onBumpEvent.checkRect().overlaps(boundingBox)) {
+                entity.send(new WaitEvent(currentPosition, onBumpEvent.playerPosition()));
             }
         }
     }
