@@ -54,68 +54,43 @@ public class InputPlayer extends InputComponent implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.CONTROL_LEFT || keycode == Input.Keys.CONTROL_RIGHT
-            || keycode == Constant.KEYCODE_L1) {
-            pressCtrl = true;
-        }
-        if (keycode == Input.Keys.SHIFT_LEFT || keycode == Input.Keys.SHIFT_RIGHT
-            || keycode == Constant.KEYCODE_R1) {
-            pressShift = true;
-        }
-
-        if (keycode == Input.Keys.A || keycode == Constant.KEYCODE_BOTTOM) {
-            pressAction = true;
-        }
-
-        if (keycode == Input.Keys.UP) {
-            pressUp = true;
-        }
-        if (keycode == Input.Keys.DOWN) {
-            pressDown = true;
-        }
-        if (keycode == Input.Keys.LEFT) {
-            pressLeft = true;
-        }
-        if (keycode == Input.Keys.RIGHT) {
-            pressRight = true;
-        }
-
-        if (keycode == Input.Keys.SPACE) {
-            pressAlign = true;
-        }
-        return false;
+        return keyPressed(keycode, true);
     }
 
     @Override
     public boolean keyUp(int keycode) {
+        return keyPressed(keycode, false);
+    }
+
+    private boolean keyPressed(int keycode, boolean isPressed) {
         if (keycode == Input.Keys.CONTROL_LEFT || keycode == Input.Keys.CONTROL_RIGHT
             || keycode == Constant.KEYCODE_L1) {
-            pressCtrl = false;
+            pressCtrl = isPressed;
         }
         if (keycode == Input.Keys.SHIFT_LEFT || keycode == Input.Keys.SHIFT_RIGHT
             || keycode == Constant.KEYCODE_R1) {
-            pressShift = false;
+            pressShift = isPressed;
         }
 
         if (keycode == Input.Keys.A || keycode == Constant.KEYCODE_BOTTOM) {
-            pressAction = false;
+            pressAction = isPressed;
         }
 
         if (keycode == Input.Keys.UP) {
-            pressUp = false;
+            pressUp = isPressed;
         }
         if (keycode == Input.Keys.DOWN) {
-            pressDown = false;
+            pressDown = isPressed;
         }
         if (keycode == Input.Keys.LEFT) {
-            pressLeft = false;
+            pressLeft = isPressed;
         }
         if (keycode == Input.Keys.RIGHT) {
-            pressRight = false;
+            pressRight = isPressed;
         }
 
         if (keycode == Input.Keys.SPACE) {
-            pressAlign = false;
+            pressAlign = isPressed;
         }
         return false;
     }
