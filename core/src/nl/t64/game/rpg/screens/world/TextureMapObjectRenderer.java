@@ -88,7 +88,7 @@ public class TextureMapObjectRenderer extends OrthogonalTiledMapRenderer {
 
     private void renderOtherMapLights() {
         Texture darkness = Utils.createLightmap(LIGHTMAP_ID);
-        for (GameMapLight light : Utils.getMapManager().getCurrentMap().lights) {
+        for (GameMapLight light : Utils.getMapManager().getGameMapLights()) {
             if (light.getId().equals("blue")) {
                 batch.setColor(Color.ROYAL);
             }

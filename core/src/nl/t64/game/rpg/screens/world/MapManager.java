@@ -1,5 +1,6 @@
 package nl.t64.game.rpg.screens.world;
 
+import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -12,6 +13,7 @@ import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.screens.world.entity.Direction;
 import nl.t64.game.rpg.screens.world.mapobjects.*;
+import nl.t64.game.rpg.screens.world.pathfinding.TiledNode;
 import nl.t64.game.rpg.subjects.ProfileObserver;
 
 import java.util.Arrays;
@@ -100,6 +102,14 @@ public class MapManager implements ProfileObserver {
 
     public Sprite getLightmapMap() {
         return currentMap.lightmapMap;
+    }
+
+    public List<GameMapLight> getGameMapLights() {
+        return currentMap.lights;
+    }
+
+    public DefaultGraphPath<TiledNode> findPath(Vector2 startPoint, Vector2 endPoint) {
+        return currentMap.tiledGraph.findPath(startPoint, endPoint);
     }
 
     public Optional<Sprite> getLightmapPlayer() {

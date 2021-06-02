@@ -344,7 +344,7 @@ public class WorldScreen implements Screen,
     private DefaultGraphPath<TiledNode> getPathOf(Entity npc) {
         final Vector2 startPoint = npc.getPositionInGrid();
         final Vector2 endPoint = getEndPoint(npc);
-        return Utils.getMapManager().getCurrentMap().tiledGraph.findPath(startPoint, endPoint);
+        return Utils.getMapManager().findPath(startPoint, endPoint);
     }
 
     private Vector2 getEndPoint(Entity npc) {
