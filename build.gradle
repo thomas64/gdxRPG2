@@ -35,7 +35,7 @@ allprojects {
         jacksonVersion = "2.12.2"
         assertjVersion = "3.19.0"
         mockitoVersion = "3.9.0"
-        junitVersion = "5.7.1"
+        junitVersion = "5.7.2"
     }
 
     repositories {
