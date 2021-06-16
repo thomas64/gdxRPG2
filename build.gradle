@@ -33,7 +33,7 @@ allprojects {
         aiVersion = "1.8.2"
         lombokVersion = "1.18.20"
         jacksonVersion = "2.12.3"
-        assertjVersion = "3.20.0"
+        assertjVersion = "3.20.1"
         mockitoVersion = "3.11.1"
         junitVersion = "5.7.2"
     }
