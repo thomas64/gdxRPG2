@@ -1,4 +1,6 @@
 buildscript {
+    ext.kotlinVersion = '1.5.10'
+
     repositories {
         mavenLocal()
         mavenCentral()
@@ -8,6 +10,7 @@ buildscript {
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.2.1"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
 
@@ -50,6 +53,7 @@ allprojects {
 
 project(":desktop") {
     apply plugin: "java-library"
+    apply plugin: "kotlin"
     sourceCompatibility = 16
 
     dependencies {
@@ -58,11 +62,13 @@ project(":desktop") {
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$controllerVersion"
+        api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     }
 }
 
 project(":android") {
-    apply plugin: "com.android.application"
+    apply plugin: "android"
+    apply plugin: "kotlin-android"
     configurations { natives }
 
     dependencies {
@@ -79,11 +85,13 @@ project(":android") {
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64"
+        api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     }
 }
 
 project(":core") {
     apply plugin: "java-library"
+    apply plugin: "kotlin"
     sourceCompatibility = 16
 
     dependencies {
@@ -96,11 +104,13 @@ project(":core") {
         api "de.golfgl.gdxcontrollerutils:gdx-controllerutils-mapping:$mappingVersion"
         api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         api "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+        api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     }
 }
 
 project(":tests") {
     apply plugin: "java-library"
+    apply plugin: "kotlin"
     sourceCompatibility = 16
 
     dependencies {
@@ -111,5 +121,6 @@ project(":tests") {
         testImplementation "org.assertj:assertj-core:$assertjVersion"
         testImplementation "org.mockito:mockito-core:$mockitoVersion"
         testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+        testImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     }
 }

@@ -13,7 +13,10 @@ class InventoryContainer(numberOfSlots: Int = NUMBER_OF_SLOTS) {
     private val inventory: MutableList<InventoryItem?> = arrayOfNulls<InventoryItem>(numberOfSlots).toMutableList()
 
     fun getAllContent(): Map<String, Int> {
-        return inventory.filterNotNull().associate { Pair(it.id, it.amount) }.toMutableMap()
+        return inventory
+            .filterNotNull()
+            .associate { Pair(it.id, it.amount) }   // .map(Pair(etc)).toMap()
+            .toMutableMap()
     }
 
     fun getAllFilledSlots(): List<InventoryItem> {
