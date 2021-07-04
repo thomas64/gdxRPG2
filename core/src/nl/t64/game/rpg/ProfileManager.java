@@ -5,6 +5,7 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.utils.SerializationException;
 import lombok.Setter;
 import nl.t64.game.rpg.constants.Constant;
 
@@ -103,8 +104,12 @@ public class ProfileManager {
     private String getVisualOf(int profileIndex) {
         Preferences saveFile = getSaveFileBy(profileIndex);
         if (saveFile.contains(SAVE_STATE_KEY)) {
-            ObjectMap<String, Object> objectMap = getSaveStateProperties(saveFile);
-            return objectMap.get(PROFILE_ID) + " [" + objectMap.get(PROFILE_SAVE_DATE) + "]";
+            try {
+                ObjectMap<String, Object> objectMap = getSaveStateProperties(saveFile);
+                return objectMap.get(PROFILE_ID) + " [" + objectMap.get(PROFILE_SAVE_DATE) + "]";
+            } catch (SerializationException e) {
+                return (profileIndex + 1) + " [Invalid]";
+            }
         } else {
             return (profileIndex + 1) + " [...]";
         }
