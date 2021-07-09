@@ -1,6 +1,7 @@
 package nl.t64.game.rpg.screens.menu;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -21,6 +22,7 @@ public class MenuSettings extends MenuScreen {
     private static final String MENU_ITEM_CONTROLS = "View controls";
     private static final String MENU_ITEM_BACK = "Back";
 
+    private static final float MENU_X = 604f;
     private static final int NUMBER_OF_ITEMS = 6;
     private static final int EXIT_INDEX = 5;
 
@@ -103,14 +105,16 @@ public class MenuSettings extends MenuScreen {
         // table
         var newTable = new Table();
         newTable.setFillParent(true);
-        newTable.top().padTop(PAD_TOP).right().padRight(PAD_RIGHT);
-        newTable.defaults().right();
+        newTable.defaults().center();
         newTable.add(fullscreenButton).row();
         newTable.add(musicButton).row();
         newTable.add(soundButton).row();
         newTable.add(debugModeButton).row();
         newTable.add(controlsButton).row();
         newTable.add(backButton);
+        newTable.setX(MENU_X);
+        Actor logo = stage.getActors().peek();
+        newTable.top().padTop((logo.getHeight() * logo.getScaleY()) + LOGO_PAD + PAD_TOP);
         return newTable;
     }
 

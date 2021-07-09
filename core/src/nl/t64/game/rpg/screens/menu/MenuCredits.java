@@ -13,7 +13,7 @@ public class MenuCredits extends MenuScreen {
 
     private static final String CREDITS_PATH = "licenses/credits.txt";
     private static final int SCROLL_SPEED = 100;
-    private static final int EMPTY_LINES = 25;
+    private static final int EMPTY_LINES = 20;
 
     private final ScrollPane scrollPane;
 

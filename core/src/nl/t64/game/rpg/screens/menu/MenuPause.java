@@ -1,6 +1,7 @@
 package nl.t64.game.rpg.screens.menu;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -20,8 +21,9 @@ public class MenuPause extends MenuScreen {
     private static final int NUMBER_OF_ITEMS = 4;
     private static final int EXIT_INDEX = 0;
 
-    private static final String DIALOG_MESSAGE = "All progress after the last save will be lost."
-                                                 + System.lineSeparator() + "Are you sure you want to exit?";
+    private static final String DIALOG_MESSAGE = """
+            All progress after the last save will be lost.
+            Are you sure you want to exit?""";
 
     private ListenerKeyVertical listenerKeyVertical;
 
@@ -95,12 +97,14 @@ public class MenuPause extends MenuScreen {
         // table
         var newTable = new Table();
         newTable.setFillParent(true);
-        newTable.top().padTop(PAD_TOP).right().padRight(PAD_RIGHT);
-        newTable.defaults().right();
+        newTable.defaults().center();
         newTable.add(continueButton).row();
         newTable.add(loadGameButton).row();
         newTable.add(settingsButton).row();
         newTable.add(mainMenuButton);
+        Actor logo = stage.getActors().peek();
+        newTable.top().padTop((logo.getHeight() * logo.getScaleY()) + LOGO_PAD + PAD_TOP)
+                .right().padRight(((logo.getWidth() * logo.getScaleX()) / 2f) - (newTable.getPrefWidth() / 2f) + LOGO_PAD);
         return newTable;
     }
 

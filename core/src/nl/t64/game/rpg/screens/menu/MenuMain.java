@@ -3,6 +3,7 @@ package nl.t64.game.rpg.screens.menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -81,12 +82,14 @@ public class MenuMain extends MenuScreen {
         // table
         var newTable = new Table();
         newTable.setFillParent(true);
-        newTable.top().padTop(PAD_TOP).right().padRight(PAD_RIGHT);
-        newTable.defaults().right();
+        newTable.defaults().center();
         newTable.add(startButton).row();
         newTable.add(settingsButton).row();
         newTable.add(creditsButton).row();
         newTable.add(exitButton);
+        Actor logo = stage.getActors().peek();
+        newTable.top().padTop((logo.getHeight() * logo.getScaleY()) + LOGO_PAD + PAD_TOP)
+                .right().padRight(((logo.getWidth() * logo.getScaleX()) / 2f) - (newTable.getPrefWidth() / 2f) + LOGO_PAD);
         return newTable;
     }
 

@@ -142,7 +142,6 @@ public class MenuNew extends MenuScreen {
         // table
         var newTable = new Table();
         newTable.setFillParent(true);
-        newTable.top().padTop(PAD_TOP).right().padRight(PAD_RIGHT);
 
         var upperTable = new Table();
         upperTable.add(profileLabel).spaceBottom(SPACE_BOTTOM).row();
@@ -154,6 +153,9 @@ public class MenuNew extends MenuScreen {
 
         newTable.add(upperTable).spaceBottom(SPACE_BOTTOM).row();
         newTable.add(lowerTable);
+        Actor logo = stage.getActors().peek();
+        newTable.top().padTop((logo.getHeight() * logo.getScaleY()) + LOGO_PAD + PAD_TOP)
+                .right().padRight(((logo.getWidth() * logo.getScaleX()) / 2f) - (newTable.getPrefWidth() / 2f) + (LOGO_PAD / 2f));
         return newTable;
     }
 

@@ -1,6 +1,7 @@
 package nl.t64.game.rpg.screens.menu;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
@@ -13,7 +14,7 @@ import java.util.stream.IntStream;
 
 public class MenuControls extends MenuScreen {
 
-    private static final float COLUMN_0_WIDTH = 200f;
+    private static final float COLUMN_0_WIDTH = 240f;
     private static final float COLUMN_1_WIDTH = 120f;
 
     private boolean isGamepadConnected;
@@ -40,15 +41,17 @@ public class MenuControls extends MenuScreen {
     private void createTables() {
         var textStyle = new Label.LabelStyle(menuFont, fontColor);
         List<Label> labels = createInputLabels(textStyle);
-        labels.forEach(label -> label.setAlignment(Align.right));
+        labels.forEach(label -> label.setAlignment(Align.center));
 
         table = new Table();
         table.setFillParent(true);
-        table.top().padTop(PAD_TOP).right().padRight(PAD_RIGHT);
         table.columnDefaults(0).width(COLUMN_0_WIDTH);
         table.columnDefaults(1).width(COLUMN_1_WIDTH);
         IntStream.range(0, labels.size())
                  .forEach(index -> addToTable(index, labels));
+        Actor logo = stage.getActors().peek();
+        table.top().padTop((logo.getHeight() * logo.getScaleY()) + LOGO_PAD + PAD_TOP)
+             .right().padRight(((logo.getWidth() * logo.getScaleX()) / 2f) - (table.getPrefWidth() / 2f) + LOGO_PAD);
     }
 
     private void addToTable(int index, List<Label> labels) {

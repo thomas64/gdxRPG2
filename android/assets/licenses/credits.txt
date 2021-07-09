@@ -23,14 +23,15 @@ Sieger Noppe
 
 Graphics Copyright Notice
 
-"Titlelogo"
 "Titlescreen"
-
 by N. van der Stoep
 
 
-"Painterly Spell Icons"
+"Titlelogo"
+by F. Stellingwerf
 
+
+"Painterly Spell Icons"
 by J.W. Bjerk (eleazzaar)
 www.jwbjerk.com/art
 
@@ -46,7 +47,6 @@ Music Copyright Notice
 "Town"
 "Wake up"
 "Woods"
-
 by Yusaku Kishigami
 www.presence-of-music.com
 

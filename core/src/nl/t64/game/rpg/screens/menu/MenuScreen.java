@@ -20,12 +20,14 @@ import nl.t64.game.rpg.constants.ScreenType;
 
 public abstract class MenuScreen implements Screen {
 
-    static final float PAD_TOP = 120f;
-    static final float PAD_RIGHT = 40f;
+    static final float LOGO_PAD = 20f;
+    static final float PAD_TOP = 40f;
 
-    private static final String TITLE_LOGO = "sprites/titlelogo.png";
-    private static final String MENU_FONT = "fonts/calibril.ttf";
-    private static final int MENU_SIZE = 34;
+    private static final String TITLE_LOGO_W = "sprites/accot_w.png";
+    private static final String TITLE_LOGO_B = "sprites/accot_b.png";
+    private static final float LOGO_SCALE = 0.5f;
+    private static final String MENU_FONT = "fonts/barlow_regular.ttf";
+    private static final int MENU_SIZE = 45;
 
     final Stage stage;
     final BitmapFont menuFont;
@@ -48,10 +50,11 @@ public abstract class MenuScreen implements Screen {
     public void setBackground(Image background) {
         this.background = background;
         stage.addActor(background);
-        if (startScreen.equals(ScreenType.MENU_PAUSE)) {
-            Texture logo = Utils.getResourceManager().getTextureAsset(TITLE_LOGO);
-            stage.addActor(new Image(logo));
-        }
+        var image = new Image(getLogo());
+        image.setScale(LOGO_SCALE);
+        image.setPosition(Gdx.graphics.getWidth() - (image.getWidth() * image.getScaleX()) - LOGO_PAD,
+                          Gdx.graphics.getHeight() - (image.getHeight() * image.getScaleY()) - LOGO_PAD);
+        stage.addActor(image);
     }
 
     public void updateMenuIndex(int newIndex) {
@@ -95,6 +98,14 @@ public abstract class MenuScreen implements Screen {
             fontColor = Color.WHITE;
         } else {
             throw new IllegalCallerException("startScreen can only be Main or Pause Screen.");
+        }
+    }
+
+    private Texture getLogo() {
+        if (startScreen.equals(ScreenType.MENU_PAUSE)) {
+            return Utils.getResourceManager().getTextureAsset(TITLE_LOGO_W);
+        } else {
+            return Utils.getResourceManager().getTextureAsset(TITLE_LOGO_B);
         }
     }
 

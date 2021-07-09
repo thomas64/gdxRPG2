@@ -3,6 +3,7 @@ package nl.t64.game.rpg.screens.menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
@@ -26,11 +27,14 @@ public class MenuLoad extends MenuScreen {
     private static final String MENU_ITEM_LOAD = "Load";
     private static final String MENU_ITEM_DELETE = "Delete";
     private static final String MENU_ITEM_BACK = "Back";
-    private static final String LOAD_MESSAGE = "All progress after the last save will be lost."
-                                               + System.lineSeparator() + "Are you sure you want to load this profile?";
-    private static final String DELETE_MESSAGE = "This save file will be removed."
-                                                 + System.lineSeparator() + "Are you sure?";
+    private static final String LOAD_MESSAGE = """
+            All progress after the last save will be lost.
+            Are you sure you want to load this profile?""";
+    private static final String DELETE_MESSAGE = """
+            This save file will be removed.
+            Are you sure?""";
 
+    private static final float MENU_X = 604f;
     private static final float TITLE_SPACE_BOTTOM = 10f;
     private static final float BUTTON_SPACE_RIGHT = 20f;
 
@@ -190,24 +194,27 @@ public class MenuLoad extends MenuScreen {
 
         listItems = new List<>(listStyle);
         listItems.setItems(profiles);
-        listItems.setAlignment(Align.right);
+        listItems.setAlignment(Align.center);
         group = new VerticalGroup();
         group.addActor(listItems);
 
         // tables
         topTable = new Table();
         topTable.setFillParent(true);
-        topTable.top().padTop(PAD_TOP).right().padRight(PAD_RIGHT);
-        topTable.add(titleLabel).right().spaceBottom(TITLE_SPACE_BOTTOM).row();
-        topTable.add(group).right();
+        topTable.add(titleLabel).center().spaceBottom(TITLE_SPACE_BOTTOM).row();
+        topTable.add(group).center();
+        topTable.setX(MENU_X);
+        Actor logo = stage.getActors().peek();
+        topTable.top().padTop((logo.getHeight() * logo.getScaleY()) + LOGO_PAD + PAD_TOP);
 
         // bottom table
         table = new Table();
         table.setFillParent(true);
-        table.top().padTop(TITLE_SPACE_BOTTOM + topTable.getPrefHeight()).right().padRight(PAD_RIGHT);
         table.add(loadButton).spaceRight(BUTTON_SPACE_RIGHT);
         table.add(deleteButton).spaceRight(BUTTON_SPACE_RIGHT);
         table.add(backButton);
+        table.top().padTop(TITLE_SPACE_BOTTOM + topTable.getPrefHeight())
+             .right().padRight(((logo.getWidth() * logo.getScaleX()) / 2f) - (table.getPrefWidth() / 2f) + LOGO_PAD);
     }
 
     private void createSomeListeners() {
