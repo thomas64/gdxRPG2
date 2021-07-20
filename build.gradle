@@ -31,7 +31,7 @@ allprojects {
     ext {
         appName = "gdx-rpg2"
         gdxVersion = "1.10.0"
-        controllerVersion = "2.2.0"
+        controllerVersion = "2.2.1"
         mappingVersion = "2.3.0"
         aiVersion = "1.8.2"
         lombokVersion = "1.18.20"
