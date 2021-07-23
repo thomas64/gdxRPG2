@@ -21,11 +21,11 @@ class InventoryStacksMerger {
     }
 
     private void setItem1IfPresent(int index1) {
-        container.getItemAt(index1)
-                 .ifPresent(inventoryItem -> {
-                     inventoryItem1 = inventoryItem;
-                     searchIfStackable(index1);
-                 });
+        InventoryItem item = container.getItemAt(index1);
+        if (item != null) {
+            inventoryItem1 = item;
+            searchIfStackable(index1);
+        }
     }
 
     private void searchIfStackable(int index1) {
@@ -40,11 +40,11 @@ class InventoryStacksMerger {
     }
 
     private void setItem2IfPresent(int index2) {
-        container.getItemAt(index2)
-                 .ifPresent(inventoryItem -> {
-                     inventoryItem2 = inventoryItem;
-                     stackIfItemsAreTheSame(index2);
-                 });
+        InventoryItem item = container.getItemAt(index2);
+        if (item != null) {
+            inventoryItem2 = item;
+            stackIfItemsAreTheSame(index2);
+        }
     }
 
     private void stackIfItemsAreTheSame(int index2) {

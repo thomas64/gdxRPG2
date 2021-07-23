@@ -45,7 +45,7 @@ public class InventorySlot extends ItemSlot {
 
     @Override
     public boolean hasItem() {
-        return inventory.getItemAt(index).isPresent();
+        return inventory.getItemAt(index) != null;
     }
 
     @Override

@@ -22,22 +22,21 @@ class InventoryTest extends GameTest {
     private static final String BASIC_MACE = "basic_mace";
     private static final String BASIC_LIGHT_CHEST = "basic_light_chest";
 
-    private final InventoryDatabase inventoryDB = InventoryDatabase.getInstance();
     private InventoryContainer inventory;
 
     @BeforeEach
     private void setup() {
         inventory = new InventoryContainer();
-        InventoryItem mace = inventoryDB.createInventoryItem(BASIC_MACE);
+        InventoryItem mace = InventoryDatabase.createInventoryItem(BASIC_MACE);
         inventory.autoSetItem(mace);
-        InventoryItem gold = inventoryDB.createInventoryItem(GOLD);
+        InventoryItem gold = InventoryDatabase.createInventoryItem(GOLD);
         inventory.autoSetItem(gold);
         inventory.sort();
     }
 
     @Test
     void whenResourceItemIsCreated_ShouldHaveVariables() {
-        InventoryItem gold = inventoryDB.createInventoryItem(GOLD);
+        InventoryItem gold = InventoryDatabase.createInventoryItem(GOLD);
         assertThat(gold.name).isEqualTo("Gold");
         assertThat(gold.sort).isEqualTo(90090);
         assertThat(gold.getGroup()).isEqualTo(InventoryGroup.RESOURCE);
@@ -47,7 +46,7 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenPotionItemIsCreated_ShouldHaveVariables() {
-        InventoryItem potion = inventoryDB.createInventoryItem(POTION);
+        InventoryItem potion = InventoryDatabase.createInventoryItem(POTION);
         assertThat(potion.name).isEqualTo("Healing Potion");
         assertThat(potion.sort).isEqualTo(80005);
         assertThat(potion.getGroup()).isEqualTo(InventoryGroup.POTION);
@@ -59,7 +58,7 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenCopyOfItemIsCreated_ShouldBeSameItemButNotSameObject() {
-        InventoryItem potion = inventoryDB.createInventoryItem(POTION);
+        InventoryItem potion = InventoryDatabase.createInventoryItem(POTION);
         InventoryItem copyPotion = InventoryItem.copyOf(potion, potion.amount);
         assertThat(potion.hasSameIdAs(copyPotion)).isTrue();
         assertThat(potion).isNotEqualTo(copyPotion);
@@ -67,10 +66,10 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenResourceItemIsCreatedWithAmount_ShouldHaveCorrectAmountWithoutSet() {
-        InventoryItem spice = inventoryDB.createInventoryItem("spice");
-        InventoryItem gold = inventoryDB.createInventoryItem(GOLD, 5);
-        InventoryItem herb = inventoryDB.createInventoryItemForShop(HERB);
-        InventoryItem potion = inventoryDB.createInventoryItemForShop(POTION);
+        InventoryItem spice = InventoryDatabase.createInventoryItem("spice");
+        InventoryItem gold = InventoryDatabase.createInventoryItem(GOLD, 5);
+        InventoryItem herb = InventoryDatabase.createInventoryItemForShop(HERB);
+        InventoryItem potion = InventoryDatabase.createInventoryItemForShop(POTION);
         assertThat(spice.getAmount()).isEqualTo(1);
         assertThat(gold.getAmount()).isEqualTo(5);
         assertThat(herb.getAmount()).isEqualTo(100);
@@ -79,7 +78,7 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenInventoryItemIsCreated_ShouldHaveTradeValue() {
-        InventoryItem basicMace = inventoryDB.createInventoryItem(BASIC_MACE);
+        InventoryItem basicMace = InventoryDatabase.createInventoryItem(BASIC_MACE);
         assertThat(basicMace.getBuyPriceTotal(0)).isEqualTo(15);
         assertThat(basicMace.getSellValueTotal(0)).isEqualTo(5);
         assertThat(basicMace.getBuyPriceTotal(30)).isEqualTo(11);
@@ -88,16 +87,16 @@ class InventoryTest extends GameTest {
         assertThat(basicMace.getSellValueTotal(60)).isEqualTo(6);
         assertThat(basicMace.getBuyPriceTotal(100)).isEqualTo(1);
         assertThat(basicMace.getSellValueTotal(100)).isEqualTo(7);
-        InventoryItem fineMace = inventoryDB.createInventoryItem("fine_mace");
+        InventoryItem fineMace = InventoryDatabase.createInventoryItem("fine_mace");
         assertThat(fineMace.getBuyPriceTotal(0)).isEqualTo(45);
         assertThat(fineMace.getSellValueTotal(0)).isEqualTo(15);
-        InventoryItem specialistMace = inventoryDB.createInventoryItem("specialist_mace");
+        InventoryItem specialistMace = InventoryDatabase.createInventoryItem("specialist_mace");
         assertThat(specialistMace.getBuyPriceTotal(0)).isEqualTo(75);
         assertThat(specialistMace.getSellValueTotal(0)).isEqualTo(25);
-        InventoryItem masterworkMace = inventoryDB.createInventoryItem("masterwork_mace");
+        InventoryItem masterworkMace = InventoryDatabase.createInventoryItem("masterwork_mace");
         assertThat(masterworkMace.getBuyPriceTotal(0)).isEqualTo(105);
         assertThat(masterworkMace.getSellValueTotal(0)).isEqualTo(35);
-        InventoryItem potion = inventoryDB.createInventoryItem(POTION);
+        InventoryItem potion = InventoryDatabase.createInventoryItem(POTION);
         assertThat(potion.getBuyPricePiece(0)).isEqualTo(4);
         assertThat(potion.getBuyPriceTotal(0)).isEqualTo(4);
         assertThat(potion.getSellValuePiece(0)).isEqualTo(1);
@@ -115,11 +114,11 @@ class InventoryTest extends GameTest {
 
         assertThat(inventory.contains(BASIC_MACE)).isTrue();
         assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(1);
-        assertThat(inventory.getItemAt(0)).get().hasFieldOrPropertyWithValue("id", BASIC_MACE);
+        assertThat(inventory.getItemAt(0)).hasFieldOrPropertyWithValue("id", BASIC_MACE);
 
         assertThat(inventory.contains(GOLD)).isTrue();
         assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex())).isEqualTo(1);
-        assertThat(inventory.getItemAt(inventory.getLastIndex())).get().hasFieldOrPropertyWithValue("id", GOLD);
+        assertThat(inventory.getItemAt(inventory.getLastIndex())).hasFieldOrPropertyWithValue("id", GOLD);
     }
 
     @Test
@@ -131,23 +130,23 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenResourceItemIsAdded_ShouldBeAddedToStartOfInventory() {
-        InventoryItem herb = inventoryDB.createInventoryItem(HERB);
+        InventoryItem herb = InventoryDatabase.createInventoryItem(HERB);
         assertThat(inventory.contains(HERB)).isFalse();
         assertThat(inventory.getAmountOfItemAt(1)).isZero();
         inventory.autoSetItem(herb);
         assertThat(inventory.contains(HERB)).isTrue();
         assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(1);
-        assertThat(inventory.getItemAt(1)).containsSame(herb);
+        assertThat(inventory.getItemAt(1)).isSameAs(herb);
     }
 
     @Test
     void whenEquipmentItemIsAdded_ShouldBeAddedToStartOfInventory() {
-        InventoryItem chest = inventoryDB.createInventoryItem(BASIC_LIGHT_CHEST);
+        InventoryItem chest = InventoryDatabase.createInventoryItem(BASIC_LIGHT_CHEST);
         assertThat(inventory.contains(BASIC_LIGHT_CHEST)).isFalse();
         inventory.autoSetItem(chest);
         assertThat(inventory.contains(BASIC_LIGHT_CHEST)).isTrue();
         assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(1);
-        assertThat(inventory.getItemAt(1)).containsSame(chest);
+        assertThat(inventory.getItemAt(1)).isSameAs(chest);
     }
 
     @Test
@@ -160,10 +159,10 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenLargeQuantityResourceItemIsRemoved_ShouldRemoveFromMultipleSlots() {
-        InventoryItem gold1 = inventoryDB.createInventoryItem(GOLD);
-        InventoryItem gold2 = inventoryDB.createInventoryItem(GOLD);
-        InventoryItem gold3 = inventoryDB.createInventoryItem(GOLD);
-        InventoryItem gold4 = inventoryDB.createInventoryItem(GOLD);
+        InventoryItem gold1 = InventoryDatabase.createInventoryItem(GOLD);
+        InventoryItem gold2 = InventoryDatabase.createInventoryItem(GOLD);
+        InventoryItem gold3 = InventoryDatabase.createInventoryItem(GOLD);
+        InventoryItem gold4 = InventoryDatabase.createInventoryItem(GOLD);
         gold1.setAmount(15);
         gold2.setAmount(25);
         gold3.setAmount(35);
@@ -180,7 +179,7 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenInventoryIsFull_ShouldAcceptSameResourceButRejectNewResource() {
-        InventoryItem gold = inventoryDB.createInventoryItem(GOLD);
+        InventoryItem gold = InventoryDatabase.createInventoryItem(GOLD);
         IntStream.range(2, inventory.getSize())
                  .forEach(i -> inventory.forceSetItemAt(i, gold));
         assertThat(inventory.hasRoomForResource(GOLD)).isTrue();
@@ -192,7 +191,7 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenItemIsForceSet_ShouldOverwriteExistingItem() {
-        InventoryItem chest = inventoryDB.createInventoryItem(BASIC_LIGHT_CHEST);
+        InventoryItem chest = InventoryDatabase.createInventoryItem(BASIC_LIGHT_CHEST);
         assertThat(inventory.contains(BASIC_MACE)).isTrue();
         assertThat(inventory.contains(BASIC_LIGHT_CHEST)).isFalse();
 
@@ -204,7 +203,7 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenSameResourceItemIsAdded_ShouldIncreaseAmount() {
-        InventoryItem gold = inventoryDB.createInventoryItem(GOLD);
+        InventoryItem gold = InventoryDatabase.createInventoryItem(GOLD);
         assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex())).isEqualTo(1);
         inventory.autoSetItem(gold);
         assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex())).isEqualTo(2);
@@ -212,7 +211,7 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenSameEquipmentItemIsAdded_ShouldNotIncreaseAmount() {
-        InventoryItem basicMace = inventoryDB.createInventoryItem(BASIC_MACE);
+        InventoryItem basicMace = InventoryDatabase.createInventoryItem(BASIC_MACE);
         assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(1);
         assertThat(inventory.getAmountOfItemAt(1)).isZero();
         inventory.autoSetItem(basicMace);
@@ -222,9 +221,9 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenSameResourceItemOfMultipleIsAdded_ShouldIncreaseTheFirstAmount() {
-        InventoryItem gold1 = inventoryDB.createInventoryItem(GOLD);
-        InventoryItem gold2 = inventoryDB.createInventoryItem(GOLD);
-        InventoryItem gold3 = inventoryDB.createInventoryItem(GOLD);
+        InventoryItem gold1 = InventoryDatabase.createInventoryItem(GOLD);
+        InventoryItem gold2 = InventoryDatabase.createInventoryItem(GOLD);
+        InventoryItem gold3 = InventoryDatabase.createInventoryItem(GOLD);
         inventory.forceSetItemAt(0, gold1);
         inventory.forceSetItemAt(1, gold2);
         inventory.forceSetItemAt(2, gold3);
@@ -232,7 +231,7 @@ class InventoryTest extends GameTest {
         assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(1);
         assertThat(inventory.getAmountOfItemAt(2)).isEqualTo(1);
 
-        InventoryItem moreGold = inventoryDB.createInventoryItem(GOLD);
+        InventoryItem moreGold = InventoryDatabase.createInventoryItem(GOLD);
         inventory.autoSetItem(moreGold);
         assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(2);
         assertThat(inventory.getAmountOfItemAt(1)).isEqualTo(1);
@@ -252,8 +251,8 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenSearchingForSlotWithItem_ShouldReturnIndexOrNot() {
-        assertThat(inventory.findFirstSlotWithItem(GOLD)).contains(65);
-        assertThat(inventory.findFirstSlotWithItem(HERB)).isEmpty();
+        assertThat(inventory.findFirstSlotWithItem(GOLD)).isEqualTo(65);
+        assertThat(inventory.findFirstSlotWithItem(HERB)).isNull();
     }
 
     @Test
@@ -270,20 +269,20 @@ class InventoryTest extends GameTest {
         inventory.clearItemAt(inventory.getLastIndex());
         assertThat(inventory.isEmpty()).isTrue();
         inventory.forceSetItemAt(8, new InventoryItem());
-        assertThat(inventory.findFirstFilledSlot()).hasValue(8);
+        assertThat(inventory.findFirstFilledSlot()).isEqualTo(8);
     }
 
     @Test
     void whenInventoryIsSorted_ShouldBeSortedAndMerged() {
-        InventoryItem gold1 = inventoryDB.createInventoryItem(GOLD);
-        InventoryItem gold2 = inventoryDB.createInventoryItem(GOLD);
-        InventoryItem gold3 = inventoryDB.createInventoryItem(GOLD);
-        InventoryItem herb1 = inventoryDB.createInventoryItem(HERB);
-        InventoryItem herb2 = inventoryDB.createInventoryItem(HERB);
-        InventoryItem herb3 = inventoryDB.createInventoryItem(HERB);
+        InventoryItem gold1 = InventoryDatabase.createInventoryItem(GOLD);
+        InventoryItem gold2 = InventoryDatabase.createInventoryItem(GOLD);
+        InventoryItem gold3 = InventoryDatabase.createInventoryItem(GOLD);
+        InventoryItem herb1 = InventoryDatabase.createInventoryItem(HERB);
+        InventoryItem herb2 = InventoryDatabase.createInventoryItem(HERB);
+        InventoryItem herb3 = InventoryDatabase.createInventoryItem(HERB);
         herb1.setAmount(80);
         herb2.setAmount(80);
-        InventoryItem chest = inventoryDB.createInventoryItem(BASIC_LIGHT_CHEST);
+        InventoryItem chest = InventoryDatabase.createInventoryItem(BASIC_LIGHT_CHEST);
 
         inventory.forceSetItemAt(0, gold1);
         inventory.forceSetItemAt(20, gold2);
@@ -297,19 +296,19 @@ class InventoryTest extends GameTest {
         inventory.sort();
 
         assertThat(inventory.getAmountOfItemAt(0)).isEqualTo(1);
-        assertThat(inventory.getItemAt(0)).containsSame(chest);
+        assertThat(inventory.getItemAt(0)).isSameAs(chest);
         assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex())).isEqualTo(3);
-        assertThat(inventory.getItemAt(inventory.getLastIndex())).containsSame(gold1);
+        assertThat(inventory.getItemAt(inventory.getLastIndex())).isSameAs(gold1);
         assertThat(inventory.getAmountOfItemAt(inventory.getLastIndex() - 1)).isEqualTo(161);
-        assertThat(inventory.getItemAt(inventory.getLastIndex() - 1)).containsSame(herb1);
+        assertThat(inventory.getItemAt(inventory.getLastIndex() - 1)).isSameAs(herb1);
     }
 
     @Disabled
     @Test
     void whenInventoryIsFull_ShouldNotThrowError() {
-        InventoryItem gold = inventoryDB.createInventoryItem(GOLD);
-        InventoryItem herb = inventoryDB.createInventoryItem(HERB);
-        InventoryItem mace = inventoryDB.createInventoryItem(BASIC_MACE);
+        InventoryItem gold = InventoryDatabase.createInventoryItem(GOLD);
+        InventoryItem herb = InventoryDatabase.createInventoryItem(HERB);
+        InventoryItem mace = InventoryDatabase.createInventoryItem(BASIC_MACE);
         IntStream.range(0, inventory.getSize())
                  .forEach(i -> inventory.forceSetItemAt(i, gold));
         inventory.autoSetItem(herb);
@@ -324,7 +323,7 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenInventoryItemWeapon_ShouldCreateDescription() {
-        InventoryItem weapon = inventoryDB.createInventoryItem(BASIC_MACE);
+        InventoryItem weapon = InventoryDatabase.createInventoryItem(BASIC_MACE);
         List<InventoryDescription> description = new DescriptionCreator(weapon, 0)
                 .createItemDescription();
         assertThat(description.get(0).getKey()).isEqualTo(InventoryGroup.WEAPON);
@@ -348,7 +347,7 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenInventoryItemWeaponTwoHanded_ShouldCreateDescription() {
-        InventoryItem weapon = inventoryDB.createInventoryItem("basic_shortbow");
+        InventoryItem weapon = InventoryDatabase.createInventoryItem("basic_shortbow");
         List<InventoryDescription> description = new DescriptionCreator(weapon, 0)
                 .createItemDescription();
         assertThat(description.get(0).getKey()).isEqualTo(InventoryGroup.WEAPON);
@@ -359,7 +358,7 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenInventoryItemShield_ShouldCreateDescription() {
-        InventoryItem weapon = inventoryDB.createInventoryItem("basic_light_shield");
+        InventoryItem weapon = InventoryDatabase.createInventoryItem("basic_light_shield");
         List<InventoryDescription> description = new DescriptionCreator(weapon, 0)
                 .createItemDescription();
         assertThat(description.get(0).getKey()).isEqualTo(InventoryGroup.SHIELD);
@@ -385,7 +384,7 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenInventoryItemChest_ShouldCreateDescription() {
-        InventoryItem weapon = inventoryDB.createInventoryItem(BASIC_LIGHT_CHEST);
+        InventoryItem weapon = InventoryDatabase.createInventoryItem(BASIC_LIGHT_CHEST);
         List<InventoryDescription> description = new DescriptionCreator(weapon, 0)
                 .createItemDescription();
         assertThat(description.get(0).getKey()).isEqualTo(InventoryGroup.CHEST);
@@ -407,7 +406,7 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenResourceItemHerb_ShouldCreateDescription() {
-        InventoryItem potion = inventoryDB.createInventoryItem(POTION, 10);
+        InventoryItem potion = InventoryDatabase.createInventoryItem(POTION, 10);
         List<InventoryDescription> description = new DescriptionCreator(potion, 0)
                 .createItemDescription();
         assertThat(description.get(0).getKey()).isEqualTo(InventoryGroup.POTION);
@@ -425,14 +424,14 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenAmountOfItemIsZero_ShouldThrowException() {
-        InventoryItem potion = inventoryDB.createInventoryItem(POTION, 0);
+        InventoryItem potion = InventoryDatabase.createInventoryItem(POTION, 0);
         var creator = new DescriptionCreator(potion, 0);
         assertThatExceptionOfType(IllegalStateException.class).isThrownBy(creator::createItemDescription);
     }
 
     @Test
     void whenItemIsComparedToHero_ShouldReturnSpecificThreeStates() {
-        InventoryItem weapon = inventoryDB.createInventoryItem(BASIC_MACE);
+        InventoryItem weapon = InventoryDatabase.createInventoryItem(BASIC_MACE);
         HeroItem heroMock = Mockito.mock(HeroItem.class);
         Mockito.when(heroMock.getSkillById(SkillItemId.HAFTED)).thenReturn(new Hafted(1));
         Mockito.when(heroMock.getStatById(StatItemId.STRENGTH)).thenReturn(new Strength(10));
@@ -446,8 +445,8 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenWeaponIsComparedToOtherWeapon_ShouldReturnSpecificThreeStates() {
-        InventoryItem mace = inventoryDB.createInventoryItem(BASIC_MACE);
-        InventoryItem sword = inventoryDB.createInventoryItem("basic_shortsword");
+        InventoryItem mace = InventoryDatabase.createInventoryItem(BASIC_MACE);
+        InventoryItem sword = InventoryDatabase.createInventoryItem("basic_shortsword");
         List<InventoryDescription> description = new DescriptionCreator(mace, 0)
                 .createItemDescriptionComparingToItem(sword);
         assertThat(description.get(6).getKey()).isEqualTo(CalcAttributeId.BASE_HIT);
@@ -458,8 +457,8 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenWeaponIsComparedToOtherTypeWeapon_ShouldReturnEmptyMinimalLines() {
-        InventoryItem mace = inventoryDB.createInventoryItem(BASIC_MACE);
-        InventoryItem javelin = inventoryDB.createInventoryItem("basic_javelin");
+        InventoryItem mace = InventoryDatabase.createInventoryItem(BASIC_MACE);
+        InventoryItem javelin = InventoryDatabase.createInventoryItem("basic_javelin");
         List<InventoryDescription> description = new DescriptionCreator(mace, 0)
                 .createItemDescriptionComparingToItem(javelin);
         assertThat(description.get(4).getKey()).isEqualTo(InventoryMinimal.SKILL);
@@ -470,8 +469,8 @@ class InventoryTest extends GameTest {
 
     @Test
     void whenShieldIsComparedToOtherShield_ShouldReturnSpecificThreeStates() {
-        InventoryItem light = inventoryDB.createInventoryItem("basic_light_shield");
-        InventoryItem medium = inventoryDB.createInventoryItem("basic_medium_shield");
+        InventoryItem light = InventoryDatabase.createInventoryItem("basic_light_shield");
+        InventoryItem medium = InventoryDatabase.createInventoryItem("basic_medium_shield");
         List<InventoryDescription> description1 = new DescriptionCreator(light, 0)
                 .createItemDescriptionComparingToItem(medium);
         assertThat(description1.get(7).getKey()).isEqualTo(StatItemId.AGILITY);

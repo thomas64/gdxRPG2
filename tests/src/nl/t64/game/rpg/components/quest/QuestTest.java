@@ -73,8 +73,8 @@ class QuestTest extends GameTest {
         quest0001.handleReturn(s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_NO_SUCCESS));
         assertThatExceptionOfType(IllegalStateException.class)
                 .isThrownBy(() -> quest0001.handleReward(null, new ConversationSubject()));
-        inventory.autoSetItem(InventoryDatabase.getInstance().createInventoryItem("gemstone", 5));
-        inventory.autoSetItem(InventoryDatabase.getInstance().createInventoryItem("herb", 3));
+        inventory.autoSetItem(InventoryDatabase.createInventoryItem("gemstone", 5));
+        inventory.autoSetItem(InventoryDatabase.createInventoryItem("herb", 3));
         quest0001.handleReturn(s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_SUCCESS));
         quest0001.handleReward(null, new ConversationSubject());
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.UNCLAIMED);
@@ -90,8 +90,8 @@ class QuestTest extends GameTest {
 
     @Test
     void whenDemandsAreCompleteFromTheStart_ShouldHandleQuickFlow() {
-        inventory.autoSetItem(InventoryDatabase.getInstance().createInventoryItem("gemstone", 5));
-        inventory.autoSetItem(InventoryDatabase.getInstance().createInventoryItem("herb", 3));
+        inventory.autoSetItem(InventoryDatabase.createInventoryItem("gemstone", 5));
+        inventory.autoSetItem(InventoryDatabase.createInventoryItem("herb", 3));
         QuestGraph quest0001 = quests.getQuestById("quest0001");
         quest0001.handleAccept(s -> assertThat(s).isEqualTo(Constant.PHRASE_ID_QUEST_IMMEDIATE_SUCCESS),
                                new ConversationSubject());
@@ -120,8 +120,8 @@ class QuestTest extends GameTest {
         assertThatExceptionOfType(IllegalStateException.class).isThrownBy(quest0001::know);
         assertThatExceptionOfType(IllegalStateException.class).isThrownBy(
                 () -> quest0001.accept(new ConversationSubject()));
-        inventory.autoSetItem(InventoryDatabase.getInstance().createInventoryItem("gemstone", 5));
-        inventory.autoSetItem(InventoryDatabase.getInstance().createInventoryItem("herb", 3));
+        inventory.autoSetItem(InventoryDatabase.createInventoryItem("gemstone", 5));
+        inventory.autoSetItem(InventoryDatabase.createInventoryItem("herb", 3));
         quest0001.handleReward(null, new ConversationSubject());
         assertThat(quest0001.getCurrentState()).isEqualTo(QuestState.UNCLAIMED);
         assertThatExceptionOfType(IllegalStateException.class).isThrownBy(quest0001::unclaim);
@@ -142,7 +142,7 @@ class QuestTest extends GameTest {
                                                  s -> assertThat(s).isEqualTo("xxx"));
 
         String targetId = quest0005.getTasks().get("1").getTarget().entrySet().iterator().next().getKey();
-        InventoryItem targetItem = InventoryDatabase.getInstance().createInventoryItem(targetId);
+        InventoryItem targetItem = InventoryDatabase.createInventoryItem(targetId);
         inventory.autoSetItem(targetItem);
 
         quest0005.handleCheckIfAcceptedInventory("1", "xxx",
@@ -178,8 +178,8 @@ class QuestTest extends GameTest {
 
     @Test
     void whenPartyGainsEnoughXp_ShouldShowMessageThatMemberGainedLevel() {
-        inventory.autoSetItem(InventoryDatabase.getInstance().createInventoryItem("gemstone", 5));
-        inventory.autoSetItem(InventoryDatabase.getInstance().createInventoryItem("herb", 3));
+        inventory.autoSetItem(InventoryDatabase.createInventoryItem("gemstone", 5));
+        inventory.autoSetItem(InventoryDatabase.createInventoryItem("herb", 3));
         party.getHero(0).gainXp(19, new StringBuilder());
         QuestGraph quest0001 = quests.getQuestById("quest0001");
         Loot questLoot = loot.getLoot("quest0001");
@@ -193,8 +193,7 @@ class QuestTest extends GameTest {
 
     @Test
     void whenQuestFails_ShouldSetSubtasksAccordingly() {
-        inventory.autoSetItem(InventoryDatabase.getInstance()
-                                               .createInventoryItem("key_mysterious_tunnel", 1));
+        inventory.autoSetItem(InventoryDatabase.createInventoryItem("key_mysterious_tunnel", 1));
 
         QuestGraph quest0006 = quests.getQuestById("quest0006");
         assertThat(quest0006.getAllTasks()).extracting("isOptional").containsExactly(
@@ -263,7 +262,7 @@ class QuestTest extends GameTest {
         assertThat(quest0001.getTasks().get("1").isQuestFinished()).isFalse();
         assertThat(quest0001.getTasks().get("1")).hasToString("     Collect 3 herbs");
 
-        inventory.autoSetItem(InventoryDatabase.getInstance().createInventoryItem("herb", 3));
+        inventory.autoSetItem(InventoryDatabase.createInventoryItem("herb", 3));
         assertThat(quest0001.getTasks().get("1")).hasToString("v  Collect 3 herbs");
 
         inventory.autoRemoveItem("herb", 3);

@@ -8,11 +8,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class NoteTest extends GameTest {
 
-    private final NoteDatabase noteDB = NoteDatabase.getInstance();
-
     @Test
     void whenNoteDatabaseIsCreated_ShouldContainNotes() {
-        ConversationGraph graph = noteDB.getNoteById("note_statue_hero_s_hometown_hero_s_chamber");
+        ConversationGraph graph = NoteDatabase.getNoteById("note_statue_hero_s_hometown_hero_s_chamber");
         assertThat(graph.getCurrentPhraseId()).isEqualTo("1");
         assertThat(graph.getPhrases()).hasSize(2);
         assertThat(graph.getCurrentPhrase())

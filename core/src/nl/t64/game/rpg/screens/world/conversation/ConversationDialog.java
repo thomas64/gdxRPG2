@@ -111,7 +111,7 @@ public class ConversationDialog {
     public void loadNote(String noteId) {
         conversationId = null;
         faceId = null;
-        graph = NoteDatabase.getInstance().getNoteById(noteId);
+        graph = NoteDatabase.getNoteById(noteId);
         fillDialogForNote();
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_CONVERSATION_START);
         populateConversationDialog(graph.getCurrentPhraseId());

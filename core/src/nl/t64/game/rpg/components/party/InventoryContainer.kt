@@ -1,14 +1,10 @@
 package nl.t64.game.rpg.components.party
 
-import java.util.*
 
+private const val NUMBER_OF_SLOTS = 66
+private const val SORTING_SPLIT = 70000 // atm, item.json starts with this number.
 
 class InventoryContainer(numberOfSlots: Int = NUMBER_OF_SLOTS) {
-
-    companion object {
-        private const val NUMBER_OF_SLOTS = 66
-        private const val SORTING_SPLIT = 70000 // atm, item.json starts with this number.
-    }
 
     private val inventory: MutableList<InventoryItem?> = arrayOfNulls<InventoryItem>(numberOfSlots).toMutableList()
 
@@ -20,7 +16,7 @@ class InventoryContainer(numberOfSlots: Int = NUMBER_OF_SLOTS) {
     }
 
     fun getAllFilledSlots(): List<InventoryItem> {
-        return inventory.filterNotNull().toList()
+        return inventory.filterNotNull()
     }
 
     fun getAmountOfItemAt(index: Int): Int {
@@ -37,8 +33,8 @@ class InventoryContainer(numberOfSlots: Int = NUMBER_OF_SLOTS) {
             ?: throw IllegalStateException("There is no item to decrement amount.")
     }
 
-    fun getItemAt(index: Int): Optional<InventoryItem> {
-        return Optional.ofNullable(inventory[index]);
+    fun getItemAt(index: Int): InventoryItem? {
+        return inventory[index]
     }
 
     fun autoSetItem(newItem: InventoryItem) {
@@ -102,35 +98,27 @@ class InventoryContainer(numberOfSlots: Int = NUMBER_OF_SLOTS) {
     }
 
     fun hasEmptySlot(): Boolean {
-        return findFirstEmptySlot2() != null
+        return findFirstEmptySlot() != null
     }
 
     fun hasRoomForResource(itemId: String): Boolean {
-        return (findFirstSlotWithItem2(itemId) != null
-                || findFirstEmptySlot2() != null)
+        return (findFirstSlotWithItem(itemId) != null
+                || findFirstEmptySlot() != null)
     }
 
-    fun findFirstSlotWithItem(itemId: String): Optional<Int> {
-        return Optional.ofNullable(findFirstSlotWithItem2(itemId))
-    }
-
-    private fun findFirstSlotWithItem2(itemId: String): Int? {
+    fun findFirstSlotWithItem(itemId: String): Int? {
         return (0 until getSize()).firstOrNull { containsItemAt(it, itemId) }
     }
 
-    fun findFirstFilledSlot(): Optional<Int> {
+    fun findFirstFilledSlot(): Int? {
         return findNextFilledSlotFrom(0)
     }
 
-    fun findNextFilledSlotFrom(index: Int): Optional<Int> {
-        return Optional.ofNullable((index until getSize()).firstOrNull { isSlotFilled(it) })
+    fun findNextFilledSlotFrom(index: Int): Int? {
+        return (index until getSize()).firstOrNull { isSlotFilled(it) }
     }
 
-    fun findFirstEmptySlot(): Optional<Int> {
-        return Optional.ofNullable(findFirstEmptySlot2())
-    }
-
-    private fun findFirstEmptySlot2(): Int? {
+    fun findFirstEmptySlot(): Int? {
         return (0 until getSize()).firstOrNull { isSlotEmpty(it) }
     }
 
@@ -158,7 +146,7 @@ class InventoryContainer(numberOfSlots: Int = NUMBER_OF_SLOTS) {
     }
 
     private fun addItemAtEmptySlot(newItem: InventoryItem) {
-        findFirstEmptySlot2()?.let { slotIsEmptySoSetItemAt(it, newItem) }
+        findFirstEmptySlot()?.also { slotIsEmptySoSetItemAt(it, newItem) }
             ?: throw IllegalStateException("Inventory is full.")
     }
 
@@ -177,7 +165,7 @@ class InventoryContainer(numberOfSlots: Int = NUMBER_OF_SLOTS) {
     }
 
     private fun possibleAddToAmountToResourceMap(index: Int, resourceMap: MutableMap<Int, Int>, itemId: String) {
-        inventory[index]?.takeIf { it.id == itemId }?.let { resourceMap.put(index, it.amount) }
+        inventory[index]?.takeIf { it.id == itemId }?.also { resourceMap[index] = it.amount }
     }
 
     private fun isSlotFilled(index: Int): Boolean {

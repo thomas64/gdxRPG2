@@ -34,9 +34,13 @@ public class ItemSlotSelector {
     }
 
     public void findNextSlot() {
-        int nextIndex = itemContainer.findNextFilledSlotFrom(itemSlot.index)
-                                     .orElseGet(() -> itemContainer.findFirstFilledSlot()
-                                                                   .orElse(itemSlot.index));
+        Integer nextIndex = itemContainer.findNextFilledSlotFrom(itemSlot.index);
+        if (nextIndex == null) {
+            nextIndex = itemContainer.findFirstFilledSlot();
+            if (nextIndex == null) {
+                nextIndex = itemSlot.index;
+            }
+        }
         itemSlot.deselect();
         setNewSelectedByIndex(nextIndex);
     }

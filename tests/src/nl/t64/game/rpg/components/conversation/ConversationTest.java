@@ -125,7 +125,7 @@ class ConversationTest extends GameTest {
         assertThat(graph.getAssociatedChoices()[1].getText()).startsWith("[Mysterious Tunnel Key] Y");
         assertThat(graph.getAssociatedChoices()[1].isMeetingCondition()).isFalse();
 
-        gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("key_mysterious_tunnel"));
+        gameData.getInventory().autoSetItem(InventoryDatabase.createInventoryItem("key_mysterious_tunnel"));
         assertThat(graph.getAssociatedChoices()[1].isMeetingCondition()).isTrue();
     }
 
@@ -172,7 +172,7 @@ class ConversationTest extends GameTest {
         assertThat(choices.get(2).isVisible()).isFalse();
 
         QuestGraph quest6 = gameData.getQuests().getQuestById("quest0006");
-        gameData.getInventory().autoSetItem(InventoryDatabase.getInstance().createInventoryItem("key_mysterious_tunnel"));
+        gameData.getInventory().autoSetItem(InventoryDatabase.createInventoryItem("key_mysterious_tunnel"));
         quest6.setTaskComplete("3");
 
         assertThat(graph.getAssociatedChoices()).hasSize(2);

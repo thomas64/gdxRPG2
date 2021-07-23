@@ -6,8 +6,6 @@ import com.badlogic.gdx.math.Vector2;
 import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.subjects.BlockObserver;
 
-import java.util.Optional;
-
 
 public class GameMapBlocker extends GameMapObject implements BlockObserver {
 
@@ -18,11 +16,11 @@ public class GameMapBlocker extends GameMapObject implements BlockObserver {
     }
 
     @Override
-    public Optional<Rectangle> getBlockerFor(Rectangle boundingBox) {
+    public Rectangle getBlockerFor(Rectangle boundingBox) {
         if (boundingBox.overlaps(rectangle)) {
-            return Optional.of(rectangle);
+            return rectangle;
         } else {
-            return Optional.empty();
+            return null;
         }
     }
 

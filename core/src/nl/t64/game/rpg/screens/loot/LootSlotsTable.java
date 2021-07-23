@@ -95,7 +95,7 @@ public class LootSlotsTable {
     }
 
     private InventoryItem createInventoryItem(Map.Entry<String, Integer> loot) {
-        return InventoryDatabase.getInstance().createInventoryItem(loot.getKey(), loot.getValue());
+        return InventoryDatabase.createInventoryItem(loot.getKey(), loot.getValue());
     }
 
     private void fillLootSlotsTable() {
@@ -105,8 +105,10 @@ public class LootSlotsTable {
 
     private void createLootSlot(int index) {
         var lootSlot = new InventorySlot(index, InventoryGroup.LOOT_ITEM, tooltip, inventory);
-        inventory.getItemAt(index)
-                 .ifPresent(item -> lootSlot.addToStack(new InventoryImage(item)));
+        InventoryItem item = inventory.getItemAt(index);
+        if (item != null) {
+            lootSlot.addToStack(new InventoryImage(item));
+        }
         lootSlots.add(lootSlot).size(SLOT_SIZE, SLOT_SIZE);
         if ((index + 1) % SLOTS_IN_ROW == 0) {
             lootSlots.row();

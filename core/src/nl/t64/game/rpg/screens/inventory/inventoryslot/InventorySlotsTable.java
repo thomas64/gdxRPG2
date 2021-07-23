@@ -128,16 +128,24 @@ public class InventorySlotsTable implements WindowSelector {
 
     public Optional<ItemSlot> getPossibleSameStackableItemSlotWith(InventoryItem candidateItem) {
         if (candidateItem.isStackable()) {
-            return inventory.findFirstSlotWithItem(candidateItem.getId())
-                            .map(index -> (ItemSlot) inventorySlotTable.getChild(index));
+            Integer slotIndex = inventory.findFirstSlotWithItem(candidateItem.getId());
+            if (slotIndex != null) {
+                return Optional.of((ItemSlot) inventorySlotTable.getChild(slotIndex));
+            } else {
+                return Optional.empty();
+            }
         } else {
             return Optional.empty();
         }
     }
 
     public Optional<ItemSlot> getPossibleEmptySlot() {
-        return inventory.findFirstEmptySlot()
-                        .map(index -> (ItemSlot) inventorySlotTable.getChild(index));
+        Integer slotIndex = inventory.findFirstEmptySlot();
+        if (slotIndex != null) {
+            return Optional.of((ItemSlot) inventorySlotTable.getChild(slotIndex));
+        } else {
+            return Optional.empty();
+        }
     }
 
     private void fillInventorySlots() {
@@ -147,8 +155,10 @@ public class InventorySlotsTable implements WindowSelector {
 
     private void createInventorySlot(int index) {
         var inventorySlot = new InventorySlot(index, InventoryGroup.EVERYTHING, tooltip, inventory);
-        inventory.getItemAt(index)
-                 .ifPresent(item -> inventorySlot.addToStack(new InventoryImage(item)));
+        InventoryItem item = inventory.getItemAt(index);
+        if (item != null) {
+            inventorySlot.addToStack(new InventoryImage(item));
+        }
         inventorySlotTable.add(inventorySlot).size(SLOT_SIZE, SLOT_SIZE);
         if ((index + 1) % SLOTS_IN_ROW == 0) {
             inventorySlotTable.row();

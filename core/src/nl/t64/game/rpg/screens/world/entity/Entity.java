@@ -17,8 +17,6 @@ import nl.t64.game.rpg.subjects.BlockObserver;
 import nl.t64.game.rpg.subjects.BumpObserver;
 import nl.t64.game.rpg.subjects.DetectionObserver;
 
-import java.util.Optional;
-
 
 public class Entity implements ActionObserver, BlockObserver, BumpObserver, DetectionObserver {
 
@@ -41,11 +39,11 @@ public class Entity implements ActionObserver, BlockObserver, BumpObserver, Dete
     }
 
     @Override
-    public Optional<Rectangle> getBlockerFor(Rectangle boundingBox) {
+    public Rectangle getBlockerFor(Rectangle boundingBox) {
         if (boundingBox.overlaps(physicsComponent.boundingBox)) {
-            return Optional.of(physicsComponent.boundingBox);
+            return physicsComponent.boundingBox;
         } else {
-            return Optional.empty();
+            return null;
         }
     }
 

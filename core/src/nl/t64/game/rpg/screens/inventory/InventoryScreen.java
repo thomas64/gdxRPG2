@@ -170,11 +170,10 @@ public class InventoryScreen extends ScreenToLoad implements ConversationObserve
                 && inventory.hasRoomForResource("spice")
                 && inventory.hasRoomForResource("gemstone")) {
                 Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_ERROR);
-                InventoryDatabase idb = InventoryDatabase.getInstance();
-                inventory.autoSetItem(idb.createInventoryItem("gold", 100));
-                inventory.autoSetItem(idb.createInventoryItem("herb", 100));
-                inventory.autoSetItem(idb.createInventoryItem("spice", 100));
-                inventory.autoSetItem(idb.createInventoryItem("gemstone", 100));
+                inventory.autoSetItem(InventoryDatabase.createInventoryItem("gold", 100));
+                inventory.autoSetItem(InventoryDatabase.createInventoryItem("herb", 100));
+                inventory.autoSetItem(InventoryDatabase.createInventoryItem("spice", 100));
+                inventory.autoSetItem(InventoryDatabase.createInventoryItem("gemstone", 100));
                 inventoryUI.reloadInventory();
             }
         }

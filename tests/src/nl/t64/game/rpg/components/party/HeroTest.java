@@ -137,7 +137,7 @@ class HeroTest extends GameTest {
         final HeroItem mozes = party.getHero("mozes");
         assertThat(mozes.getInventoryItem(InventoryGroup.WEAPON)).get().hasFieldOrPropertyWithValue("id", "basic_shortsword");
 
-        final InventoryItem newWeapon = InventoryDatabase.getInstance().createInventoryItem("masterwork_lance");
+        final InventoryItem newWeapon = InventoryDatabase.createInventoryItem("masterwork_lance");
         mozes.forceSetInventoryItemFor(InventoryGroup.WEAPON, newWeapon);
         assertThat(mozes.getInventoryItem(InventoryGroup.WEAPON)).containsSame(newWeapon);
         mozes.clearInventoryItemFor(InventoryGroup.WEAPON);
@@ -148,12 +148,12 @@ class HeroTest extends GameTest {
     void whenImpossibleItemIsChecked_ShouldGetMessage() {
         final HeroItem mozes = party.getHero("mozes");
         final HeroItem ryiah = heroes.getHero("ryiah");
-        final InventoryItem legendaryStaff = InventoryDatabase.getInstance().createInventoryItem("legendary_staff");
-        final InventoryItem masterworkLance = InventoryDatabase.getInstance().createInventoryItem("masterwork_lance");
-        final InventoryItem basicDagger = InventoryDatabase.getInstance().createInventoryItem("basic_dagger");
-        final InventoryItem chest = InventoryDatabase.getInstance().createInventoryItem("basic_light_chest");
-        final InventoryItem bow = InventoryDatabase.getInstance().createInventoryItem("basic_shortbow");
-        final InventoryItem shield = InventoryDatabase.getInstance().createInventoryItem("basic_light_shield");
+        final InventoryItem legendaryStaff = InventoryDatabase.createInventoryItem("legendary_staff");
+        final InventoryItem masterworkLance = InventoryDatabase.createInventoryItem("masterwork_lance");
+        final InventoryItem basicDagger = InventoryDatabase.createInventoryItem("basic_dagger");
+        final InventoryItem chest = InventoryDatabase.createInventoryItem("basic_light_chest");
+        final InventoryItem bow = InventoryDatabase.createInventoryItem("basic_shortbow");
+        final InventoryItem shield = InventoryDatabase.createInventoryItem("basic_light_shield");
 
         Optional<String> message;
 

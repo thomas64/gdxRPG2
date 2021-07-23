@@ -106,22 +106,30 @@ public class ShopSlotsTable implements WindowSelector {
 
     public Optional<ItemSlot> getPossibleSameStackableItemSlotWith(InventoryItem candidateItem) {
         if (candidateItem.isStackable()) {
-            return inventory.findFirstSlotWithItem(candidateItem.getId())
-                            .map(index -> (ItemSlot) shopSlotTable.getChild(index));
+            Integer slotIndex = inventory.findFirstSlotWithItem(candidateItem.getId());
+            if (slotIndex != null) {
+                return Optional.of((ItemSlot) shopSlotTable.getChild(slotIndex));
+            } else {
+                return Optional.empty();
+            }
         } else {
             return Optional.empty();
         }
     }
 
     public Optional<ItemSlot> getPossibleEmptySlot() {
-        return inventory.findFirstEmptySlot()
-                        .map(index -> (ItemSlot) shopSlotTable.getChild(index));
+        Integer slotIndex = inventory.findFirstEmptySlot();
+        if (slotIndex != null) {
+            return Optional.of((ItemSlot) shopSlotTable.getChild(slotIndex));
+        } else {
+            return Optional.empty();
+        }
     }
 
     private void fillShopContainer(String shopId) {
         Utils.getResourceManager().getShopInventory(shopId)
              .stream()
-             .map(itemId -> InventoryDatabase.getInstance().createInventoryItemForShop(itemId))
+             .map(InventoryDatabase::createInventoryItemForShop)
              .forEach(inventory::autoSetItem);
     }
 
@@ -132,8 +140,10 @@ public class ShopSlotsTable implements WindowSelector {
 
     private void createShopSlot(int index) {
         var shopSlot = new ShopSlot(index, tooltip, inventory);
-        inventory.getItemAt(index)
-                 .ifPresent(item -> shopSlot.addToStack(new InventoryImage(item)));
+        InventoryItem item = inventory.getItemAt(index);
+        if (item != null) {
+            shopSlot.addToStack(new InventoryImage(item));
+        }
         shopSlotTable.add(shopSlot).size(SLOT_SIZE, SLOT_SIZE);
         if ((index + 1) % SLOTS_IN_ROW == 0) {
             shopSlotTable.row();
