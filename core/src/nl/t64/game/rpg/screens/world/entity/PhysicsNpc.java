@@ -47,7 +47,7 @@ public class PhysicsNpc extends PhysicsComponent {
         state = loadEvent.state;
         currentPosition = loadEvent.position;
         direction = loadEvent.direction;
-        conversationId = loadEvent.conversationId;
+        conversationId = loadEvent.conversationOrBattleId;
         setWanderBox();
         setBoundingBox();
     }

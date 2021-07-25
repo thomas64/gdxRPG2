@@ -10,7 +10,7 @@ public class LoadEntityEvent implements Event {
     public final EntityState state;
     public final Direction direction;
     public final Vector2 position;
-    public final String conversationId;
+    public final String conversationOrBattleId;
 
     public LoadEntityEvent(Vector2 position) {
         this(null, null, position, null);
@@ -28,11 +28,11 @@ public class LoadEntityEvent implements Event {
         this(state, direction, position, null);
     }
 
-    public LoadEntityEvent(EntityState state, Direction direction, Vector2 position, String conversationId) {
+    public LoadEntityEvent(EntityState state, Direction direction, Vector2 position, String conversationOrBattleId) {
         this.state = state;
         this.direction = direction;
         this.position = position;
-        this.conversationId = conversationId;
+        this.conversationOrBattleId = conversationOrBattleId;
     }
 
 }

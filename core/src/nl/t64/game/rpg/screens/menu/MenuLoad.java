@@ -154,7 +154,7 @@ public class MenuLoad extends MenuScreen {
 
     private void openWorldScreen() {
         Utils.getMapManager().disposeOldMaps();
-        Utils.getScreenManager().getWorldScreen();  // just load the constructor.
+        Utils.getScreenManager().getScreen(ScreenType.WORLD);  // just load the constructor.
         Utils.getProfileManager().loadProfile(selectedListIndex);
         if (Utils.getGameData().getCutscenes().isPlayed(CutsceneId.SCENE_INTRO)) {
             Utils.getScreenManager().setScreen(ScreenType.WORLD);

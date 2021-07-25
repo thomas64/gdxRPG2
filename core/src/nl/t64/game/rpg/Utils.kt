@@ -15,7 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.ScreenUtils
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import nl.t64.game.rpg.audio.AudioManager
 import nl.t64.game.rpg.constants.Constant
 import nl.t64.game.rpg.screens.ScreenManager
@@ -217,8 +218,15 @@ object Utils {
 
     @JvmStatic
     fun <T> readValue(json: String, clazz: Class<T>): HashMap<String, T> {
-        val mapper = ObjectMapper()
+        val mapper = jacksonObjectMapper()
         val valueType = mapper.typeFactory.constructMapType(HashMap::class.java, String::class.java, clazz)
+        return mapper.readValue(json, valueType)
+    }
+
+    @JvmStatic
+    fun <T> readListValue(json: String, clazz: Class<T>): Map<String, List<T>> {
+        val mapper = jacksonObjectMapper()
+        val valueType: TypeReference<Map<String, List<T>>> = object : TypeReference<Map<String, List<T>>>() {}
         return mapper.readValue(json, valueType)
     }
 

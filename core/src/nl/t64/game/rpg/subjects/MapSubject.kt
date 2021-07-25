@@ -20,8 +20,8 @@ class MapSubject {
         observers.clear()
     }
 
-    fun notifyMapWillChange(changeMap: Runnable, transitionColor: Color) {
-        observers.forEach { it.onNotifyMapWillChange(changeMap, transitionColor) }
+    fun notifyFadeOut(actionAfterFade: Runnable, transitionColor: Color) {
+        observers.forEach { it.onNotifyFadeOut(actionAfterFade, transitionColor) }
     }
 
     fun notifyMapChanged(currentMap: GameMap) {
@@ -30,6 +30,10 @@ class MapSubject {
 
     fun notifyShakeCamera() {
         observers.forEach { it.onNotifyShakeCamera() }
+    }
+
+    fun notifyStartCutscene(cutsceneId: String) {
+        observers.forEach { it.onNotifyStartCutscene(cutsceneId) }
     }
 
 }

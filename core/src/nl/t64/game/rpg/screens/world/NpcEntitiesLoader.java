@@ -5,6 +5,7 @@ import nl.t64.game.rpg.components.condition.ConditionDatabase;
 import nl.t64.game.rpg.components.party.HeroItem;
 import nl.t64.game.rpg.screens.world.entity.*;
 import nl.t64.game.rpg.screens.world.entity.events.LoadEntityEvent;
+import nl.t64.game.rpg.screens.world.mapobjects.GameMapEnemy;
 import nl.t64.game.rpg.screens.world.mapobjects.GameMapHero;
 import nl.t64.game.rpg.screens.world.mapobjects.GameMapNpc;
 
@@ -48,15 +49,16 @@ class NpcEntitiesLoader {
         }
     }
 
-    private void loadEnemy(GameMapNpc gameMapNpc) {
-        String entityId = gameMapNpc.getName();
+    private void loadEnemy(GameMapEnemy gameMapEnemy) {
+        String entityId = gameMapEnemy.getName();
         var enemyEntity = new Entity(entityId, new InputEnemy(), new PhysicsEnemy(), new GraphicsEnemy(entityId));
         npcEntities.add(enemyEntity);
         Utils.getBrokerManager().detectionObservers.addObserver(enemyEntity);
         Utils.getBrokerManager().bumpObservers.addObserver(enemyEntity);
-        enemyEntity.send(new LoadEntityEvent(gameMapNpc.getState(),
-                                             gameMapNpc.getDirection(),
-                                             gameMapNpc.getPosition()));
+        enemyEntity.send(new LoadEntityEvent(gameMapEnemy.getState(),
+                                             gameMapEnemy.getDirection(),
+                                             gameMapEnemy.getPosition(),
+                                             gameMapEnemy.getBattleId()));
     }
 
     private void loadNpcEntity(GameMapNpc gameMapNpc) {

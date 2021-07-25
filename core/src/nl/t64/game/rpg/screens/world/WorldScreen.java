@@ -13,10 +13,12 @@ import nl.t64.game.rpg.Utils;
 import nl.t64.game.rpg.audio.AudioCommand;
 import nl.t64.game.rpg.audio.AudioEvent;
 import nl.t64.game.rpg.components.conversation.ConversationGraph;
+import nl.t64.game.rpg.components.cutscene.CutsceneContainer;
 import nl.t64.game.rpg.components.loot.Loot;
 import nl.t64.game.rpg.components.quest.QuestGraph;
 import nl.t64.game.rpg.constants.Constant;
 import nl.t64.game.rpg.constants.GameState;
+import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.screens.inventory.tooltip.MessageTooltip;
 import nl.t64.game.rpg.screens.loot.FindScreen;
 import nl.t64.game.rpg.screens.loot.ReceiveScreen;
@@ -103,13 +105,8 @@ public class WorldScreen implements Screen,
     // MapObserver /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public void onNotifyMapWillChange(Runnable changeMap, Color transitionColor) {
-        var transition = new TransitionImage(transitionColor);
-        stage.addActor(transition);
-        transition.addAction(Actions.sequence(Actions.alpha(0f),
-                                              Actions.fadeIn(Constant.FADE_DURATION),
-                                              Actions.run(changeMap),
-                                              Actions.removeActor()));
+    public void onNotifyFadeOut(Runnable actionAfterFade, Color transitionColor) {
+        fadeOut(actionAfterFade, transitionColor);
     }
 
     @Override
@@ -129,12 +126,24 @@ public class WorldScreen implements Screen,
         camera.startShaking();
     }
 
+    @Override
+    public void onNotifyStartCutscene(String cutsceneId) {
+        CutsceneContainer cutscenes = Utils.getGameData().getCutscenes();
+        if (!cutscenes.isPlayed(cutsceneId)) {
+            cutscenes.setPlayed(cutsceneId);
+            doBeforeLoadScreen();
+            fadeOut(() -> Utils.getScreenManager().setScreen(ScreenType.valueOf(cutsceneId.toUpperCase())),
+                    Color.BLACK);
+        }
+    }
+
     // ComponentObserver ///////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     public void onNotifyShowConversationDialog(String conversationId, Entity npcEntity) {
         this.currentNpcEntity = npcEntity;
         player.resetInput();
+        gameState = GameState.DIALOG;
         conversationDialog.loadConversation(conversationId, npcEntity.getId());
         conversationDialog.show();
     }
@@ -142,6 +151,7 @@ public class WorldScreen implements Screen,
     @Override
     public void onNotifyShowConversationDialog(String conversationId, String entityId) {
         player.resetInput();
+        gameState = GameState.DIALOG;
         conversationDialog.loadConversation(conversationId, entityId);
         conversationDialog.show();
     }
@@ -149,14 +159,17 @@ public class WorldScreen implements Screen,
     @Override
     public void onNotifyShowNoteDialog(String noteId) {
         player.resetInput();
+        gameState = GameState.DIALOG;
         conversationDialog.loadNote(noteId);
         conversationDialog.show();
     }
 
     @Override
     public void onNotifyShowFindDialog(Loot loot, AudioEvent event, String message) {
-        messageDialog.setActionAfterHide(() -> onNotifyShowFindDialog(loot, event));
-        onNotifyShowMessageDialog(message);
+        doBeforeLoadScreen();
+        gameState = GameState.DIALOG;
+        messageDialog.setActionAfterHide(() -> FindScreen.load(loot, event));
+        messageDialog.show(message, AudioEvent.SE_CONVERSATION_NEXT);
     }
 
     @Override
@@ -168,7 +181,19 @@ public class WorldScreen implements Screen,
     @Override
     public void onNotifyShowMessageDialog(String message) {
         player.resetInput();
+        gameState = GameState.DIALOG;
+        messageDialog.setActionAfterHide(() -> gameState = GameState.RUNNING);
         messageDialog.show(message, AudioEvent.SE_CONVERSATION_NEXT);
+    }
+
+    @Override
+    public void onNotifyShowBattleScreen(String battleId) {
+        Utils.getMapManager().prepareForBattle();
+        fadeOut(() -> {
+                    doBeforeLoadScreen();
+                    Utils.getScreenManager().setScreen(ScreenType.BATTLE);
+                },
+                Color.BLACK);
     }
 
     // PartyObserver ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -270,7 +295,7 @@ public class WorldScreen implements Screen,
         switch (gameState) {
             case PAUSED -> { /* do nothing here*/ }
             case MINIMAP -> renderMiniMap();
-            case RUNNING -> renderAll(dt);
+            case RUNNING, DIALOG -> renderAll(dt);
         }
     }
 
@@ -289,7 +314,9 @@ public class WorldScreen implements Screen,
     private void renderAll(float dt) {
         Utils.getMapManager().updateFogOfWar(player.getPosition(), dt);
         Utils.getMapManager().updateQuestLayers();
-        updateEntities(dt);
+        if (!gameState.equals(GameState.DIALOG)) {
+            updateEntities(dt);
+        }
         updateCameraPosition();
         mapRenderer.renderAll(player.getPosition(), this::renderEntities);
         renderGrid();
@@ -356,7 +383,16 @@ public class WorldScreen implements Screen,
         }
     }
 
-    public void doBeforeLoadScreen() {
+    private void fadeOut(Runnable actionAfterFade, Color transitionColor) {
+        var transition = new TransitionImage(transitionColor);
+        stage.addActor(transition);
+        transition.addAction(Actions.sequence(Actions.alpha(0f),
+                                              Actions.fadeIn(Constant.FADE_DURATION),
+                                              Actions.run(actionAfterFade),
+                                              Actions.removeActor()));
+    }
+
+    private void doBeforeLoadScreen() {
         player.resetInput();
         render(0f);
     }
@@ -410,8 +446,7 @@ public class WorldScreen implements Screen,
 
     @Override
     public void hide() {
-        previousGameState = gameState;
-        gameState = GameState.PAUSED;
+        pause();
         Gdx.input.setInputProcessor(null);
         Utils.setGamepadInputProcessor(null);
     }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Null;
 import lombok.Getter;
 import nl.t64.game.rpg.ProfileManager;
 import nl.t64.game.rpg.Utils;
@@ -31,6 +32,7 @@ public class MapManager implements ProfileObserver {
 
     @Getter
     private GameMap currentMap;
+    @Null
     private String nextMapTitle;
     private FogOfWar fogOfWar;
     private float timer = 0;
@@ -150,16 +152,20 @@ public class MapManager implements ProfileObserver {
         return AudioEvent.from(currentMap.getUnderground(playerFeetPosition));
     }
 
+    public void prepareForBattle() {
+        nextMapTitle = null;
+    }
+
     public void checkWarpPoint(GameMapWarpPoint warpPoint, Direction playerDirection) {
         Utils.getAudioManager().handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_WARP);
         nextMapTitle = warpPoint.getToMapName();
-        Utils.getBrokerManager().mapObservers.notifyMapWillChange(
+        Utils.getBrokerManager().mapObservers.notifyFadeOut(
                 () -> changeMapWithCameraShake(warpPoint, playerDirection), warpPoint.getFadeColor());
     }
 
     public void collisionPortal(GameMapPortal portal, Direction playerDirection) {
         nextMapTitle = portal.getToMapName();
-        Utils.getBrokerManager().mapObservers.notifyMapWillChange(
+        Utils.getBrokerManager().mapObservers.notifyFadeOut(
                 () -> changeMap(portal, playerDirection), portal.getFadeColor());
     }
 
@@ -228,7 +234,11 @@ public class MapManager implements ProfileObserver {
     }
 
     static TiledMap getTiledMap(String mapTitle) {
-        return Utils.getResourceManager().getMapAsset(MAP_PATH + mapTitle + MAPFILE_SUFFIX);
+        if (mapTitle == null) {
+            return new TiledMap();
+        } else {
+            return Utils.getResourceManager().getMapAsset(MAP_PATH + mapTitle + MAPFILE_SUFFIX);
+        }
     }
 
 }

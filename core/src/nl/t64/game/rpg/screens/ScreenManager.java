@@ -8,7 +8,6 @@ import com.badlogic.gdx.utils.reflect.ReflectionException;
 import nl.t64.game.rpg.Engine;
 import nl.t64.game.rpg.constants.ScreenType;
 import nl.t64.game.rpg.screens.menu.MenuScreen;
-import nl.t64.game.rpg.screens.world.WorldScreen;
 
 import java.util.EnumMap;
 
@@ -29,10 +28,6 @@ public class ScreenManager {
 
     public MenuScreen getMenuScreen(ScreenType screenType) {
         return (MenuScreen) getScreen(screenType);
-    }
-
-    public WorldScreen getWorldScreen() {
-        return (WorldScreen) getScreen(ScreenType.WORLD);
     }
 
     public Screen getScreen(ScreenType screenType) {

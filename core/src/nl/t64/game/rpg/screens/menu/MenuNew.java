@@ -100,7 +100,7 @@ public class MenuNew extends MenuScreen {
     }
 
     private void createNewGame() {
-        Utils.getScreenManager().getWorldScreen();  // just load the constructor.
+        Utils.getScreenManager().getScreen(ScreenType.WORLD);  // just load the constructor.
         Utils.getProfileManager().createNewProfile(finalProfileName);
         Utils.getGameData().getCutscenes().setPlayed(CutsceneId.SCENE_INTRO);
         Utils.getScreenManager().setScreen(ScreenType.SCENE_INTRO);

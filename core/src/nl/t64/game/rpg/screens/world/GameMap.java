@@ -62,7 +62,7 @@ public class GameMap {
 
     final List<GameMapNpc> npcs;
     final List<GameMapHero> heroes;
-    final List<GameMapNpc> enemies;
+    final List<GameMapEnemy> enemies;
     final List<GameMapLight> lights;
     final List<GameMapQuestBlocker> questBlockers;
     final List<GameMapQuestTexture> upperTextures;
@@ -107,7 +107,7 @@ public class GameMap {
         this.sounds = loader.loadLayer(SOUND_LAYER);
         this.npcs = loader.loadLayer(NPC_LAYER, GameMapNpc::new);
         this.heroes = loader.loadLayer(HERO_LAYER, rectObject -> Utils.getGameData().getHeroes().contains(rectObject.getName()), GameMapHero::new);
-        this.enemies = loader.loadLayer(ENEMY_LAYER, GameMapNpc::new);
+        this.enemies = loader.loadLayer(ENEMY_LAYER, GameMapEnemy::new);
         this.blockers = loader.loadLayer(COLLISION_LAYER, GameMapBlocker::new);
         this.lights = loader.loadLayer(LIGHTS_LAYER, GameMapLight::new);
 

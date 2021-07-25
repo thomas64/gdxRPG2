@@ -100,7 +100,7 @@ public class PartyContainer {
         return getBestSkillLevel(skillItemId) >= rank;
     }
 
-    HeroItem getHero(String heroId) {
+    public HeroItem getHero(String heroId) {
         return party.get(heroId);
     }
 

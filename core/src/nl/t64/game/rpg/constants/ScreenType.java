@@ -4,6 +4,7 @@ import com.badlogic.gdx.Screen;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import nl.t64.game.rpg.screens.LoadScreen;
+import nl.t64.game.rpg.screens.battle.BattleScreen;
 import nl.t64.game.rpg.screens.inventory.InventoryScreen;
 import nl.t64.game.rpg.screens.loot.FindScreen;
 import nl.t64.game.rpg.screens.loot.ReceiveScreen;
@@ -26,6 +27,7 @@ public enum ScreenType {
     MENU_CONTROLS(MenuControls.class),
     MENU_PAUSE(MenuPause.class),
     WORLD(WorldScreen.class),
+    BATTLE(BattleScreen.class),
     LOAD_SCREEN(LoadScreen.class),
     INVENTORY(InventoryScreen.class),
     QUEST_LOG(QuestLogScreen.class),

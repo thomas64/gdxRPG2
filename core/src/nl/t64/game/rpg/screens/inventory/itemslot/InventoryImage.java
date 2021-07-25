@@ -5,10 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import nl.t64.game.rpg.Utils;
-import nl.t64.game.rpg.components.party.DescriptionCreator;
-import nl.t64.game.rpg.components.party.InventoryDescription;
-import nl.t64.game.rpg.components.party.InventoryGroup;
-import nl.t64.game.rpg.components.party.InventoryItem;
+import nl.t64.game.rpg.components.party.*;
 import nl.t64.game.rpg.screens.inventory.InventoryUtils;
 
 import java.util.List;
@@ -56,7 +53,9 @@ public class InventoryImage extends Image {
 
     public List<InventoryDescription> getSingleDescription(int totalMerchant) {
         final var descriptionCreator = new DescriptionCreator(inventoryItem, totalMerchant);
-        return descriptionCreator.createItemDescriptionComparingToHero(InventoryUtils.getSelectedHero());
+        final String selectedHeroId = InventoryUtils.getSelectedHeroId();
+        final HeroItem heroItem = Utils.getGameData().getParty().getHero(selectedHeroId);
+        return descriptionCreator.createItemDescriptionComparingToHero(heroItem);
     }
 
     public List<InventoryDescription> getDualDescription(InventoryImage otherItem, int totalMerchant) {

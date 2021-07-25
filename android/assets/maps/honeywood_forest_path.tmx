@@ -97,7 +97,11 @@
   <object id="67" name="chest0001" x="528" y="1296" width="48" height="48"/>
  </objectgroup>
  <objectgroup color="#ff007f" id="22" name="enemy">
-  <object id="70" name="green_slime" type="w" x="456" y="768" width="48" height="24"/>
+  <object id="70" name="green_slime" type="w" x="456" y="768" width="48" height="24">
+   <properties>
+    <property name="battleId" value="battle0001"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup color="#55ff7f" id="16" name="npc"/>
  <objectgroup color="#55aaff" id="12" name="spawn">

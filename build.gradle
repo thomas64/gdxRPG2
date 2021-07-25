@@ -34,6 +34,7 @@ allprojects {
         controllerVersion = "2.2.1"
         mappingVersion = "2.3.0"
         aiVersion = "1.8.2"
+        ktxVersion = "1.10.0-b1"
         lombokVersion = "1.18.20"
         jacksonVersion = "2.12.4"
         assertjVersion = "3.20.2"
@@ -103,7 +104,12 @@ project(":core") {
         api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$controllerVersion"
         api "de.golfgl.gdxcontrollerutils:gdx-controllerutils-mapping:$mappingVersion"
         api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+        api "io.github.libktx:ktx-collections:$ktxVersion"
+        api "io.github.libktx:ktx-json:$ktxVersion"
+        api "io.github.libktx:ktx-preferences:$ktxVersion"
+        api "io.github.libktx:ktx-tiled:$ktxVersion"
         api "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+        api "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion"
         api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     }
 }

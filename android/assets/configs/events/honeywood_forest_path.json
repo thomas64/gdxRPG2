@@ -10,6 +10,6 @@
   },
   "guide_event_slow"     : {
     "type": "messagebox",
-    "text": "Keep %slow% pressed to move stealthily.\nEnemies will detect you less easy.\nComing to close will start a battle anyway."
+    "text": "Coming near an enemy will start a battle.\nKeep %slow% pressed to move stealthily.\nEnemies will detect you less easy."
   }
 }

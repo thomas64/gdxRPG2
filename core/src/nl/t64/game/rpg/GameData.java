@@ -2,6 +2,7 @@ package nl.t64.game.rpg;
 
 import lombok.Getter;
 import lombok.Setter;
+import nl.t64.game.rpg.components.battle.BattleContainer;
 import nl.t64.game.rpg.components.conversation.ConversationContainer;
 import nl.t64.game.rpg.components.conversation.PhraseIdContainer;
 import nl.t64.game.rpg.components.cutscene.CutsceneContainer;
@@ -20,6 +21,7 @@ public class GameData implements ProfileObserver {
     private HeroContainer heroes;
     private PartyContainer party;
     private InventoryContainer inventory;
+    private BattleContainer battles;
     private ConversationContainer conversations;
     private QuestContainer quests;
     private EventContainer events;
@@ -36,6 +38,7 @@ public class GameData implements ProfileObserver {
         heroes = new HeroContainer();
         party = new PartyContainer();
         inventory = new InventoryContainer();
+        battles = new BattleContainer();
         conversations = new ConversationContainer();
         quests = new QuestContainer();
         events = new EventContainer();
@@ -54,6 +57,7 @@ public class GameData implements ProfileObserver {
         profileManager.setProperty("heroes", heroes);
         profileManager.setProperty("party", party);
         profileManager.setProperty("inventory", inventory);
+        profileManager.setProperty("battles", battles);
         profileManager.setProperty("conversations", conversations.createPhraseIdContainer());
         profileManager.setProperty("quests", quests);
         profileManager.setProperty("events", events);
@@ -69,6 +73,7 @@ public class GameData implements ProfileObserver {
         heroes = profileManager.getProperty("heroes", HeroContainer.class);
         party = profileManager.getProperty("party", PartyContainer.class);
         inventory = profileManager.getProperty("inventory", InventoryContainer.class);
+        battles = profileManager.getProperty("battles", BattleContainer.class);
         conversations = new ConversationContainer();
         var currentPhraseIds = profileManager.getProperty("conversations", PhraseIdContainer.class);
         conversations.setCurrentPhraseIds(currentPhraseIds);

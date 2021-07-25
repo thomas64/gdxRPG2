@@ -13,6 +13,9 @@ import nl.t64.game.rpg.screens.world.pathfinding.TiledNode;
 
 public class PhysicsEnemy extends PhysicsComponent {
 
+    private static final int MINIMAL_NODES_BEFORE_STARTING_A_BATTLE = 5;
+
+    private String battleId;
     private DefaultGraphPath<TiledNode> path;
     private boolean isDetectingPlayer;
 
@@ -46,6 +49,7 @@ public class PhysicsEnemy extends PhysicsComponent {
         state = loadEvent.state;
         currentPosition = loadEvent.position;
         direction = loadEvent.direction;
+        battleId = loadEvent.conversationOrBattleId;
         setWanderBox();
         setBoundingBox();
     }
@@ -60,6 +64,9 @@ public class PhysicsEnemy extends PhysicsComponent {
             checkObstacles();
         }
         entity.send(new PositionEvent(currentPosition));
+        if (isNearbyPlayer()) {
+            Utils.getBrokerManager().componentObservers.notifyShowBattleScreen(battleId);
+        }
     }
 
     private void checkObstaclesWhileDetecting(float dt) {
@@ -70,6 +77,10 @@ public class PhysicsEnemy extends PhysicsComponent {
             currentPosition.set(oldPosition);
             move(dt);
         }
+    }
+
+    private boolean isNearbyPlayer() {
+        return path.getCount() > 0 && path.getCount() <= MINIMAL_NODES_BEFORE_STARTING_A_BATTLE;
     }
 
     @Override

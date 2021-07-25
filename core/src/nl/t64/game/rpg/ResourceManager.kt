@@ -18,7 +18,8 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoa
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.utils.Json
-import com.badlogic.gdx.utils.ObjectMap
+import ktx.collections.GdxMap
+import ktx.json.fromJson
 
 
 private const val FILE_LIST = "_files.txt"
@@ -35,10 +36,10 @@ private const val FILE_LIST_ATLAS_FILES3 = ATLAS_FILES3 + FILE_LIST
 
 class ResourceManager {
 
-    private val assetManager: AssetManager = AssetManager()
-    private val spriteConfigs: ObjectMap<String, SpriteConfig> = ObjectMap()
-    private val atlasList: MutableList<TextureAtlas> = ArrayList()
-    private val json: Json = Json()
+    private val assetManager = AssetManager()
+    private val spriteConfigs = GdxMap<String, SpriteConfig>()
+    private val atlasList = ArrayList<TextureAtlas>()
+    private val json = Json()
 
     fun unloadAsset(assetFilenamePath: String) {
         if (assetManager.isLoaded(assetFilenamePath)) {
@@ -122,14 +123,15 @@ class ResourceManager {
         if (spriteConfigs.isEmpty) {
             loadSpriteConfigs()
         }
-        return spriteConfigs.get(spriteId)
+        return spriteConfigs[spriteId]
     }
 
     private fun loadSpriteConfigs() {
-        Gdx.files.internal(FILE_LIST_SPRITE_CONFIGS).readString().split(System.lineSeparator())
+        Gdx.files.internal(FILE_LIST_SPRITE_CONFIGS).readString()
+            .split(System.lineSeparator())
             .map { Gdx.files.internal(SPRITE_CONFIGS + it) }
-            .map { json.fromJson(ObjectMap::class.java, SpriteConfig::class.java, it) }
-            .forEach { spriteConfigs.putAll(it as ObjectMap<String, SpriteConfig>) }
+            .map { json.fromJson(GdxMap::class.java, SpriteConfig::class.java, it) }
+            .forEach { spriteConfigs.putAll(it as GdxMap<String, SpriteConfig>) }
     }
 
     fun getAtlasTexture(atlasId: String): TextureRegion {
@@ -142,7 +144,8 @@ class ResourceManager {
     }
 
     private fun loadAtlasTexture(fileName: String, directory: String) {
-        Gdx.files.internal(fileName).readString().split(System.lineSeparator())
+        Gdx.files.internal(fileName).readString()
+            .split(System.lineSeparator())
             .filter { it.isNotBlank() }
             .map { Gdx.files.internal(directory + it) }
             .map { TextureAtlas(it) }
@@ -151,7 +154,7 @@ class ResourceManager {
 
     fun getShopInventory(shopId: String): List<String> {
         val fullFilenamePath = SHOP_CONFIGS + shopId + CONFIG_SUFFIX
-        return json.fromJson(List::class.java, String::class.java, Gdx.files.internal(fullFilenamePath)) as List<String>
+        return json.fromJson(Gdx.files.internal(fullFilenamePath))
     }
 
 }

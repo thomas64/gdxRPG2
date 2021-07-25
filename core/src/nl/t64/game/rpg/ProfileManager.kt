@@ -2,10 +2,13 @@ package nl.t64.game.rpg
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
-import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Json
-import com.badlogic.gdx.utils.ObjectMap
 import com.badlogic.gdx.utils.SerializationException
+import ktx.collections.GdxArray
+import ktx.collections.GdxMap
+import ktx.collections.set
+import ktx.json.fromJson
+import nl.t64.game.rpg.Utils.brokerManager
 import nl.t64.game.rpg.constants.Constant
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -23,8 +26,8 @@ private const val DEFAULT_EMPTY_PROFILE_VIEW = " [...]"
 class ProfileManager {
 
     private val json = Json()
-    private var saveStateProperties = ObjectMap<String, Any>()
-    private var currentSaveFileName: String? = null
+    private var saveStateProperties = GdxMap<String, Any>()
+    private lateinit var currentSaveFileName: String
     var selectedIndex = -1
 
     fun doesProfileExist(profileIndex: Int): Boolean {
@@ -36,20 +39,20 @@ class ProfileManager {
         currentSaveFileName = getSaveFileNames()[selectedIndex]
         saveStateProperties.clear()
         setProperty(PROFILE_ID, profileId.ifEmpty { getDefaultId() })
-        Utils.brokerManager.profileObservers.notifyCreateProfile(this)
+        brokerManager.profileObservers.notifyCreateProfile(this)
         writeProfileToDisk()
     }
 
     fun <T> getProperty(key: String, clazz: Class<T>): T {
-        return clazz.cast(saveStateProperties.get(key))
+        return clazz.cast(saveStateProperties[key])
     }
 
     fun setProperty(key: String, any: Any) {
-        saveStateProperties.put(key, any)
+        saveStateProperties[key] = any
     }
 
     fun saveProfile() {
-        Utils.brokerManager.profileObservers.notifySaveProfile(this)
+        brokerManager.profileObservers.notifySaveProfile(this)
         writeProfileToDisk()
     }
 
@@ -57,7 +60,7 @@ class ProfileManager {
         currentSaveFileName = getSaveFileNames()[profileIndex]
         val saveFile = Gdx.app.getPreferences(currentSaveFileName)
         saveStateProperties = getSaveStateProperties(saveFile)
-        Utils.brokerManager.profileObservers.notifyLoadProfile(this)
+        brokerManager.profileObservers.notifyLoadProfile(this)
     }
 
     fun removeProfile(profileIndex: Int) {
@@ -66,11 +69,11 @@ class ProfileManager {
         saveFile.flush()
     }
 
-    fun getVisualLoadingArray(): Array<String> =
-        Array(LOADING.split(",").toTypedArray())
+    fun getVisualLoadingArray(): GdxArray<String> =
+        GdxArray(LOADING.split(",").toTypedArray())
 
-    fun getVisualProfileArray(): Array<String> =
-        Array(getSaveFileNames().indices.map { getVisualOf(it) }.toTypedArray())
+    fun getVisualProfileArray(): GdxArray<String> =
+        GdxArray(getSaveFileNames().indices.map { getVisualOf(it) }.toTypedArray())
 
     private fun writeProfileToDisk() {
         val formatter = DateTimeFormatter.ofPattern(DATE_PATTERN)
@@ -85,8 +88,8 @@ class ProfileManager {
         val saveFile = getSaveFileBy(profileIndex)
         return if (saveFile.contains(SAVE_STATE_KEY)) {
             try {
-                val objectMap = getSaveStateProperties(saveFile)
-                "${objectMap.get(PROFILE_ID)} [${objectMap.get(PROFILE_SAVE_DATE)}]"
+                val saveState = getSaveStateProperties(saveFile)
+                "${saveState[PROFILE_ID]} [${saveState[PROFILE_SAVE_DATE]}]"
             } catch (e: SerializationException) {
                 "${profileIndex + 1} $INVALID_PROFILE_VIEW"
             }
@@ -100,9 +103,9 @@ class ProfileManager {
         return Gdx.app.getPreferences(saveFileName)
     }
 
-    private fun getSaveStateProperties(saveFile: Preferences): ObjectMap<String, Any> {
+    private fun getSaveStateProperties(saveFile: Preferences): GdxMap<String, Any> {
         val saveStateJsonString = saveFile.getString(SAVE_STATE_KEY)
-        return json.fromJson(ObjectMap::class.java, saveStateJsonString) as ObjectMap<String, Any>
+        return json.fromJson(saveStateJsonString)
     }
 
     private fun getDefaultId(): String {
