@@ -12,7 +12,7 @@ object NoteDatabase {
     private val notes: Map<String, ConversationGraph> = Gdx.files.internal(FILE_LIST).readString()
         .split(System.lineSeparator())
         .map { Gdx.files.internal(NOTES_CONFIGS + it).readString() }
-        .map { Utils.readValue(it, ConversationGraph::class.java) }
+        .map { Utils.readValue<ConversationGraph>(it) }
         .flatMap { it.toList() }
         .toMap()
 

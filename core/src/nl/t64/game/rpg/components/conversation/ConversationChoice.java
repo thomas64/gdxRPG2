@@ -45,7 +45,7 @@ public class ConversationChoice {
     }
 
     public boolean isMeetingCondition() {
-        return ConditionDatabase.getInstance().isMeetingConditions(conditionId);
+        return ConditionDatabase.isMeetingConditions(conditionId);
     }
 
 }

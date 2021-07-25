@@ -12,7 +12,7 @@ class EventContainer {
     private val events: Map<String, Event> = Gdx.files.internal(FILE_LIST).readString()
         .split(System.lineSeparator())
         .map { Gdx.files.internal(EVENT_CONFIGS + it).readString() }
-        .map { Utils.readValue(it, Event::class.java) }
+        .map { Utils.readValue<Event>(it) }
         .flatMap { it.toList() }
         .toMap()
 

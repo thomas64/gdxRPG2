@@ -27,7 +27,7 @@ public class DoorLoader {
     }
 
     private void loadDoors() {
-        for (RectangleMapObject gameMapDoor : currentMap.doors) {
+        for (RectangleMapObject gameMapDoor : currentMap.getDoors()) {
             loadDoor(gameMapDoor);
         }
     }

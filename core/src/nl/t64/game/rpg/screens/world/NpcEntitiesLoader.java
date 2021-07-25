@@ -31,20 +31,20 @@ class NpcEntitiesLoader {
     }
 
     private void loadNpcs() {
-        currentMap.npcs.forEach(this::loadNpcEntity);
+        currentMap.getNpcs().forEach(this::loadNpcEntity);
     }
 
     private void loadHeroes() {
-        currentMap.heroes.forEach(this::loadHero);
+        currentMap.getHeroes().forEach(this::loadHero);
     }
 
     private void loadEnemies() {
-        currentMap.enemies.forEach(this::loadEnemy);
+        currentMap.getEnemies().forEach(this::loadEnemy);
     }
 
     private void loadHero(GameMapHero gameMapHero) {
         HeroItem hero = Utils.getGameData().getHeroes().getHero(gameMapHero.getName());
-        if (gameMapHero.isHasBeenRecruited() == hero.isHasBeenRecruited()) {
+        if (gameMapHero.getHasBeenRecruited() == hero.isHasBeenRecruited()) {
             loadNpcEntity(gameMapHero);
         }
     }
@@ -62,7 +62,7 @@ class NpcEntitiesLoader {
     }
 
     private void loadNpcEntity(GameMapNpc gameMapNpc) {
-        if (!ConditionDatabase.getInstance().isMeetingConditions(gameMapNpc.getConditionIds())) {
+        if (!ConditionDatabase.isMeetingConditions(gameMapNpc.getConditionIds())) {
             return;
         }
         String entityId = gameMapNpc.getName();

@@ -1,6 +1,6 @@
 package nl.t64.game.rpg.components.quest
 
-internal enum class QuestType {
+enum class QuestType {
     FETCH,
     DISCOVER,
     CHECK,

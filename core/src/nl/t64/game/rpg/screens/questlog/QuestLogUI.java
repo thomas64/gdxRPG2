@@ -27,7 +27,7 @@ class QuestLogUI {
         this.summaryWindow = Utils.createDefaultWindow(TITLE_SUMMARY, summaryTable.container);
 
         this.taskListTable = new TaskListTable();
-        this.taskListWindow = Utils.createDefaultWindow(TITLE_TASKS, taskListTable.container);
+        this.taskListWindow = Utils.createDefaultWindow(TITLE_TASKS, taskListTable.getContainer());
     }
 
     void addToStage(Stage stage) {

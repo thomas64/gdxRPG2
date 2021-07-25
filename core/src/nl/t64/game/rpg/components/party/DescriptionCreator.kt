@@ -63,7 +63,6 @@ class DescriptionCreator(
 
     private fun addPrices(createDescription: (Any, Any) -> InventoryDescription) {
         when {
-            //@formatter:off
             inventoryItem.amount == 1 -> {
                 descriptionList.add(createDescription.invoke(Constant.DESCRIPTION_KEY_BUY, inventoryItem.getBuyPriceTotal(partySumOfMerchantSkill)))
                 descriptionList.add(createDescription.invoke(Constant.DESCRIPTION_KEY_SELL, inventoryItem.getSellValueTotal(partySumOfMerchantSkill)))
@@ -74,7 +73,6 @@ class DescriptionCreator(
                 descriptionList.add(createDescription.invoke(Constant.DESCRIPTION_KEY_SELL_PIECE, inventoryItem.getSellValuePiece(partySumOfMerchantSkill)))
                 descriptionList.add(createDescription.invoke(Constant.DESCRIPTION_KEY_SELL_TOTAL, inventoryItem.getSellValueTotal(partySumOfMerchantSkill)))
             }
-            //@formatter:on
             else -> {
                 throw IllegalStateException("Amount cannot be below 1.")
             }

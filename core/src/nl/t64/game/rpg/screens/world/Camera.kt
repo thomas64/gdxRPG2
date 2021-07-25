@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import nl.t64.game.rpg.sfx.ShakeCamera
+import kotlin.math.max
 
 
 class Camera : OrthographicCamera() {
@@ -25,7 +26,7 @@ class Camera : OrthographicCamera() {
         return if (mapWidth / zoom > Gdx.graphics.width && mapHeight / zoom > Gdx.graphics.height) {
             val zoomNumberWidth = mapWidth / Gdx.graphics.width
             val zoomNumberHeight = mapHeight / Gdx.graphics.height
-            zoom = zoomNumberWidth.coerceAtLeast(zoomNumberHeight)
+            zoom = max(zoomNumberWidth, zoomNumberHeight)
             true
         } else false
     }

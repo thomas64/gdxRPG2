@@ -12,7 +12,7 @@ class QuestContainer {
     private val quests: Map<String, QuestGraph> = Gdx.files.internal(FILE_LIST).readString()
         .split(System.lineSeparator())
         .map { Gdx.files.internal(QUEST_CONFIGS + it).readString() }
-        .map { Utils.readValue(it, QuestGraph::class.java) }
+        .map { Utils.readValue<QuestGraph>(it) }
         .flatMap { it.toList() }
         .toMap()
         .onEach { (questId: String, quest: QuestGraph) -> quest.id = questId }

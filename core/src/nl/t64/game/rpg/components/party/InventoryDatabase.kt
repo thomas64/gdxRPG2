@@ -1,7 +1,7 @@
 package nl.t64.game.rpg.components.party
 
 import com.badlogic.gdx.Gdx
-import nl.t64.game.rpg.Utils.readValue
+import nl.t64.game.rpg.Utils
 
 
 private const val INVENTORY_CONFIGS = "configs/inventory/"
@@ -14,7 +14,7 @@ object InventoryDatabase {
     private val inventoryItems: Map<String, InventoryItem> = Gdx.files.internal(FILE_LIST).readString()
         .split(System.lineSeparator())
         .map { Gdx.files.internal(INVENTORY_CONFIGS + it).readString() }
-        .map { readValue(it, InventoryItem::class.java) }
+        .map { Utils.readValue<InventoryItem>(it) }
         .flatMap { it.toList() }
         .toMap()
         .onEach { (inventoryItemId: String, inventoryItem: InventoryItem) -> inventoryItem.id = inventoryItemId }

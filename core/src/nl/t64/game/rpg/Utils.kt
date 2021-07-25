@@ -110,7 +110,6 @@ object Utils {
         return NinePatchDrawable(ninepatch)
     }
 
-    @JvmStatic
     fun createLightmap(lightmapId: String): Texture {
         return resourceManager.getTextureAsset(String.format(LIGHTMAP_PATH, lightmapId))
     }
@@ -220,6 +219,12 @@ object Utils {
     fun <T> readValue(json: String, clazz: Class<T>): HashMap<String, T> {
         val mapper = jacksonObjectMapper()
         val valueType = mapper.typeFactory.constructMapType(HashMap::class.java, String::class.java, clazz)
+        return mapper.readValue(json, valueType)
+    }
+
+    inline fun <reified T> readValue(json: String): HashMap<String, T> {
+        val mapper = jacksonObjectMapper()
+        val valueType = mapper.typeFactory.constructMapType(HashMap::class.java, String::class.java, T::class.java)
         return mapper.readValue(json, valueType)
     }
 

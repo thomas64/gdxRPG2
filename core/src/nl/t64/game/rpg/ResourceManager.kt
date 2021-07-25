@@ -1,6 +1,7 @@
 package nl.t64.game.rpg
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.assets.AssetLoaderParameters
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.assets.loaders.MusicLoader
 import com.badlogic.gdx.assets.loaders.SoundLoader
@@ -11,13 +12,15 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader
-import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoaderParameter
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.utils.Json
+import ktx.assets.getAsset
+import ktx.assets.loadOnDemand
+import ktx.assets.setLoader
+import ktx.assets.unloadSafely
 import ktx.collections.GdxMap
 import ktx.json.fromJson
 
@@ -36,87 +39,48 @@ private const val FILE_LIST_ATLAS_FILES3 = ATLAS_FILES3 + FILE_LIST
 
 class ResourceManager {
 
-    private val assetManager = AssetManager()
+    private val assetManager = AssetManager().apply {
+        setLoader(TmxMapLoader(fileHandleResolver))
+        setLoader(FreeTypeFontGeneratorLoader(fileHandleResolver))
+        setLoader(FreetypeFontLoader(fileHandleResolver), ".ttf")
+        setLoader(TextureLoader(fileHandleResolver))
+        setLoader(SoundLoader(fileHandleResolver))
+        setLoader(MusicLoader(fileHandleResolver))
+    }
     private val spriteConfigs = GdxMap<String, SpriteConfig>()
     private val atlasList = ArrayList<TextureAtlas>()
     private val json = Json()
 
     fun unloadAsset(assetFilenamePath: String) {
-        if (assetManager.isLoaded(assetFilenamePath)) {
-            assetManager.unload(assetFilenamePath)
-        }
+        assetManager.unloadSafely(assetFilenamePath)
     }
 
     fun getMapAsset(mapFilenamePath: String): TiledMap {
-        if (!assetManager.isLoaded(mapFilenamePath)) {
-            loadMapAsset(mapFilenamePath)
-        }
-        return assetManager.get(mapFilenamePath, TiledMap::class.java)
-    }
-
-    private fun loadMapAsset(mapFilenamePath: String) {
-        assetManager.setLoader(TiledMap::class.java, TmxMapLoader(assetManager.fileHandleResolver))
-        assetManager.load(mapFilenamePath, TiledMap::class.java)
-        assetManager.finishLoadingAsset<Any>(mapFilenamePath)
+        return getAsset(mapFilenamePath)
     }
 
     fun getTrueTypeAsset(trueTypeFilenamePath: String, fontSize: Int): BitmapFont {
-        if (!assetManager.isLoaded(trueTypeFilenamePath)) {
-            loadTrueTypeAsset(trueTypeFilenamePath, fontSize)
-        }
-        return assetManager.get(trueTypeFilenamePath, BitmapFont::class.java)
-    }
-
-    private fun loadTrueTypeAsset(trueTypeFilenamePath: String, fontSize: Int) {
-        assetManager.setLoader(
-            FreeTypeFontGenerator::class.java,
-            FreeTypeFontGeneratorLoader(assetManager.fileHandleResolver)
-        )
-        assetManager.setLoader(BitmapFont::class.java, ".ttf", FreetypeFontLoader(assetManager.fileHandleResolver))
-        val parameter = FreeTypeFontLoaderParameter()
-        parameter.fontFileName = trueTypeFilenamePath
-        parameter.fontParameters.size = fontSize
-        assetManager.load(trueTypeFilenamePath, BitmapFont::class.java, parameter)
-        assetManager.finishLoadingAsset<Any>(trueTypeFilenamePath)
+        val parameters = FreetypeFontLoader.FreeTypeFontLoaderParameter()
+        parameters.fontFileName = trueTypeFilenamePath
+        parameters.fontParameters.size = fontSize
+        return getAsset(trueTypeFilenamePath, parameters)
     }
 
     fun getTextureAsset(textureFilenamePath: String): Texture {
-        if (!assetManager.isLoaded(textureFilenamePath)) {
-            loadTextureAsset(textureFilenamePath)
-        }
-        return assetManager.get(textureFilenamePath, Texture::class.java)
-    }
-
-    private fun loadTextureAsset(textureFilenamePath: String) {
-        assetManager.setLoader(Texture::class.java, TextureLoader(assetManager.fileHandleResolver))
-        assetManager.load(textureFilenamePath, Texture::class.java)
-        assetManager.finishLoadingAsset<Any>(textureFilenamePath)
+        return getAsset(textureFilenamePath)
     }
 
     fun getSoundAsset(soundFilenamePath: String): Sound {
-        if (!assetManager.isLoaded(soundFilenamePath)) {
-            loadSoundAsset(soundFilenamePath)
-        }
-        return assetManager.get(soundFilenamePath, Sound::class.java)
-    }
-
-    private fun loadSoundAsset(soundFilenamePath: String) {
-        assetManager.setLoader(Sound::class.java, SoundLoader(assetManager.fileHandleResolver))
-        assetManager.load(soundFilenamePath, Sound::class.java)
-        assetManager.finishLoadingAsset<Any>(soundFilenamePath)
+        return getAsset(soundFilenamePath)
     }
 
     fun getMusicAsset(musicFilenamePath: String): Music {
-        if (!assetManager.isLoaded(musicFilenamePath)) {
-            loadMusicAsset(musicFilenamePath)
-        }
-        return assetManager.get(musicFilenamePath, Music::class.java)
+        return getAsset(musicFilenamePath)
     }
 
-    private fun loadMusicAsset(musicFilenamePath: String) {
-        assetManager.setLoader(Music::class.java, MusicLoader(assetManager.fileHandleResolver))
-        assetManager.load(musicFilenamePath, Music::class.java)
-        assetManager.finishLoadingAsset<Any>(musicFilenamePath)
+    private inline fun <reified T : Any> getAsset(path: String, parameters: AssetLoaderParameters<T>? = null): T {
+        assetManager.loadOnDemand(path, parameters).finishLoading()
+        return assetManager.getAsset(path)
     }
 
     fun getSpriteConfig(spriteId: String): SpriteConfig {

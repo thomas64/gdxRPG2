@@ -28,7 +28,7 @@ class LootLoader {
     }
 
     private void loadSparkles() {
-        for (RectangleMapObject gameMapSparkle : currentMap.sparkles) {
+        for (RectangleMapObject gameMapSparkle : currentMap.getSparkles()) {
             Loot sparkle = Utils.getGameData().getLoot().getLoot(gameMapSparkle.getName());
             if (!sparkle.isTaken()) {
                 loadSparkle(gameMapSparkle, sparkle);
@@ -37,7 +37,7 @@ class LootLoader {
     }
 
     private void loadChests() {
-        for (RectangleMapObject gameMapChest : currentMap.chests) {
+        for (RectangleMapObject gameMapChest : currentMap.getChests()) {
             Loot chest = Utils.getGameData().getLoot().getLoot(gameMapChest.getName());
             loadChest(gameMapChest, chest);
         }

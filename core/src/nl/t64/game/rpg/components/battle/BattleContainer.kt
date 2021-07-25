@@ -13,7 +13,7 @@ class BattleContainer {
         .split(System.lineSeparator())
         .filter { it.isNotBlank() }
         .map { Gdx.files.internal(BATTLES_CONFIGS + it).readString() }
-        .map { Utils.readValue(it, Battle::class.java) }
+        .map { Utils.readValue<Battle>(it) }
         .flatMap { it.toList() }
         .toMap()
 

@@ -111,7 +111,7 @@ public class WorldScreen implements Screen,
 
     @Override
     public void onNotifyMapChanged(GameMap currentMap) {
-        mapRenderer.setMap(currentMap.tiledMap);
+        mapRenderer.setMap(currentMap.getTiledMap());
         camera.setNewMapSize(currentMap.getPixelWidth(), currentMap.getPixelHeight());
         player.send(new LoadEntityEvent(currentMap.playerSpawnDirection, currentMap.playerSpawnLocation));
         npcEntities = new NpcEntitiesLoader(currentMap).createNpcs();

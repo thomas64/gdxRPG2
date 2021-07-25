@@ -1,0 +1,22 @@
+package nl.t64.game.rpg.screens.world.mapobjects
+
+import com.badlogic.gdx.maps.objects.RectangleMapObject
+import ktx.tiled.property
+import nl.t64.game.rpg.screens.world.entity.Direction
+
+
+class GameMapSpawnPoint(rectObject: RectangleMapObject) : GameMapObject(rectObject.rectangle) {
+
+    private val fromMapName: String = rectObject.name
+    private val fromMapLocation: String = rectObject.property("type", "")
+    val direction: Direction = Direction.valueOf(rectObject.property("direction", "NONE").uppercase())
+
+    val x: Float get() = rectangle.getX()
+    val y: Float get() = rectangle.getY()
+
+    fun isInConnectionWith(portal: GameMapRelocator): Boolean {
+        return fromMapName == portal.fromMapName &&
+                fromMapLocation.equals(portal.toMapLocation, true)
+    }
+
+}
