@@ -34,7 +34,7 @@ allprojects {
         controllerVersion = "2.2.1"
         mappingVersion = "2.3.0"
         aiVersion = "1.8.2"
-        ktxVersion = "1.10.0-b1"
+        ktxVersion = "1.10.0-SNAPSHOT"
         lombokVersion = "1.18.20"
         jacksonVersion = "2.12.4"
         assertjVersion = "3.20.2"
