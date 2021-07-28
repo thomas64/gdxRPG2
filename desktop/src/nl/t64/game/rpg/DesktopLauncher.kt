@@ -1,24 +1,25 @@
 package nl.t64.game.rpg
 
-import com.badlogic.gdx.Application
-import com.badlogic.gdx.Files
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
-import nl.t64.game.rpg.Utils.preferenceManager
+import com.badlogic.gdx.Files.FileType
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
 import nl.t64.game.rpg.constants.Constant
 
 
-fun main() {
-    val config = LwjglApplicationConfiguration()
-    config.title = Constant.TITLE
-    config.width = Constant.SCREEN_WIDTH
-    config.height = Constant.SCREEN_HEIGHT
-    config.addIcon("sprites/icon.png", Files.FileType.Internal)
-    config.resizable = false
-    config.preferencesDirectory = "T64.nl/"
+class DesktopLauncher {
 
-    Gdx.app = LwjglApplication(Engine(), config)
-    Gdx.app.postRunnable { preferenceManager.setFullscreenAccordingToPreference() }
-    Gdx.app.logLevel = Application.LOG_ERROR
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val config = Lwjgl3ApplicationConfiguration()
+            config.setTitle(Constant.TITLE)
+            config.setWindowIcon("sprites/icon.png")
+            config.setResizable(false)
+            config.setWindowedMode(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGHT)
+            config.setPreferencesConfig("T64.nl/", FileType.External)
+
+            Lwjgl3Application(Engine(), config)
+        }
+    }
+
 }

@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 class SpellContainer {
@@ -34,7 +35,7 @@ class SpellContainer {
         return spells.values()
                      .stream()
                      .sorted(Comparator.comparing(SpellItem::getSort))
-                     .toList();
+                     .collect(Collectors.toUnmodifiableList());
     }
 
 }

@@ -14,7 +14,7 @@ public class Engine extends Game {
     private static float runTime = 0f;
 
     ProfileManager profileManager;
-    private PreferenceManager preferenceManager;
+    PreferenceManager preferenceManager;
     final ResourceManager resourceManager;
     final GameData gameData;
     final ScreenManager screenManager;
@@ -41,15 +41,11 @@ public class Engine extends Game {
         return runTime;
     }
 
-    PreferenceManager getPreferenceManager() {
-        if (preferenceManager == null) {
-            preferenceManager = new PreferenceManager();
-        }
-        return preferenceManager;
-    }
-
     @Override
     public void create() {
+        preferenceManager = new PreferenceManager();
+        preferenceManager.setFullscreenAccordingToPreference();
+
         profileManager = new ProfileManager();
 
         brokerManager.profileObservers.addObserver(gameData);

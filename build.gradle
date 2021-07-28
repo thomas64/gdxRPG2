@@ -1,5 +1,6 @@
 buildscript {
     ext.kotlinVersion = '1.5.21'
+    ext.javaVersion = 15
 
     repositories {
         mavenLocal()
@@ -9,7 +10,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.1.3"
+        classpath 'com.android.tools.build:gradle:4.2.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
@@ -17,15 +18,15 @@ buildscript {
 allprojects {
     apply plugin: "idea"
 
-//    tasks.withType(JavaCompile) {
-//        options.compilerArgs += "--enable-preview"
-//    }
-//    tasks.withType(Test) {
-//        jvmArgs += "--enable-preview"
-//    }
-//    tasks.withType(JavaExec) {
-//        jvmArgs += "--enable-preview"
-//    }
+    tasks.withType(JavaCompile) {
+        options.compilerArgs += "--enable-preview"
+    }
+    tasks.withType(Test) {
+        jvmArgs += "--enable-preview"
+    }
+    tasks.withType(JavaExec) {
+        jvmArgs += "--enable-preview"
+    }
 
     version = "1.0"
     ext {
@@ -55,11 +56,11 @@ allprojects {
 project(":desktop") {
     apply plugin: "java-library"
     apply plugin: "kotlin"
-    sourceCompatibility = 16
+    sourceCompatibility = "$javaVersion"
 
     dependencies {
         implementation project(":core")
-        api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$controllerVersion"
@@ -93,7 +94,7 @@ project(":android") {
 project(":core") {
     apply plugin: "java-library"
     apply plugin: "kotlin"
-    sourceCompatibility = 16
+    sourceCompatibility = "$javaVersion"
 
     dependencies {
         compileOnly "org.projectlombok:lombok:$lombokVersion"
@@ -119,7 +120,7 @@ project(":core") {
 project(":tests") {
     apply plugin: "java-library"
     apply plugin: "kotlin"
-    sourceCompatibility = 16
+    sourceCompatibility = "$javaVersion"
 
     dependencies {
         implementation project(":core")

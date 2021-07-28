@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 
 class StatContainer {
@@ -92,7 +93,7 @@ class StatContainer {
     List<StatItem> getAll() {
         return Arrays.stream(StatItemId.values())
                      .map(statItemId -> stats.get(statItemId.name()))
-                     .toList();
+                     .collect(Collectors.toUnmodifiableList());
     }
 
     int getInflictDamageStaminaPenalty() {
