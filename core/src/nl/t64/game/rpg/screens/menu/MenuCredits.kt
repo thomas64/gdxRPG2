@@ -29,7 +29,7 @@ class MenuCredits : MenuScreen() {
         createTable()
     }
 
-    public override fun setupScreen() {
+    override fun setupScreen() {
         scrollPane.scrollY = 0f
         scrollPane.updateVisualScroll()
         applyListeners()

@@ -10,7 +10,7 @@ import de.golfgl.gdx.controllers.mapping.ControllerToInputAdapter;
 import nl.t64.game.rpg.constants.Constant;
 
 
-class GamepadMapping extends ControllerMappings {
+public class GamepadMapping extends ControllerMappings {
 
     private static final int LEFT_AXIS_VERTICAL = 0;
     private static final int LEFT_AXIS_HORIZONTAL = 1;

@@ -4,6 +4,7 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject
 import com.badlogic.gdx.math.Vector2
 import ktx.tiled.property
 import ktx.tiled.propertyOrNull
+import ktx.tiled.type
 import nl.t64.game.rpg.screens.world.entity.Direction
 import nl.t64.game.rpg.screens.world.entity.EntityState
 
@@ -18,7 +19,7 @@ open class GameMapNpc(rectObject: RectangleMapObject) : GameMapObject(rectObject
     val position: Vector2 get() = Vector2(rectangle.x, rectangle.y)
 
     private fun createState(rectObject: RectangleMapObject): EntityState {
-        val entityState = rectObject.propertyOrNull<String>("type")
+        val entityState = rectObject.type
         return when {
             entityState == null -> EntityState.IMMOBILE
             entityState.equals("inv", true) -> EntityState.INVISIBLE

@@ -16,7 +16,6 @@ object NoteDatabase {
         .flatMap { it.toList() }
         .toMap()
 
-    @JvmStatic
     fun getNoteById(noteId: String): ConversationGraph = notes[noteId]!!
 
 }

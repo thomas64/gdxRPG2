@@ -80,8 +80,8 @@ class GameMap(val mapTitle: String) {
     private val portals: List<GameMapPortal> = loader.loadLayer(PORTAL_LAYER) { GameMapPortal(it, mapTitle) }
     private val warpPoints: List<GameMapWarpPoint> = loader.loadLayer(WARP_LAYER) { GameMapWarpPoint(it, mapTitle) }
 
-    val pixelWidth: Int get() = tiledMap.totalWidth()
-    val pixelHeight: Int get() = tiledMap.totalHeight()
+    val pixelWidth: Float get() = tiledMap.totalWidth().toFloat()
+    val pixelHeight: Float get() = tiledMap.totalHeight().toFloat()
     val width: Int get() = tiledMap.width
     val height: Int get() = tiledMap.height
 

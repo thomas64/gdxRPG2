@@ -211,11 +211,6 @@ object Utils {
     }
 
     @JvmStatic
-    fun <T> reverseList(list: List<T>): List<T> {
-        return list.reversed()
-    }
-
-    @JvmStatic
     fun <T> readValue(json: String, clazz: Class<T>): HashMap<String, T> {
         val mapper = jacksonObjectMapper()
         val valueType = mapper.typeFactory.constructMapType(HashMap::class.java, String::class.java, clazz)

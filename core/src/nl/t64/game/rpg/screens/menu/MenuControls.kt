@@ -16,7 +16,7 @@ class MenuControls : MenuScreen() {
 
     private var isGamepadConnected = false
 
-    public override fun setupScreen() {
+    override fun setupScreen() {
         isGamepadConnected = Utils.isGamepadConnected()
         setFontColor()
         createTables()

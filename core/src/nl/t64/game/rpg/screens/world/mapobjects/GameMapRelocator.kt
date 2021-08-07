@@ -3,7 +3,7 @@ package nl.t64.game.rpg.screens.world.mapobjects
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.maps.objects.RectangleMapObject
 import com.badlogic.gdx.math.Rectangle
-import ktx.tiled.property
+import ktx.tiled.type
 import nl.t64.game.rpg.screens.world.entity.Direction
 
 
@@ -19,7 +19,7 @@ abstract class GameMapRelocator(
 
     companion object {
         fun createToMapLocation(rectObject: RectangleMapObject): String {
-            return rectObject.property("type", "")
+            return rectObject.type ?: ""
         }
     }
 

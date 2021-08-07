@@ -17,10 +17,11 @@ class QuestContainer {
         .toMap()
         .onEach { (questId: String, quest: QuestGraph) -> quest.id = questId }
 
-    fun getAllKnownQuests(): List<QuestGraph> =
+    fun getAllKnownQuests(): Array<QuestGraph> =
         quests.values
             .filter { it.currentState != QuestState.UNKNOWN }
             .sortedWith(compareBy({ it.isFailed }, { it.currentState }, { it.id }))
+            .toTypedArray()
 
     fun getQuestById(questId: String): QuestGraph = quests[questId]!!
 

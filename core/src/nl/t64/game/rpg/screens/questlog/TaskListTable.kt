@@ -35,7 +35,8 @@ internal class TaskListTable {
     fun populateTaskList(quest: QuestGraph) {
         taskList.clearItems()
         if (quest.currentState != QuestState.KNOWN) {
-            taskList.setItems(GdxArray<QuestTask>(quest.getAllTasks()))
+            val questTasks = GdxArray(quest.getAllTasks())
+            taskList.setItems(questTasks)
             taskList.setAlignment(Align.left)
         } else {
             taskList.setItems(QuestTask(taskPhrase = "(No tasks visible until this quest is accepted)"))

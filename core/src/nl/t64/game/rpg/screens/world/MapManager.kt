@@ -215,7 +215,7 @@ class MapManager : ProfileObserver {
 
         fun getTiledMap(mapTitle: String?): TiledMap {
             return mapTitle?.let {
-                resourceManager.getMapAsset("$MAP_PATH$mapTitle$MAPFILE_SUFFIX")
+                resourceManager.getMapAsset("$MAP_PATH$it$MAPFILE_SUFFIX")
             } ?: TiledMap()
         }
     }

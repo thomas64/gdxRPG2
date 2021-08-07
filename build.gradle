@@ -18,6 +18,11 @@ buildscript {
 allprojects {
     apply plugin: "idea"
 
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+        kotlinOptions {
+            freeCompilerArgs = ['-Xjvm-default=all-compatibility']
+        }
+    }
     tasks.withType(JavaCompile) {
         options.compilerArgs += "--enable-preview"
     }
@@ -40,6 +45,7 @@ allprojects {
         jacksonVersion = "2.12.4"
         assertjVersion = "3.20.2"
         mockitoVersion = "3.11.2"
+        kockitoVersion = "3.2.0"
         junitVersion = "5.7.2"
     }
 
@@ -129,6 +135,7 @@ project(":tests") {
         testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
         testImplementation "org.assertj:assertj-core:$assertjVersion"
         testImplementation "org.mockito:mockito-core:$mockitoVersion"
+        testImplementation "org.mockito.kotlin:mockito-kotlin:$kockitoVersion"
         testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
         testImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     }

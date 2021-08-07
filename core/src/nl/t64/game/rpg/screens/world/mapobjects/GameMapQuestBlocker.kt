@@ -15,8 +15,9 @@ class GameMapQuestBlocker(rectObject: RectangleMapObject) : GameMapObject(rectOb
     private val questId: String = rectObject.name
     private val isActiveIfComplete: Boolean = rectObject.property("activeIfComplete")
     private val taskId: String = rectObject.property("task")
-    private var isActive: Boolean = rectObject.property<Boolean>("isActive")
-        .also { isActive -> if (isActive) brokerManager.blockObservers.addObserver(this) }
+    private var isActive: Boolean = rectObject.property<Boolean>("isActive").also {
+        if (it) brokerManager.blockObservers.addObserver(this)
+    }
 
     override fun getBlockerFor(boundingBox: Rectangle): Rectangle? {
         return rectangle.takeIf { isActive && boundingBox.overlaps(rectangle) }

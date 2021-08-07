@@ -1,6 +1,5 @@
 package nl.t64.game.rpg.components.quest
 
-import com.badlogic.gdx.utils.GdxRuntimeException
 import nl.t64.game.rpg.Utils.gameData
 
 
@@ -41,7 +40,7 @@ class QuestTask(
             QuestType.DISCOVER,
             QuestType.MESSAGE_DELIVERY -> isComplete = true
             QuestType.CHECK -> setCheckTypePossibleComplete()
-            else -> throw IllegalCallerException("Only possible to complete a DISCOVER, CHECK or DELIVERY task.")
+            else -> throw IllegalArgumentException("Only possible to complete a DISCOVER, CHECK or DELIVERY task.")
         }
     }
 
@@ -72,8 +71,8 @@ class QuestTask(
             QuestType.CHECK,
             QuestType.MESSAGE_DELIVERY,
             QuestType.ITEM_DELIVERY -> isComplete
-            else -> throw GdxRuntimeException("No $type task for now.")
-        };
+            else -> throw IllegalStateException("No '$type' task for now.")
+        }
     }
 
     private fun doesInventoryContainsTarget(): Boolean {

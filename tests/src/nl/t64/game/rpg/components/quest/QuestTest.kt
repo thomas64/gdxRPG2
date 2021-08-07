@@ -4,9 +4,9 @@ import nl.t64.game.rpg.GameTest
 import nl.t64.game.rpg.ProfileManager
 import nl.t64.game.rpg.Utils.gameData
 import nl.t64.game.rpg.components.loot.LootContainer
-import nl.t64.game.rpg.components.party.InventoryContainer
-import nl.t64.game.rpg.components.party.InventoryDatabase.createInventoryItem
 import nl.t64.game.rpg.components.party.PartyContainer
+import nl.t64.game.rpg.components.party.inventory.InventoryContainer
+import nl.t64.game.rpg.components.party.inventory.InventoryDatabase
 import nl.t64.game.rpg.constants.Constant
 import nl.t64.game.rpg.screens.world.conversation.ConversationSubject
 import org.assertj.core.api.Assertions.*
@@ -54,33 +54,34 @@ internal class QuestTest : GameTest() {
 
     @Test
     fun whenQuestGraphIsLoaded_ShouldHandleFlow() {
-        assertThat(party.getHero(0).xpToInvest).isZero
+        assertThat(party.getHero(0).getXpToInvest()).isZero
         val quest0001 = quests.getQuestById("quest0001")
-        assertThatExceptionOfType(IllegalCallerException::class.java).isThrownBy { quest0001.setTaskComplete("1") }
+        assertThatIllegalArgumentException().isThrownBy { quest0001.setTaskComplete("1") }
         assertThat(quest0001.isFinished()).isFalse
-        quest0001.handleAccept({ assertThat(it).isEqualTo(Constant.PHRASE_ID_QUEST_ACCEPT) }, ConversationSubject())
+        quest0001.handleAccept({ assertThat(it).isEqualTo(Constant.PHRASE_ID_QUEST_ACCEPT) },
+                               ConversationSubject())
         assertThat(quest0001.currentState).isEqualTo(QuestState.ACCEPTED)
         quest0001.handleReturn { assertThat(it).isEqualTo(Constant.PHRASE_ID_QUEST_NO_SUCCESS) }
-        assertThatExceptionOfType(IllegalStateException::class.java)
-            .isThrownBy { quest0001.handleReward({}, ConversationSubject()) }
-        inventory.autoSetItem(createInventoryItem("gemstone", 5))
-        inventory.autoSetItem(createInventoryItem("herb", 3))
+        assertThatIllegalStateException().isThrownBy { quest0001.handleReward({}, ConversationSubject()) }
+        inventory.autoSetItem(InventoryDatabase.createInventoryItem("gemstone", 5))
+        inventory.autoSetItem(InventoryDatabase.createInventoryItem("herb", 3))
         quest0001.handleReturn { assertThat(it).isEqualTo(Constant.PHRASE_ID_QUEST_SUCCESS) }
         quest0001.handleReward({}, ConversationSubject())
         assertThat(quest0001.currentState).isEqualTo(QuestState.UNCLAIMED)
         loot.getLoot("quest0001").clearContent()
-        quest0001.handleReward({ assertThat(it).isEqualTo(Constant.PHRASE_ID_QUEST_FINISHED) }, ConversationSubject())
+        quest0001.handleReward({ assertThat(it).isEqualTo(Constant.PHRASE_ID_QUEST_FINISHED) },
+                               ConversationSubject())
         assertThat(quest0001.currentState).isEqualTo(QuestState.FINISHED)
         assertThat(quest0001.isFinished()).isTrue
-        assertThat(party.getHero(0).xpToInvest).isEqualTo(2)
+        assertThat(party.getHero(0).getXpToInvest()).isEqualTo(2)
         assertThat(inventory.hasEnoughOfItem("gemstone", 1)).isFalse
         assertThat(inventory.hasEnoughOfItem("herb", 1)).isFalse
     }
 
     @Test
     fun whenDemandsAreCompleteFromTheStart_ShouldHandleQuickFlow() {
-        inventory.autoSetItem(createInventoryItem("gemstone", 5))
-        inventory.autoSetItem(createInventoryItem("herb", 3))
+        inventory.autoSetItem(InventoryDatabase.createInventoryItem("gemstone", 5))
+        inventory.autoSetItem(InventoryDatabase.createInventoryItem("herb", 3))
         val quest0001 = quests.getQuestById("quest0001")
         quest0001.handleAccept(
             { assertThat(it).isEqualTo(Constant.PHRASE_ID_QUEST_IMMEDIATE_SUCCESS) },
@@ -108,18 +109,17 @@ internal class QuestTest : GameTest() {
             .isThrownBy { quest0001.handleReceive(ConversationSubject()) }
         quest0001.handleAccept({}, ConversationSubject())
         assertThat(quest0001.currentState).isEqualTo(QuestState.ACCEPTED)
-        assertThatExceptionOfType(IllegalStateException::class.java).isThrownBy { quest0001.know() }
-        assertThatExceptionOfType(IllegalStateException::class.java)
-            .isThrownBy { quest0001.accept(ConversationSubject()) }
-        inventory.autoSetItem(createInventoryItem("gemstone", 5))
-        inventory.autoSetItem(createInventoryItem("herb", 3))
+        assertThatIllegalStateException().isThrownBy { quest0001.know() }
+        assertThatIllegalStateException().isThrownBy { quest0001.accept(ConversationSubject()) }
+        inventory.autoSetItem(InventoryDatabase.createInventoryItem("gemstone", 5))
+        inventory.autoSetItem(InventoryDatabase.createInventoryItem("herb", 3))
         quest0001.handleReward({}, ConversationSubject())
         assertThat(quest0001.currentState).isEqualTo(QuestState.UNCLAIMED)
-        assertThatExceptionOfType(IllegalStateException::class.java).isThrownBy { quest0001.unclaim() }
+        assertThatIllegalStateException().isThrownBy { quest0001.unclaim() }
         loot.getLoot("quest0001").clearContent()
         quest0001.handleReward({}, ConversationSubject())
         assertThat(quest0001.currentState).isEqualTo(QuestState.FINISHED)
-        assertThatExceptionOfType(IllegalStateException::class.java).isThrownBy { quest0001.finish() }
+        assertThatIllegalStateException().isThrownBy { quest0001.finish() }
     }
 
     @Test
@@ -128,19 +128,20 @@ internal class QuestTest : GameTest() {
         quest0005.handleReceive(ConversationSubject())
         assertThat(quest0005.currentState).isEqualTo(QuestState.KNOWN)
 
-        quest0005.handleCheckIfAcceptedInventory("1", "xxx",
-            { assertThat(it).isNull() }, { assertThat(it).isEqualTo("xxx") })
+        quest0005.handleCheckIfAcceptedInventory(
+            "1", "xxx", { assertThat(it).isNull() }, { assertThat(it).isEqualTo("xxx") })
 
         val targetId = quest0005.tasks["1"]!!.target.entries.iterator().next().key
-        val targetItem = createInventoryItem(targetId)
+        val targetItem = InventoryDatabase.createInventoryItem(targetId)
         inventory.autoSetItem(targetItem)
 
-        quest0005.handleCheckIfAcceptedInventory("1", "xxx",
-            { assertThat(it).isNull() }, { assertThat(it).isEqualTo("xxx") })
+        quest0005.handleCheckIfAcceptedInventory(
+            "1", "xxx", { assertThat(it).isNull() }, { assertThat(it).isEqualTo("xxx") })
 
         quest0005.accept(ConversationSubject())
 
-        quest0005.handleCheckIfAcceptedInventory("1", "xxx",
+        quest0005.handleCheckIfAcceptedInventory(
+            "1", "xxx",
             { assertThat(it).isEqualTo(Constant.PHRASE_ID_QUEST_DELIVERY) }, { assertThat(it).isNull() })
 
         assertThat(inventory.contains(mapOf(Pair(targetId, 1)))).isTrue
@@ -152,19 +153,19 @@ internal class QuestTest : GameTest() {
     fun whenQuestReceiveMessageQuestIsHandled_ShouldBeHandled() {
         val quest0004 = quests.getQuestById("quest0004")
 
-        quest0004.handleCheckIfAccepted("xxx",
-            { assertThat(it).isNull() }, { s: String? -> assertThat(s).isEqualTo("xxx") })
+        quest0004.handleCheckIfAccepted(
+            "xxx", { assertThat(it).isNull() }, { s: String? -> assertThat(s).isEqualTo("xxx") })
 
         quest0004.handleAccept({ assertThat(it).isEqualTo(Constant.PHRASE_ID_QUEST_ACCEPT) }, ConversationSubject())
 
-        quest0004.handleCheckIfAccepted("xxx",
-            { assertThat(it).isEqualTo(Constant.PHRASE_ID_QUEST_DELIVERY) }, { assertThat(it).isNull() })
+        quest0004.handleCheckIfAccepted(
+            "xxx", { assertThat(it).isEqualTo(Constant.PHRASE_ID_QUEST_DELIVERY) }, { assertThat(it).isNull() })
     }
 
     @Test
     fun whenPartyGainsEnoughXp_ShouldShowMessageThatMemberGainedLevel() {
-        inventory.autoSetItem(createInventoryItem("gemstone", 5))
-        inventory.autoSetItem(createInventoryItem("herb", 3))
+        inventory.autoSetItem(InventoryDatabase.createInventoryItem("gemstone", 5))
+        inventory.autoSetItem(InventoryDatabase.createInventoryItem("herb", 3))
         party.getHero(0).gainXp(19, StringBuilder())
         val quest0001 = quests.getQuestById("quest0001")
         val questLoot = loot.getLoot("quest0001")
@@ -178,7 +179,7 @@ internal class QuestTest : GameTest() {
 
     @Test
     fun whenQuestFails_ShouldSetSubtasksAccordingly() {
-        inventory.autoSetItem(createInventoryItem("key_mysterious_tunnel", 1))
+        inventory.autoSetItem(InventoryDatabase.createInventoryItem("key_mysterious_tunnel", 1))
 
         val quest0006 = quests.getQuestById("quest0006")
         assertThat(quest0006.getAllTasks()).extracting("isOptional").containsExactly(true, false, true, false)
@@ -245,7 +246,7 @@ internal class QuestTest : GameTest() {
         assertThat(quest0001.tasks["1"]!!.isQuestFinished).isFalse
         assertThat(quest0001.tasks["1"]).hasToString("     Collect 3 herbs")
 
-        inventory.autoSetItem(createInventoryItem("herb", 3))
+        inventory.autoSetItem(InventoryDatabase.createInventoryItem("herb", 3))
         assertThat(quest0001.tasks["1"]).hasToString("v  Collect 3 herbs")
 
         inventory.autoRemoveItem("herb", 3)
@@ -294,6 +295,13 @@ internal class QuestTest : GameTest() {
         assertThat(questTask).hasToString(
             System.lineSeparator() + System.lineSeparator() + System.lineSeparator() + message
         )
+    }
+
+    @Test
+    fun `When QuestTask with wrong type checks for isCompleteForReturn, should throw exception`() {
+        val task = QuestTask()
+        assertThatIllegalStateException().isThrownBy { task.isCompleteForReturn() }
+            .withMessage("No 'NONE' task for now.")
     }
 
 }

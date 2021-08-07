@@ -203,7 +203,7 @@ internal class PartyWindow {
 
     private fun renderLevelLabel(i: Int) {
         val labelStyle = LabelStyle(font, TRANSPARENT_BLACK)
-        val heroLevel = party.getHero(i).level
+        val heroLevel = party.getHero(i).getLevel()
         val levelLabel = Label("Level: $heroLevel", labelStyle)
         levelLabel.setPosition(
             i * Constant.FACE_SIZE + i * PADDING + PADDING_SMALL,
@@ -225,10 +225,10 @@ internal class PartyWindow {
     private fun renderHpBar(i: Int) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         val hero = party.getHero(i)
-        val hpStats = hero.allHpStats
+        val hpStats = hero.getAllHpStats()
         val color = getHpColor(hpStats)
         shapeRenderer.color = color
-        val barWidth = BAR_WIDTH / hero.maximumHp * hero.currentHp
+        val barWidth = BAR_WIDTH / hero.getMaximumHp() * hero.getCurrentHp()
         renderBar(i, 2f, barWidth)
         shapeRenderer.end()
         renderBarOutline(i, 2f)
@@ -254,8 +254,8 @@ internal class PartyWindow {
 
     private fun calculateXpBarWidth(i: Int): Float {
         val hero = party.getHero(i)
-        val maxXp = hero.xpDeltaBetweenLevels
-        val currentXp = maxXp - hero.xpNeededForNextLevel
+        val maxXp = hero.getXpDeltaBetweenLevels()
+        val currentXp = maxXp - hero.getXpNeededForNextLevel()
         return BAR_WIDTH / maxXp * currentXp
     }
 

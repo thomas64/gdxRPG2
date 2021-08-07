@@ -8,9 +8,9 @@ import nl.t64.game.rpg.components.door.DoorContainer
 import nl.t64.game.rpg.components.event.EventContainer
 import nl.t64.game.rpg.components.loot.LootContainer
 import nl.t64.game.rpg.components.party.HeroContainer
-import nl.t64.game.rpg.components.party.InventoryContainer
-import nl.t64.game.rpg.components.party.InventoryDatabase.createInventoryItem
 import nl.t64.game.rpg.components.party.PartyContainer
+import nl.t64.game.rpg.components.party.inventory.InventoryContainer
+import nl.t64.game.rpg.components.party.inventory.InventoryDatabase.createInventoryItem
 import nl.t64.game.rpg.components.quest.QuestContainer
 import nl.t64.game.rpg.constants.Constant
 import nl.t64.game.rpg.subjects.ProfileObserver
@@ -83,7 +83,7 @@ class GameData : ProfileObserver {
     }
 
     private fun addFirstHeroToParty() {
-        val hero = heroes.getHero(Constant.PLAYER_ID)
+        val hero = heroes.getCertainHero(Constant.PLAYER_ID)
         heroes.removeHero(Constant.PLAYER_ID)
         party.addHero(hero)
     }
