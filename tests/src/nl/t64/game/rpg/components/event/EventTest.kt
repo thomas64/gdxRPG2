@@ -4,7 +4,7 @@ import nl.t64.game.rpg.GameTest
 import nl.t64.game.rpg.ProfileManager
 import nl.t64.game.rpg.Utils.gameData
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.assertThatIllegalStateException
+import org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -62,14 +62,14 @@ internal class EventTest : GameTest() {
         val replace3 = TextReplacer.replace(event3.text!!)
         assertThat(replace3).contains("Keep 'Ctrl' key pressed to move stealthily.")
 
-        assertThatIllegalStateException().isThrownBy { TextReplacer.replace("%pipo%") }
+        assertThatIllegalArgumentException().isThrownBy { TextReplacer.replace("%pipo%") }
             .withMessage("Unexpected value: '%pipo%'")
     }
 
     @Test
     fun `When event type does not exist, should throw exception`() {
         val event = Event("nonexistent type")
-        assertThatIllegalStateException().isThrownBy { event.possibleStart() }
+        assertThatIllegalArgumentException().isThrownBy { event.possibleStart() }
             .withMessage("Event does not recognize type: 'nonexistent type'.")
     }
 

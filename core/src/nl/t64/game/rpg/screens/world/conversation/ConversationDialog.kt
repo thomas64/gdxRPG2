@@ -97,12 +97,7 @@ class ConversationDialog {
         stage.draw()
     }
 
-    // todo, na alle kotlin: methode mergen met de aangeroepen
-    fun loadConversation(conversationId: String) {
-        loadConversation(conversationId, null)
-    }
-
-    fun loadConversation(conversationId: String, entityId: String?) {
+    fun loadConversation(conversationId: String, entityId: String? = null) {
         this.conversationId = conversationId
         faceId = entityId
         graph = gameData.conversations.getConversationById(conversationId)
@@ -295,7 +290,7 @@ class ConversationDialog {
             ConversationCommand.REWARD_QUEST -> rewardQuest()
             ConversationCommand.BONUS_REWARD_QUEST -> bonusRewardQuest()
             ConversationCommand.FAIL_QUEST -> failQuest(destinationId)
-            else -> throw IllegalStateException("ConversationCommand '$conversationCommand' cannot be reached here.")
+            else -> throw IllegalArgumentException("ConversationCommand '$conversationCommand' cannot be reached here.")
         }
     }
 

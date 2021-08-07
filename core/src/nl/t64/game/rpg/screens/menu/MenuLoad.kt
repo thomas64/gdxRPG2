@@ -111,7 +111,7 @@ class MenuLoad : MenuScreen() {
             0 -> processLoadButton()
             1 -> processDeleteButton()
             2 -> processBackButton()
-            else -> throw  IllegalArgumentException("SelectedIndex not found.")
+            else -> throw IllegalArgumentException("SelectedIndex not found.")
         }
     }
 

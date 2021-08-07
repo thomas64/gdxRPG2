@@ -14,12 +14,10 @@ object InventoryUtils {
 
     private var selectedHero: HeroItem? = null
 
-    @JvmStatic
     fun getSelectedHero(): HeroItem {
         return selectedHero!!
     }
 
-    @JvmStatic
     fun getSelectedHeroId(): String {
         val party = gameData.party
         if (selectedHero == null || !party.containsExactlyEqualTo(selectedHero!!)) {
@@ -28,29 +26,24 @@ object InventoryUtils {
         return selectedHero!!.id
     }
 
-    @JvmStatic
     fun selectPreviousHero() {
         selectedHero = gameData.party.getPreviousHero(selectedHero!!)
     }
 
-    @JvmStatic
     fun selectNextHero() {
         selectedHero = gameData.party.getNextHero(selectedHero!!)
     }
 
-    @JvmStatic
     fun setWindowDeselected(container: Table) {
         val parent = container.parent as Window
         parent.titleLabel.style.fontColor = Color.BLACK
     }
 
-    @JvmStatic
     fun setWindowSelected(container: Table) {
         val parent = container.parent as Window
         parent.titleLabel.style.fontColor = Constant.DARK_RED
     }
 
-    @JvmStatic
     fun getScreenUI(): ScreenUI = screenManager.getCurrentScreenToLoad().getScreenUI()
 
 }

@@ -39,39 +39,30 @@ private const val LIGHTMAP_PATH = "sprites/lightmaps/%s.png"
 
 object Utils {
 
-    @JvmStatic
     val resourceManager: ResourceManager
         get() = engine.resourceManager
 
-    @JvmStatic
     val preferenceManager: PreferenceManager
         get() = engine.preferenceManager
 
-    @JvmStatic
     val profileManager: ProfileManager
         get() = engine.profileManager
 
-    @JvmStatic
     val gameData: GameData
         get() = engine.gameData
 
-    @JvmStatic
     val screenManager: ScreenManager
         get() = engine.screenManager
 
-    @JvmStatic
     val audioManager: AudioManager
         get() = engine.audioManager
 
-    @JvmStatic
     val mapManager: MapManager
         get() = engine.mapManager
 
-    @JvmStatic
     val brokerManager: BrokerManager
         get() = engine.brokerManager
 
-    @JvmStatic
     fun setGamepadInputProcessor(inputProcessor: InputProcessor?) {
         engine.gamepadMapping.setInputProcessor(inputProcessor)
     }
@@ -79,12 +70,10 @@ object Utils {
     private val engine: Engine
         get() = Gdx.app.applicationListener as Engine
 
-    @JvmStatic
     fun isGamepadConnected(): Boolean {
         return Controllers.getCurrent()?.isConnected ?: false
     }
 
-    @JvmStatic
     fun createDefaultWindow(title: String, table: Table): Window {
         val window = Window(title, createDefaultWindowStyle())
         window.add(table)
@@ -103,7 +92,6 @@ object Utils {
         return WindowStyle(font, Color.BLACK, drawable)
     }
 
-    @JvmStatic
     fun createTopBorder(): Drawable {
         val texture = resourceManager.getTextureAsset(SPRITE_TOP_BORDER)
         val ninepatch = NinePatch(texture, 0, 0, 1, 0)
@@ -114,7 +102,6 @@ object Utils {
         return resourceManager.getTextureAsset(String.format(LIGHTMAP_PATH, lightmapId))
     }
 
-    @JvmStatic
     fun getCharImage(spriteId: String): Array<Array<TextureRegion>> {
         val charConfig = resourceManager.getSpriteConfig(spriteId)
         val path = String.format(CHAR_PATH, charConfig.source)
@@ -125,7 +112,6 @@ object Utils {
         return personSprite.split(Constant.TILE_SIZE.toInt(), Constant.TILE_SIZE.toInt())
     }
 
-    @JvmStatic
     fun getFaceImage(spriteId: String): Image {
         val faceConfig = resourceManager.getSpriteConfig(spriteId)
         val path = String.format(FACE_PATH, faceConfig.source)
@@ -136,7 +122,6 @@ object Utils {
         return Image(characterFace)
     }
 
-    @JvmStatic
     fun getDoorImage(spriteId: String, width: Int): Array<Array<TextureRegion>> {
         val doorConfig = resourceManager.getSpriteConfig(spriteId)
         val path = String.format(DOOR_PATH, doorConfig.source)
@@ -147,7 +132,6 @@ object Utils {
         return doorSprite.split(width, Constant.TILE_SIZE.toInt() * 2)
     }
 
-    @JvmStatic
     fun getChestImage(): List<TextureRegion> {
         val splitOfEight = getSplitTexture(CHEST_PATH, Constant.SPRITE_GROUP_WIDTH, Constant.SPRITE_GROUP_HEIGHT)
         val firstRedChest = splitOfEight[0][0]
@@ -155,7 +139,6 @@ object Utils {
         return listOf(twelveRedChestTextures[0][0], twelveRedChestTextures[3][0])
     }
 
-    @JvmStatic
     fun getSplitTexture(texturePath: String, size: Int): Array<Array<TextureRegion>> {
         return getSplitTexture(texturePath, size, size)
     }
@@ -165,7 +148,6 @@ object Utils {
         return TextureRegion.split(completeTexture, width, height)
     }
 
-    @JvmStatic
     fun getHpColor(hpStats: Map<String, Int>): Color {
         var color = Color.ROYAL
         if (hpStats["lvlVari"]!! < hpStats["lvlRank"]!!) {
@@ -183,7 +165,6 @@ object Utils {
         return color
     }
 
-    @JvmStatic
     fun createScreenshot(withBlur: Boolean): Image {
         val screenshot = Image(ScreenUtils.getFrameBufferTexture())
         if (withBlur) {
@@ -192,14 +173,12 @@ object Utils {
         return screenshot
     }
 
-    @JvmStatic
     fun createLargeParchment(): Image {
         val parchment = Image(resourceManager.getTextureAsset(SPRITE_PARCHMENT))
         parchment.setSize(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
         return parchment
     }
 
-    @JvmStatic
     fun createSmallParchment(): Image {
         val parchment = Image(resourceManager.getTextureAsset(SPRITE_PARCHMENT))
         parchment.setSize(SMALL_PARCHMENT_WIDTH, SMALL_PARCHMENT_HEIGHT)
@@ -210,7 +189,6 @@ object Utils {
         return parchment
     }
 
-    @JvmStatic
     fun <T> readValue(json: String, clazz: Class<T>): HashMap<String, T> {
         val mapper = jacksonObjectMapper()
         val valueType = mapper.typeFactory.constructMapType(HashMap::class.java, String::class.java, clazz)
@@ -223,7 +201,6 @@ object Utils {
         return mapper.readValue(json, valueType)
     }
 
-    @JvmStatic
     fun <T> readListValue(json: String, clazz: Class<T>): Map<String, List<T>> {
         val mapper = jacksonObjectMapper()
         val valueType: TypeReference<Map<String, List<T>>> = object : TypeReference<Map<String, List<T>>>() {}

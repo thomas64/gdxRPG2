@@ -322,7 +322,7 @@ internal class InventoryTest : GameTest() {
 
     @Test
     fun whenEmptyIndexIsIncreased_ShouldThrowException() {
-        assertThatIllegalStateException().isThrownBy { inventory.incrementAmountAt(2, 1) }
+        assertThatIllegalArgumentException().isThrownBy { inventory.incrementAmountAt(2, 1) }
     }
 
     @Test

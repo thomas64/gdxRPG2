@@ -300,7 +300,7 @@ internal class QuestTest : GameTest() {
     @Test
     fun `When QuestTask with wrong type checks for isCompleteForReturn, should throw exception`() {
         val task = QuestTask()
-        assertThatIllegalStateException().isThrownBy { task.isCompleteForReturn() }
+        assertThatIllegalArgumentException().isThrownBy { task.isCompleteForReturn() }
             .withMessage("No 'NONE' task for now.")
     }
 

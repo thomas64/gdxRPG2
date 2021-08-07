@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
-import com.badlogic.gdx.utils.GdxRuntimeException
 import nl.t64.game.rpg.Utils
 import nl.t64.game.rpg.constants.Constant
 
@@ -106,7 +105,7 @@ abstract class GraphicsComponent : Component {
             Direction.SOUTH -> walkSouthAnimation
             Direction.WEST -> walkWestAnimation
             Direction.EAST -> walkEastAnimation
-            Direction.NONE -> throw GdxRuntimeException("No animation for direction NONE.")
+            Direction.NONE -> throw IllegalArgumentException("No animation for direction NONE.")
         }
     }
 

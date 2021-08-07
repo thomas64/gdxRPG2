@@ -30,7 +30,6 @@ object Constant {
     const val FADE_DURATION = 0.5f
     const val DIALOG_FADE_OUT_DURATION = 0.4f - 0.1f
 
-    @JvmField
     val DARK_RED = Color(0.5f, 0f, 0f, 1f)
 
     const val PLAYER_ID = "mozes"

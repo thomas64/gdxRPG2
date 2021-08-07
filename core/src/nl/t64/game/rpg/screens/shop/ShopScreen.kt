@@ -21,7 +21,6 @@ class ShopScreen : ScreenToLoad() {
     private lateinit var shopId: String
 
     companion object {
-        @JvmStatic
         fun load(npcId: String, shopId: String) {
             audioManager.handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL)
             val shopScreen = screenManager.getScreen(ScreenType.SHOP) as ShopScreen

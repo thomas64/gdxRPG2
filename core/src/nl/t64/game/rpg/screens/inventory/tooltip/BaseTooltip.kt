@@ -32,7 +32,7 @@ abstract class BaseTooltip {
     }
 
     open fun toggle(itemSlot: ItemSlot) {
-        throw IllegalCallerException("Implement this method in child.")
+        throw IllegalStateException("Implement this method in child.")
     }
 
     open fun toggleCompare(itemSlot: ItemSlot) {

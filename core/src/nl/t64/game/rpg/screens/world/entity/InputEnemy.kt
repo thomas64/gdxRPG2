@@ -3,7 +3,6 @@ package nl.t64.game.rpg.screens.world.entity
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.utils.GdxRuntimeException
 import nl.t64.game.rpg.constants.Constant
 import nl.t64.game.rpg.screens.world.entity.events.*
 import nl.t64.game.rpg.screens.world.pathfinding.TiledNode
@@ -72,7 +71,7 @@ class InputEnemy : InputComponent() {
         state = when (state) {
             EntityState.IDLE, EntityState.WALKING -> EntityState.IDLE
             EntityState.IDLE_ANIMATING, EntityState.FLYING -> EntityState.IDLE_ANIMATING
-            else -> throw IllegalStateException("Unexpected value: $state")
+            else -> throw IllegalArgumentException("Unexpected value: $state")
         }
     }
 
@@ -88,7 +87,7 @@ class InputEnemy : InputComponent() {
         return when (state) {
             EntityState.IDLE, EntityState.WALKING -> EntityState.WALKING
             EntityState.IDLE_ANIMATING, EntityState.FLYING -> EntityState.FLYING
-            else -> throw IllegalStateException("Unexpected value: $state")
+            else -> throw IllegalArgumentException("Unexpected value: $state")
         }
     }
 
@@ -98,7 +97,7 @@ class InputEnemy : InputComponent() {
             nodePosition.y < currentGridPosition.y -> Direction.SOUTH
             nodePosition.x < currentGridPosition.x -> Direction.WEST
             nodePosition.x > currentGridPosition.x -> Direction.EAST
-            else -> throw GdxRuntimeException("Is this possible?")
+            else -> throw IllegalStateException("Is this possible?")
         }
     }
 
@@ -120,7 +119,7 @@ class InputEnemy : InputComponent() {
             EntityState.WALKING -> state = EntityState.IDLE
             EntityState.FLYING -> direction = Direction.getRandom()
             EntityState.IDLE_ANIMATING -> state = EntityState.FLYING
-            else -> throw IllegalStateException("Unexpected value: $state")
+            else -> throw IllegalArgumentException("Unexpected value: $state")
         }
     }
 

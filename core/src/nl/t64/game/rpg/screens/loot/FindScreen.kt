@@ -12,7 +12,6 @@ import nl.t64.game.rpg.constants.ScreenType
 class FindScreen : LootScreen() {
 
     companion object {
-        @JvmStatic
         fun load(loot: Loot, event: AudioEvent) {
             audioManager.handle(AudioCommand.SE_PLAY_ONCE, event)
             val findScreen = screenManager.getScreen(ScreenType.FIND) as FindScreen

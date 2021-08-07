@@ -11,7 +11,6 @@ class TransitionAction : Action() {
     private var duration: Float = 0f
 
     companion object {
-        @JvmStatic
         fun transition(type: TransitionType): TransitionAction {
             val action = Actions.action(TransitionAction::class.java)
             action.type = type

@@ -29,7 +29,7 @@ enum class SkillItemId(override val title: String) : SuperEnum {
         return when (this) {
             SWORD, HAFTED, POLE -> true
             MISSILE, THROWN -> false
-            else -> throw IllegalCallerException("Only possible to ask a Weapon Skill.")
+            else -> throw IllegalArgumentException("Only possible to ask a Weapon Skill.")
         }
     }
 

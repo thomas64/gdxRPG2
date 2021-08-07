@@ -92,7 +92,7 @@ public class GamepadMapping extends ControllerMappings {
     }
 
     private ControllerToInputAdapter createControllerToInputAdapter() {
-        var adapter = new ControllerToInputAdapter(this);
+        ControllerToInputAdapter adapter = new ControllerToInputAdapter(this);
         adapter.addAxisMapping(LEFT_AXIS_VERTICAL, Input.Keys.UP, Input.Keys.DOWN);
         adapter.addAxisMapping(LEFT_AXIS_HORIZONTAL, Input.Keys.LEFT, Input.Keys.RIGHT);
         adapter.addButtonMapping(D_PAD_UP, Input.Keys.UP);

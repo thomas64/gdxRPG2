@@ -19,7 +19,6 @@ object InventoryDatabase {
         .toMap()
         .onEach { it.value.id = it.key }
 
-    @JvmStatic
     fun createInventoryItemForShop(itemId: String): InventoryItem {
         val inventoryItem = createInventoryItem(itemId)
         if (inventoryItem.group == InventoryGroup.RESOURCE) {
@@ -34,7 +33,6 @@ object InventoryDatabase {
         return createInventoryItem(itemId, 1)
     }
 
-    @JvmStatic
     fun createInventoryItem(itemId: String, amount: Int): InventoryItem {
         val inventoryItem = inventoryItems[itemId]!!
         return inventoryItem.createCopy(amount)

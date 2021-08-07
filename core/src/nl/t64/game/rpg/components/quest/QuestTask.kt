@@ -71,7 +71,7 @@ class QuestTask(
             QuestType.CHECK,
             QuestType.MESSAGE_DELIVERY,
             QuestType.ITEM_DELIVERY -> isComplete
-            else -> throw IllegalStateException("No '$type' task for now.")
+            else -> throw IllegalArgumentException("No '$type' task for now.")
         }
     }
 

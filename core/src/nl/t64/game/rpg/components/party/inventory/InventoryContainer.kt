@@ -25,12 +25,12 @@ class InventoryContainer(numberOfSlots: Int = NUMBER_OF_SLOTS) {
 
     fun incrementAmountAt(index: Int, amount: Int) {
         inventory[index]?.increaseAmountWith(amount)
-            ?: throw IllegalStateException("There is no item to increment amount.")
+            ?: throw IllegalArgumentException("There is no item to increment amount.")
     }
 
     fun decrementAmountAt(index: Int, amount: Int) {
         inventory[index]?.decreaseAmountWith(amount)
-            ?: throw IllegalStateException("There is no item to decrement amount.")
+            ?: throw IllegalArgumentException("There is no item to decrement amount.")
     }
 
     fun getItemAt(index: Int): InventoryItem? {

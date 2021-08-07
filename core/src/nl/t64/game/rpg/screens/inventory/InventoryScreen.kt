@@ -26,7 +26,6 @@ class InventoryScreen : ScreenToLoad(), ConversationObserver {
     private lateinit var inventoryUI: InventoryUI
 
     companion object {
-        @JvmStatic
         fun load() {
             audioManager.handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL)
             screenManager.openParchmentLoadScreen(ScreenType.INVENTORY)

@@ -13,7 +13,7 @@ object TextReplacer {
             "%action%" -> str.replace(substr, if (hasGamePad) "'A' button" else "'A' key")
             "%inventory%" -> str.replace(substr, if (hasGamePad) "'Y' button" else "'I' key")
             "%slow%" -> str.replace(substr, if (hasGamePad) "'L1' button" else "'Ctrl' key")
-            else -> throw IllegalStateException("Unexpected value: '$substr'")
+            else -> throw IllegalArgumentException("Unexpected value: '$substr'")
         }
     }
 

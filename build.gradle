@@ -1,6 +1,6 @@
 buildscript {
-    ext.kotlinVersion = '1.5.21'
-    ext.javaVersion = 15
+    ext.kotlinVersion = '1.5.10'
+    ext.javaVersion = 1.8
 
     repositories {
         mavenLocal()
@@ -18,21 +18,6 @@ buildscript {
 allprojects {
     apply plugin: "idea"
 
-    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-        kotlinOptions {
-            freeCompilerArgs = ['-Xjvm-default=all-compatibility']
-        }
-    }
-    tasks.withType(JavaCompile) {
-        options.compilerArgs += "--enable-preview"
-    }
-    tasks.withType(Test) {
-        jvmArgs += "--enable-preview"
-    }
-    tasks.withType(JavaExec) {
-        jvmArgs += "--enable-preview"
-    }
-
     version = "1.0"
     ext {
         appName = "gdx-rpg2"
@@ -41,7 +26,6 @@ allprojects {
         mappingVersion = "2.3.0"
         aiVersion = "1.8.2"
         ktxVersion = "1.10.0-SNAPSHOT"
-        lombokVersion = "1.18.20"
         jacksonVersion = "2.12.4"
         assertjVersion = "3.20.2"
         mockitoVersion = "3.11.2"
@@ -60,7 +44,6 @@ allprojects {
 }
 
 project(":desktop") {
-    apply plugin: "java-library"
     apply plugin: "kotlin"
     sourceCompatibility = "$javaVersion"
 
@@ -98,14 +81,10 @@ project(":android") {
 }
 
 project(":core") {
-    apply plugin: "java-library"
     apply plugin: "kotlin"
     sourceCompatibility = "$javaVersion"
 
     dependencies {
-        compileOnly "org.projectlombok:lombok:$lombokVersion"
-        annotationProcessor "org.projectlombok:lombok:$lombokVersion"
-
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$controllerVersion"
@@ -124,7 +103,6 @@ project(":core") {
 }
 
 project(":tests") {
-    apply plugin: "java-library"
     apply plugin: "kotlin"
     sourceCompatibility = "$javaVersion"
 

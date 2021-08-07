@@ -59,7 +59,6 @@ enum class CalcAttributeId(override val title: String) : SuperEnum {
     abstract fun getDescription(): String
 
     companion object {
-        @JvmStatic
         fun from(label: String): CalcAttributeId? {
             return values().firstOrNull { label.lowercase().contains(it.title.lowercase()) }
         }

@@ -12,7 +12,6 @@ import nl.t64.game.rpg.constants.ScreenType
 class ReceiveScreen : LootScreen() {
 
     companion object {
-        @JvmStatic
         fun load(receive: Loot) {
             audioManager.handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_REWARD)
             val receiveScreen = screenManager.getScreen(ScreenType.RECEIVE) as ReceiveScreen

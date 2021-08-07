@@ -62,7 +62,7 @@ internal class DialogQuestion(
         when (selectedIndex) {
             0 -> processYesButton()
             1 -> processNoButton()
-            else -> throw  IllegalArgumentException("SelectedIndex not found.")
+            else -> throw IllegalArgumentException("SelectedIndex not found.")
         }
     }
 

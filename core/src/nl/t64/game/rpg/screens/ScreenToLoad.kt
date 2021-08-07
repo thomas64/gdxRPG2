@@ -14,7 +14,7 @@ abstract class ScreenToLoad : Screen {
     protected val stage: Stage = Stage()
 
     open fun getScreenUI(): ScreenUI {
-        throw IllegalCallerException("ScreenUI not implemented here.")
+        throw IllegalStateException("ScreenUI not implemented here.")
     }
 
     override fun resize(width: Int, height: Int) {

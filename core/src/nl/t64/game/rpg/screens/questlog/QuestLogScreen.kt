@@ -26,7 +26,6 @@ private const val LABEL_PADDING_BOTTOM = 26f
 class QuestLogScreen : ScreenToLoad() {
 
     companion object {
-        @JvmStatic
         fun load() {
             audioManager.handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_SCROLL)
             screenManager.openParchmentLoadScreen(ScreenType.QUEST_LOG)

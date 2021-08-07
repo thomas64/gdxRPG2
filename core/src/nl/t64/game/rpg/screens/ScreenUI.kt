@@ -20,7 +20,7 @@ abstract class ScreenUI(
     private val stage: Stage get() = equipWindow.stage
 
     open fun getShopSlotsTable(): ShopSlotsTable {
-        throw IllegalCallerException("ShopSlotsTable not implemented here.")
+        throw IllegalStateException("ShopSlotsTable not implemented here.")
     }
 
     fun updateSelectedHero(updateHero: Runnable) {

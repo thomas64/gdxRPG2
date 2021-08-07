@@ -15,7 +15,6 @@ class RewardScreen : LootScreen() {
     private var levelUpMessage: String? = null
 
     companion object {
-        @JvmStatic
         fun load(reward: Loot, @Null levelUpMessage: String?) {
             val rewardScreen = screenManager.getScreen(ScreenType.REWARD) as RewardScreen
             rewardScreen.loot = reward

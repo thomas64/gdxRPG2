@@ -72,11 +72,11 @@ internal class EquipSlot(
     }
 
     override fun incrementAmountBy(amount: Int) {
-        throw IllegalCallerException("EquipSlot amount cannot be incremented.")
+        throw IllegalStateException("EquipSlot amount cannot be incremented.")
     }
 
     override fun decrementAmountBy(amount: Int) {
-        throw IllegalCallerException("EquipSlot amount cannot be decremented.")
+        throw IllegalStateException("EquipSlot amount cannot be decremented.")
     }
 
     private fun doesHeroAcceptItem(draggedItem: InventoryImage): Boolean {

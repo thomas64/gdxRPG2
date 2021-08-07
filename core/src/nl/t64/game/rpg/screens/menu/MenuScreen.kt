@@ -90,7 +90,7 @@ abstract class MenuScreen : Screen {
         fontColor = when (startScreen) {
             ScreenType.MENU_MAIN -> Color.BLACK
             ScreenType.MENU_PAUSE -> Color.WHITE
-            else -> throw IllegalCallerException("startScreen can only be Main or Pause Screen.")
+            else -> throw IllegalStateException("startScreen can only be Main or Pause Screen.")
         }
     }
 

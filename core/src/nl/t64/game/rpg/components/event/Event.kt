@@ -30,7 +30,7 @@ class Event(
         when (type) {
             "conversation" -> brokerManager.componentObservers.notifyShowConversationDialog(conversationId!!, entityId!!)
             "messagebox" -> brokerManager.componentObservers.notifyShowMessageDialog(TextReplacer.replace(text!!))
-            else -> throw IllegalStateException("Event does not recognize type: '$type'.")
+            else -> throw IllegalArgumentException("Event does not recognize type: '$type'.")
         }
     }
 

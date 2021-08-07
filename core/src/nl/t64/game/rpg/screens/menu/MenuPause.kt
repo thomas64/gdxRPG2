@@ -31,7 +31,6 @@ class MenuPause : MenuScreen() {
     private lateinit var listenerKeyVertical: ListenerKeyVertical
 
     companion object {
-        @JvmStatic
         fun load() {
             audioManager.handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_CONFIRM)
             val menuPause = screenManager.getMenuScreen(ScreenType.MENU_PAUSE)
