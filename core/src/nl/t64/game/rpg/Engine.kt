@@ -1,5 +1,6 @@
 package nl.t64.game.rpg
 
+import com.badlogic.gdx.Application
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.controllers.Controllers
@@ -35,7 +36,9 @@ open class Engine : Game() {
 
     override fun create() {
         preferenceManager = PreferenceManager()
-        preferenceManager.setFullscreenAccordingToPreference()
+        if (Gdx.app.type == Application.ApplicationType.Desktop) {
+            preferenceManager.setFullscreenAccordingToPreference()
+        }
 
         brokerManager.profileObservers.addObserver(gameData)
         brokerManager.profileObservers.addObserver(mapManager)
