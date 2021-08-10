@@ -141,7 +141,7 @@ abstract class CutsceneScreen : Screen, ConversationObserver {
         Gdx.input.inputProcessor = null
         Utils.setGamepadInputProcessor(null)
         return Actions.sequence(
-            Actions.addAction(TransitionAction.transition(TransitionType.FADE_OUT), transition),
+            Actions.addAction(TransitionAction(TransitionType.FADE_OUT), transition),
             Actions.delay(Constant.FADE_DURATION),
             Actions.delay(1f),
             Actions.addAction(Actions.alpha(1f), transition),
@@ -182,7 +182,7 @@ abstract class CutsceneScreen : Screen, ConversationObserver {
 
     fun actionFadeIn(): Action {
         return Actions.sequence(
-            Actions.addAction(TransitionAction.transition(TransitionType.FADE_IN), transition),
+            Actions.addAction(TransitionAction(TransitionType.FADE_IN), transition),
             Actions.delay(Constant.FADE_DURATION)
         )
     }
@@ -190,7 +190,7 @@ abstract class CutsceneScreen : Screen, ConversationObserver {
     fun actionFadeOut(): Action {
         return Actions.sequence(
             Actions.run { isBgmFading = true },
-            Actions.addAction(TransitionAction.transition(TransitionType.FADE_OUT), transition),
+            Actions.addAction(TransitionAction(TransitionType.FADE_OUT), transition),
             Actions.delay(Constant.FADE_DURATION),
             Actions.run { isBgmFading = false }
         )

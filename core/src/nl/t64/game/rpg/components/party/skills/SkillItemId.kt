@@ -33,10 +33,8 @@ enum class SkillItemId(override val title: String) : SuperEnum {
         }
     }
 
-    companion object {
-        fun from(possibleSkillItemId: String): SkillItemId {
-            return values().first { possibleSkillItemId.equals(it.name, true) }
-        }
-    }
+}
 
+fun String.toSkillItemId(): SkillItemId {
+    return SkillItemId.values().first { this.equals(it.name, true) }
 }

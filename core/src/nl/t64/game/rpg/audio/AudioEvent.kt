@@ -75,10 +75,8 @@ enum class AudioEvent(val filePath: String, val volume: Float = 1f) {
 
     NONE("");
 
-    companion object {
-        fun from(underground: String): AudioEvent {
-            return valueOf("SE_STEP_" + underground.uppercase() + MathUtils.random(1, 4))
-        }
-    }
+}
 
+fun String.toAudioEvent(): AudioEvent {
+    return AudioEvent.valueOf("SE_STEP_" + this.uppercase() + MathUtils.random(1, 4))
 }

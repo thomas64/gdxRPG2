@@ -8,8 +8,8 @@ internal class CalcAttributeIdTest {
 
     @Test
     fun test() {
-        assertThat(CalcAttributeId.from("something")).isNull()
-        assertThat(CalcAttributeId.from("weapon damage")).isSameAs(CalcAttributeId.DAMAGE)
+        assertThat("something".toCalcAttributeId()).isNull()
+        assertThat("weapon damage".toCalcAttributeId()).isSameAs(CalcAttributeId.DAMAGE)
     }
 
 }

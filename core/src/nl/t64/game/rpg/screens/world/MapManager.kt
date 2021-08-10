@@ -12,6 +12,7 @@ import nl.t64.game.rpg.Utils.brokerManager
 import nl.t64.game.rpg.Utils.resourceManager
 import nl.t64.game.rpg.audio.AudioCommand
 import nl.t64.game.rpg.audio.AudioEvent
+import nl.t64.game.rpg.audio.toAudioEvent
 import nl.t64.game.rpg.constants.Constant
 import nl.t64.game.rpg.screens.world.entity.Direction
 import nl.t64.game.rpg.screens.world.mapobjects.*
@@ -125,7 +126,7 @@ class MapManager : ProfileObserver {
     }
 
     fun getGroundSound(playerFeetPosition: Vector2): AudioEvent {
-        return AudioEvent.from(currentMap.getUnderground(playerFeetPosition))
+        return currentMap.getUnderground(playerFeetPosition).toAudioEvent()
     }
 
     fun prepareForBattle() {

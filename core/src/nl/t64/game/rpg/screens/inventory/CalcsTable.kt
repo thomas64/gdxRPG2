@@ -7,6 +7,7 @@ import nl.t64.game.rpg.Utils.createTopBorder
 import nl.t64.game.rpg.components.party.CalcAttributeId
 import nl.t64.game.rpg.components.party.PersonalityItem
 import nl.t64.game.rpg.components.party.inventory.InventoryGroup
+import nl.t64.game.rpg.components.party.toCalcAttributeId
 import nl.t64.game.rpg.constants.Constant
 import nl.t64.game.rpg.screens.inventory.tooltip.PersonalityTooltip
 
@@ -98,7 +99,7 @@ internal class CalcsTable(tooltip: PersonalityTooltip) : BaseTable(tooltip) {
     private fun getPersonalityItemForDescriptionOnly(child: Label): PersonalityItem {
         return object : PersonalityItem {
             override fun getDescription(totalLoremaster: Int): String {
-                return CalcAttributeId.from(child.text.toString())
+                return child.text.toString().toCalcAttributeId()
                     ?.getDescription()
                     ?: "ToDo from CalcsTable"
             }

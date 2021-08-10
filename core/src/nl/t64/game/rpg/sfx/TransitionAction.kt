@@ -5,19 +5,10 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import nl.t64.game.rpg.constants.Constant
 
 
-class TransitionAction : Action() {
-
-    private lateinit var type: TransitionType
-    private var duration: Float = 0f
-
-    companion object {
-        fun transition(type: TransitionType): TransitionAction {
-            val action = Actions.action(TransitionAction::class.java)
-            action.type = type
-            action.duration = Constant.FADE_DURATION
-            return action
-        }
-    }
+class TransitionAction(
+    val type: TransitionType,
+    val duration: Float = Constant.FADE_DURATION
+) : Action() {
 
     override fun act(dt: Float): Boolean {
         val actor = super.getTarget()

@@ -68,7 +68,7 @@ class SceneIntro : CutsceneScreen() {
             ), title),
             Actions.delay(7f),
 
-            Actions.addAction(TransitionAction.transition(TransitionType.FADE_IN), transition),
+            Actions.addAction(TransitionAction(TransitionType.FADE_IN), transition),
 
             Actions.addAction(Actions.sequence(
                 Actions.parallel(
