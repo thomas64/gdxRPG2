@@ -50,10 +50,6 @@ class InputEnemy : InputComponent() {
         enemyEntity?.send(DetectionEvent(isDetectingPlayer))
     }
 
-    override fun dispose() {
-        // empty
-    }
-
     override fun update(enemyEntity: Entity, dt: Float) {
         this.enemyEntity = enemyEntity
         if (path!!.count < MINIMUM_DETECTION_RANGE) {

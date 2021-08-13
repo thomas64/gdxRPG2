@@ -1,15 +1,15 @@
 {
   "guide_event_action"   : {
     "type": "messagebox",
-    "text": "Press %action% for an action.\nTo talk with a person or to open a chest or door."
+    "text": ["Press %action% for an action.", "To talk with a person or to open a chest or door."]
   },
   "guide_event_inventory": {
     "type"     : "messagebox",
     "condition": ["3_starting_potions"],
-    "text"     : "Press %inventory% to see your inventory,\nalong with your equipment, stats, skills and spells."
+    "text": ["Press %inventory% to see your inventory,", "along with your equipment, stats, skills and spells."]
   },
   "guide_event_slow"     : {
     "type": "messagebox",
-    "text": "Coming near an enemy will start a battle.\nKeep %slow% pressed to move stealthily.\nEnemies will detect you less easy."
+    "text": ["Coming near an enemy will start a battle.", "Keep %slow% pressed to move stealthily.", "Enemies will detect you less easy."]
   }
 }

@@ -49,20 +49,20 @@ internal class EventTest : GameTest() {
     fun `When text contains specific percentage signs, should replace text`() {
         val event1 = eventContainer.getEventById("guide_event_action")
         assertThat(event1.text).contains("Press %action% for an action.")
-        val replace1 = TextReplacer.replace(event1.text!!)
+        val replace1 = TextReplacer.replace(event1.text)
         assertThat(replace1).contains("Press 'A' key for an action.")
 
         val event2 = eventContainer.getEventById("guide_event_inventory")
         assertThat(event2.text).contains("Press %inventory% to see your inventory,")
-        val replace2 = TextReplacer.replace(event2.text!!)
+        val replace2 = TextReplacer.replace(event2.text)
         assertThat(replace2).contains("Press 'I' key to see your inventory,")
 
         val event3 = eventContainer.getEventById("guide_event_slow")
         assertThat(event3.text).contains("Keep %slow% pressed to move stealthily.")
-        val replace3 = TextReplacer.replace(event3.text!!)
+        val replace3 = TextReplacer.replace(event3.text)
         assertThat(replace3).contains("Keep 'Ctrl' key pressed to move stealthily.")
 
-        assertThatIllegalArgumentException().isThrownBy { TextReplacer.replace("%pipo%") }
+        assertThatIllegalArgumentException().isThrownBy { TextReplacer.replace(listOf("%pipo%")) }
             .withMessage("Unexpected value: '%pipo%'")
     }
 

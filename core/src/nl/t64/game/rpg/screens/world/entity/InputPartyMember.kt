@@ -23,10 +23,6 @@ class InputPartyMember : InputComponent() {
         }
     }
 
-    override fun dispose() {
-        // empty
-    }
-
     override fun update(partyMember: Entity, dt: Float) {
         this.partyMember = partyMember
         setStateAndDirection()

@@ -11,7 +11,7 @@ class Event(
     val conditionIds: List<String> = emptyList(),
     val conversationId: String? = null,
     val entityId: String? = null,
-    val text: String? = null
+    val text: List<String> = emptyList()
 ) {
     var hasPlayed: Boolean = false
 
@@ -29,7 +29,7 @@ class Event(
     private fun start() {
         when (type) {
             "conversation" -> brokerManager.componentObservers.notifyShowConversationDialog(conversationId!!, entityId!!)
-            "messagebox" -> brokerManager.componentObservers.notifyShowMessageDialog(TextReplacer.replace(text!!))
+            "messagebox" -> brokerManager.componentObservers.notifyShowMessageDialog(TextReplacer.replace(text))
             else -> throw IllegalArgumentException("Event does not recognize type: '$type'.")
         }
     }

@@ -2,13 +2,14 @@ package nl.t64.game.rpg.screens.world.mapobjects
 
 import com.badlogic.gdx.maps.objects.RectangleMapObject
 import ktx.tiled.property
+import ktx.tiled.type
 import nl.t64.game.rpg.screens.world.entity.Direction
 
 
 class GameMapSpawnPoint(rectObject: RectangleMapObject) : GameMapObject(rectObject.rectangle) {
 
     private val fromMapName: String = rectObject.name
-    private val fromMapLocation: String = rectObject.property("type", "")
+    private val fromMapLocation: String = rectObject.type ?: ""
     val direction: Direction = Direction.valueOf(rectObject.property("direction", "NONE").uppercase())
 
     val x: Float get() = rectangle.getX()

@@ -7,6 +7,10 @@ abstract class InputComponent : Component {
 
     abstract fun update(entity: Entity, dt: Float)
 
+    override fun dispose() {
+        // empty
+    }
+
     open fun reset() {
         // empty
     }

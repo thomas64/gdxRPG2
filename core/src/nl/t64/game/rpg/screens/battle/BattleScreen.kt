@@ -68,10 +68,10 @@ class BattleScreen : Screen {
     private fun createBattleTitle(): Label {
         val font = resourceManager.getTrueTypeAsset(TITLE_FONT, FONT_SIZE)
         val style = LabelStyle(font, Color.WHITE)
-        val label = Label("Battle...!", style)
-        label.setPosition(Gdx.graphics.width / 2f - label.width / 2f, Gdx.graphics.height / 2f - label.height / 2f)
-        label.isVisible = false
-        return label
+        return Label("Battle...!", style).apply {
+            setPosition((Gdx.graphics.width / 2f) - (width / 2f), (Gdx.graphics.height / 2f) - (height / 2f))
+            isVisible = false
+        }
     }
 
 }

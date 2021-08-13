@@ -5,9 +5,15 @@ import nl.t64.game.rpg.Utils
 
 object TextReplacer {
 
-    fun replace(str: String): String {
-        var substr = str.substring(str.indexOf("%"))
-        substr = substr.substring(0, substr.indexOf("%", 1) + 1)
+    fun replace(listOfStrings: List<String>): String {
+        return listOfStrings.joinToString(System.lineSeparator()) { replace(it) }
+    }
+
+    private fun replace(str: String): String {
+        val firstIndex = str.indexOf("%").takeUnless { it == -1 } ?: return str
+        val substr = str.substring(firstIndex).let {
+            it.substring(0, it.indexOf("%", 1) + 1)
+        }
         val hasGamePad = Utils.isGamepadConnected()
         return when (substr) {
             "%action%" -> str.replace(substr, if (hasGamePad) "'A' button" else "'A' key")

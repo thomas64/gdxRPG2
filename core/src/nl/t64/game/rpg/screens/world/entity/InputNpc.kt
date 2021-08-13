@@ -28,10 +28,6 @@ class InputNpc : InputComponent() {
         }
     }
 
-    override fun dispose() {
-        // empty
-    }
-
     override fun update(npcEntity: Entity, dt: Float) {
         stateTime -= dt
         if (stateTime < 0) {

@@ -9,10 +9,6 @@ class InputEmpty : InputComponent() {
         // empty
     }
 
-    override fun dispose() {
-        // empty
-    }
-
     override fun update(entity: Entity, dt: Float) {
         // empty
     }
