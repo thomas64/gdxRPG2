@@ -332,7 +332,7 @@ class WorldScreen : Screen, MapObserver, ComponentObserver, PartyObserver, LootO
         }
     }
 
-    private fun fadeOut(actionAfterFade: Runnable, transitionColor: Color) {
+    private fun fadeOut(actionAfterFade: () -> Unit, transitionColor: Color) {
         val transition = TransitionImage(transitionColor)
         stage.addActor(transition)
         transition.addAction(Actions.sequence(Actions.alpha(0f),

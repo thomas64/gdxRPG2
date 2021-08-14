@@ -23,12 +23,12 @@ abstract class ScreenUI(
         throw IllegalStateException("ShopSlotsTable not implemented here.")
     }
 
-    fun updateSelectedHero(updateHero: Runnable) {
+    fun updateSelectedHero(updateHero: () -> Unit) {
         getSelectedTable().deselectCurrentSlot()
 
         val oldCurrentIndex = equipSlotsTables.getIndexOfCurrentSlot()
         equipWindow.getChild(1).remove()
-        updateHero.run()
+        updateHero.invoke()
         equipWindow.add(equipSlotsTables.getCurrentEquipTable())
         equipSlotsTables.setCurrentByIndex(oldCurrentIndex)
 

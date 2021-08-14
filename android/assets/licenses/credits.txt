@@ -45,6 +45,7 @@ Music Copyright Notice
 "Quiet town"
 "Store"
 "Town"
+"Volcano"
 "Wake up"
 "Woods"
 by Yusaku Kishigami

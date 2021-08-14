@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.world.cutscene
+package nl.t64.game.rpg.screens.cutscene
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable

@@ -37,7 +37,7 @@ class MapManager : ProfileObserver {
 
     override fun onNotifyCreateProfile(profileManager: ProfileManager) {
         fogOfWar = FogOfWar()
-        loadMap(Constant.STARTING_MAP)
+        loadMapWithBgmBgs(Constant.STARTING_MAP)
         currentMap.setPlayerSpawnLocationForNewLoad(Constant.STARTING_MAP)
         onNotifySaveProfile(profileManager)
         brokerManager.mapObservers.notifyMapChanged(currentMap)
@@ -51,13 +51,13 @@ class MapManager : ProfileObserver {
     override fun onNotifyLoadProfile(profileManager: ProfileManager) {
         val mapTitle = profileManager.getProperty<String>("mapTitle")
         fogOfWar = profileManager.getProperty("fogOfWar")
-        loadMap(mapTitle)
+        loadMapWithBgmBgs(mapTitle)
         currentMap.setPlayerSpawnLocationForNewLoad(mapTitle)
         brokerManager.mapObservers.notifyMapChanged(currentMap)
     }
 
     fun loadMapAfterCutscene(mapTitle: String, cutsceneId: String) {
-        loadMap(mapTitle)
+        loadMapWithBgmBgs(mapTitle)
         currentMap.setPlayerSpawnLocationForNewLoad(cutsceneId)
         brokerManager.mapObservers.notifyMapChanged(currentMap)
     }
@@ -155,7 +155,7 @@ class MapManager : ProfileObserver {
 
     private fun changeMap(portal: GameMapRelocator, direction: Direction) {
         portal.enterDirection = direction
-        loadMap(portal.toMapName)
+        loadMapWithBgmBgs(portal.toMapName)
         currentMap.setPlayerSpawnLocation(portal)
         brokerManager.mapObservers.notifyMapChanged(currentMap)
     }
@@ -176,17 +176,28 @@ class MapManager : ProfileObserver {
         audioManager.possibleBgsFade(currentMap.bgs, getBgsOfMap(getTiledMap(nextMapTitle)))
     }
 
-    fun loadMap(mapTitle: String) {
+    fun loadMapWithBgmBgs(mapTitle: String) {
         val prevBgm = if (isMapLoaded) currentMap.bgm else AudioEvent.NONE
         val prevBgs = if (isMapLoaded) currentMap.bgs else listOf(AudioEvent.NONE)
-        disposeOldMaps()
-        currentMap = GameMap(mapTitle)
-        isMapLoaded = true
-        fogOfWar.putIfAbsent(currentMap)
+        loadMap(mapTitle)
         val nextBgm = currentMap.bgm
         val nextBgs = currentMap.bgs
         audioManager.possibleBgmSwitch(prevBgm, nextBgm)
         audioManager.possibleBgsSwitch(prevBgs, nextBgs)
+    }
+
+    fun loadMapWithBgs(mapTitle: String) {
+        val prevBgs = if (isMapLoaded) currentMap.bgs else listOf(AudioEvent.NONE)
+        loadMap(mapTitle)
+        val nextBgs = currentMap.bgs
+        audioManager.possibleBgsSwitch(prevBgs, nextBgs)
+    }
+
+    private fun loadMap(mapTitle: String) {
+        disposeOldMaps()
+        currentMap = GameMap(mapTitle)
+        isMapLoaded = true
+        fogOfWar.putIfAbsent(currentMap)
     }
 
     fun disposeOldMaps() {

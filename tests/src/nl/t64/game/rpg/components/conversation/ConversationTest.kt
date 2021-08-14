@@ -175,7 +175,7 @@ internal class ConversationTest : GameTest() {
 
     @Test
     fun `When conversation has different faces, should show correct faces with the sentences`() {
-        val graph = conversations.getConversationById("cutscene_intro_1")
+        val graph = conversations.getConversationById("mozes_calls_grace_inside")
         assertThat(graph.getCurrentFace()).isEqualTo("mozes")
         assertThat(graph.currentPhraseId).isEqualTo("1")
         graph.currentPhraseId = "3"

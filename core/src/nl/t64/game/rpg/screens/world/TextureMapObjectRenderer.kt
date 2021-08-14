@@ -31,13 +31,13 @@ class TextureMapObjectRenderer(private val camera: Camera) : OrthogonalTiledMapR
         renderWithoutPlayerLight {}
     }
 
-    fun renderAll(playerPosition: Vector2, renderEntities: Runnable) {
+    fun renderAll(playerPosition: Vector2, renderEntities: () -> Unit) {
         mapManager.getLightmapPlayer()?.let {
             renderWithPlayerLight(playerPosition, it, renderEntities)
         } ?: renderWithoutPlayerLight(renderEntities)
     }
 
-    private fun renderWithPlayerLight(playerPosition: Vector2, sprite: Sprite, renderEntities: Runnable) {
+    private fun renderWithPlayerLight(playerPosition: Vector2, sprite: Sprite, renderEntities: () -> Unit) {
         frameBuffer.begin()
         ScreenUtils.clear(Color.BLACK)
         renderLightmapPlayer(playerPosition, sprite)
@@ -46,7 +46,7 @@ class TextureMapObjectRenderer(private val camera: Camera) : OrthogonalTiledMapR
         renderFrameBuffer()
     }
 
-    private fun renderWithoutPlayerLight(renderEntities: Runnable) {
+    private fun renderWithoutPlayerLight(renderEntities: () -> Unit) {
         ScreenUtils.clear(Color.BLACK)
         renderMapLayers(renderEntities)
     }
@@ -89,7 +89,7 @@ class TextureMapObjectRenderer(private val camera: Camera) : OrthogonalTiledMapR
         }
     }
 
-    private fun renderMapLayers(renderEntities: Runnable) {
+    private fun renderMapLayers(renderEntities: () -> Unit) {
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)
 
         renderBackground()
@@ -97,7 +97,7 @@ class TextureMapObjectRenderer(private val camera: Camera) : OrthogonalTiledMapR
         render(UNDER_LAYERS)
         batch.begin()
         renderTextures(mapManager.getLowerMapTextures())
-        renderEntities.run()
+        renderEntities.invoke()
         renderTextures(mapManager.getUpperMapTextures())
         batch.end()
         render(OVER_LAYERS)

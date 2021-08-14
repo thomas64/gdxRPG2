@@ -1,5 +1,5 @@
 {
-  "cutscene_intro_1": {
+  "mozes_calls_grace_inside" : {
     "phrases": {
       "1": {"face": "mozes", "text": ["Grace!"]},
       "2": {"face": "mozes", "text": ["Come in the house, it's time to go to bed."]},
@@ -11,7 +11,7 @@
       "8": {"face": "girl01", "text": ["Okay ..."], "choices": [{"conversationCommand": "EXIT_CONVERSATION"}]}
     }
   },
-  "cutscene_intro_2": {
+  "mozes_puts_grace_to_bed"  : {
     "phrases": {
       "1" : {"face": "mozes", "text": ["I'm sorry Grace, but after mother and father died, you know it's not safe here in the village anymore after dark. Orcs sometimes come in the village and I don't want to lose you too."]},
       "2" : {"face": "girl01", "text": ["Boohoo! I miss mommy and daddy!"]},
@@ -25,7 +25,7 @@
       "10": {"face": "girl01", "text": ["Love you too."], "choices": [{"conversationCommand": "EXIT_CONVERSATION"}]}
     }
   },
-  "cutscene_intro_3": {
+  "mozes_finds_grace_missing": {
     "phrases": {
       "1": {"text": ["Good morning Grace. Did you sleep well?"]},
       "2": {"text": ["Grace?"]},
@@ -36,7 +36,7 @@
       "7": {"text": ["I'll get my sword, hopefully I don't need it."], "choices": [{"conversationCommand": "EXIT_CONVERSATION"}]}
     }
   },
-  "cutscene_intro_4": {
+  "mozes_talks_to_johanna"   : {
     "phrases": {
       "1": {"face": "mozes", "text": ["Mrs. Johanna!", "Have you seen Grace?"]},
       "2": {"face": "oldwoman01", "text": ["I am sorry dear, I have not seen Grace this morning.", "Is something the matter?"]},
@@ -47,12 +47,12 @@
       "7": {"face": "mozes", "text": ["Please do, I'll go north."], "choices": [{"conversationCommand": "EXIT_CONVERSATION"}]}
     }
   },
-  "cutscene_intro_5": {
+  "tree_has_fallen_1"        : {
     "phrases": {
       "1": {"text": ["What was that loud noise?"], "choices": [{"conversationCommand": "EXIT_CONVERSATION"}]}
     }
   },
-  "cutscene_intro_6": {
+  "tree_has_fallen_2"        : {
     "phrases": {
       "1": {"text": ["Dang! That's just great."]},
       "2": {"text": [" .......... "]},

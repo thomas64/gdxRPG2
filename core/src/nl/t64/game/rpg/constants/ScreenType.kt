@@ -3,6 +3,7 @@ package nl.t64.game.rpg.constants
 import com.badlogic.gdx.Screen
 import nl.t64.game.rpg.screens.LoadScreen
 import nl.t64.game.rpg.screens.battle.BattleScreen
+import nl.t64.game.rpg.screens.cutscene.SceneIntro
 import nl.t64.game.rpg.screens.inventory.InventoryScreen
 import nl.t64.game.rpg.screens.loot.FindScreen
 import nl.t64.game.rpg.screens.loot.ReceiveScreen
@@ -11,7 +12,6 @@ import nl.t64.game.rpg.screens.menu.*
 import nl.t64.game.rpg.screens.questlog.QuestLogScreen
 import nl.t64.game.rpg.screens.shop.ShopScreen
 import nl.t64.game.rpg.screens.world.WorldScreen
-import nl.t64.game.rpg.screens.world.cutscene.SceneIntro
 
 
 enum class ScreenType(val screenClass: Class<out Screen>) {

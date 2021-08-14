@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.world.cutscene
+package nl.t64.game.rpg.screens.cutscene
 
 import com.badlogic.gdx.scenes.scene2d.Action
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
@@ -41,7 +41,7 @@ class SceneIntro : CutsceneScreen() {
     private fun callGraceToBed(): Action {
         return Actions.sequence(
             Actions.run {
-                setMap("honeywood")
+                setMapWithBgmBgs("honeywood")
                 setCameraPosition(0f, 1380f)
                 title.setText("""
                     The land of Adan
@@ -110,7 +110,7 @@ class SceneIntro : CutsceneScreen() {
                 Actions.delay(1f),
                 Actions.run { mozes.direction = Direction.WEST },
                 Actions.delay(1f),
-                Actions.run { showConversationDialog("cutscene_intro_1") }
+                Actions.run { showConversationDialog("mozes_calls_grace_inside") }
             ), mozes)
         )
     }
@@ -151,7 +151,7 @@ class SceneIntro : CutsceneScreen() {
 
             Actions.delay(1f),
             Actions.run {
-                setMap("honeywood_mozes_house")
+                setMapWithBgmBgs("honeywood_mozes_house")
                 setCameraPosition(0f, 720f)
                 door1.isVisible = false
                 mozes.setPosition(96f, 528f)
@@ -167,7 +167,7 @@ class SceneIntro : CutsceneScreen() {
             actionFadeIn(),
 
             Actions.delay(1f),
-            Actions.run { showConversationDialog("cutscene_intro_2") }
+            Actions.run { showConversationDialog("mozes_puts_grace_to_bed") }
         )
     }
 
@@ -184,7 +184,7 @@ class SceneIntro : CutsceneScreen() {
             },
             Actions.delay(2f),
             Actions.addAction(Actions.alpha(0.7f), transition),
-            Actions.run { audioManager.handle(AudioCommand.BGM_PLAY_ONCE, AudioEvent.BGM_CELLAR) },
+            Actions.run { audioManager.handle(AudioCommand.BGM_PLAY_LOOP, AudioEvent.BGM_CELLAR) },
             Actions.addAction(Actions.sequence(
                 Actions.delay(5f),
                 Actions.run { grace.direction = Direction.EAST },
@@ -229,13 +229,16 @@ class SceneIntro : CutsceneScreen() {
                 Actions.moveBy(48f, 0f, 2f),
                 Actions.run { mozes.entityState = EntityState.IDLE },
                 Actions.run { mozes.direction = Direction.WEST },
-                Actions.run { showConversationDialog("cutscene_intro_3", "mozes") }
+                Actions.run { isBgmFading = true },
+                Actions.run { showConversationDialog("mozes_finds_grace_missing", "mozes") }
             ), mozes)
         )
     }
 
     private fun startToSearch(): Action {
         return Actions.sequence(
+            Actions.run { isBgmFading = false },
+            Actions.run { audioManager.handle(AudioCommand.BGM_PLAY_LOOP, AudioEvent.BGM_TENSION) },
             Actions.addAction(Actions.sequence(
                 Actions.run { mozes.direction = Direction.NORTH },
                 Actions.delay(0.5f),
@@ -255,10 +258,10 @@ class SceneIntro : CutsceneScreen() {
             ), mozes),
             Actions.delay(5.5f),
 
-            actionFadeOut(),
+            actionFadeOutWithoutBgmFading(),
 
             Actions.run {
-                setMap("honeywood")
+                setMapWithBgsOnly("honeywood")
                 door1.isVisible = true
                 oldWoman.isVisible = true
                 oldWoman.setPosition(1800f, 1340f)
@@ -315,7 +318,7 @@ class SceneIntro : CutsceneScreen() {
                     actionWalkSound(mozes, 4.8f, FAST_STEP)
                 ),
                 Actions.run { mozes.entityState = EntityState.IDLE },
-                Actions.run { showConversationDialog("cutscene_intro_4") },
+                Actions.run { showConversationDialog("mozes_talks_to_johanna") },
                 Actions.delay(1f),
                 Actions.run { oldWoman.direction = Direction.WEST }
             ), mozes)
@@ -343,10 +346,10 @@ class SceneIntro : CutsceneScreen() {
             ), mozes),
             Actions.delay(3.5f),
 
-            actionFadeOut(),
+            actionFadeOutWithoutBgmFading(),
 
             Actions.run {
-                setMap("honeywood_forest_path")
+                setMapWithBgsOnly("honeywood_forest_path")
                 mozes.setPosition(480f, -48f)
             },
             Actions.delay(1f),
@@ -359,14 +362,16 @@ class SceneIntro : CutsceneScreen() {
                 Actions.delay(1f),
                 Actions.run { mozes.direction = Direction.SOUTH },
                 Actions.delay(1f),
-                Actions.run { showConversationDialog("cutscene_intro_5", "mozes") }
+                Actions.run { showConversationDialog("tree_has_fallen_1", "mozes") }
             ), mozes),
             Actions.addAction(Actions.sequence(
                 Actions.delay(1.3f),
+                Actions.run { isBgmFading = true },
                 Actions.run { audioManager.handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_BANG) },
                 Actions.delay(0.5f),
                 Actions.run { camera.startShaking() },
-                Actions.run { mapManager.updateQuestLayers() }
+                Actions.run { mapManager.updateQuestLayers() },
+                Actions.run { isBgmFading = false }
             ))
         )
     }
@@ -379,7 +384,7 @@ class SceneIntro : CutsceneScreen() {
                 actionMoveTo(mozes, 480f, 60f, 5f, NORMAL_STEP),
                 Actions.run { mozes.entityState = EntityState.IDLE },
                 Actions.delay(1f),
-                Actions.run { showConversationDialog("cutscene_intro_6", "mozes") }
+                Actions.run { showConversationDialog("tree_has_fallen_2", "mozes") }
             ), mozes)
         )
     }

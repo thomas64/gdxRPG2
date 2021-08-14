@@ -1,4 +1,4 @@
-package nl.t64.game.rpg.screens.world.cutscene
+package nl.t64.game.rpg.screens.cutscene
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
@@ -65,6 +65,9 @@ abstract class CutsceneScreen : Screen, ConversationObserver {
         conversationDialog = ConversationDialog()
         conversationDialog.conversationObservers.addObserver(this)
         actionId = 0
+
+        title.setText("")
+        title.clearActions()
 
         transitionStage.clear()
         transitionStage.addActor(transition)
@@ -141,10 +144,7 @@ abstract class CutsceneScreen : Screen, ConversationObserver {
         Gdx.input.inputProcessor = null
         Utils.setGamepadInputProcessor(null)
         return Actions.sequence(
-            Actions.addAction(TransitionAction(TransitionType.FADE_OUT), transition),
-            Actions.delay(Constant.FADE_DURATION),
-            Actions.delay(1f),
-            Actions.addAction(Actions.alpha(1f), transition),
+            if (title.isVisible) fadeFromTitle() else fadeFromMap(),
             Actions.run {
                 mapManager.loadMapAfterCutscene(mapTitle, cutsceneId)
                 screenManager.setScreen(ScreenType.WORLD)
@@ -152,11 +152,40 @@ abstract class CutsceneScreen : Screen, ConversationObserver {
         )
     }
 
-    fun setMap(mapId: String) {
-        val manager = mapManager
-        manager.loadMap(mapId)
-        val currentMap = manager.currentMap
-        mapRenderer.map = manager.getTiledMap()
+    private fun fadeFromTitle(): Action {
+        return Actions.sequence(
+            Actions.addAction(Actions.sequence(
+                Actions.run { isBgmFading = true },
+                Actions.fadeOut(Constant.FADE_DURATION),
+                Actions.visible(false),
+                Actions.alpha(1f),
+                Actions.run { isBgmFading = false }
+            ), title),
+            Actions.delay(1f)
+        )
+    }
+
+    private fun fadeFromMap(): Action {
+        return Actions.sequence(
+            actionFadeOut(),
+            Actions.delay(1f),
+            Actions.addAction(Actions.alpha(1f), transition)
+        )
+    }
+
+    fun setMapWithBgmBgs(mapId: String) {
+        mapManager.loadMapWithBgmBgs(mapId)
+        setNewMap()
+    }
+
+    fun setMapWithBgsOnly(mapId: String) {
+        mapManager.loadMapWithBgs(mapId)
+        setNewMap()
+    }
+
+    private fun setNewMap() {
+        val currentMap = mapManager.currentMap
+        mapRenderer.map = mapManager.getTiledMap()
         camera.setNewMapSize(currentMap.pixelWidth, currentMap.pixelHeight)
     }
 
@@ -193,6 +222,13 @@ abstract class CutsceneScreen : Screen, ConversationObserver {
             Actions.addAction(TransitionAction(TransitionType.FADE_OUT), transition),
             Actions.delay(Constant.FADE_DURATION),
             Actions.run { isBgmFading = false }
+        )
+    }
+
+    fun actionFadeOutWithoutBgmFading(): Action {
+        return Actions.sequence(
+            Actions.addAction(TransitionAction(TransitionType.FADE_OUT), transition),
+            Actions.delay(Constant.FADE_DURATION),
         )
     }
 

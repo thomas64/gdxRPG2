@@ -13,7 +13,7 @@ import nl.t64.game.rpg.constants.Constant
 
 internal class ConversationDialogListener(
     private val answers: List<ConversationChoice>,
-    private val selectAnswer: Runnable
+    private val selectAnswer: () -> Unit
 ) : InputListener() {
 
     override fun keyDown(event: InputEvent, keycode: Int): Boolean {
@@ -45,7 +45,7 @@ internal class ConversationDialogListener(
 
     private fun inputConfirm() {
         if (answers.selectedIndex != -1) {
-            selectAnswer.run()
+            selectAnswer.invoke()
         }
     }
 
