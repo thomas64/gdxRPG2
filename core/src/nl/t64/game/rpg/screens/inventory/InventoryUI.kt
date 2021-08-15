@@ -53,8 +53,7 @@ internal class InventoryUI private constructor(
     heroesTable: HeroesTable,
     tableList: List<WindowSelector>,
     selectedTableIndex: Int
-) :
-    ScreenUI(equipWindow, equipSlotsTables, inventorySlotsTable, heroesTable, tableList, selectedTableIndex) {
+) : ScreenUI(equipWindow, equipSlotsTables, inventorySlotsTable, heroesTable, tableList, selectedTableIndex) {
 
     companion object {
         fun create(stage: Stage): InventoryUI {

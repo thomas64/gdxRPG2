@@ -3,7 +3,7 @@ package nl.t64.game.rpg.components.party.skills
 import java.beans.ConstructorProperties
 
 
-private const val NUMBER_OF_SKILL_SLOTS = 18
+private const val NUMBER_OF_SKILL_SLOTS = 19
 
 class SkillContainer() {
 
@@ -12,10 +12,12 @@ class SkillContainer() {
     @ConstructorProperties(
         "alchemist", "diplomat", "healer", "loremaster", "mechanic", "merchant",
         "ranger", "stealth", "thief", "troubadour", "warrior", "wizard",
-        "hafted", "missile", "pole", "shield", "sword", "thrown")
+        "hafted", "missile", "pole", "shield", "sword", "thrown",
+        "bite")
     constructor(alc: Int, dip: Int, hlr: Int, lor: Int, mec: Int, mer: Int,
                 ran: Int, stl: Int, thf: Int, trb: Int, war: Int, wiz: Int,
-                haf: Int, mis: Int, pol: Int, shd: Int, swd: Int, thr: Int
+                haf: Int, mis: Int, pol: Int, shd: Int, swd: Int, thr: Int,
+                bit: Int
     ) : this() {
         this.skills[SkillItemId.ALCHEMIST.name] = Alchemist(alc)
         this.skills[SkillItemId.DIPLOMAT.name] = Diplomat(dip)
@@ -35,6 +37,7 @@ class SkillContainer() {
         this.skills[SkillItemId.SHIELD.name] = Shield(shd)
         this.skills[SkillItemId.SWORD.name] = Sword(swd)
         this.skills[SkillItemId.THROWN.name] = Thrown(thr)
+        this.skills[SkillItemId.BITE.name] = Bite(bit)
     }
 
 

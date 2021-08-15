@@ -1,7 +1,7 @@
 package nl.t64.game.rpg.components.door
 
 import com.badlogic.gdx.Gdx
-import nl.t64.game.rpg.Utils.readValue
+import nl.t64.game.rpg.Utils
 
 
 private const val DOOR_CONFIGS = "configs/doors/"
@@ -12,7 +12,7 @@ class DoorContainer {
     private val doors: Map<String, Door> = Gdx.files.internal(FILE_LIST).readString()
         .split(System.lineSeparator())
         .map { Gdx.files.internal(DOOR_CONFIGS + it).readString() }
-        .map { readValue<Door>(it) }
+        .map { Utils.readValue<Door>(it) }
         .onEach { setDependentVariables(it) }
         .flatMap { it.toList() }
         .toMap()

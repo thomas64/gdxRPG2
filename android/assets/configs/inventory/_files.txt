@@ -19,3 +19,4 @@ shield.json
 shoulders.json
 sword.json
 thrown.json
+enemy.json

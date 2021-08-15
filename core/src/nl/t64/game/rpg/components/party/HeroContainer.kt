@@ -1,14 +1,14 @@
 package nl.t64.game.rpg.components.party
 
 import com.badlogic.gdx.Gdx
-import nl.t64.game.rpg.Utils.readValue
+import nl.t64.game.rpg.Utils
 
 
 private const val HERO_CONFIGS = "configs/characters/hero1.json"
 
 class HeroContainer {
 
-    private val heroes: MutableMap<String, HeroItem> = readValue<HeroItem>(
+    private val heroes: MutableMap<String, HeroItem> = Utils.readValue<HeroItem>(
         Gdx.files.internal(HERO_CONFIGS).readString()).onEach { it.value.id = it.key }
     val size: Int get() = heroes.size
 

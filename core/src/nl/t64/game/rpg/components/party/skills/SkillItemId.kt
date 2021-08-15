@@ -23,7 +23,9 @@ enum class SkillItemId(override val title: String) : SuperEnum {
     POLE("Pole"),
     SHIELD("Shield"),
     SWORD("Sword"),
-    THROWN("Thrown");
+    THROWN("Thrown"),
+
+    BITE("Bite");
 
     fun isHandToHandWeaponSkill(): Boolean {
         return when (this) {

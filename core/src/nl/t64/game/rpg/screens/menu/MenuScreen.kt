@@ -61,7 +61,6 @@ abstract class MenuScreen : Screen {
     }
 
     fun processButton(from: ScreenType, toScreen: ScreenType) {
-        val screenManager = screenManager
         val clickedScreen = screenManager.getMenuScreen(toScreen)
         clickedScreen.startScreen = startScreen
         clickedScreen.fromScreen = from
@@ -72,7 +71,6 @@ abstract class MenuScreen : Screen {
     fun processBackButton() {
         audioManager.handle(AudioCommand.SE_STOP_ALL)
         audioManager.handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_BACK)
-        val screenManager = screenManager
         val backScreen = screenManager.getMenuScreen(fromScreen)
         backScreen.setBackground(background)
         screenManager.setScreen(fromScreen)

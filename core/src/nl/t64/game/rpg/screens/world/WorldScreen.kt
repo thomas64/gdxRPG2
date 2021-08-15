@@ -21,6 +21,7 @@ import nl.t64.game.rpg.components.loot.Loot
 import nl.t64.game.rpg.constants.Constant
 import nl.t64.game.rpg.constants.GameState
 import nl.t64.game.rpg.constants.ScreenType
+import nl.t64.game.rpg.screens.battle.BattleScreen
 import nl.t64.game.rpg.screens.inventory.tooltip.MessageTooltip
 import nl.t64.game.rpg.screens.loot.FindScreen
 import nl.t64.game.rpg.screens.loot.ReceiveScreen
@@ -156,7 +157,7 @@ class WorldScreen : Screen, MapObserver, ComponentObserver, PartyObserver, LootO
         mapManager.prepareForBattle()
         fadeOut({
                     doBeforeLoadScreen()
-                    screenManager.setScreen(ScreenType.BATTLE)
+                    BattleScreen.load(battleId)
                 }, Color.BLACK)
     }
 

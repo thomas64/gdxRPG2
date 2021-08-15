@@ -1,7 +1,7 @@
 package nl.t64.game.rpg.components.conversation
 
 import com.badlogic.gdx.Gdx
-import nl.t64.game.rpg.Utils.readValue
+import nl.t64.game.rpg.Utils
 
 
 private const val CONVERSATION_CONFIGS = "configs/conversations/"
@@ -12,7 +12,7 @@ class ConversationContainer {
     private val conversations: Map<String, ConversationGraph> = Gdx.files.internal(FILE_LIST).readString()
         .split(System.lineSeparator())
         .map { Gdx.files.internal(CONVERSATION_CONFIGS + it).readString() }
-        .map { readValue<ConversationGraph>(it) }
+        .map { Utils.readValue<ConversationGraph>(it) }
         .flatMap { it.toList() }
         .toMap()
 
