@@ -5,6 +5,8 @@ import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.badlogic.gdx.scenes.scene2d.ui.Image
+import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.ScreenUtils
 import nl.t64.game.rpg.Utils
 import nl.t64.game.rpg.Utils.audioManager
@@ -50,7 +52,7 @@ class BattleScreen : Screen {
         stage.addActor(buttonTable)
         val enemyTable = BattleScreenBuilder.createEnemyTable(enemies.getAll())
         stage.addActor(enemyTable)
-        listener = BattleScreenListener({ winBattle() }, { fleeBattle() }, { killPartyMember(it) })
+        listener = BattleScreenListener({ winBattle() }, { fleeBattle() }, { killHero(it) })
 
         stage.addAction(Actions.sequence(
             Actions.addAction(Actions.sequence(
@@ -107,7 +109,7 @@ class BattleScreen : Screen {
 
         val levelUpMessage = StringBuilder()
         val totalXpWon = enemies.getTotalXp()
-        gameData.party.getAllHeroes().forEach { it.gainXp(totalXpWon, levelUpMessage) }
+        gameData.party.gainXp(totalXpWon, levelUpMessage)
         val finalLevelUpMessage = levelUpMessage.toString().trim().ifEmpty { null }
 
         val xpMessage = """
@@ -157,8 +159,24 @@ class BattleScreen : Screen {
         ))
     }
 
+    private fun killHero(index: Int) {
+        if (index == 1) {
+            gameOver()
+        } else {
+            killPartyMember(index)
+        }
+    }
+
+    private fun gameOver() {
+        TODO("cutscene met vuur enzo")
+    }
+
     private fun killPartyMember(index: Int) {
-        println("killPartyMember $index")
+        audioManager.handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_CONVERSATION_NEXT)
+        gameData.party.getHero(index - 1).takeDamage(1000)
+        val heroTable = stage.actors[1] as Table
+        val heroFace = heroTable.cells[(index * 3) - 2].actor as Image
+        heroFace.color = Color.DARK_GRAY
     }
 
 }

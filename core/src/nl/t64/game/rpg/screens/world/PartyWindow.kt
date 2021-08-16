@@ -8,9 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import nl.t64.game.rpg.Utils
 import nl.t64.game.rpg.Utils.gameData
-import nl.t64.game.rpg.Utils.getFaceImage
-import nl.t64.game.rpg.Utils.getHpColor
 import nl.t64.game.rpg.Utils.resourceManager
 import nl.t64.game.rpg.components.party.PartyContainer
 import nl.t64.game.rpg.constants.Constant
@@ -21,6 +20,7 @@ private const val FONT_BIG_PATH = "fonts/spectral_extra_bold_28.ttf"
 private val TRANSPARENT_BLACK = Color(0f, 0f, 0f, 0.8f)
 private val TRANSPARENT_WHITE = Color(1f, 1f, 1f, 0.3f)
 private val TRANSPARENT_FACES = Color(1f, 1f, 1f, 0.7f)
+private val TRANSPARENT_DEATH = Color(0x3f3f3fc0)
 
 private const val FONT_BIG_SIZE = 28
 private const val FONT_SIZE = 20
@@ -183,9 +183,10 @@ internal class PartyWindow {
     }
 
     private fun renderFace(i: Int) {
-        val heroId = party.getHero(i).id
-        val image = getFaceImage(heroId)
+        val hero = party.getHero(i)
+        val image = Utils.getFaceImage(hero.id)
         image.color = TRANSPARENT_FACES
+        if (!hero.isAlive) image.color = TRANSPARENT_DEATH
         image.setPosition(i * Constant.FACE_SIZE + i * PADDING, yPos + FACE_Y)
         table.addActor(image)
     }
@@ -226,7 +227,7 @@ internal class PartyWindow {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         val hero = party.getHero(i)
         val hpStats = hero.getAllHpStats()
-        val color = getHpColor(hpStats)
+        val color = Utils.getHpColor(hpStats)
         shapeRenderer.color = color
         val barWidth = BAR_WIDTH / hero.getMaximumHp() * hero.getCurrentHp()
         renderBar(i, 2f, barWidth)

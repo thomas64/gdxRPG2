@@ -39,7 +39,7 @@ internal class NpcEntitiesLoader(private val currentMap: GameMap) {
 
     private fun loadHero(gameMapHero: GameMapHero) {
         val hero = gameData.heroes.getCertainHero(gameMapHero.name)
-        if (gameMapHero.hasBeenRecruited == hero.hasBeenRecruited) {
+        if (hero.isAlive && gameMapHero.hasBeenRecruited == hero.hasBeenRecruited) {
             loadNpcEntity(gameMapHero)
         }
     }

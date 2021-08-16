@@ -39,7 +39,7 @@ object BattleScreenBuilder {
             isVisible = false
             gameData.party.getAllHeroes().forEachIndexed { i, hero ->
                 add((i + 1).toString())
-                add(Utils.getFaceImage(hero.id))
+                add(Utils.getFaceImage(hero.id).apply { if (!hero.isAlive) color = Color.DARK_GRAY })
                 add(hero.name).padLeft(20f).row()
             }
         }
@@ -48,10 +48,13 @@ object BattleScreenBuilder {
     fun createButtonTable(): Table {
         return Table(createSkin()).apply {
             defaults().height(50f)
-            columnDefaults(0).width(200f)
             top()
             setPosition(Gdx.graphics.width / 2f, Gdx.graphics.height.toFloat() - 50f)
             isVisible = false
+            add().row()
+            add("This battle screen is a temporary placeholder for the real turn based").row()
+            add("strategic battle gameplay that will replace this screen in the future.").row()
+            add().row()
             add("(W)in battle").row()
             add("(F)lee battle").row()
             add("Kill hero (1-6)")

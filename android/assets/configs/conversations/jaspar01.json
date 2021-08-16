@@ -32,5 +32,16 @@
         ]
       }
     }
+  },
+  "bury_jaspar"   : {
+    "phrases": {
+      "1": {
+        "text"   : ["Hero specific text.", "All his equipment will also be gone once you bury him."],
+        "choices": [
+          {"text": "Yes, the funeral may continue.", "conversationCommand": "HERO_DISMISS"},
+          {"text": "No, I need to take precautions first.", "conversationCommand": "EXIT_CONVERSATION"}
+        ]
+      }
+    }
   }
 }

@@ -237,6 +237,7 @@ class WorldScreen : Screen,
 
     override fun onNotifyBattleWon(battleId: String, spoils: Loot, levelUpMessage: String?) {
         npcEntities = npcEntities.filter { it != currentNpcEntity }
+        partyMembers = PartyMembersLoader(player).loadPartyMembers()
         if (!spoils.isTaken()) {
             gameData.spoils.addSpoil(battleId, Spoil(mapManager.currentMap.mapTitle,
                                                      currentNpcEntity.position.x, currentNpcEntity.position.y, spoils))
@@ -244,7 +245,7 @@ class WorldScreen : Screen,
             doBeforeLoadScreen()
             SpoilsScreen.load(spoils, levelUpMessage)
         } else {
-            levelUpMessage?.let { onNotifyShowLevelUpDialog(it) }
+            levelUpMessage?.let { messageDialog.show(levelUpMessage, AudioEvent.SE_LEVELUP) }
         }
     }
 

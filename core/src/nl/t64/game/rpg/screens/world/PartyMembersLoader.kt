@@ -18,7 +18,7 @@ internal class PartyMembersLoader(private val player: Entity) {
     }
 
     private fun createPartyMembers() {
-        gameData.party.getAllHeroes()
+        gameData.party.getAllHeroesAlive()
             .filter { !it.isPlayer }
             .map { createEntity(it) }
             .forEach { addToPartyMembers(it) }

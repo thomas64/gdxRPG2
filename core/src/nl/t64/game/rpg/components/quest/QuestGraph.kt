@@ -179,7 +179,7 @@ class QuestGraph(
             return null
         }
         val levelUpMessage = StringBuilder()
-        gameData.party.getAllHeroes().forEach { it.gainXp(reward.xp, levelUpMessage) }
+        gameData.party.gainXp(reward.xp, levelUpMessage)
         observers.notifyShowMessageTooltip("+ ${reward.xp} XP")
         reward.clearXp()
         return levelUpMessage.toString().trim().ifEmpty { null }

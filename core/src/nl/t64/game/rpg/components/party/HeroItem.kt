@@ -27,12 +27,20 @@ class HeroItem(
     lateinit var id: String
     var hasBeenRecruited = false
     val isPlayer: Boolean get() = id == Constant.PLAYER_ID
+    var isAlive = true
 
     fun hasSameIdAs(candidateHero: HeroItem): Boolean {
         return id == candidateHero.id
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    fun takeDamage(damage: Int) {
+        stats.takeDamage(damage)
+        if (getCurrentHp() <= 0) {
+            isAlive = false
+        }
+    }
 
     fun gainXp(amount: Int, levelUpMessage: StringBuilder) {
         stats.gainXp(amount) { append(levelUpMessage) }
@@ -96,7 +104,8 @@ class HeroItem(
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     fun createMessageIfNotAbleToEquip(inventoryItem: InventoryItem): String? {
-        return createMessageIfHeroHasNotEnoughFor(inventoryItem)
+        return createMessageIfHeroIsDead()
+            ?: createMessageIfHeroHasNotEnoughFor(inventoryItem)
             ?: createMessageIfWeaponAndShieldAreNotCompatible(inventoryItem)
             ?: createMessageIfNotAbleToDequip(getInventoryItem(inventoryItem.group)
                                                   ?: InventoryItem())   // does nothing
@@ -139,6 +148,10 @@ class HeroItem(
         return InventoryMinimal.values()
             .mapNotNull { it.createMessageIfHeroHasNotEnoughFor(inventoryItem, this) }
             .firstOrNull()
+    }
+
+    private fun createMessageIfHeroIsDead(): String? {
+        return if (!isAlive) "$name is deceased." else null
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

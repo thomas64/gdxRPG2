@@ -65,6 +65,14 @@ class StatContainer() {
         return StatItemId.values().map { stats[it.name]!! }
     }
 
+    fun takeDamage(damage: Int) {
+        level.takeDamage(damage)?.let { it1 ->
+            (stats[StatItemId.STAMINA.name] as Stamina).takeDamage(it1)?.let { it2 ->
+                (stats[StatItemId.ENDURANCE.name] as Endurance).takeDamage(it2)
+            }
+        }
+    }
+
     fun getInflictDamageStaminaPenalty(): Int {
         return (stats[StatItemId.STAMINA.name] as Stamina).getInflictDamagePenalty()
     }

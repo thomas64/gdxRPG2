@@ -17,6 +17,10 @@ class PartyContainer {
     val isFull: Boolean get() = size >= MAXIMUM
     val size: Int get() = party.size
 
+    fun gainXp(amount: Int, levelUpMessage: StringBuilder) {
+        getAllHeroesAlive().forEach { it.gainXp(amount, levelUpMessage) }
+    }
+
     fun getPreviousHero(hero: HeroItem): HeroItem {
         return when {
             isHeroFirst(hero) -> lastHero
@@ -63,7 +67,7 @@ class PartyContainer {
     }
 
     fun getHeroWithHighestSkill(skillItemId: SkillItemId): HeroItem {
-        return getAllHeroes().maxByOrNull { it.getCalculatedTotalSkillOf(skillItemId) } ?: firstHero
+        return getAllHeroesAlive().maxByOrNull { it.getCalculatedTotalSkillOf(skillItemId) } ?: firstHero
     }
 
     fun hasEnoughOfSkill(skillItemId: SkillItemId, rank: Int): Boolean {
@@ -82,6 +86,8 @@ class PartyContainer {
         return getAllHeroes().indexOf(hero)
     }
 
+    fun getAllHeroesAlive(): List<HeroItem> = getAllHeroes().filter { it.isAlive }
+
     fun getAllHeroes(): List<HeroItem> = ArrayList(party.values)
 
     fun getCertainHero(heroId: String): HeroItem {
@@ -97,7 +103,7 @@ class PartyContainer {
     }
 
     private fun getAllCalculatedTotalSkillsOf(skillItemId: SkillItemId): List<Int> {
-        return getAllHeroes().map { it.getCalculatedTotalSkillOf(skillItemId) }
+        return getAllHeroesAlive().map { it.getCalculatedTotalSkillOf(skillItemId) }
     }
 
 }

@@ -1,5 +1,6 @@
 package nl.t64.game.rpg.components.party.stats
 
+import kotlin.math.abs
 import kotlin.math.roundToInt
 
 
@@ -36,6 +37,16 @@ class Level(var rank: Int = 1) {
             variable += 1
             hasGainedLevel.invoke(true)
         }
+    }
+
+    fun takeDamage(damage: Int): Int? {
+        variable -= damage
+        if (variable < 0) {
+            val remainingDamage = abs(variable)
+            variable = 0
+            return remainingDamage
+        }
+        return null
     }
 
     private fun getTotalXpForLevel(level: Float): Int {

@@ -32,5 +32,16 @@
         ]
       }
     }
+  },
+  "bury_ryiah"   : {
+    "phrases": {
+      "1": {
+        "text"   : ["Hero specific text.", "All her equipment will also be gone once you bury her."],
+        "choices": [
+          {"text": "Yes, the funeral may continue.", "conversationCommand": "HERO_DISMISS"},
+          {"text": "No, I need to take precautions first.", "conversationCommand": "EXIT_CONVERSATION"}
+        ]
+      }
+    }
   }
 }
