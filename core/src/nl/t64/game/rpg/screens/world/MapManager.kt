@@ -56,6 +56,10 @@ class MapManager : ProfileObserver {
         brokerManager.mapObservers.notifyMapChanged(currentMap)
     }
 
+    fun loadMapAfterFleeing(mapTitle: String) {
+        loadMapAfterCutscene(mapTitle, mapTitle)
+    }
+
     fun loadMapAfterCutscene(mapTitle: String, cutsceneId: String) {
         loadMapWithBgmBgs(mapTitle)
         currentMap.setPlayerSpawnLocationForNewLoad(cutsceneId)

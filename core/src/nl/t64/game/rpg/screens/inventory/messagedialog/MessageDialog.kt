@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
@@ -16,7 +15,6 @@ import nl.t64.game.rpg.Utils.audioManager
 import nl.t64.game.rpg.Utils.resourceManager
 import nl.t64.game.rpg.audio.AudioCommand
 import nl.t64.game.rpg.audio.AudioEvent
-import nl.t64.game.rpg.constants.Constant
 
 
 private const val SPRITE_PARCHMENT = "sprites/parchment.png"
@@ -92,14 +90,9 @@ class MessageDialog(private val message: String) {
     }
 
     private fun hideWithAction(action: () -> Unit) {
-        dialog.stage.addAction(Actions.sequence(
-            Actions.run { dialog.hide() },
-            Actions.delay(Constant.DIALOG_FADE_OUT_DURATION),
-            Actions.run {
-                action.invoke()
-                actionAfterHide = null
-            }
-        ))
+        dialog.hide()
+        action.invoke()
+        actionAfterHide = null
     }
 
 }

@@ -76,6 +76,10 @@ class ProfileManager {
     fun getVisualProfileArray(): GdxArray<String> =
         GdxArray(getSaveFileNames().indices.map { getVisualOf(it) }.toTypedArray())
 
+    fun getLastSaveLocation(): String {
+        return saveStateProperties["mapTitle"] as String
+    }
+
     private fun writeProfileToDisk() {
         val formatter = DateTimeFormatter.ofPattern(DATE_PATTERN)
         setProperty(PROFILE_SAVE_DATE, formatter.format(LocalDateTime.now()))

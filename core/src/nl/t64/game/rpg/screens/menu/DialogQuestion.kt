@@ -34,7 +34,7 @@ private const val BUTTON_SPACE_RIGHT = 100f
 private const val NUMBER_OF_ITEMS = 2
 private const val EXIT_INDEX = 1
 
-internal class DialogQuestion(
+class DialogQuestion(
     private val yesFunction: () -> Unit,
     private val message: String
 ) {
@@ -47,9 +47,14 @@ internal class DialogQuestion(
         applyListeners()
     }
 
-    fun show(stage: Stage) {
+    fun show(stage: Stage, event: AudioEvent, startIndex: Int = EXIT_INDEX) {
+        audioManager.handle(AudioCommand.SE_PLAY_ONCE, event)
+        show(stage, startIndex)
+    }
+
+    fun show(stage: Stage, startIndex: Int = EXIT_INDEX) {
         dialog.show(stage)
-        updateIndex(EXIT_INDEX)
+        updateIndex(startIndex)
     }
 
     private fun updateIndex(newIndex: Int) {

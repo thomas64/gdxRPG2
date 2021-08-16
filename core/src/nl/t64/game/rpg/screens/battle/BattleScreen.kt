@@ -10,6 +10,8 @@ import nl.t64.game.rpg.Utils
 import nl.t64.game.rpg.Utils.audioManager
 import nl.t64.game.rpg.Utils.brokerManager
 import nl.t64.game.rpg.Utils.gameData
+import nl.t64.game.rpg.Utils.mapManager
+import nl.t64.game.rpg.Utils.profileManager
 import nl.t64.game.rpg.Utils.screenManager
 import nl.t64.game.rpg.audio.AudioCommand
 import nl.t64.game.rpg.audio.AudioEvent
@@ -17,6 +19,7 @@ import nl.t64.game.rpg.components.battle.EnemyContainer
 import nl.t64.game.rpg.constants.Constant
 import nl.t64.game.rpg.constants.ScreenType
 import nl.t64.game.rpg.screens.inventory.messagedialog.MessageDialog
+import nl.t64.game.rpg.screens.menu.DialogQuestion
 import nl.t64.game.rpg.screens.world.Camera
 
 
@@ -130,7 +133,28 @@ class BattleScreen : Screen {
     }
 
     private fun fleeBattle() {
-        println("fleeBattle")
+        val message = """
+            Fleeing will return you to the location of 
+            your last save with all the progress intact.
+            
+            Do you want to flee?""".trimIndent()
+        DialogQuestion({ battleFledExitScreen() }, message)
+            .show(stage, AudioEvent.SE_CONVERSATION_NEXT, 0)
+    }
+
+    private fun battleFledExitScreen() {
+        stage.addAction(Actions.sequence(
+            Actions.run {
+                Gdx.input.inputProcessor = null
+                Utils.setGamepadInputProcessor(null)
+            },
+            Actions.fadeOut(Constant.FADE_DURATION),
+            Actions.run {
+                val mapTitle = profileManager.getLastSaveLocation()
+                mapManager.loadMapAfterFleeing(mapTitle)
+                screenManager.setScreen(ScreenType.WORLD)
+            }
+        ))
     }
 
     private fun killPartyMember(index: Int) {

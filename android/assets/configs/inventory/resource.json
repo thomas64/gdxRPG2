@@ -43,7 +43,7 @@
     "group"      : "RESOURCE",
     "sort"       : 90040,
     "price"      : 1,
-    "description": ["ToDo", "ToDO"]
+    "description": ["ToDo", "ToDo"]
   },
   "leather"    : {
     "name"       : "Leather",
