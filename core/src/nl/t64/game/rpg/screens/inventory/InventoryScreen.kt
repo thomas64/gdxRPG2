@@ -126,13 +126,12 @@ class InventoryScreen : ScreenToLoad(), ConversationObserver {
     private fun tryToDismissHero() {
         val party = gameData.party
         val currentHero = InventoryUtils.getSelectedHero()
-        val currentHeroId = currentHero.id
-        if (party.isPlayer(currentHeroId)) {
+        if (party.isPlayer(currentHero.id)) {
             val errorMessage = "You cannot dismiss the party leader."
             val messageDialog = MessageDialog(errorMessage)
             messageDialog.show(stage, AudioEvent.SE_MENU_ERROR)
         } else {
-            conversationDialog.loadConversation("dismiss_$currentHeroId", currentHeroId)
+            conversationDialog.loadConversation("dismiss_${currentHero.id}", currentHero.id)
             conversationDialog.show()
         }
     }

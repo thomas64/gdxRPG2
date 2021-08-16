@@ -8,6 +8,7 @@ import nl.t64.game.rpg.screens.inventory.InventoryScreen
 import nl.t64.game.rpg.screens.loot.FindScreen
 import nl.t64.game.rpg.screens.loot.ReceiveScreen
 import nl.t64.game.rpg.screens.loot.RewardScreen
+import nl.t64.game.rpg.screens.loot.SpoilsScreen
 import nl.t64.game.rpg.screens.menu.*
 import nl.t64.game.rpg.screens.questlog.QuestLogScreen
 import nl.t64.game.rpg.screens.shop.ShopScreen
@@ -32,6 +33,7 @@ enum class ScreenType(val screenClass: Class<out Screen>) {
     FIND(FindScreen::class.java),
     REWARD(RewardScreen::class.java),
     RECEIVE(ReceiveScreen::class.java),
+    SPOILS(SpoilsScreen::class.java),
 
     SCENE_INTRO(SceneIntro::class.java);
 

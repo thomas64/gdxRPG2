@@ -32,7 +32,9 @@ internal class NpcEntitiesLoader(private val currentMap: GameMap) {
     }
 
     private fun loadEnemies() {
-        currentMap.enemies.forEach { loadEnemy(it) }
+        currentMap.enemies
+            .filter { !gameData.battles.isBattleWon(it.battleId) }
+            .forEach { loadEnemy(it) }
     }
 
     private fun loadHero(gameMapHero: GameMapHero) {

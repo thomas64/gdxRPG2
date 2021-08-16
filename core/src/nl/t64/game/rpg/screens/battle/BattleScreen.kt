@@ -8,40 +8,31 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.utils.ScreenUtils
 import nl.t64.game.rpg.Utils
 import nl.t64.game.rpg.Utils.audioManager
+import nl.t64.game.rpg.Utils.brokerManager
 import nl.t64.game.rpg.Utils.gameData
 import nl.t64.game.rpg.Utils.screenManager
 import nl.t64.game.rpg.audio.AudioCommand
 import nl.t64.game.rpg.audio.AudioEvent
-import nl.t64.game.rpg.components.battle.EnemyDatabase
-import nl.t64.game.rpg.components.battle.EnemyItem
+import nl.t64.game.rpg.components.battle.EnemyContainer
 import nl.t64.game.rpg.constants.Constant
 import nl.t64.game.rpg.constants.ScreenType
+import nl.t64.game.rpg.screens.inventory.messagedialog.MessageDialog
 import nl.t64.game.rpg.screens.world.Camera
 
 
 class BattleScreen : Screen {
 
     private lateinit var battleId: String
-    private lateinit var enemies: List<EnemyItem>
+    private lateinit var enemies: EnemyContainer
     private lateinit var stage: Stage
+    private lateinit var listener: BattleScreenListener
 
     companion object {
         fun load(battleId: String) {
             val screen = screenManager.getScreen(ScreenType.BATTLE) as BattleScreen
             screen.battleId = battleId
-            screen.enemies = createEnemies(battleId)
+            screen.enemies = EnemyContainer(battleId)
             screenManager.setScreen(ScreenType.BATTLE)
-        }
-
-        private fun createEnemies(battleId: String): List<EnemyItem> {
-            val enemies: MutableList<EnemyItem> = ArrayList()
-            gameData.battles.getBattlers(battleId).forEach {
-                (0 until it.amount).forEach { _ ->
-                    val enemy = EnemyDatabase.createEnemy(it.id)
-                    enemies.add(enemy)
-                }
-            }
-            return enemies
         }
     }
 
@@ -54,8 +45,9 @@ class BattleScreen : Screen {
         stage.addActor(heroTable)
         val buttonTable = BattleScreenBuilder.createButtonTable()
         stage.addActor(buttonTable)
-        val enemyTable = BattleScreenBuilder.createEnemyTable(enemies)
+        val enemyTable = BattleScreenBuilder.createEnemyTable(enemies.getAll())
         stage.addActor(enemyTable)
+        listener = BattleScreenListener({ winBattle() }, { fleeBattle() }, { killPartyMember(it) })
 
         stage.addAction(Actions.sequence(
             Actions.addAction(Actions.sequence(
@@ -76,9 +68,7 @@ class BattleScreen : Screen {
                 Gdx.input.inputProcessor = stage
                 Utils.setGamepadInputProcessor(stage)
             },
-            Actions.addListener(BattleScreenListener({ winBattle() },
-                                                     { fleeBattle() },
-                                                     { killPartyMember(it) }), false)
+            Actions.addListener(listener, false)
         ))
     }
 
@@ -101,8 +91,6 @@ class BattleScreen : Screen {
     }
 
     override fun hide() {
-        Gdx.input.inputProcessor = null
-        Utils.setGamepadInputProcessor(null)
         stage.clear()
     }
 
@@ -111,7 +99,34 @@ class BattleScreen : Screen {
     }
 
     private fun winBattle() {
-        println("winBattle")
+        stage.removeListener(listener)
+        gameData.battles.setBattleWon(battleId)
+
+        val levelUpMessage = StringBuilder()
+        val totalXpWon = enemies.getTotalXp()
+        gameData.party.getAllHeroes().forEach { it.gainXp(totalXpWon, levelUpMessage) }
+        val finalLevelUpMessage = levelUpMessage.toString().trim().ifEmpty { null }
+
+        val xpMessage = """
+            The enemy is defeated!
+            Party gained $totalXpWon XP.""".trimIndent()
+        val messageDialog = MessageDialog(xpMessage)
+        messageDialog.setActionAfterHide { battleWonExitScreen(finalLevelUpMessage) }
+        messageDialog.show(stage, AudioEvent.SE_CONVERSATION_NEXT)
+    }
+
+    private fun battleWonExitScreen(levelUpMessage: String?) {
+        stage.addAction(Actions.sequence(
+            Actions.run {
+                Gdx.input.inputProcessor = null
+                Utils.setGamepadInputProcessor(null)
+            },
+            Actions.fadeOut(Constant.FADE_DURATION),
+            Actions.run {
+                screenManager.setScreen(ScreenType.WORLD)
+                brokerManager.battleObservers.notifyBattleWon(battleId, enemies.getSpoils(), levelUpMessage)
+            }
+        ))
     }
 
     private fun fleeBattle() {

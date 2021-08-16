@@ -130,7 +130,7 @@ class InventoryItem(
             SkillItemId.SHIELD,
             SkillItemId.SWORD,
             SkillItemId.THROWN -> 0
-            else -> throw IllegalArgumentException("SkillItemId '$skillItemId' not usable.")
+            SkillItemId.BITE -> 0
         }
     }
 

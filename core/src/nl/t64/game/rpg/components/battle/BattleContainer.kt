@@ -21,6 +21,10 @@ class BattleContainer {
         return battles[battleId]!!.battlers
     }
 
+    fun isBattleWon(battleId: String): Boolean {
+        return battles[battleId]!!.hasWon
+    }
+
     fun setBattleWon(battleId: String) {
         battles[battleId]!!.hasWon = true
     }

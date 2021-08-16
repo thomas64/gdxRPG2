@@ -1,5 +1,5 @@
 {
-  "gold"    : {
+  "gold"       : {
     "name"       : "Gold",
     "group"      : "RESOURCE",
     "sort"       : 90090,
@@ -7,7 +7,7 @@
       "Gold can be used to pay for goods or services."
     ]
   },
-  "herb"    : {
+  "herb"       : {
     "name"       : "Herb",
     "group"      : "RESOURCE",
     "sort"       : 90010,
@@ -18,7 +18,7 @@
       "They also contain healing possibilities (Healer Skill)."
     ]
   },
-  "spice"   : {
+  "spice"      : {
     "name"       : "Spice",
     "group"      : "RESOURCE",
     "sort"       : 90020,
@@ -28,7 +28,7 @@
       "and in creating potions (Alchemist Skill)."
     ]
   },
-  "gemstone": {
+  "gemstone"   : {
     "name"       : "Gemstone",
     "group"      : "RESOURCE",
     "sort"       : 90030,
@@ -37,5 +37,19 @@
       "Gemstones are used in magical spells (Wizard Skill)",
       "and in creating potions (Alchemist Skill)."
     ]
+  },
+  "green_jelly": {
+    "name"       : "Green Jelly",
+    "group"      : "RESOURCE",
+    "sort"       : 90040,
+    "price"      : 1,
+    "description": ["ToDo", "ToDO"]
+  },
+  "leather"    : {
+    "name"       : "Leather",
+    "group"      : "RESOURCE",
+    "sort"       : 90050,
+    "price"      : 1,
+    "description": ["ToDo", "ToDo"]
   }
 }

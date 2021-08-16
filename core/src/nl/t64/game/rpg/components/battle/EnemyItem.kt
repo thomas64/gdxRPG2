@@ -14,8 +14,8 @@ class EnemyItem(
     private val skills: SkillContainer = SkillContainer(),
     private val spells: SpellContainer = SpellContainer(),
     private val inventory: EquipContainer = EquipContainer(),
-    private val xp: Int = 0,
-    private val drops: Map<String, Int> = emptyMap()
+    val xp: Int = 0,
+    val drops: Map<String, Int> = emptyMap()
 ) {
 
     lateinit var id: String

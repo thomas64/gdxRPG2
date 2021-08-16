@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import nl.t64.game.rpg.Utils
+import nl.t64.game.rpg.Utils.gameData
+import nl.t64.game.rpg.Utils.resourceManager
 import nl.t64.game.rpg.components.battle.EnemyItem
 import nl.t64.game.rpg.constants.Constant
 
@@ -18,7 +20,7 @@ private const val TITLE_TEXT = "Battle...!"
 object BattleScreenBuilder {
 
     fun createBattleTitle(): Label {
-        val font: BitmapFont = Utils.resourceManager.getTrueTypeAsset(TEXT_FONT, FONT_SIZE)
+        val font: BitmapFont = resourceManager.getTrueTypeAsset(TEXT_FONT, FONT_SIZE)
         val style = Label.LabelStyle(font, Color.WHITE)
         return Label(TITLE_TEXT, style).apply {
             setPosition((Gdx.graphics.width / 2f) - (width / 2f), (Gdx.graphics.height / 2f) - (height / 2f))
@@ -35,7 +37,7 @@ object BattleScreenBuilder {
             top().left()
             setPosition(50f, Gdx.graphics.height.toFloat() - 50f)
             isVisible = false
-            Utils.gameData.party.getAllHeroes().forEachIndexed { i, hero ->
+            gameData.party.getAllHeroes().forEachIndexed { i, hero ->
                 add((i + 1).toString())
                 add(Utils.getFaceImage(hero.id))
                 add(hero.name).padLeft(20f).row()
@@ -73,7 +75,7 @@ object BattleScreenBuilder {
     }
 
     private fun createSkin(): Skin {
-        val font: BitmapFont = Utils.resourceManager.getTrueTypeAsset(TEXT_FONT, FONT_SIZE)
+        val font: BitmapFont = resourceManager.getTrueTypeAsset(TEXT_FONT, FONT_SIZE)
         return Skin().apply {
             add("default", Label.LabelStyle(font, Color.WHITE))
         }

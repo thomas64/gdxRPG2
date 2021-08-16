@@ -61,7 +61,7 @@ class PhysicsEnemy : PhysicsComponent() {
         }
         entity.send(PositionEvent(currentPosition))
         if (isNearbyPlayer()) {
-            brokerManager.componentObservers.notifyShowBattleScreen(battleId)
+            brokerManager.componentObservers.notifyShowBattleScreen(battleId, entity)
         }
     }
 

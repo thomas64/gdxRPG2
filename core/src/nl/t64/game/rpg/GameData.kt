@@ -7,6 +7,7 @@ import nl.t64.game.rpg.components.cutscene.CutsceneContainer
 import nl.t64.game.rpg.components.door.DoorContainer
 import nl.t64.game.rpg.components.event.EventContainer
 import nl.t64.game.rpg.components.loot.LootContainer
+import nl.t64.game.rpg.components.loot.SpoilsContainer
 import nl.t64.game.rpg.components.party.HeroContainer
 import nl.t64.game.rpg.components.party.PartyContainer
 import nl.t64.game.rpg.components.party.inventory.InventoryContainer
@@ -26,6 +27,7 @@ class GameData : ProfileObserver {
     lateinit var quests: QuestContainer
     lateinit var events: EventContainer
     lateinit var loot: LootContainer
+    lateinit var spoils: SpoilsContainer
     lateinit var doors: DoorContainer
     lateinit var cutscenes: CutsceneContainer
     var isTooltipEnabled = false
@@ -40,6 +42,7 @@ class GameData : ProfileObserver {
         quests = QuestContainer()
         events = EventContainer()
         loot = LootContainer()
+        spoils = SpoilsContainer()
         doors = DoorContainer()
         cutscenes = CutsceneContainer()
         isTooltipEnabled = true
@@ -58,6 +61,7 @@ class GameData : ProfileObserver {
         profileManager.setProperty("quests", quests)
         profileManager.setProperty("events", events)
         profileManager.setProperty("loot", loot)
+        profileManager.setProperty("spoils", spoils)
         profileManager.setProperty("doors", doors)
         profileManager.setProperty("cutscenes", cutscenes)
         profileManager.setProperty("isTooltipEnabled", isTooltipEnabled)
@@ -76,6 +80,7 @@ class GameData : ProfileObserver {
         quests = profileManager.getProperty("quests")
         events = profileManager.getProperty("events")
         loot = profileManager.getProperty("loot")
+        spoils = profileManager.getProperty("spoils")
         doors = profileManager.getProperty("doors")
         cutscenes = profileManager.getProperty("cutscenes")
         isTooltipEnabled = profileManager.getProperty("isTooltipEnabled")

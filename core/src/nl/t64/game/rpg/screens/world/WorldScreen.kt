@@ -18,6 +18,7 @@ import nl.t64.game.rpg.Utils.screenManager
 import nl.t64.game.rpg.audio.AudioCommand
 import nl.t64.game.rpg.audio.AudioEvent
 import nl.t64.game.rpg.components.loot.Loot
+import nl.t64.game.rpg.components.loot.Spoil
 import nl.t64.game.rpg.constants.Constant
 import nl.t64.game.rpg.constants.GameState
 import nl.t64.game.rpg.constants.ScreenType
@@ -26,6 +27,7 @@ import nl.t64.game.rpg.screens.inventory.tooltip.MessageTooltip
 import nl.t64.game.rpg.screens.loot.FindScreen
 import nl.t64.game.rpg.screens.loot.ReceiveScreen
 import nl.t64.game.rpg.screens.loot.RewardScreen
+import nl.t64.game.rpg.screens.loot.SpoilsScreen
 import nl.t64.game.rpg.screens.shop.ShopScreen
 import nl.t64.game.rpg.screens.world.conversation.ConversationDialog
 import nl.t64.game.rpg.screens.world.conversation.ConversationObserver
@@ -38,13 +40,11 @@ import nl.t64.game.rpg.screens.world.entity.events.PathUpdateEvent
 import nl.t64.game.rpg.screens.world.messagedialog.MessageDialog
 import nl.t64.game.rpg.screens.world.pathfinding.TiledNode
 import nl.t64.game.rpg.sfx.TransitionImage
-import nl.t64.game.rpg.subjects.ComponentObserver
-import nl.t64.game.rpg.subjects.LootObserver
-import nl.t64.game.rpg.subjects.MapObserver
-import nl.t64.game.rpg.subjects.PartyObserver
+import nl.t64.game.rpg.subjects.*
 
 
-class WorldScreen : Screen, MapObserver, ComponentObserver, PartyObserver, LootObserver, ConversationObserver {
+class WorldScreen : Screen,
+    MapObserver, ComponentObserver, PartyObserver, LootObserver, ConversationObserver, BattleObserver {
 
     private lateinit var previousGameState: GameState
     private lateinit var gameState: GameState
@@ -78,6 +78,7 @@ class WorldScreen : Screen, MapObserver, ComponentObserver, PartyObserver, LootO
         brokerManager.mapObservers.addObserver(this)
         brokerManager.partyObservers.addObserver(this)
         brokerManager.lootObservers.addObserver(this)
+        brokerManager.battleObservers.addObserver(this)
     }
 
     // MapObserver /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -153,12 +154,12 @@ class WorldScreen : Screen, MapObserver, ComponentObserver, PartyObserver, LootO
         messageDialog.show(message, AudioEvent.SE_CONVERSATION_NEXT)
     }
 
-    override fun onNotifyShowBattleScreen(battleId: String) {
+    override fun onNotifyShowBattleScreen(battleId: String, enemyEntity: Entity) {
+        currentNpcEntity = enemyEntity
         mapManager.prepareForBattle()
-        fadeOut({
-                    doBeforeLoadScreen()
-                    BattleScreen.load(battleId)
-                }, Color.BLACK)
+        gameState = GameState.BATTLE
+        doBeforeLoadScreen()
+        fadeOut({ BattleScreen.load(battleId) }, Color.BLACK)
     }
 
     // PartyObserver ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -232,6 +233,21 @@ class WorldScreen : Screen, MapObserver, ComponentObserver, PartyObserver, LootO
         partyMembers = PartyMembersLoader(player).loadPartyMembers()
     }
 
+    // BattleObserver //////////////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun onNotifyBattleWon(battleId: String, spoils: Loot, levelUpMessage: String?) {
+        npcEntities = npcEntities.filter { it != currentNpcEntity }
+        if (!spoils.isTaken()) {
+            gameData.spoils.addSpoil(battleId, Spoil(mapManager.currentMap.mapTitle,
+                                                     currentNpcEntity.position.x, currentNpcEntity.position.y, spoils))
+            lootList = LootLoader(mapManager.currentMap).createLoot()
+            doBeforeLoadScreen()
+            SpoilsScreen.load(spoils, levelUpMessage)
+        } else {
+            levelUpMessage?.let { onNotifyShowLevelUpDialog(it) }
+        }
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     override fun show() {
@@ -246,7 +262,7 @@ class WorldScreen : Screen, MapObserver, ComponentObserver, PartyObserver, LootO
             GameState.PAUSED -> { // do nothing here
             }
             GameState.MINIMAP -> renderMiniMap()
-            GameState.RUNNING, GameState.DIALOG -> renderAll(dt)
+            GameState.RUNNING, GameState.DIALOG, GameState.BATTLE -> renderAll(dt)
         }
     }
 
@@ -265,7 +281,7 @@ class WorldScreen : Screen, MapObserver, ComponentObserver, PartyObserver, LootO
     private fun renderAll(dt: Float) {
         mapManager.updateFogOfWar(player.position, dt)
         mapManager.updateQuestLayers()
-        if (gameState != GameState.DIALOG) {
+        if (gameState != GameState.DIALOG && gameState != GameState.BATTLE) {
             updateEntities(dt)
         }
         updateCameraPosition()
@@ -312,7 +328,7 @@ class WorldScreen : Screen, MapObserver, ComponentObserver, PartyObserver, LootO
         allEntities.addAll(npcEntities)
         allEntities.add(player)
         allEntities.sortByDescending { it.position.y }
-        allEntities.forEach() { it.render(mapRenderer.batch) }
+        allEntities.forEach { it.render(mapRenderer.batch) }
 
         doorList
             .filter { it.position.y < player.position.y }
