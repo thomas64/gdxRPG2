@@ -2,16 +2,14 @@ package nl.t64.game.rpg.screens.menu
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle
-import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
 import com.badlogic.gdx.utils.Align
+import nl.t64.game.rpg.Utils
 import nl.t64.game.rpg.Utils.audioManager
 import nl.t64.game.rpg.Utils.resourceManager
 import nl.t64.game.rpg.audio.AudioCommand
@@ -19,9 +17,9 @@ import nl.t64.game.rpg.audio.AudioEvent
 import nl.t64.game.rpg.constants.Constant
 
 
-private const val SPRITE_PARCHMENT = "sprites/parchment.png"
-private const val DIALOG_FONT = "fonts/fff_tusj.ttf"
-private const val FONT_SIZE = 30
+private const val FONT = "fonts/spectral_regular_24.ttf"
+private const val FONT_SIZE = 24
+private const val LINE_HEIGHT = 26f
 
 private const val DIALOG_YES = "Yes"
 private const val DIALOG_NO = "No"
@@ -39,7 +37,9 @@ class DialogQuestion(
     private val message: String
 ) {
     private val dialogHeight: Float = ((message.lines().count() * FONT_SIZE) + DIALOG_INIT_HEIGHT).toFloat()
-    private val dialogFont: BitmapFont = resourceManager.getTrueTypeAsset(DIALOG_FONT, FONT_SIZE)
+    private val font: BitmapFont = resourceManager.getTrueTypeAsset(FONT, FONT_SIZE).apply {
+        data.setLineHeight(LINE_HEIGHT)
+    }
     private val dialog: Dialog = createDialog()
     private var selectedIndex = 0
 
@@ -91,41 +91,25 @@ class DialogQuestion(
     }
 
     private fun createDialog(): Dialog {
-        // styles
-        val labelStyle = LabelStyle(dialogFont, Color.BLACK)
-        val buttonStyle = TextButtonStyle()
-        buttonStyle.font = dialogFont
-        buttonStyle.fontColor = Color.BLACK
-        val windowStyle = WindowStyle()
-        windowStyle.titleFont = dialogFont
-        windowStyle.titleFontColor = Color.BLACK
-
-        // actors
-        val label = Label(message, labelStyle)
+        val label = Label(message, LabelStyle(font, Color.BLACK))
         label.setAlignment(Align.center)
+
+        val buttonStyle = TextButtonStyle()
+        buttonStyle.font = font
+        buttonStyle.fontColor = Color.BLACK
+
         val yesButton = TextButton(DIALOG_YES, TextButtonStyle(buttonStyle))
         val noButton = TextButton(DIALOG_NO, TextButtonStyle(buttonStyle))
 
-        // table
-        val newDialog = Dialog("", windowStyle)
-        newDialog.titleLabel.setAlignment(Align.center)
-        newDialog.padTop(DIALOG_PAD_TOP)
-        newDialog.padBottom(DIALOG_PAD_BOTTOM)
-        newDialog.contentTable.defaults().width(label.prefWidth + BUTTON_SPACE_RIGHT)
-
-        val sprite = Sprite(resourceManager.getTextureAsset(SPRITE_PARCHMENT))
-        newDialog.background(SpriteDrawable(sprite))
-        newDialog.background.minHeight = dialogHeight
-
-        newDialog.setKeepWithinStage(true)
-        newDialog.isModal = true
-        newDialog.isMovable = false
-        newDialog.isResizable = false
-        newDialog.text(label)
-
-        newDialog.buttonTable.add(yesButton).spaceRight(BUTTON_SPACE_RIGHT)
-        newDialog.buttonTable.add(noButton)
-        return newDialog
+        return Utils.createParchmentDialog(font).apply {
+            padTop(DIALOG_PAD_TOP)
+            padBottom(DIALOG_PAD_BOTTOM)
+            contentTable.defaults().width(label.prefWidth + BUTTON_SPACE_RIGHT)
+            background.minHeight = dialogHeight
+            text(label)
+            buttonTable.add(yesButton).spaceRight(BUTTON_SPACE_RIGHT)
+            buttonTable.add(noButton)
+        }
     }
 
     private fun applyListeners() {

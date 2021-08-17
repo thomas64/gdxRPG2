@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
 import com.badlogic.gdx.scenes.scene2d.ui.List
 import com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle
-import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.GdxRuntimeException
@@ -31,11 +30,12 @@ import nl.t64.game.rpg.components.conversation.NoteDatabase.getNoteById
 import nl.t64.game.rpg.constants.Constant
 
 
-private const val SPRITE_PARCHMENT = "sprites/parchment.png"
 private const val SPRITE_TRANSPARENT = "sprites/transparent.png"
-private const val CONVERSATION_FONT = "fonts/spectral_regular_24.ttf"
+
+private const val FONT = "fonts/spectral_regular_24.ttf"
 private const val FONT_SIZE = 24
 private const val LINE_HEIGHT = 26f
+
 private const val SCROLL_PANE_LINE_HEIGHT = 32f
 private const val SCROLL_PANE_LINE_PAD = -4f
 private const val SCROLL_PANE_TOP_PAD = 10f
@@ -49,7 +49,7 @@ class ConversationDialog {
     val conversationObservers: ConversationSubject = ConversationSubject()
 
     private val stage: Stage = Stage()
-    private val font: BitmapFont = resourceManager.getTrueTypeAsset(CONVERSATION_FONT, FONT_SIZE).apply {
+    private val font: BitmapFont = resourceManager.getTrueTypeAsset(FONT, FONT_SIZE).apply {
         data.setLineHeight(LINE_HEIGHT)
     }
     private val dialog: Dialog = createDialog()
@@ -116,26 +116,17 @@ class ConversationDialog {
     }
 
     private fun createDialog(): Dialog {
+        label = Label("No Conversation", LabelStyle(font, Color.BLACK)).apply {
+            wrap = true
+        }
+
         val spriteTransparent = Sprite(resourceManager.getTextureAsset(SPRITE_TRANSPARENT))
+        val drawable = SpriteDrawable(spriteTransparent).apply {
+            topHeight = SCROLL_PANE_LINE_PAD
+            bottomHeight = SCROLL_PANE_LINE_PAD
+        }
+        answers = List(ListStyle(font, Constant.DARK_RED, Color.BLACK, drawable))
 
-        // styles
-        val labelStyle = LabelStyle(font, Color.BLACK)
-        val windowStyle = WindowStyle()
-        windowStyle.titleFont = font
-        windowStyle.titleFontColor = Color.BLACK
-        val listStyle = ListStyle()
-        listStyle.font = font
-        listStyle.fontColorSelected = Constant.DARK_RED
-        listStyle.fontColorUnselected = Color.BLACK
-        val drawable = SpriteDrawable(spriteTransparent)
-        drawable.topHeight = SCROLL_PANE_LINE_PAD
-        drawable.bottomHeight = SCROLL_PANE_LINE_PAD
-        listStyle.selection = drawable
-
-        // actors
-        label = Label("No Conversation", labelStyle)
-        label.wrap = true
-        answers = List(listStyle)
         scrollPane = ScrollPane(answers)
         scrollPane.setOverscroll(false, false)
         scrollPane.fadeScrollBars = false
@@ -143,18 +134,11 @@ class ConversationDialog {
         scrollPane.setForceScroll(false, false)
         scrollPane.setScrollBarPositions(false, false)
 
-        // dialog
-        val newDialog = Dialog("", windowStyle)
-        newDialog.titleLabel.setAlignment(Align.center)
-        newDialog.setKeepWithinStage(true)
-        newDialog.isModal = true
-        newDialog.isMovable = false
-        newDialog.isResizable = false
-        val sprite = Sprite(resourceManager.getTextureAsset(SPRITE_PARCHMENT))
-        sprite.setSize(DIALOG_WIDTH, DIALOG_HEIGHT)
-        newDialog.background = SpriteDrawable(sprite)
-        newDialog.setPosition(Gdx.graphics.width / 2f - DIALOG_WIDTH / 2f, 0f)
-        return newDialog
+        return Utils.createParchmentDialog(font).apply {
+            background.minWidth = DIALOG_WIDTH
+            background.minHeight = DIALOG_HEIGHT
+            setPosition(Gdx.graphics.width / 2f - DIALOG_WIDTH / 2f, 0f)
+        }
     }
 
     private fun fillDialogForConversation() {

@@ -4,14 +4,11 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
-import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.GdxRuntimeException
 import com.badlogic.gdx.utils.Null
@@ -23,9 +20,9 @@ import nl.t64.game.rpg.audio.AudioEvent
 import nl.t64.game.rpg.constants.Constant
 
 
-private const val SPRITE_PARCHMENT = "sprites/parchment.png"
-private const val DIALOG_FONT = "fonts/fff_tusj.ttf"
-private const val FONT_SIZE = 30
+private const val FONT = "fonts/spectral_regular_24.ttf"
+private const val FONT_SIZE = 24
+private const val LINE_HEIGHT = 26f
 
 private const val DIALOG_INIT_HEIGHT = 100L
 private const val DIALOG_PAD = 60f
@@ -33,7 +30,9 @@ private const val DIALOG_PAD = 60f
 class MessageDialog(private val multiplexer: InputMultiplexer) {
 
     private val stage = Stage()
-    private val font: BitmapFont = resourceManager.getTrueTypeAsset(DIALOG_FONT, FONT_SIZE)
+    private val font: BitmapFont = resourceManager.getTrueTypeAsset(FONT, FONT_SIZE).apply {
+        data.setLineHeight(LINE_HEIGHT)
+    }
     private lateinit var label: Label
     private val dialog: Dialog = createDialog()
 
@@ -71,31 +70,12 @@ class MessageDialog(private val multiplexer: InputMultiplexer) {
     }
 
     private fun createDialog(): Dialog {
-        // styles
-        val labelStyle = LabelStyle(font, Color.BLACK)
-        val windowStyle = WindowStyle()
-        windowStyle.titleFont = font
-        windowStyle.titleFontColor = Color.BLACK
-
-        // actors
-        label = Label("no message", labelStyle)
+        label = Label("no message", LabelStyle(font, Color.BLACK))
         label.setAlignment(Align.center)
-
-        // dialog
-        val newDialog = Dialog("", windowStyle)
-        newDialog.titleLabel.setAlignment(Align.center)
-        newDialog.padLeft(DIALOG_PAD)
-        newDialog.padRight(DIALOG_PAD)
-
-        val sprite = Sprite(resourceManager.getTextureAsset(SPRITE_PARCHMENT))
-        newDialog.background(SpriteDrawable(sprite))
-
-        newDialog.setKeepWithinStage(true)
-        newDialog.isModal = true
-        newDialog.isMovable = false
-        newDialog.isResizable = false
-
-        return newDialog
+        return Utils.createParchmentDialog(font).apply {
+            padLeft(DIALOG_PAD)
+            padRight(DIALOG_PAD)
+        }
     }
 
     private fun fillDialog(message: String) {

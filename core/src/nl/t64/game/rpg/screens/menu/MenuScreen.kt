@@ -26,7 +26,7 @@ const val PAD_TOP = 40f
 private const val TITLE_LOGO_W = "sprites/accot_w.png"
 private const val TITLE_LOGO_B = "sprites/accot_b.png"
 private const val LOGO_SCALE = 0.5f
-private const val MENU_FONT = "fonts/barlow_regular.ttf"
+private const val MENU_FONT = "fonts/barlow_regular_45.ttf"
 private const val MENU_SIZE = 45
 
 abstract class MenuScreen : Screen {

@@ -2,16 +2,14 @@ package nl.t64.game.rpg.screens.inventory.tooltip
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.utils.Align
+import nl.t64.game.rpg.Utils
 import nl.t64.game.rpg.Utils.gameData
-import nl.t64.game.rpg.Utils.resourceManager
 import nl.t64.game.rpg.components.party.CalcAttributeId
 import nl.t64.game.rpg.components.party.SuperEnum
 import nl.t64.game.rpg.components.party.inventory.InventoryDescription
@@ -26,7 +24,6 @@ import nl.t64.game.rpg.screens.inventory.itemslot.ItemSlot
 
 private const val SLOT_SIZE = 64f
 private const val THREE_QUARTERS = SLOT_SIZE * 0.75f
-private const val RIGHT_BORDER = "sprites/tooltip_right.png"
 private const val COLUMN_SPACING = 20f
 private const val HALF_SPACING = 10f
 private const val EMPTY_ROW = ""
@@ -136,12 +133,12 @@ open class ItemSlotTooltip : BaseTooltip() {
     }
 
     private fun createLeftTooltip(hoveredImage: InventoryImage, equippedImage: InventoryImage): Table {
-        val hoveredTable = Table(window.skin)
-        setRightBorder(hoveredTable)
-        hoveredTable.padRight(HALF_SPACING)
-        hoveredTable.defaults().align(Align.left)
-        hoveredTable.add(createLabel(LEFT_TITLE, Color.WHITE)).row()
-
+        val hoveredTable = Table(window.skin).apply {
+            background = Utils.createTooltipRightBorder()
+            padRight(HALF_SPACING)
+            defaults().align(Align.left)
+            add(createLabel(LEFT_TITLE, Color.WHITE)).row()
+        }
         val totalMerchant = gameData.party.getSumOfSkill(SkillItemId.MERCHANT)
         val descriptionList = hoveredImage.getDualDescription(equippedImage, totalMerchant).toMutableList()
         removeLeftUnnecessaryAttributes(descriptionList)
@@ -151,9 +148,10 @@ open class ItemSlotTooltip : BaseTooltip() {
     }
 
     private fun createRightTooltip(equippedImage: InventoryImage, hoveredImage: InventoryImage): Table {
-        val equippedTable = Table()
-        equippedTable.defaults().align(Align.left)
-        equippedTable.add(createLabel(RIGHT_TITLE, Color.LIGHT_GRAY)).row()
+        val equippedTable = Table().apply {
+            defaults().align(Align.left)
+            add(createLabel(RIGHT_TITLE, Color.LIGHT_GRAY)).row()
+        }
 
         val totalMerchant = gameData.party.getSumOfSkill(SkillItemId.MERCHANT)
         val descriptionList = equippedImage.getDualDescription(hoveredImage, totalMerchant).toMutableList()
@@ -236,13 +234,6 @@ open class ItemSlotTooltip : BaseTooltip() {
             attribute.key == CalcAttributeId.BASE_HIT -> String.format("%s%%", attribute.value)
             else -> attribute.value.toString()
         }
-    }
-
-    private fun setRightBorder(table: Table) {
-        val texture = resourceManager.getTextureAsset(RIGHT_BORDER)
-        val ninepatch = NinePatch(texture, 0, 1, 0, 0)
-        val drawable = NinePatchDrawable(ninepatch)
-        table.background = drawable
     }
 
     private fun createLabel(text: String, color: Color): Label {

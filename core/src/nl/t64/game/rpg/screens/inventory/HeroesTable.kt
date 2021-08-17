@@ -3,13 +3,11 @@ package nl.t64.game.rpg.screens.inventory
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
@@ -20,8 +18,6 @@ import nl.t64.game.rpg.components.party.HeroItem
 import nl.t64.game.rpg.components.party.PartyContainer
 
 
-private const val SPRITE_BORDER = "sprites/border.png"
-private const val SPRITE_RIGHT_BORDER = "sprites/right_border.png"
 private const val SPRITE_GRAY = "sprites/gray.png"
 private const val FONT_PATH = "fonts/spectral_extra_bold_20.ttf"
 private const val FONT_BIG_PATH = "fonts/spectral_extra_bold_28.ttf"
@@ -90,7 +86,7 @@ class HeroesTable {
             columnDefaults(0).width(STATS_COLUMN_PAD)
             columnDefaults(1).width(STATS_COLUMN_WIDTH)
             columnDefaults(2).width(STATS_COLUMN_PAD)
-            if (!party.isHeroLast(hero)) setRightBorder(this)
+            if (!party.isHeroLast(hero)) background = Utils.createRightBorder()
         }
     }
 
@@ -104,22 +100,19 @@ class HeroesTable {
 
     private fun addNameLabelTo(statsTable: Table, hero: HeroItem) {
         statsTable.add(Label("", nameStyle))
-        val nameLabel = Label(hero.name, nameStyle)
-        statsTable.add(nameLabel)
+        statsTable.add(Label(hero.name, nameStyle))
         statsTable.add(Label("", nameStyle)).row()
     }
 
     private fun addLevelLabelTo(statsTable: Table, hero: HeroItem) {
         statsTable.add(Label("", levelStyle))
-        val levelLabel = Label("Level:   " + hero.getLevel(), levelStyle)
-        statsTable.add(levelLabel)
+        statsTable.add(Label("Level:   " + hero.getLevel(), levelStyle))
         statsTable.add(Label("", levelStyle)).row()
     }
 
     private fun addHpLabelTo(statsTable: Table, hero: HeroItem) {
         statsTable.add(Label("", levelStyle))
-        val hpLabel = Label("HP:  " + hero.getCurrentHp() + "/ " + hero.getMaximumHp(), levelStyle)
-        statsTable.add(hpLabel)
+        statsTable.add(Label("HP:  " + hero.getCurrentHp() + "/ " + hero.getMaximumHp(), levelStyle))
         statsTable.add(Label("", levelStyle))
     }
 
@@ -130,26 +123,11 @@ class HeroesTable {
         statsTable.add(Label("", levelStyle))
     }
 
-    private fun setRightBorder(statsTable: Table) {
-        val texture = resourceManager.getTextureAsset(SPRITE_RIGHT_BORDER)
-        val ninepatch = NinePatch(texture, 0, 1, 0, 0)
-        val drawable = NinePatchDrawable(ninepatch)
-        statsTable.background = drawable
-    }
-
     private fun createHpBar(hero: HeroItem): Stack {
-        val outline = createOutline()
-        val fill = createFill(hero)
         return Stack().apply {
-            add(fill)
-            add(outline)
+            add(createFill(hero))
+            add(Image(Utils.createFullBorder()))
         }
-    }
-
-    private fun createOutline(): Image {
-        val texture = resourceManager.getTextureAsset(SPRITE_BORDER)
-        val ninepatch = NinePatch(texture, 1, 1, 1, 1)
-        return Image(ninepatch)
     }
 
     private fun createFill(hero: HeroItem): Image {

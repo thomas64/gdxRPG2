@@ -1,7 +1,6 @@
 package nl.t64.game.rpg.screens.menu
 
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
@@ -10,20 +9,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.ScreenUtils
+import nl.t64.game.rpg.Utils
 import nl.t64.game.rpg.Utils.audioManager
 import nl.t64.game.rpg.Utils.gameData
 import nl.t64.game.rpg.Utils.profileManager
-import nl.t64.game.rpg.Utils.resourceManager
 import nl.t64.game.rpg.Utils.screenManager
 import nl.t64.game.rpg.components.cutscene.CutsceneId
 import nl.t64.game.rpg.constants.Constant
 import nl.t64.game.rpg.constants.ScreenType
 
-
-private const val SPRITE_BORDER = "sprites/border.png"
 
 private const val PROFILE_LABEL = "Enter profile name:"
 private const val PROFILE_INPUT_LENGTH = 8 + 1
@@ -159,20 +155,16 @@ class MenuNew : MenuScreen() {
     }
 
     private fun createProfileText(): TextField {
-        // style
-        val textFieldStyle = TextFieldStyle()
-        textFieldStyle.font = menuFont
-        textFieldStyle.fontColor = Color.BLACK
-        val texture = resourceManager.getTextureAsset(SPRITE_BORDER)
-        val ninepatch = NinePatch(texture, 1, 1, 1, 1)
-        textFieldStyle.background = NinePatchDrawable(ninepatch)
-
-        // actor
-        val textField = TextField("", textFieldStyle)
-        textField.isDisabled = true
-        textField.maxLength = PROFILE_INPUT_LENGTH
-        textField.alignment = Align.center
-        return textField
+        val textFieldStyle = TextFieldStyle().apply {
+            font = menuFont
+            fontColor = Color.BLACK
+            background = Utils.createFullBorder()
+        }
+        return TextField("", textFieldStyle).apply {
+            isDisabled = true
+            maxLength = PROFILE_INPUT_LENGTH
+            alignment = Align.center
+        }
     }
 
     private fun applyListeners() {

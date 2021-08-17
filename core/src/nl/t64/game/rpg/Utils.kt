@@ -5,14 +5,18 @@ import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.controllers.Controllers
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.NinePatch
+import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.Window
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.ScreenUtils
 import com.fasterxml.jackson.core.type.TypeReference
@@ -24,10 +28,13 @@ import nl.t64.game.rpg.screens.world.MapManager
 
 
 private const val TITLE_PADDING = 50f
-private const val TITLE_FONT = "fonts/fff_tusj.ttf"
+private const val TITLE_FONT = "fonts/fff_tusj_bold_30.ttf"
 private const val TITLE_SIZE = 30
 private const val SPRITE_BORDER = "sprites/border.png"
-private const val SPRITE_TOP_BORDER = "sprites/top_border.png"
+private const val SPRITE_BORDER_TOP = "sprites/border_top.png"
+private const val SPRITE_BORDER_RIGHT = "sprites/border_right.png"
+private const val SPRITE_TOOLTIP = "sprites/tooltip.png"
+private const val SPRITE_TOOLTIP_RIGHT = "sprites/tooltip_right.png"
 private const val CHAR_PATH = "sprites/characters/%s.png"
 private const val FACE_PATH = "sprites/faces/%s.png"
 private const val DOOR_PATH = "sprites/objects/%s.png"
@@ -75,27 +82,58 @@ object Utils {
     }
 
     fun createDefaultWindow(title: String, table: Table): Window {
-        val window = Window(title, createDefaultWindowStyle())
-        window.add(table)
-        window.padTop(TITLE_PADDING)
-        window.titleLabel.setAlignment(Align.left)
-        window.isMovable = false
-        window.pack()
-        return window
+        val font = resourceManager.getTrueTypeAsset(TITLE_FONT, TITLE_SIZE)
+        val windowStyle = WindowStyle(font, Color.BLACK, createFullBorder())
+        return Window(title, windowStyle).apply {
+            add(table)
+            padTop(TITLE_PADDING)
+            titleLabel.setAlignment(Align.left)
+            isMovable = false
+            pack()
+        }
     }
 
-    private fun createDefaultWindowStyle(): WindowStyle {
+    fun createParchmentDialog(font: BitmapFont): Dialog {
+        val parchment = Sprite(resourceManager.getTextureAsset(SPRITE_PARCHMENT))
+        val windowStyle = WindowStyle(font, Color.BLACK, SpriteDrawable(parchment))
+        return Dialog("", windowStyle).apply {
+            titleLabel.setAlignment(Align.center)
+            setKeepWithinStage(true)
+            isModal = true
+            isMovable = false
+            isResizable = false
+        }
+    }
+
+    fun createFullBorder(): Drawable {
         val texture = resourceManager.getTextureAsset(SPRITE_BORDER)
         val ninepatch = NinePatch(texture, 1, 1, 1, 1)
-        val drawable = NinePatchDrawable(ninepatch)
-        val font = resourceManager.getTrueTypeAsset(TITLE_FONT, TITLE_SIZE)
-        return WindowStyle(font, Color.BLACK, drawable)
+        return NinePatchDrawable(ninepatch)
     }
 
     fun createTopBorder(): Drawable {
-        val texture = resourceManager.getTextureAsset(SPRITE_TOP_BORDER)
+        val texture = resourceManager.getTextureAsset(SPRITE_BORDER_TOP)
         val ninepatch = NinePatch(texture, 0, 0, 1, 0)
         return NinePatchDrawable(ninepatch)
+    }
+
+    fun createRightBorder(): Drawable {
+        val texture = resourceManager.getTextureAsset(SPRITE_BORDER_RIGHT)
+        val ninepatch = NinePatch(texture, 0, 1, 0, 0)
+        return NinePatchDrawable(ninepatch)
+    }
+
+    fun createTooltipRightBorder(): Drawable {
+        val texture = resourceManager.getTextureAsset(SPRITE_TOOLTIP_RIGHT)
+        val ninepatch = NinePatch(texture, 0, 1, 0, 0)
+        return NinePatchDrawable(ninepatch)
+    }
+
+    fun createTooltipWindowStyle(): WindowStyle {
+        val texture = resourceManager.getTextureAsset(SPRITE_TOOLTIP)
+        val ninepatch = NinePatch(texture, 1, 1, 1, 1)
+        val drawable = NinePatchDrawable(ninepatch)
+        return WindowStyle(BitmapFont(), Color.GREEN, drawable)
     }
 
     fun createLightmap(lightmapId: String): Texture {
