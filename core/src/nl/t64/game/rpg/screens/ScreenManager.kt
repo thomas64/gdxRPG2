@@ -31,7 +31,7 @@ class ScreenManager {
         return screenCache[screenType]!!
     }
 
-    fun getCurrentScreenToLoad(): ScreenToLoad = currentScreen as ScreenToLoad
+    fun getCurrentParchmentScreen(): ParchmentScreen = currentScreen as ParchmentScreen
 
     fun setScreen(screenType: ScreenType) {
         ifNotInScreenCacheAdd(screenType)

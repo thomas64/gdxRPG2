@@ -14,7 +14,7 @@ internal class QuestLogScreenListener(
         when (keycode) {
             Constant.KEYCODE_RIGHT,
             Input.Keys.L,
-            Input.Keys.ESCAPE -> closeScreenFunction.invoke();
+            Input.Keys.ESCAPE -> closeScreenFunction.invoke()
         }
         return true
     }

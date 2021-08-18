@@ -36,10 +36,10 @@ internal class EquipSlot(
     }
 
     override fun addToStack(actor: Actor) {
-        super.add(actor);
+        super.add(actor)
         if (actor is InventoryImage) {
-            heroItem.forceSetInventoryItemFor(filterGroup, actor.inventoryItem);
-            refreshSlot();
+            heroItem.forceSetInventoryItemFor(filterGroup, actor.inventoryItem)
+            refreshSlot()
         }
     }
 

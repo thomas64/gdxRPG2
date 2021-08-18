@@ -13,14 +13,14 @@ import nl.t64.game.rpg.audio.AudioCommand
 import nl.t64.game.rpg.audio.AudioEvent
 import nl.t64.game.rpg.components.party.inventory.InventoryDatabase
 import nl.t64.game.rpg.constants.ScreenType
-import nl.t64.game.rpg.screens.ScreenToLoad
+import nl.t64.game.rpg.screens.ParchmentScreen
 import nl.t64.game.rpg.screens.ScreenUI
 import nl.t64.game.rpg.screens.inventory.messagedialog.MessageDialog
 import nl.t64.game.rpg.screens.world.conversation.ConversationDialog
 import nl.t64.game.rpg.screens.world.conversation.ConversationObserver
 
 
-class InventoryScreen : ScreenToLoad(), ConversationObserver {
+class InventoryScreen : ParchmentScreen(), ConversationObserver {
 
     private val conversationDialog: ConversationDialog = ConversationDialog()
     private lateinit var inventoryUI: InventoryUI

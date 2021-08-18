@@ -44,6 +44,6 @@ object InventoryUtils {
         parent.titleLabel.style.fontColor = Constant.DARK_RED
     }
 
-    fun getScreenUI(): ScreenUI = screenManager.getCurrentScreenToLoad().getScreenUI()
+    fun getScreenUI(): ScreenUI = screenManager.getCurrentParchmentScreen().getScreenUI()
 
 }

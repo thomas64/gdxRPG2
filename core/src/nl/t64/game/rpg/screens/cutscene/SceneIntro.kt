@@ -48,7 +48,7 @@ class SceneIntro : CutsceneScreen() {
 
                     Honeywood Village
 
-                    582 AD""".trimIndent());
+                    582 AD""".trimIndent())
                 title.setPosition(camera.position.x - (title.width / 2f), camera.position.y)
                 door1.setPosition(528f, 1344f)
                 mozes.setPosition(528f, 1344f)

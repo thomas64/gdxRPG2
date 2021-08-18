@@ -39,9 +39,9 @@ class LoadScreen : Screen {
     }
 
     private fun setScreenThatJustLoaded() {
-        val screenToLoad = screenManager.getScreen(screenTypeToLoad) as ScreenToLoad
-        screenToLoad.setBackground((stage.actors[0] as Image),
-                                   (stage.actors[1] as Image))
+        val parchmentScreen = screenManager.getScreen(screenTypeToLoad) as ParchmentScreen
+        parchmentScreen.setBackground((stage.actors[0] as Image),
+                                      (stage.actors[1] as Image))
         screenManager.setScreen(screenTypeToLoad)
     }
 

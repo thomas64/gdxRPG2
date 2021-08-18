@@ -8,10 +8,10 @@ import nl.t64.game.rpg.Utils.audioManager
 import nl.t64.game.rpg.audio.AudioCommand
 import nl.t64.game.rpg.audio.AudioEvent
 import nl.t64.game.rpg.components.loot.Loot
-import nl.t64.game.rpg.screens.ScreenToLoad
+import nl.t64.game.rpg.screens.ParchmentScreen
 
 
-abstract class LootScreen : ScreenToLoad() {
+abstract class LootScreen : ParchmentScreen() {
 
     lateinit var loot: Loot
     lateinit var lootTitle: String

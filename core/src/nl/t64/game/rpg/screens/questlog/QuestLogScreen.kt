@@ -12,7 +12,7 @@ import nl.t64.game.rpg.Utils.screenManager
 import nl.t64.game.rpg.audio.AudioCommand
 import nl.t64.game.rpg.audio.AudioEvent
 import nl.t64.game.rpg.constants.ScreenType
-import nl.t64.game.rpg.screens.ScreenToLoad
+import nl.t64.game.rpg.screens.ParchmentScreen
 
 
 private const val QUESTS_WINDOW_POSITION_X = 63f
@@ -23,7 +23,7 @@ private const val TASKS_WINDOW_POSITION_X = 18f
 private const val TASKS_WINDOW_POSITION_Y = 50f
 private const val LABEL_PADDING_BOTTOM = 26f
 
-class QuestLogScreen : ScreenToLoad() {
+class QuestLogScreen : ParchmentScreen() {
 
     companion object {
         fun load() {

@@ -9,12 +9,12 @@ import nl.t64.game.rpg.Utils.screenManager
 import nl.t64.game.rpg.audio.AudioCommand
 import nl.t64.game.rpg.audio.AudioEvent
 import nl.t64.game.rpg.constants.ScreenType
-import nl.t64.game.rpg.screens.ScreenToLoad
+import nl.t64.game.rpg.screens.ParchmentScreen
 import nl.t64.game.rpg.screens.ScreenUI
 import nl.t64.game.rpg.screens.inventory.InventoryUtils
 
 
-class ShopScreen : ScreenToLoad() {
+class ShopScreen : ParchmentScreen() {
 
     private lateinit var shopUI: ShopUI
     private lateinit var npcId: String

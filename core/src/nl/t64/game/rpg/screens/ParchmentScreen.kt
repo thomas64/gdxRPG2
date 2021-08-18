@@ -9,7 +9,7 @@ import nl.t64.game.rpg.constants.Constant
 import nl.t64.game.rpg.constants.ScreenType
 
 
-abstract class ScreenToLoad : Screen {
+abstract class ParchmentScreen : Screen {
 
     protected val stage: Stage = Stage()
 

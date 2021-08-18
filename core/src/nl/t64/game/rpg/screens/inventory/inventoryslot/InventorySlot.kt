@@ -38,7 +38,7 @@ open class InventorySlot(
             inventory.forceSetItemAt(index, actor.inventoryItem)
             refreshSlot()
         } else {
-            super.add(actor);
+            super.add(actor)
         }
     }
 
