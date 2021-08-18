@@ -181,7 +181,7 @@ object Utils {
         return getSplitTexture(texturePath, size, size)
     }
 
-    private fun getSplitTexture(texturePath: String, width: Int, height: Int): Array<Array<TextureRegion>> {
+    fun getSplitTexture(texturePath: String, width: Int, height: Int): Array<Array<TextureRegion>> {
         val completeTexture = resourceManager.getTextureAsset(texturePath)
         return TextureRegion.split(completeTexture, width, height)
     }

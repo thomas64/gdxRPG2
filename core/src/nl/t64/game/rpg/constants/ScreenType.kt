@@ -3,6 +3,7 @@ package nl.t64.game.rpg.constants
 import com.badlogic.gdx.Screen
 import nl.t64.game.rpg.screens.LoadScreen
 import nl.t64.game.rpg.screens.battle.BattleScreen
+import nl.t64.game.rpg.screens.cutscene.SceneDeath
 import nl.t64.game.rpg.screens.cutscene.SceneIntro
 import nl.t64.game.rpg.screens.inventory.InventoryScreen
 import nl.t64.game.rpg.screens.loot.FindScreen
@@ -35,6 +36,7 @@ enum class ScreenType(val screenClass: Class<out Screen>) {
     RECEIVE(ReceiveScreen::class.java),
     SPOILS(SpoilsScreen::class.java),
 
-    SCENE_INTRO(SceneIntro::class.java);
+    SCENE_INTRO(SceneIntro::class.java),
+    SCENE_DEATH(SceneDeath::class.java);
 
 }

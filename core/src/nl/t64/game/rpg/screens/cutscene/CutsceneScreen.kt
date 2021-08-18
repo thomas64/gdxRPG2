@@ -76,7 +76,7 @@ abstract class CutsceneScreen : Screen, ConversationObserver {
         actorsStage.clear()
         Gdx.input.inputProcessor = actorsStage
         Utils.setGamepadInputProcessor(actorsStage)
-        actorsStage.addListener(CutSceneListener({ exitScreen() }))
+        actorsStage.addListener(CutSceneListener { exitScreen() })
 
         prepare()
         actorsStage.addAction(actions[actionId])
@@ -139,17 +139,21 @@ abstract class CutsceneScreen : Screen, ConversationObserver {
 
     abstract fun exitScreen()
 
-    fun getLastAction(mapTitle: String, cutsceneId: String): Action {
+    fun endCutsceneAndOpenMap(mapTitle: String, cutsceneId: String) {
+        endCutsceneAnd {
+            mapManager.loadMapAfterCutscene(mapTitle, cutsceneId)
+            screenManager.setScreen(ScreenType.WORLD)
+        }
+    }
+
+    fun endCutsceneAnd(actionAfter: () -> Unit) {
         conversationDialog.conversationObservers.removeObserver(this)
         Gdx.input.inputProcessor = null
         Utils.setGamepadInputProcessor(null)
-        return Actions.sequence(
+        actorsStage.addAction(Actions.sequence(
             if (title.isVisible) fadeFromTitle() else fadeFromMap(),
-            Actions.run {
-                mapManager.loadMapAfterCutscene(mapTitle, cutsceneId)
-                screenManager.setScreen(ScreenType.WORLD)
-            }
-        )
+            Actions.run { actionAfter() }
+        ))
     }
 
     private fun fadeFromTitle(): Action {

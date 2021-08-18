@@ -18,10 +18,10 @@ class CutsceneActor : Image {
     var entityState: EntityState
     var direction: Direction
 
-    private constructor(entity: Entity, entityState: EntityState, direction: Direction) {
+    private constructor(entity: Entity, direction: Direction) {
         this.stateTime = Constant.NO_FRAMES
         this.entity = entity
-        this.entityState = entityState
+        this.entityState = EntityState.IDLE
         this.direction = direction
         this.entity.send(StateEvent(this.entityState))
         this.entity.send(DirectionEvent(this.direction))
@@ -51,13 +51,18 @@ class CutsceneActor : Image {
     companion object {
         fun createCharacter(characterId: String): CutsceneActor {
             val entity = Entity(characterId, InputEmpty(), PhysicsNpc(), GraphicsNpc(characterId))
-            return CutsceneActor(entity, EntityState.IDLE, Direction.SOUTH)
+            return CutsceneActor(entity, Direction.SOUTH)
         }
 
         fun createDoor(doorId: String): CutsceneActor {
             val door = gameData.doors.getDoor(doorId)
             val entity = Entity(doorId, InputEmpty(), PhysicsDoor(door), GraphicsDoor(door))
             return CutsceneActor(entity, EntityState.IDLE)
+        }
+
+        fun createFlame(): CutsceneActor {
+            val entity = Entity("flame", InputEmpty(), PhysicsEmpty(), GraphicsFlame())
+            return CutsceneActor(entity, EntityState.WALKING)
         }
     }
 

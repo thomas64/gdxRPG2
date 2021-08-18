@@ -397,7 +397,7 @@ class SceneIntro : CutsceneScreen() {
     }
 
     override fun exitScreen() {
-        actorsStage.addAction(getLastAction("honeywood_forest_path", "scene_intro"))
+        endCutsceneAndOpenMap("honeywood_forest_path", "scene_intro")
     }
 
 }

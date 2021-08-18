@@ -104,7 +104,6 @@ class BattleScreen : Screen {
     }
 
     private fun winBattle() {
-        stage.removeListener(listener)
         gameData.battles.setBattleWon(battleId)
 
         val levelUpMessage = StringBuilder()
@@ -121,17 +120,10 @@ class BattleScreen : Screen {
     }
 
     private fun battleWonExitScreen(levelUpMessage: String?) {
-        stage.addAction(Actions.sequence(
-            Actions.run {
-                Gdx.input.inputProcessor = null
-                Utils.setGamepadInputProcessor(null)
-            },
-            Actions.fadeOut(Constant.FADE_DURATION),
-            Actions.run {
-                screenManager.setScreen(ScreenType.WORLD)
-                brokerManager.battleObservers.notifyBattleWon(battleId, enemies.getSpoils(), levelUpMessage)
-            }
-        ))
+        exitScreen {
+            screenManager.setScreen(ScreenType.WORLD)
+            brokerManager.battleObservers.notifyBattleWon(battleId, enemies.getSpoils(), levelUpMessage)
+        }
     }
 
     private fun fleeBattle() {
@@ -145,18 +137,11 @@ class BattleScreen : Screen {
     }
 
     private fun battleFledExitScreen() {
-        stage.addAction(Actions.sequence(
-            Actions.run {
-                Gdx.input.inputProcessor = null
-                Utils.setGamepadInputProcessor(null)
-            },
-            Actions.fadeOut(Constant.FADE_DURATION),
-            Actions.run {
-                val mapTitle = profileManager.getLastSaveLocation()
-                mapManager.loadMapAfterFleeing(mapTitle)
-                screenManager.setScreen(ScreenType.WORLD)
-            }
-        ))
+        exitScreen {
+            val mapTitle = profileManager.getLastSaveLocation()
+            mapManager.loadMapAfterFleeing(mapTitle)
+            screenManager.setScreen(ScreenType.WORLD)
+        }
     }
 
     private fun killHero(index: Int) {
@@ -168,15 +153,40 @@ class BattleScreen : Screen {
     }
 
     private fun gameOver() {
-        TODO("cutscene met vuur enzo")
+        val message = """
+            Mozes took a fatal blow.
+            
+                       Game Over.""".trimIndent()
+        val messageDialog = MessageDialog(message)
+        messageDialog.setActionAfterHide { gameOverExitScreen() }
+        messageDialog.show(stage, AudioEvent.SE_CONVERSATION_NEXT)
+    }
+
+    private fun gameOverExitScreen() {
+        exitScreen {
+            screenManager.setScreen(ScreenType.SCENE_DEATH)
+        }
     }
 
     private fun killPartyMember(index: Int) {
-        audioManager.handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_CONVERSATION_NEXT)
-        gameData.party.getHero(index - 1).takeDamage(1000)
-        val heroTable = stage.actors[1] as Table
-        val heroFace = heroTable.cells[(index * 3) - 2].actor as Image
-        heroFace.color = Color.DARK_GRAY
+        if (gameData.party.contains(index - 1)) {
+            audioManager.handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_CONVERSATION_NEXT)
+            gameData.party.getHero(index - 1).takeDamage(1000)
+            val heroTable = stage.actors[1] as Table
+            val heroFace = heroTable.cells[(index * 3) - 2].actor as Image
+            heroFace.color = Color.DARK_GRAY
+        }
+    }
+
+    private fun exitScreen(actionAfterExit: () -> Unit) {
+        stage.addAction(Actions.sequence(
+            Actions.run {
+                Gdx.input.inputProcessor = null
+                Utils.setGamepadInputProcessor(null)
+            },
+            Actions.fadeOut(Constant.FADE_DURATION),
+            Actions.run { actionAfterExit.invoke() }
+        ))
     }
 
 }

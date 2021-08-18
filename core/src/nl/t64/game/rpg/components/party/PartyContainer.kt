@@ -78,6 +78,10 @@ class PartyContainer {
         return party.containsKey(heroId)
     }
 
+    fun contains(index: Int): Boolean {
+        return index <= party.size - 1
+    }
+
     fun getHero(index: Int): HeroItem {
         return getAllHeroes()[index]
     }

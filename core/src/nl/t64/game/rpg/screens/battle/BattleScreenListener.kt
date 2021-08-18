@@ -3,6 +3,7 @@ package nl.t64.game.rpg.screens.battle
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog
 
 
 internal class BattleScreenListener(
@@ -12,6 +13,8 @@ internal class BattleScreenListener(
 ) : InputListener() {
 
     override fun keyDown(event: InputEvent, keycode: Int): Boolean {
+        if (event.stage.actors.items.any { it is Dialog }) return true
+
         when (keycode) {
             Input.Keys.W -> winBattle.invoke()
             Input.Keys.F -> fleeBattle.invoke()

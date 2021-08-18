@@ -21,6 +21,7 @@ enum class AudioEvent(val filePath: String, val volume: Float = 1f) {
     BGS_SPRING_FLOW("audio/bgs/spring_flow.ogg"),
     BGS_CROWS("audio/bgs/crows.ogg"),
     BGS_RIVER("audio/bgs/fsm_river.ogg"),
+    BGS_QUAKE("audio/bgs/quake.ogg"),
 
     SE_MENU_CURSOR("audio/se/botw_menu_cursor.wav"),
     SE_MENU_CONFIRM("audio/se/botw_menu_confirm.wav"),
@@ -50,8 +51,8 @@ enum class AudioEvent(val filePath: String, val volume: Float = 1f) {
     SE_SMALL_DOOR("audio/se/fsm_small_door.ogg", 0.2f),
     SE_LARGE_DOOR("audio/se/fsm_large_door.ogg", 0.2f),
     SE_BANG("audio/se/whooshes_impacts2_whooshes_032.ogg", 0.4f),
-
     SE_FIGHT_ON("audio/se/fight_on.ogg", 0.2f),
+    SE_DEATH_SCREAM("audio/se/death_7_ian.ogg"),
 
     SE_STEP_CARPET1("audio/se/footsteps/oot_step_carpet1.ogg"),
     SE_STEP_CARPET2("audio/se/footsteps/oot_step_carpet2.ogg"),
