@@ -9,10 +9,12 @@ import ktx.tiled.property
 import nl.t64.game.rpg.ProfileManager
 import nl.t64.game.rpg.Utils.audioManager
 import nl.t64.game.rpg.Utils.brokerManager
+import nl.t64.game.rpg.Utils.gameData
 import nl.t64.game.rpg.Utils.resourceManager
 import nl.t64.game.rpg.audio.AudioCommand
 import nl.t64.game.rpg.audio.AudioEvent
 import nl.t64.game.rpg.audio.toAudioEvent
+import nl.t64.game.rpg.components.cutscene.CutsceneId
 import nl.t64.game.rpg.constants.Constant
 import nl.t64.game.rpg.screens.world.entity.Direction
 import nl.t64.game.rpg.screens.world.mapobjects.*
@@ -37,7 +39,7 @@ class MapManager : ProfileObserver {
 
     override fun onNotifyCreateProfile(profileManager: ProfileManager) {
         fogOfWar = FogOfWar()
-        loadMapWithBgmBgs(Constant.STARTING_MAP)
+        loadMap(Constant.STARTING_MAP)
         currentMap.setPlayerSpawnLocationForNewLoad(Constant.STARTING_MAP)
         onNotifySaveProfile(profileManager)
         brokerManager.mapObservers.notifyMapChanged(currentMap)
@@ -51,7 +53,11 @@ class MapManager : ProfileObserver {
     override fun onNotifyLoadProfile(profileManager: ProfileManager) {
         val mapTitle = profileManager.getProperty<String>("mapTitle")
         fogOfWar = profileManager.getProperty("fogOfWar")
-        loadMapWithBgmBgs(mapTitle)
+        if (gameData.cutscenes.isPlayed(CutsceneId.SCENE_INTRO)) {
+            loadMapWithBgmBgs(mapTitle)
+        } else {
+            loadMap(mapTitle)
+        }
         currentMap.setPlayerSpawnLocationForNewLoad(mapTitle)
         brokerManager.mapObservers.notifyMapChanged(currentMap)
     }

@@ -14,9 +14,9 @@ import nl.t64.game.rpg.screens.world.entity.events.LoadEntityEvent
 private const val SPARKLE_PATH = "sprites/objects/sparkle.png"
 private const val ANIMATION_LENGTH = 35
 
-class GraphicsSparkle : GraphicsComponent() {
+class GraphicsSparkle(animationType: AnimationType) : GraphicsComponent() {
 
-    private val sparkleAnimation: Animation<TextureRegion> = createAnimation()
+    private val sparkleAnimation: Animation<TextureRegion> = createAnimation(animationType)
 
     override fun receive(event: Event) {
         if (event is LoadEntityEvent) {
@@ -41,7 +41,15 @@ class GraphicsSparkle : GraphicsComponent() {
         currentFrame = sparkleAnimation.getKeyFrame(frameTime)
     }
 
-    private fun createAnimation(): Animation<TextureRegion> {
+    private fun createAnimation(animationType: AnimationType): Animation<TextureRegion> {
+        return when (animationType) {
+            AnimationType.LONG -> createLongAnimation()
+            AnimationType.SHORT -> createShortAnimation()
+            AnimationType.NONE -> createNoAnimation()
+        }
+    }
+
+    private fun createLongAnimation(): Animation<TextureRegion> {
         val textures = Utils.getSplitTexture(SPARKLE_PATH, Constant.TILE_SIZE.toInt())
 
         val frames = Array<TextureRegion>(ANIMATION_LENGTH)
@@ -52,6 +60,22 @@ class GraphicsSparkle : GraphicsComponent() {
         frames.add(textures[3][1])
         frames.add(textures[3][2])
         return Animation(Constant.FAST_FRAMES, frames, Animation.PlayMode.LOOP)
+    }
+
+    private fun createShortAnimation(): Animation<TextureRegion> {
+        val textures = Utils.getSplitTexture(SPARKLE_PATH, Constant.TILE_SIZE.toInt())
+        val frames = Array(arrayOf(textures[4][0],
+                                   textures[3][2],
+                                   textures[3][1],
+                                   textures[0][1],
+                                   textures[3][1],
+                                   textures[3][2]))
+        return Animation(Constant.FAST_FRAMES, frames, Animation.PlayMode.LOOP)
+    }
+
+    private fun createNoAnimation(): Animation<TextureRegion> {
+        val textures = Utils.getSplitTexture(SPARKLE_PATH, Constant.TILE_SIZE.toInt())
+        return Animation(Constant.NO_FRAMES, textures[4][0])
     }
 
 }

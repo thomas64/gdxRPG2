@@ -1,18 +1,11 @@
 {
   "battle0001": {
-    "battlers": [
-      {
-        "id"    : "green_slime",
-        "amount": 1
-      }
-    ]
+    "battlers": [{"id": "green_slime", "amount": 1}]
   },
   "battle0002": {
-    "battlers": [
-      {
-        "id"    : "green_slime",
-        "amount": 1
-      }
-    ]
+    "battlers": [{"id": "green_slime", "amount": 1}]
+  },
+  "battle0003": {
+    "battlers": [{"id": "green_slime", "amount": 1}]
   }
 }

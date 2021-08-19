@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="44" height="70" tilewidth="24" tileheight="24" infinite="0" nextlayerid="25" nextobjectid="75">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="44" height="70" tilewidth="24" tileheight="24" infinite="0" nextlayerid="25" nextobjectid="77">
  <properties>
   <property name="bgm" value="bgm_forest"/>
   <property name="bgs" value="bgs_birds, bgs_creek"/>
@@ -102,19 +102,29 @@
     <property name="battleId" value="battle0001"/>
    </properties>
   </object>
+  <object id="75" name="green_slime" type="w" x="576" y="264" width="48" height="24">
+   <properties>
+    <property name="battleId" value="battle0002"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup color="#55ff7f" id="16" name="npc"/>
  <objectgroup color="#55aaff" id="12" name="spawn">
-  <object id="29" name="starter_area" x="576" y="24" width="48" height="24"/>
+  <object id="29" name="honeywood_forest_cave" x="576" y="24" width="48" height="24"/>
   <object id="32" name="honeywood" x="480" y="1656" width="48" height="24"/>
   <object id="66" name="scene_intro" x="480" y="1596" width="48" height="24">
    <properties>
     <property name="direction" value="south"/>
    </properties>
   </object>
+  <object id="76" name="honeywood_forest_path" x="480" y="1536" width="48" height="24">
+   <properties>
+    <property name="direction" value="north"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup color="#ffff7f" id="13" name="portal">
-  <object id="30" name="starter_area" x="552" y="-24" width="96" height="24"/>
+  <object id="30" name="honeywood_forest_cave" x="552" y="-24" width="96" height="24"/>
   <object id="31" name="honeywood" x="456" y="1680" width="96" height="24"/>
  </objectgroup>
  <objectgroup color="#ffaa7f" id="14" name="save"/>
@@ -195,6 +205,6 @@
  <objectgroup color="#ff55ff" id="23" name="event">
   <object id="69" name="guide_event_action" type="discover" x="432" y="1464" width="144" height="24"/>
   <object id="70" name="guide_event_inventory" type="discover" x="432" y="1344" width="144" height="24"/>
-  <object id="71" name="guide_event_slow" type="discover" x="384" y="1128" width="192" height="24"/>
+  <object id="71" name="guide_event_enemy" type="discover" x="432" y="1032" width="48" height="24"/>
  </objectgroup>
 </map>

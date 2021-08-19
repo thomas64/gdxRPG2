@@ -8,6 +8,7 @@ import nl.t64.game.rpg.components.loot.Loot
 import nl.t64.game.rpg.components.loot.Spoil
 import nl.t64.game.rpg.screens.world.entity.*
 import nl.t64.game.rpg.screens.world.entity.events.LoadEntityEvent
+import nl.t64.game.rpg.screens.world.mapobjects.GameMapSparkle
 
 
 class LootLoader(private val currentMap: GameMap) {
@@ -44,15 +45,15 @@ class LootLoader(private val currentMap: GameMap) {
     }
 
     private fun loadSpoil(spoil: Map.Entry<String, Spoil>) {
-        val entity = Entity(spoil.key, InputEmpty(), PhysicsSparkle(spoil.value.loot), GraphicsSparkle())
+        val entity = Entity(spoil.key, InputEmpty(), PhysicsSparkle(spoil.value.loot), GraphicsSparkle(AnimationType.SHORT))
         lootList.add(entity)
         brokerManager.actionObservers.addObserver(entity)
         val position = Vector2(spoil.value.x, spoil.value.y)
         entity.send(LoadEntityEvent(position))
     }
 
-    private fun loadSparkle(gameMapSparkle: RectangleMapObject, sparkle: Loot) {
-        val entity = Entity(gameMapSparkle.name, InputEmpty(), PhysicsSparkle(sparkle), GraphicsSparkle())
+    private fun loadSparkle(gameMapSparkle: GameMapSparkle, sparkle: Loot) {
+        val entity = Entity(gameMapSparkle.name, InputEmpty(), PhysicsSparkle(sparkle), GraphicsSparkle(gameMapSparkle.animationType))
         lootList.add(entity)
         brokerManager.actionObservers.addObserver(entity)
         val position = Vector2(gameMapSparkle.rectangle.x, gameMapSparkle.rectangle.y)

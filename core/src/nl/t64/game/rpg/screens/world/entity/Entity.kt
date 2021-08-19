@@ -88,6 +88,7 @@ class Entity(
     val position: Vector2 get() = physicsComponent.currentPosition
     val direction: Direction get() = physicsComponent.direction
     val state: EntityState get() = physicsComponent.state
+    val moveSpeed: Float get() = physicsComponent.velocity
 
     fun getConversationId(): String =
         (physicsComponent as PhysicsNpc).conversationId

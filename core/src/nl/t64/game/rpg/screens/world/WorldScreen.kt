@@ -155,11 +155,13 @@ class WorldScreen : Screen,
     }
 
     override fun onNotifyShowBattleScreen(battleId: String, enemyEntity: Entity) {
-        currentNpcEntity = enemyEntity
-        mapManager.prepareForBattle()
-        gameState = GameState.BATTLE
-        doBeforeLoadScreen()
-        fadeOut({ BattleScreen.load(battleId) }, Color.BLACK)
+        if (player.moveSpeed != Constant.MOVE_SPEED_4) {
+            currentNpcEntity = enemyEntity
+            mapManager.prepareForBattle()
+            gameState = GameState.BATTLE
+            doBeforeLoadScreen()
+            fadeOut({ BattleScreen.load(battleId) }, Color.BLACK)
+        }
     }
 
     // PartyObserver ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -240,7 +242,7 @@ class WorldScreen : Screen,
         partyMembers = PartyMembersLoader(player).loadPartyMembers()
         if (!spoils.isTaken()) {
             gameData.spoils.addSpoil(battleId, Spoil(mapManager.currentMap.mapTitle,
-                                                     currentNpcEntity.position.x, currentNpcEntity.position.y, spoils))
+                                                     player.position.x, player.position.y, spoils))
             lootList = LootLoader(mapManager.currentMap).createLoot()
             doBeforeLoadScreen()
             SpoilsScreen.load(spoils, levelUpMessage)

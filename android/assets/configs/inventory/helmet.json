@@ -185,5 +185,15 @@
     "stealth"      : 0,
     "wizard"       : 1,
     "spell_battery": 10
+  },
+  "grace_ribbon"            : {
+    "name"      : "Grace's Ribbon",
+    "group"     : "HELMET",
+    "sort"      : 60010,
+    "price"     : 1,
+    "weight"    : 0,
+    "protection": 0,
+    "agility"   : 0,
+    "stealth"   : -1
   }
 }

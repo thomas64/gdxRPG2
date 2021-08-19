@@ -79,12 +79,12 @@ class AudioManager {
         when (command) {
             AudioCommand.BGM_PLAY_ONCE -> playBgm(event.filePath, false)
             AudioCommand.BGM_PLAY_LOOP -> playBgm(event.filePath, true)
-            AudioCommand.BGM_STOP -> queuedBgm[event.filePath]!!.stop()
+            AudioCommand.BGM_STOP -> queuedBgm[event.filePath]?.stop()
             AudioCommand.BGM_PAUSE -> queuedBgm[event.filePath]!!.pause()
 
             AudioCommand.BGS_PLAY_ONCE -> playBgs(event.filePath, false)
             AudioCommand.BGS_PLAY_LOOP -> playBgs(event.filePath, true)
-            AudioCommand.BGS_STOP -> queuedBgs[event.filePath]!!.stop()
+            AudioCommand.BGS_STOP -> queuedBgs[event.filePath]?.stop()
             AudioCommand.BGS_PAUSE -> queuedBgs[event.filePath]!!.pause()
 
             AudioCommand.ME_PLAY_ONCE -> playMe(event.filePath, false)

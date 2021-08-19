@@ -29,15 +29,15 @@ internal class GameMapLayerLoader(private val tiledMap: TiledMap) {
     }
 
     fun <T> loadLayer(layerName: String,
-                      mapper: (RectangleMapObject) -> (T)
+                      mapper: (RectangleMapObject) -> T
     ): List<T> {
         return loadLayer(layerName,
                          { true },
                          mapper)
     }
 
-    fun <T> startsWith(layerName:
-                       String, match: String
+    fun <T> startsWith(layerName: String,
+                       match: String
     ): List<T> {
         return loadLayer(layerName,
                          { it.name.startsWith(match) },
@@ -46,7 +46,7 @@ internal class GameMapLayerLoader(private val tiledMap: TiledMap) {
 
     fun <T> startsWith(layerName: String,
                        match: String,
-                       mapper: (RectangleMapObject) -> (T)
+                       mapper: (RectangleMapObject) -> T
     ): List<T> {
         return loadLayer(layerName,
                          { it.name.startsWith(match) },
@@ -55,7 +55,7 @@ internal class GameMapLayerLoader(private val tiledMap: TiledMap) {
 
     fun <T> equalsIgnoreCase(layerName: String,
                              match: String,
-                             mapper: (RectangleMapObject) -> (T)
+                             mapper: (RectangleMapObject) -> T
     ): List<T> {
         return loadLayer(layerName,
                          { it.type.equals(match, true) },
@@ -63,15 +63,15 @@ internal class GameMapLayerLoader(private val tiledMap: TiledMap) {
     }
 
     fun <T> loadLayer(layerName: String,
-                      filter: (RectangleMapObject) -> (Boolean),
-                      mapper: (RectangleMapObject) -> (T)
+                      filter: (RectangleMapObject) -> Boolean,
+                      mapper: (RectangleMapObject) -> T
     ): List<T> {
         return getMapLayer(layerName)?.let { createRectObjectsList(it, filter, mapper) } ?: emptyList()
     }
 
     fun <T> loadTextureLayer(
         layerName: String,
-        mapper: (TextureMapObject) -> (T)
+        mapper: (TextureMapObject) -> T
     ): List<T> {
         return getMapLayer(layerName)?.let { createTextureObjectsList(it, mapper) } ?: emptyList()
     }
@@ -108,8 +108,8 @@ internal class GameMapLayerLoader(private val tiledMap: TiledMap) {
     }
 
     private fun <T> createRectObjectsList(mapLayer: MapLayer,
-                                          filter: (RectangleMapObject) -> (Boolean),
-                                          mapper: (RectangleMapObject) -> (T)
+                                          filter: (RectangleMapObject) -> Boolean,
+                                          mapper: (RectangleMapObject) -> T
     ): List<T> {
         return mapLayer.objects
             .map { it as RectangleMapObject }
@@ -118,7 +118,7 @@ internal class GameMapLayerLoader(private val tiledMap: TiledMap) {
     }
 
     private fun <T> createTextureObjectsList(mapLayer: MapLayer,
-                                             mapper: (TextureMapObject) -> (T)
+                                             mapper: (TextureMapObject) -> T
     ): List<T> {
         return mapLayer.objects
             .map { it as TextureMapObject }

@@ -63,7 +63,7 @@ class GameMap(val mapTitle: String) {
     val questBlockers: List<GameMapQuestBlocker> = loader.equalsIgnoreCase(QUEST_LAYER, "blocker") { GameMapQuestBlocker(it) }
     val upperTextures: List<GameMapQuestTexture> = loader.loadTextureLayer(UPPER_TEXTURE_LAYER) { GameMapQuestTexture(it) }
     val lowerTextures: List<GameMapQuestTexture> = loader.loadTextureLayer(LOWER_TEXTURE_LAYER) { GameMapQuestTexture(it) }
-    val sparkles: List<RectangleMapObject> = loader.startsWith(REST_LAYER, "sparkle")
+    val sparkles: List<GameMapSparkle> = loader.startsWith(REST_LAYER, "sparkle") { GameMapSparkle(it) }
     val chests: List<RectangleMapObject> = loader.startsWith(REST_LAYER, "chest")
     val doors: List<RectangleMapObject> = loader.startsWith(REST_LAYER, "door")
 
@@ -142,13 +142,13 @@ class GameMap(val mapTitle: String) {
 
         listOf(
             portals, spawnPoints, npcs, heroes, enemies, eventDiscovers, eventCheckers, cutsceneDiscovers,
-            questDiscovers, questCheckers, notes
+            questDiscovers, questCheckers, notes, sparkles
         )
             .flatten()
             .map { it.rectangle }
             .forEach { shapeRenderer.rect(it.x, it.y, it.width, it.height) }
 
-        listOf(sparkles, chests, doors)
+        listOf(chests, doors)
             .flatten()
             .map { it.rectangle }
             .forEach { shapeRenderer.rect(it.x, it.y, it.width, it.height) }
