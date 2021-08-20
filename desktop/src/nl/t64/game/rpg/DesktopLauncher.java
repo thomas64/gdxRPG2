@@ -13,6 +13,8 @@ public class DesktopLauncher {
         config.setTitle(Constant.TITLE);
         config.setWindowIcon("sprites/icon.png");
         config.setResizable(false);
+        config.setIdleFPS(60);
+        config.setForegroundFPS(60);
         config.setWindowedMode(Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGHT);
         config.setPreferencesConfig("T64.nl/", FileType.External);
 
