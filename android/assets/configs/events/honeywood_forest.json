@@ -1,4 +1,10 @@
 {
+  "fallen_tree"          : {
+    "type"          : "conversation",
+    "condition"     : ["quest_intro_not_finished"],
+    "conversationId": "fallen_tree",
+    "entityId"      : "mozes"
+  },
   "guide_event_action"   : {
     "type": "messagebox",
     "text": ["Press %action% for an action.", "To talk with a person or to open a chest or door."]
@@ -15,5 +21,11 @@
   "guide_event_slow"     : {
     "type": "messagebox",
     "text": ["Keep %slow% pressed to move stealthily.", "Enemies will detect you less easy.", "This way you can avoid battles."]
+  },
+  "found_grace_ribbon"   : {
+    "type"          : "conversation",
+    "condition"     : ["grace_ribbon"],
+    "conversationId": "found_grace_ribbon",
+    "entityId"      : "mozes"
   }
 }

@@ -41,6 +41,7 @@ Music Copyright Notice
 
 "Brave"
 "Cave"
+"Den"
 "Journey"
 "Quiet town"
 "Store"

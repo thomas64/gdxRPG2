@@ -1,4 +1,6 @@
 cutscene01.json
+honeywood_forest.json
+honeywood_cave.json
 default.json
 duilio01.json
 elias01.json

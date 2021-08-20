@@ -1,0 +1,14 @@
+{
+  "fallen_tree"       : {
+    "phrases": {
+      "1": {"text": ["The tree is blocking my path.", "I can't remove it like this."], "choices": [{"conversationCommand": "EXIT_CONVERSATION"}]}
+    }
+  },
+  "found_grace_ribbon": {
+    "phrases": {
+      "1": {"text": ["Oh no, what's this?"]},
+      "2": {"text": ["It's one of Grace's ribbons!", "So she has been here."]},
+      "3": {"text": ["But what is there to find here?"], "choices": [{"conversationCommand": "EXIT_CONVERSATION"}]}
+    }
+  }
+}

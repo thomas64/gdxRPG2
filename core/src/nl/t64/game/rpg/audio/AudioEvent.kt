@@ -14,6 +14,7 @@ enum class AudioEvent(val filePath: String, val volume: Float = 1f) {
     BGM_SECRET_CHAMBER("audio/bgm/woods.ogg"),
     BGM_MYSTERIOUS_TUNNEL("audio/bgm/cave.ogg"),
     BGM_TENSION("audio/bgm/volcano.ogg"),
+    BGM_CAVE("audio/bgm/den.ogg"),
 
     BGS_BIRDS("audio/bgs/birds.ogg"),
     BGS_CREEK("audio/bgs/creek.ogg"),

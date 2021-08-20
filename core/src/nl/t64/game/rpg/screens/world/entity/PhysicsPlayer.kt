@@ -57,8 +57,8 @@ class PhysicsPlayer : PhysicsComponent() {
             brokerManager.bumpObservers.notifyBump(getALittleBitBiggerBoundingBox(), getCheckRect(), currentPosition)
             if (state == EntityState.WALKING) {
                 collisionBlockers(dt)
-                brokerManager.collisionObservers.notifyCollision(boundingBox, direction)
             }
+            brokerManager.collisionObservers.notifyCollision(boundingBox, direction)
         }
     }
 

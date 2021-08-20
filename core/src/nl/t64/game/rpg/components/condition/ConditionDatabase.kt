@@ -8,10 +8,13 @@ import nl.t64.game.rpg.components.quest.QuestState
 object ConditionDatabase {
 
     private val conditions: Map<String, () -> Boolean> = mapOf(
+        Pair("quest_intro_not_finished") { questIntroNotFinished },
+        Pair("3_starting_potions") { startingPotions },
+        Pair("grace_ribbon") { graceRibbon },
+
         Pair("diplomat2") { diplomat2 },
         Pair("diplomat3") { diplomat3 },
         Pair("key_mysterious_tunnel") { keyMysteriousTunnel },
-        Pair("3_starting_potions") { startingPotions },
         Pair("quest4_known") { quest4Known },
         Pair("i_quest6_task3") { quest6Task3 },
         Pair("quest6_known") { quest6Known },
@@ -30,10 +33,13 @@ object ConditionDatabase {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    private val questIntroNotFinished get() = !isQuestTaskNumberComplete("quest_intro", 1)
+    private val startingPotions get() = hasEnoughOfItem("healing_potion", 3)
+    private val graceRibbon get() = hasEnoughOfItem("grace_ribbon", 1)
+
     private val diplomat2 get() = hasEnoughOfSkill(SkillItemId.DIPLOMAT, 2)
     private val diplomat3 get() = hasEnoughOfSkill(SkillItemId.DIPLOMAT, 3)
     private val keyMysteriousTunnel get() = hasEnoughOfItem("key_mysterious_tunnel", 1)
-    private val startingPotions get() = hasEnoughOfItem("healing_potion", 3)
     private val quest4Known get() = isQuestStateAtLeast("quest0004", QuestState.KNOWN)
     private val quest6Task3 get() = isQuestTaskNumberComplete("quest0006", 3)
     private val quest6Known get() = isQuestStateAtLeast("quest0006", QuestState.KNOWN)
