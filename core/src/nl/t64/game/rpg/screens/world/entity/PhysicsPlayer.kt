@@ -37,12 +37,12 @@ class PhysicsPlayer : PhysicsComponent() {
         }
     }
 
-    override fun update(player: Entity, dt: Float) {
+    override fun update(entity: Entity, dt: Float) {
         checkActionPressed()
         relocate(dt)
         collisionObstacles(dt)
         brokerManager.detectionObservers.notifyDetection(velocity)
-        player.send(PositionEvent(currentPosition))
+        entity.send(PositionEvent(currentPosition))
     }
 
     private fun checkActionPressed() {

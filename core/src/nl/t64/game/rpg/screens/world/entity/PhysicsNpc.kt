@@ -50,8 +50,8 @@ class PhysicsNpc : PhysicsComponent() {
         setBoundingBox()
     }
 
-    override fun update(thisNpcEntity: Entity, dt: Float) {
-        entity = thisNpcEntity
+    override fun update(entity: Entity, dt: Float) {
+        this.entity = entity
         relocate(dt)
         checkObstacles()
         entity.send(PositionEvent(currentPosition))

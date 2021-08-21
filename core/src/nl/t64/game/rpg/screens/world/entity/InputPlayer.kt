@@ -120,8 +120,8 @@ class InputPlayer(multiplexer: InputMultiplexer) : InputComponent(), InputProces
         return false
     }
 
-    override fun update(player: Entity, dt: Float) {
-        this.player = player
+    override fun update(entity: Entity, dt: Float) {
+        this.player = entity
         processMoveInput(dt)
         processOtherInput()
     }

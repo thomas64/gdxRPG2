@@ -50,8 +50,8 @@ class InputEnemy : InputComponent() {
         enemyEntity?.send(DetectionEvent(isDetectingPlayer))
     }
 
-    override fun update(enemyEntity: Entity, dt: Float) {
-        this.enemyEntity = enemyEntity
+    override fun update(entity: Entity, dt: Float) {
+        this.enemyEntity = entity
         if (path!!.count < MINIMUM_DETECTION_RANGE) {
             setIdleState()
         } else if (isDetectingPlayer) {
@@ -59,8 +59,8 @@ class InputEnemy : InputComponent() {
         } else {
             setWandering(dt)
         }
-        enemyEntity.send(StateEvent(state))
-        enemyEntity.send(DirectionEvent(direction))
+        entity.send(StateEvent(state))
+        entity.send(DirectionEvent(direction))
     }
 
     private fun setIdleState() {

@@ -23,8 +23,8 @@ class InputPartyMember : InputComponent() {
         }
     }
 
-    override fun update(partyMember: Entity, dt: Float) {
-        this.partyMember = partyMember
+    override fun update(entity: Entity, dt: Float) {
+        this.partyMember = entity
         setStateAndDirection()
     }
 

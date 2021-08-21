@@ -39,11 +39,11 @@ class PhysicsPartyMember : PhysicsComponent() {
         }
     }
 
-    override fun update(partyMember: Entity, dt: Float) {
-        entity = partyMember
+    override fun update(entity: Entity, dt: Float) {
+        this.entity = entity
         relocate(dt)
         checkObstacles(dt)
-        partyMember.send(PositionEvent(currentPosition))
+        entity.send(PositionEvent(currentPosition))
     }
 
     private fun checkObstacles(dt: Float) {

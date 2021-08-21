@@ -51,8 +51,8 @@ class PhysicsEnemy : PhysicsComponent() {
         setBoundingBox()
     }
 
-    override fun update(thisEnemyEntity: Entity, dt: Float) {
-        entity = thisEnemyEntity
+    override fun update(entity: Entity, dt: Float) {
+        this.entity = entity
         relocate(dt)
         if (isDetectingPlayer) {
             checkObstaclesWhileDetecting(dt)

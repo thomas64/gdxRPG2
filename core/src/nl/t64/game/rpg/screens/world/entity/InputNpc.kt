@@ -28,13 +28,13 @@ class InputNpc : InputComponent() {
         }
     }
 
-    override fun update(npcEntity: Entity, dt: Float) {
+    override fun update(entity: Entity, dt: Float) {
         stateTime -= dt
         if (stateTime < 0) {
             setRandom()
         }
-        npcEntity.send(StateEvent(state))
-        npcEntity.send(DirectionEvent(direction))
+        entity.send(StateEvent(state))
+        entity.send(DirectionEvent(direction))
     }
 
     private fun setRandom() {
