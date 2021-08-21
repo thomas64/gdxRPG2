@@ -2,7 +2,8 @@
   "found_honeywood_cave": {
     "phrases": {
       "1": {"text": ["Woah! It's a hidden cave!"]},
-      "2": {"text": ["Grace?! Where are you?! Are you in here?!"], "choices": [{"conversationCommand": "EXIT_CONVERSATION"}]}
+      "2": {"text": ["Grace?!", "Where are you?!"]},
+      "3": {"text": ["Are you in here?!"], "choices": [{"conversationCommand": "EXIT_CONVERSATION"}]}
     }
   }
 }

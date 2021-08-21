@@ -1,5 +1,5 @@
 {
-  "slime_slam" : {
+  "slime_slam": {
     "name"        : "",
     "group"       : "WEAPON",
     "sort"        : 0,
@@ -9,7 +9,7 @@
     "base_hit"    : 30,
     "damage"      : 1
   },
-  "bat_bite"   : {
+  "bat_bite"  : {
     "name"        : "",
     "group"       : "WEAPON",
     "sort"        : 0,
@@ -19,14 +19,16 @@
     "base_hit"    : 30,
     "damage"      : 2
   },
-  "light_armor": {
-    "name"      : "",
+  "armor_2"   : {
     "group"     : "CHEST",
-    "sort"      : 0,
-    "price"     : 0,
-    "weight"    : 0,
-    "protection": 1,
-    "agility"   : 0,
-    "stealth"   : 0
+    "protection": 2
+  },
+  "armor_3"   : {
+    "group"     : "CHEST",
+    "protection": 3
+  },
+  "armor_8"   : {
+    "group"     : "CHEST",
+    "protection": 8
   }
 }

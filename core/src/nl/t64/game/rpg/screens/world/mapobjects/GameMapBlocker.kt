@@ -14,7 +14,7 @@ class GameMapBlocker(rectObject: RectangleMapObject) : GameMapObject(rectObject.
     }
 
     override fun getBlockerFor(boundingBox: Rectangle): Rectangle? {
-        return rectangle.takeIf { boundingBox.overlaps(rectangle) }
+        return rectangle.takeIf { boundingBox.overlaps(it) }
     }
 
     override fun isBlocking(point: Vector2): Boolean {

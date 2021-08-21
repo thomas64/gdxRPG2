@@ -1,4 +1,13 @@
 {
+  "grace_ribbon"           : {
+    "name"    : "Grace's Ribbon",
+    "group"   : "ACCESSORY",
+    "sort"    : 61000,
+    "price"   : 1,
+    "weight"  : 0,
+    "diplomat": 1,
+    "stealth" : -1
+  },
   "epic_rope"              : {
     "name"         : "Rope",
     "group"        : "ACCESSORY",
