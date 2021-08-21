@@ -3,7 +3,8 @@
     "type"          : "conversation",
     "condition"     : ["quest_intro_not_finished"],
     "conversationId": "fallen_tree",
-    "entityId"      : "mozes"
+    "entityId"      : "mozes",
+    "doesRepeat"    : true
   },
   "guide_event_action"   : {
     "type": "messagebox",

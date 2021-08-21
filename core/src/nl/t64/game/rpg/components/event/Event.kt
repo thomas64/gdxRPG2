@@ -11,12 +11,15 @@ class Event(
     val conditionIds: List<String> = emptyList(),
     val conversationId: String? = null,
     val entityId: String? = null,
-    val text: List<String> = emptyList()
+    val text: List<String> = emptyList(),
+    private val doesRepeat: Boolean = false
 ) {
     var hasPlayed: Boolean = false
 
     fun possibleStart() {
-        if (!hasPlayed && isMeetingCondition()) {
+        if ((!hasPlayed && isMeetingCondition())
+            || (hasPlayed && doesRepeat && isMeetingCondition())
+        ) {
             hasPlayed = true
             start()
         }
