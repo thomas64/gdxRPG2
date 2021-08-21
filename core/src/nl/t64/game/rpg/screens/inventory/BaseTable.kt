@@ -44,8 +44,8 @@ abstract class BaseTable(val tooltip: PersonalityTooltip) : WindowSelector {
         setWindowSelected(container)
     }
 
-    override fun getCurrentSlot(): ItemSlot {
-        throw IllegalStateException("getCurrentSlot() is not used in BaseTables.")
+    override fun getCurrentSlot(): ItemSlot? {
+        return null    // not used in BaseTables.
     }
 
     override fun getCurrentTooltip(): BaseTooltip {

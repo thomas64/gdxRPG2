@@ -20,7 +20,7 @@ class PersonalityTooltip : BaseTooltip() {
     private var x: Float = 0f
     private lateinit var y: () -> Float
 
-    override fun toggle(notUsedHere: ItemSlot) {
+    override fun toggle(notUsedHere: ItemSlot?) {
         val isEnabled = gameData.isTooltipEnabled
         gameData.isTooltipEnabled = !isEnabled
         window.isVisible = !isEnabled

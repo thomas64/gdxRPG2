@@ -34,8 +34,8 @@ private const val DELAY = 0.5f
 
 open class ItemSlotTooltip : BaseTooltip() {
 
-    override fun toggle(itemSlot: ItemSlot) {
-        if (itemSlot.hasItem()) {
+    override fun toggle(itemSlot: ItemSlot?) {
+        if (itemSlot?.hasItem() == true) {
             val isEnabled = gameData.isTooltipEnabled
             gameData.isTooltipEnabled = !isEnabled
             setupTooltip(itemSlot)
@@ -43,8 +43,8 @@ open class ItemSlotTooltip : BaseTooltip() {
         }
     }
 
-    override fun toggleCompare(itemSlot: ItemSlot) {
-        if (itemSlot.hasItem() && !window.hasActions()) {
+    override fun toggleCompare(itemSlot: ItemSlot?) {
+        if (itemSlot?.hasItem() == true && !window.hasActions()) {
             val isEnabled = gameData.isComparingEnabled
             gameData.isComparingEnabled = !isEnabled
             updateDescription(itemSlot)

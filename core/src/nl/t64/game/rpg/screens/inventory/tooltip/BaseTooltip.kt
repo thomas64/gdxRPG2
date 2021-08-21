@@ -18,11 +18,11 @@ abstract class BaseTooltip {
         isVisible = false
     }
 
-    open fun toggle(itemSlot: ItemSlot) {
+    open fun toggle(itemSlot: ItemSlot?) {
         throw IllegalStateException("Implement this method in child.")
     }
 
-    open fun toggleCompare(itemSlot: ItemSlot) {
+    open fun toggleCompare(itemSlot: ItemSlot?) {
         // do nothing. some tooltips don't need compare.
     }
 

@@ -7,7 +7,7 @@ import nl.t64.game.rpg.screens.inventory.tooltip.BaseTooltip
 
 interface WindowSelector {
     fun setKeyboardFocus(stage: Stage)
-    fun getCurrentSlot(): ItemSlot
+    fun getCurrentSlot(): ItemSlot?
     fun getCurrentTooltip(): BaseTooltip
     fun deselectCurrentSlot()
     fun selectCurrentSlot()
