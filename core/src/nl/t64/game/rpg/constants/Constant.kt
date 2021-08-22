@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Color
 
 object Constant {
 
-    const val TITLE = "gdxRPG2"
+    const val TITLE = "Adan Chronicles: Crystal of Time"
     const val SCREEN_WIDTH = 1920
     const val SCREEN_HEIGHT = 1080
 //    const val SCREEN_WIDTH = 1280
@@ -19,8 +19,8 @@ object Constant {
 
     const val MOVE_SPEED_1 = 48f    // = pixels/second
     const val MOVE_SPEED_2 = 144f   // 48 * 3
-    const val MOVE_SPEED_3 = 240f   // 48 * 5
-    const val MOVE_SPEED_4 = 960f   // 48 * 20
+    const val MOVE_SPEED_3 = 192f   // 48 * 4
+    const val MOVE_SPEED_4 = 480f   // 48 * 10
 
     const val SLOW_FRAMES = 0.50f
     const val NORMAL_FRAMES = 0.25f

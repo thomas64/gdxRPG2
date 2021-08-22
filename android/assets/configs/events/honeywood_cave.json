@@ -3,5 +3,9 @@
     "type"          : "conversation",
     "conversationId": "found_honeywood_cave",
     "entityId"      : "mozes"
+  },
+  "guide_event_minimap" : {
+    "type": "messagebox",
+    "text": ["Press %minimap% in large areas to see an overview of that area.", "This way it's hard to get lost, like in dark caves."]
   }
 }

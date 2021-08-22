@@ -20,7 +20,7 @@ allprojects {
 
     version = "1.0"
     ext {
-        appName = "gdx-rpg2"
+        appName = "Adan Chronicles: Crystal of Time"
         gdxVersion = "1.10.0"
         controllerVersion = "2.2.1"
         mappingVersion = "2.3.0"

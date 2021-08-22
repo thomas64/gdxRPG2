@@ -19,6 +19,10 @@
     "type": "messagebox",
     "text": ["Coming near an enemy will start a battle.", "By winning battles, you'll earn XP,", "which you can use to improve your character."]
   },
+  "guide_event_fast"     : {
+    "type": "messagebox",
+    "text": ["Keep %fast% pressed to run.", "You'll be faster, but enemies will detect you much sooner."]
+  },
   "guide_event_slow"     : {
     "type": "messagebox",
     "text": ["Keep %slow% pressed to move stealthily.", "Enemies will detect you less easy.", "This way you can avoid battles."]
