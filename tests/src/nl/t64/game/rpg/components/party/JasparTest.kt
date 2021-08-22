@@ -17,8 +17,8 @@ internal class JasparTest : GameTest() {
 
         assertThat(jaspar.school).isEqualTo(SchoolType.NONE)
         assertThat(jaspar.getLevel()).isEqualTo(12)
-        assertThat(jaspar.getTotalXp()).isEqualTo(3250)
-        assertThat(jaspar.getXpNeededForNextLevel()).isEqualTo(845)
+        assertThat(jaspar.totalXp).isEqualTo(3250)
+        assertThat(jaspar.xpNeededForNextLevel).isEqualTo(845)
         assertThat(jaspar.getCurrentHp()).isEqualTo(102)
         assertThat(jaspar.getMaximumHp()).isEqualTo(102)
 

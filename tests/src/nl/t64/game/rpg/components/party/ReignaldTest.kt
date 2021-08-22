@@ -17,8 +17,8 @@ internal class ReignaldTest : GameTest() {
 
         assertThat(reignald.school).isEqualTo(SchoolType.NONE)
         assertThat(reignald.getLevel()).isEqualTo(8)
-        assertThat(reignald.getTotalXp()).isEqualTo(1020)
-        assertThat(reignald.getXpNeededForNextLevel()).isEqualTo(405)
+        assertThat(reignald.totalXp).isEqualTo(1020)
+        assertThat(reignald.xpNeededForNextLevel).isEqualTo(405)
         assertThat(reignald.getCurrentHp()).isEqualTo(68)
         assertThat(reignald.getMaximumHp()).isEqualTo(68)
 

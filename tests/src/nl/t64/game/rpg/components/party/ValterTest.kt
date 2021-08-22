@@ -17,8 +17,8 @@ internal class ValterTest : GameTest() {
 
         assertThat(valter.school).isEqualTo(SchoolType.ELEMENTAL)
         assertThat(valter.getLevel()).isEqualTo(2)
-        assertThat(valter.getTotalXp()).isEqualTo(25)
-        assertThat(valter.getXpNeededForNextLevel()).isEqualTo(45)
+        assertThat(valter.totalXp).isEqualTo(25)
+        assertThat(valter.xpNeededForNextLevel).isEqualTo(45)
         assertThat(valter.getCurrentHp()).isEqualTo(37)
         assertThat(valter.getMaximumHp()).isEqualTo(37)
 

@@ -255,8 +255,8 @@ internal class PartyWindow {
 
     private fun calculateXpBarWidth(i: Int): Float {
         val hero = party.getHero(i)
-        val maxXp = hero.getXpDeltaBetweenLevels()
-        val currentXp = maxXp - hero.getXpNeededForNextLevel()
+        val maxXp = hero.xpDeltaBetweenLevels
+        val currentXp = maxXp - hero.xpNeededForNextLevel
         return BAR_WIDTH / maxXp * currentXp
     }
 

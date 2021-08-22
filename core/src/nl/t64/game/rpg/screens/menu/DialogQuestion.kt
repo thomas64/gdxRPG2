@@ -43,10 +43,6 @@ class DialogQuestion(
     private val dialog: Dialog = createDialog()
     private var selectedIndex = 0
 
-    init {
-        applyListeners()
-    }
-
     fun show(stage: Stage, event: AudioEvent, startIndex: Int = EXIT_INDEX) {
         audioManager.handle(AudioCommand.SE_PLAY_ONCE, event)
         show(stage, startIndex)
@@ -55,6 +51,7 @@ class DialogQuestion(
     fun show(stage: Stage, startIndex: Int = EXIT_INDEX) {
         dialog.show(stage)
         updateIndex(startIndex)
+        applyListeners(startIndex)
     }
 
     private fun updateIndex(newIndex: Int) {
@@ -112,9 +109,9 @@ class DialogQuestion(
         }
     }
 
-    private fun applyListeners() {
+    private fun applyListeners(startIndex: Int) {
         val listenerKeyHorizontal = ListenerKeyHorizontal({ updateIndex(it) }, NUMBER_OF_ITEMS)
-        listenerKeyHorizontal.updateSelectedIndex(EXIT_INDEX)
+        listenerKeyHorizontal.updateSelectedIndex(startIndex)
         val listenerKeyConfirm = ListenerKeyConfirm { selectDialogItem() }
         val listenerKeyCancel = ListenerKeyCancel({ updateIndex(it) }, { selectDialogItem() }, EXIT_INDEX)
         dialog.addListener(listenerKeyHorizontal)

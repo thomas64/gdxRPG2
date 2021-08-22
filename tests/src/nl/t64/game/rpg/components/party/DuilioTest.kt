@@ -17,8 +17,8 @@ internal class DuilioTest : GameTest() {
 
         assertThat(duilio.school).isEqualTo(SchoolType.ELEMENTAL)
         assertThat(duilio.getLevel()).isEqualTo(22)
-        assertThat(duilio.getTotalXp()).isEqualTo(18975)
-        assertThat(duilio.getXpNeededForNextLevel()).isEqualTo(2645)
+        assertThat(duilio.totalXp).isEqualTo(18975)
+        assertThat(duilio.xpNeededForNextLevel).isEqualTo(2645)
         assertThat(duilio.getCurrentHp()).isEqualTo(122)
         assertThat(duilio.getMaximumHp()).isEqualTo(122)
 

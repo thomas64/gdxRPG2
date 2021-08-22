@@ -4,9 +4,12 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
 import nl.t64.game.rpg.Utils.createTopBorder
+import nl.t64.game.rpg.audio.AudioEvent
 import nl.t64.game.rpg.components.party.stats.StatItem
 import nl.t64.game.rpg.constants.Constant
+import nl.t64.game.rpg.screens.inventory.messagedialog.MessageDialog
 import nl.t64.game.rpg.screens.inventory.tooltip.PersonalityTooltip
+import nl.t64.game.rpg.screens.menu.DialogQuestion
 
 
 private const val FIRST_COLUMN_WIDTH = 190f
@@ -30,6 +33,29 @@ internal class StatsTable(tooltip: PersonalityTooltip) : BaseTable(tooltip) {
         fillExperience()
     }
 
+    override fun doAction() {
+        val statItem = selectedHero.getAllStats()[selectedIndex]
+        val statName = statItem.name
+        val xpCost = statItem.getXpCostForNextRank()
+        if (xpCost == 0) {
+            MessageDialog("You cannot train $statName any further.")
+                .show(table.stage, AudioEvent.SE_MENU_ERROR)
+        } else if (selectedHero.hasEnoughXpFor(xpCost)) {
+            DialogQuestion({ upgradeStat(statItem, xpCost) }, """
+                Are you sure you wish to train 
+                $statName for $xpCost 'XP to Invest'?""".trimIndent())
+                .show(table.stage, AudioEvent.SE_CONVERSATION_NEXT, 0)
+        } else {
+            MessageDialog("You need $xpCost 'XP to Invest' to train $statName.")
+                .show(table.stage, AudioEvent.SE_MENU_ERROR)
+        }
+    }
+
+    private fun upgradeStat(statItem: StatItem, xpCost: Int) {
+        selectedHero.doUpgrade(statItem, xpCost)
+        tooltip.hide()
+    }
+
     private fun updateIndex(deltaIndex: Int) {
         selectedIndex += deltaIndex
         if (selectedIndex < 0) {
@@ -49,9 +75,9 @@ internal class StatsTable(tooltip: PersonalityTooltip) : BaseTable(tooltip) {
 
     private fun fillExperience() {
         table.add("").row()
-        fillRow("XP to Invest", selectedHero.getXpToInvest())
-        fillRow("Total XP", selectedHero.getTotalXp())
-        fillRow("Next Level", selectedHero.getXpNeededForNextLevel())
+        fillRow("XP to Invest", selectedHero.xpToInvest)
+        fillRow("Total XP", selectedHero.totalXp)
+        fillRow("Next Level", selectedHero.xpNeededForNextLevel)
     }
 
     private fun fillRow(statItem: StatItem, index: Int) {

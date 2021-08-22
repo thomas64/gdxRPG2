@@ -17,8 +17,8 @@ internal class IellwenTest : GameTest() {
 
         assertThat(iellwen.school).isEqualTo(SchoolType.STAR)
         assertThat(iellwen.getLevel()).isEqualTo(20)
-        assertThat(iellwen.getTotalXp()).isEqualTo(14350)
-        assertThat(iellwen.getXpNeededForNextLevel()).isEqualTo(2205)
+        assertThat(iellwen.totalXp).isEqualTo(14350)
+        assertThat(iellwen.xpNeededForNextLevel).isEqualTo(2205)
         assertThat(iellwen.getCurrentHp()).isEqualTo(110)
         assertThat(iellwen.getMaximumHp()).isEqualTo(110)
 

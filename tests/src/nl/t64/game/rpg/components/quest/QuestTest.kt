@@ -54,7 +54,7 @@ internal class QuestTest : GameTest() {
 
     @Test
     fun whenQuestGraphIsLoaded_ShouldHandleFlow() {
-        assertThat(party.getHero(0).getXpToInvest()).isZero
+        assertThat(party.getHero(0).xpToInvest).isZero
         val quest0001 = quests.getQuestById("quest0001")
         assertThatIllegalArgumentException().isThrownBy { quest0001.setTaskComplete("1") }
         assertThat(quest0001.isFinished()).isFalse
@@ -73,7 +73,7 @@ internal class QuestTest : GameTest() {
                                ConversationSubject())
         assertThat(quest0001.currentState).isEqualTo(QuestState.FINISHED)
         assertThat(quest0001.isFinished()).isTrue
-        assertThat(party.getHero(0).getXpToInvest()).isEqualTo(2)
+        assertThat(party.getHero(0).xpToInvest).isEqualTo(2)
         assertThat(inventory.hasEnoughOfItem("gemstone", 1)).isFalse
         assertThat(inventory.hasEnoughOfItem("herb", 1)).isFalse
     }

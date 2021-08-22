@@ -25,9 +25,18 @@ class StatContainer() {
 
     fun getXpNeededForNextLevel(): Int = level.getXpNeededForNextLevel()
     fun getXpDeltaBetweenLevels(): Int = level.getXpDeltaBetweenLevels()
-    fun getTotalXp(): Int = level.totalXp
-    fun getXpToInvest(): Int = level.xpToInvest
+    val totalXp: Int get() = level.totalXp
+    val xpToInvest: Int get() = level.xpToInvest
     fun getLevel(): Int = level.rank
+
+    fun hasEnoughXpFor(xpCost: Int): Boolean {
+        return xpToInvest >= xpCost
+    }
+
+    fun doUpgrade(statItem: StatItem, xpCost: Int) {
+        level.takeXpToInvest(xpCost)
+        statItem.doUpgrade()
+    }
 
     fun gainXp(amount: Int, hasGainedLevel: (Boolean) -> Unit) {
         level.gainXp(amount, hasGainedLevel)
@@ -71,6 +80,12 @@ class StatContainer() {
                 (stats[StatItemId.ENDURANCE.name] as Endurance).takeDamage(it2)
             }
         }
+    }
+
+    fun recoverFullHp() {
+        (stats[StatItemId.ENDURANCE.name] as Endurance).restore()
+        (stats[StatItemId.STAMINA.name] as Stamina).restore()
+        level.restore()
     }
 
     fun getInflictDamageStaminaPenalty(): Int {

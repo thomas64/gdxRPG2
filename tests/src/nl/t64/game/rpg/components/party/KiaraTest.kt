@@ -17,8 +17,8 @@ internal class KiaraTest : GameTest() {
 
         assertThat(kiara.school).isEqualTo(SchoolType.ELEMENTAL)
         assertThat(kiara.getLevel()).isEqualTo(12)
-        assertThat(kiara.getTotalXp()).isEqualTo(3250)
-        assertThat(kiara.getXpNeededForNextLevel()).isEqualTo(845)
+        assertThat(kiara.totalXp).isEqualTo(3250)
+        assertThat(kiara.xpNeededForNextLevel).isEqualTo(845)
         assertThat(kiara.getCurrentHp()).isEqualTo(72)
         assertThat(kiara.getMaximumHp()).isEqualTo(72)
 

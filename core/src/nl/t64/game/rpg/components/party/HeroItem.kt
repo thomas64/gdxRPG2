@@ -43,13 +43,21 @@ class HeroItem(
     }
 
     fun gainXp(amount: Int, levelUpMessage: StringBuilder) {
-        stats.gainXp(amount) { append(levelUpMessage) }
+        stats.gainXp(amount) { gainLevel(levelUpMessage) }
     }
 
-    fun getXpNeededForNextLevel(): Int = stats.getXpNeededForNextLevel()
-    fun getXpDeltaBetweenLevels(): Int = stats.getXpDeltaBetweenLevels()
-    fun getTotalXp(): Int = stats.getTotalXp()
-    fun getXpToInvest(): Int = stats.getXpToInvest()
+    fun hasEnoughXpFor(xpCost: Int): Boolean {
+        return stats.hasEnoughXpFor(xpCost)
+    }
+
+    fun doUpgrade(statItem: StatItem, xpCost: Int) {
+        stats.doUpgrade(statItem, xpCost)
+    }
+
+    val xpNeededForNextLevel: Int get() = stats.getXpNeededForNextLevel()
+    val xpDeltaBetweenLevels: Int get() = stats.getXpDeltaBetweenLevels()
+    val totalXp: Int get() = stats.totalXp
+    val xpToInvest: Int get() = stats.xpToInvest
     fun getLevel(): Int = stats.getLevel()
     fun getAllHpStats(): Map<String, Int> = stats.getAllHpStats()
     fun getMaximumHp(): Int = stats.getMaximumHp()
@@ -234,7 +242,8 @@ class HeroItem(
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private fun append(levelUpMessage: StringBuilder) {
+    private fun gainLevel(levelUpMessage: StringBuilder) {
+        stats.recoverFullHp()
         levelUpMessage.append("$name gained a level!").append(System.lineSeparator())
     }
 

@@ -17,8 +17,8 @@ internal class LuanaTest : GameTest() {
 
         assertThat(luana.school).isEqualTo(SchoolType.ELEMENTAL)
         assertThat(luana.getLevel()).isEqualTo(1)
-        assertThat(luana.getTotalXp()).isEqualTo(5)
-        assertThat(luana.getXpNeededForNextLevel()).isEqualTo(20)
+        assertThat(luana.totalXp).isEqualTo(5)
+        assertThat(luana.xpNeededForNextLevel).isEqualTo(20)
         assertThat(luana.getCurrentHp()).isEqualTo(31)
         assertThat(luana.getMaximumHp()).isEqualTo(31)
 

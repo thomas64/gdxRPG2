@@ -17,8 +17,8 @@ internal class FaeronTest : GameTest() {
 
         assertThat(faeron.school).isEqualTo(SchoolType.NAMING)
         assertThat(faeron.getLevel()).isEqualTo(25)
-        assertThat(faeron.getTotalXp()).isEqualTo(27625)
-        assertThat(faeron.getXpNeededForNextLevel()).isEqualTo(3380)
+        assertThat(faeron.totalXp).isEqualTo(27625)
+        assertThat(faeron.xpNeededForNextLevel).isEqualTo(3380)
         assertThat(faeron.getCurrentHp()).isEqualTo(130)
         assertThat(faeron.getMaximumHp()).isEqualTo(130)
 

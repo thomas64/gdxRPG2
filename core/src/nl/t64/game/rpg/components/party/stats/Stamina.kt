@@ -11,6 +11,11 @@ class Stamina(rank: Int = 0) : StatItem(
         return "Tekst en uitleg over $name."
     }
 
+    override fun doUpgrade() {
+        rank += 1
+        variable += 1
+    }
+
     fun takeDamage(damage: Int): Int? {
         variable -= damage
         if (variable < 0) {
@@ -19,6 +24,10 @@ class Stamina(rank: Int = 0) : StatItem(
             return remainingDamage
         }
         return null
+    }
+
+    fun restore() {
+        variable = rank
     }
 
     fun getInflictDamagePenalty(): Int {

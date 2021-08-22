@@ -39,6 +39,10 @@ class Level(var rank: Int = 1) {
         }
     }
 
+    fun takeXpToInvest(xpCost: Int) {
+        xpToInvest -= xpCost
+    }
+
     fun takeDamage(damage: Int): Int? {
         variable -= damage
         if (variable < 0) {
@@ -47,6 +51,10 @@ class Level(var rank: Int = 1) {
             return remainingDamage
         }
         return null
+    }
+
+    fun restore() {
+        variable = rank
     }
 
     private fun getTotalXpForLevel(level: Float): Int {

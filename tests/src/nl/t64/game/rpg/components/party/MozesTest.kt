@@ -17,8 +17,8 @@ internal class MozesTest : GameTest() {
 
         assertThat(mozes.school).isEqualTo(SchoolType.UNKNOWN)
         assertThat(mozes.getLevel()).isEqualTo(1)
-        assertThat(mozes.getTotalXp()).isEqualTo(5)
-        assertThat(mozes.getXpNeededForNextLevel()).isEqualTo(20)
+        assertThat(mozes.totalXp).isEqualTo(5)
+        assertThat(mozes.xpNeededForNextLevel).isEqualTo(20)
         assertThat(mozes.getCurrentHp()).isEqualTo(46)
         assertThat(mozes.getMaximumHp()).isEqualTo(46)
 

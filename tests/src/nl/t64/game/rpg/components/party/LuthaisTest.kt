@@ -17,8 +17,8 @@ internal class LuthaisTest : GameTest() {
 
         assertThat(luthais.school).isEqualTo(SchoolType.ELEMENTAL)
         assertThat(luthais.getLevel()).isEqualTo(20)
-        assertThat(luthais.getTotalXp()).isEqualTo(14350)
-        assertThat(luthais.getXpNeededForNextLevel()).isEqualTo(2205)
+        assertThat(luthais.totalXp).isEqualTo(14350)
+        assertThat(luthais.xpNeededForNextLevel).isEqualTo(2205)
         assertThat(luthais.getCurrentHp()).isEqualTo(88)
         assertThat(luthais.getMaximumHp()).isEqualTo(88)
 

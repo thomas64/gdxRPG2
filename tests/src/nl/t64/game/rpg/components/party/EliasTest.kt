@@ -17,8 +17,8 @@ internal class EliasTest : GameTest() {
 
         assertThat(elias.school).isEqualTo(SchoolType.NAMING)
         assertThat(elias.getLevel()).isEqualTo(18)
-        assertThat(elias.getTotalXp()).isEqualTo(10545)
-        assertThat(elias.getXpNeededForNextLevel()).isEqualTo(1805)
+        assertThat(elias.totalXp).isEqualTo(10545)
+        assertThat(elias.xpNeededForNextLevel).isEqualTo(1805)
         assertThat(elias.getCurrentHp()).isEqualTo(108)
         assertThat(elias.getMaximumHp()).isEqualTo(108)
 

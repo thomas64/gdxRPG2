@@ -169,6 +169,7 @@ class InventoryScreen : ParchmentScreen(), ConversationObserver {
                 && inventory.hasRoomForResource("gemstone")
             ) {
                 audioManager.handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_ERROR)
+                gameData.party.getAllHeroesAlive().forEach { it.gainXp(100, StringBuilder()) }
                 inventory.autoSetItem(InventoryDatabase.createInventoryItem("gold", 100))
                 inventory.autoSetItem(InventoryDatabase.createInventoryItem("herb", 100))
                 inventory.autoSetItem(InventoryDatabase.createInventoryItem("spice", 100))
@@ -183,6 +184,7 @@ class InventoryScreen : ParchmentScreen(), ConversationObserver {
             val inventory = gameData.inventory
             if (inventory.hasEnoughOfItem("gold", 1)) {
                 audioManager.handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_ERROR)
+                gameData.party.getAllHeroesAlive().forEach { it.takeDamage(1) }
                 inventory.autoRemoveItem("gold", 1)
                 inventoryUI.reloadInventory()
             }

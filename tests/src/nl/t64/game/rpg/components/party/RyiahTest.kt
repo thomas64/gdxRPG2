@@ -17,8 +17,8 @@ internal class RyiahTest : GameTest() {
 
         assertThat(ryiah.school).isEqualTo(SchoolType.NAMING)
         assertThat(ryiah.getLevel()).isEqualTo(3)
-        assertThat(ryiah.getTotalXp()).isEqualTo(70)
-        assertThat(ryiah.getXpNeededForNextLevel()).isEqualTo(80)
+        assertThat(ryiah.totalXp).isEqualTo(70)
+        assertThat(ryiah.xpNeededForNextLevel).isEqualTo(80)
         assertThat(ryiah.getCurrentHp()).isEqualTo(50)
         assertThat(ryiah.getMaximumHp()).isEqualTo(50)
 

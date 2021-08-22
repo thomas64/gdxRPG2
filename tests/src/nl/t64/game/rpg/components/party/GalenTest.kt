@@ -17,8 +17,8 @@ internal class GalenTest : GameTest() {
 
         assertThat(galen.school).isEqualTo(SchoolType.NONE)
         assertThat(galen.getLevel()).isEqualTo(4)
-        assertThat(galen.getTotalXp()).isEqualTo(150)
-        assertThat(galen.getXpNeededForNextLevel()).isEqualTo(125)
+        assertThat(galen.totalXp).isEqualTo(150)
+        assertThat(galen.xpNeededForNextLevel).isEqualTo(125)
         assertThat(galen.getCurrentHp()).isEqualTo(64)
         assertThat(galen.getMaximumHp()).isEqualTo(64)
 

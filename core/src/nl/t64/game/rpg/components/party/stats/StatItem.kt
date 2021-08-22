@@ -17,20 +17,24 @@ abstract class StatItem(
     override fun getDescription(totalLoremaster: Int): String {
         return (getDescription() + System.lineSeparator() + System.lineSeparator()
                 + "No trainer is needed to upgrade a stat." + System.lineSeparator()
-                + getNeededXpForNextLevel())
+                + getNeededXpForNextRank())
     }
 
     abstract fun getDescription(): String
 
-    private fun getNeededXpForNextLevel(): String {
-        val xpNeeded = getXpCostForNextLevel().toString().takeIf { it != "0" } ?: "Max"
-        return "XP needed for next level: $xpNeeded"
+    private fun getNeededXpForNextRank(): String {
+        val xpNeeded = getXpCostForNextRank().toString().takeIf { it != "0" } ?: "Max"
+        return "XP needed for next rank: $xpNeeded"
     }
 
-    fun getXpCostForNextLevel(): Int {
+    fun getXpCostForNextRank(): Int {
         if (rank >= maximum) return 0
-        val nextLevel = rank + 1
-        return (upgrade * (nextLevel * nextLevel)).roundToInt()
+        val nextRank = rank + 1
+        return (upgrade * (nextRank * nextRank)).roundToInt()
+    }
+
+    open fun doUpgrade() {
+        rank += 1
     }
 
 }

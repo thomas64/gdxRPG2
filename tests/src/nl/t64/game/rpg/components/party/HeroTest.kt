@@ -222,7 +222,7 @@ class HeroTest : GameTest() {
         assertThat(mozes.school).isEqualTo(SchoolType.UNKNOWN)
         assertThat(mozes.hasSameIdAs(mozes)).isTrue
         assertThat(mozes.isPlayer).isTrue
-        assertThat(mozes.getXpDeltaBetweenLevels()).isEqualTo(20)
+        assertThat(mozes.xpDeltaBetweenLevels).isEqualTo(20)
         assertThat(mozes.getAllStats()).extracting("id")
             .containsExactly(StatItemId.INTELLIGENCE,
                              StatItemId.WILLPOWER,
@@ -231,7 +231,7 @@ class HeroTest : GameTest() {
                              StatItemId.AGILITY,
                              StatItemId.ENDURANCE,
                              StatItemId.STAMINA)
-        assertThat(mozes.getStatById(StatItemId.INTELLIGENCE).getXpCostForNextLevel()).isEqualTo(43)
+        assertThat(mozes.getStatById(StatItemId.INTELLIGENCE).getXpCostForNextRank()).isEqualTo(43)
         assertThat(mozes.getSkillById(SkillItemId.STEALTH).getXpCostForNextLevel(0)).isEqualTo(16)
         assertThat(mozes.getSkillById(SkillItemId.STEALTH).getGoldCostForNextLevel()).isEqualTo(8)
 
@@ -364,13 +364,13 @@ class HeroTest : GameTest() {
     fun whenHeroGainsXp_ShouldGainXp() {
         val mozes = party.getCertainHero("mozes")
         val sb = StringBuilder()
-        assertThat(mozes.getTotalXp()).isEqualTo(5)
-        assertThat(mozes.getXpToInvest()).isZero
+        assertThat(mozes.totalXp).isEqualTo(5)
+        assertThat(mozes.xpToInvest).isZero
         assertThat(mozes.getLevel()).isEqualTo(1)
         assertThat(sb).isBlank
         mozes.gainXp(10, sb)
-        assertThat(mozes.getTotalXp()).isEqualTo(15)
-        assertThat(mozes.getXpToInvest()).isEqualTo(10)
+        assertThat(mozes.totalXp).isEqualTo(15)
+        assertThat(mozes.xpToInvest).isEqualTo(10)
         assertThat(mozes.getLevel()).isEqualTo(1)
         assertThat(sb.toString().trim()).isBlank
     }
@@ -379,13 +379,13 @@ class HeroTest : GameTest() {
     fun whenHeroGainsEnoughXp_ShouldGainLevel() {
         val mozes = party.getCertainHero("mozes")
         val sb = StringBuilder()
-        assertThat(mozes.getTotalXp()).isEqualTo(5)
-        assertThat(mozes.getXpToInvest()).isZero
+        assertThat(mozes.totalXp).isEqualTo(5)
+        assertThat(mozes.xpToInvest).isZero
         assertThat(mozes.getLevel()).isEqualTo(1)
         assertThat(sb).isBlank
         mozes.gainXp(20, sb)
-        assertThat(mozes.getTotalXp()).isEqualTo(25)
-        assertThat(mozes.getXpToInvest()).isEqualTo(20)
+        assertThat(mozes.totalXp).isEqualTo(25)
+        assertThat(mozes.xpToInvest).isEqualTo(20)
         assertThat(mozes.getLevel()).isEqualTo(2)
         assertThat(sb.toString().trim()).isEqualTo("Mozes gained a level!")
     }

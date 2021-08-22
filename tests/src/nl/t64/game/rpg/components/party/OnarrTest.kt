@@ -17,8 +17,8 @@ internal class OnarrTest : GameTest() {
 
         assertThat(onarr.school).isEqualTo(SchoolType.NONE)
         assertThat(onarr.getLevel()).isEqualTo(18)
-        assertThat(onarr.getTotalXp()).isEqualTo(10545)
-        assertThat(onarr.getXpNeededForNextLevel()).isEqualTo(1805)
+        assertThat(onarr.totalXp).isEqualTo(10545)
+        assertThat(onarr.xpNeededForNextLevel).isEqualTo(1805)
         assertThat(onarr.getCurrentHp()).isEqualTo(108)
         assertThat(onarr.getMaximumHp()).isEqualTo(108)
 

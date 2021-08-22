@@ -46,35 +46,35 @@ class SpellItem(
                 + "Requires: " + requiredResource.title + System.lineSeparator()
                 + "Stamina cost: " + staminaCost + System.lineSeparator()
                 + System.lineSeparator()
-                + getNeededXpForNextLevel(totalLoremaster) + System.lineSeparator()
-                + getNeededGoldForNextLevel())
+                + getNeededXpForNextRank(totalLoremaster) + System.lineSeparator()
+                + getNeededGoldForNextRank())
     }
 
-    private fun getNeededXpForNextLevel(totalLoremaster: Int): String {
-        val xpNeeded = getXpCostForNextLevel(totalLoremaster).toString().takeIf { it != "0" } ?: "Max"
-        return "XP needed for next level: $xpNeeded"
+    private fun getNeededXpForNextRank(totalLoremaster: Int): String {
+        val xpNeeded = getXpCostForNextRank(totalLoremaster).toString().takeIf { it != "0" } ?: "Max"
+        return "XP needed for next rank: $xpNeeded"
     }
 
-    private fun getNeededGoldForNextLevel(): String {
-        val goldNeeded = getGoldCostForNextLevel().toString().takeIf { it != "0" } ?: "Max"
-        return "Gold needed for next level: $goldNeeded"
+    private fun getNeededGoldForNextRank(): String {
+        val goldNeeded = getGoldCostForNextRank().toString().takeIf { it != "0" } ?: "Max"
+        return "Gold needed for next rank: $goldNeeded"
     }
 
-    private fun getXpCostForNextLevel(totalLoremaster: Int): Int {
+    private fun getXpCostForNextRank(totalLoremaster: Int): Int {
         return when {
             rank >= MAXIMUM -> 0
             else -> (getUpgradeFormula() - ((getUpgradeFormula() / 100) * totalLoremaster)).roundToInt()
         }
     }
 
-    private fun getGoldCostForNextLevel(): Int {
-        val nextLevel = rank + 1
-        return TRAINING_COSTS[nextLevel - 1]
+    private fun getGoldCostForNextRank(): Int {
+        val nextRank = rank + 1
+        return TRAINING_COSTS[nextRank - 1]
     }
 
     private fun getUpgradeFormula(): Float {
-        val nextLevel = rank + 1
-        return upgrade * (nextLevel * nextLevel)
+        val nextRank = rank + 1
+        return upgrade * (nextRank * nextRank)
     }
 
 }
