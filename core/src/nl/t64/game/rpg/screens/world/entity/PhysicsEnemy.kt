@@ -34,6 +34,9 @@ class PhysicsEnemy : PhysicsComponent() {
         if (event is DirectionEvent) {
             direction = event.direction
         }
+        if (event is SpeedEvent) {
+            velocity = event.moveSpeed
+        }
         if (event is PathUpdateEvent) {
             path = event.path
         }
@@ -76,7 +79,7 @@ class PhysicsEnemy : PhysicsComponent() {
     }
 
     private fun isNearbyPlayer(): Boolean {
-        return path.count in 1..MINIMAL_NODES_BEFORE_STARTING_A_BATTLE
+        return isDetectingPlayer && path.count in 1..MINIMAL_NODES_BEFORE_STARTING_A_BATTLE
     }
 
     override fun debug(shapeRenderer: ShapeRenderer) {

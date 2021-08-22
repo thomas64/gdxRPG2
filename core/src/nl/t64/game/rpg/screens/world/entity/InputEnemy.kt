@@ -40,12 +40,15 @@ class InputEnemy : InputComponent() {
     private fun setIsDetectingPlayer(onDetectionEvent: OnDetectionEvent) {
         if (onDetectionEvent.moveSpeed == Constant.MOVE_SPEED_4) {
             isDetectingPlayer = false
+            enemyEntity?.send(SpeedEvent(Constant.MOVE_SPEED_1))
         } else if (path != null && path!!.count > 0
             && path!!.count < onDetectionEvent.moveSpeed / DETECTION_RANGE_DIVIDER
         ) {
             isDetectingPlayer = true
+            enemyEntity?.send(SpeedEvent(Constant.MOVE_SPEED_2))
         } else if (path != null && path!!.count > MAXIMUM_DETECTION_RANGE) {
             isDetectingPlayer = false
+            enemyEntity?.send(SpeedEvent(Constant.MOVE_SPEED_1))
         }
         enemyEntity?.send(DetectionEvent(isDetectingPlayer))
     }
