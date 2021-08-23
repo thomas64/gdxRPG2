@@ -119,6 +119,17 @@
     "agility"   : -3,
     "stealth"   : -2
   },
+  "mask_of_ardor"           : {
+    "name"      : "Mask of Ardor",
+    "group"     : "HELMET",
+    "sort"      : 61000,
+    "price"     : 1,
+    "weight"    : 1,
+    "protection": 0,
+    "agility"   : 0,
+    "stealth"   : 0,
+    "wizard"    : 1
+  },
   "epic_helm_of_knowledge"  : {
     "name"        : "Helm of Knowledge",
     "group"       : "HELMET",

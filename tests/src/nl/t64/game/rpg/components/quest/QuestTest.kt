@@ -47,7 +47,7 @@ internal class QuestTest : GameTest() {
         val tasks = quest0001.tasks
         assertThat(tasks).hasSize(3)
         assertThat(tasks["1"]!!.taskPhrase).isEqualTo("Collect 3 herbs")
-        assertThat(tasks["1"]!!.type).isEqualTo(QuestType.FETCH)
+        assertThat(tasks["1"]!!.type).isEqualTo(QuestType.FETCH_ITEM)
         assertThat(tasks["1"]!!.target).containsOnly(entry("herb", 3))
         assertThat(tasks["1"]).hasToString("     Collect 3 herbs")
     }
@@ -57,7 +57,7 @@ internal class QuestTest : GameTest() {
         assertThat(party.getHero(0).xpToInvest).isZero
         val quest0001 = quests.getQuestById("quest0001")
         assertThatIllegalArgumentException().isThrownBy { quest0001.setTaskComplete("1") }
-        assertThat(quest0001.isFinished()).isFalse
+        assertThat(quest0001.isCurrentStateEqualOrHigherThan(QuestState.FINISHED)).isFalse
         quest0001.handleAccept({ assertThat(it).isEqualTo(Constant.PHRASE_ID_QUEST_ACCEPT) },
                                ConversationSubject())
         assertThat(quest0001.currentState).isEqualTo(QuestState.ACCEPTED)
@@ -72,7 +72,7 @@ internal class QuestTest : GameTest() {
         quest0001.handleReward({ assertThat(it).isEqualTo(Constant.PHRASE_ID_QUEST_FINISHED) },
                                ConversationSubject())
         assertThat(quest0001.currentState).isEqualTo(QuestState.FINISHED)
-        assertThat(quest0001.isFinished()).isTrue
+        assertThat(quest0001.isCurrentStateEqualOrHigherThan(QuestState.FINISHED)).isTrue
         assertThat(party.getHero(0).xpToInvest).isEqualTo(2)
         assertThat(inventory.hasEnoughOfItem("gemstone", 1)).isFalse
         assertThat(inventory.hasEnoughOfItem("herb", 1)).isFalse

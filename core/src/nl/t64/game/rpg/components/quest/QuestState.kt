@@ -8,7 +8,7 @@ enum class QuestState(val index: Int) {
     UNCLAIMED(3),
     FINISHED(4);
 
-    fun isAtLeast(otherState: QuestState): Boolean = index >= otherState.index
-    fun isAtMost(otherState: QuestState): Boolean = index <= otherState.index
+    fun isEqualOrHigherThan(otherState: QuestState): Boolean = index >= otherState.index
+    fun isEqualOrLowerThan(otherState: QuestState): Boolean = index <= otherState.index
 
 }

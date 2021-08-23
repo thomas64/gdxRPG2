@@ -4,9 +4,11 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import ktx.tiled.property
+import ktx.tiled.propertyOrNull
 import nl.t64.game.rpg.Utils.brokerManager
 import nl.t64.game.rpg.Utils.gameData
 import nl.t64.game.rpg.Utils.mapManager
+import nl.t64.game.rpg.components.quest.QuestState
 import nl.t64.game.rpg.subjects.BlockObserver
 
 
@@ -14,7 +16,7 @@ class GameMapQuestBlocker(rectObject: RectangleMapObject) : GameMapObject(rectOb
 
     private val questId: String = rectObject.name
     private val isActiveIfComplete: Boolean = rectObject.property("activeIfComplete")
-    private val taskId: String = rectObject.property("task")
+    private val taskId: String? = rectObject.propertyOrNull("task")
     private var isActive: Boolean = rectObject.property<Boolean>("isActive").also {
         if (it) brokerManager.blockObservers.addObserver(this)
     }
@@ -28,8 +30,8 @@ class GameMapQuestBlocker(rectObject: RectangleMapObject) : GameMapObject(rectOb
     }
 
     fun update() {
-        val isFinished = gameData.quests.getQuestById(questId).isFinished()
-        val isComplete = gameData.quests.getQuestById(questId).isTaskComplete(taskId)
+        val isFinished = gameData.quests.isCurrentStateEqualOrHigherThan(questId, QuestState.FINISHED)
+        val isComplete = gameData.quests.isTaskComplete(questId, taskId)
 
         val before = isActive
         isActive = (isFinished || isComplete) == isActiveIfComplete

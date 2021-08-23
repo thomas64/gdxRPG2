@@ -154,6 +154,10 @@ class WorldScreen : Screen,
         messageDialog.show(message, AudioEvent.SE_CONVERSATION_NEXT)
     }
 
+    override fun onNotifyShowBattleScreen(battleId: String) {
+        onNotifyShowBattleScreen(battleId, currentNpcEntity)
+    }
+
     override fun onNotifyShowBattleScreen(battleId: String, enemyEntity: Entity) {
         if (player.moveSpeed != Constant.MOVE_SPEED_4) {
             currentNpcEntity = enemyEntity
@@ -180,17 +184,15 @@ class WorldScreen : Screen,
 
     override fun onNotifyRewardTaken() {
         val conversationId = currentNpcEntity.getConversationId()
-        val quest = gameData.quests.getQuestById(conversationId)
+        gameData.quests.finish(conversationId)
         val conversation = gameData.conversations.getConversationById(conversationId)
-        quest.finish()
         conversation.currentPhraseId = Constant.PHRASE_ID_QUEST_FINISHED
     }
 
     override fun onNotifyReceiveTaken() {
         val conversationId = currentNpcEntity.getConversationId()
-        val quest = gameData.quests.getQuestById(conversationId)
+        gameData.quests.accept(conversationId, conversationDialog.conversationObservers)
         val conversation = gameData.conversations.getConversationById(conversationId)
-        quest.accept(conversationDialog.conversationObservers)
         conversation.currentPhraseId = Constant.PHRASE_ID_QUEST_ACCEPT
     }
 
@@ -238,7 +240,11 @@ class WorldScreen : Screen,
     // BattleObserver //////////////////////////////////////////////////////////////////////////////////////////////////
 
     override fun onNotifyBattleWon(battleId: String, spoils: Loot, levelUpMessage: String?) {
-        npcEntities = npcEntities.filter { it != currentNpcEntity }
+        if (gameData.quests.contains(battleId)) {
+            gameData.quests.handleReward(battleId, { }, conversationDialog.conversationObservers)
+        }
+
+        refreshNpcEntitiesListAfterBattle(battleId)
         partyMembers = PartyMembersLoader(player).loadPartyMembers()
         if (!spoils.isTaken()) {
             gameData.spoils.addSpoil(battleId, Spoil(mapManager.currentMap.mapTitle,
@@ -248,6 +254,22 @@ class WorldScreen : Screen,
             SpoilsScreen.load(spoils, levelUpMessage)
         } else {
             levelUpMessage?.let { messageDialog.show(levelUpMessage, AudioEvent.SE_LEVELUP) }
+        }
+    }
+
+    private fun refreshNpcEntitiesListAfterBattle(battleId: String) {
+        if (currentNpcEntity.isNpc()) {
+            val remainingNpcEntities = mutableListOf<Entity>()
+            npcEntities.forEach {
+                if (it.isNpc() && it.getConversationId() == battleId) {
+                    brokerManager.blockObservers.removeObserver(it)
+                } else {
+                    remainingNpcEntities.add(it)
+                }
+            }
+            npcEntities = remainingNpcEntities
+        } else {
+            npcEntities = npcEntities.filter { it != currentNpcEntity }
         }
     }
 

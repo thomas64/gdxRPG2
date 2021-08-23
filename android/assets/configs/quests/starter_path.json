@@ -6,12 +6,12 @@
     "tasks"   : {
       "1": {
         "taskPhrase": "Collect 3 herbs",
-        "type"      : "FETCH",
+        "type"      : "FETCH_ITEM",
         "target"    : {"herb": 3}
       },
       "2": {
         "taskPhrase": "Collect 5 gemstones for the programmer",
-        "type"      : "FETCH",
+        "type"      : "FETCH_ITEM",
         "target"    : {"gemstone": 5}
       },
       "3": {

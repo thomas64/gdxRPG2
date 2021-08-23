@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException
 import ktx.collections.GdxArray
 import nl.t64.game.rpg.Utils
 import nl.t64.game.rpg.Utils.audioManager
+import nl.t64.game.rpg.Utils.brokerManager
 import nl.t64.game.rpg.Utils.gameData
 import nl.t64.game.rpg.Utils.profileManager
 import nl.t64.game.rpg.Utils.resourceManager
@@ -27,6 +28,7 @@ import nl.t64.game.rpg.components.conversation.ConversationChoice
 import nl.t64.game.rpg.components.conversation.ConversationCommand
 import nl.t64.game.rpg.components.conversation.ConversationGraph
 import nl.t64.game.rpg.components.conversation.NoteDatabase.getNoteById
+import nl.t64.game.rpg.components.quest.QuestState
 import nl.t64.game.rpg.constants.Constant
 
 
@@ -39,10 +41,10 @@ private const val LINE_HEIGHT = 26f
 private const val SCROLL_PANE_LINE_HEIGHT = 32f
 private const val SCROLL_PANE_LINE_PAD = -4f
 private const val SCROLL_PANE_TOP_PAD = 10f
-private const val DIALOG_WIDTH = 1000f
+private const val DIALOG_WIDTH = 1200f
 private const val DIALOG_HEIGHT = 300f
 private const val PAD = 25f
-private const val ALL_PADS = PAD * 2f + Constant.FACE_SIZE + PAD + PAD * 3f
+private const val ALL_PADS = PAD * 4f + Constant.FACE_SIZE + PAD + PAD * 3f
 
 class ConversationDialog {
 
@@ -146,7 +148,7 @@ class ConversationDialog {
         val mainTable = Table()
         mainTable.left()
         faceImage = getFaceImage()
-        mainTable.add<Actor>(faceImage).width(Constant.FACE_SIZE).padLeft(PAD * 2f)
+        mainTable.add<Actor>(faceImage).width(Constant.FACE_SIZE).padLeft(PAD * 4f)
 
         val textTable = Table()
         textTable.pad(PAD, PAD, PAD, PAD * 3f)
@@ -271,9 +273,11 @@ class ConversationDialog {
             ConversationCommand.CHECK_IF_IN_INVENTORY -> checkIfInInventory(destinationId)
             ConversationCommand.COMPLETE_QUEST_TASK -> completeTask(destinationId)
             ConversationCommand.RETURN_QUEST -> returnQuest()
+            ConversationCommand.ACCEPT_OR_RETURN_QUEST -> acceptOrReturnQuest()
             ConversationCommand.REWARD_QUEST -> rewardQuest()
             ConversationCommand.BONUS_REWARD_QUEST -> bonusRewardQuest()
             ConversationCommand.FAIL_QUEST -> failQuest(destinationId)
+            ConversationCommand.START_BATTLE -> startBattle(destinationId)
             else -> throw IllegalArgumentException("ConversationCommand '$conversationCommand' cannot be reached here.")
         }
     }
@@ -297,12 +301,12 @@ class ConversationDialog {
     private fun dismissHero(destinationId: String) {
         audioManager.handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_CONVERSATION_END)
         graph.currentPhraseId = destinationId
-        conversationObservers.notifyHeroDismiss()                                       // ends conversation
+        conversationObservers.notifyHeroDismiss()                                   // ends conversation
     }
 
     private fun loadShop(destinationId: String) {
         graph.currentPhraseId = destinationId
-        conversationObservers.notifyLoadShop()                                          // ends conversation
+        conversationObservers.notifyLoadShop()                                      // ends conversation
     }
 
     private fun saveGame(destinationId: String) {
@@ -311,59 +315,66 @@ class ConversationDialog {
     }
 
     private fun acceptQuest() {
-        val quest = gameData.quests.getQuestById(conversationId!!)
-        quest.handleAccept({ continueConversation(it) }, conversationObservers)         // sets new phraseId
+        gameData.quests.handleAccept(conversationId!!,
+                                     { continueConversation(it) },                  // sets new phraseId
+                                     conversationObservers)
     }
 
     private fun knowQuest(destinationId: String) {
-        val quest = gameData.quests.getQuestById(conversationId!!)
-        quest.know()
+        gameData.quests.know(conversationId!!)
         continueConversation(destinationId)
     }
 
     private fun tolerateQuest() {
-        val quest = gameData.quests.getQuestById(conversationId!!)
-        quest.handleTolerate(conversationObservers)
+        gameData.quests.handleTolerate(conversationId!!, conversationObservers)
         continueConversation(Constant.PHRASE_ID_QUEST_TOLERATE)
     }
 
     private fun receiveItem(destinationId: String) {
         graph.currentPhraseId = destinationId
-        val quest = gameData.quests.getQuestById(conversationId!!)
-        quest.handleReceive(conversationObservers)                      // ends conversation, sets possible new phraseId
+        gameData.quests.handleReceive(conversationId!!, conversationObservers)      // ends conversation, sets possible new phraseId
     }
 
     private fun checkIfLinkedQuestKnown(destinationId: String) {
-        val quest = gameData.quests.getQuestById(conversationId!!)
-        quest.handleCheckIfLinkedIsKnown(destinationId) { continueConversation(it) }    // sets possible new phraseId
+        gameData.quests.handleCheckIfLinkedIsKnown(conversationId!!,
+                                                   destinationId,
+                                                   { continueConversation(it) })    // sets possible new phraseId
     }
 
     private fun checkIfQuestAccepted(destinationId: String) {
         val questId = conversationId!!.substring(0, conversationId!!.length - 2)
-        val quest = gameData.quests.getQuestById(questId)
-        quest.handleCheckIfAccepted(destinationId, { continueConversation(it) }, { endConversation(it) })
+        gameData.quests.handleCheckIfAccepted(questId,
+                                              destinationId,
+                                              { continueConversation(it) },
+                                              { endConversation(it) })
     }
 
     private fun checkIfInInventory(destinationId: String) {
         val questId = conversationId!!.substring(0, conversationId!!.length - 2)
-        val quest = gameData.quests.getQuestById(questId)
         val questTaskId = conversationId!!.substring(conversationId!!.length - 1)
-        quest.handleCheckIfAcceptedInventory(
-            questTaskId, destinationId, { continueConversation(it) }, { endConversation(it) })
+        gameData.quests.handleCheckIfAcceptedInventory(questId,
+                                                       questTaskId,
+                                                       destinationId,
+                                                       { continueConversation(it) },
+                                                       { endConversation(it) })
     }
 
     private fun completeTask(destinationId: String) {
         audioManager.handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_REWARD)
         val questId = conversationId!!.substring(0, conversationId!!.length - 2)
-        val quest = gameData.quests.getQuestById(questId)
         val questTaskId = conversationId!!.substring(conversationId!!.length - 1)
-        quest.setTaskComplete(questTaskId)
+        gameData.quests.setTaskComplete(questId, questTaskId)
         continueConversationWithoutSound(destinationId)
     }
 
     private fun returnQuest() {
-        val quest = gameData.quests.getQuestById(conversationId!!)
-        quest.handleReturn { continueConversation(it) }                                 // sets new phraseId
+        gameData.quests.handleReturn(conversationId!!) { continueConversation(it) } // sets new phraseId
+    }
+
+    private fun acceptOrReturnQuest() {
+        gameData.quests.handleAcceptOrReturn(conversationId!!,
+                                             { continueConversation(it) },            // sets new phraseId
+                                             conversationObservers)
     }
 
     private fun bonusRewardQuest() {
@@ -374,15 +385,23 @@ class ConversationDialog {
     private fun rewardQuest() {
         audioManager.handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_REWARD)
         graph.currentPhraseId = Constant.PHRASE_ID_QUEST_UNCLAIMED
-        val quest = gameData.quests.getQuestById(conversationId!!)
-        quest.handleReward({ endConversationWithoutSound(it) }, conversationObservers)  // ends conversation, sets possible new phraseId
+        gameData.quests.handleReward(conversationId!!,
+                                     { endConversationWithoutSound(it) },           // ends conversation, sets possible new phraseId
+                                     conversationObservers)
     }
 
     private fun failQuest(destinationId: String) {
         audioManager.handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_QUEST_FAIL)
-        val quest = gameData.quests.getQuestById(conversationId!!)
-        quest.handleFail(conversationObservers)
+        gameData.quests.handleFail(conversationId!!, conversationObservers)
         continueConversation(destinationId)
+    }
+
+    private fun startBattle(destinationId: String) {
+        if (gameData.quests.isCurrentStateEqualOrLowerThan(conversationId!!, QuestState.KNOWN)) {
+            gameData.quests.handleTolerate(conversationId!!, conversationObservers)
+        }
+        endConversation(destinationId)
+        brokerManager.componentObservers.notifyShowBattleScreen(conversationId!!)
     }
 
 }

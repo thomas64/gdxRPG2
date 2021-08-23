@@ -3,7 +3,6 @@ package nl.t64.game.rpg.screens.inventory.itemslot
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
-import com.badlogic.gdx.utils.GdxRuntimeException
 import com.badlogic.gdx.utils.Scaling
 import nl.t64.game.rpg.Utils.resourceManager
 import nl.t64.game.rpg.components.party.inventory.InventoryGroup
@@ -53,7 +52,7 @@ abstract class ItemSlot(
         if (isSelected()) {
             super.getChildren().pop()
         } else {
-            throw GdxRuntimeException("Tried to deselect an unselected ItemSlot.")
+            throw IllegalStateException("Tried to deselect an unselected ItemSlot.")
         }
     }
 

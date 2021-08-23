@@ -66,7 +66,7 @@ class QuestTask(
     fun isCompleteForReturn(): Boolean {
         return when (type) {
             QuestType.RETURN -> true
-            QuestType.FETCH -> doesInventoryContainsTarget()
+            QuestType.FETCH_ITEM -> doesInventoryContainsTarget()
             QuestType.DISCOVER,
             QuestType.CHECK,
             QuestType.MESSAGE_DELIVERY,

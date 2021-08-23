@@ -6,7 +6,7 @@
     "tasks"   : {
       "1": {
         "taskPhrase": "You need 1 gold",
-        "type"      : "FETCH",
+        "type"      : "FETCH_ITEM",
         "target"    : {"gold": 1}
       },
       "2": {

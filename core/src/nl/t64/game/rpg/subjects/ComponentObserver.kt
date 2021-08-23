@@ -13,6 +13,7 @@ interface ComponentObserver {
     fun onNotifyShowFindDialog(loot: Loot, event: AudioEvent, message: String)
     fun onNotifyShowFindDialog(loot: Loot, event: AudioEvent)
     fun onNotifyShowMessageDialog(message: String)
+    fun onNotifyShowBattleScreen(battleId: String)
     fun onNotifyShowBattleScreen(battleId: String, enemyEntity: Entity)
 
 }

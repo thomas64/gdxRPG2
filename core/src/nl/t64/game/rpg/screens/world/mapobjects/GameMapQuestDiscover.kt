@@ -20,13 +20,8 @@ class GameMapQuestDiscover(rectObject: RectangleMapObject) : GameMapObject(rectO
 
     override fun onNotifyCollision(playerBoundingBox: Rectangle, playerDirection: Direction) {
         if (playerBoundingBox.overlaps(rectangle)) {
-            setQuestTaskComplete()
+            gameData.quests.setTaskComplete(questId, taskId)
         }
-    }
-
-    private fun setQuestTaskComplete() {
-        val quest = gameData.quests.getQuestById(questId)
-        quest.setTaskComplete(taskId)
     }
 
 }

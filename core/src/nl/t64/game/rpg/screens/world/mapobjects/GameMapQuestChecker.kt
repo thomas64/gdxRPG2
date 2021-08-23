@@ -21,13 +21,8 @@ class GameMapQuestChecker(rectObject: RectangleMapObject) : GameMapObject(rectOb
 
     override fun onNotifyActionPressed(checkRect: Rectangle, playerDirection: Direction, playerPosition: Vector2) {
         if (checkRect.overlaps(rectangle)) {
-            setQuestTaskComplete()
+            gameData.quests.setTaskComplete(questId, taskId)
         }
-    }
-
-    private fun setQuestTaskComplete() {
-        val quest = gameData.quests.getQuestById(questId)
-        quest.setTaskComplete(taskId)
     }
 
 }

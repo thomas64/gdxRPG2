@@ -90,6 +90,8 @@ class Entity(
     val state: EntityState get() = physicsComponent.state
     val moveSpeed: Float get() = physicsComponent.velocity
 
+    fun isNpc(): Boolean = physicsComponent is PhysicsNpc
+
     fun getConversationId(): String =
         (physicsComponent as PhysicsNpc).conversationId
 

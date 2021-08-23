@@ -11,8 +11,11 @@ object ConditionDatabase {
         Pair("quest_intro_not_finished") { questIntroNotFinished },
         Pair("3_starting_potions") { startingPotions },
         Pair("grace_ribbon") { graceRibbon },
-
+        Pair("first_equipment_item") { firstEquipmentItem },
         Pair("diplomat2") { diplomat2 },
+        Pair("i_mask_of_ardor") { maskOfArdor },
+        Pair("defeated_orc_guards") { defeatedOrcGuards },
+
         Pair("diplomat3") { diplomat3 },
         Pair("key_mysterious_tunnel") { keyMysteriousTunnel },
         Pair("quest4_known") { quest4Known },
@@ -36,8 +39,11 @@ object ConditionDatabase {
     private val questIntroNotFinished get() = !isQuestTaskNumberComplete("quest_intro", 1)
     private val startingPotions get() = hasEnoughOfItem("healing_potion", 3)
     private val graceRibbon get() = hasEnoughOfItem("grace_ribbon", 1)
-
+    private val firstEquipmentItem get() = hasEnoughOfOneOfTheseItems("basic_light_helmet", "basic_light_boots")
     private val diplomat2 get() = hasEnoughOfSkill(SkillItemId.DIPLOMAT, 2)
+    private val maskOfArdor get() = hasEnoughOfItem("mask_of_ardor", 1)
+    private val defeatedOrcGuards get() = isBattleWon("quest_orc_guards")
+
     private val diplomat3 get() = hasEnoughOfSkill(SkillItemId.DIPLOMAT, 3)
     private val keyMysteriousTunnel get() = hasEnoughOfItem("key_mysterious_tunnel", 1)
     private val quest4Known get() = isQuestStateAtLeast("quest0004", QuestState.KNOWN)
@@ -50,28 +56,26 @@ object ConditionDatabase {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private fun hasEnoughOfSkill(skillItemId: SkillItemId, rank: Int): Boolean {
-        return gameData.party.hasEnoughOfSkill(skillItemId, rank)
-    }
+    private fun hasEnoughOfSkill(skillItemId: SkillItemId, rank: Int): Boolean =
+        gameData.party.hasEnoughOfSkill(skillItemId, rank)
 
-    private fun hasEnoughOfItem(inventoryItemId: String, amount: Int): Boolean {
-        return gameData.inventory.hasEnoughOfItem(inventoryItemId, amount)
-    }
+    private fun hasEnoughOfOneOfTheseItems(vararg inventoryItemIds: String): Boolean =
+        inventoryItemIds.any { hasEnoughOfItem(it, 1) }
 
-    private fun isQuestTaskNumberComplete(questId: String, taskNumber: Int): Boolean {
-        val quest = gameData.quests.getQuestById(questId)
-        val questTask = quest.getAllTasks()[taskNumber - 1]
-        return questTask.isComplete
-    }
+    private fun hasEnoughOfItem(inventoryItemId: String, amount: Int): Boolean =
+        gameData.inventory.hasEnoughOfItem(inventoryItemId, amount)
 
-    private fun isQuestStateAtLeast(questId: String, questState: QuestState): Boolean {
-        val quest = gameData.quests.getQuestById(questId)
-        return quest.currentState.isAtLeast(questState)
-    }
+    private fun isQuestTaskNumberComplete(questId: String, taskNumber: Int): Boolean =
+        gameData.quests.isTaskNumberComplete(questId, taskNumber)
 
-    private fun isQuestStateAtMost(questId: String, questState: QuestState): Boolean {
-        val quest = gameData.quests.getQuestById(questId)
-        return quest.currentState.isAtMost(questState)
-    }
+    private fun isQuestStateAtLeast(questId: String, questState: QuestState): Boolean =
+        gameData.quests.isCurrentStateEqualOrHigherThan(questId, questState)
+
+    private fun isQuestStateAtMost(questId: String, questState: QuestState): Boolean =
+        gameData.quests.isCurrentStateEqualOrLowerThan(questId, questState)
+
+    private fun isBattleWon(battleId: String): Boolean =
+        gameData.battles.isBattleWon(battleId)
+
 
 }

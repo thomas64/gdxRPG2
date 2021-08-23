@@ -5,5 +5,66 @@
       "2": {"text": ["Grace?!", "Where are you?!"]},
       "3": {"text": ["Are you in here?!"], "choices": [{"conversationCommand": "EXIT_CONVERSATION"}]}
     }
+  },
+  "quest_orc_guards"    : {
+    "phrases": {
+      "1"   : {"text": ["Halt! Forbidden area!"]},
+      "2"   : {"text": ["This is domain of Great Wizard Ardor.", "Leave now, or die!"]},
+      "3"   : {
+        "face"   : "mozes", "text": ["Wait wait wait! Don't kill me."],
+        "choices": [
+          {"text": "I'm looking for a little girl, have you guys maybe seen her?", "destinationId": "4"},
+          {"condition": ["i_mask_of_ardor"], "text": "[Mask of Ardor] Your boss needs this for the ritual, let me through.", "destinationId": "5"},
+          {"condition": ["diplomat2"], "text": "[Diplomat 2] Don't threaten me! Do you know who I am?", "destinationId": "6"},
+          {"text": "Alright, let's settle this! (Start battle)", "destinationId": "9"},
+          {"text": "Okay, I'll quickly go away. (Leave conversation)", "conversationCommand": "EXIT_CONVERSATION"}
+        ]
+      },
+      "4"   : {
+        "face"   : "orc_sergeant",
+        "text"   : ["Ardor has girl. Leave now, or die!"],
+        "choices": [{"destinationId": "3"}]
+      },
+      "5"   : {
+        "face"   : "orc_sergeant",
+        "text"   : ["That is Mask of Ardor, he does need that."],
+        "choices": [{"conversationCommand": "ACCEPT_OR_RETURN_QUEST"}]
+      },
+      "6"   : {
+        "face": "orc_sergeant",
+        "text": ["No, who are you?"]
+      },
+      "7"   : {
+        "face": "mozes",
+        "text": ["I am the Great Wizard Mozes! You'll be sorry if Ardor hears that you wouldn't let me through. He will incinerate you on the spot.", "You know he will."]
+      },
+      "8"   : {
+        "face"   : "orc_sergeant",
+        "text"   : ["I know he could."],
+        "choices": [{"conversationCommand": "ACCEPT_OR_RETURN_QUEST"}]
+      },
+      "9"   : {
+        "face"   : "orc_sergeant",
+        "text"   : ["You'll die!"],
+        "choices": [{"conversationCommand": "START_BATTLE", "destinationId": "1"}]
+      },
+      "2000": {
+        "face"   : "orc_sergeant",
+        "text"   : ["You go through."],
+        "choices": [{"conversationCommand": "REWARD_QUEST"}]
+      },
+      "2100": {
+        "face"   : "orc_sergeant",
+        "text"   : ["You go through."],
+        "choices": [{"conversationCommand": "REWARD_QUEST"}]
+      },
+      "2400": {
+        "text"   : ["Go!"],
+        "choices": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "2400"}]
+      }
+    }
+  },
+  "defeated_orc_guards" : {
+    "phrases": {"1": {"text": ["No, I won't."], "choices": [{"conversationCommand": "EXIT_CONVERSATION"}]}}
   }
 }

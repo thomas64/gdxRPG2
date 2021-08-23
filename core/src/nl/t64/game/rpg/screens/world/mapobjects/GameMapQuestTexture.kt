@@ -3,6 +3,7 @@ package nl.t64.game.rpg.screens.world.mapobjects
 import com.badlogic.gdx.maps.objects.TextureMapObject
 import ktx.tiled.property
 import nl.t64.game.rpg.Utils.gameData
+import nl.t64.game.rpg.components.quest.QuestState
 
 
 class GameMapQuestTexture(val texture: TextureMapObject) {
@@ -13,8 +14,8 @@ class GameMapQuestTexture(val texture: TextureMapObject) {
     var isVisible: Boolean = texture.property("isVisible")
 
     fun update() {
-        val isFinished = gameData.quests.getQuestById(questId).isFinished()
-        val isComplete = gameData.quests.getQuestById(questId).isTaskComplete(taskId)
+        val isFinished = gameData.quests.isCurrentStateEqualOrHigherThan(questId, QuestState.FINISHED)
+        val isComplete = gameData.quests.isTaskComplete(questId, taskId)
         isVisible = (isFinished || isComplete) == isVisibleIfComplete
     }
 

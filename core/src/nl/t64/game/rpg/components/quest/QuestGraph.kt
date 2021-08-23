@@ -12,6 +12,7 @@ class QuestGraph(
     val title: String = "",
     val entityId: String = "",
     val summary: String = "",
+    val isHidden: Boolean = false,
     val linkedWith: String? = null,
     val tasks: Map<String, QuestTask> = emptyMap()
 ) {
@@ -28,6 +29,9 @@ class QuestGraph(
         }
     }
 
+    fun isCurrentStateEqualOrHigherThan(questState: QuestState): Boolean = currentState.isEqualOrHigherThan(questState)
+    fun isCurrentStateEqualOrLowerThan(questState: QuestState): Boolean = currentState.isEqualOrLowerThan(questState)
+
     fun getAllTasks(): Array<QuestTask> = tasks.entries
         .sortedBy { it.key }
         .map { it.value }
@@ -37,11 +41,10 @@ class QuestGraph(
         tasks[taskId]!!.setComplete()
     }
 
-    fun isTaskComplete(taskId: String): Boolean {
+    fun isTaskComplete(taskId: String?): Boolean {
+        if (taskId == null) return false
         return tasks[taskId]!!.isComplete
     }
-
-    fun isFinished(): Boolean = currentState == QuestState.FINISHED
 
     fun handleAccept(continueConversation: (String) -> Unit, observers: ConversationSubject) {
         handleTolerate(observers)
@@ -66,8 +69,9 @@ class QuestGraph(
 
     fun handleCheckIfLinkedIsKnown(phraseId: String, continueConversation: (String) -> Unit) {
         val newPhraseId =
-            if (linkedWith != null && gameData.quests.getQuestById(linkedWith).currentState != QuestState.UNKNOWN)
-                Constant.PHRASE_ID_QUEST_LINKED else phraseId
+            if (linkedWith != null && gameData.quests.isCurrentStateEqualOrHigherThan(linkedWith, QuestState.KNOWN)) {
+                Constant.PHRASE_ID_QUEST_LINKED
+            } else phraseId
         continueConversation.invoke(newPhraseId)
     }
 
@@ -102,11 +106,25 @@ class QuestGraph(
         continueConversation.invoke(phraseId)
     }
 
+    fun handleAcceptOrReturn(continueConversation: (String) -> Unit, observers: ConversationSubject) {
+        if (isCurrentStateEqualOrLowerThan(QuestState.KNOWN)) {
+            handleAccept(continueConversation, observers)
+        } else if (currentState == QuestState.ACCEPTED) {
+            handleReturn(continueConversation)
+        } else {
+            throw IllegalStateException("You've messed up the conversation quest flow.")
+        }
+    }
+
     fun handleReward(endConversation: (String) -> Unit, observers: ConversationSubject) {
         if (currentState == QuestState.ACCEPTED) {
             handleRewardPart1(observers)
         }
-        handleRewardPart2(observers, endConversation)
+        if (currentState == QuestState.UNCLAIMED) {
+            handleRewardPart2(observers, endConversation)
+        } else {
+            throw IllegalStateException("You've messed up the conversation quest flow.")
+        }
     }
 
     fun handleFail(observers: ConversationSubject) {
@@ -126,7 +144,7 @@ class QuestGraph(
     fun accept(observers: ConversationSubject) {
         if (currentState == QuestState.KNOWN) {
             currentState = QuestState.ACCEPTED
-            observers.notifyShowMessageTooltip("New quest:" + System.lineSeparator() + System.lineSeparator() + title)
+            if (!isHidden) observers.notifyShowMessageTooltip("New quest:" + System.lineSeparator() + System.lineSeparator() + title)
         } else {
             throw IllegalStateException("Only quest KNOWN can be ACCEPTED.")
         }
@@ -152,7 +170,7 @@ class QuestGraph(
         takeDemands()
         unclaim()
         getAllQuestTasks().forEach { it.forceFinished() }
-        observers.notifyShowMessageTooltip("Quest completed:" + System.lineSeparator() + System.lineSeparator() + title)
+        if (!isHidden) observers.notifyShowMessageTooltip("Quest completed:" + System.lineSeparator() + System.lineSeparator() + title)
     }
 
     private fun handleRewardPart2(observers: ConversationSubject, endConversation: (String) -> Unit) {
@@ -170,7 +188,7 @@ class QuestGraph(
 
     private fun takeDemands() {
         getAllQuestTasks()
-            .filter { it.type == QuestType.FETCH }
+            .filter { it.type == QuestType.FETCH_ITEM }
             .forEach { it.removeTargetFromInventory() }
     }
 

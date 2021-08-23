@@ -17,14 +17,9 @@ class BattleContainer {
         .flatMap { it.toList() }
         .toMap()
 
-    fun getBattlers(battleId: String): List<Battler> {
-        return battles[battleId]!!.battlers
-    }
-
-    fun isBattleWon(battleId: String): Boolean {
-        return battles[battleId]!!.hasWon
-    }
-
+    fun getBattlers(battleId: String): List<Battler> = battles[battleId]!!.battlers
+    fun contains(battleId: String): Boolean = battles.containsKey(battleId)
+    fun isBattleWon(battleId: String): Boolean = battles[battleId]!!.hasWon
     fun setBattleWon(battleId: String) {
         battles[battleId]!!.hasWon = true
     }

@@ -60,6 +60,12 @@ internal class NpcEntitiesLoader(private val currentMap: GameMap) {
         if (!isMeetingConditions(gameMapNpc.conditionIds)) {
             return
         }
+        if (gameData.battles.contains(gameMapNpc.conversation)
+            && gameData.battles.isBattleWon(gameMapNpc.conversation)
+        ) {
+            return
+        }
+
         val entityId = gameMapNpc.name
         val npcEntity = Entity(entityId, InputNpc(), PhysicsNpc(), GraphicsNpc(entityId))
         npcEntities.add(npcEntity)
