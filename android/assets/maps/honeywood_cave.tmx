@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="36" height="36" tilewidth="24" tileheight="24" infinite="0" nextlayerid="16" nextobjectid="42">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="36" height="36" tilewidth="24" tileheight="24" infinite="0" nextlayerid="16" nextobjectid="47">
  <properties>
   <property name="bgm" value="bgm_cave"/>
   <property name="lightmap_player" value="light_player"/>
@@ -96,10 +96,10 @@
   <object id="25" name="found_honeywood_cave" type="discover" x="288" y="672" width="48" height="24"/>
  </objectgroup>
  <objectgroup color="#ffffff" id="14" name="lights">
-  <object id="23" x="306" y="642" width="12" height="12"/>
-  <object id="35" x="258" y="354" width="12" height="12"/>
-  <object id="38" x="234" y="546" width="12" height="12"/>
-  <object id="40" x="378" y="546" width="12" height="12"/>
-  <object id="41" x="306" y="582" width="12" height="12"/>
+  <object id="42" x="240" y="336" width="48" height="48"/>
+  <object id="43" x="216" y="528" width="48" height="48"/>
+  <object id="44" x="360" y="528" width="48" height="48"/>
+  <object id="45" x="288" y="552" width="48" height="48"/>
+  <object id="46" x="288" y="624" width="48" height="48"/>
  </objectgroup>
 </map>

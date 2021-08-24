@@ -127,6 +127,11 @@ class BattleScreen : Screen {
     }
 
     private fun fleeBattle() {
+        if (!gameData.battles.isBattleEscapable(battleId)) {
+            audioManager.handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_MENU_ERROR)
+            return
+        }
+
         val message = """
             Fleeing will return you to the location of 
             your last save with all the progress intact.

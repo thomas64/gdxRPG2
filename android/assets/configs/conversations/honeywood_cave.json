@@ -6,44 +6,124 @@
       "3": {"text": ["Are you in here?!"], "choices": [{"conversationCommand": "EXIT_CONVERSATION"}]}
     }
   },
-  "quest_orc_guards"    : {
+  "lonely_orc_scout"    : {
     "phrases": {
-      "1"   : {"text": ["Halt! Forbidden area!"]},
-      "2"   : {"text": ["This is domain of Great Wizard Ardor.", "Leave now, or die!"]},
-      "3"   : {
-        "face"   : "mozes", "text": ["Wait wait wait! Don't kill me."],
+      "1" : {"text": ["Who are you and what are you doing here!"]},
+      "2" : {
+        "face"   : "mozes",
+        "text"   : ["Woah! Easy there."],
         "choices": [
-          {"text": "I'm looking for a little girl, have you guys maybe seen her?", "destinationId": "4"},
-          {"condition": ["i_mask_of_ardor"], "text": "[Mask of Ardor] Your boss needs this for the ritual, let me through.", "destinationId": "5"},
-          {"condition": ["diplomat2"], "text": "[Diplomat 2] Don't threaten me! Do you know who I am?", "destinationId": "6"},
-          {"text": "Alright, let's settle this! (Start battle)", "destinationId": "9"},
-          {"text": "Okay, I'll quickly go away. (Leave conversation)", "conversationCommand": "EXIT_CONVERSATION"}
+          {"text": "I'm Mozes and I'm looking for a little girl.", "destinationId": "5"},
+          {"text": "No, you answer my questions!", "destinationId": "6"}
         ]
       },
-      "4"   : {
+      "5" : {
+        "face"   : "orc_scout",
+        "text"   : ["Hah! Little girl? You won't find her anymore. We found her snooping around in forest, so we brought her to Ardor."],
+        "choices": [{"destinationId": "10"}]
+      },
+      "6" : {
+        "face"   : "orc_scout",
+        "text"   : ["Hah! Watch your mouth. Don't tell me you came here for little girl we found snooping in forest earlier. We brought her to Ardor."],
+        "choices": [{"destinationId": "10"}]
+      },
+      "10": {
+        "face"   : "mozes",
+        "text"   : ["If anything has happened to Grace..."],
+        "choices": [
+          {"text": "Who is this Ardor?", "destinationId": "11"},
+          {"text": "What has Grace to do with Ardor?", "destinationId": "12"}
+        ]
+      },
+      "11": {
+        "face"   : "orc_scout",
+        "text"   : ["Ardor is great wizard, soon ruler of Adan."],
+        "choices": [{"destinationId": "10"}]
+      },
+      "12": {
+        "face"   : "orc_scout",
+        "text"   : ["Ardor has found ancient spell for world domination, but spell needs blood of princess. We found little girl, so brought her to Ardor."],
+        "choices": [{"destinationId": "20"}]
+      },
+      "20": {
+        "face"   : "mozes",
+        "text"   : ["What?! Blood?! Grace is no princess!"],
+        "choices": [
+          {"text": "Does Ardor know that?", "destinationId": "21"},
+          {"text": "Where is this Ardor?", "destinationId": "22"}
+        ]
+      },
+      "21": {
+        "face"   : "orc_scout",
+        "text"   : ["No. Easy job for us."],
+        "choices": [{"destinationId": "20"}]
+      },
+      "22": {
+        "face": "orc_scout",
+        "text": ["You'll have get past guards, but they are far too strong for you.", "They kill you with ease."]
+      },
+      "23": {
+        "text"   : ["But you know more than enough.", "I have to go to Ardor. He needs mask for ritual with little girl.", "She will die and so will you!"],
+        "choices": [{"conversationCommand": "START_BATTLE"}]
+      }
+    }
+  },
+  "quest_orc_guards"    : {
+    "phrases": {
+      "1" : {"text": ["Halt! Forbidden area!"]},
+      "2" : {"text": ["This is domain of Great Wizard Ardor.", "Leave now, or die!"]},
+      "3" : {
+        "face"   : "mozes",
+        "text"   : ["Wait wait wait! Don't kill me."],
+        "choices": [
+          {"text": "I'm looking for a little girl, have you guys maybe seen her?", "destinationId": "10"},
+          {"condition": ["i_mask_of_ardor"], "text": "[Mask of Ardor] Your boss needs this for the ritual, let me through.", "destinationId": "20"},
+          {"condition": ["diplomat2"], "text": "[Diplomat 2] Don't threaten me! Do you know who I am?", "destinationId": "30"},
+          {"text": "Alright, let's settle this! (Start battle)", "destinationId": "40"},
+          {"text": "Okay, I'll quickly go away... For now. (Leave conversation)", "conversationCommand": "EXIT_CONVERSATION"}
+        ]
+      },
+      "10": {
+        "face": "orc_sergeant",
+        "text": ["Ardor has girl. Leave now, or die!"]
+      },
+      "11": {
+        "face"   : "mozes",
+        "text"   : ["If anything has happened to Grace..."],
+        "choices": [
+          {"text": "Who is this Ardor?", "destinationId": "12"},
+          {"text": "If this Ardor has Grace, bring me to him!", "destinationId": "13"}
+        ]
+      },
+      "12": {
         "face"   : "orc_sergeant",
-        "text"   : ["Ardor has girl. Leave now, or die!"],
+        "text"   : ["Ardor is great wizard, soon ruler of Adan."],
+        "choices": [{"destinationId": "11"}]
+      },
+      "13": {
+        "face"   : "orc_sergeant",
+        "text"   : ["No! You leave, or die!"],
         "choices": [{"destinationId": "3"}]
       },
-      "5"   : {
+      "20": {
         "face"   : "orc_sergeant",
-        "text"   : ["That is Mask of Ardor, he does need that."],
+        "text"   : ["That is mask of Ardor, he does need that."],
         "choices": [{"conversationCommand": "ACCEPT_OR_RETURN_QUEST"}]
       },
-      "6"   : {
+      "30": {
         "face": "orc_sergeant",
         "text": ["No, who are you?"]
       },
-      "7"   : {
+      "31": {
         "face": "mozes",
         "text": ["I am the Great Wizard Mozes! You'll be sorry if Ardor hears that you wouldn't let me through. He will incinerate you on the spot.", "You know he will."]
       },
-      "8"   : {
+      "32": {
         "face"   : "orc_sergeant",
         "text"   : ["I know he could."],
         "choices": [{"conversationCommand": "ACCEPT_OR_RETURN_QUEST"}]
       },
-      "9"   : {
+      "40": {
         "face"   : "orc_sergeant",
         "text"   : ["You'll die!"],
         "choices": [{"conversationCommand": "START_BATTLE", "destinationId": "1"}]

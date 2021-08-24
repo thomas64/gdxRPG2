@@ -18,8 +18,8 @@ class BattleContainer {
         .toMap()
 
     fun getBattlers(battleId: String): List<Battler> = battles[battleId]!!.battlers
-    fun contains(battleId: String): Boolean = battles.containsKey(battleId)
-    fun isBattleWon(battleId: String): Boolean = battles[battleId]!!.hasWon
+    fun isBattleEscapable(battleId: String): Boolean = battles[battleId]!!.isEscapable
+    fun isBattleWon(battleId: String): Boolean = battles[battleId]?.hasWon ?: false
     fun setBattleWon(battleId: String) {
         battles[battleId]!!.hasWon = true
     }

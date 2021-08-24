@@ -64,6 +64,7 @@ object ConditionDatabase {
 
     private fun hasEnoughOfItem(inventoryItemId: String, amount: Int): Boolean =
         gameData.inventory.hasEnoughOfItem(inventoryItemId, amount)
+                || gameData.party.getAllHeroes().count { it.hasInventoryItem(inventoryItemId) } >= amount
 
     private fun isQuestTaskNumberComplete(questId: String, taskNumber: Int): Boolean =
         gameData.quests.isTaskNumberComplete(questId, taskNumber)

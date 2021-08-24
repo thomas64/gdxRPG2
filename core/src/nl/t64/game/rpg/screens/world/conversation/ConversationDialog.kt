@@ -397,7 +397,9 @@ class ConversationDialog {
     }
 
     private fun startBattle(destinationId: String) {
-        if (gameData.quests.isCurrentStateEqualOrLowerThan(conversationId!!, QuestState.KNOWN)) {
+        if (gameData.quests.contains(conversationId!!)
+            && gameData.quests.isCurrentStateEqualOrLowerThan(conversationId!!, QuestState.KNOWN)
+        ) {
             gameData.quests.handleTolerate(conversationId!!, conversationObservers)
         }
         endConversation(destinationId)

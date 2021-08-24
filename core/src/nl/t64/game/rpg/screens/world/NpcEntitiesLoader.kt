@@ -2,7 +2,7 @@ package nl.t64.game.rpg.screens.world
 
 import nl.t64.game.rpg.Utils.brokerManager
 import nl.t64.game.rpg.Utils.gameData
-import nl.t64.game.rpg.components.condition.ConditionDatabase.isMeetingConditions
+import nl.t64.game.rpg.components.condition.ConditionDatabase
 import nl.t64.game.rpg.screens.world.entity.*
 import nl.t64.game.rpg.screens.world.entity.events.LoadEntityEvent
 import nl.t64.game.rpg.screens.world.mapobjects.GameMapEnemy
@@ -22,9 +22,10 @@ internal class NpcEntitiesLoader(private val currentMap: GameMap) {
     }
 
     private fun loadNpcs() {
-        currentMap.npcs.forEach {
-            loadNpcEntity(it)
-        }
+        currentMap.npcs
+            .filter { ConditionDatabase.isMeetingConditions(it.conditionIds) }
+            .filterNot { gameData.battles.isBattleWon(it.conversation) }
+            .forEach { loadNpcEntity(it) }
     }
 
     private fun loadHeroes() {
@@ -33,7 +34,7 @@ internal class NpcEntitiesLoader(private val currentMap: GameMap) {
 
     private fun loadEnemies() {
         currentMap.enemies
-            .filter { !gameData.battles.isBattleWon(it.battleId) }
+            .filterNot { gameData.battles.isBattleWon(it.battleId) }
             .forEach { loadEnemy(it) }
     }
 
@@ -57,15 +58,6 @@ internal class NpcEntitiesLoader(private val currentMap: GameMap) {
     }
 
     private fun loadNpcEntity(gameMapNpc: GameMapNpc) {
-        if (!isMeetingConditions(gameMapNpc.conditionIds)) {
-            return
-        }
-        if (gameData.battles.contains(gameMapNpc.conversation)
-            && gameData.battles.isBattleWon(gameMapNpc.conversation)
-        ) {
-            return
-        }
-
         val entityId = gameMapNpc.name
         val npcEntity = Entity(entityId, InputNpc(), PhysicsNpc(), GraphicsNpc(entityId))
         npcEntities.add(npcEntity)

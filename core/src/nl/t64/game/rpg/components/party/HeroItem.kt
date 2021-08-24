@@ -93,6 +93,10 @@ class HeroItem(
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    fun hasInventoryItem(itemId: String): Boolean {
+        return inventory.hasInventoryItem(itemId)
+    }
+
     fun getInventoryItem(inventoryGroup: InventoryGroup): InventoryItem? {
         return inventory.getInventoryItem(inventoryGroup)
     }

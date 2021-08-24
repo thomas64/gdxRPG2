@@ -31,6 +31,10 @@ class EquipContainer() {
         this.equipment[InventoryGroup.CHEST.name] = InventoryDatabase.createInventoryItem(chestId)
     }
 
+    fun hasInventoryItem(itemId: String): Boolean {
+        return equipment.values.any { it?.id == itemId }
+    }
+
     fun getInventoryItem(inventoryGroup: InventoryGroup): InventoryItem? {
         return equipment[inventoryGroup.name]
     }

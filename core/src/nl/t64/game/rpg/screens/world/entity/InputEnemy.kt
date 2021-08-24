@@ -55,7 +55,7 @@ class InputEnemy : InputComponent() {
 
     override fun update(entity: Entity, dt: Float) {
         this.enemyEntity = entity
-        if (path!!.count < MINIMUM_DETECTION_RANGE) {
+        if (path!!.count in 1 until MINIMUM_DETECTION_RANGE) {
             setIdleState()
         } else if (isDetectingPlayer) {
             setFollowPath()
