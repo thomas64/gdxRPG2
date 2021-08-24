@@ -38,7 +38,7 @@ abstract class LootScreen : ParchmentScreen() {
         stage.dispose()
     }
 
-    fun closeScreen(isAllTheLootCleared: Boolean) {
+    open fun closeScreen(isAllTheLootCleared: Boolean) {
         if (isAllTheLootCleared) {
             resolveAfterClearingContent()
         }

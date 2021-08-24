@@ -17,6 +17,10 @@ class LootSubject {
         observers.clear()
     }
 
+    fun notifySpoilsUpdated() {
+        observers.forEach { it.onNotifySpoilsUpdated() }
+    }
+
     fun notifyLootTaken() {
         observers.forEach { it.onNotifyLootTaken() }
     }

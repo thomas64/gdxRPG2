@@ -176,6 +176,10 @@ class WorldScreen : Screen,
 
     // LootObserver ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    override fun onNotifySpoilsUpdated() {
+        onNotifyLootTaken()
+    }
+
     override fun onNotifyLootTaken() {
         lootList.forEach { brokerManager.actionObservers.removeObserver(it) }
         lootList.forEach { brokerManager.blockObservers.removeObserver(it) }
@@ -249,7 +253,6 @@ class WorldScreen : Screen,
         if (!spoils.isTaken()) {
             gameData.spoils.addSpoil(battleId, Spoil(mapManager.currentMap.mapTitle,
                                                      player.position.x, player.position.y, spoils))
-            lootList = LootLoader(mapManager.currentMap).createLoot()
             doBeforeLoadScreen()
             SpoilsScreen.load(spoils, levelUpMessage)
         } else {

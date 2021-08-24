@@ -32,8 +32,16 @@ class SpoilsScreen : LootScreen() {
         levelUpMessage?.let { showLevelUpMessage() }
     }
 
+    override fun closeScreen(isAllTheLootCleared: Boolean) {
+        brokerManager.lootObservers.notifySpoilsUpdated()
+        super.closeScreen(false)
+        // Above argument is false so that resolveAfterClearingContent() is not called in closeScreen(),
+        // which is empty anyway and also already resolved at the line with notifySpoilsUpdated().
+        // This is necessary, so that loot is always updated, even if the spoils are not taken.
+    }
+
     override fun resolveAfterClearingContent() {
-        brokerManager.lootObservers.notifyLootTaken()
+        // empty
     }
 
     private fun showLevelUpMessage() {
