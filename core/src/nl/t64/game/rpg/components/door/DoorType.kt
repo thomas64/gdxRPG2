@@ -8,6 +8,7 @@ enum class DoorType(val width: Float, val height: Float, val audioEvent: AudioEv
 
     SMALL(Constant.TILE_SIZE, Constant.TILE_SIZE * 2f, AudioEvent.SE_SMALL_DOOR),
     LARGE(Constant.TILE_SIZE * 3f, Constant.TILE_SIZE * 2f, AudioEvent.SE_LARGE_DOOR),
-    GATE(Constant.TILE_SIZE, Constant.TILE_SIZE * 2f, AudioEvent.SE_GATE);
+    GATE(Constant.TILE_SIZE, Constant.TILE_SIZE * 2f, AudioEvent.SE_METAL_GATE),
+    LARGE_WOODEN_GATE(Constant.TILE_SIZE * 3f, Constant.TILE_SIZE * 2f, AudioEvent.SE_WOODEN_GATE);
 
 }

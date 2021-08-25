@@ -40,7 +40,7 @@ internal class DoorTest : GameTest() {
         assertThat(door.type).isEqualTo(DoorType.GATE)
         assertThat(door.spriteId).isEqualTo("gate_with_lock")
         assertThat(door.keyId).contains("key_mysterious_tunnel")
-        assertThat(door.audio).isEqualTo(AudioEvent.SE_GATE)
+        assertThat(door.audio).isEqualTo(AudioEvent.SE_METAL_GATE)
         assertThat(door.width).isEqualTo(48f)
         assertThat(door.height).isEqualTo(96f)
 

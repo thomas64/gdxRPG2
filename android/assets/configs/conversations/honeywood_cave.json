@@ -19,12 +19,12 @@
       },
       "5" : {
         "face"   : "orc_scout",
-        "text"   : ["Hah! Little girl? You won't find her anymore. We found her snooping around in forest, so we brought her to Ardor."],
+        "text"   : ["Hah! Little girl? You won't find her anymore.", "We found her snooping around in forest, so we brought her to Ardor."],
         "choices": [{"destinationId": "10"}]
       },
       "6" : {
         "face"   : "orc_scout",
-        "text"   : ["Hah! Watch your mouth. Don't tell me you came here for little girl we found snooping in forest earlier. We brought her to Ardor."],
+        "text"   : ["Hah! Watch your mouth!", "Don't tell me you came here for little girl we found snooping in forest earlier.", "We brought her to Ardor. She is goner."],
         "choices": [{"destinationId": "10"}]
       },
       "10": {
@@ -60,7 +60,7 @@
       },
       "22": {
         "face": "orc_scout",
-        "text": ["You'll have get past guards, but they are far too strong for you.", "They kill you with ease."]
+        "text": ["You will have to get past guards, but they are far too strong for you.", "They kill you with ease."]
       },
       "23": {
         "text"   : ["But you know more than enough.", "I have to go to Ardor. He needs mask for ritual with little girl.", "She will die and so will you!"],
@@ -125,7 +125,7 @@
       },
       "40": {
         "face"   : "orc_sergeant",
-        "text"   : ["You'll die!"],
+        "text"   : ["You will die!"],
         "choices": [{"conversationCommand": "START_BATTLE", "destinationId": "1"}]
       },
       "2000": {
