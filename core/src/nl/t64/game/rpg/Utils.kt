@@ -160,11 +160,11 @@ object Utils {
         return Image(characterFace)
     }
 
-    fun getDoorImage(spriteId: String, width: Int): Array<Array<TextureRegion>> {
+    fun getDoorImage(spriteId: String, width: Int, isShadow: Boolean): Array<Array<TextureRegion>> {
         val doorConfig = resourceManager.getSpriteConfig(spriteId)
         val path = String.format(DOOR_PATH, doorConfig.source)
         val row = doorConfig.row - 1
-        val col = doorConfig.col - 1
+        val col = doorConfig.col - (if (isShadow) 0 else 1)
         val allDoors = getSplitTexture(path, width, Constant.SPRITE_GROUP_HEIGHT * 2)
         val doorSprite = allDoors[row][col]
         return doorSprite.split(width, Constant.TILE_SIZE.toInt() * 2)
