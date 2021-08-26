@@ -8,6 +8,7 @@ private const val LOOT_CONFIGS = "configs/loot/"
 private const val SPARKLE_FILE_LIST = LOOT_CONFIGS + "_files_sparkles.txt"
 private const val CHEST_FILE_LIST = LOOT_CONFIGS + "_files_chests.txt"
 private const val QUEST_FILE_LIST = LOOT_CONFIGS + "_files_quests.txt"
+private const val CONVERSATION_FILE_LIST = LOOT_CONFIGS + "_files_conversations.txt"
 
 class LootContainer {
 
@@ -25,7 +26,8 @@ class LootContainer {
         val sparkles = getFileList(SPARKLE_FILE_LIST)
         val chests = getFileList(CHEST_FILE_LIST)
         val quests = getFileList(QUEST_FILE_LIST)
-        return listOf(sparkles, chests, quests)
+        val conversations = getFileList(CONVERSATION_FILE_LIST)
+        return listOf(sparkles, chests, quests, conversations)
             .flatten()
             .map { Gdx.files.internal(LOOT_CONFIGS + it).readString() }
             .map { Utils.readValue<Loot>(it) }

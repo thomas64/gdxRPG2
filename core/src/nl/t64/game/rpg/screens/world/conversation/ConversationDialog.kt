@@ -268,6 +268,7 @@ class ConversationDialog {
             ConversationCommand.KNOW_QUEST -> knowQuest(destinationId)
             ConversationCommand.TOLERATE_QUEST -> tolerateQuest()
             ConversationCommand.RECEIVE_ITEM -> receiveItem(destinationId)
+            ConversationCommand.RECEIVE_XP -> receiveXp(destinationId)
             ConversationCommand.CHECK_IF_LINKED_QUEST_KNOWN -> checkIfLinkedQuestKnown(destinationId)
             ConversationCommand.CHECK_IF_QUEST_ACCEPTED -> checkIfQuestAccepted(destinationId)
             ConversationCommand.CHECK_IF_IN_INVENTORY -> checkIfInInventory(destinationId)
@@ -333,6 +334,26 @@ class ConversationDialog {
     private fun receiveItem(destinationId: String) {
         graph.currentPhraseId = destinationId
         gameData.quests.handleReceive(conversationId!!, conversationObservers)      // ends conversation, sets possible new phraseId
+    }
+
+    private fun receiveXp(destinationId: String) {
+        val reward = gameData.loot.getLoot(conversationId!!)
+        if (reward.isXpGained()) {
+            continueConversation(destinationId)
+        } else {
+            audioManager.handle(AudioCommand.SE_PLAY_ONCE, AudioEvent.SE_REWARD)
+            val levelUpMessage = StringBuilder()
+            gameData.party.gainXp(reward.xp, levelUpMessage)
+            val finalMessage = levelUpMessage.toString().trim()
+            if (finalMessage.isEmpty()) {
+                conversationObservers.notifyShowMessageTooltip("+ ${reward.xp} XP")
+            } else {
+                conversationObservers.notifyShowMessageTooltip("+ ${reward.xp} XP" + System.lineSeparator()
+                                                                       + System.lineSeparator() + finalMessage)
+            }
+            reward.clearXp()
+            continueConversationWithoutSound(destinationId)
+        }
     }
 
     private fun checkIfLinkedQuestKnown(destinationId: String) {

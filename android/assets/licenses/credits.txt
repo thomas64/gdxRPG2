@@ -45,10 +45,12 @@ Music Copyright Notice
 "Den"
 "Journey"
 "Quiet town"
+"Remains"
 "Store"
 "Town"
 "Volcano"
 "Wake up"
+"Wayfarer"
 "Woods"
 by Yusaku Kishigami
 www.presence-of-music.com

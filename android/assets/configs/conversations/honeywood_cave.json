@@ -70,9 +70,9 @@
   },
   "quest_orc_guards"    : {
     "phrases": {
-      "1" : {"text": ["Halt! Forbidden area!"]},
-      "2" : {"text": ["This is domain of Great Wizard Ardor.", "Leave now, or die!"]},
-      "3" : {
+      "1"   : {"text": ["Halt! Forbidden area!"]},
+      "2"   : {"text": ["This is domain of Great Wizard Ardor.", "Leave now, or die!"]},
+      "3"   : {
         "face"   : "mozes",
         "text"   : ["Wait wait wait! Don't kill me."],
         "choices": [
@@ -83,11 +83,11 @@
           {"text": "Okay, I'll quickly go away... For now. (Leave conversation)", "conversationCommand": "EXIT_CONVERSATION"}
         ]
       },
-      "10": {
+      "10"  : {
         "face": "orc_sergeant",
         "text": ["Ardor has girl. Leave now, or die!"]
       },
-      "11": {
+      "11"  : {
         "face"   : "mozes",
         "text"   : ["If anything has happened to Grace..."],
         "choices": [
@@ -95,35 +95,35 @@
           {"text": "If this Ardor has Grace, bring me to him!", "destinationId": "13"}
         ]
       },
-      "12": {
+      "12"  : {
         "face"   : "orc_sergeant",
         "text"   : ["Ardor is great wizard, soon ruler of Adan."],
         "choices": [{"destinationId": "11"}]
       },
-      "13": {
+      "13"  : {
         "face"   : "orc_sergeant",
         "text"   : ["No! You leave, or die!"],
         "choices": [{"destinationId": "3"}]
       },
-      "20": {
+      "20"  : {
         "face"   : "orc_sergeant",
         "text"   : ["That is mask of Ardor, he does need that."],
         "choices": [{"conversationCommand": "ACCEPT_OR_RETURN_QUEST"}]
       },
-      "30": {
+      "30"  : {
         "face": "orc_sergeant",
         "text": ["No, who are you?"]
       },
-      "31": {
+      "31"  : {
         "face": "mozes",
         "text": ["I am the Great Wizard Mozes! You'll be sorry if Ardor hears that you wouldn't let me through. He will incinerate you on the spot.", "You know he will."]
       },
-      "32": {
+      "32"  : {
         "face"   : "orc_sergeant",
         "text"   : ["I know he could."],
         "choices": [{"conversationCommand": "ACCEPT_OR_RETURN_QUEST"}]
       },
-      "40": {
+      "40"  : {
         "face"   : "orc_sergeant",
         "text"   : ["You will die!"],
         "choices": [{"conversationCommand": "START_BATTLE", "destinationId": "1"}]
@@ -142,6 +142,12 @@
         "text"   : ["Go!"],
         "choices": [{"conversationCommand": "EXIT_CONVERSATION", "destinationId": "2400"}]
       }
+    }
+  },
+  "find_dead_orcs"      : {
+    "phrases": {
+      "1": {"text": ["What is this? What happened here?", "Dead orcs?"]},
+      "2": {"text": ["What kind of terrible force is there behind that gate?"], "choices": [{"conversationCommand": "EXIT_CONVERSATION"}]}
     }
   },
   "defeated_orc_guards" : {
