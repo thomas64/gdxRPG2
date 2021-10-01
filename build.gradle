@@ -26,7 +26,7 @@ allprojects {
         mappingVersion = "2.3.0"
         aiVersion = "1.8.2"
         ktxVersion = "1.10.0-SNAPSHOT"
-        jacksonVersion = "2.12.4"
+        jacksonVersion = "2.13.0"
         assertjVersion = "3.20.2"
         mockitoVersion = "3.12.4"
         kockitoVersion = "3.2.0"
